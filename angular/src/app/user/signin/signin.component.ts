@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
@@ -10,14 +10,19 @@ import { AuthService } from '../../shared/services/auth.service';
   templateUrl: './signin.component.html',
   styles: ``
 })
-export class SigninComponent {
+export class SigninComponent implements OnInit {
   private isSubmitted: boolean = false;
 
   constructor(
     public formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router
-  ) { }
+  ){}
+
+  ngOnInit() {
+    if (!this.authService.isSignedIn()) return;
+    this.router.navigateByUrl('');
+  }
 
   form = this.formBuilder.group({
     email: [ '', [ Validators.required ]],
@@ -36,7 +41,7 @@ export class SigninComponent {
         console.log(res);
         this.form.reset();
         this.isSubmitted = false;
-        localStorage.setItem('token', res.token);
+        this.authService.storeToken(res.token);
         this.router.navigateByUrl('/map');
       },
       error: (err: any) => {

@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { FirstKeyPipe } from '../../shared/pipes/first-key.pipe';
 import { AuthService } from '../../shared/services/auth.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -11,15 +11,21 @@ import { RouterLink } from '@angular/router';
   templateUrl: './signup.component.html',
   styles: ``
 })
-export class SignupComponent {
+export class SignupComponent implements OnInit {
   private isSubmitted: boolean = false;
   private serverErrors: string[] = [];
 
   constructor(
     public formBuilder: FormBuilder,
     public firstKey: FirstKeyPipe,
+    private router: Router,
     private authService: AuthService
-  ) {}
+  ){}
+
+  ngOnInit(): void {
+    if (!this.authService.isSignedIn()) return;
+    this.router.navigateByUrl('');
+  }
 
   passwordMatch: ValidatorFn = (control: AbstractControl): null => {
     const password = control.get('password');

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using GofishApi.Data;
 using GofishApi.Models;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GofishApi.Extensions
 {
@@ -30,30 +32,71 @@ namespace GofishApi.Extensions
         {
             services.AddCors((options) =>
             {
-                options.AddPolicy("angular", (policy) => policy
-                    .WithOrigins("http://localhost:4200")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials());
+                options
+                .AddPolicy("angular", (policy) => policy
+                .WithOrigins("http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials());
             });
         }
 
         public static void AddIdentityAuth(this IServiceCollection services, IConfiguration configuration)
         {
-            var builder = services.AddAuthentication((options) =>
-            {
-                options.DefaultAuthenticateScheme =
-                options.DefaultChallengeScheme =
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            });
-            builder.AddJwtBearer((options) =>
+            services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer((options) => 
             {
                 options.SaveToken = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("Jwt")["Secret"]!))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("Jwt")["Secret"]!)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
                 };
+            });
+            // services
+            // .AddAuthorizationBuilder()
+            // .AddFallbackPolicy(
+            //     "Bearer",
+            //     new AuthorizationPolicyBuilder()
+            //     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+            //     .RequireAuthenticatedUser()
+            //     .Build()
+            // );
+            services.AddAuthorization();
+        }
+
+        public static void AddAndConfigureSwaggerGen(this IServiceCollection services)
+        {
+            services
+            .AddEndpointsApiExplorer()
+            .AddSwaggerGen((options) =>
+            {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorizations",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Fill in the JWT token"
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new List<String>()
+                    }
+                });
             });
         }
     }
