@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GofishApi.Data
 {
-    public class AppDbContext : IdentityDbContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-        public DbSet<AppUser> AppUsers { get; set; }
+        // public DbSet<AppUser> AppUsers { get; set; }
     }
 }
