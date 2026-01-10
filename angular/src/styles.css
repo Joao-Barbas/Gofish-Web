@@ -1,23 +1,30 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 
 :root {
-  /* Colors */
-  --color-primary: #4f46e5;       /* Indigo-600 */
-  --color-secondary: #10b981;     /* Emerald-500 */
-  --color-background: #f9fafb;    /* Gray-50 */
-  --color-text: #111827;          /* Gray-900 */
-
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
-
-  /* Fonts */
   --font-main: 'Inter', sans-serif;
-  --font-heading: 'Roboto', sans-serif;
+  --font-heading: 'Montserrat', sans-serif;
 
-  /* Other variables */
-  --border-radius: 0.5rem;
+  --dark-bg-dark: oklch(0.1616 0.0109 276.23);
+  --dark-bg: oklch(0.2604 0.012 276.58);
+  --dark-bg-light: oklch(0.3037 0.0233 276.07);
+  --dark-text: oklch(0.9619 0 0);
+  --dark-text-muted: oklch(0.7652 0 0);
+
+  --primary: oklch(0.6048 0.2142 262.15);
+  --primary-text: oklch(0.6114 0.1743 262.46);
+  --secondary: oklch(0.7096 0.186513 13.1188);
+  --tertiary: oklch(0.4462 0.0246 276.43);
+  --danger: oklch(0.648 0.1874 28.51);
+  --warning: oklch(0.8829 0.1633 104.07);
+  --success: oklch(0.8359 0.1769 156.76);
+  --info: oklch(0.6114 0.1743 262.46);
+
+  --dark-lift-shadow-s: inset 0 1px 2px #ffffff30, 0 1px 2px #00000030, 0 2px 4px #00000025;
+  --dark-lift-shadow-m: inset 0 1px 2px #ffffff50, 0 2px 4px #00000030, 0 4px 8px #00000015;
+  --dark-lift-shadow-l: inset 0 1px 2px #ffffff70, 0 4px 6px #00000030, 0 6px 10px #00000015;
+  --dark-sunk-shadow-s: inset 0 -1px 2px #ffffff30, inset 0 1px 2px #00000030, inset 0 2px 4px #00000025;
+  --dark-sunk-shadow-m: inset 0 -1px 2px #ffffff50, inset 0 2px 4px #00000030, inset 0 4px 8px #00000015;
+  --dark-sunk-shadow-l: inset 0 -1px 2px #ffffff70, inset 0 4px 6px #00000030, inset 0 6px 10px #00000015;
 }
 
 body {
@@ -25,6 +32,146 @@ body {
 }
 
 .error-feedback {
-  font-size: 0.9rem;
-  color: crimson;
+  font-size: 0.75rem;
+  color: var(--danger);
+}
+
+.fixed-map-image-background {
+  min-height: 100vh;
+  min-width: 100vw;
+  background-image: url('/assets/images/backgroung-map.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.auth-parent-container {
+  background-color: var(--dark-bg);
+  box-shadow: var(--dark-lift-shadow-m);
+  border-radius: 1.25rem;
+  padding: 2.5rem 2.5rem 2.5rem 2.5rem; /* top, right, bottom, left */
+}
+
+.container-align-items-center {
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  justify-content: center;  /* horizontal */
+  align-items: center;      /* vertical */
+}
+
+.logo-text {
+  color: var(--dark-text);
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.125rem;
+}
+
+.form-auth-container {
+  width: 20rem;
+  max-width: 20rem;
+}
+
+.form-divider {
+  display: flex;
+  margin: 0rem 1rem; /* top & bottom / left & right */
+}
+
+.form-divider::before,
+.form-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--dark-text-muted);
+}
+
+.form-divider::before {
+  margin-right: 10px;
+}
+
+.form-divider::after {
+  margin-left: 10px;
+}
+
+.form-divider span {
+  color: var(--dark-text-muted);
+}
+
+.form-input {
+  width: 100%;
+  height: 2.5rem;
+  background-color: var(--dark-bg-light);
+  box-shadow: var(--dark-sunk-shadow-s);
+  color: var(--dark-text);
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+.form-input-label {
+  color: var(--dark-text-muted);
+  font-size: 0.75rem;
+}
+
+.form-submit-button {
+  width: 100%;
+  height: 2.5rem;
+  box-shadow: var(--dark-lift-shadow-s);
+  background-color: var(--primary);
+  color: var(--dark-text);
+  border-radius: 0.5rem;
+  border: none;
+}
+
+.form-secondary-button {
+  box-shadow: var(--dark-lift-shadow-s);
+  background-color: var(--tertiary);
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.gap-4 {
+  gap: 0.25rem !important;
+}
+
+.gap-8 {
+  gap: 0.5rem !important;
+}
+
+.gap-12 {
+  gap: 0.75rem !important;
+}
+
+.gap-16 {
+  gap: 1rem !important;
+}
+
+.gap-20 {
+  gap: 1.25rem !important;
+}
+
+.margin-top-12 {
+  margin-top: 0.75rem;
+}
+
+.text-small-muted {
+  color: var(--dark-text-muted);
+  font-size: 0.75rem;
+}
+
+.vertical-flow {
+  display: flex;
+  flex-direction: column;
+}
+
+.horizontal-flow {
+  display: flex;
+  flex-direction: row;
+}
+
+.align-center-center {
+  justify-content: center; /* horizontal */
+  align-items: center;     /* vertical */
 }

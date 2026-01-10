@@ -17,6 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddScoped<IJwtService, JwtService>();
 
+builder.Services.AddDataProtection();
+builder.Services.AddScoped<ITwoFactorTokenService, TwoFactorTokenService>();
+
 builder.Services.AddDbContext<AppDbContext>((options) => options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings")["Default"]!));
 builder.Services.AddIdentityHandlersAndStores();
 builder.Services.ConfigureIdentityOptions();

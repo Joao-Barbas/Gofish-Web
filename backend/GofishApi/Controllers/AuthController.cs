@@ -14,15 +14,19 @@ namespace GofishApi.Controllers
         private readonly ILogger<AuthController> _logger;
         private readonly UserManager<AppUser> _userManager;
         private readonly IJwtService _jwtService;
+        private readonly ITwoFactorTokenService _twoFactorService;
 
         public AuthController(
             ILogger<AuthController> logger,
             UserManager<AppUser> userManager,
-            IJwtService jwtService
-        ){
+            IJwtService jwtService,
+            ITwoFactorTokenService twoFactorService
+        )
+        {
             _logger = logger;
             _userManager = userManager;
             _jwtService = jwtService;
+            _twoFactorService = twoFactorService;
         }
 
         [HttpPost("SignUp")]
@@ -43,10 +47,27 @@ namespace GofishApi.Controllers
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn([FromBody] UserSignInDTO dto)
         {
-            var user = await _userManager.FindByNameAsync(dto.Email) ?? await _userManager.FindByEmailAsync(dto.Email);
-            if (user is null) return BadRequest(new { message = "Username/e-mail or password is/are incorrect." });
-            var ok = await _userManager.CheckPasswordAsync(user, dto.Password);
-            if (!ok) return BadRequest(new { message = "Username/e-mail or password is/are incorrect." });
+            var user = await _userManager.FindByNameAsync(dto.Email)
+                    ?? await _userManager.FindByEmailAsync(dto.Email);
+
+            if (user is null)
+            {
+                return NotFound(new { message = "NoSuchUser" });
+            }
+            if (!await _userManager.CheckPasswordAsync(user, dto.Password))
+            {
+                return BadRequest(new { message = "InvalidCredentials" });
+            }
+            if (user.TwoFactorEnabled)
+            {
+                var hasAuthenticator = await _userManager.GetAuthenticatorKeyAsync(user) is { Length: > 0 };
+                if (hasAuthenticator)
+                {
+                    var twoFactorToken = _twoFactorService.CreateTwoFactorToken(user);
+                    return Ok(new { requiresTwoFactor = true, twoFactorToken });
+                }
+            }
+
             var token = await _jwtService.CreateTokenAsync(user);
             return Ok(new { token });
         }

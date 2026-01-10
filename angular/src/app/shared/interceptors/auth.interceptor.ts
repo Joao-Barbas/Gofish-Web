@@ -7,7 +7,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if (!authService.isSignedIn()) return next(req);
   var clonedReq = req.clone({
     headers: req.headers.set('Authorization', `Bearer ${authService.getToken()}`)
-  })
+  });
   return next(clonedReq);
 };
 

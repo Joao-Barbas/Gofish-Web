@@ -3,6 +3,10 @@ import { authGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
   {
+    path: '',
+    loadComponent: () => import('@gofish/home/home.component').then(m => m.HomeComponent)
+  },
+  {
     path: 'user', loadComponent: () => import('./user/user.component').then(m => m.UserComponent),
     children: [
       { path: 'signup', loadComponent: () => import('./user/signup/signup.component').then(m => m.SignupComponent) },
