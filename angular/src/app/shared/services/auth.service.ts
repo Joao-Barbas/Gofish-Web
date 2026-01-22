@@ -11,11 +11,11 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  postUser(data: any) {
+  postUser(data: any): any {
     return this.http.post(`${environment.baseApiUrl}/${this.baseAuthUrl}/SignUp`, data);
   }
 
-  signInUser(data: any) {
+  signInUser(data: any): any {
     return this.http.post(`${environment.baseApiUrl}/${this.baseAuthUrl}/SignIn`, data);
   }
 

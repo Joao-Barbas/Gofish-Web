@@ -45,18 +45,26 @@ namespace GofishApi.Controllers
         }
 
         [HttpPost("SignIn")]
-        public async Task<IActionResult> SignIn([FromBody] UserSignInDTO dto)
+        public async Task<IActionResult> SignIn([FromBody] SignInReqDTO dto)
         {
             var user = await _userManager.FindByNameAsync(dto.Email)
                     ?? await _userManager.FindByEmailAsync(dto.Email);
 
             if (user is null)
             {
-                return NotFound(new { message = "NoSuchUser" });
+                return NotFound(new SignInResDTO(
+                    Success: false,
+                    ErrorCode: "NoSuchUser",
+                    ErrorDescription: "No user was found with the provided email or username."
+                ));
             }
             if (!await _userManager.CheckPasswordAsync(user, dto.Password))
             {
-                return BadRequest(new { message = "InvalidCredentials" });
+                return BadRequest(new SignInResDTO(
+                    Success: false,
+                    ErrorCode: "InvalidCredentials",
+                    ErrorDescription: "Email/username or password is incorrect."
+                ));
             }
             if (user.TwoFactorEnabled)
             {
@@ -64,12 +72,19 @@ namespace GofishApi.Controllers
                 if (hasAuthenticator)
                 {
                     var twoFactorToken = _twoFactorService.CreateTwoFactorToken(user);
-                    return Ok(new { requiresTwoFactor = true, twoFactorToken });
+                    return Ok(new SignInResDTO(
+                        Success: true,
+                        RequiresTwoFactor: true,
+                        TwoFactorToken: twoFactorToken
+                    ));
                 }
             }
 
             var token = await _jwtService.CreateTokenAsync(user);
-            return Ok(new { token });
+            return Ok(new SignInResDTO(
+                Success: true,
+                Token: token
+            ));
         }
     }
 }

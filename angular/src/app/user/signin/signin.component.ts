@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../shared/services/auth.service';
+import { SignInResDTO } from '@gofish/shared/dtos/signin.dto';
+import { AuthService } from '@gofish/shared/services/auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -34,31 +36,50 @@ export class SigninComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     this.form.markAllAsTouched();
+    this.formErrors = [];
 
     if (this.form.invalid) return;
     this.setBusy(true);
 
+    //this.authService.signInUser(this.form.value).subscribe({
+    //  next: (res: SignInResDTO) => {
+    //    console.log(res);
+    //    this.setBusy(false);
+    //    this.form.reset();
+    //    this.isSubmitted = false;
+    //    this.authService.storeToken(res.token!);
+    //    this.router.navigateByUrl('/map');
+    //  },
+    //  error: (err: any) => {
+    //    this.setBusy(false);
+    //    if (err.error) {
+    //      switch (err.error.message)
+    //      {
+    //      case "NoSuchUser": this.formErrors.push('Email and/or password are incorrect'); break;
+    //      case "InvalidCredentials": this.formErrors.push('Email and/or password are incorrect'); break;
+    //      }
+    //    }
+    //    console.log(err.error.message)
+    //  }
+    //})
+
+    // login.component.ts
     this.authService.signInUser(this.form.value).subscribe({
-      next: (res: any) => {
-        console.log(res);
+      next: (res: SignInResDTO) => {
         this.setBusy(false);
-        this.form.reset();
         this.isSubmitted = false;
-        this.authService.storeToken(res.token);
+        this.form.reset();
+        this.authService.storeToken(res.token!);
         this.router.navigateByUrl('/map');
       },
-      error: (err: any) => {
+      error: (err: HttpErrorResponse) => {
         this.setBusy(false);
-        if (err.error) {
-          switch (err.error.message)
-          {
-          case "NoSuchUser": this.formErrors.push('Email and/or password are incorrect'); break;
-          case "InvalidCredentials": this.formErrors.push('Email and/or password are incorrect'); break;
-          }
-        }
-        console.log(err.error.message)
+        this.isSubmitted = false;
+        var res = err.error as SignInResDTO;
+        this.formErrors.push(res.errorDescription!);
+        console.log(res);
       }
-    })
+    });
   }
 
   hasError(): boolean {
