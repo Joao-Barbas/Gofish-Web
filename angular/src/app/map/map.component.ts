@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { UserService } from '@gofish/shared/services/user.service';
 import mapboxgl from 'mapbox-gl';
-
+import { HeaderComponent } from '@gofish/header/header.component';
 
 
 @Component({
   selector: 'app-map',
-  imports: [],
+  imports: [HeaderComponent],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
