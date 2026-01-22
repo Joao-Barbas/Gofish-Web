@@ -1,4 +1,7 @@
-﻿namespace GofishApi.Models
+﻿
+using System.ComponentModel.DataAnnotations;
+
+namespace GofishApi.Models
 {
     public interface IPin
     {

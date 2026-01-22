@@ -1,8 +1,12 @@
-﻿namespace GofishApi.Models
+﻿
+using System.ComponentModel.DataAnnotations;
+
+namespace GofishApi.Models
 {
     public abstract class PinBase : IPin
     {
-        public int Id { get; set; }
+        [Key]
+        public int Id { get; set; } = default!;
         public int Latitude { get; set; }
         public int Longitude { get; set; }
         public string? Description { get; set; }
