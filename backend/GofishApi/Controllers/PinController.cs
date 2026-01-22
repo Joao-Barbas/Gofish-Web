@@ -45,18 +45,18 @@ namespace GofishApi.Controllers
                 Latitude = dto.Latitude,
                 Longitude = dto.Longitude,
                 Description = dto.Description,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 PinType = PinType.Catch,
                 SpeciesType = dto.SpeciesType,
                 HookSize = dto.HookSize,
                 BaitType = dto.BaitType,
             };
-            var result = await _db.CatchPins.AddAsync(pin);
-            Console.WriteLine(result);
+            await _db.CatchPins.AddAsync(pin);
+            await _db.SaveChangesAsync();
             return Ok(new 
             {
                 Success = true,
-                Id = result.Entity.Id
+                Id = pin.Id
             });
         }
     }
