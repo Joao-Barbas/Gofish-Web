@@ -4,6 +4,7 @@ using GofishApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GofishApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260122142946_pin5")]
+    partial class pin5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,11 +116,11 @@ namespace GofishApi.Migrations
                     b.Property<int?>("HookSize")
                         .HasColumnType("int");
 
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
+                    b.Property<int>("Latitude")
+                        .HasColumnType("int");
 
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
+                    b.Property<int>("Longitude")
+                        .HasColumnType("int");
 
                     b.Property<int>("PinType")
                         .HasColumnType("int");
