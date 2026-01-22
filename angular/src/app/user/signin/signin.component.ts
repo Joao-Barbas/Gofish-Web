@@ -11,6 +11,8 @@ import { AuthService } from '../../shared/services/auth.service';
   styles: ``
 })
 export class SigninComponent implements OnInit {
+  private formErrors: string[] = [];
+  private busyCount: number = 0;
   private isSubmitted: boolean = false;
 
   constructor(
@@ -34,20 +36,44 @@ export class SigninComponent implements OnInit {
     this.form.markAllAsTouched();
 
     if (this.form.invalid) return;
-    console.log('sent');
+    this.setBusy(true);
 
     this.authService.signInUser(this.form.value).subscribe({
       next: (res: any) => {
         console.log(res);
+        this.setBusy(false);
         this.form.reset();
         this.isSubmitted = false;
         this.authService.storeToken(res.token);
         this.router.navigateByUrl('/map');
       },
       error: (err: any) => {
-        // if (err.error.errors) {}
-        console.log(err);
+        this.setBusy(false);
+        if (err.error) {
+          switch (err.error.message)
+          {
+          case "NoSuchUser": this.formErrors.push('Email and/or password are incorrect'); break;
+          case "InvalidCredentials": this.formErrors.push('Email and/or password are incorrect'); break;
+          }
+        }
+        console.log(err.error.message)
       }
     })
+  }
+
+  hasError(): boolean {
+    return this.formErrors.length > 0;
+  }
+
+  getError(): string | null {
+    return this.hasError() ? this.formErrors[0] : null;
+  }
+
+  setBusy(busy: boolean) {
+    this.busyCount = busy ? this.busyCount + 1 : Math.max(0, this.busyCount - 1);
+  }
+
+  isBusy(): boolean {
+    return this.busyCount > 0;
   }
 }
