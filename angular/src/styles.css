@@ -19,12 +19,12 @@
   --success: oklch(0.8359 0.1769 156.76);
   --info: oklch(0.6114 0.1743 262.46);
 
-  --dark-lift-shadow-s: inset 0 1px 2px #ffffff30, 0 1px 2px #00000030, 0 2px 4px #00000025;
-  --dark-lift-shadow-m: inset 0 1px 2px #ffffff50, 0 2px 4px #00000030, 0 4px 8px #00000015;
-  --dark-lift-shadow-l: inset 0 1px 2px #ffffff70, 0 4px 6px #00000030, 0 6px 10px #00000015;
-  --dark-sunk-shadow-s: inset 0 -1px 2px #ffffff30, inset 0 1px 2px #00000030, inset 0 2px 4px #00000025;
-  --dark-sunk-shadow-m: inset 0 -1px 2px #ffffff50, inset 0 2px 4px #00000030, inset 0 4px 8px #00000015;
-  --dark-sunk-shadow-l: inset 0 -1px 2px #ffffff70, inset 0 4px 6px #00000030, inset 0 6px 10px #00000015;
+  --dark-lift-shadow-s: inset 0 1px  2px #ffffff30, inset 0 1px 2px #00000020, inset 0 2px 4px #00000015;
+  --dark-lift-shadow-m: inset 0 1px  2px #ffffff50, inset 0 2px 4px #00000020, inset 0 4px 8px #00000010;
+  --dark-lift-shadow-l: inset 0 1px  2px #ffffff70, inset 0 4px 6px #00000020, inset 0 6px 10px #00000010;
+  --dark-sunk-shadow-s: inset 0 -1px 2px #ffffff20, inset 0 1px 2px #00000030, inset 0 2px 4px #00000025;
+  --dark-sunk-shadow-m: inset 0 -1px 2px #ffffff30, inset 0 2px 4px #00000030, inset 0 4px 8px #00000015;
+  --dark-sunk-shadow-l: inset 0 -1px 2px #ffffff40, inset 0 4px 6px #00000030, inset 0 6px 10px #00000015;
 }
 
 body {
@@ -105,9 +105,14 @@ body {
   box-shadow: var(--dark-sunk-shadow-s);
   color: var(--dark-text);
   border: none;
+  outline: none;
   border-radius: 0.75rem;
   padding: 0.75rem;
   font-size: 1rem;
+  transition: box-shadow .15s ease-in-out;
+}
+.form-input:focus {
+  box-shadow: var(--dark-lift-shadow-s);
 }
 
 .form-input-label {
@@ -123,6 +128,13 @@ body {
   color: var(--dark-text);
   border-radius: 0.5rem;
   border: none;
+  transition: background-color 0.35s ease, box-shadow 0.05s ease, transform 0.05s ease;
+}
+.form-submit-button:disabled {
+  background-color: var(--tertiary);
+}
+.form-submit-button:not(:disabled):active {
+  box-shadow: var(--dark-sunk-shadow-s);
 }
 
 .form-secondary-button {

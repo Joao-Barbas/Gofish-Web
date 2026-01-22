@@ -42,7 +42,7 @@
           {{ getError() }}
         </div>
       }
-      <button type="submit" class="form-submit-button">
+      <button type="submit" class="form-submit-button" [disabled]="isBusy">
         Sign Up
       </button>
       <div class="text-small-muted">

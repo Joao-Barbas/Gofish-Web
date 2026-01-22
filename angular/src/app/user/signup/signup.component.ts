@@ -13,6 +13,7 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class SignupComponent implements OnInit {
   private isSubmitted: boolean = false;
+  public isBusy: boolean = false;
   private serverErrors: string[] = [];
 
   constructor(
@@ -62,16 +63,20 @@ export class SignupComponent implements OnInit {
     this.serverErrors = [];
 
     if (this.form.invalid) return;
+    this.isBusy = true;
 
     this.authService.postUser(this.form.value).subscribe({
       next: (res: any) => {
+        this.isBusy = false;
         if (res.succeeded) {
           this.form.reset();
           this.isSubmitted = false;
           this.serverErrors = [];
+          this.router.navigateByUrl('');
         }
       },
       error: (err: any) => {
+        this.isBusy = false;
         if (err.error.errors)
         {
           err.error.errors.forEach((e: any) => {
