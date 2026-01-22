@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { UserService } from '@gofish/shared/services/user.service';
@@ -6,17 +7,20 @@ import mapboxgl from 'mapbox-gl';
 
 
 
+
 @Component({
   selector: 'app-map',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit, AfterViewInit {
-
-  public firstName: string = '';
+  firstName: string = '';
   private map !: mapboxgl.Map; // Map instance
-  private marker !: mapboxgl.Marker; // Marker instance
+
+  selected: { lng: number; lat: number } | null = null; // Selected point
+  private previewMarker: mapboxgl.Marker | null = null; // Preview marker instance
+  private pins : mapboxgl.Marker[] = []; // Array to hold pin markers
 
 
   constructor(
@@ -36,7 +40,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
 
-        const map = new mapboxgl.Map({
+         this.map = new mapboxgl.Map({
           container: 'map', // container ID
           style: 'mapbox://styles/goncalopro2/cmkpidm7e003601s526nugcv1', // style URL
           center: [-8.8882, 38.5243], // [lng, lat]
@@ -45,29 +49,46 @@ export class MapComponent implements OnInit, AfterViewInit {
           minZoom: 4
         });
 
-        map.dragRotate.disable();
-        map.touchZoomRotate.disableRotation();
-        map.keyboard.disableRotation();
+        this.map.dragRotate.disable();
+        this.map.touchZoomRotate.disableRotation();
+        this.map.keyboard.disableRotation();
 
-        // Add pin manually
-        this.marker = new mapboxgl.Marker()
-          .setLngLat([-8.8882, 38.5243])
-          .addTo(map);
-
-        this.enableClickPin();
+        this.map.on('click', (e) => {
+          this.onMapClick(e);
+        });
   }
 
-  private enableClickPin(): void {
-    this.map.on('click', (event) => {
-      const { lng, lat } = event.lngLat;
+  onMapClick(e: mapboxgl.MapMouseEvent): void {
+  const lng = e.lngLat.lng;
+  const lat = e.lngLat.lat;
 
-      this.marker = new mapboxgl.Marker()
-        .setLngLat([lng, lat])
-        .addTo(this.map);
+  this.selected = { lng, lat };
 
-        console.log(`Marker placed at Longitude: ${lng}, Latitude: ${lat}`);
-    });
+  console.log('COORDENADAS:', lng, lat);
   }
+
+
+  addPin(): void {
+    if (!this.selected) return;
+
+    const { lng, lat } = this.selected;
+
+    // cria pin definitivo
+    const pin = new mapboxgl.Marker()
+      .setLngLat([lng, lat])
+      .addTo(this.map);
+
+    this.pins.push(pin);
+
+    // limpa seleção/preview
+    if (this.previewMarker) {
+      this.previewMarker.remove();
+      this.previewMarker = null;
+    }
+    this.selected = null;
+  }
+
+
 
   onSignOut() {
     this.authService.deleteToken();

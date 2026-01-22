@@ -1,1 +1,17 @@
-<div id = "map"> </div>
+<div class="controls">
+  <div *ngIf="selected; else noSelection">
+    Coordenadas selecionadas:
+    <strong>{{ selected.lat.toFixed(6) }}, {{ selected.lng.toFixed(6) }}</strong>
+  </div>
+
+  <ng-template #noSelection>
+    <span>Clica no mapa para escolher um ponto</span>
+  </ng-template>
+
+  <button (click)="addPin()" [disabled]="!selected">
+    Adicionar pin
+  </button>
+</div>
+
+
+<div id="map"></div>
