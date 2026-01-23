@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { SignInResDTO } from '@gofish/shared/dtos/signin.dto';
+import { SignInReqDTO, SignInResDTO } from '@gofish/shared/dtos/signin.dto';
 import { AuthService } from '@gofish/shared/services/auth.service';
 
 @Component({
@@ -13,9 +13,9 @@ import { AuthService } from '@gofish/shared/services/auth.service';
   styles: ``
 })
 export class SigninComponent implements OnInit {
-  private formErrors: string[] = [];
-  private busyCount: number = 0;
-  private isSubmitted: boolean = false;
+  formErrors: string[] = [];
+  busyCount: number = 0;
+  isSubmitted: boolean = false;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -28,7 +28,7 @@ export class SigninComponent implements OnInit {
     this.router.navigateByUrl('');
   }
 
-  form = this.formBuilder.group({
+  form: FormGroup = this.formBuilder.group({
     email: [ '', [ Validators.required ]],
     password: [ '', [ Validators.required ]],
   });
@@ -41,30 +41,7 @@ export class SigninComponent implements OnInit {
     if (this.form.invalid) return;
     this.setBusy(true);
 
-    //this.authService.signInUser(this.form.value).subscribe({
-    //  next: (res: SignInResDTO) => {
-    //    console.log(res);
-    //    this.setBusy(false);
-    //    this.form.reset();
-    //    this.isSubmitted = false;
-    //    this.authService.storeToken(res.token!);
-    //    this.router.navigateByUrl('/map');
-    //  },
-    //  error: (err: any) => {
-    //    this.setBusy(false);
-    //    if (err.error) {
-    //      switch (err.error.message)
-    //      {
-    //      case "NoSuchUser": this.formErrors.push('Email and/or password are incorrect'); break;
-    //      case "InvalidCredentials": this.formErrors.push('Email and/or password are incorrect'); break;
-    //      }
-    //    }
-    //    console.log(err.error.message)
-    //  }
-    //})
-
-    // login.component.ts
-    this.authService.signInUser(this.form.value).subscribe({
+    this.authService.signInUser(this.form.value as SignInReqDTO).subscribe({
       next: (res: SignInResDTO) => {
         this.setBusy(false);
         this.isSubmitted = false;
@@ -76,8 +53,7 @@ export class SigninComponent implements OnInit {
         this.setBusy(false);
         this.isSubmitted = false;
         var res = err.error as SignInResDTO;
-        this.formErrors.push(res.errorDescription!);
-        console.log(res);
+        this.formErrors.push(res.errorDescription ?? 'Server error. Try again later.');
       }
     });
   }

@@ -30,7 +30,7 @@ namespace GofishApi.Controllers
         }
 
         [HttpPost("SignUp")]
-        public async Task<IActionResult> SignUp([FromBody] UserSignUpDTO dto)
+        public async Task<IActionResult> SignUp([FromBody] SignUpReqDTO dto)
         {
             var user = new AppUser
             {
@@ -40,8 +40,19 @@ namespace GofishApi.Controllers
                 LastName = dto.LastName
             };
             var result = await _userManager.CreateAsync(user, dto.Password);
-            if (result.Succeeded) return Ok(result);
-            return BadRequest(result);
+            if (result.Succeeded)
+            {
+                return Ok(new SignUpResDTO(
+                    Success: true
+                ));
+            }
+            else
+            {
+                return BadRequest(new SignUpResDTO(
+                    Success: false,
+                    Errors: result.Errors
+                ));
+            }
         }
 
         [HttpPost("SignIn")]
