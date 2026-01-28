@@ -147,5 +147,45 @@ namespace GofishApi.Controllers
             }
 
         }
+
+        [Authorize]
+        [HttpDelete("DeleteCatchPin/{id}")]
+        public async Task<IActionResult> DeleteCatchPin(int id)
+        {
+            var pin = await _db.CatchPins.FindAsync(id);
+
+            if(pin == null) return NotFound("Pin não encontrado");
+
+            _db.CatchPins.Remove(pin);
+            await _db.SaveChangesAsync();
+
+            return Ok("Pin apagado com sucesso");
+        }
+
+        [Authorize]
+        [HttpDelete("DeleteInfoPin/{id}")]
+        public async Task<IActionResult> DeleteInfoPin(int id)
+        {
+            var pin = await _db.InfoPins.FindAsync(id);
+
+            if (pin == null) return NotFound("Pin não encontrado");
+
+            _db.InfoPins.Remove(pin);
+            await _db.SaveChangesAsync();
+            return Ok("Pin apagado com sucesso");
+        }
+
+        [Authorize]
+        [HttpDelete("DeleteWarnPin/{id}")]
+        public async Task<IActionResult> DeleteWarnPin(int id)
+        {
+            var pin = await _db.WarnPins.FindAsync(id);
+
+            if (pin == null) return NotFound("Pin não encontrado");
+
+            _db.WarnPins.Remove(pin);
+            await _db.SaveChangesAsync();
+            return Ok("Pin apagado com sucesso");
+        }
     }
 }
