@@ -49,10 +49,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    // TOKEN GONCALO
     mapboxgl.accessToken =
       'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
-
-
 
     this.map = new mapboxgl.Map({
       container: 'map',
@@ -104,7 +103,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.pinService.createCatchPin(dto).subscribe({
       next: (res) => {
-        // marker definitivo (podes trocar o ícone depois)
+        // marker definitivo (dá para trocar o icon depois)
         new mapboxgl.Marker()
           .setLngLat([dto.longitude, dto.latitude])
           .addTo(this.map);
