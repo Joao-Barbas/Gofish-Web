@@ -2,54 +2,49 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import mapboxgl from 'mapbox-gl';
-
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { UserService } from '@gofish/shared/services/user.service';
-import { PinService } from '@gofish/shared/services/pin.service';
-import { CreateCatchingPinDTO } from '@gofish/shared/models/create-catching-pin';
+import { CreatePinComponent } from './create-pin/create-pin.component';
+import { Coords } from '@gofish/shared/models/pin-types';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CreatePinComponent],
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  styleUrls: ['./map.component.css'],
 })
+
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   firstName = '';
 
   private map!: mapboxgl.Map;
 
-  // ponto selecionado
-  selected: { lng: number; lat: number } | null = null;
+  // coords selecionadas (formato do teu Coords: latitude/longitude)
+  selected: Coords | null = null;
 
-  // preview do marker
+  // preview marker
   private previewMarker: mapboxgl.Marker | null = null;
 
-  // DtO fields
-  description = '';
-  speciesType = 0;
-  hookSize = 0;
-  baitType = 0;
+  // só aceitar cliques no mapa quando estiver a escolher localização
+  pickingOnMap = false;
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private userService: UserService,
-    private pinService: PinService
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.userService.getUserProfile().subscribe({
       next: (res: any) => (this.firstName = res.firstName),
-      error: (err: any) => console.log('Error while retrieving user profile:\n', err)
+      error: (err: any) =>
+        console.log('Error while retrieving user profile:\n', err),
     });
   }
 
   ngAfterViewInit(): void {
-    // TOKEN GONCALO
     mapboxgl.accessToken =
       'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
 
@@ -61,74 +56,83 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       maxZoom: 13,
       minZoom: 4,
       pitch: 0,
-      bearing: 0
+      bearing: 0,
     });
 
     this.map.dragRotate.disable();
     this.map.touchZoomRotate.disableRotation();
     this.map.keyboard.disableRotation();
 
-    // Esperar o mapa carregar
     this.map.on('load', () => {
       this.map.on('click', (e) => this.onMapClick(e));
     });
   }
 
+
+  enablePickMode(): void {
+    this.pickingOnMap = true;
+    if (this.map) this.map.getCanvas().style.cursor = 'crosshair';
+  }
+
+
+  onCoordsSelected(coords: Coords): void {
+    this.setSelectedCoords(coords);
+    this.disablePickMode();
+  }
+
+
+  onPinCreated(event: { dto: { latitude: number; longitude: number }; res: any }): void {
+    new mapboxgl.Marker()
+      .setLngLat([event.dto.longitude, event.dto.latitude])
+      .addTo(this.map);
+
+    this.clearPreviewAndSelection();
+    this.disablePickMode();
+
+    console.log('Pin created:', event.res);
+  }
+
+  onPinCreateFailed(msg: string): void {
+    console.error('Failed create pin:', msg);
+  }
+
+
   onMapClick(e: mapboxgl.MapMouseEvent): void {
+    if (!this.pickingOnMap) return;
+
     const { lng, lat } = e.lngLat;
 
-    this.selected = { lng, lat };
-    console.log('COORDENADAS:', lng, lat);
+    const coords: Coords = { latitude: lat, longitude: lng };
+    this.setSelectedCoords(coords);
 
-    // marker preview
+    this.disablePickMode();
+  }
+
+  private setSelectedCoords(coords: Coords): void {
+    this.selected = coords;
+
     if (this.previewMarker) this.previewMarker.remove();
     this.previewMarker = new mapboxgl.Marker()
-      .setLngLat([lng, lat])
+      .setLngLat([coords.longitude, coords.latitude])
       .addTo(this.map);
+
+    this.map.setCenter([coords.longitude, coords.latitude]);
   }
 
-  addPin(): void {
-    if (!this.selected) return;
-
-    const dto: CreateCatchingPinDTO = {
-      latitude: this.selected.lat,
-      longitude: this.selected.lng,
-      description: this.description.trim() || 'Sem descrição',
-      speciesType: this.speciesType,
-      hookSize: this.hookSize,
-      baitType: this.baitType
-    };
-
-    console.log('DTO a enviar:', dto);
-
-    this.pinService.createCatchPin(dto).subscribe({
-      next: (res) => {
-        // marker definitivo (dá para trocar o icon depois)
-        new mapboxgl.Marker()
-          .setLngLat([dto.longitude, dto.latitude])
-          .addTo(this.map);
-
-        // limpar seleção/preview
-        if (this.previewMarker) {
-          this.previewMarker.remove();
-          this.previewMarker = null;
-        }
-        this.selected = null;
-
-        // opcional: reset ao form
-        this.description = '';
-        // this.speciesType = 0;
-        // this.hookSize = 0;
-        // this.baitType = 0;
-
-        console.log('Pin criado:', res);
-      },
-      error: (err) => {
-        console.error('Erro ao criar pin:', err);
-      }
-    });
+  private clearPreviewAndSelection(): void {
+    if (this.previewMarker) {
+      this.previewMarker.remove();
+      this.previewMarker = null;
+    }
+    this.selected = null;
   }
 
+  private disablePickMode(): void {
+    this.pickingOnMap = false;
+    if (this.map) this.map.getCanvas().style.cursor = '';
+  }
+
+  //AUTH
   onSignOut(): void {
     this.authService.deleteToken();
     this.router.navigateByUrl('');

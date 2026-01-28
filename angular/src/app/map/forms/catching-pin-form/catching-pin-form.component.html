@@ -1,0 +1,13 @@
+<label>Descrição</label>
+<input [(ngModel)]="description" />
+
+<label>Species</label>
+<input type="number" [(ngModel)]="speciesType" />
+
+<label>Hook</label>
+<input type="number" [(ngModel)]="hookSize" />
+
+<label>Bait</label>
+<input type="number" [(ngModel)]="baitType" />
+
+<button (click)="onSubmit()">Criar</button>

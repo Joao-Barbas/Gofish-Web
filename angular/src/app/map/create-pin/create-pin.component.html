@@ -1,0 +1,49 @@
+<!-- IDLE -->
+<button *ngIf="step === 'idle'" (click)="startCreatingPin()">
+  Create Pin
+</button>
+
+<!-- CHOOSE LOCATION -->
+<div *ngIf="step === 'chooseLocation'">
+  <h3>Escolher localização</h3>
+
+  <button type="button" (click)="chooseCurrentLocation()">
+    Localização atual
+  </button>
+
+  <button type="button" (click)="chooseOnMap()">
+    Escolher no mapa
+  </button>
+
+  <div *ngIf="selectedCoords">
+    {{ selectedCoords.longitude | number:'1.6-6' }},
+    {{ selectedCoords.latitude  | number:'1.6-6' }}
+  </div>
+
+  <div style="margin-top: 8px;">
+    <button type="button" (click)="continueAfterChoosingLocation(PinType.CATCHING)">
+      Continuar (Catching)
+    </button>
+  </div>
+
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  <button type="button" (click)="cancelCreatingPin()">Cancelar</button>
+</div>
+
+<!-- FILL FORM -->
+<div *ngIf="step === 'fillForm'">
+  <label>Tipo</label>
+  <select [(ngModel)]="pinType">
+    <option [ngValue]="PinType.CATCHING">Catching</option>
+  </select>
+
+  <hr />
+
+  <app-catching-pin-form
+    *ngIf="pinType === PinType.CATCHING"
+    [coords]="selectedCoords!"
+    (submitForm)="onCatchingSubmit($event)">
+  </app-catching-pin-form>
+
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+</div>

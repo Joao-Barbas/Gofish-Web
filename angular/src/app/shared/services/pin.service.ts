@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateCatchingPinDTO } from '../models/create-catching-pin';
+import { CreateCatchingPinDTO } from '../dtos/create-catching-pin';
+
 
 @Injectable({
   providedIn: 'root'
