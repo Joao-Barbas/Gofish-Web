@@ -8,7 +8,8 @@ import mapboxgl from 'mapbox-gl';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { UserService } from '@gofish/shared/services/user.service';
 import { PinService } from '@gofish/shared/services/pin.service';
-import { CreateCatchingPinDTO } from '@gofish/shared/models/create-catching-pin';
+import { CreateCatchPinReqDTO, CreateCatchPinResDTO } from '@gofish/shared/dtos/create-pin.dto';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-map',
@@ -90,7 +91,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   addPin(): void {
     if (!this.selected) return;
 
-    const dto: CreateCatchingPinDTO = {
+    const dto: CreateCatchPinReqDTO = {
       latitude: this.selected.lat,
       longitude: this.selected.lng,
       description: this.description.trim() || 'Sem descrição',
@@ -102,7 +103,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('DTO a enviar:', dto);
 
     this.pinService.createCatchPin(dto).subscribe({
-      next: (res) => {
+      next: (res: CreateCatchPinResDTO) => {
         // marker definitivo (dá para trocar o icon depois)
         new mapboxgl.Marker()
           .setLngLat([dto.longitude, dto.latitude])
@@ -123,8 +124,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
         console.log('Pin criado:', res);
       },
-      error: (err) => {
-        console.error('Erro ao criar pin:', err);
+      error: (err: HttpErrorResponse) => {
+
+        var res = err.error as CreateCatchPinResDTO;
+
+        console.log(res);
+
       }
     });
   }

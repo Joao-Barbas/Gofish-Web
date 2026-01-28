@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GofishApi.Models
 {
-    public abstract class PinBase : IPin
+    public abstract class PinBase
     {
         [Key]
         public int Id { get; set; } = default!;
