@@ -5,6 +5,7 @@ import { Coords, PinType } from '@gofish/shared/models/pin-types';
 import { PinService } from '@gofish/shared/services/pin.service';
 import { CatchingPinFormComponent } from '../forms/catching-pin-form/catching-pin-form.component';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '@gofish/shared/services/auth.service';
 
 // Vale a pena fazer um padrao state ?
 type Step = 'idle' | 'chooseLocation' | 'fillForm';
@@ -43,9 +44,15 @@ export class CreatePinComponent {
   loading = false;
   errorMessage = '';
 
-  constructor(private pinService: PinService) {}
+  constructor(private pinService: PinService,
+    private auth: AuthService
+  ) {}
 
   startCreatingPin() {
+    if (!this.auth.getToken?.()) {
+      alert('You need to be logged in to create a pin.');
+      return;
+    }
     this.errorMessage = '';
     this.step = 'chooseLocation';
   }
