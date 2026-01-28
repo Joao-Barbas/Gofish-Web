@@ -6,37 +6,92 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static GofishApi.Dtos.GetNearbyPinsResDTO;
 
 namespace GofishApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PinController : ControllerBase
-    {
-        private readonly AppDbContext _db;
-        private readonly ILogger<PinController> _logger;
-
-        public PinController(
-            ILogger<PinController> logger,
-            AppDbContext db
-        )
-        {
-            _logger = logger;
-            _db = db;
-        }
-
-
-        [Authorize]
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll()
-        {
-            var pins = await _db.CatchPins.ToListAsync();
-            return Ok(new
+            [Route("api/[controller]")]
+            [ApiController]
+            public class PinController : ControllerBase
             {
-                Success = true,
-                Pins = pins
-            });
+                private readonly AppDbContext _db;
+                private readonly ILogger<PinController> _logger;
+
+                public PinController(
+                    ILogger<PinController> logger,
+                    AppDbContext db
+                )
+                {
+                    _logger = logger;
+                    _db = db;
+                }
+
+
+            [Authorize]
+            [HttpGet("GetInViewport")]
+            public async Task<IActionResult> GetInViewport(
+                [FromQuery] double minLat,
+                [FromQuery] double minLng,
+                [FromQuery] double maxLat,
+                [FromQuery] double maxLng
+            )
+            {
+            var catchPins = await _db.CatchPins
+                .Where(p => p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng)
+                .Select(p => new NearbyPinDTO 
+                {
+                    Id = p.Id,
+                    Latitude = p.Latitude,
+                    Longitude = p.Longitude,
+                    Description = p.Description,
+                    CreatedAt = p.CreatedAt,
+                    PinType = PinType.Catch,
+                    SpeciesType = p.SpeciesType,
+                    HookSize = p.HookSize,
+                    BaitType = p.BaitType,
+                })
+                .ToListAsync();
+            var infoPins = await _db.InfoPins
+                .Where(p => p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng)
+                .Select(p => new NearbyPinDTO
+                {
+                    Id = p.Id,
+                    Latitude = p.Latitude,
+                    Longitude = p.Longitude,
+                    Description = p.Description,
+                    CreatedAt = p.CreatedAt,
+                    PinType = PinType.Info,
+                    AccessDifficulty = p.AccessDifficulty,
+                    SeaBedType = p.SeaBedType,
+                })
+                .ToListAsync();
+           var warnPins = await _db.WarnPins
+                .Where(p => p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng)
+                .Select(p => new NearbyPinDTO
+                {
+                    Id = p.Id,
+                    Latitude = p.Latitude,
+                    Longitude = p.Longitude,
+                    Description = p.Description,
+                    CreatedAt = p.CreatedAt,
+                    PinType = PinType.Warning,
+                    WarnPinType = p.WarnPinType
+,
+                })
+                .ToListAsync();
+
+            var allPins = new List<NearbyPinDTO>();
+
+            allPins.AddRange(warnPins);
+            allPins.AddRange(infoPins);
+            allPins.AddRange(catchPins);
+
+            return Ok(new GetNearbyPinsResDTO { Success = true, Pins = allPins });
         }
+
+
+
+
 
         [Authorize]
         [HttpPost("CreateCatchPin")]
@@ -123,7 +178,7 @@ namespace GofishApi.Controllers
                     Longitude = dto.Longitude,
                     Description = dto.Description,
                     CreatedAt = DateTime.UtcNow,
-                    PinType = PinType.Info,
+                    PinType = PinType.Warning,
                     WarnPinType = dto.WarnPinType,
                 };
 
