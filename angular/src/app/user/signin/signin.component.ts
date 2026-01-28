@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../shared/services/auth.service';
+import { SignInReqDTO, SignInResDTO } from '@gofish/shared/dtos/signin.dto';
+import { AuthService } from '@gofish/shared/services/auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -11,7 +13,9 @@ import { AuthService } from '../../shared/services/auth.service';
   styles: ``
 })
 export class SigninComponent implements OnInit {
-  private isSubmitted: boolean = false;
+  formErrors: string[] = [];
+  busyCount: number = 0;
+  isSubmitted: boolean = false;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -24,7 +28,7 @@ export class SigninComponent implements OnInit {
     this.router.navigateByUrl('');
   }
 
-  form = this.formBuilder.group({
+  form: FormGroup = this.formBuilder.group({
     email: [ '', [ Validators.required ]],
     password: [ '', [ Validators.required ]],
   });
@@ -32,22 +36,41 @@ export class SigninComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     this.form.markAllAsTouched();
+    this.formErrors = [];
 
     if (this.form.invalid) return;
-    console.log('sent');
+    this.setBusy(true);
 
-    this.authService.signInUser(this.form.value).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.form.reset();
+    this.authService.signInUser(this.form.value as SignInReqDTO).subscribe({
+      next: (res: SignInResDTO) => {
+        this.setBusy(false);
         this.isSubmitted = false;
-        this.authService.storeToken(res.token);
+        this.form.reset();
+        this.authService.storeToken(res.token!);
         this.router.navigateByUrl('/map');
       },
-      error: (err: any) => {
-        // if (err.error.errors) {}
-        console.log(err);
+      error: (err: HttpErrorResponse) => {
+        this.setBusy(false);
+        this.isSubmitted = false;
+        var res = err.error as SignInResDTO;
+        this.formErrors.push(res.errorDescription ?? 'Server error. Try again later.');
       }
-    })
+    });
+  }
+
+  hasError(): boolean {
+    return this.formErrors.length > 0;
+  }
+
+  getError(): string | null {
+    return this.hasError() ? this.formErrors[0] : null;
+  }
+
+  setBusy(busy: boolean) {
+    this.busyCount = busy ? this.busyCount + 1 : Math.max(0, this.busyCount - 1);
+  }
+
+  isBusy(): boolean {
+    return this.busyCount > 0;
   }
 }

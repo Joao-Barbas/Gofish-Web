@@ -1,7 +1,10 @@
+import { environment } from 'environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { LOCAL_TOKEN_KEY } from '@gofish/const';
-import { environment } from 'environments/environment';
+import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/signup.dto';
+import { SignInReqDTO, SignInResDTO } from '@gofish/shared/dtos/signin.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +14,12 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  postUser(data: any) {
-    return this.http.post(`${environment.baseApiUrl}/${this.baseAuthUrl}/SignUp`, data);
+  postUser(data: SignUpReqDTO): Observable<SignUpResDTO> {
+    return this.http.post<SignUpResDTO>(`${environment.baseApiUrl}/${this.baseAuthUrl}/SignUp`, data);
   }
 
-  signInUser(data: any) {
-    return this.http.post(`${environment.baseApiUrl}/${this.baseAuthUrl}/SignIn`, data);
+  signInUser(data: SignInReqDTO): Observable<SignInResDTO> {
+    return this.http.post<SignInResDTO>(`${environment.baseApiUrl}/${this.baseAuthUrl}/SignIn`, data);
   }
 
   isSignedIn() {

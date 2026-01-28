@@ -1,9 +1,11 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { FirstKeyPipe } from '../../shared/pipes/first-key.pipe';
-import { AuthService } from '../../shared/services/auth.service';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FirstKeyPipe } from '@gofish/shared/pipes/first-key.pipe';
+import { AuthService } from '@gofish/shared/services/auth.service';
+import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/signup.dto';
 
 @Component({
   selector: 'app-signup',
@@ -12,8 +14,9 @@ import { Router, RouterLink } from '@angular/router';
   styles: ``
 })
 export class SignupComponent implements OnInit {
-  private isSubmitted: boolean = false;
-  private serverErrors: string[] = [];
+  isSubmitted: boolean = false;
+  busyCount: number = 0;
+  formErrors: string[] = [];
 
   constructor(
     public formBuilder: FormBuilder,
@@ -30,12 +33,10 @@ export class SignupComponent implements OnInit {
   passwordMatch: ValidatorFn = (control: AbstractControl): null => {
     const password = control.get('password');
     const confirmPassword = control.get('confirmPassword');
-
     if (password && confirmPassword && password.value != confirmPassword.value) {
       confirmPassword.setErrors({ passwordmismatch: true })
       return null;
     }
-
     confirmPassword?.setErrors(null);
     return null;
   }
@@ -54,59 +55,47 @@ export class SignupComponent implements OnInit {
     lastName: ['', Validators.required],
     userName: ['', Validators.required],
     confirmPassword: [''],
-  }, { validators: this.passwordMatch });
+  }, {
+    validators: this.passwordMatch
+  });
 
   onSubmit() {
     this.isSubmitted = true;
     this.form.markAllAsTouched();
-    this.serverErrors = [];
+    this.formErrors = [];
 
     if (this.form.invalid) return;
+    this.setBusy(true);
 
-    this.authService.postUser(this.form.value).subscribe({
-      next: (res: any) => {
-        if (res.succeeded) {
-          this.form.reset();
-          this.isSubmitted = false;
-          this.serverErrors = [];
-        }
+    this.authService.postUser(this.form.value as SignUpReqDTO).subscribe({
+      next: (res: SignUpResDTO) => {
+        this.setBusy(false);
+        this.isSubmitted = false;
+        if (!res.success) return;
+        this.form.reset();
+        this.router.navigateByUrl('');
       },
-      error: (err: any) => {
-        if (err.error.errors)
-        {
-          err.error.errors.forEach((e: any) => {
-            switch (e.code) {
-            case 'DuplicateEmail':
-              this.serverErrors.push('E-mail is already in use');
-              break;
-            case 'DuplicateUserName':
-              this.serverErrors.push('Username is already taken');
-              break;
-            default:
-              this.serverErrors.push('Registration failed');
-            }
-          });
-        } else {
-          this.serverErrors.push('Server error. Try again later.')
-        }
+      error: (err: HttpErrorResponse) => {
+        this.setBusy(false);
+        this.isSubmitted = false;
+        var res = err.error as SignUpResDTO;
+        this.formErrors.push(res.errors?.[0]?.description ?? 'Server error. Try again later.');
       }
     })
   }
 
   hasError(): boolean {
-    return (this.form.invalid && (this.isSubmitted || this.form.touched || this.form.dirty)) || this.serverErrors.length > 0;
+    return (this.form.invalid && (this.isSubmitted || this.form.touched || this.form.dirty)) || this.formErrors.length > 0;
   }
 
   getControlError(name: string): ValidationErrors | null | undefined {
     var control = this.form.get(name);
-    if (Boolean(control?.invalid) && (this.isSubmitted || Boolean(control?.touched) || Boolean(control?.dirty)))
-      return control?.errors;
+    if (Boolean(control?.invalid) && (this.isSubmitted || Boolean(control?.touched) || Boolean(control?.dirty))) return control?.errors;
     return null;
   }
 
   getError(): string | null {
-    if (this.serverErrors.length > 0) return this.serverErrors[0];
-
+    if (this.formErrors.length > 0) return this.formErrors[0];
     switch (this.firstKey.transform(this.getControlError('email'))) {
       case 'required': return 'Email is required';
       case 'email': return 'Enter a valid e-mail address';
@@ -128,7 +117,14 @@ export class SignupComponent implements OnInit {
     switch (this.firstKey.transform(this.getControlError('confirmPassword'))) {
       case 'passwordmismatch': return 'Password\'s don\'t match';
     }
-
     return null;
+  }
+
+  setBusy(busy: boolean) {
+    this.busyCount = busy ? this.busyCount + 1 : Math.max(0, this.busyCount - 1);
+  }
+
+  isBusy(): boolean {
+    return this.busyCount > 0;
   }
 }
