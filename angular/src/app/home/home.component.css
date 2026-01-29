@@ -1,6 +1,9 @@
-.home-container {
+.hero {
   min-height: 100vh;
-  background-color: rgb(172, 172, 172)/*var(--dark-bg);*/
+}
+
+.hero-right {
+  padding-left: 136px;
 }
 
 .header {
@@ -8,45 +11,44 @@
 
 }
 
-.main-hero {
-  display:flex;
-  justify-content:space-between;
-}
-
-.main-hero .dark-text {
+.dark-text {
   font-weight: bold;
-  font-size: var(--font-size);
+  /*font-size: var(--font-size);*/
 }
 
-.main-hero .dark--muted {
-  font-size: var(--font-size);
+.dark-text-muted {
+  font-style: medium;
 }
 
 .square {
-  height: 50px;
-  width: 50px;
+  height: 290px;
+  width: 381px;
   background-color: #555;
 }
 
 .btn-fish {
   padding: 0px 20px 0px 20px;
-  min-width: 80px;
+  min-width: 130px;
   min-height: 40px;
+
   background: #333;
   color: var(--dark-text);
   font-size: 14px;
-  box-shadow: 0px -2px 0px 0px #525252;
+
+  /* Design antigo
+  box-shadow: 0px 2px 5px #525252 inset;*/
+  box-shadow: var(--dark-lift-shadow-s);
   border-width: 0px;
   border-radius: 20px;
 
   transition: transform 0.1s, box-shadow 0.1s;
 
-  margin-bottom:10px; /* apagar */
 }
 
 .btn-fish:active {
   border-width: 0px;
   border-radius: 20px;
+  box-shadow: 0px 0px 5px #515151;
+  /* RETIRAR se for rejeitado a ideia*/
   transform: translateY(-1px);
-  box-shadow: 0px 0px 0px 0px #515151;
 }
