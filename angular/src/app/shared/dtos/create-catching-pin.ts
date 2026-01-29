@@ -6,3 +6,4 @@ export interface CreateCatchingPinDTO {
   hookSize: number;
   baitType: number;
 }
+

@@ -32,3 +32,4 @@ namespace GofishApi.Dtos
             public WarnPinType? WarnPinType { get; set; }
         }
     }
+}
