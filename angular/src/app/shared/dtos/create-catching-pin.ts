@@ -1,3 +1,4 @@
+// Deixa de estar em uso, porque nao sabia a parte de req e res , agora ja coloquei req e res
 export interface CreateCatchingPinDTO {
   latitude: number;
   longitude: number;
@@ -6,4 +7,5 @@ export interface CreateCatchingPinDTO {
   hookSize: number;
   baitType: number;
 }
+
 

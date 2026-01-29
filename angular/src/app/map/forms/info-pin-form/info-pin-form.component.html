@@ -1,0 +1,10 @@
+<label>Descrição</label>
+<input [(ngModel)]="description" />
+
+<label>Dificuldade de acesso</label>
+<input type="number" [(ngModel)]="accessDifficulty" />
+
+<label>Tipo de fundo (SeaBedType)</label>
+<input type="number" [(ngModel)]="seaBedType" />
+
+<button type="button" (click)="onSubmit()">Criar Info Pin</button>

@@ -30,3 +30,15 @@
   padding: 6px 8px;
   min-width: 180px;
 }
+
+.pin {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.pin-catch { background-color: #2ecc71; }
+.pin-info  { background-color: #3498db; }
+.pin-warn  { background-color: #e74c3c; }
+

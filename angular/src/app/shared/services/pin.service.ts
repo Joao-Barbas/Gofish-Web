@@ -2,7 +2,7 @@ import { environment } from 'environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateCatchPinReqDTO, CreatePinResDTO} from '../dtos/create-pin.dto';
+import { CreateCatchPinReqDTO, CreateInfoPinReqDTO, CreatePinResDTO, CreateWarnPinReqDTO} from '../dtos/create-pin.dto';
 import { GetPinsInViewportResDTO } from '../dtos/pin-marker.dto';
 
 @Injectable({
@@ -14,6 +14,7 @@ export class PinService {
 
   constructor(private http: HttpClient) {}
 
+  // Ainda nao esta a ser usado
   getAll(): Observable<any> {
     return this.http.get(`${this.baseUrl}/GetAll`);
   }
@@ -27,6 +28,12 @@ export class PinService {
     return this.http.post<CreatePinResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/CreateCatchPin`, dto);
   }
 
+  createInfoPin(dto: CreateInfoPinReqDTO): Observable<CreatePinResDTO> {
+    return this.http.post<CreatePinResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/CreateInfoPin`, dto);
+  }
 
+  createWarningPin(dto: CreateWarnPinReqDTO): Observable<CreateWarnPinReqDTO> {
+    return this.http.post<CreateWarnPinReqDTO>(`${environment.baseApiUrl}/${this.baseUrl}/CreateWarnPin`, dto);
+  }
 
 }

@@ -1,7 +1,7 @@
 export enum PinType {
-  CATCHING = 1,
-  INFORMATION = 2,
-  WARNING = 3
+  CATCHING = 0,
+  INFORMATION = 1,
+  WARNING = 2
 }
 
 export type Coords = {

@@ -6,17 +6,22 @@ import { PinService } from '@gofish/shared/services/pin.service';
 import { CatchingPinFormComponent } from '../forms/catching-pin-form/catching-pin-form.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@gofish/shared/services/auth.service';
+import { CreateCatchPinReqDTO, CreateInfoPinReqDTO, CreateWarnPinReqDTO } from '@gofish/shared/dtos/create-pin.dto';
+import { InfoPinFormComponent } from '../forms/info-pin-form/info-pin-form.component';
+import { WarnPinFormComponent } from '../forms/warn-pin-form/warn-pin-form.component';
 
 // Vale a pena fazer um padrao state ?
-type Step = 'idle' | 'chooseLocation' | 'fillForm';
+type Step = 'idle' | 'chooseLocation' | 'chooseType' | 'fillForm';
 
 // Ver se da para colocar noutro sitio
 type PinCreatedEvent =
-  | { type: PinType.CATCHING; dto: CreateCatchingPinDTO; res: any };
+  | { type: PinType.CATCHING; dto: CreateCatchPinReqDTO; res: any }
+  | { type: PinType.INFORMATION; dto: CreateInfoPinReqDTO; res: any }
+  | { type: PinType.WARNING; dto: CreateInfoPinReqDTO; res: any };
 
 @Component({
   selector: 'app-create-pin',
-  imports: [CommonModule, FormsModule, CatchingPinFormComponent],
+  imports: [CommonModule, FormsModule, CatchingPinFormComponent, InfoPinFormComponent, WarnPinFormComponent],
   templateUrl: './create-pin.component.html',
   styles: ``
 })
@@ -46,7 +51,7 @@ export class CreatePinComponent {
 
   constructor(private pinService: PinService,
     private auth: AuthService
-  ) {}
+  ) { }
 
   startCreatingPin() {
     if (!this.auth.getToken?.()) {
@@ -107,40 +112,79 @@ export class CreatePinComponent {
     this.step = 'fillForm';
   }
 
-  onCatchingSubmit(partial: Omit<CreateCatchingPinDTO, 'latitude' | 'longitude'>) {
+  goToChooseType(): void {
     if (!this.selectedCoords) {
-      this.errorMessage = 'No location.';
+      this.errorMessage = 'No location selected';
       return;
     }
+    this.errorMessage = '';
+    this.step = 'chooseType';
+  }
+
+  selectTypeAndContinue(type: PinType): void {
+    this.pinType = type;
+    this.errorMessage = '';
+    this.step = 'fillForm';
+  }
+
+  backToChooseLocation(): void {
+    this.errorMessage = '';
+    this.step = 'chooseLocation';
+  }
+
+  backToChooseType(): void {
+    this.errorMessage = '';
+    this.step = 'chooseType';
+  }
+  onCatchingSubmit(dto: CreateCatchPinReqDTO) {
     if (this.loading) return;
-
-    const dto: CreateCatchingPinDTO = {
-      latitude: this.selectedCoords.latitude,
-      longitude: this.selectedCoords.longitude,
-      ...partial,
-    };
-
     this.loading = true;
+
     this.pinService.createCatchPin(dto).subscribe({
       next: (res) => {
         this.loading = false;
-        this.creationComplete.emit({ type: PinType.CATCHING, dto, res });
+        this.creationComplete.emit({ type: PinType.CATCHING, dto, res } as any);
         this.cancelCreatingPin();
       },
       error: (err) => {
         this.loading = false;
+        this.creationFailed.emit('Error creating CatchingPin');
+      }
+    });
+  }
 
-        console.error('CreateCatchPin error:', err);
+  onInfoSubmit(dto: CreateInfoPinReqDTO) {
+    if (this.loading) return;
+    this.loading = true;
 
-        const msg =
-          err?.error?.message ??
-          err?.error?.title ??
-          err?.message ??
-          'Error creating pin.';
-
-        this.errorMessage = msg;
-        this.creationFailed.emit(msg);
+    this.pinService.createInfoPin(dto).subscribe({
+      next: (res) => {
+        this.loading = false;
+        this.creationComplete.emit({ type: PinType.INFORMATION, dto, res } as any);
+        this.cancelCreatingPin();
       },
+      error: (err) => {
+        this.loading = false;
+        this.creationFailed.emit('Error creating InfoPin');
+      }
+    });
+  }
+
+  onWarnSubmit(dto: CreateWarnPinReqDTO) {
+    if (this.loading) return;
+    this.loading = true;
+
+    this.pinService.createWarningPin(dto).subscribe({
+      next: (res) => {
+        this.loading = false;
+        this.creationComplete.emit({ type: PinType.WARNING, dto, res } as any);
+        this.cancelCreatingPin();
+      },
+      error: (err) => {
+        console.error('CreateWarnPin error:');
+        this.loading = false;
+        this.creationFailed.emit('Error creating WarnPin');
+      }
     });
   }
 }

@@ -6,7 +6,7 @@ import mapboxgl from 'mapbox-gl';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { UserService } from '@gofish/shared/services/user.service';
 import { CreatePinComponent } from './create-pin/create-pin.component';
-import { Coords } from '@gofish/shared/models/pin-types';
+import { Coords, PinType } from '@gofish/shared/models/pin-types';
 import { PinService } from '@gofish/shared/services/pin.service';
 import { GetPinsInViewportResDTO, PinMarkerDTO } from '@gofish/shared/dtos/pin-marker.dto';
 
@@ -38,7 +38,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     private pinService: PinService,
     private authService: AuthService,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.userService.getUserProfile().subscribe({
@@ -99,7 +99,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.clearPreviewAndSelection();
     this.disablePickMode();
-
+    this.loadPinsInViewport();
     console.log('Pin created:', event.res);
   }
 
@@ -147,8 +147,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.map) return;
 
     const bounds = this.map.getBounds();
-    if (!bounds){
-      console.log('ERRO GRAVE');
+    if (!bounds) {
       return;
     }
 
@@ -157,23 +156,25 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     const minLng = bounds.getWest();
     const maxLng = bounds.getEast();
 
-    console.log('BOUNDS', { minLat, minLng, maxLat, maxLng });
+    //console.log('BOUNDS', { minLat, minLng, maxLat, maxLng });
 
     this.getPinsInViewport(minLat, minLng, maxLat, maxLng);
   }
 
   private getPinsInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number): void {
-  this.pinService.getInViewport(minLat, minLng, maxLat, maxLng)
-    .subscribe({
-      next: (res: GetPinsInViewportResDTO) => {
-        if (!res.success) return;
-        this.renderPins(res.pins);
-      },
-      error: (err: any) => {
-        console.error('Erro GetInViewport:', err);
-      }
-    });
-}
+    this.pinService.getInViewport(minLat, minLng, maxLat, maxLng)
+      .subscribe({
+        next: (res: GetPinsInViewportResDTO) => {
+          //console.log('SUCCESS', res.success, 'PINS', res.pins.length);
+          //console.log('PINS TYPE:', res.pins.map(pin => pin.pinType));
+          if (!res.success) return;
+          this.renderPins(res.pins);
+        },
+        error: (err: any) => {
+          console.error('Erro GetInViewport:', err);
+        }
+      });
+  }
   private renderPins(pins: PinMarkerDTO[]): void {
     const visibleMarkerIds = new Set(pins.map(pin => pin.id.toString()));
 
@@ -193,11 +194,25 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         continue;
       }
 
-      const newMarker = new mapboxgl.Marker()
+
+      const newMarker = new mapboxgl.Marker({ color: this.getMarkerColor(pin.pinType) })
         .setLngLat(lngLat)
         .addTo(this.map);
 
       this.markers.set(pin.id.toString(), newMarker);
+    }
+  }
+
+  private getMarkerColor(pinType: PinType): string {
+    switch (pinType) {
+      case PinType.CATCHING:
+        return '#2ecc71'; // verde
+      case PinType.INFORMATION:
+        return '#3498db'; // azul
+      case PinType.WARNING:
+        return '#e74c3c'; // vermelho
+      default:
+        return '#95a5a6'; // cinza
     }
   }
 
