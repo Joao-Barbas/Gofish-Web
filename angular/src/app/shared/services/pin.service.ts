@@ -1,15 +1,15 @@
+import { environment } from 'environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateCatchingPinDTO } from '../dtos/create-catching-pin';
-
+import { CreateCatchPinReqDTO, CreateCatchPinResDTO} from '../dtos/create-pin.dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PinService {
 
-  private baseUrl = 'https://localhost:7113/api/Pin';
+  private baseUrl = 'Pin';
 
   constructor(private http: HttpClient) {}
 
@@ -17,7 +17,7 @@ export class PinService {
     return this.http.get(`${this.baseUrl}/GetAll`);
   }
 
-  createCatchPin(dto: CreateCatchingPinDTO) {
-  return this.http.post(`${this.baseUrl}/CreateCatchPin`, dto);
+  createCatchPin(dto: CreateCatchPinReqDTO): Observable<CreateCatchPinResDTO> {
+    return this.http.post<CreateCatchPinResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/CreateCatchPin`, dto);
   }
 }
