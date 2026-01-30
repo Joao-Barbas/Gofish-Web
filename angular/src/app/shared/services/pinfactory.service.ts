@@ -3,6 +3,7 @@ import { PinType } from '../models/pin-types';
 import { PinStyleService } from './pin-style.service';
 import { PinMarkerDTO } from '../dtos/pin-marker.dto';
 import mapboxgl from 'mapbox-gl';
+import { PinIconService } from './pin-icon.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +11,28 @@ import mapboxgl from 'mapbox-gl';
 
 export class PinfactoryService {
 
-  constructor(private pinStyle: PinStyleService) { }
+  constructor(private pinStyle: PinStyleService, private pinIcon: PinIconService) { }
 
   createPin(pin: PinMarkerDTO): mapboxgl.Marker {
-    return new mapboxgl.Marker({
-      color: this.pinStyle.getColor(pin.pinType),
-    }).setLngLat([pin.longitude, pin.latitude]);
+    const el = document.createElement('div');
+    el.innerHTML = this.pinIcon.getSvgIcon(pin.pinType);
+    el.style.cursor = 'pointer';
+
+    el.style.width = '32px';
+    el.style.height = '32px';
+
+    return new mapboxgl.Marker({ element: el })
+      .setLngLat([pin.longitude, pin.latitude]);
   }
 
-  createPreviewPin(longitude: number, latitude: number): mapboxgl.Marker {
-    return new mapboxgl.Marker().setLngLat([longitude, latitude]);
+  createPreviewPin(lng: number, lat: number): mapboxgl.Marker {
+    const el = document.createElement('div');
+    el.innerHTML = this.pinIcon.getSvgIcon(0 as any);
+    el.style.width = '32px';
+    el.style.height = '32px';
+    el.style.opacity = '0.7';
+
+    return new mapboxgl.Marker({ element: el })
+      .setLngLat([lng, lat]);
   }
 }
