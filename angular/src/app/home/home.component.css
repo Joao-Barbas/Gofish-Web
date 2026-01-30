@@ -6,9 +6,12 @@
   padding-left: 136px;
 }
 
-.header {
-  font-family: var(--font-heading);
-
+@media (max-width: 992px) {
+  .hero-right {
+    padding-left: 0;
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .dark-text {
@@ -52,3 +55,38 @@
   /* RETIRAR se for rejeitado a ideia*/
   transform: translateY(-1px);
 }
+
+/* FEATURES CARD */
+.features-card {
+  box-shadow: var(--dark-lift-shadow-m);
+  border-radius: 12px;
+  border-width: 0px;
+  background: #333;
+  padding: 24px;
+}
+
+.icon-box{
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background-color: #1A1A1A;
+
+  background-image: var(--icon-url);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 22px 22px;
+}
+
+.icon-guitar { --icon-url: url('/assets/images/home/guitar.svg'); }
+.icon-map    { --icon-url: url('/assets/images/home/map.svg'); }
+.icon-hook   { --icon-url: url('/assets/images/home/hook.svg'); }
+.icon-clear   { --icon-url: url('/assets/images/home/clear.svg'); }
+
+.features-card > h5 {
+  font-size: 20px;
+}
+
+.features-card > p {
+  font-size: 18px;
+}
+/* FEATURES CARD - FIM */

@@ -1,37 +1,98 @@
 <app-header></app-header>
-<main class="dark-bg">
+<main class="dark-bg font-main hero">
 
-
-  <section class="hero pt-5 pb-5">
-    <div class="container">
-      <div class="row align-items-center gx-5">
+  <section>
+    <div class="container pt-5 pb-6">
+      <div class="row align-items-center gx-5 mb-5">
 
         <!-- PRIMEIRA COLUNA -->
-        <div class="col-6">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center text-lg-start">
 
-          <h1 class="font-main dark-text" >Mapa Social</h1>
-          <h4 class="font-main dark-text mb-5" >Para Pescadores Por Pescadores</h4>
-          <p class="font-main dark-text-muted">Regista, explora e partilha capturas georreferenciadas com a comunidade.</p>
+          <h1 class="dark-text">Mapa Social</h1>
+          <h4 class="dark-text mb-5">Para Pescadores Por Pescadores</h4>
+          <p class="dark-text-muted">
+            Regista, explora e partilha capturas georreferenciadas com a comunidade.
+          </p>
 
-          <div class="d-flex gap-3 mt-4">
+          <!--
+          TODO: Botões têm de estar alinhados no centro quando a largura do ecrã ficam <992
 
-            <button class="font-main btn-fish">Explorar Mapa</button>
-            <button class="font-main btn-fish">Ver atividade</button>
-
+          align-items-sm-center e align-items-center não funcionam???
+          -->
+          <div class="d-flex align-items-sm-center align-items-lg-start gap-3 mt-4">
+            <button class="btn-fish">Explorar Mapa</button>
+            <button class="btn-fish">Ver Atividade</button>
           </div>
         </div>
 
 
         <!-- SEGUNDA COLUNA -->
-        <div class="col-md-6 hero-right mt-4 mt-md-0">
+        <div class="col-12 col-lg-6 hero-right mt-4 mt-md-3 mt-lg-4 mt-md-0">
           <div class="square"></div>
         </div>
 
       </div>
-
     </div>
   </section>
 
-  <!-- TODO: Secção de funcionalidades da aplicação -->
+  <section>
+
+    <!-- SECÇÃO -->
+    <div class="container">
+      <div class="row g-4 mt-4">
+
+        <!-- 1º Cartão -->
+        <div class="col-12 col-md-6">
+          <div class="features-card h-100">
+            <div class="icon-box icon-guitar mb-3"></div>
+            <h5 class="font-main dark-text mb-3">Comunidade Portuguesa</h5>
+            <p class="font-main features-card-p dark-text-muted mb-0">
+              Plataforma dedicada a pescadores em Portugal, com conteúdos,
+              locais e práticas adaptadas ao contexto nacional.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2º Cartão -->
+        <div class="col-12 col-md-6">
+          <div class="features-card h-100">
+            <div class="icon-box icon-map mb-3"></div>
+            <h5 class="font-main dark-text mb-3">Mapa Colaborativo</h5>
+            <p class="font-main dark-text-muted mb-0">
+              Registos de pesca georreferenciados e partilhados pela comunidade, permitindo explorar locais e padrões
+              reais.
+            </p>
+          </div>
+        </div>
+
+        <!-- 3º Cartão -->
+        <div class="col-12 col-md-6">
+          <div class="features-card h-100">
+            <div class="icon-box icon-hook mb-3"></div>
+            <h5 class="font-main dark-text mb-3">Registe Capturas</h5>
+            <p class="font-main dark-text-muted mb-0">
+              Carregue as fotos das suas capturas e partilhe-as com a comunidade.
+            </p>
+          </div>
+        </div>
+
+        <!-- 4º Cartão -->
+        <div class="col-12 col-md-6">
+          <div class="features-card h-100">
+            <div class="icon-box icon-clear mb-3"></div>
+            <h5 class="font-main dark-text mb-3">Interface clara</h5>
+            <p class="font-main dark-text-muted mb-0">
+              Design focado em legibilidade, navegação simples e utilização eficiente em dispositivos móveis.
+            </p>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TODO: Secção de estatisticas -->
 
 </main>

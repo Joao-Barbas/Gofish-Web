@@ -125,5 +125,10 @@
         }
       }
     }
+  },
+  "cli": {
+    "cache": {
+      "enabled": true
+    }
   }
 }
