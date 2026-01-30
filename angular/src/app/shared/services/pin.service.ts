@@ -8,6 +8,7 @@ import { GetPinsInViewportResDTO } from '../dtos/pin-marker.dto';
 @Injectable({
   providedIn: 'root'
 })
+// Tem tudo de HTTP relacionado com Pins
 export class PinService {
 
   private baseUrl = 'Pin';
@@ -24,6 +25,7 @@ export class PinService {
     { params: { minLat, minLng, maxLat, maxLng } });
   }
 
+  // Create
   createCatchPin(dto: CreateCatchPinReqDTO): Observable<CreatePinResDTO> {
     return this.http.post<CreatePinResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/CreateCatchPin`, dto);
   }
@@ -36,4 +38,5 @@ export class PinService {
     return this.http.post<CreateWarnPinReqDTO>(`${environment.baseApiUrl}/${this.baseUrl}/CreateWarnPin`, dto);
   }
 
-}
+
+  }

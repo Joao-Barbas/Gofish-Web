@@ -9,6 +9,7 @@ import { CreatePinComponent } from './create-pin/create-pin.component';
 import { Coords, PinType } from '@gofish/shared/models/pin-types';
 import { PinService } from '@gofish/shared/services/pin.service';
 import { GetPinsInViewportResDTO, PinMarkerDTO } from '@gofish/shared/dtos/pin-marker.dto';
+import { PinfactoryService } from '@gofish/shared/services/pinfactory.service';
 
 @Component({
   selector: 'app-map',
@@ -22,7 +23,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   firstName = '';
 
   private map!: mapboxgl.Map;
-  private markers = new Map<string, mapboxgl.Marker>();
+  private markers = new Map<number, mapboxgl.Marker>();
 
   // coords selecionadas (formato do teu Coords: latitude/longitude)
   selected: Coords | null = null;
@@ -37,7 +38,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private pinService: PinService,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private pinFactory: PinfactoryService
   ) { }
 
   ngOnInit(): void {
@@ -69,7 +71,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.map.on('load', () => {
 
-
       this.loadPinsInViewport();
 
       this.map.on('moveend', () => this.loadPinsInViewport());
@@ -92,15 +93,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  onPinCreated(event: { dto: { latitude: number; longitude: number }; res: any }): void {
-    new mapboxgl.Marker()
-      .setLngLat([event.dto.longitude, event.dto.latitude])
-      .addTo(this.map);
-
+  onPinCreated(): void {
     this.clearPreviewAndSelection();
     this.disablePickMode();
     this.loadPinsInViewport();
-    console.log('Pin created:', event.res);
+    console.log('Pin created successfully.');
   }
 
   onPinCreateFailed(msg: string): void {
@@ -111,11 +108,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   onMapClick(e: mapboxgl.MapMouseEvent): void {
     if (!this.pickingOnMap) return;
 
-    const { lng, lat } = e.lngLat;
+    if (!this.isWaterClick(e)) {
+      console.log('Only create pins on water.');
+      this.debugLayersAtClick(e);
+      return;
+    }
 
+
+    const { lng, lat } = e.lngLat;
     const coords: Coords = { latitude: lat, longitude: lng };
     this.setSelectedCoords(coords);
-
     this.disablePickMode();
   }
 
@@ -123,9 +125,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selected = coords;
 
     if (this.previewMarker) this.previewMarker.remove();
-    this.previewMarker = new mapboxgl.Marker()
-      .setLngLat([coords.longitude, coords.latitude])
-      .addTo(this.map);
+    this.previewMarker = this.pinFactory.createPreviewPin(coords.longitude, coords.latitude);
+    this.previewMarker.addTo(this.map);
 
     this.map.setCenter([coords.longitude, coords.latitude]);
   }
@@ -179,14 +180,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     const visibleMarkerIds = new Set(pins.map(pin => pin.id.toString()));
 
     for (const [id, marker] of this.markers) {
-      if (!visibleMarkerIds.has(id)) {
+      if (!visibleMarkerIds.has(id.toString())) {
         marker.remove();
         this.markers.delete(id);
       }
     }
 
     for (const pin of pins) {
-      const existingMarker = this.markers.get(pin.id.toString());
+      const existingMarker = this.markers.get(pin.id);
       const lngLat: [number, number] = [pin.longitude, pin.latitude];
 
       if (existingMarker) {
@@ -194,28 +195,24 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         continue;
       }
 
-
-      const newMarker = new mapboxgl.Marker({ color: this.getMarkerColor(pin.pinType) })
-        .setLngLat(lngLat)
-        .addTo(this.map);
-
-      this.markers.set(pin.id.toString(), newMarker);
+      const newMarker = this.pinFactory.createPin(pin);
+      newMarker.addTo(this.map);
+      this.markers.set(pin.id, newMarker);
     }
   }
 
-  private getMarkerColor(pinType: PinType): string {
-    switch (pinType) {
-      case PinType.CATCHING:
-        return '#2ecc71'; // verde
-      case PinType.INFORMATION:
-        return '#3498db'; // azul
-      case PinType.WARNING:
-        return '#e74c3c'; // vermelho
-      default:
-        return '#95a5a6'; // cinza
-    }
+  private isWaterClick(e: mapboxgl.MapMouseEvent): boolean {
+    const layers = ["water"];
+    const features = this.map.queryRenderedFeatures(e.point, { layers });
+    return features.length > 0;
   }
 
+  // APGAR DEPOIS
+  private debugLayersAtClick(e: mapboxgl.MapMouseEvent) {
+  const feats = this.map.queryRenderedFeatures(e.point);
+  const uniqueLayerIds = Array.from(new Set(feats.map(f => f.layer?.id))).slice(0, 30);
+  console.log('LAYER IDS AT CLICK:', uniqueLayerIds);
+}
 
   //AUTH
   onSignOut(): void {
