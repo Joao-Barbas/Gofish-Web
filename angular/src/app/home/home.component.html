@@ -1,25 +1,20 @@
 <app-header></app-header>
-<main class="dark-bg font-main hero">
+<main class="dark-bg figma-bg-dark-temporary font-main hero">
 
   <section>
-    <div class="container pt-5 pb-6">
-      <div class="row align-items-center gx-5 mb-5">
+    <div class="container pt-5 pb-5">
+      <div class="row d-flex align-items-center justify-content-around mb-5">
 
         <!-- PRIMEIRA COLUNA -->
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center text-lg-start">
 
-          <h1 class="dark-text">Mapa Social</h1>
-          <h4 class="dark-text mb-5">Para Pescadores Por Pescadores</h4>
+          <h1 class="dark-text main-hero-text-heading">Mapa Social</h1>
+          <h4 class="dark-text main-hero-text-subheading mb-5">Para Pescadores Por Pescadores</h4>
           <p class="dark-text-muted">
             Regista, explora e partilha capturas georreferenciadas com a comunidade.
           </p>
 
-          <!--
-          TODO: Botões têm de estar alinhados no centro quando a largura do ecrã ficam <992
-
-          align-items-sm-center e align-items-center não funcionam???
-          -->
-          <div class="d-flex align-items-sm-center align-items-lg-start gap-3 mt-4">
+          <div class="d-flex justify-content-center justify-content-lg-start gap-3 mt-4">
             <button class="btn-fish">Explorar Mapa</button>
             <button class="btn-fish">Ver Atividade</button>
           </div>
@@ -27,7 +22,9 @@
 
 
         <!-- SEGUNDA COLUNA -->
-        <div class="col-12 col-lg-6 hero-right mt-4 mt-md-3 mt-lg-4 mt-md-0">
+        <div class="col-12 col-lg-6
+                    mt-4 mt-md-4 mt-lg-4
+                    d-flex justify-content-center justify-content-lg-end">
           <div class="square"></div>
         </div>
 
@@ -46,7 +43,7 @@
           <div class="features-card h-100">
             <div class="icon-box icon-guitar mb-3"></div>
             <h5 class="font-main dark-text mb-3">Comunidade Portuguesa</h5>
-            <p class="font-main features-card-p dark-text-muted mb-0">
+            <p class="font-main features-card-p dark-text-muted mb-0 d-flex align-text-bottom">
               Plataforma dedicada a pescadores em Portugal, com conteúdos,
               locais e práticas adaptadas ao contexto nacional.
             </p>
@@ -70,7 +67,7 @@
           <div class="features-card h-100">
             <div class="icon-box icon-hook mb-3"></div>
             <h5 class="font-main dark-text mb-3">Registe Capturas</h5>
-            <p class="font-main dark-text-muted mb-0">
+            <p class="font-main dark-text-muted mb-0 d-flex align-self-sm-stretch cat">
               Carregue as fotos das suas capturas e partilhe-as com a comunidade.
             </p>
           </div>
@@ -93,6 +90,9 @@
     </div>
   </section>
 
-  <!-- TODO: Secção de estatisticas -->
+  <!-- TODO:
+   Secção de estatisticas
+   Ver se retirar o Bootstrap do index.html tem algum efeito, uma vez que já está a ser chamado no angular.json > styles
+   -->
 
 </main>
