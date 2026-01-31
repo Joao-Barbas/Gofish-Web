@@ -78,8 +78,9 @@
 }
 
 .icon-box{
-  width: 48px;
-  height: 48px;
+  --min-size: 48px;
+  width: var(--min-size);
+  height: var(--min-size);
   border-radius: 8px;
   background-color: #1A1A1A;
 
@@ -89,10 +90,31 @@
   background-size: 22px 22px;
 }
 
+
 .icon-guitar { --icon-url: url('/assets/images/home/guitar.svg'); }
 .icon-map    { --icon-url: url('/assets/images/home/map.svg'); }
 .icon-hook   { --icon-url: url('/assets/images/home/hook.svg'); }
 .icon-clear   { --icon-url: url('/assets/images/home/clear.svg'); }
+.icon-fish   { --icon-url: url('/assets/images/home/fish.svg'); }
+
+.icon-resize-statistics {
+  --size: 60px;
+
+
+  width: var(--size);
+  height: var(--size);
+  background-size: var(--size);
+
+}
+
+.cat {
+  font-size: 28px;
+}
+
+.dog {
+  font-size: 12px;
+
+}
 
 .features-card > h5 {
   font-size: 20px;
