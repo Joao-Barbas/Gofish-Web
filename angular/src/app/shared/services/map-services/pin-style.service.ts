@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Pin } from '../models/pin.model';
-import { PinType } from '../models/pin-types';
+import { PinType } from '@gofish/shared/models/pin-types';
 
 @Injectable({
   providedIn: 'root'

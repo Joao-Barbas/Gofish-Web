@@ -2,8 +2,9 @@ import { environment } from 'environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateCatchPinReqDTO, CreateInfoPinReqDTO, CreatePinResDTO, CreateWarnPinReqDTO} from '../dtos/create-pin.dto';
-import { GetPinsInViewportResDTO } from '../dtos/pin-marker.dto';
+import { GetPinsInViewportResDTO } from '@gofish/shared/dtos/pin-marker.dto';
+import { CreateCatchPinReqDTO, CreateInfoPinReqDTO, CreatePinResDTO, CreateWarnPinReqDTO } from '@gofish/shared/dtos/create-pin.dto';
+
 
 @Injectable({
   providedIn: 'root'

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CreateCatchingPinDTO } from '@gofish/shared/dtos/create-catching-pin';
 import { Coords, PinType } from '@gofish/shared/models/pin-types';
-import { PinService } from '@gofish/shared/services/pin.service';
+import { PinService } from '@gofish/shared/services/map-services/pin.service';
 import { CatchingPinFormComponent } from '../forms/catching-pin-form/catching-pin-form.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@gofish/shared/services/auth.service';
@@ -68,6 +68,13 @@ export class CreatePinComponent {
     this.pinType = null;
     this.step = 'idle';
     this.creationFailed.emit('Creation cancelled by user.');
+  }
+
+  submitCreatingPin() {
+    this.errorMessage = '';
+    this.loading = false;
+    this.pinType = null;
+    this.step = 'idle';
   }
 
   chooseCurrentLocation() {
@@ -146,7 +153,7 @@ export class CreatePinComponent {
       next: (res) => {
         this.loading = false;
         this.creationComplete.emit({ type: PinType.CATCHING, dto, res } as any);
-        this.cancelCreatingPin();
+        this.submitCreatingPin();
       },
       error: (err) => {
         this.loading = false;
@@ -163,7 +170,7 @@ export class CreatePinComponent {
       next: (res) => {
         this.loading = false;
         this.creationComplete.emit({ type: PinType.INFORMATION, dto, res } as any);
-        this.cancelCreatingPin();
+        this.submitCreatingPin();
       },
       error: (err) => {
         this.loading = false;
@@ -180,7 +187,7 @@ export class CreatePinComponent {
       next: (res) => {
         this.loading = false;
         this.creationComplete.emit({ type: PinType.WARNING, dto, res } as any);
-        this.cancelCreatingPin();
+        this.submitCreatingPin();
       },
       error: (err) => {
         console.error('CreateWarnPin error:');

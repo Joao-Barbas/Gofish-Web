@@ -2,14 +2,23 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import mapboxgl from 'mapbox-gl';
+
+import mapboxgl, { MapMouseEvent } from 'mapbox-gl';
+
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { UserService } from '@gofish/shared/services/user.service';
+import { PinService } from '@gofish/shared/services/map-services/pin.service';
+import { PinfactoryService } from '@gofish/shared/services/map-services/pinfactory.service';
+
 import { CreatePinComponent } from './create-pin/create-pin.component';
+
 import { Coords, PinType } from '@gofish/shared/models/pin-types';
-import { PinService } from '@gofish/shared/services/pin.service';
 import { GetPinsInViewportResDTO, PinMarkerDTO } from '@gofish/shared/dtos/pin-marker.dto';
-import { PinfactoryService } from '@gofish/shared/services/pinfactory.service';
+import { WaterValidationService } from '@gofish/shared/services/map-services/water-validation.service';
+import { PreviewMarkerService } from '@gofish/shared/services/map-services/preview-marker.service';
+import { MarkerRegistryService } from '@gofish/shared/services/map-services/marker-registry.service';
+
+
 
 @Component({
   selector: 'app-map',
@@ -18,31 +27,32 @@ import { PinfactoryService } from '@gofish/shared/services/pinfactory.service';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
 })
-
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
+  // UI / state
   firstName = '';
-
-  private map!: mapboxgl.Map;
-  private markers = new Map<number, mapboxgl.Marker>();
-
-  // coords selecionadas (formato do teu Coords: latitude/longitude)
   selected: Coords | null = null;
 
-  // preview marker
-  private previewMarker: mapboxgl.Marker | null = null;
-
-  // só aceitar cliques no mapa quando estiver a escolher localização
   pickingOnMap = false;
-  isCreating : boolean = false;
+  isCreating: boolean = false;
+
+  // Mapbox
+  private map!: mapboxgl.Map;
+
 
   constructor(
     private router: Router,
     private pinService: PinService,
     private authService: AuthService,
     private userService: UserService,
-    private pinFactory: PinfactoryService
+    private pinFactory: PinfactoryService,
+    private waterValidationService: WaterValidationService,
+    private previewMarkerService: PreviewMarkerService,
+    private markerRegistry: MarkerRegistryService
   ) { }
 
+  // =========================
+  // Lifecycle
+  // =========================
   ngOnInit(): void {
     this.userService.getUserProfile().subscribe({
       next: (res: any) => (this.firstName = res.firstName),
@@ -71,178 +81,154 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.map.keyboard.disableRotation();
 
     this.map.on('load', () => {
-
       this.loadPinsInViewport();
 
       this.map.on('moveend', () => this.loadPinsInViewport());
       this.map.on('zoomend', () => this.loadPinsInViewport());
-
       this.map.on('click', (e) => this.onMapClick(e));
+
     });
   }
 
 
-  enablePickMode(): void {
-    this.pickingOnMap = true;
-    this.isCreating = true;
-    if (this.map) {this.map.getCanvas().style.cursor = 'crosshair';
-      console.log('Pick mode enabled. Click on the map to select location.');
-    }
-  }
+  onMapClick(e: mapboxgl.MapMouseEvent): void {
+    if (!this.pickingOnMap) return;
 
+    const isWater = this.waterValidationService.isWaterAtPoint(this.map, e.point);
 
-  onCoordsSelected(coords: Coords): void {
-    if (!this.isWaterLngLat(coords.longitude, coords.latitude)) {
-      alert('Selected coordinates are not on water. Please select a valid location.');
+    if (!isWater) {
+      console.log('Only create pins on water.');
       return;
     }
+
+    const { lng, lat } = e.lngLat;
+    const coords: Coords = { latitude: lat, longitude: lng };
+
     this.setSelectedCoords(coords);
+
     this.disablePickMode();
   }
 
+  ngOnDestroy(): void {
+    this.previewMarkerService.clear();
+    this.markerRegistry.clear();
+
+    if (this.map) this.map.remove();
+  }
+
+  // =========================
+  // Create / Pick mode
+  // =========================
+  startCreate(): void {
+    this.isCreating = true;
+  }
+
+  enablePickMode(): void {
+    this.isCreating = true;
+    this.pickingOnMap = true;
+    this.map.getCanvas().style.cursor = 'crosshair';
+    console.log('Pick mode enabled');
+  }
+
+  private disablePickMode(): void {
+    this.pickingOnMap = false;
+    this.map.getCanvas().style.cursor = 'default';
+  }
+
+
+
+  onCoordsSelected(coords: Coords): void {
+    if (!this.waterValidationService.isWaterAtLngLat(this.map, coords.longitude, coords.latitude)) {
+      alert('Selected coordinates are not on water. Please select a valid location.');
+      return;
+    }
+
+    this.setSelectedCoords(coords);
+    this.disablePickMode();
+  }
 
   onPinCreated(): void {
     this.clearPreviewAndSelection();
     this.disablePickMode();
     this.loadPinsInViewport();
+
     this.isCreating = false;
     console.log('Pin created successfully.');
   }
 
   onPinCreateFailed(msg: string): void {
     console.error('Failed create pin:', msg);
+    this.disablePickMode();
     this.clearPreviewAndSelection();
     this.isCreating = false;
   }
 
-  startCreate():void{
-    this.isCreating = true;
-  }
-
-  onMapClick(e: mapboxgl.MapMouseEvent): void {
-    if (!this.pickingOnMap) return;
-
-    if (!this.isWaterClick(e)) {
-      console.log('Only create pins on water.');
-      this.debugLayersAtClick(e);
-      return;
-    }
-
-
-    const { lng, lat } = e.lngLat;
-    const coords: Coords = { latitude: lat, longitude: lng };
-    this.setSelectedCoords(coords);
-    this.disablePickMode();
-  }
-
+  // =========================
+  // Selection / Preview marker
+  // =========================
   private setSelectedCoords(coords: Coords): void {
     this.selected = coords;
 
-    if (this.previewMarker) this.previewMarker.remove();
-    this.previewMarker = this.pinFactory.createPreviewPin(coords.longitude, coords.latitude);
-    this.previewMarker.addTo(this.map);
+    this.previewMarkerService.clear();
+    this.previewMarkerService.set(this.map, coords.longitude, coords.latitude, (lng, lat) => this.pinFactory.createPreviewPin(lng, lat));
 
     this.map.setCenter([coords.longitude, coords.latitude]);
   }
 
   private clearPreviewAndSelection(): void {
-    if (this.previewMarker) {
-      this.previewMarker.remove();
-      this.previewMarker = null;
-    }
+    this.previewMarkerService.clear();
     this.selected = null;
   }
 
-  private disablePickMode(): void {
-    this.pickingOnMap = false;
-    if (this.map) this.map.getCanvas().style.cursor = '';
-  }
-
+  // =========================
+  // Pins in viewport
+  // =========================
   private loadPinsInViewport(): void {
     if (!this.map) return;
 
     const bounds = this.map.getBounds();
-    if (!bounds) {
-      return;
-    }
+    if (!bounds) return;
 
     const minLat = bounds.getSouth();
     const maxLat = bounds.getNorth();
     const minLng = bounds.getWest();
     const maxLng = bounds.getEast();
 
-    //console.log('BOUNDS', { minLat, minLng, maxLat, maxLng });
-
     this.getPinsInViewport(minLat, minLng, maxLat, maxLng);
   }
 
-  private getPinsInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number): void {
-    this.pinService.getInViewport(minLat, minLng, maxLat, maxLng)
-      .subscribe({
-        next: (res: GetPinsInViewportResDTO) => {
-          //console.log('SUCCESS', res.success, 'PINS', res.pins.length);
-          //console.log('PINS TYPE:', res.pins.map(pin => pin.pinType));
-          if (!res.success) return;
-          this.renderPins(res.pins);
-        },
-        error: (err: any) => {
-          console.error('Erro GetInViewport:', err);
-        }
-      });
-  }
-  private renderPins(pins: PinMarkerDTO[]): void {
-    const visibleMarkerIds = new Set(pins.map(pin => pin.id.toString()));
-
-    for (const [id, marker] of this.markers) {
-      if (!visibleMarkerIds.has(id.toString())) {
-        marker.remove();
-        this.markers.delete(id);
-      }
-    }
-
-    for (const pin of pins) {
-      const existingMarker = this.markers.get(pin.id);
-      const lngLat: [number, number] = [pin.longitude, pin.latitude];
-
-      if (existingMarker) {
-        existingMarker.setLngLat(lngLat);
-        continue;
-      }
-
-      const newMarker = this.pinFactory.createPin(pin);
-      newMarker.addTo(this.map);
-      this.markers.set(pin.id, newMarker);
-    }
+  private getPinsInViewport(
+    minLat: number,
+    minLng: number,
+    maxLat: number,
+    maxLng: number
+  ): void {
+    this.pinService.getInViewport(minLat, minLng, maxLat, maxLng).subscribe({
+      next: (res: GetPinsInViewportResDTO) => {
+        if (!res.success) return;
+        this.markerRegistry.loadPins(this.map, res.pins, (pin) => this.pinFactory.createPin(pin));
+      },
+      error: (err: any) => {
+        console.error('Erro GetInViewport:', err);
+      },
+    });
   }
 
-  private isWaterClick(e: mapboxgl.MapMouseEvent): boolean {
-    const layers = ["water"];
-    const features = this.map.queryRenderedFeatures(e.point, { layers });
-    return features.length > 0;
-  }
-
-  private isWaterLngLat(lng: number, lat: number): boolean {
-    const point = this.map.project([lng, lat]);
-    return this.map.queryRenderedFeatures(point, { layers: ["water"] }).length > 0;
-  }
-
+  // =========================
+  // Debug
+  // =========================
   // APAGAR DEPOIS
   private debugLayersAtClick(e: mapboxgl.MapMouseEvent) {
-  const feats = this.map.queryRenderedFeatures(e.point);
-  const uniqueLayerIds = Array.from(new Set(feats.map(f => f.layer?.id))).slice(0, 30);
-  console.log('LAYER IDS AT CLICK:', uniqueLayerIds);
-}
+    const feats = this.map.queryRenderedFeatures(e.point);
+    const uniqueLayerIds = Array.from(new Set(feats.map((f) => f.layer?.id))).slice(0, 30);
+    console.log('LAYER IDS AT CLICK:', uniqueLayerIds);
+  }
 
-  //AUTH
+  // =========================
+  // Auth
+  // =========================
   onSignOut(): void {
     this.authService.deleteToken();
     this.router.navigateByUrl('');
-  }
-
-  ngOnDestroy(): void {
-    for (const m of this.markers.values()) m.remove();
-    this.markers.clear();
-
-    if (this.map) this.map.remove();
   }
 }

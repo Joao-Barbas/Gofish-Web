@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { PinType } from '../models/pin-types';
-import { PinStyleService } from './pin-style.service';
-import { PinMarkerDTO } from '../dtos/pin-marker.dto';
+import { PinType } from '../../models/pin-types';
+import { PinStyleService } from '../map-services/pin-style.service';
+import { PinMarkerDTO } from '../../dtos/pin-marker.dto';
 import mapboxgl from 'mapbox-gl';
 import { PinIconService } from './pin-icon.service';
 
