@@ -215,16 +215,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // =========================
-  // Debug
-  // =========================
-  // APAGAR DEPOIS
-  private debugLayersAtClick(e: mapboxgl.MapMouseEvent) {
-    const feats = this.map.queryRenderedFeatures(e.point);
-    const uniqueLayerIds = Array.from(new Set(feats.map((f) => f.layer?.id))).slice(0, 30);
-    console.log('LAYER IDS AT CLICK:', uniqueLayerIds);
-  }
-
-  // =========================
   // Auth
   // =========================
   onSignOut(): void {

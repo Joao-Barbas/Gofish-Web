@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { PinType } from '../../models/pin-types';
-import { PinStyleService } from '../map-services/pin-style.service';
 import { PinMarkerDTO } from '../../dtos/pin-marker.dto';
 import mapboxgl from 'mapbox-gl';
 import { PinIconService } from './pin-icon.service';
@@ -11,7 +10,7 @@ import { PinIconService } from './pin-icon.service';
 
 export class PinfactoryService {
 
-  constructor(private pinStyle: PinStyleService, private pinIcon: PinIconService) { }
+  constructor(private pinIcon: PinIconService) { }
 
   createPin(pin: PinMarkerDTO): mapboxgl.Marker {
     const el = document.createElement('div');

@@ -25,7 +25,7 @@
     <button type="button" (click)="cancelCreatingPin()">Cancelar</button>
   </div>
 
-  <div *ngIf="step === 'chooseType'">
+  <div *ngIf="step === 'chooseType'" class="btn-container">
     <h3>Escolher tipo de Pin</h3>
 
     <button type="button" (click)="selectTypeAndContinue(PinType.CATCHING)">Catching</button>
@@ -34,25 +34,24 @@
 
     <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
 
-    <button type="button" (click)="backToChooseLocation()">Voltar</button>
-    <button type="button" (click)="cancelCreatingPin()">Cancelar</button>
+    <div class="footer-btns">
+      <button type="button" (click)="backToChooseLocation()">Voltar</button>
+      <button type="button" (click)="cancelCreatingPin()">Cancelar</button>
+    </div>
   </div>
 
   <div *ngIf="step === 'fillForm'">
     <h3>Preencher dados</h3>
 
-    <app-catching-pin-form *ngIf="pinType === PinType.CATCHING"
-      [coords]="selectedCoords!"
+    <app-catching-pin-form *ngIf="pinType === PinType.CATCHING" [coords]="selectedCoords!"
       (submitForm)="onCatchingSubmit($event)">
     </app-catching-pin-form>
 
-    <app-info-pin-form *ngIf="pinType === PinType.INFORMATION"
-      [coords]="selectedCoords!"
+    <app-info-pin-form *ngIf="pinType === PinType.INFORMATION" [coords]="selectedCoords!"
       (submitForm)="onInfoSubmit($event)">
     </app-info-pin-form>
 
-    <app-warn-pin-form *ngIf="pinType === PinType.WARNING"
-      [coords]="selectedCoords!"
+    <app-warn-pin-form *ngIf="pinType === PinType.WARNING" [coords]="selectedCoords!"
       (submitForm)="onWarnSubmit($event)">
     </app-warn-pin-form>
 

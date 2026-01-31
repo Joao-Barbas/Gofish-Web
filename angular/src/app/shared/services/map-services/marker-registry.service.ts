@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
 import { PinMarkerDTO } from '@gofish/shared/dtos/pin-marker.dto';
+import { Pin } from '@gofish/shared/models/pin.model';
+import { PinHoverPreviewService } from './pin-hover-preview.service';
 
 @Injectable({ providedIn: 'root' })
 export class MarkerRegistryService {
   private markers = new Map<number, mapboxgl.Marker>();
-  constructor() { }
+
+  constructor(private pinHoverPreviewService: PinHoverPreviewService) { }
 
   loadPins(
     map: mapboxgl.Map,
@@ -33,6 +36,7 @@ export class MarkerRegistryService {
       const marker = createMarker(pin);
       marker.setLngLat(lngLat);
       marker.addTo(map);
+      this.pinHoverPreviewService.attach(map, marker, pin);
 
       this.markers.set(pin.id, marker);
     }
