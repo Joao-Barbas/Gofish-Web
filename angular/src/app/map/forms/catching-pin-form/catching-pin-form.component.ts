@@ -8,18 +8,26 @@ import { Coords } from '@gofish/shared/models/pin-types';
   selector: 'app-catching-pin-form',
   imports: [CommonModule, FormsModule],
   templateUrl: './catching-pin-form.component.html',
-  styles: ``
+  styleUrls: ['./catching-pin-form.component.css']
 })
 export class CatchingPinFormComponent {
-@Input() coords!: Coords;
-@Output() submitForm = new EventEmitter<CreateCatchingPinDTO>();
+  @Input() coords!: Coords;
+  @Output() submitForm = new EventEmitter<CreateCatchingPinDTO>();
+  @Output() cancel = new EventEmitter<void>();
 
-description = '';
-speciesType = 0;
-hookSize = 0;
-baitType = 0;
+  description = '';
+  speciesType = 0;
+  hookSize = 0;
+  baitType = 0;
 
-onSubmit() {
+  errorMessage: string = '';
+
+  onSubmit() {
+    if (!this.coords) {
+      this.errorMessage = "No coords";
+      return;
+    }
+
     this.submitForm.emit({
       latitude: this.coords.latitude,
       longitude: this.coords.longitude,
