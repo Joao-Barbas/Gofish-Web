@@ -33,6 +33,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // só aceitar cliques no mapa quando estiver a escolher localização
   pickingOnMap = false;
+  isCreating : boolean = false;
 
   constructor(
     private router: Router,
@@ -83,11 +84,18 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   enablePickMode(): void {
     this.pickingOnMap = true;
-    if (this.map) this.map.getCanvas().style.cursor = 'crosshair';
+    this.isCreating = true;
+    if (this.map) {this.map.getCanvas().style.cursor = 'crosshair';
+      console.log('Pick mode enabled. Click on the map to select location.');
+    }
   }
 
 
   onCoordsSelected(coords: Coords): void {
+    if (!this.isWaterLngLat(coords.longitude, coords.latitude)) {
+      alert('Selected coordinates are not on water. Please select a valid location.');
+      return;
+    }
     this.setSelectedCoords(coords);
     this.disablePickMode();
   }
@@ -97,13 +105,19 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.clearPreviewAndSelection();
     this.disablePickMode();
     this.loadPinsInViewport();
+    this.isCreating = false;
     console.log('Pin created successfully.');
   }
 
   onPinCreateFailed(msg: string): void {
     console.error('Failed create pin:', msg);
+    this.clearPreviewAndSelection();
+    this.isCreating = false;
   }
 
+  startCreate():void{
+    this.isCreating = true;
+  }
 
   onMapClick(e: mapboxgl.MapMouseEvent): void {
     if (!this.pickingOnMap) return;
@@ -207,7 +221,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     return features.length > 0;
   }
 
-  // APGAR DEPOIS
+  private isWaterLngLat(lng: number, lat: number): boolean {
+    const point = this.map.project([lng, lat]);
+    return this.map.queryRenderedFeatures(point, { layers: ["water"] }).length > 0;
+  }
+
+  // APAGAR DEPOIS
   private debugLayersAtClick(e: mapboxgl.MapMouseEvent) {
   const feats = this.map.queryRenderedFeatures(e.point);
   const uniqueLayerIds = Array.from(new Set(feats.map(f => f.layer?.id))).slice(0, 30);

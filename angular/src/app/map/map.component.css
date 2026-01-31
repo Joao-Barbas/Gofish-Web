@@ -1,44 +1,14 @@
 #map {
   width: 100%;
-  height: 500px;
+  height: 900px;
+  position: relative;
+  z-index: 0;
 }
 
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
+/* tenta “flutuar” por cima do mapa */
+app-create-pin {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
 }
-
-.controls {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.coords {
-  font-size: 14px;
-}
-
-.form {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.form input {
-  padding: 6px 8px;
-  min-width: 180px;
-}
-
-.pin {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid white;
-}
-
-.pin-catch { background-color: #2ecc71; }
-.pin-info  { background-color: #3498db; }
-.pin-warn  { background-color: #e74c3c; }
-

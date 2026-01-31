@@ -27,7 +27,7 @@ export class PinfactoryService {
 
   createPreviewPin(lng: number, lat: number): mapboxgl.Marker {
     const el = document.createElement('div');
-    el.innerHTML = this.pinIcon.getSvgIcon(0 as any);
+    el.innerHTML = this.pinIcon.getSvgIcon(PinType.DEFAULT);
     el.style.width = '32px';
     el.style.height = '32px';
     el.style.opacity = '0.7';

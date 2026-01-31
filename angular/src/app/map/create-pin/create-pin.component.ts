@@ -23,7 +23,7 @@ type PinCreatedEvent =
   selector: 'app-create-pin',
   imports: [CommonModule, FormsModule, CatchingPinFormComponent, InfoPinFormComponent, WarnPinFormComponent],
   templateUrl: './create-pin.component.html',
-  styles: ``
+  styleUrls: ['./create-pin.component.css']
 })
 
 // Falta colocar os DTOs dos outros pins no shared
@@ -67,6 +67,7 @@ export class CreatePinComponent {
     this.loading = false;
     this.pinType = null;
     this.step = 'idle';
+    this.creationFailed.emit('Creation cancelled by user.');
   }
 
   chooseCurrentLocation() {
@@ -87,8 +88,8 @@ export class CreatePinComponent {
         // manda ao pai
         this.coordsSelected.emit(coords);
 
-        // já avançar para escolher tipo/form
-        this.step = 'fillForm';
+
+        if (this.selectedCoords) return;
       },
       () => {
         this.errorMessage = 'Not possible to get location.';
@@ -100,6 +101,7 @@ export class CreatePinComponent {
   chooseOnMap() {
     this.errorMessage = '';
     this.requestPickOnMap.emit();
+    console.log('Emitted requestPickOnMap event');
     // esperar o pai mandar as coords
   }
 
