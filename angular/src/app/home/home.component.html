@@ -1,6 +1,7 @@
 <app-header></app-header>
 <main class="dark-bg figma-bg-dark-temporary font-main hero">
 
+  <!-- SECÇÃO Main Hero -->
   <section>
     <div class="container pt-5 pb-5">
       <div class="row d-flex align-items-center justify-content-around mb-5">
@@ -32,16 +33,16 @@
     </div>
   </section>
 
+  <!-- SECÇÃO Cartões com funcionalidades -->
   <section>
 
-    <!-- SECÇÃO -->
     <div class="container">
-      <div class="row g-5 mt-4 mb-4 pb-5">
+      <div class="row g-5 mt-4 mb-4 pb-2 pb-md-5 text-center text-md-start">
 
         <!-- 1º Cartão -->
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-12 col-lg-6">
           <div class="features-card h-100">
-            <div class="icon-box icon-guitar mb-3"></div>
+            <div class="icon-box icon-guitar mb-3 mx-auto mx-md-0"></div>
             <h5 class="font-main dark-text mb-3">Comunidade Portuguesa</h5>
             <p class="font-main features-card-p dark-text-muted mb-0 d-flex align-text-bottom">
               Plataforma dedicada a pescadores em Portugal, com conteúdos,
@@ -51,9 +52,9 @@
         </div>
 
         <!-- 2º Cartão -->
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-12 col-lg-6">
           <div class="features-card h-100">
-            <div class="icon-box icon-map mb-3"></div>
+            <div class="icon-box icon-map mb-3 mx-auto mx-md-0"></div>
             <h5 class="font-main dark-text mb-3">Mapa Colaborativo</h5>
             <p class="font-main dark-text-muted mb-0">
               Registos de pesca georreferenciados e partilhados pela comunidade, permitindo explorar locais e padrões
@@ -63,9 +64,9 @@
         </div>
 
         <!-- 3º Cartão -->
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-12 col-lg-6">
           <div class="features-card h-100">
-            <div class="icon-box icon-hook mb-3"></div>
+            <div class="icon-box icon-hook mb-3 mx-auto mx-md-0"></div>
             <h5 class="font-main dark-text mb-3">Registe Capturas</h5>
             <p class="font-main dark-text-muted mb-0 d-flex align-self-sm-stretch cat">
               Carregue as fotos das suas capturas e partilhe-as com a comunidade.
@@ -74,9 +75,9 @@
         </div>
 
         <!-- 4º Cartão -->
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-12 col-lg-6">
           <div class="features-card h-100">
-            <div class="icon-box icon-clear mb-3"></div>
+            <div class="icon-box icon-clear mb-3 mx-auto mx-md-0"></div>
             <h5 class="font-main dark-text mb-3">Interface clara</h5>
             <p class="font-main dark-text-muted mb-0">
               Design focado em legibilidade, navegação simples e utilização eficiente em dispositivos móveis.
@@ -90,34 +91,41 @@
     </div>
   </section>
 
-  <!-- TODO:
-   Secção de estatisticas
-   -->
 
-   <section>
+  <section>
+     <!-- TODO:
+      Secção de estatisticas
+      * arranjar novos textos para as stats
+      -->
 
     <!-- SECÇÃO -->
     <div class="container">
-      <div class="row d-flex align-items-sm-center justify-content-center gap-3
-                      mt-5 pt-5 ms-3 me-3">
+      <div class="row justify-content-center text-center gy-5 mt-5 pt-5">
 
-        <div class="col-12 col-md-2 text-center bold">
-          <img src="/assets/images/home/fish.svg" class="icon-box .icon-resize-statistics mb-3"/>
-          <p class="dark-text cat">99M</p>
-          <p class="dark-text-muted dog">Total de pins criados</p>
+        <div class="col-3">
+          <div class="stat-card">
+            <div class="icon-box icon-fish icon-resize-statistics"></div>
+            <p class="dark-text stat-value">99M</p>
+            <p class="dark-text-muted stat-label">Total de pins criados</p>
+          </div>
         </div>
 
-        <div class="col-12 col-md-2 text-center bold">
-          <img src="/assets/images/home/fish.svg" class="icon-box .icon-resize-statistics mb-3"/>
-          <p class="dark-text cat">99M</p>
-          <p class="dark-text-muted dog">Total de Pins de Pesca</p>
+        <div class="col-3">
+          <div class="stat-card">
+            <div class="icon-box icon-fish icon-resize-statistics"></div>
+            <p class="dark-text stat-value">99M</p>
+            <p class="dark-text-muted stat-label">Total de pins criados</p>
+          </div>
         </div>
 
-        <div class="col-12 col-md-2 text-center bold">
-          <img src="/assets/images/home/fish.svg" class="icon-box .icon-resize-statistics mb-3"/>
-          <p class="dark-text cat">99M</p>
-          <p class="dark-text-muted dog">Total de Pins de Aviso e Informação</p>
+        <div class="col-3">
+          <div class="stat-card">
+            <div class="icon-box icon-fish icon-resize-statistics"></div>
+            <p class="dark-text stat-value">99M</p>
+            <p class="dark-text-muted stat-label">Total de pins criados</p>
+          </div>
         </div>
+
 
       </div>
     </div>
@@ -125,29 +133,3 @@
   </section>
 
 </main>
-
-
-
-
-
-<!--
-
-<div id="1" class="col-12 col-md-2 text-center bold">
-  <img src="/assets/images/home/guitar.svg" class="icon-box .icon-resize-statistics mb-3" />
-  <p class="dark-text cat">99M</p>
-  <p class="dark-text-muted dog">total de pins criados</p>
-</div>
-
-<div id="2" class="col-12 col-md-1 ">
-  <div class="icon-box icon-fish icon-resize-statistics mb-3"></div>
-  <p class="dark-text cat">99M</p>
-  <p class="dark-text-muted dog">total de pins criados</p>
-</div>
-
-<div id="3" class="col-12 col-md-1 ">
-  <div class="icon-box icon-fish icon-resize-statistics mb-3"></div>
-  <p class="dark-text cat">99M</p>
-  <p class="dark-text-muted dog">total de pins criados</p>
-</div>
-
--->

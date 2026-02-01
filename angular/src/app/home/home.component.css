@@ -71,7 +71,10 @@
   border-radius: 12px;
   border-width: 0px;
 
-  min-width: 466px;
+  /*
+   * Estraga a vista mobile, transborda
+   * min-width: 466px;
+  */
 
   background: #333;
   padding: 24px;
@@ -97,23 +100,37 @@
 .icon-clear   { --icon-url: url('/assets/images/home/clear.svg'); }
 .icon-fish   { --icon-url: url('/assets/images/home/fish.svg'); }
 
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  gap: 12px;
+}
+
 .icon-resize-statistics {
-  --size: 60px;
+  --size: 90px;
 
 
   width: var(--size);
   height: var(--size);
-  background-size: var(--size);
+  background-size: 70px 70px;
 
 }
 
-.cat {
+.stat-value {
   font-size: 28px;
+  line-height: 1;
+  margin: 0;
 }
 
-.dog {
+.stat-label {
   font-size: 12px;
-
+  font-weight: 400;
+  margin: 0;
+  max-width: 100px;
+  word-wrap:break-word;
 }
 
 .features-card > h5 {
