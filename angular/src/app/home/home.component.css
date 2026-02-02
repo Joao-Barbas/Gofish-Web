@@ -4,9 +4,6 @@
 */
 .figma-bg-dark-temporary {background-color: #191919;}
 
-.hero {
-  min-height: 100vh;
-}
 
 @media (max-width: 992px) {
   .hero-right {
@@ -16,20 +13,11 @@
   }
 }
 
-.dark-text {
-  font-weight: 700;
-}
-
-.dark-text-muted {
-  font-style: medium;
-}
-
-
-.main-hero-text-heading {
+.main-text-heading {
   font-size: 48px;
 }
 
-.main-hero-text-subheading {
+.main-text-subheading {
   font-size: 24px;
 }
 
@@ -65,41 +53,80 @@
   transform: translateY(1px);
 }
 
-/* FEATURES CARD */
-.features-card {
+/* Gofish Card === */
+.gofish-card {
   box-shadow: var(--dark-lift-shadow-m);
   border-radius: 12px;
   border-width: 0px;
 
   /*
-   * Estraga a vista mobile, transborda
-   * min-width: 466px;
+  * Estraga a vista mobile, transborda
+  * min-width: 466px;
   */
 
   background: #333;
   padding: 24px;
 }
 
-.icon-box{
+.gofish-card > .gofish-card-title {
+  font-size: 22px;
+}
+
+.gofish-card > .gofish-card-p {
+  font-size: 20px;
+}
+
+/* Little Gofish Card === */
+
+
+.gofish-little-card {
+  box-shadow: var(--dark-lift-shadow-m);
+  border-radius: 12px;
+  border-width: 0px;
+
+  background: #333;
+  padding:18px;
+}
+
+.gofish-little-card .review-author {
+  font-size: 18px;
+}
+
+.gofish-little-card .review-text {
+  font-size: 19px;
+}
+
+/* Icones*/
+
+
+/*TODO: Arranjar melhor nomenclatura para os icones*/
+.gofish-card > .icon-box{
   --min-size: 48px;
   width: var(--min-size);
   height: var(--min-size);
   border-radius: 8px;
-  background-color: #1A1A1A;
 
-  background-image: var(--icon-url);
-  background-repeat: no-repeat;
-  background-position: center;
+
+  background-color: #1A1A1A;
   background-size: 22px 22px;
 }
 
+.icon {
+  background-image: var(--icon-url);
+  background-repeat: no-repeat;
+  background-position: center;
+}
 
-.icon-guitar { --icon-url: url('/assets/images/home/guitar.svg'); }
-.icon-map    { --icon-url: url('/assets/images/home/map.svg'); }
-.icon-hook   { --icon-url: url('/assets/images/home/hook.svg'); }
-.icon-clear   { --icon-url: url('/assets/images/home/clear.svg'); }
-.icon-fish   { --icon-url: url('/assets/images/home/fish.svg'); }
 
+.icon.icon-guitar      { --icon-url: url('/assets/images/home/guitar.svg'); }
+.icon.icon-map         { --icon-url: url('/assets/images/home/map.svg'); }
+.icon.icon-hook        { --icon-url: url('/assets/images/home/hook.svg'); }
+.icon.icon-clear       { --icon-url: url('/assets/images/home/clear.svg'); }
+.icon.icon-fish        { --icon-url: url('/assets/images/home/fish.svg'); }
+.icon.icon-star        { --icon-url: url('/assets/images/home/star.svg'); }
+.icon.icon-halfstar   { --icon-url: url('/assets/images/home/star-half.svg'); }
+
+/* Stat Card == */
 .stat-card {
   display: flex;
   flex-direction: column;
@@ -109,14 +136,27 @@
   gap: 12px;
 }
 
-.icon-resize-statistics {
+.icon-size-statistics {
   --size: 90px;
-
 
   width: var(--size);
   height: var(--size);
   background-size: 70px 70px;
 
+}
+
+.icon-size {
+  width: var(--size);
+  height: var(--size);
+  background-size: var(--size) var(--size);
+}
+
+.icon-size-overall-review  {
+  --size: 40px;
+}
+
+.icon-size-review  {
+  --size: 20px;
 }
 
 .stat-value {
@@ -129,19 +169,6 @@
   font-size: 12px;
   font-weight: 400;
   margin: 0;
-  max-width: 100px;
-  word-wrap:break-word;
+  max-width: 250px;
+  word-wrap: break-word;
 }
-
-.features-card > h5 {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.features-card > p {
-  font-size: 18px;
-  font-weight: 500;
-}
-
-
-/* FEATURES CARD - FIM */
