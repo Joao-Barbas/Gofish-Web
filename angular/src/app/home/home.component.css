@@ -4,15 +4,6 @@
 */
 .figma-bg-dark-temporary {background-color: #191919;}
 
-
-@media (max-width: 992px) {
-  .hero-right {
-    padding-left: 0;
-    display: flex;
-    justify-content: center;
-  }
-}
-
 .main-text-heading {
   font-size: 48px;
 }
@@ -49,7 +40,6 @@
   border-width: 0px;
   border-radius: 20px;
   box-shadow: 0px 0px 5px #515151;
-  /* RETIRAR se for rejeitado a ideia*/
   transform: translateY(1px);
 }
 
@@ -124,7 +114,7 @@
 .icon.icon-clear       { --icon-url: url('/assets/images/home/clear.svg'); }
 .icon.icon-fish        { --icon-url: url('/assets/images/home/fish.svg'); }
 .icon.icon-star        { --icon-url: url('/assets/images/home/star.svg'); }
-.icon.icon-halfstar   { --icon-url: url('/assets/images/home/star-half.svg'); }
+.icon.icon-halfstar    { --icon-url: url('/assets/images/home/star-half.svg'); }
 
 /* Stat Card == */
 .stat-card {
@@ -145,18 +135,20 @@
 
 }
 
-.icon-size {
+.icon-size-overall-review  {
+  --size: 40px;
+
   width: var(--size);
   height: var(--size);
   background-size: var(--size) var(--size);
 }
 
-.icon-size-overall-review  {
-  --size: 40px;
-}
-
 .icon-size-review  {
   --size: 20px;
+
+  width: var(--size);
+  height: var(--size);
+  background-size: var(--size) var(--size);
 }
 
 .stat-value {
