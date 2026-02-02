@@ -3,6 +3,7 @@ using GofishApi.Dtos;
 using GofishApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -89,6 +90,67 @@ namespace GofishApi.Controllers
             return Ok(new GetNearbyPinsResDTO { Success = true, Pins = allPins });
         }
 
+
+        [Authorize]
+        [HttpGet("GetPinPreview/{type}/{id}")]
+        public async Task<IActionResult> GetPinPreview(PinType type, int id)
+        {
+            GetPinPreviewResDTO? result = type switch
+            {
+                PinType.Catch => await _db.CatchPins
+                    .Where(p => p.Id == id)
+                    .Select(p => new GetPinPreviewResDTO
+                    {
+                        Id = p.Id,
+                        Latitude = p.Latitude,
+                        Longitude = p.Longitude,
+                        Description = p.Description,
+                        CreatedAt = p.CreatedAt,
+                        PinType = PinType.Catch,
+                        SpeciesType = p.SpeciesType,
+                        HookSize = p.HookSize,
+                        BaitType = p.BaitType,
+                        // PhotoUrl = p.PhotoUrl 
+                    })
+                    .FirstOrDefaultAsync(),
+
+                PinType.Info => await _db.InfoPins
+                    .Where(p => p.Id == id)
+                    .Select(p => new GetPinPreviewResDTO
+                    {
+                        Id = p.Id,
+                        Latitude = p.Latitude,
+                        Longitude = p.Longitude,
+                        Description = p.Description,
+                        CreatedAt = p.CreatedAt,
+                        PinType = PinType.Info,
+                        AccessDifficulty = p.AccessDifficulty,
+                        SeaBedType = p.SeaBedType
+                    })
+                    .FirstOrDefaultAsync(),
+
+                PinType.Warning => await _db.WarnPins
+                    .Where(p => p.Id == id)
+                    .Select(p => new GetPinPreviewResDTO
+                    {
+                        Id = p.Id,
+                        Latitude = p.Latitude,
+                        Longitude = p.Longitude,
+                        Description = p.Description,
+                        CreatedAt = p.CreatedAt,
+                        PinType = PinType.Warning,
+                        WarnPinType = p.WarnPinType
+                    })
+                    .FirstOrDefaultAsync(),
+
+                _ => null
+            };
+
+            if (result is null)
+                return NotFound("Pin não encontrado.");
+
+            return Ok(result);
+        }
 
 
 
