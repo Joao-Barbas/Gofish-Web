@@ -30,9 +30,12 @@ body {
 }
 
 /* 1. Classes para texto == == */
-
+.font-main p,
 .font-main {font-family: var(--font-main);}
-.font-heading {font-family: var(--font-heading);}
+
+.font-heading span,
+.font-heading
+{font-family: var(--font-heading);}
 
 /* 1.1. Cores de fundo
 */
@@ -44,6 +47,7 @@ body {
 /* 1.2. Cores de texto
 */
 
+
 .dark-text {color: var(--dark-text);}
 .dark-text-muted {color: var(--dark-text-muted);}
 
@@ -54,9 +58,41 @@ body {
 .text-normal {font-weight: normal !important;}
 .text-medium {font-weight: 500 !important;}
 .text-bold {font-weight: 700 !important;}
+.text-gofish {font-weight: 900 !important;}
 
 /* OUTROS == */
 /* ========= */
+
+.icon {
+  background-image: var(--icon-url);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.icon.icon-guitar      { --icon-url: url('/assets/images/home/guitar.svg'); }
+.icon.icon-map         { --icon-url: url('/assets/images/home/map.svg'); }
+.icon.icon-hook        { --icon-url: url('/assets/images/home/hook.svg'); }
+.icon.icon-clear       { --icon-url: url('/assets/images/home/clear.svg'); }
+.icon.icon-fish        { --icon-url: url('/assets/images/home/fish.svg'); }
+.icon.icon-star        { --icon-url: url('/assets/images/home/star.svg'); }
+.icon.icon-halfstar    { --icon-url: url('/assets/images/home/star-half.svg'); }
+.icon.icon-check    { --icon-url: url('/assets/images/check.svg'); }
+.icon.icon-cross    { --icon-url: url('/assets/images/x.svg'); }
+.icon.icon-gofish    { --icon-url: url('/assets/images/logo-white-256.png'); }
+
+
+.icon-size-about-table {
+  --size: 48px;
+
+  width: var(--size);
+  height: var(--size);
+  background-size: var(--size) var(--size);
+
+}
+
+.icon-white {
+  filter: invert(100%) sepia(100%) saturate(1%) hue-rotate(266deg) brightness(103%) contrast(101%);
+}
 
 .error-feedback {
   font-size: 0.75rem;

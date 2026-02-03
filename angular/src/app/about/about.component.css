@@ -1,3 +1,24 @@
-.pop {
+.figma-bg-dark-temporary {background-color: #191919;}
 
+.about-us-main-text {
+  font-size: 24px;
+  font-weight: 600;
 }
+
+.row-font-size {
+  font-size: 30px;
+}
+
+.col-font {
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 900;
+}
+
+/*
+@media (min-width: 992px) {
+    .container-plus {
+        max-width: 1520px;
+    }
+}*/
+
