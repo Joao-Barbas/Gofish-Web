@@ -1,5 +1,3 @@
-@import "bootstrap/dist/css/bootstrap.min.css";
-
 :root {
   --font-main: 'Inter', sans-serif;
   --font-heading: 'Montserrat', sans-serif;
@@ -28,8 +26,37 @@
 }
 
 body {
-  font-family: var(--font-main);
+  font-family: var(--font-main), "Times New Roman", sans-serif;
 }
+
+/* 1. Classes para texto == == */
+
+.font-main {font-family: var(--font-main);}
+.font-heading {font-family: var(--font-heading);}
+
+/* 1.1. Cores de fundo
+*/
+
+.dark-bg-dark {background-color: var(--dark-bg-dark);}
+.dark-bg {background-color: var(--dark-bg);}
+.dark-bg-light {background-color: var(--dark-bg-light);}
+
+/* 1.2. Cores de texto
+*/
+
+.dark-text {color: var(--dark-text);}
+.dark-text-muted {color: var(--dark-text-muted);}
+
+/* 1.3. Intensidade do texto (negrito)
+*/
+
+.text-slim {font-weight: 400 !important;}
+.text-normal {font-weight: normal !important;}
+.text-medium {font-weight: 500 !important;}
+.text-bold {font-weight: 700 !important;}
+
+/* OUTROS == */
+/* ========= */
 
 .error-feedback {
   font-size: 0.75rem;

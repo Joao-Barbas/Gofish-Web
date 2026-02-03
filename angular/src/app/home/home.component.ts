@@ -5,7 +5,7 @@ import { HeaderComponent } from "@gofish/header/header.component";
   selector: 'app-home',
   imports: [ HeaderComponent ],
   templateUrl: './home.component.html',
-  styles: ``
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
 
