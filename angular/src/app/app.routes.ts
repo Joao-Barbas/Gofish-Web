@@ -17,5 +17,9 @@ export const routes: Routes = [
     path: 'map',
     loadComponent: () => import('./map/map.component').then(m => m.MapComponent),
     canActivate: [ authGuard ]
+  },
+  {
+    path: 'about-us',
+    loadComponent: () => import('./about/about.component').then(a => a.AboutComponent),
   }
 ];
