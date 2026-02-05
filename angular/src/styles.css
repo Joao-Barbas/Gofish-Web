@@ -8,6 +8,7 @@
   --dark-text: oklch(0.9619 0 0);
   --dark-text-muted: oklch(0.7652 0 0);
 
+
   --primary: oklch(0.6048 0.2142 262.15);
   --primary-text: oklch(0.6114 0.1743 262.46);
   --secondary: oklch(0.7096 0.186513 13.1188);
@@ -16,6 +17,7 @@
   --warning: oklch(0.8829 0.1633 104.07);
   --success: oklch(0.8359 0.1769 156.76);
   --info: oklch(0.6114 0.1743 262.46);
+  --selected: oklch(0.6803 0.1178 218.59);
 
   --dark-lift-shadow-s: inset 0 1px  2px #ffffff30, inset 0 1px 2px #00000020, inset 0 2px 4px #00000015;
   --dark-lift-shadow-m: inset 0 1px  2px #ffffff50, inset 0 2px 4px #00000020, inset 0 4px 8px #00000010;
@@ -30,7 +32,6 @@ body {
 }
 
 /* 1. Classes para texto == == */
-.font-main p,
 .font-main {font-family: var(--font-main);}
 
 .font-heading span,
@@ -47,18 +48,18 @@ body {
 /* 1.2. Cores de texto
 */
 
-
 .dark-text {color: var(--dark-text);}
 .dark-text-muted {color: var(--dark-text-muted);}
+
 
 /* 1.3. Intensidade do texto (negrito)
 */
 
-.text-slim {font-weight: 400 !important;}
-.text-normal {font-weight: normal !important;}
-.text-medium {font-weight: 500 !important;}
-.text-bold {font-weight: 700 !important;}
-.text-gofish {font-weight: 900 !important;}
+.text-slim {font-weight: 400;}
+.text-normal {font-weight: normal;}
+.text-medium {font-weight: 500 ;}
+.text-bold {font-weight: 700 ;}
+.text-gofish {font-weight: 900 ;}
 
 /* OUTROS == */
 /* ========= */
