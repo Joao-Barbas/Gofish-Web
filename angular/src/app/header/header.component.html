@@ -1,7 +1,7 @@
 <header class="w-100 dark-bg-dark">
   <div class="container-lg">
 
-    <div class="row pt-4 pb-4 gap-3">
+    <div class="row pt-4 pb-4 align-items-center">
 
       <!-- # Logo and Gofish -->
 
@@ -11,14 +11,14 @@
       </div>
 
       <!-- # Header Items -->
-      <div class="col-5 d-flex align-items-center gap-4
-      header-item-font font-main header-items">
+      <div class="col d-flex align-items-center gap-4 font-main header-items">
 
         <a routerLink="/"
           routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
           class="text-slim dark-text-muted">
           HOME
         </a>
+
         <a routerLink="/map" routerLinkActive="active"
         class="text-slim dark-text-muted">
           MAP
@@ -33,7 +33,28 @@
         </a>
 
       </div>
+
+      <div class="col-auto d-flex align-items-center justify-content-end header-right gap-2">
+        <div class="gofish-card gofish-card-size icon-wrapper-clickable">
+          <div class="icon icon-search icon-white-muted icon-size-header"></div>
+        </div>
+        <div class="gofish-card gofish-card-size icon-wrapper-clickable">
+          <div class="icon icon-user icon-white-muted icon-size-header"></div>
+        </div>
+        <div class="gofish-card gofish-card-size icon-wrapper-clickable">
+          <div class="icon icon-shielduser icon-white-muted icon-size-header"></div>
+        </div>
+
+
+      </div>
+
     </div>
+
+    <!-- TODO:
+      * Fazer com que o texto do logotipo não permita o utilizador copiar
+      * Adicionar o botões do lado direito do header
+      * Fazer o header responsivo (burger menu em ecrãs pequenos)
+    -->
 
   </div>
 </header>
