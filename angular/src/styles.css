@@ -31,28 +31,48 @@ body {
   font-family: var(--font-main), "Times New Roman", sans-serif;
 }
 
-/* 1. Classes para texto == == */
+
+  /* ========== */
+ /* 1. Headers */
+/* ========== */
+
+.main-text-heading {
+  font-size: 48px;
+}
+
+.main-text-subheading {
+  font-size: 24px;
+}
+
+
+  /* ===================== */
+ /* 2. Classes para texto */
+/* ===================== */
+
 .font-main {font-family: var(--font-main);}
 
 .font-heading span,
 .font-heading
 {font-family: var(--font-heading);}
 
-/* 1.1. Cores de fundo
+/*
+ * 2.1. Cores de fundo
 */
 
 .dark-bg-dark {background-color: var(--dark-bg-dark);}
 .dark-bg {background-color: var(--dark-bg);}
 .dark-bg-light {background-color: var(--dark-bg-light);}
 
-/* 1.2. Cores de texto
+/*
+ * 2.2. Cores de texto
 */
 
 .dark-text {color: var(--dark-text);}
 .dark-text-muted {color: var(--dark-text-muted);}
 
 
-/* 1.3. Intensidade do texto (negrito)
+/*
+ * 2.3. Intensidade do texto (negrito)
 */
 
 .text-slim {font-weight: 400;}
@@ -61,70 +81,213 @@ body {
 .text-bold {font-weight: 700 ;}
 .text-gofish {font-weight: 900 ;}
 
-/* OUTROS == */
+  /* ===========/
+ /* 3. Ícones */
 /* ========= */
 
-.icon {
+
+/*
+ * 3.1. Ícone Base
+*/
+
+.icon,
+[class^="icon-"] {
+  /*
+  * A imagem do ícone é definida com a classe do (2.2.)
+  *
+  * Definido no <.icon-*>
+  */
   background-image: var(--icon-url);
   background-repeat: no-repeat;
   background-position: center;
-}
-
-.icon.icon-guitar      { --icon-url: url('/assets/images/home/guitar.svg'); }
-.icon.icon-map         { --icon-url: url('/assets/images/home/map.svg'); }
-.icon.icon-hook        { --icon-url: url('/assets/images/home/hook.svg'); }
-.icon.icon-clear       { --icon-url: url('/assets/images/home/clear.svg'); }
-.icon.icon-fish        { --icon-url: url('/assets/images/home/fish.svg'); }
-.icon.icon-star        { --icon-url: url('/assets/images/home/star.svg'); }
-.icon.icon-halfstar    { --icon-url: url('/assets/images/home/star-half.svg'); }
-.icon.icon-check    { --icon-url: url('/assets/images/check.svg'); }
-.icon.icon-cross    { --icon-url: url('/assets/images/x.svg'); }
-.icon.icon-gofish    { --icon-url: url('/assets/images/logo-white-256.png'); }
-.icon.icon-search    { --icon-url: url('/assets/images/search.svg'); }
-.icon.icon-user    { --icon-url: url('/assets/images/user.svg'); }
-.icon.icon-shielduser    { --icon-url: url('/assets/images/shield-user.svg'); }
-
-
-.icon-size-about-table {
-  --size: 48px;
-
-  width: var(--size);
-  height: var(--size);
-  background-size: var(--size) var(--size);
-
-}
-
-.icon-white {
-  filter: invert(100%) sepia(100%) saturate(1%) hue-rotate(266deg) brightness(103%) contrast(101%);
-}
-
-.icon-white-muted {
-  filter: invert(76%) sepia(1%) saturate(0%) hue-rotate(138deg) brightness(93%) contrast(98%);
-}
-
-.gofish-card {
-  box-shadow: var(--dark-lift-shadow-m);
-  border-radius: 12px;
-  border-width: 0px;
 
   /*
-  * Estraga a vista mobile, transborda
-  * min-width: 466px;
+  * O tamanho do ícone é definido com a classe do (2.3.)
+  *
+  * Definido no <.icon-size-*>
+  */
+  --size:48px;
+  width: var(--size);
+  height: var(--size);
+
+  /* bg-size pode ser definido à parte se for necessário */
+  background-size: var(--size) var(--size);
+
+  /*
+  * A cor do ícone é definido na classe do (2.4)
   */
 
-  background: #333;
-  padding: 24px;
+  filter: var(--filter);
 }
 
-.gofish-little-card {
+/*
+ * 3.2. Imagens de ícones
+*/
+
+.icon-guitar        { --icon-url: url('/assets/images/home/guitar.svg'); }
+.icon-map           { --icon-url: url('/assets/images/home/map.svg'); }
+.icon-hook          { --icon-url: url('/assets/images/home/hook.svg'); }
+.icon-clear         { --icon-url: url('/assets/images/home/clear.svg'); }
+.icon-fish          { --icon-url: url('/assets/images/home/fish.svg'); }
+.icon-star          { --icon-url: url('/assets/images/home/star.svg'); }
+.icon-halfstar      { --icon-url: url('/assets/images/home/star-half.svg'); }
+.icon-check         { --icon-url: url('/assets/images/check.svg'); }
+.icon-cross         { --icon-url: url('/assets/images/x.svg'); }
+.icon-gofish        { --icon-url: url('/assets/images/logo-white-256.png'); }
+.icon-search        { --icon-url: url('/assets/images/search.svg'); }
+.icon-user          { --icon-url: url('/assets/images/user.svg'); }
+.icon-shielduser    { --icon-url: url('/assets/images/shield-user.svg'); }
+
+
+/*
+ * 3.3. Definição de tamanhos dos ícones
+*/
+
+/* Exemplo
+
+  .icon.icon-size-about-table {
+    --size: 48px;
+
+    -> (opcional)
+    -> Se for different que width e height
+    background-size: 70px 70px;
+  }
+
+*/
+
+
+/*
+ * 3.4. Cores dos ícones
+*/
+
+.icon-white .icon,
+.icon-white[class^="icon-"],
+.icon-white [class^="icon-"],
+.icon.icon-white {
+  --filter: invert(100%) sepia(100%) saturate(1%) hue-rotate(266deg) brightness(103%) contrast(101%);
+
+}
+
+.icon-white-muted div.icon,
+.icon-white-muted[class^="icon-"],
+.icon-white-muted [class^="icon-"],
+.icon-white-muted {
+  --filter: invert(76%) sepia(1%) saturate(0%) hue-rotate(138deg) brightness(93%) contrast(98%);
+}
+
+/*
+ * 3.5. Botões
+*/
+
+[class^="gf-btn"], [class^="gofish-btn-"],
+.gf-btn, .gofish-btn {
+  padding: 10px 20px;
+
+  background: #333;
+  color: var(--dark-text);
+  font-size: 14px;
+
+  box-shadow: var(--dark-lift-shadow-s);
+  border-width: 0px;
+  border-radius: 20px;
+}
+
+[class^="gf-btn"]:active,
+[class^="gofish-btn"]:active,
+.gf-btn:active,
+.gofish-btn:active {
+  box-shadow: var(--dark-sunk-shadow-l);
+  transform: translateY(1px);
+}
+
+  /*
+   * 3.5.1 Animação antiga dos botões
+   */
+
+.gofish-btn-legacy { transition: transform 0.1s, box-shadow 0.1s;}
+
+.gofish-btn-legacy:active {
+  box-shadow: 0px 0px 5px #515151;
+  transform: translateY(1px);
+}
+
+.button-wrapper-clickable {cursor: pointer;}
+
+.button-wrapper-clickable:active {box-shadow: var(--dark-sunk-shadow-l);}
+
+  /* ================/
+ /* 4. Gofish Card */
+/* ============== */
+
+/*
+ * 4.1. Gofish Card Base
+*/
+
+.gf-card,
+.gofish-card,
+[class^="gf-card-"],
+[class^="gofish-card-"] {
   box-shadow: var(--dark-lift-shadow-m);
+
   border-radius: 12px;
   border-width: 0px;
 
   background: #333;
-  padding:18px;
+
+  /*
+  * O padding do cartão pode ser definido numa classe à parte
+  * Por exemplo: gf-card-little
+  */
+  --gofish-card-padding: 24px;
+  padding: var(--gofish-card-padding);
+
+  /*
+  * - Os seguintes estilos estão no home.component.css
+  * icon-box
+  * gofish-card-title
+  * gofish-card-p
+  *
+  * - Importar esses estilos se forem necessários para a reutilização
+  */
 }
 
+/*
+ * 4.3. Gofish Little Card
+*/
+
+.gf-card-little,
+.gofish-card-little {
+  --gofish-card-padding: 18px;
+}
+
+/*
+ * 4.4. Estilos dos elementos OPCIONAIS do gofish-card
+*/
+
+  /*
+   * 4.4.1 Cartão informativo
+  */
+
+.gf-card > .gofish-card-title,
+.gofish-card > .gofish-card-title {font-size: 22px;}
+
+.gf-card > .gofish-card-p,
+.gofish-card > .gofish-card-p {font-size: 20px;}
+
+    /*
+     * 4.4.2 Cartão de avaliações
+    */
+
+.gofish-card-little .review-author,
+.gf-card-little .review-author {font-size: 18px;}
+
+.gofish-card-little .review-text,
+.gf-card-little .review-text {font-size: 19px;}
+
+
+  /* ====== */
+ /* Outros */
+/* ====== */
 
 .error-feedback {
   font-size: 0.75rem;

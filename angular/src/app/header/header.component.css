@@ -49,15 +49,11 @@
   border-radius: 50px;
 }
 
-.icon-wrapper-clickable {
-  cursor: pointer;
-
-}
-.icon-wrapper-clickable:active {
+.header-right a:active{
   box-shadow: var(--dark-sunk-shadow-l);
-  /*
-  border: red solid 2px;
-  */
+
+  transform: translateY(1px);
+
 }
 
 .icon-size-header {

@@ -4,117 +4,28 @@
 */
 .figma-bg-dark-temporary {background-color: #191919;}
 
-.main-text-heading {
-  font-size: 48px;
-}
-
-.main-text-subheading {
-  font-size: 24px;
-}
-
 .square {
   width: 381px;
   height: 290px;
   background-color: #555;
 }
 
-.btn-fish {
-  padding: 0px 20px 0px 20px;
-  min-width: 137px;
-  min-height: 40px;
-
-  background: #333;
-  color: var(--dark-text);
-  font-size: 14px;
-
-  /* Design antigo
-  box-shadow: 0px 2px 5px #525252 inset;*/
-  box-shadow: var(--dark-lift-shadow-s);
-  border-width: 0px;
-  border-radius: 20px;
-
-  transition: transform 0.1s, box-shadow 0.1s;
-}
-
-.btn-fish:active {
-  border-width: 0px;
-  border-radius: 20px;
-  box-shadow: 0px 0px 5px #515151;
-  transform: translateY(1px);
-}
-
-/* Gofish Card === */
-.gofish-card {
-  box-shadow: var(--dark-lift-shadow-m);
-  border-radius: 12px;
-  border-width: 0px;
-
-  /*
-  * Estraga a vista mobile, transborda
-  * min-width: 466px;
-  */
-
-  background: #333;
-  padding: 24px;
-}
-
-.gofish-card > .gofish-card-title {
-  font-size: 22px;
-}
-
-.gofish-card > .gofish-card-p {
-  font-size: 20px;
-}
-
-/* Little Gofish Card === */
-
-
-.gofish-little-card {
-  box-shadow: var(--dark-lift-shadow-m);
-  border-radius: 12px;
-  border-width: 0px;
-
-  background: #333;
-  padding:18px;
-}
-
-.gofish-little-card .review-author {
-  font-size: 18px;
-}
-
-.gofish-little-card .review-text {
-  font-size: 19px;
-}
-
 /* Icones*/
 
 
-/*TODO: Arranjar melhor nomenclatura para os icones*/
-.gofish-card > .icon-box{
-  --min-size: 48px;
-  width: var(--min-size);
-  height: var(--min-size);
+/* TODO: Arranjar melhor nomenclatura para os icones*/
+.gofish-card > .icon-box {
+  --icon-box-size: 48px;
+  width: var(--icon-box-size);
+  height: var(--icon-box-size);
   border-radius: 8px;
-
-
   background-color: #1A1A1A;
-  background-size: 22px 22px;
 }
 
-.icon {
-  background-image: var(--icon-url);
-  background-repeat: no-repeat;
-  background-position: center;
+.gofish-card > .icon-box > [class^="icon-"] {
+  --size:48px;
+  background-size: 24px 24px;
 }
-
-
-.icon.icon-guitar      { --icon-url: url('/assets/images/home/guitar.svg'); }
-.icon.icon-map         { --icon-url: url('/assets/images/home/map.svg'); }
-.icon.icon-hook        { --icon-url: url('/assets/images/home/hook.svg'); }
-.icon.icon-clear       { --icon-url: url('/assets/images/home/clear.svg'); }
-.icon.icon-fish        { --icon-url: url('/assets/images/home/fish.svg'); }
-.icon.icon-star        { --icon-url: url('/assets/images/home/star.svg'); }
-.icon.icon-halfstar    { --icon-url: url('/assets/images/home/star-half.svg'); }
 
 /* Stat Card == */
 .stat-card {
@@ -127,29 +38,13 @@
 }
 
 .icon-size-statistics {
-  --size: 90px;
-
-  width: var(--size);
-  height: var(--size);
+  --size: 70px;
   background-size: 70px 70px;
-
 }
 
-.icon-size-overall-review  {
-  --size: 40px;
+.icon-size-overall-review  {--size: 40px;}
 
-  width: var(--size);
-  height: var(--size);
-  background-size: var(--size) var(--size);
-}
-
-.icon-size-review  {
-  --size: 20px;
-
-  width: var(--size);
-  height: var(--size);
-  background-size: var(--size) var(--size);
-}
+.icon-size-review  {--size: 20px;}
 
 .stat-value {
   font-size: 28px;

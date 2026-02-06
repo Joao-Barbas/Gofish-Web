@@ -11,7 +11,7 @@
    class="lucide lucide-fishing-hook-icon lucide-fishing-hook"
    version="1.1"
    id="svg2"
-   sodipodi:docname="fishing-hook.svg"
+   sodipodi:docname="hook.svg"
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -29,7 +29,7 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="8.90625"
-     inkscape:cx="49.852632"
+     inkscape:cx="49.964912"
      inkscape:cy="38.680702"
      inkscape:window-width="1920"
      inkscape:window-height="1057"
@@ -40,15 +40,15 @@
   <path
      d="m17.586 11.414-5.93 5.93a1 1 0 0 1-8-8l3.137-3.137a.707.707 0 0 1 1.207.5V10"
      id="path1"
-     style="stroke:#ffffff;stroke-opacity:1" />
+     style="stroke:#000000;stroke-opacity:1" />
   <path
      d="M20.414 8.586 22 7"
      id="path2"
-     style="stroke:#ffffff;stroke-opacity:1" />
+     style="stroke:#000000;stroke-opacity:1" />
   <circle
      cx="19"
      cy="10"
      r="2"
      id="circle2"
-     style="stroke:#ffffff;stroke-opacity:1" />
+     style="stroke:#000000;stroke-opacity:1" />
 </svg>

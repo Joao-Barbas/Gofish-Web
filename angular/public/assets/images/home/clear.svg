@@ -11,7 +11,7 @@
    class="lucide lucide-chevrons-left-right-ellipsis-icon lucide-chevrons-left-right-ellipsis"
    version="1.1"
    id="svg5"
-   sodipodi:docname="chevrons-left-right-ellipsis.svg"
+   sodipodi:docname="clear.svg"
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -29,7 +29,7 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="8.90625"
-     inkscape:cx="34.694737"
+     inkscape:cx="34.807018"
      inkscape:cy="33.403509"
      inkscape:window-width="1920"
      inkscape:window-height="1057"
@@ -40,21 +40,21 @@
   <path
      d="M12 12h.01"
      id="path1"
-     style="stroke:#ffffff;stroke-opacity:1" />
+     style="stroke:#000000;stroke-opacity:1" />
   <path
      d="M16 12h.01"
      id="path2"
-     style="stroke:#ffffff;stroke-opacity:1" />
+     style="stroke:#000000;stroke-opacity:1" />
   <path
      d="m17 7 5 5-5 5"
      id="path3"
-     style="stroke:#ffffff;stroke-opacity:1" />
+     style="stroke:#000000;stroke-opacity:1" />
   <path
      d="m7 7-5 5 5 5"
      id="path4"
-     style="stroke:#ffffff;stroke-opacity:1" />
+     style="stroke:#000000;stroke-opacity:1" />
   <path
      d="M8 12h.01"
      id="path5"
-     style="stroke:#ffffff;stroke-opacity:1" />
+     style="stroke:#000000;stroke-opacity:1" />
 </svg>
