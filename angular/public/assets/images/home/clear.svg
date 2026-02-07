@@ -29,7 +29,7 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="8.90625"
-     inkscape:cx="34.807018"
+     inkscape:cx="34.919298"
      inkscape:cy="33.403509"
      inkscape:window-width="1920"
      inkscape:window-height="1057"
@@ -40,21 +40,21 @@
   <path
      d="M12 12h.01"
      id="path1"
-     style="stroke:#000000;stroke-opacity:1" />
+     style="stroke:#000000;stroke-opacity:1;stroke-width:1.5;stroke-dasharray:none" />
   <path
      d="M16 12h.01"
      id="path2"
-     style="stroke:#000000;stroke-opacity:1" />
+     style="stroke:#000000;stroke-opacity:1;stroke-width:1.5;stroke-dasharray:none" />
   <path
      d="m17 7 5 5-5 5"
      id="path3"
-     style="stroke:#000000;stroke-opacity:1" />
+     style="stroke:#000000;stroke-opacity:1;stroke-width:1.5;stroke-dasharray:none" />
   <path
      d="m7 7-5 5 5 5"
      id="path4"
-     style="stroke:#000000;stroke-opacity:1" />
+     style="stroke:#000000;stroke-opacity:1;stroke-width:1.5;stroke-dasharray:none" />
   <path
      d="M8 12h.01"
      id="path5"
-     style="stroke:#000000;stroke-opacity:1" />
+     style="stroke:#000000;stroke-opacity:1;stroke-width:1.5;stroke-dasharray:none" />
 </svg>
