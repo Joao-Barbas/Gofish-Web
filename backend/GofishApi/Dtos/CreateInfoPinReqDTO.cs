@@ -9,6 +9,5 @@ namespace GofishApi.Dtos
         public required string Description { get; set; }
         public required int AccessDifficulty { get; set; }
         public required SeaBedType SeaBedType { get; set; }
-
     }
 }

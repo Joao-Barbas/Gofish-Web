@@ -23,7 +23,7 @@ namespace GofishApi.Data
                 .HasValue<WarnPin>(PinType.Warning);
 
             builder.Entity<PinBase>()
-                .HasIndex(p => new { p.Latitude, p.Longitude });
+                .HasIndex(p => new { p.Latitude, p.Longitude }); // TODO: Spacial index?
 
             builder.Entity<PinBase>()
                 .HasIndex(p => new { p.ExpiresAt, p.CreatedAt });

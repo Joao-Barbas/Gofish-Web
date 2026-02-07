@@ -11,7 +11,7 @@ namespace GofishApi.Models
         public double Longitude { get; set; }
         public string? Description { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime? ExpiresAt { get; set; } // Info pin does not expire
         public PinType PinType { get; set; }
-        public DateTime ExpiresAt { get; set; } 
     }
 }

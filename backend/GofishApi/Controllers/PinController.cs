@@ -9,323 +9,239 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using static GofishApi.Dtos.GetNearbyPinsResDTO;
 
 namespace GofishApi.Controllers
 {
-            [Route("api/[controller]")]
-            [ApiController]
-            public class PinController : ControllerBase
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PinController : ControllerBase
+    {
+        private readonly AppDbContext _db;
+        private readonly ILogger<PinController> _logger;
+        private readonly BlobStorageService _blobStorage;        
+
+        public PinController(
+            ILogger<PinController> logger,
+            AppDbContext db,
+            BlobStorageService blobStorage
+        ){
+            _logger = logger;
+            _db = db;
+            _blobStorage = blobStorage;
+        }
+
+        [Authorize]
+        [HttpGet("GetInViewport")]
+        public async Task<IActionResult> GetInViewport(
+            [FromQuery] double minLat,
+            [FromQuery] double minLon,
+            [FromQuery] double maxLat,
+            [FromQuery] double maxLon
+        ){
+            var pins = await _db.Pins
+            .Where(p => 
+                (p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLon && p.Longitude <= maxLon) &&
+                (p.ExpiresAt == null || p.ExpiresAt > DateTime.UtcNow))
+            .Select(p => new NearbyPinDTO
             {
-                private readonly AppDbContext _db;
-                private readonly ILogger<PinController> _logger;
-                private readonly BlobStorageService _blobStorage;        
-
-                public PinController(
-                    ILogger<PinController> logger,
-                    AppDbContext db,
-                    BlobStorageService blobStorage
-                ){
-                    _logger = logger;
-                    _db = db;
-                    _blobStorage = blobStorage;
-                }
-
-
-            [Authorize]
-            [HttpGet("GetInViewport")]
-            public async Task<IActionResult> GetInViewport(
-                [FromQuery] double minLat,
-                [FromQuery] double minLng,
-                [FromQuery] double maxLat,
-                [FromQuery] double maxLng
-            )
-            {
-            var catchPins = await _db.CatchPins
-                .Where(p => p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng)
-                .Select(p => new NearbyPinDTO 
-                {
-                    Id = p.Id,
-                    Latitude = p.Latitude,
-                    Longitude = p.Longitude,
-                    Description = p.Description,
-                    CreatedAt = p.CreatedAt,
-                    PinType = PinType.Catch,
-                    SpeciesType = p.SpeciesType,
-                    HookSize = p.HookSize,
-                    BaitType = p.BaitType,
-                })
-                .ToListAsync();
-            var infoPins = await _db.InfoPins
-                .Where(p => p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng)
-                .Select(p => new NearbyPinDTO
-                {
-                    Id = p.Id,
-                    Latitude = p.Latitude,
-                    Longitude = p.Longitude,
-                    Description = p.Description,
-                    CreatedAt = p.CreatedAt,
-                    PinType = PinType.Info,
-                    AccessDifficulty = p.AccessDifficulty,
-                    SeaBedType = p.SeaBedType,
-                })
-                .ToListAsync();
-            var warnPins = await _db.WarnPins
-                .Where(p => p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng)
-                .Select(p => new NearbyPinDTO
-                {
-                    Id = p.Id,
-                    Latitude = p.Latitude,
-                    Longitude = p.Longitude,
-                    Description = p.Description,
-                    CreatedAt = p.CreatedAt,
-                    PinType = PinType.Warning,
-                    WarnPinType = p.WarnPinType
-,
-                })
-                .ToListAsync();
-
-            var allPins = new List<NearbyPinDTO>();
-
-            allPins.AddRange(warnPins);
-            allPins.AddRange(infoPins);
-            allPins.AddRange(catchPins);
-
-            return Ok(new GetNearbyPinsResDTO { Success = true, Pins = allPins });
+                Id = p.Id,
+                Latitude = p.Latitude,
+                Longitude = p.Longitude,
+                CreatedAt = p.CreatedAt,
+                PinType = p.PinType
+            })
+            .ToListAsync();
+            return Ok(new GetNearbyPinsResDTO { Success = true, Pins = pins });
         }
 
 
         [Authorize]
-        [HttpGet("GetPinPreview/{type}/{id}")]
-        public async Task<IActionResult> GetPinPreview(PinType type, int id)
+        [HttpGet("GetPinPreview/{id}")]
+        public async Task<IActionResult> GetPinPreview(int id)
         {
-            GetPinPreviewResDTO? result = type switch
+            var pin = await _db.Pins
+            .Where(p => p.Id == id)
+            .FirstOrDefaultAsync();
+            
+            if (pin == null)
             {
-                PinType.Catch => await _db.CatchPins
-                    .Where(p => p.Id == id)
-                    .Select(p => new GetPinPreviewResDTO
-                    {
-                        Id = p.Id,
-                        ImageUrl = p.ImageUrl,
-                        Latitude = p.Latitude,
-                        Longitude = p.Longitude,
-                        Description = p.Description,
-                        CreatedAt = p.CreatedAt,
-                        PinType = PinType.Catch,
-                        SpeciesType = p.SpeciesType,
-                        HookSize = p.HookSize,
-                        BaitType = p.BaitType,
-                    })
-                    .FirstOrDefaultAsync(),
+                return NotFound(new ApiErrorResponse
+                {
+                    Errors = [new("PinNotFound", "Id returned no results")]
+                });
+            }
 
-                PinType.Info => await _db.InfoPins
-                    .Where(p => p.Id == id)
-                    .Select(p => new GetPinPreviewResDTO
-                    {
-                        Id = p.Id,
-                        Latitude = p.Latitude,
-                        Longitude = p.Longitude,
-                        Description = p.Description,
-                        CreatedAt = p.CreatedAt,
-                        PinType = PinType.Info,
-                        AccessDifficulty = p.AccessDifficulty,
-                        SeaBedType = p.SeaBedType
-                    })
-                    .FirstOrDefaultAsync(),
-
-                PinType.Warning => await _db.WarnPins
-                    .Where(p => p.Id == id)
-                    .Select(p => new GetPinPreviewResDTO
-                    {
-                        Id = p.Id,
-                        Latitude = p.Latitude,
-                        Longitude = p.Longitude,
-                        Description = p.Description,
-                        CreatedAt = p.CreatedAt,
-                        PinType = PinType.Warning,
-                        WarnPinType = p.WarnPinType
-                    })
-                    .FirstOrDefaultAsync(),
-
+            GetPinPreviewResDTO? data = pin.PinType switch
+            {
+                PinType.Catch => GetPinPreviewResDTO.FromCatchPin((CatchPin)pin),
+                PinType.Info => GetPinPreviewResDTO.FromInfoPin((InfoPin)pin),
+                PinType.Warning => GetPinPreviewResDTO.FromWarnPin((WarnPin)pin),
                 _ => null
             };
 
-            if (result is null)
-                return NotFound("Pin não encontrado.");
-
-            return Ok(result);
+            return Ok(new ApiResponse<GetPinPreviewResDTO>
+            {
+                Data = data
+            });
         }
-
-
-
 
         [Authorize]
         [HttpPost("CreateCatchPin")]
         [RequestSizeLimit(5_000_000)]
         public async Task<IActionResult> CreateCatchPin(CreateCatchPinReqDTO dto)
         {
+            var allowedTypes = new[] { "image/jpeg", "image/png" };
+            string? imageUrl = null;
 
-            try
+            if (!allowedTypes.Contains(dto.Image.ContentType))
             {
-                var allowedTypes = new[] { "image/jpeg", "image/png" };
-                string? imageUrl = null;
-
-                if (!allowedTypes.Contains(dto.Image.ContentType))
+                return BadRequest(new ApiErrorResponse
                 {
-                    return BadRequest(new CreateCatchPinResDTO
-                    {
-                        Success = false,
-                        ErrorMessage = "Invalid Image type"
-                    });
-                }
-                else 
+                    Errors = [new("InvalidFileType", "Invalid file type")]
+                });
+            }
+            else
+            {
+                try
                 {
                     imageUrl = await _blobStorage.UploadImageAsync(dto.Image);
                 }
-
-                var pin = new CatchPin
+                catch (Exception ex)
                 {
-                    Latitude = dto.Latitude,
-                    Longitude = dto.Longitude,
-                    Description = dto.Description,
-                    CreatedAt = DateTime.UtcNow,
-                    PinType = PinType.Catch,
-                    SpeciesType = dto.SpeciesType,
-                    HookSize = dto.HookSize,
-                    BaitType = dto.BaitType,
-                    ImageUrl = imageUrl,
-                };
+                    return StatusCode(503, new ApiErrorResponse {
+                        Errors = [new("ImageUploadFailed", ex.Message)]
+                    });
+                }
+            }
 
-                await _db.CatchPins.AddAsync(pin);
+            var pin = new CatchPin // Aqui podias criar um metodo ToCatchPin no CreateCatchPinReqDTO (Se se repetir mais que esta vez)
+            {
+                Latitude = dto.Latitude,
+                Longitude = dto.Longitude,
+                Description = dto.Description,
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
+                PinType = PinType.Catch,
+                SpeciesType = dto.SpeciesType,
+                HookSize = dto.HookSize,
+                BaitType = dto.BaitType,
+                ImageUrl = imageUrl,
+            };
+
+            try
+            {
+                _db.Pins.Add(pin);
                 await _db.SaveChangesAsync();
-
-                return Ok(new CreateCatchPinResDTO
-                {
-                    Success = true,
-                    Id = pin.Id
-                });
             }
             catch (Exception ex)
             {
-                return BadRequest(new CreateCatchPinResDTO
+                return StatusCode(503, new ApiErrorResponse
                 {
-                    Success = false,
-                    ErrorMessage = ex.Message
+                    Errors = [new("GenericDatabaseFail", ex.Message)]
                 });
             }
+
+            return Ok(new ApiResponse<CreateCatchPinResDTO>
+            {
+                Data = new(Id: pin.Id)
+            });
         }
+
         [Authorize]
         [HttpPost("CreateInfoPin")]
         public async Task<IActionResult> CreateInfoPin(CreateInfoPinReqDTO dto)
         {
+            var pin = new InfoPin
+            {
+                Latitude = dto.Latitude,
+                Longitude = dto.Longitude,
+                Description = dto.Description,
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = null,
+                PinType = PinType.Info,
+                AccessDifficulty = dto.AccessDifficulty,
+                SeaBedType = dto.SeaBedType,
+            };
+
             try
             {
-                var pin = new InfoPin
-                {
-                    Latitude = dto.Latitude,
-                    Longitude = dto.Longitude,
-                    Description = dto.Description,
-                    CreatedAt = DateTime.UtcNow,
-                    PinType = PinType.Info,
-                    AccessDifficulty = dto.AccessDifficulty,
-                    SeaBedType = dto.SeaBedType,
-                };
-
-                await _db.InfoPins.AddAsync(pin);
+                _db.Pins.Add(pin);
                 await _db.SaveChangesAsync();
-
-                return Ok(new CreateInfoPinResDTO
-                {
-                    Success = true,
-                    Id = pin.Id
-                });
             }
             catch (Exception ex)
             {
-                return BadRequest(new CreateInfoPinResDTO
+                return StatusCode(503, new ApiErrorResponse
                 {
-                    Success = false,
-                    ErrorMessage = ex.Message
+                    Errors = [new("GenericDatabaseFail", ex.Message)]
                 });
-
             }
 
+            return Ok(new ApiResponse<CreateInfoPinResDTO>
+            {
+                Data = new (Id: pin.Id)
+            });
         }
+
         [Authorize]
         [HttpPost("CreateWarnPin")]
         public async Task<IActionResult> CreateWarnPin(CreateWarnPinReqDTO dto)
         {
+            var pin = new WarnPin
+            {
+                Latitude = dto.Latitude,
+                Longitude = dto.Longitude,
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddDays(WarnPin.ExpiresInDays),
+                PinType = PinType.Warning,
+                WarnPinType = dto.WarnPinType,
+            };
+
             try
             {
-                var pin = new WarnPin
-                {
-                    Latitude = dto.Latitude,
-                    Longitude = dto.Longitude,
-                    Description = dto.Description,
-                    CreatedAt = DateTime.UtcNow,
-                    PinType = PinType.Warning,
-                    WarnPinType = dto.WarnPinType,
-                };
-
-                await _db.WarnPins.AddAsync(pin);
+                _db.Pins.Add(pin);
                 await _db.SaveChangesAsync();
-
-                return Ok(new CreateWarnPinResDTO
-                {
-                    Success = true,
-                    Id = pin.Id
-                });
             }
             catch (Exception ex)
             {
-                return BadRequest(new CreateWarnPinResDTO
+                return StatusCode(503, new ApiErrorResponse
                 {
-                    Success = false,
-                    ErrorMessage = ex.Message
+                    Errors = [new("GenericDatabaseFail", ex.Message)]
                 });
-
             }
 
+            return Ok(new ApiResponse<CreateWarnPinResDTO>
+            {
+                Data = new(Id: pin.Id)
+            });
         }
 
         [Authorize]
-        [HttpDelete("DeleteCatchPin/{id}")]
-        public async Task<IActionResult> DeleteCatchPin(int id)
+        [HttpDelete("DeletePin/{id}")]
+        public async Task<IActionResult> DeletePin(int id)
         {
-            var pin = await _db.CatchPins.FindAsync(id);
-
-            if(pin == null) return NotFound("Pin não encontrado");
-
-            _db.CatchPins.Remove(pin);
-            await _db.SaveChangesAsync();
-
-            return Ok("Pin apagado com sucesso");
-        }
-
-        [Authorize]
-        [HttpDelete("DeleteInfoPin/{id}")]
-        public async Task<IActionResult> DeleteInfoPin(int id)
-        {
-            var pin = await _db.InfoPins.FindAsync(id);
-
-            if (pin == null) return NotFound("Pin não encontrado");
-
-            _db.InfoPins.Remove(pin);
-            await _db.SaveChangesAsync();
-            return Ok("Pin apagado com sucesso");
-        }
-
-        [Authorize]
-        [HttpDelete("DeleteWarnPin/{id}")]
-        public async Task<IActionResult> DeleteWarnPin(int id)
-        {
-            var pin = await _db.WarnPins.FindAsync(id);
-
-            if (pin == null) return NotFound("Pin não encontrado");
-
-            _db.WarnPins.Remove(pin);
-            await _db.SaveChangesAsync();
-            return Ok("Pin apagado com sucesso");
+            try
+            {
+                var pin = await _db.Pins.FindAsync(id);
+                if (pin == null)
+                {
+                    return NotFound(new ApiErrorResponse
+                    {
+                        Errors = [new("PinNotFound", "Id returned no results")]
+                    });
+                }
+                _db.Pins.Remove(pin);
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(503, new ApiErrorResponse
+                {
+                    Errors = [new("GenericDatabaseFail", ex.Message)]
+                });
+            }
+            return Ok(new ApiResponse<object>());
         }
     }
 }

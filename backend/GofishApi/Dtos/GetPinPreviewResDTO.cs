@@ -2,28 +2,60 @@
 
 namespace GofishApi.Dtos
 {
-    public class GetPinPreviewResDTO
+    public record GetPinPreviewResDTO(
+        int Id,
+        double Latitude,
+        double Longitude,
+        DateTime CreatedAt,
+        PinType PinType,
+        string Description = "",
+
+        // Catch pin
+        string? ImageUrl = null,
+        SpeciesType? SpeciesType = null,
+        int? HookSize = null,
+        BaitType? BaitType = null,
+
+        // Info pin
+        int? AccessDifficulty = null,
+        SeaBedType? SeaBedType = null,
+
+        // Warn pin
+        WarnPinType? WarnPinType = null
+    )
     {
-        // Comuns a todos
-        public int Id { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public string? Description { get; set; } = "";
-        public DateTime CreatedAt { get; set; }
-        public PinType PinType { get; set; }
+        public static GetPinPreviewResDTO FromCatchPin(CatchPin pin) => new(
+            Id: pin.Id,
+            Latitude: pin.Latitude,
+            Longitude: pin.Longitude,
+            CreatedAt: pin.CreatedAt,
+            PinType: PinType.Catch,
+            Description: pin.Description ?? "",
+            ImageUrl: pin.ImageUrl,
+            SpeciesType: pin.SpeciesType,
+            HookSize: pin.HookSize,
+            BaitType: pin.BaitType
+        );
 
+        public static GetPinPreviewResDTO FromInfoPin(InfoPin pin) => new(
+            Id: pin.Id,
+            Latitude: pin.Latitude,
+            Longitude: pin.Longitude,
+            CreatedAt: pin.CreatedAt,
+            PinType: PinType.Info,
+            Description: pin.Description ?? "",
+            AccessDifficulty: pin.AccessDifficulty,
+            SeaBedType: pin.SeaBedType
+        );
 
-        // CatchPin (opcionais)
-        public string? ImageUrl { get; set; }
-        public SpeciesType? SpeciesType { get; set; }
-        public int? HookSize { get; set; }
-        public BaitType? BaitType { get; set; }
-
-        // InfoPin (opcionais)
-        public int? AccessDifficulty { get; set; }
-        public SeaBedType? SeaBedType { get; set; }
-       
-        // WarnPin (opcional)
-        public WarnPinType? WarnPinType { get; set; }
+        public static GetPinPreviewResDTO FromWarnPin(WarnPin pin) => new(
+            Id: pin.Id,
+            Latitude: pin.Latitude,
+            Longitude: pin.Longitude,
+            CreatedAt: pin.CreatedAt,
+            PinType: PinType.Warning,
+            Description: pin.Description ?? "",
+            WarnPinType: pin.WarnPinType
+        );
     }
 }
