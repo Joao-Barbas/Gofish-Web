@@ -4,8 +4,12 @@
 }
 
 
+/*
+ * Source: https://stackoverflow.com/a/62872785
+*/
 .header-items a {
   font-size: 16px;
+  
   text-decoration:none;
   background: linear-gradient(currentColor 0 0)
   bottom center/ var(--underline-width, 0%) 2px no-repeat;
@@ -21,9 +25,6 @@
 
 }
 
-/*
- * Source: https://stackoverflow.com/a/62872785
-*/
 .header-items a.active {
   text-decoration:underline;
   text-decoration-thickness: 2px;
