@@ -22,7 +22,7 @@ namespace GofishApi.Dtos
         // InfoPin (opcionais)
         public int? AccessDifficulty { get; set; }
         public SeaBedType? SeaBedType { get; set; }
-
+       
         // WarnPin (opcional)
         public WarnPinType? WarnPinType { get; set; }
     }

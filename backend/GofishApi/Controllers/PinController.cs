@@ -70,7 +70,7 @@ namespace GofishApi.Controllers
                     SeaBedType = p.SeaBedType,
                 })
                 .ToListAsync();
-           var warnPins = await _db.WarnPins
+            var warnPins = await _db.WarnPins
                 .Where(p => p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng)
                 .Select(p => new NearbyPinDTO
                 {

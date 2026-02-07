@@ -4,7 +4,5 @@
     {
         public int AccessDifficulty { get; set; }
         public SeaBedType SeaBedType { get; set; }
-
-        
     }
 }
