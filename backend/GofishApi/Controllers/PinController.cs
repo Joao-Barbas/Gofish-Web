@@ -1,6 +1,8 @@
-﻿using GofishApi.Data;
+﻿using Azure.Core;
+using GofishApi.Data;
 using GofishApi.Dtos;
 using GofishApi.Models;
+using GofishApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -17,14 +19,16 @@ namespace GofishApi.Controllers
             {
                 private readonly AppDbContext _db;
                 private readonly ILogger<PinController> _logger;
+                private readonly BlobStorageService _blobStorage;        
 
                 public PinController(
                     ILogger<PinController> logger,
-                    AppDbContext db
-                )
-                {
+                    AppDbContext db,
+                    BlobStorageService blobStorage
+                ){
                     _logger = logger;
                     _db = db;
+                    _blobStorage = blobStorage;
                 }
 
 
@@ -102,6 +106,7 @@ namespace GofishApi.Controllers
                     .Select(p => new GetPinPreviewResDTO
                     {
                         Id = p.Id,
+                        ImageUrl = p.ImageUrl,
                         Latitude = p.Latitude,
                         Longitude = p.Longitude,
                         Description = p.Description,
@@ -110,7 +115,6 @@ namespace GofishApi.Controllers
                         SpeciesType = p.SpeciesType,
                         HookSize = p.HookSize,
                         BaitType = p.BaitType,
-                        // PhotoUrl = p.PhotoUrl 
                     })
                     .FirstOrDefaultAsync(),
 
@@ -157,10 +161,28 @@ namespace GofishApi.Controllers
 
         [Authorize]
         [HttpPost("CreateCatchPin")]
+        [RequestSizeLimit(5_000_000)]
         public async Task<IActionResult> CreateCatchPin(CreateCatchPinReqDTO dto)
         {
+
             try
             {
+                var allowedTypes = new[] { "image/jpeg", "image/png" };
+                string? imageUrl = null;
+
+                if (!allowedTypes.Contains(dto.Image.ContentType))
+                {
+                    return BadRequest(new CreateCatchPinResDTO
+                    {
+                        Success = false,
+                        ErrorMessage = "Invalid Image type"
+                    });
+                }
+                else 
+                {
+                    imageUrl = await _blobStorage.UploadImageAsync(dto.Image);
+                }
+
                 var pin = new CatchPin
                 {
                     Latitude = dto.Latitude,
@@ -171,6 +193,7 @@ namespace GofishApi.Controllers
                     SpeciesType = dto.SpeciesType,
                     HookSize = dto.HookSize,
                     BaitType = dto.BaitType,
+                    ImageUrl = imageUrl,
                 };
 
                 await _db.CatchPins.AddAsync(pin);

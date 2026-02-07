@@ -14,6 +14,7 @@ namespace GofishApi.Dtos
 
 
         // CatchPin (opcionais)
+        public string? ImageUrl { get; set; }
         public SpeciesType? SpeciesType { get; set; }
         public int? HookSize { get; set; }
         public BaitType? BaitType { get; set; }
