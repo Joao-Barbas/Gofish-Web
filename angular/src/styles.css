@@ -92,7 +92,7 @@ body {
 .icon,
 [class^="icon-"] {
   /*
-  * A imagem do ícone é definida com a classe do (2.2.)
+  * A imagem do ícone é definida com a classe do (3.2.)
   *
   * Definido no <.icon-*>
   */
@@ -101,7 +101,7 @@ body {
   background-position: center;
 
   /*
-  * O tamanho do ícone é definido com a classe do (2.3.)
+  * O tamanho do ícone é definido com a classe do (3.3.)
   *
   * Definido no <.icon-size-*>
   */
@@ -113,7 +113,7 @@ body {
   background-size: var(--size) var(--size);
 
   /*
-  * A cor do ícone é definido na classe do (2.4)
+  * A cor do ícone é definido na classe do (3.4)
   */
 
   filter: var(--filter);
