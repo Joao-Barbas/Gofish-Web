@@ -52,8 +52,7 @@ body {
 .font-main {font-family: var(--font-main);}
 
 .font-heading span,
-.font-heading
-{font-family: var(--font-heading);}
+.font-heading {font-family: var(--font-heading);}
 
 /*
  * 2.1. Cores de fundo
@@ -272,7 +271,10 @@ body {
 .gofish-card > .gofish-card-title {font-size: 22px;}
 
 .gf-card > .gofish-card-p,
-.gofish-card > .gofish-card-p {font-size: 20px;}
+.gofish-card > .gofish-card-p {
+  font-size: 20px;
+  line-height: normal;
+}
 
     /*
      * 4.4.2 Cartão de avaliações
