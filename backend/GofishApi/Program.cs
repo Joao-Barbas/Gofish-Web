@@ -15,7 +15,10 @@ using GofishApi.Options;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+builder.Services.Configure<AzureStorageOptions>(builder.Configuration.GetSection("AzureStorage"));
+
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
 
 builder.Services.AddDataProtection();
 builder.Services.AddScoped<ITwoFactorTokenService, TwoFactorTokenService>();

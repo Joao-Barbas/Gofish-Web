@@ -1,11 +1,9 @@
-<div class="text-center">
-  <button class="btn btn-dark" (click)="onSignOut()">
-    Sign Out
-  </button>
-  <h1 class="display-6">
-    Welcome
-  </h1>
-  <h1 class="display-6 fw-border text-dark">
-    {{firstName}}
-  </h1>
-</div>
+<app-create-pin
+  [selectedCoords]="selected"
+  (requestPickOnMap)="enablePickMode()"
+  (coordsSelected)="onCoordsSelected($event)"
+  (creationComplete)="onPinCreated()"
+  (creationFailed)="onPinCreateFailed($event)">
+</app-create-pin>
+
+<div id="map"></div>

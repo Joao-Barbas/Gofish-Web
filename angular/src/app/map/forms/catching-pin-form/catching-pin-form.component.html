@@ -1,0 +1,74 @@
+<div class="map-create-pin">
+  <div class="menu">
+    <!-- HEADER -->
+    <div class="header-2">
+      <button type="button" class="close-button" (click)="cancel.emit()">
+        ✕
+      </button>
+      <p class="p">What did you catch today?</p>
+    </div>
+
+    <div class="separator"></div>
+
+    <!-- CONTENT -->
+    <div class="image-textbox">
+      <div class="header-3">Content</div>
+
+      <!-- (Opcional) zona de imagem - mantém se quiseres o UI -->
+      <div class="image-drag-drop">
+        <div class="upload-button"></div>
+        <div class="drag-and-drop">Drag And Drop</div>
+      </div>
+
+      <!-- FORM -->
+      <div class="textbox">
+        <label>Descrição</label>
+        <input [(ngModel)]="description" />
+
+        <label>Species</label>
+        <input type="number" [(ngModel)]="speciesType" />
+
+        <label>Hook</label>
+        <input type="number" [(ngModel)]="hookSize" />
+
+        <label>Bait</label>
+        <input type="number" [(ngModel)]="baitType" />
+      </div>
+    </div>
+
+    <!-- OPTIONS -->
+    <div class="options">
+      <div class="header-4">Options</div>
+
+      <div class="option-5">
+        <div class="name">Geolocation</div>
+        <div class="set">
+          <div class="text-wrapper-3">
+            <div class="text-6">{{ coords?.latitude | number:'1.6-6' }}</div>
+          </div>
+          <div class="text-wrapper-3">
+            <div class="text-7">{{ coords?.longitude | number:'1.6-6' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ERROR -->
+    <div *ngIf="errorMessage" class="text-wrapper-4">
+      {{ errorMessage }}
+    </div>
+
+    <div class="separator"></div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+      <button type="button" class="cancel-button" (click)="cancel.emit()">
+        <div class="cancel">CANCEL</div>
+      </button>
+
+      <button type="button" class="publish-button" (click)="onSubmit()">
+        <div class="publish">PUBLISH</div>
+      </button>
+    </div>
+  </div>
+</div>

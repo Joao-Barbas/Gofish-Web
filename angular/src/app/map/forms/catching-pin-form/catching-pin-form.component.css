@@ -1,0 +1,28 @@
+.map-create-pin .menu { position: relative; }
+.map-create-pin .separator {
+  height: 1px;
+  width: 100%;
+  background: var(--dark-bg-dark);
+  opacity: 0.8;
+}
+.map-create-pin .textbox {
+  flex-direction: column;
+  gap: 10px;
+  min-height: auto;
+}
+
+.map-create-pin .textbox label {
+  font-family: "Inter-Regular", Helvetica;
+  font-size: 12px;
+  color: var(--dark-text-muted);
+}
+
+.map-create-pin .textbox input {
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--dark-bg);
+  background: var(--dark-bg);
+  color: var(--dark-text);
+  padding: 0 10px;
+  outline: none;
+}
