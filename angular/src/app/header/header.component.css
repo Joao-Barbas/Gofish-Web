@@ -31,19 +31,18 @@
 
 }
 
-
-
 .gofish-btn-circle {
-
   --gf-btn-bg: #22232A;
   --gf-btn-border-radius: 50px;
 
-  --gf-btn-padding:8px;
-}
+  --gf-btn-padding:0px;
 
-.header-right{
-  gap:12px;
+  width: 36px;
+  height: 36px;
 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 
@@ -53,6 +52,11 @@
   width: var(--size);
   height: var(--size);
   background-size: var(--size) var(--size);
+}
+
+.header-right{
+  gap: 12px;
+
 }
 
 

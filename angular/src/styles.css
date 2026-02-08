@@ -192,9 +192,8 @@ body {
   */
 
   --gf-btn-padding-default: 10px 20px;
-  --gf-btn-padding: var(--gf-padding-default);
+  --gf-btn-padding: var(--gf-btn-padding-default);
 
-  padding: var(--gf-btn-padding);
 
   --gf-btn-bg-default: #333;
   --gf-btn-bg: var(--gf-btn-bg-default);
