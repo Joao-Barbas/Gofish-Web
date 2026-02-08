@@ -25,6 +25,7 @@
   --dark-sunk-shadow-s: inset 0 -1px 2px #ffffff20, inset 0 1px 2px #00000030, inset 0 2px 4px #00000025;
   --dark-sunk-shadow-m: inset 0 -1px 2px #ffffff30, inset 0 2px 4px #00000030, inset 0 4px 8px #00000015;
   --dark-sunk-shadow-l: inset 0 -1px 2px #ffffff40, inset 0 4px 6px #00000030, inset 0 6px 10px #00000015;
+
 }
 
 body {
@@ -182,24 +183,51 @@ body {
 
 [class^="gf-btn"], [class^="gofish-btn-"],
 .gf-btn, .gofish-btn {
-  padding: 10px 20px;
-
-  background: #333;
   color: var(--dark-text);
   font-size: 14px;
-
-  box-shadow: var(--dark-lift-shadow-s);
   border-width: 0px;
-  border-radius: 20px;
+
+   /*
+   * O padding pode ser definido ao modificar o --gf-btn-padding
+  */
+
+  --gf-btn-padding-default: 10px 20px;
+  --gf-btn-padding: var(--gf-padding-default);
+
+  padding: var(--gf-btn-padding);
+
+  --gf-btn-bg-default: #333;
+  --gf-btn-bg: var(--gf-btn-bg-default);
+
+  background-color: var(--gf-btn-bg);
+
+  /*
+   * O box-shadow pode ser definido ao modificar o --gf-btn-box-shadow
+  */
+
+  --gf-btn-box-shadow-default: var(--dark-lift-shadow-s);
+  --gf-btn-box-shadow: var(--gf-btn-box-shadow-default);
+
+  box-shadow: var(--gf-btn-box-shadow);
+
+  /*
+   * O border-radius pode ser definido ao modificar o --gf-btn-border-radius
+  */
+
+  --gf-btn-border-radius-default: 20px;
+  --gf-btn-border-radius: var(--gf-btn-border-radius-default);
+
+  border-radius: var(--gf-btn-border-radius);
+
 }
 
-[class^="gf-btn"]:active,
-[class^="gofish-btn"]:active,
+[class^="gf-btn"]:active, [class^="gofish-btn"]:active,
 .gf-btn:active,
 .gofish-btn:active {
   box-shadow: var(--dark-sunk-shadow-l);
   transform: translateY(1px);
 }
+
 
   /*
    * 3.5.1 Animação antiga dos botões
@@ -233,7 +261,13 @@ body {
   border-radius: 12px;
   border-width: 0px;
 
-  background: #333;
+  /*
+   * A cor do cartão pode ser definida ao modificar o --gf-bg-color
+  */
+  --gf-bg-color-default:#333;
+  --gf-bg-color:var(--gf-bg-color-default);
+
+  background: var(--gf-bg-color);
 
   /*
   * O padding do cartão pode ser definido numa classe à parte
@@ -329,6 +363,7 @@ body {
   font-size: 2rem;
   font-weight: 900;
   letter-spacing: -0.125rem;
+  user-select: none;
 }
 
 .form-auth-container {

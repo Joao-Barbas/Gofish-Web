@@ -1,15 +1,10 @@
-.gofish-logo-text {
-  font-size: 28px;
-  user-select: none;
-}
-
-
 /*
  * Source: https://stackoverflow.com/a/62872785
 */
 .header-items a {
   font-size: 16px;
-  
+  letter-spacing: 5%;
+
   text-decoration:none;
   background: linear-gradient(currentColor 0 0)
   bottom center/ var(--underline-width, 0%) 2px no-repeat;
@@ -36,26 +31,21 @@
 
 }
 
-.gofish-card {
-  box-shadow: var(--dark-lift-shadow-m);
-  border-radius: 12px;
-  border-width: 0px;
-  background: #333;
 
-  padding: var(--gofish-card-padding);
+
+.gofish-btn-circle {
+
+  --gf-btn-bg: #22232A;
+  --gf-btn-border-radius: 50px;
+
+  --gf-btn-padding:8px;
 }
 
-.gofish-card-size {
-  --gofish-card-padding: 10px;
-  border-radius: 50px;
-}
-
-.header-right a:active{
-  box-shadow: var(--dark-sunk-shadow-l);
-
-  transform: translateY(1px);
+.header-right{
+  gap:12px;
 
 }
+
 
 .icon-size-header {
   --size: 20px;
