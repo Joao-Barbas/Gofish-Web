@@ -163,6 +163,12 @@ body {
 
 */
 
+
+/*
+ * Se for acompanhado com outro elemento de texto para o nome
+ da aplicação, utilizar a seguinte classe nesse texto:
+ * -> text-gofish
+*/
 .icon-size-gofish-logo {
   --size: 48px;
 
