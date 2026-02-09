@@ -1,54 +1,55 @@
-<footer class="vh-100 w-100 dark-bg py-5">
+<footer class="w-100 dark-bg pt-5">
 
   <div class="container-lg">
     <div class="row">
 
       <!-- Elementos da esquerda -->
-      <div class="col-6">
+      <div class="col-12 col-sm-6">
 
-        <!-- Logotipo -->
-        <div class="gofish d-flex align-items-center gap-2 mb-4">
-          <div class="icon-gofish icon-size-about-table"></div>
-          <span class="dark-text logo-text font-heading">GOFISH</span>
+        <!-- # Logo and Gofish -->
+        <div class="gofish d-flex align-items-center gap-4 gap-lg-2 mb-4">
+          <div class="icon-gofish icon-size-gofish-logo"></div>
+          <span class="dark-text logo-text">GOFISH</span>
         </div>
 
 
-          <ul class="footer-links list-unstyled font-main mb-1">
-            <li>
-              <a routerLink="/about-us">About</a>
-            </li>
-            <li>
-              <a routerLink="/">GitHub</a>
-            </li>
-            <li>
-              <a routerLink="/">Changelog</a>
-            </li>
-            <li>
-              <a routerLink="/">Terms of Service</a>
-            </li>
-            <li>
-              <a routerLink="/">Privacy Policy</a>
-            </li>
-          </ul>
+        <!-- # Header Items -->
+
+        <ul class="footer-links list-unstyled font-main mb-1">
+          <li>
+            <a routerLink="/about-us">About</a>
+          </li>
+          <li>
+            <a href="https://github.com/Joao-Barbas/Gofish-Web/tree/main">GitHub</a>
+          </li>
+          <li>
+            <a routerLink="/">Changelog</a>
+          </li>
+          <li>
+            <a routerLink="/">Terms of Service</a>
+          </li>
+          <li>
+            <a routerLink="/">Privacy Policy</a>
+          </li>
+        </ul>
 
       </div>
 
-      <div class="col-6 d-flex align-items-end justify-content-end">
-        <div class="d-flex socials icon-white">
-          <div class="icon-guitar"></div>
-          <div class="icon-guitar"></div>
-          <div class="icon-guitar"></div>
-          <div class="icon-guitar"></div>
+      <!-- # Social Icons -->
+
+      <div class="col-12 col-sm-6 d-flex align-items-end mt-3 mt-sm-0 justify-content-start justify-content-sm-end">
+
+        <div class="d-flex gap-3 icon-white socials icon-size-socials generic-button-wrapper-all">
+
+          <a href="" class="icon-atsign"></a>
+          <a href="" class="icon-facebook"></a>
+          <a href="" class="icon-instagram"></a>
+          <a href="" class="icon-youtube"></a>
+          <a href="" class="icon-twitter"></a>
 
         </div>
-      </div>
 
-      <!-- TODO:
-         * Fazer a parte dos ícones
-         * Experimentar refazer o header com list-group para torna-lo responsivo (dúvido)
-         * https://getbootstrap.com/docs/5.3/components/list-group/#active-items
-         * https://stackblitz.com/run?file=index.html
-      -->
+      </div>
 
 
     </div>

@@ -30,6 +30,7 @@
 
 body {
   font-family: var(--font-main), "Times New Roman", sans-serif;
+
 }
 
 
@@ -139,6 +140,11 @@ body {
 .icon-search        { --icon-url: url('/assets/images/search.svg'); }
 .icon-user          { --icon-url: url('/assets/images/user.svg'); }
 .icon-shielduser    { --icon-url: url('/assets/images/shield-user.svg'); }
+.icon-atsign        { --icon-url: url('/assets/images/footer/at-sign.svg'); }
+.icon-facebook      { --icon-url: url('/assets/images/footer/facebook.svg'); }
+.icon-instagram     { --icon-url: url('/assets/images/footer/instagram.svg'); }
+.icon-youtube       { --icon-url: url('/assets/images/footer/youtube.svg'); }
+.icon-twitter       { --icon-url: url('/assets/images/footer/twitter.svg'); }
 
 
 /*
@@ -156,6 +162,11 @@ body {
   }
 
 */
+
+.icon-size-gofish-logo {
+  --size: 48px;
+
+}
 
 
 /*
@@ -193,6 +204,7 @@ body {
 
   --gf-btn-padding-default: 10px 20px;
   --gf-btn-padding: var(--gf-btn-padding-default);
+  padding: var(--gf-btn-padding);
 
 
   --gf-btn-bg-default: #333;
@@ -238,6 +250,10 @@ body {
   box-shadow: 0px 0px 5px #515151;
   transform: translateY(1px);
 }
+
+.generic-button-wrapper-s {cursor: pointer;}
+
+.generic-button-wrapper-all > .icon {cursor: pointer;}
 
 .button-wrapper-clickable {cursor: pointer;}
 

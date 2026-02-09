@@ -20,6 +20,14 @@
   --underline-width: 100%;
 }
 
-.socials {
+.icon-size-socials > [class^="icon-"] {
+  --size: 24px;
+}
 
+@media (max-width: 576px) {
+  .icon-size-gofish-logo {
+    --size: 40px;
+
+
+  }
 }
