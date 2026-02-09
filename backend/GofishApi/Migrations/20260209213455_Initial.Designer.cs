@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GofishApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260131203638_initial")]
-    partial class initial
+    [Migration("20260209213455_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,78 +96,7 @@ namespace GofishApi.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("GofishApi.Models.CatchPin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BaitType")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("HookSize")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
-
-                    b.Property<int>("PinType")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SpeciesType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CatchPins");
-                });
-
-            modelBuilder.Entity("GofishApi.Models.InfoPin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AccessDifficulty")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
-
-                    b.Property<int>("PinType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SeaBedType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("InfoPins");
-                });
-
-            modelBuilder.Entity("GofishApi.Models.WarnPin", b =>
+            modelBuilder.Entity("GofishApi.Models.PinBase", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -181,6 +110,9 @@ namespace GofishApi.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -192,7 +124,15 @@ namespace GofishApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WarnPins");
+                    b.HasIndex("ExpiresAt", "CreatedAt");
+
+                    b.HasIndex("Latitude", "Longitude");
+
+                    b.ToTable("Pins");
+
+                    b.HasDiscriminator<int>("PinType");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -326,6 +266,47 @@ namespace GofishApi.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("GofishApi.Models.CatchPin", b =>
+                {
+                    b.HasBaseType("GofishApi.Models.PinBase");
+
+                    b.Property<int?>("BaitType")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("HookSize")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("SpeciesType")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue(0);
+                });
+
+            modelBuilder.Entity("GofishApi.Models.InfoPin", b =>
+                {
+                    b.HasBaseType("GofishApi.Models.PinBase");
+
+                    b.Property<int>("AccessDifficulty")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SeaBedType")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
+            modelBuilder.Entity("GofishApi.Models.WarnPin", b =>
+                {
+                    b.HasBaseType("GofishApi.Models.PinBase");
+
+                    b.HasDiscriminator().HasValue(2);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
