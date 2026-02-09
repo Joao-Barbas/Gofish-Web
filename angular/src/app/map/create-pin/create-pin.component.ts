@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CreateCatchingPinDTO } from '@gofish/shared/dtos/create-catching-pin';
 import { Coords, PinType } from '@gofish/shared/models/pin-types';
 import { PinService } from '@gofish/shared/services/map-services/pin.service';
 import { CatchingPinFormComponent } from '../forms/catching-pin-form/catching-pin-form.component';
@@ -15,7 +14,7 @@ type Step = 'idle' | 'chooseLocation' | 'chooseType' | 'fillForm';
 
 // Ver se da para colocar noutro sitio
 type PinCreatedEvent =
-  | { type: PinType.CATCHING; dto: CreateCatchPinReqDTO; res: any }
+  | { type: PinType.CATCHING; formData?: FormData; res: any}
   | { type: PinType.INFORMATION; dto: CreateInfoPinReqDTO; res: any }
   | { type: PinType.WARNING; dto: CreateInfoPinReqDTO; res: any };
 
@@ -145,14 +144,17 @@ export class CreatePinComponent {
     this.errorMessage = '';
     this.step = 'chooseType';
   }
-  onCatchingSubmit(dto: CreateCatchPinReqDTO) {
+
+  onCatchingSubmit(formData: FormData): void {
     if (this.loading) return;
     this.loading = true;
 
-    this.pinService.createCatchPin(dto).subscribe({
+    this.pinService.createCatchPin(formData).subscribe({
       next: (res) => {
         this.loading = false;
-        this.creationComplete.emit({ type: PinType.CATCHING, dto, res } as any);
+
+        this.creationComplete.emit({type: PinType.CATCHING, res});
+
         this.submitCreatingPin();
       },
       error: (err) => {

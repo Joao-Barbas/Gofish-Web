@@ -22,6 +22,8 @@
 
       <!-- FORM -->
       <div class="textbox">
+        <Label>Insira a sua imagem</Label>
+        <input type="file" accept="image/" (change)="onFileSelected($event)" />
         <label>Descrição</label>
         <input [(ngModel)]="description" />
 

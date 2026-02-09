@@ -36,13 +36,13 @@ namespace GofishApi.Controllers
         [HttpGet("GetInViewport")]
         public async Task<IActionResult> GetInViewport(
             [FromQuery] double minLat,
-            [FromQuery] double minLon,
+            [FromQuery] double minLng,
             [FromQuery] double maxLat,
-            [FromQuery] double maxLon
+            [FromQuery] double maxLng
         ){
             var pins = await _db.Pins
             .Where(p => 
-                (p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLon && p.Longitude <= maxLon) &&
+                (p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng) &&
                 (p.ExpiresAt == null || p.ExpiresAt > DateTime.UtcNow))
             .Select(p => new NearbyPinDTO
             {
