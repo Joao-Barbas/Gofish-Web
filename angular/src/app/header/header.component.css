@@ -1,11 +1,10 @@
-.gofish-logo-text {
-  font-size: 28px;
-  user-select: none;
-}
-
-
+/*
+ * Source: https://stackoverflow.com/a/62872785
+*/
 .header-items a {
   font-size: 16px;
+  letter-spacing: 5%;
+
   text-decoration:none;
   background: linear-gradient(currentColor 0 0)
   bottom center/ var(--underline-width, 0%) 2px no-repeat;
@@ -21,9 +20,6 @@
 
 }
 
-/*
- * Source: https://stackoverflow.com/a/62872785
-*/
 .header-items a.active {
   text-decoration:underline;
   text-decoration-thickness: 2px;
@@ -35,26 +31,20 @@
 
 }
 
-.gofish-card {
-  box-shadow: var(--dark-lift-shadow-m);
-  border-radius: 12px;
-  border-width: 0px;
-  background: #333;
+.gofish-btn-circle {
+  --gf-btn-bg: #22232A;
+  --gf-btn-border-radius: 50px;
 
-  padding: var(--gofish-card-padding);
+  --gf-btn-padding:0px;
+
+  width: 36px;
+  height: 36px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.gofish-card-size {
-  --gofish-card-padding: 10px;
-  border-radius: 50px;
-}
-
-.header-right a:active{
-  box-shadow: var(--dark-sunk-shadow-l);
-
-  transform: translateY(1px);
-
-}
 
 .icon-size-header {
   --size: 20px;
@@ -62,6 +52,11 @@
   width: var(--size);
   height: var(--size);
   background-size: var(--size) var(--size);
+}
+
+.header-right{
+  gap: 12px;
+
 }
 
 

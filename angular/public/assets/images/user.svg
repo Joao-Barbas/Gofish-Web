@@ -28,9 +28,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="4.453125"
-     inkscape:cx="-33.235088"
-     inkscape:cy="5.0526316"
+     inkscape:zoom="12.59534"
+     inkscape:cx="-13.973422"
+     inkscape:cy="22.428931"
      inkscape:window-width="1920"
      inkscape:window-height="1057"
      inkscape:window-x="-8"
@@ -39,10 +39,12 @@
      inkscape:current-layer="svg1" />
   <path
      d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"
-     id="path1" />
+     id="path1"
+     style="stroke-width:2.5;stroke-dasharray:none" />
   <circle
      cx="12"
      cy="7"
      r="4"
-     id="circle1" />
+     id="circle1"
+     style="stroke-width:2.5;stroke-dasharray:none" />
 </svg>
