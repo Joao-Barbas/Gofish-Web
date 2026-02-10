@@ -18,14 +18,14 @@ namespace GofishApi.Controllers
     [ApiController]
     public class PinController : ControllerBase
     {
-        private readonly AppDbContext _db;
         private readonly ILogger<PinController> _logger;
-        private readonly BlobStorageService _blobStorage;        
+        private readonly AppDbContext _db;
+        private readonly IBlobStorageService _blobStorage;        
 
         public PinController(
             ILogger<PinController> logger,
             AppDbContext db,
-            BlobStorageService blobStorage
+            IBlobStorageService blobStorage
         ){
             _logger = logger;
             _db = db;

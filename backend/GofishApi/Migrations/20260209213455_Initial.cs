@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GofishApi.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,59 +53,27 @@ namespace GofishApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CatchPins",
+                name: "Pins",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PinType = table.Column<int>(type: "int", nullable: false),
                     SpeciesType = table.Column<int>(type: "int", nullable: true),
                     HookSize = table.Column<int>(type: "int", nullable: true),
                     BaitType = table.Column<int>(type: "int", nullable: true),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PinType = table.Column<int>(type: "int", nullable: false)
+                    ImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    AccessDifficulty = table.Column<int>(type: "int", nullable: true),
+                    SeaBedType = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CatchPins", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InfoPins",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AccessDifficulty = table.Column<int>(type: "int", nullable: false),
-                    SeaBedType = table.Column<int>(type: "int", nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PinType = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InfoPins", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WarnPins",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PinType = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WarnPins", x => x.Id);
+                    table.PrimaryKey("PK_Pins", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -252,6 +220,16 @@ namespace GofishApi.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pins_ExpiresAt_CreatedAt",
+                table: "Pins",
+                columns: new[] { "ExpiresAt", "CreatedAt" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pins_Latitude_Longitude",
+                table: "Pins",
+                columns: new[] { "Latitude", "Longitude" });
         }
 
         /// <inheritdoc />
@@ -273,13 +251,7 @@ namespace GofishApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CatchPins");
-
-            migrationBuilder.DropTable(
-                name: "InfoPins");
-
-            migrationBuilder.DropTable(
-                name: "WarnPins");
+                name: "Pins");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

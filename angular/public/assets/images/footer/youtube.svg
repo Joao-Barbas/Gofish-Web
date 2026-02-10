@@ -8,19 +8,19 @@
    stroke-width="2"
    stroke-linecap="round"
    stroke-linejoin="round"
-   class="lucide lucide-search-icon lucide-search"
+   class="lucide lucide-youtube-icon lucide-youtube"
    version="1.1"
-   id="svg1"
-   sodipodi:docname="search.svg"
+   id="svg2"
+   sodipodi:docname="youtube.svg"
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
-     id="defs1" />
+     id="defs2" />
   <sodipodi:namedview
-     id="namedview1"
+     id="namedview2"
      pagecolor="#ffffff"
      bordercolor="#000000"
      borderopacity="0.25"
@@ -28,23 +28,21 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="4.453125"
-     inkscape:cx="-60.182456"
-     inkscape:cy="-25.936842"
+     inkscape:zoom="25.190679"
+     inkscape:cx="14.251303"
+     inkscape:cy="10.460218"
      inkscape:window-width="1920"
      inkscape:window-height="1057"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg1" />
+     inkscape:current-layer="svg2" />
   <path
-     d="m21 21-4.34-4.34"
+     d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"
      id="path1"
-     style="stroke-width:2.5;stroke-dasharray:none" />
-  <circle
-     cx="11"
-     cy="11"
-     r="8"
-     id="circle1"
-     style="stroke-width:2.5;stroke-dasharray:none" />
+     style="stroke-width:1.5;stroke-dasharray:none" />
+  <path
+     d="m10 15 5-3-5-3z"
+     id="path2"
+     style="stroke-width:1.5;stroke-dasharray:none" />
 </svg>
