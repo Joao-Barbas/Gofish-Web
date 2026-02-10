@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { GetPinsInViewportResDTO } from '@gofish/shared/dtos/pin-marker.dto';
 import { CreateCatchPinReqDTO, CreateInfoPinReqDTO, CreatePinResDTO, CreateWarnPinReqDTO } from '@gofish/shared/dtos/create-pin.dto';
 import { Form } from '@angular/forms';
+import { GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
 
 
 @Injectable({
@@ -40,4 +41,9 @@ export class PinService {
     return this.http.post<CreateWarnPinReqDTO>(`${environment.baseApiUrl}/${this.baseUrl}/CreateWarnPin`, dto);
   }
 
+  enumeratePinType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumeratePinType`);
+  enumerateBaitType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateBaitType`);
+  enumerateSeaBedType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateSeaBedType`);
+  enumerateWarningType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateWarningType`);
+  enumerateSpeciesType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateSpeciesType`);
 }

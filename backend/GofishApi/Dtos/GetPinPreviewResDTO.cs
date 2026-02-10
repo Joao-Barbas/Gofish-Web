@@ -21,7 +21,7 @@ namespace GofishApi.Dtos
         SeaBedType? SeaBedType = null,
 
         // Warn pin
-        WarnPinType? WarnPinType = null
+        WarningType? WarnPinType = null
     )
     {
         public static GetPinPreviewResDTO FromCatchPin(CatchPin pin) => new(

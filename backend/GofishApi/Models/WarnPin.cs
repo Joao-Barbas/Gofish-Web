@@ -3,6 +3,6 @@
     public class WarnPin : PinBase
     {
         public const int ExpiresInDays = 1;
-        public WarnPinType WarnPinType;
+        public WarningType WarnPinType;
     }
 }

@@ -7,7 +7,7 @@
 <label>Tipo de fundo (SeaBedType)</label>
 <select [(ngModel)]="selectedSeaBed" name="seaBed">
   <option [ngValue]="null" disabled>Selecione uma opção</option>
-  <option *ngFor="let option of seaBedOptions" [ngValue]="option.id">
+  <option *ngFor="let option of seaBedOptions" [ngValue]="option.value">
     {{ option.name }}
   </option>
 </select>

@@ -1,9 +1,10 @@
 import { CommonModule, DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { PinEnumItemResDTO  } from '@gofish/shared/dtos/enums.dto';
+import { EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
 import { Coords } from '@gofish/shared/models/pin-types';
-import { EnumsService } from '@gofish/shared/services/map-services/enums.service';
+import { PinService } from '@gofish/shared/services/map-services/pin.service';
 
 @Component({
   selector: 'app-catching-pin-form',
@@ -18,27 +19,38 @@ export class CatchingPinFormComponent {
 
   description = '';
 
-  speciesTypeOptions: PinEnumItemResDTO[] = [];
+  speciesTypeOptions: EnumeratorDTO[] = [];
   selectedSpeciesType: number | null = null;
 
   hookSize = 0;
 
-  baitTypeOptions: PinEnumItemResDTO[] = [];
+  baitTypeOptions: EnumeratorDTO[] = [];
   selectedBaitType: number | null = null;
 
   image: File | null = null;
 
   errorMessage: string = '';
 
-  constructor(private enumService: EnumsService) { }
+  constructor(private pinService: PinService) { }
 
   ngOnInit(): void {
-    this.enumService.getPinEnums().subscribe({
-      next: (enums) => {
-        this.baitTypeOptions = enums.baitTypes;
-        this.speciesTypeOptions = enums.speciesTypes;
+    this.pinService.enumerateBaitType().subscribe({
+      next: (res: GetEnumeratorResDTO) => {
+        this.baitTypeOptions = res.data!.enumerator;
       },
-      error: (err) => console.error('Erro ao carregar enums', err)
+      error: (err: HttpErrorResponse) => {
+        var res = err.error as GetEnumeratorResDTO;
+        console.error(res);
+      }
+    });
+    this.pinService.enumerateSpeciesType().subscribe({
+      next: (res: GetEnumeratorResDTO) => {
+        this.speciesTypeOptions = res.data!.enumerator;
+      },
+      error: (err: HttpErrorResponse) => {
+        var res = err.error as GetEnumeratorResDTO;
+        console.error(res)
+      }
     });
   }
 
@@ -53,7 +65,7 @@ export class CatchingPinFormComponent {
       return;
     }
 
-    if (this.description.length < 5) {
+    if (this.description.length < length) {
       this.errorMessage = "A descrição tem de ter mais de 5 caracteres"
       return;
     }

@@ -30,5 +30,6 @@ namespace GofishApi.Controllers
                 Data = data
             });
         }
+
     }
 }

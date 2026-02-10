@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CreateInfoPinReqDTO } from '@gofish/shared/dtos/create-pin.dto';
-import { PinEnumItemResDTO  } from '@gofish/shared/dtos/enums.dto';
+import { EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
 import { Coords } from '@gofish/shared/models/pin-types';
-import { EnumsService } from '@gofish/shared/services/map-services/enums.service';
-
+import { PinService } from '@gofish/shared/services/map-services/pin.service';
 
 @Component({
   selector: 'app-info-pin-form',
@@ -13,7 +13,6 @@ import { EnumsService } from '@gofish/shared/services/map-services/enums.service
   templateUrl: './info-pin-form.component.html',
   styles: ``
 })
-
 export class InfoPinFormComponent {
   @Input() coords!: Coords;
   @Output() submitForm = new EventEmitter<CreateInfoPinReqDTO>();
@@ -22,23 +21,27 @@ export class InfoPinFormComponent {
   description: string = '';
   accessDifficulty: number = 1;
 
-  seaBedOptions: PinEnumItemResDTO [] = [];
+  seaBedOptions: EnumeratorDTO[] = [];
   selectedSeaBed: number | null = null;
 
   errorMessage: string = '';
 
   //image: File | null = null;
 
-  constructor(private enumsSerive: EnumsService) { }
+  constructor(private pinService: PinService) { }
 
   ngOnInit(): void {
-    this.enumsSerive.getPinEnums().subscribe({
-      next: (enums) => {
-        this.seaBedOptions = enums.seaBedTypes;
+    this.pinService.enumerateSeaBedType().subscribe({
+      next: (res: GetEnumeratorResDTO) => {
+        this.seaBedOptions = res.data!.enumerator;
       },
-      error: (err) => console.error('Erro ao carregar seabed', err)
+      error: (err: HttpErrorResponse) => {
+        var res = err.error as GetEnumeratorResDTO;
+        console.error(res);
+      }
     });
   }
+
   onSubmit() {
     this.errorMessage = '';
 

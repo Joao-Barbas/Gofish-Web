@@ -20,13 +20,13 @@ namespace GofishApi.Controllers
     {
         private readonly ILogger<PinController> _logger;
         private readonly AppDbContext _db;
-        private readonly IBlobStorageService _blobStorage;        
+        private readonly IBlobStorageService _blobStorage;
 
         public PinController(
             ILogger<PinController> logger,
             AppDbContext db,
             IBlobStorageService blobStorage
-        ){
+        ) {
             _logger = logger;
             _db = db;
             _blobStorage = blobStorage;
@@ -39,9 +39,9 @@ namespace GofishApi.Controllers
             [FromQuery] double minLng,
             [FromQuery] double maxLat,
             [FromQuery] double maxLng
-        ){
+        ) {
             var pins = await _db.Pins
-            .Where(p => 
+            .Where(p =>
                 (p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng) &&
                 (p.ExpiresAt == null || p.ExpiresAt > DateTime.UtcNow))
             .Select(p => new NearbyPinDTO
@@ -64,7 +64,7 @@ namespace GofishApi.Controllers
             var pin = await _db.Pins
             .Where(p => p.Id == id)
             .FirstOrDefaultAsync();
-            
+
             if (pin == null)
             {
                 return NotFound(new ApiErrorResponse
@@ -86,6 +86,8 @@ namespace GofishApi.Controllers
                 Data = data
             });
         }
+
+        #region CreatePins
 
         [Authorize]
         [HttpPost("CreateCatchPin")]
@@ -149,6 +151,7 @@ namespace GofishApi.Controllers
             });
         }
 
+
         [Authorize]
         [HttpPost("CreateInfoPin")]
         public async Task<IActionResult> CreateInfoPin(CreateInfoPinReqDTO dto)
@@ -180,7 +183,7 @@ namespace GofishApi.Controllers
 
             return Ok(new ApiResponse<CreateInfoPinResDTO>
             {
-                Data = new (Id: pin.Id)
+                Data = new(Id: pin.Id)
             });
         }
 
@@ -217,6 +220,8 @@ namespace GofishApi.Controllers
             });
         }
 
+        #endregion
+
         [Authorize]
         [HttpDelete("DeletePin/{id}")]
         public async Task<IActionResult> DeletePin(int id)
@@ -243,5 +248,29 @@ namespace GofishApi.Controllers
             }
             return Ok(new ApiResponse<object>());
         }
+
+        #region EnumeratorEndpoints
+
+        [AllowAnonymous]
+        [HttpGet("EnumeratePinType")]
+        public IActionResult EnumeratePinType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<PinType>() }); }
+
+        [AllowAnonymous]
+        [HttpGet("EnumerateBaitType")]
+        public IActionResult EnumerateBaitType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<BaitType>() }); }
+
+        [AllowAnonymous]
+        [HttpGet("EnumerateSeaBedType")]
+        public IActionResult EnumerateSeaBedType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<SeaBedType>() }); }
+
+        [AllowAnonymous]
+        [HttpGet("EnumerateWarningType")]
+        public IActionResult EnumerateWarningType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<WarningType>() }); }
+
+        [AllowAnonymous]
+        [HttpGet("EnumerateSpeciesType")]
+        public IActionResult EnumerateSpeciesType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<SpeciesType>() }); }
+
+        #endregion
     }
 }

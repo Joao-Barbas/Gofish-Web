@@ -4,7 +4,7 @@
 <label>Tipo de aviso (WarnPinType)</label>
 <select [(ngModel)]="selectedWarnType" name="bait">
   <option [ngValue]="null" disabled>Selecione uma opção</option>
-  <option *ngFor="let option of warnTypeOptions" [ngValue]="option.id">
+  <option *ngFor="let option of warnTypeOptions" [ngValue]="option.value">
     {{ option.name }}
   </option>
 </select>

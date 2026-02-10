@@ -1,6 +1,6 @@
 ﻿namespace GofishApi.Models
 {
-    public enum WarnPinType
+    public enum WarningType
     {
         StrongCurrents,
         AlgaePresence,

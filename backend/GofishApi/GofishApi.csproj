@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\EnumsController.cs" />
     <Compile Remove="Dtos\CreateCatchingPinDTO.cs" />
   </ItemGroup>
 

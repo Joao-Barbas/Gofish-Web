@@ -30,7 +30,7 @@
         <label>Espécies</label>
         <select [(ngModel)]="selectedSpeciesType" name="bait">
           <option [ngValue]="null" disabled>Selecione uma opção</option>
-          <option *ngFor="let option of speciesTypeOptions" [ngValue]="option.id">
+          <option *ngFor="let option of speciesTypeOptions" [ngValue]="option.value">
             {{ option.name }}
           </option>
         </select>
@@ -41,7 +41,7 @@
         <label>Isca</label>
         <select [(ngModel)]="selectedBaitType" name="bait">
           <option [ngValue]="null" disabled>Selecione uma opção</option>
-          <option *ngFor="let option of baitTypeOptions" [ngValue]="option.id">
+          <option *ngFor="let option of baitTypeOptions" [ngValue]="option.value">
             {{ option.name }}
           </option>
         </select>

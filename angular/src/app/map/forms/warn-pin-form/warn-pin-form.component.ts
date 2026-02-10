@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/create-pin.dto';
-import { PinEnumItemResDTO } from '@gofish/shared/dtos/enums.dto';
+import { EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
 import { Coords } from '@gofish/shared/models/pin-types';
-import { EnumsService } from '@gofish/shared/services/map-services/enums.service';
+import { PinService } from '@gofish/shared/services/map-services/pin.service';
 
 @Component({
   selector: 'app-warn-pin-form',
@@ -18,19 +19,22 @@ export class WarnPinFormComponent {
 
   description: string = '';
 
-  warnTypeOptions: PinEnumItemResDTO[] = [];
+  warnTypeOptions: EnumeratorDTO[] = [];
   selectedWarnType: number | null = null;
 
   errorMessage = '';
 
-  constructor(private enumsService: EnumsService) { }
+  constructor(private pinService: PinService) { }
 
   ngOnInit() {
-    this.enumsService.getPinEnums().subscribe({
-      next: (enums) => {
-        this.warnTypeOptions = enums.warnPinTypes;
+    this.pinService.enumerateWarningType().subscribe({
+      next: (res: GetEnumeratorResDTO) => {
+        this.warnTypeOptions = res.data!.enumerator;
       },
-      error: (err) => console.error('Erro ao carregar warntype', err)
+      error: (err: HttpErrorResponse) => {
+        var res = err.error as GetEnumeratorResDTO;
+        console.error(res);
+      }
     });
   }
 
