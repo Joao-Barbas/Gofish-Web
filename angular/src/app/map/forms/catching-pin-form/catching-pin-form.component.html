@@ -5,7 +5,7 @@
       <button type="button" class="close-button" (click)="cancel.emit()">
         ✕
       </button>
-      <p class="p">What did you catch today?</p>
+      <p class="p">O que é que apanhaste hoje campeão?</p>
     </div>
 
     <div class="separator"></div>
@@ -27,14 +27,24 @@
         <label>Descrição</label>
         <input [(ngModel)]="description" />
 
-        <label>Species</label>
-        <input type="number" [(ngModel)]="speciesType" />
+        <label>Espécies</label>
+        <select [(ngModel)]="selectedSpeciesType" name="bait">
+          <option [ngValue]="null" disabled>Selecione uma opção</option>
+          <option *ngFor="let option of speciesTypeOptions" [ngValue]="option.id">
+            {{ option.name }}
+          </option>
+        </select>
 
-        <label>Hook</label>
+        <label>Anzol</label>
         <input type="number" [(ngModel)]="hookSize" />
 
-        <label>Bait</label>
-        <input type="number" [(ngModel)]="baitType" />
+        <label>Isca</label>
+        <select [(ngModel)]="selectedBaitType" name="bait">
+          <option [ngValue]="null" disabled>Selecione uma opção</option>
+          <option *ngFor="let option of baitTypeOptions" [ngValue]="option.id">
+            {{ option.name }}
+          </option>
+        </select>
       </div>
     </div>
 

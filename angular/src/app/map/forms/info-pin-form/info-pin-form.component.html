@@ -5,6 +5,15 @@
 <input type="number" [(ngModel)]="accessDifficulty" />
 
 <label>Tipo de fundo (SeaBedType)</label>
-<input type="number" [(ngModel)]="seaBedType" />
+<select [(ngModel)]="selectedSeaBed" name="seaBed">
+  <option [ngValue]="null" disabled>Selecione uma opção</option>
+  <option *ngFor="let option of seaBedOptions" [ngValue]="option.id">
+    {{ option.name }}
+  </option>
+</select>
+
+<div *ngIf="errorMessage">
+  {{ errorMessage }}
+</div>
 
 <button type="button" (click)="onSubmit()">Criar Info Pin</button>

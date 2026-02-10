@@ -125,7 +125,7 @@ namespace GofishApi.Migrations
 
                     b.HasIndex("Latitude", "Longitude");
 
-                    b.ToTable("Pins");
+                    b.ToTable("Pins", (string)null);
 
                     b.HasDiscriminator<int>("PinType");
 

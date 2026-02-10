@@ -2,6 +2,15 @@
 <input [(ngModel)]="description" />
 
 <label>Tipo de aviso (WarnPinType)</label>
-<input type="number" [(ngModel)]="warnPinType" />
+<select [(ngModel)]="selectedWarnType" name="bait">
+  <option [ngValue]="null" disabled>Selecione uma opção</option>
+  <option *ngFor="let option of warnTypeOptions" [ngValue]="option.id">
+    {{ option.name }}
+  </option>
+</select>
+
+<div *ngIf="errorMessage">
+  {{ errorMessage }}
+</div>
 
 <button type="button" (click)="onSubmit()">Criar Warn Pin</button>

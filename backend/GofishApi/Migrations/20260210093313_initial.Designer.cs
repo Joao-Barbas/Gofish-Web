@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GofishApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260209213455_Initial")]
-    partial class Initial
+    [Migration("20260210093313_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,7 +128,7 @@ namespace GofishApi.Migrations
 
                     b.HasIndex("Latitude", "Longitude");
 
-                    b.ToTable("Pins");
+                    b.ToTable("Pins", (string)null);
 
                     b.HasDiscriminator<int>("PinType");
 

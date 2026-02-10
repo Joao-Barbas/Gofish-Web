@@ -17,6 +17,7 @@ namespace GofishApi.Data
             base.OnModelCreating(builder);
 
             builder.Entity<PinBase>()
+                .ToTable("Pins")
                 .HasDiscriminator<PinType>("PinType")
                 .HasValue<CatchPin>(PinType.Catch)
                 .HasValue<InfoPin>(PinType.Info)
