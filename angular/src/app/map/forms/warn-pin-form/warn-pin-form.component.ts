@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/create-pin.dto';
-import { EnumResDto } from '@gofish/shared/dtos/enums.dto';
+import { PinEnumItemResDTO } from '@gofish/shared/dtos/enums.dto';
 import { Coords } from '@gofish/shared/models/pin-types';
 import { EnumsService } from '@gofish/shared/services/map-services/enums.service';
 
@@ -18,7 +18,7 @@ export class WarnPinFormComponent {
 
   description: string = '';
 
-  warnTypeOptions: EnumResDto[] = [];
+  warnTypeOptions: PinEnumItemResDTO[] = [];
   selectedWarnType: number | null = null;
 
   errorMessage = '';
@@ -26,9 +26,9 @@ export class WarnPinFormComponent {
   constructor(private enumsService: EnumsService) { }
 
   ngOnInit() {
-    this.enumsService.getWarnPinTypes().subscribe({
-      next: (data) => {
-        this.warnTypeOptions = data;
+    this.enumsService.getPinEnums().subscribe({
+      next: (enums) => {
+        this.warnTypeOptions = enums.warnPinTypes;
       },
       error: (err) => console.error('Erro ao carregar warntype', err)
     });

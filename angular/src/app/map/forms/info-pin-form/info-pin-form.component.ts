@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CreateInfoPinReqDTO } from '@gofish/shared/dtos/create-pin.dto';
-import { EnumResDto } from '@gofish/shared/dtos/enums.dto';
+import { PinEnumItemResDTO  } from '@gofish/shared/dtos/enums.dto';
 import { Coords } from '@gofish/shared/models/pin-types';
 import { EnumsService } from '@gofish/shared/services/map-services/enums.service';
 
@@ -22,7 +22,7 @@ export class InfoPinFormComponent {
   description: string = '';
   accessDifficulty: number = 1;
 
-  seaBedOptions: EnumResDto[] = [];
+  seaBedOptions: PinEnumItemResDTO [] = [];
   selectedSeaBed: number | null = null;
 
   errorMessage: string = '';
@@ -32,9 +32,9 @@ export class InfoPinFormComponent {
   constructor(private enumsSerive: EnumsService) { }
 
   ngOnInit(): void {
-    this.enumsSerive.getSeaBedTypes().subscribe({
-      next: (data) => {
-        this.seaBedOptions = data;
+    this.enumsSerive.getPinEnums().subscribe({
+      next: (enums) => {
+        this.seaBedOptions = enums.seaBedTypes;
       },
       error: (err) => console.error('Erro ao carregar seabed', err)
     });

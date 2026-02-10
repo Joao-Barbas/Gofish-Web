@@ -1,54 +1,34 @@
-﻿using GofishApi.Models;
+﻿using GofishApi.Dtos;
+using GofishApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 
 namespace GofishApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class EnumsController : Controller
+    public class EnumsController : ControllerBase
     {
-        [HttpGet("GetSeaBedTypes")]
-        public IActionResult GetSeaBedTypes()
+        private static IEnumerable<PinEnumItemResDTO> Map<T>() where T : struct, Enum
+            => Enum.GetValues<T>()
+                .Select(e => new PinEnumItemResDTO(Convert.ToInt32(e), e.ToString()));
+
+        [HttpGet("GetPinEnums")]
+        public IActionResult GetPinEnums()
         {
-            var seaBedTypes = Enum.GetValues(typeof(SeaBedType))
-                .Cast<SeaBedType>()
-                .Select(e => new { Id = (int)e, Name = e.ToString() });
+            var data = new PinEnumsResDTO
+            {
+                SeaBedTypes = Map<SeaBedType>(),
+                SpeciesTypes = Map<SpeciesType>(),
+                BaitTypes = Map<BaitType>(),
+                WarnPinTypes = Map<WarnPinType>()
+            };
 
-            return Ok(seaBedTypes);
+            return Ok(new ApiResponse<PinEnumsResDTO>
+            {
+                Success = true,
+                Data = data
+            });
         }
-
-
-        [HttpGet("GetSpeciesTypes")]
-        public IActionResult GetSpeciesTypes()
-        {
-            var speciesTypes = Enum.GetValues(typeof(SpeciesType))
-                .Cast<SpeciesType>()
-                .Select(e => new { Id = (int)e, Name = e.ToString() });
-
-            return Ok(speciesTypes);
-        }
-
-        [HttpGet("GetBaitTypes")]
-        public IActionResult GetBaitTypes()
-        {
-            var baitTypes = Enum.GetValues(typeof(BaitType))
-                .Cast<BaitType>()
-                .Select(e => new { Id = (int)e, Name = e.ToString() });
-
-            return Ok(baitTypes);
-        }
-
-        [HttpGet("GetWarnPinTypes")]
-        public IActionResult GetWarnPinTypes()
-        {
-            var warnTypes = Enum.GetValues(typeof(WarnPinType))
-                .Cast<WarnPinType>()
-                .Select(e => new { Id = (int)e, Name = e.ToString() });
-
-            return Ok(warnTypes);
-        }
-
-
     }
 }

@@ -1,7 +1,7 @@
 import { CommonModule, DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { EnumResDto } from '@gofish/shared/dtos/enums.dto';
+import { PinEnumItemResDTO  } from '@gofish/shared/dtos/enums.dto';
 import { Coords } from '@gofish/shared/models/pin-types';
 import { EnumsService } from '@gofish/shared/services/map-services/enums.service';
 
@@ -18,12 +18,12 @@ export class CatchingPinFormComponent {
 
   description = '';
 
-  speciesTypeOptions: EnumResDto[] = [];
+  speciesTypeOptions: PinEnumItemResDTO[] = [];
   selectedSpeciesType: number | null = null;
 
   hookSize = 0;
 
-  baitTypeOptions: EnumResDto[] = [];
+  baitTypeOptions: PinEnumItemResDTO[] = [];
   selectedBaitType: number | null = null;
 
   image: File | null = null;
@@ -33,18 +33,12 @@ export class CatchingPinFormComponent {
   constructor(private enumService: EnumsService) { }
 
   ngOnInit(): void {
-    this.enumService.getBaitTypes().subscribe({
-      next: (data) => {
-        this.baitTypeOptions = data;
+    this.enumService.getPinEnums().subscribe({
+      next: (enums) => {
+        this.baitTypeOptions = enums.baitTypes;
+        this.speciesTypeOptions = enums.speciesTypes;
       },
-      error: (err) => console.error('Erro ao carregar baittypes', err)
-    });
-
-    this.enumService.getSpeciesTypes().subscribe({
-      next: (data) => {
-        this.speciesTypeOptions = data;
-      },
-      error: (err) => console.error('Erro ao carregar speciestype', err)
+      error: (err) => console.error('Erro ao carregar enums', err)
     });
   }
 
@@ -59,7 +53,7 @@ export class CatchingPinFormComponent {
       return;
     }
 
-    if (this.description.length < length) {
+    if (this.description.length < 5) {
       this.errorMessage = "A descrição tem de ter mais de 5 caracteres"
       return;
     }
