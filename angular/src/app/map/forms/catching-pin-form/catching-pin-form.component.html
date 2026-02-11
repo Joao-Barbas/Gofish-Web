@@ -27,14 +27,19 @@
         <label>Descrição</label>
         <input [(ngModel)]="body" />
 
-        <label>Visibilidade</label>
-        <select [(ngModel)]="selectedVisibilityType" name="visibility">
-          <option [ngValue]="null" disabled>Selecione uma opção</option>
-          <option *ngFor="let option of visibilityOptions" [ngValue]="option.value">
-            {{ option.name }}
-          </option>
-        </select>
+        <div class="options">
+          <div class="header-4">Visibility</div>
+          <div class="custom-radio-group">
+            <ng-container *ngFor="let option of visibilityOptions; let i = index">
+              <input type="radio" class="btn-check" name="visibility" [id]="'vis_' + i" [value]="option.value"
+                [(ngModel)]="selectedVisibilityType" autocomplete="off">
 
+              <label class="btn custom-radio-btn" [for]="'vis_' + i">
+                {{ option.name }}
+              </label>
+            </ng-container>
+          </div>
+        </div>
         <label>Espécies</label>
         <select [(ngModel)]="selectedSpeciesType" name="bait">
           <option [ngValue]="null" disabled>Selecione uma opção</option>

@@ -268,3 +268,38 @@
   font-size: 14px;
   color: #0f1117;
 }
+
+/* Container dos botões */
+.btn-group {
+    width: 100%; /* Faz o grupo ocupar a largura total, se desejar */
+    gap: 10px;    /* Espaçamento entre os botões (remova se quiser eles grudados) */
+}
+
+/* Estilização dos botões (Labels) */
+.btn-check + .btn-outline-primary {
+    border-radius: 8px !important; /* Bordas mais arredondadas e modernas */
+    border: 2px solid #dee2e6;     /* Borda padrão mais suave */
+    color: #6c757d;
+    padding: 10px 20px;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Estado quando o mouse passa por cima (Hover) */
+.btn-check + .btn-outline-primary:hover {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Estado quando está SELECIONADO */
+.btn-check:checked + .btn-outline-primary {
+    background-color: #e7f1ff; /* Azul bem clarinho de fundo */
+    color: #0d6efd;            /* Texto em azul forte */
+    border-color: #0d6efd;     /* Borda em azul forte */
+    font-weight: 600;
+}
+
+/* Remove aquele "brilho/sombra" azul chato ao clicar */
+.btn-check:focus + .btn-outline-primary {
+    box-shadow: none;
+}
