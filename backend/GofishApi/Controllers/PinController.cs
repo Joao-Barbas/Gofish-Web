@@ -40,6 +40,7 @@ namespace GofishApi.Controllers
             [FromQuery] double maxLat,
             [FromQuery] double maxLng
         ) {
+            
             var pins = await _db.Pins
             .Where(p =>
                 (p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng) &&
@@ -50,7 +51,9 @@ namespace GofishApi.Controllers
                 Latitude = p.Latitude,
                 Longitude = p.Longitude,
                 CreatedAt = p.CreatedAt,
-                PinType = p.PinType
+                PinType = p.PinType,
+                ImageUrl = string.IsNullOrEmpty(p.ImageUrl) ? null : $"{p.ImageUrl}",
+                Description = p.Description
             })
             .ToListAsync();
             return Ok(new GetNearbyPinsResDTO { Success = true, Pins = pins });
@@ -92,7 +95,7 @@ namespace GofishApi.Controllers
         [Authorize]
         [HttpPost("CreateCatchPin")]
         [RequestSizeLimit(5_000_000)]
-        public async Task<IActionResult> CreateCatchPin(CreateCatchPinReqDTO dto)
+        public async Task<IActionResult> CreateCatchPin([FromForm] CreateCatchPinReqDTO dto)
         {
             var allowedTypes = new[] { "image/jpeg", "image/png" };
             string? imageUrl = null;

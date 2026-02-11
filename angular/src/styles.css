@@ -505,3 +505,111 @@ body {
   justify-content: center; /* horizontal */
   align-items: center;     /* vertical */
 }
+
+/* TESTE POP UPS PINS */
+.mapboxgl-popup-content {
+  background-color: var(--dark-bg) !important;
+  color: var(--dark-text);
+  border-radius: 1.25rem !important;
+  padding: 0 !important; /* Importante: o card preenche tudo */
+  overflow: hidden;
+  box-shadow: var(--dark-lift-shadow-m) !important;
+  border: none;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: var(--dark-bg) !important;
+  border-bottom-color: var(--dark-bg) !important;
+}
+
+.mapboxgl-popup-close-button {
+  color: var(--dark-text-muted);
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  outline: none;
+}
+.mapboxgl-popup-close-button:hover {
+  background-color: transparent;
+  color: var(--dark-text);
+}
+
+
+.popup-is-tip .mapboxgl-popup-content {
+  width: auto !important;
+  min-width: 120px;
+}
+
+.pin-hover-tip {
+  padding: 0.75rem 1rem;
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.popup-is-card .mapboxgl-popup-content {
+  width: 240px !important;
+}
+
+
+.pin-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.pin-card__image-wrapper {
+  width: 100%;
+  height: 120px;
+  background-color: var(--dark-bg-dark);
+  box-shadow: var(--dark-sunk-shadow-s); /* Efeito de profundidade */
+  overflow: hidden;
+}
+
+.pin-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pin-card__content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pin-card__title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 1.1rem;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.pin-card__coords {
+  font-family: var(--font-main);
+  color: var(--dark-text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.025em;
+}
+.pin-card__description {
+  font-family: var(--font-main); /* Fonte principal Inter */
+  color: var(--dark-text);      /* Cor clara para leitura */
+  font-size: 0.875rem;          /* Tamanho equilibrado (14px) */
+  font-weight: 400;             /* Peso normal para contraste com o h3 bold */
+  margin: 0;                    /* Reset de margens padrão do h2 */
+  line-height: 1.4;             /* Melhor legibilidade para textos descritivos */
+
+  /* Opcional: Limitar a descrição a 2 ou 3 linhas caso o texto seja longo demais */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.pin-card--catching .pin-card__title    { color: var(--success); }
+.pin-card--warning .pin-card__title     { color: var(--warning); }
+.pin-card--info .pin-card__title        { color: var(--info); }
+.pin-card--information .pin-card__title { color: var(--info); }

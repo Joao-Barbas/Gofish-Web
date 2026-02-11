@@ -149,6 +149,9 @@ export class CreatePinComponent {
     if (this.loading) return;
     this.loading = true;
 
+    const file = formData.get('Image');
+    console.log("Ficheiro:", file);
+
     this.pinService.createCatchPin(formData).subscribe({
       next: (res) => {
         this.loading = false;

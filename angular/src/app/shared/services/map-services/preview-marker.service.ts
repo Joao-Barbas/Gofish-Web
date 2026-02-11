@@ -7,25 +7,16 @@ export class PreviewMarkerService {
 
   constructor() { }
 
-  clear(): void {
-    if (this.previewMarker) {
-      this.previewMarker.remove();
-      this.previewMarker = null;
-    }
-  }
-
-
-  set(
-    map: mapboxgl.Map,
-    lng: number,
-    lat: number,
-    createMarker: (lng: number, lat: number) => mapboxgl.Marker
-  ): void {
-
+  set(map: mapboxgl.Map, lng: number, lat: number): void {
     this.clear();
 
-    this.previewMarker = createMarker(lng, lat);
+    this.previewMarker = new mapboxgl.Marker()
+      .setLngLat([lng, lat])
+      .addTo(map);
+  }
 
-    this.previewMarker.addTo(map);
+  clear(): void {
+    this.previewMarker?.remove();
+    this.previewMarker = null;
   }
 }

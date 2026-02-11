@@ -2,10 +2,11 @@ import { environment } from 'environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GetPinsInViewportResDTO } from '@gofish/shared/dtos/pin-marker.dto';
+
 import { CreateCatchPinReqDTO, CreateInfoPinReqDTO, CreatePinResDTO, CreateWarnPinReqDTO } from '@gofish/shared/dtos/create-pin.dto';
 import { Form } from '@angular/forms';
 import { GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
+import { GetNearbyPinsResDTO } from '@gofish/shared/dtos/get-marker.dto';
 
 
 @Injectable({
@@ -24,7 +25,7 @@ export class PinService {
   }
 
   getInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number) {
-    return this.http.get<GetPinsInViewportResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/GetInViewport`,
+    return this.http.get<GetNearbyPinsResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/GetInViewport`,
       { params: { minLat, minLng, maxLat, maxLng } });
   }
 

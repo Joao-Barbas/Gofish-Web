@@ -12,11 +12,11 @@ import { PinfactoryService } from '@gofish/shared/services/map-services/pinfacto
 
 import { CreatePinComponent } from './create-pin/create-pin.component';
 
-import { Coords, PinType } from '@gofish/shared/models/pin-types';
-import { GetPinsInViewportResDTO, PinMarkerDTO } from '@gofish/shared/dtos/pin-marker.dto';
+import { Coords} from '@gofish/shared/models/pin-types';
 import { WaterValidationService } from '@gofish/shared/services/map-services/water-validation.service';
 import { PreviewMarkerService } from '@gofish/shared/services/map-services/preview-marker.service';
 import { MarkerRegistryService } from '@gofish/shared/services/map-services/marker-registry.service';
+import { GetNearbyPinsResDTO } from '@gofish/shared/dtos/get-marker.dto';
 
 
 
@@ -170,7 +170,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selected = coords;
 
     this.previewMarkerService.clear();
-    this.previewMarkerService.set(this.map, coords.longitude, coords.latitude, (lng, lat) => this.pinFactory.createPreviewPin(lng, lat));
+    this.previewMarkerService.set(this.map, coords.longitude, coords.latitude);
 
     this.map.setCenter([coords.longitude, coords.latitude]);
   }
@@ -204,7 +204,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     maxLng: number
   ): void {
     this.pinService.getInViewport(minLat, minLng, maxLat, maxLng).subscribe({
-      next: (res: GetPinsInViewportResDTO) => {
+      next: (res: GetNearbyPinsResDTO) => {
         if (!res.success) return;
         this.markerRegistry.loadPins(this.map, res.pins, (pin) => this.pinFactory.createPin(pin));
       },

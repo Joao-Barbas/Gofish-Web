@@ -11,8 +11,10 @@ namespace GofishApi.Models
         public int? HookSize { get; set; }
         public BaitType? BaitType { get; set; }
         
+        /*
         [Required]
         [MaxLength(500)]
         public required string ImageUrl { get; set; }
+        */
     }
 }

@@ -14,6 +14,8 @@ namespace GofishApi.Dtos
             public double Longitude { get; set; }
             public DateTime CreatedAt { get; set; }
             public PinType PinType { get; set; }
+            public string? ImageUrl { get; set; }
+            public string Description { get; set; }
         }
     }
 }
