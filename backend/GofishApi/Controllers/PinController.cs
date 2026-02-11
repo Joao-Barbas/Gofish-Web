@@ -9,8 +9,11 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
-using static GofishApi.Dtos.GetNearbyPinsResDTO;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace GofishApi.Controllers
 {
@@ -26,7 +29,7 @@ namespace GofishApi.Controllers
             ILogger<PinController> logger,
             AppDbContext db,
             IBlobStorageService blobStorage
-        ) {
+        ){
             _logger = logger;
             _db = db;
             _blobStorage = blobStorage;
@@ -39,24 +42,23 @@ namespace GofishApi.Controllers
             [FromQuery] double minLng,
             [FromQuery] double maxLat,
             [FromQuery] double maxLng
-        ) {
-            
+        ){
             var pins = await _db.Pins
             .Where(p =>
                 (p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng) &&
                 (p.ExpiresAt == null || p.ExpiresAt > DateTime.UtcNow))
-            .Select(p => new NearbyPinDTO
-            {
-                Id = p.Id,
-                Latitude = p.Latitude,
-                Longitude = p.Longitude,
-                CreatedAt = p.CreatedAt,
-                PinType = p.PinType,
-                ImageUrl = string.IsNullOrEmpty(p.ImageUrl) ? null : $"{p.ImageUrl}",
-                Description = p.Description
-            })
+            .Select(p => new ViewportPinDTO(
+                p.Id,
+                p.Latitude,
+                p.Longitude,
+                p.CreatedAt,
+                p.PinType
+            ))
             .ToListAsync();
-            return Ok(new GetNearbyPinsResDTO { Success = true, Pins = pins });
+            return Ok(new ApiResponse<GetViewportPinsResDTO>
+            {
+                Data = new (pins)
+            });
         }
 
 
@@ -97,6 +99,16 @@ namespace GofishApi.Controllers
         [RequestSizeLimit(5_000_000)]
         public async Task<IActionResult> CreateCatchPin(CreateCatchPinReqDTO dto)
         {
+            var userIdString = User.FindFirstValue("UserId");
+            if (userIdString is null)
+            {
+                return Unauthorized(new ApiErrorResponse
+                {
+                    Errors = [new("Unauthorized", "Access denied")]
+                });
+            }
+
+            var userId = Guid.Parse(userIdString);
             var allowedTypes = new[] { "image/jpeg", "image/png" };
             string? imageUrl = null;
 
@@ -115,29 +127,43 @@ namespace GofishApi.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return StatusCode(503, new ApiErrorResponse {
+                    return StatusCode(503, new ApiErrorResponse
+                    {
                         Errors = [new("ImageUploadFailed", ex.Message)]
                     });
                 }
             }
 
-            var pin = new CatchPin // Aqui podias criar um metodo ToCatchPin no CreateCatchPinReqDTO (Se se repetir mais que esta vez)
+            // Aqui podias criar um metodo ToCatchPin no CreateCatchPinReqDTO
+            // Se se repetisse mais que esta vez
+            var newPin = new CatchPin
             {
                 Latitude = dto.Latitude,
                 Longitude = dto.Longitude,
-                Description = dto.Description,
                 CreatedAt = DateTime.UtcNow,
                 ExpiresAt = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
+                Visibility = dto.Visibility,
                 PinType = PinType.Catch,
+                UserId = userId,
+
                 SpeciesType = dto.SpeciesType,
-                HookSize = dto.HookSize,
                 BaitType = dto.BaitType,
-                ImageUrl = imageUrl,
+                HookSize = dto.HookSize,
+
+                Post = new Post
+                {
+                    Body = dto.Body,
+                    ImageUrl = imageUrl,
+                    CreatedAt = DateTime.UtcNow,
+                    UserId = userId
+                }
             };
 
             try
             {
-                _db.Pins.Add(pin);
+                // _db.Posts.Add() and also set PinId on Post is not needed
+                // Entity framework should do it correctly behind the scenes
+                _db.Pins.Add(newPin);
                 await _db.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -150,30 +176,48 @@ namespace GofishApi.Controllers
 
             return Ok(new ApiResponse<CreateCatchPinResDTO>
             {
-                Data = new(Id: pin.Id)
+                Data = new(Id: newPin.Id)
             });
         }
-
 
         [Authorize]
         [HttpPost("CreateInfoPin")]
         public async Task<IActionResult> CreateInfoPin(CreateInfoPinReqDTO dto)
         {
-            var pin = new InfoPin
+            var userIdString = User.FindFirstValue("UserId");
+            if (userIdString is null)
+            {
+                return Unauthorized(new ApiErrorResponse
+                {
+                    Errors = [new("Unauthorized", "Access denied")]
+                });
+            }
+
+            var userId = Guid.Parse(userIdString);
+            var newPin = new InfoPin
             {
                 Latitude = dto.Latitude,
                 Longitude = dto.Longitude,
-                Description = dto.Description,
                 CreatedAt = DateTime.UtcNow,
-                ExpiresAt = null,
-                PinType = PinType.Info,
+                ExpiresAt = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
+                Visibility = dto.Visibility,
+                PinType = PinType.Catch,
+                UserId = userId,
+
                 AccessDifficulty = dto.AccessDifficulty,
                 SeaBedType = dto.SeaBedType,
+
+                Post = new Post
+                {
+                    Body = dto.Body,
+                    CreatedAt = DateTime.UtcNow,
+                    UserId = userId
+                }
             };
 
             try
             {
-                _db.Pins.Add(pin);
+                _db.Pins.Add(newPin);
                 await _db.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -186,7 +230,7 @@ namespace GofishApi.Controllers
 
             return Ok(new ApiResponse<CreateInfoPinResDTO>
             {
-                Data = new(Id: pin.Id)
+                Data = new(Id: newPin.Id)
             });
         }
 
@@ -194,19 +238,39 @@ namespace GofishApi.Controllers
         [HttpPost("CreateWarnPin")]
         public async Task<IActionResult> CreateWarnPin(CreateWarnPinReqDTO dto)
         {
-            var pin = new WarnPin
+            var userIdString = User.FindFirstValue("UserId");
+            if (userIdString is null)
+            {
+                return Unauthorized(new ApiErrorResponse
+                {
+                    Errors = [new("Unauthorized", "Access denied")]
+                });
+            }
+
+            var userId = Guid.Parse(userIdString);
+            var newPin = new WarnPin
             {
                 Latitude = dto.Latitude,
                 Longitude = dto.Longitude,
                 CreatedAt = DateTime.UtcNow,
-                ExpiresAt = DateTime.UtcNow.AddDays(WarnPin.ExpiresInDays),
-                PinType = PinType.Warning,
-                WarnPinType = dto.WarnPinType,
+                ExpiresAt = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
+                Visibility = dto.Visibility,
+                PinType = PinType.Catch,
+                UserId = userId,
+
+                WarningType = dto.WarningType,
+
+                Post = new Post
+                {
+                    Body = dto.Body,
+                    CreatedAt = DateTime.UtcNow,
+                    UserId = userId
+                }
             };
 
             try
             {
-                _db.Pins.Add(pin);
+                _db.Pins.Add(newPin);
                 await _db.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -219,7 +283,7 @@ namespace GofishApi.Controllers
 
             return Ok(new ApiResponse<CreateWarnPinResDTO>
             {
-                Data = new(Id: pin.Id)
+                Data = new(Id: newPin.Id)
             });
         }
 
@@ -273,6 +337,10 @@ namespace GofishApi.Controllers
         [AllowAnonymous]
         [HttpGet("EnumerateSpeciesType")]
         public IActionResult EnumerateSpeciesType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<SpeciesType>() }); }
+
+        [AllowAnonymous]
+        [HttpGet("EnumerateVisibilityType")]
+        public IActionResult EnumerateVisibilityType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<VisibilityType>() }); }
 
         #endregion
     }

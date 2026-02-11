@@ -11,6 +11,7 @@ namespace GofishApi.Data
 
         //public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Pin> Pins { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -28,6 +29,19 @@ namespace GofishApi.Data
 
             builder.Entity<Pin>()
                 .HasIndex(p => new { p.ExpiresAt, p.CreatedAt });
+
+            builder.Entity<Pin>()
+                .HasOne(p => p.Post)
+                .WithOne(p => p.Pin)
+                .HasForeignKey<Post>(p => p.PinId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Post>()
+                .HasIndex(f => f.PinId)
+                .IsUnique();
+
+            // TODO: Database constraints
         }
     }
 }

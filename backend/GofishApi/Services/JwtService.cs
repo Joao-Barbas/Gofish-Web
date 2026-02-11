@@ -36,5 +36,10 @@ namespace GofishApi.Services
             var token = handler.WriteToken(handler.CreateToken(descriptor));
             return Task.FromResult(token);
         }
+
+        // Optional Future Improvement:
+        // Consider adding CreatedByUser navigation everywhere(Pins, Posts, Comments) to simplify queries.
+        // Consider claiming Name or Email in JWT if you need it for auditing.
+        // For revocable tokens, consider refresh tokens stored in DB.
     }
 }

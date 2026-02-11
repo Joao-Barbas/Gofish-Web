@@ -3,59 +3,70 @@
 namespace GofishApi.Dtos
 {
     public record GetPinPreviewResDTO(
+        // Pin
         int Id,
         double Latitude,
         double Longitude,
         DateTime CreatedAt,
         PinType PinType,
-        string Description = "",
+
+        // User
+        Guid AuthorId,
+        string AuthorUserName,
+
+        // Post
+        string? PostBody         = null,
+        string? PostImageUrl     = null,
 
         // Catch pin
-        string? ImageUrl = null,
         SpeciesType? SpeciesType = null,
-        int? HookSize = null,
-        BaitType? BaitType = null,
+        BaitType? BaitType       = null,
+        string? HookSize         = null,
 
         // Info pin
-        int? AccessDifficulty = null,
-        SeaBedType? SeaBedType = null,
+        string? AccessDifficulty = null,
+        SeaBedType? SeaBedType   = null,
 
         // Warn pin
-        WarningType? WarnPinType = null
-    )
-    {
+        WarningType? WarningType = null
+    ){
         public static GetPinPreviewResDTO FromCatchPin(CatchPin pin) => new(
-            Id: pin.Id,
-            Latitude: pin.Latitude,
-            Longitude: pin.Longitude,
-            CreatedAt: pin.CreatedAt,
-            PinType: PinType.Catch,
-            Description: pin.Description ?? "",
-            ImageUrl: pin.ImageUrl,
-            SpeciesType: pin.SpeciesType,
-            HookSize: pin.HookSize,
-            BaitType: pin.BaitType
+            Id:             pin.Id,
+            Latitude:       pin.Latitude,
+            Longitude:      pin.Longitude,
+            CreatedAt:      pin.CreatedAt,
+            PinType:        PinType.Catch,
+            AuthorId:       pin.UserId,
+            AuthorUserName: pin.AppUser.UserName!,
+            PostBody:       pin.Post.Body,
+            PostImageUrl:   pin.Post.ImageUrl,
+            SpeciesType:    pin.SpeciesType,
+            BaitType:       pin.BaitType,
+            HookSize:       pin.HookSize
         );
 
         public static GetPinPreviewResDTO FromInfoPin(InfoPin pin) => new(
-            Id: pin.Id,
-            Latitude: pin.Latitude,
-            Longitude: pin.Longitude,
-            CreatedAt: pin.CreatedAt,
-            PinType: PinType.Info,
-            Description: pin.Description ?? "",
+            Id:               pin.Id,
+            Latitude:         pin.Latitude,
+            Longitude:        pin.Longitude,
+            CreatedAt:        pin.CreatedAt,
+            PinType:          PinType.Catch,
+            AuthorId:         pin.UserId,
+            AuthorUserName:   pin.AppUser.UserName!,
+            PostBody:         pin.Post.Body,
             AccessDifficulty: pin.AccessDifficulty,
-            SeaBedType: pin.SeaBedType
+            SeaBedType:       pin.SeaBedType
         );
 
         public static GetPinPreviewResDTO FromWarnPin(WarnPin pin) => new(
-            Id: pin.Id,
-            Latitude: pin.Latitude,
-            Longitude: pin.Longitude,
-            CreatedAt: pin.CreatedAt,
-            PinType: PinType.Warning,
-            Description: pin.Description ?? "",
-            WarnPinType: pin.WarnPinType
+            Id:             pin.Id,
+            Latitude:       pin.Latitude,
+            Longitude:      pin.Longitude,
+            CreatedAt:      pin.CreatedAt,
+            PinType:        PinType.Catch,
+            AuthorId:       pin.UserId,
+            AuthorUserName: pin.AppUser.UserName!,
+            WarningType:    pin.WarningType
         );
     }
 }

@@ -1,17 +1,31 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GofishApi.Models
+namespace GofishApi.Models;
+
+public abstract class Pin
 {
-    public abstract class Pin
-    {
-        [Key]
-        public int Id { get; set; } = default!;
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public string? Description { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? ExpiresAt { get; set; } // Info pin does not expire
-        public PinType PinType { get; set; }
-        public string? ImageUrl { get; set; }
-    }
+    #region Scalar Properties
+
+    [Key]
+    public int Id { get; set; }
+
+    [Range(-90, 90)]
+    public required double Latitude { get; set; }
+
+    [Range(-180, 180)]
+    public required double Longitude { get; set; }
+
+    public required DateTime CreatedAt { get; set; }
+    public DateTime? ExpiresAt { get; set; } // Info pin does not expire
+    public required VisibilityType Visibility { get; set; }
+    public required PinType PinType { get; set; }
+    public Guid UserId { get; set; }
+
+    #endregion
+    #region Navigation Properties
+
+    public AppUser AppUser { get; set; } = null!;
+    public Post Post { get; set; } = null!;
+
+    #endregion
 }
