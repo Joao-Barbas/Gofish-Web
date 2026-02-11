@@ -95,7 +95,7 @@ namespace GofishApi.Controllers
         [Authorize]
         [HttpPost("CreateCatchPin")]
         [RequestSizeLimit(5_000_000)]
-        public async Task<IActionResult> CreateCatchPin([FromForm] CreateCatchPinReqDTO dto)
+        public async Task<IActionResult> CreateCatchPin(CreateCatchPinReqDTO dto)
         {
             var allowedTypes = new[] { "image/jpeg", "image/png" };
             string? imageUrl = null;
