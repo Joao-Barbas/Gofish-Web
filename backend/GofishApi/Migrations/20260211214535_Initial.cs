@@ -175,7 +175,8 @@ namespace GofishApi.Migrations
                     SpeciesType = table.Column<int>(type: "int", nullable: true),
                     BaitType = table.Column<int>(type: "int", nullable: true),
                     AccessDifficulty = table.Column<int>(type: "int", nullable: true),
-                    SeaBedType = table.Column<int>(type: "int", nullable: true)
+                    SeaBedType = table.Column<int>(type: "int", nullable: true),
+                    WarningType = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

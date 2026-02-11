@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GofishApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260211191542_Initial")]
+    [Migration("20260211214535_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -349,6 +349,9 @@ namespace GofishApi.Migrations
             modelBuilder.Entity("GofishApi.Models.WarnPin", b =>
                 {
                     b.HasBaseType("GofishApi.Models.Pin");
+
+                    b.Property<int>("WarningType")
+                        .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue(2);
                 });

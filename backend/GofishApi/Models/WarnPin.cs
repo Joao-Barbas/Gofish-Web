@@ -9,7 +9,7 @@ public class WarnPin : Pin
     #endregion
     #region Scalar Properties
 
-    public required WarningType WarningType;
+    public required WarningType WarningType { get; set; }
 
     #endregion
 }

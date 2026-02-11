@@ -347,6 +347,9 @@ namespace GofishApi.Migrations
                 {
                     b.HasBaseType("GofishApi.Models.Pin");
 
+                    b.Property<int>("WarningType")
+                        .HasColumnType("int");
+
                     b.HasDiscriminator().HasValue(2);
                 });
 
