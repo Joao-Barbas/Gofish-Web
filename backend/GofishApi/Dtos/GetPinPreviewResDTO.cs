@@ -11,7 +11,7 @@ namespace GofishApi.Dtos
         PinType PinType,
 
         // User
-        Guid AuthorId,
+        string AuthorId,
         string AuthorUserName,
 
         // Post
@@ -37,7 +37,7 @@ namespace GofishApi.Dtos
             CreatedAt:      pin.CreatedAt,
             PinType:        PinType.Catch,
             AuthorId:       pin.UserId,
-            AuthorUserName: pin.AppUser?.UserName ?? "",
+            AuthorUserName: pin.AppUser.UserName!, // App enforces username
             PostBody:       pin.Post.Body,
             PostImageUrl:   pin.Post.ImageUrl,
             SpeciesType:    pin.SpeciesType,
@@ -52,7 +52,7 @@ namespace GofishApi.Dtos
             CreatedAt:        pin.CreatedAt,
             PinType:          PinType.Info,
             AuthorId:         pin.UserId,
-            AuthorUserName:   pin.AppUser?.UserName ?? "",
+            AuthorUserName:   pin.AppUser.UserName!,
             PostBody:         pin.Post.Body,
             AccessDifficulty: pin.AccessDifficulty,
             SeaBedType:       pin.SeaBedType
@@ -65,7 +65,7 @@ namespace GofishApi.Dtos
             CreatedAt:      pin.CreatedAt,
             PinType:        PinType.Warning,
             AuthorId:       pin.UserId,
-            AuthorUserName: pin.AppUser?.UserName ?? "",
+            AuthorUserName: pin.AppUser.UserName!,
             WarningType:    pin.WarningType
         );
     }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GofishApi.Models
 {
@@ -19,14 +20,18 @@ namespace GofishApi.Models
         public required DateTime CreatedAt { get; set; }
         public int UpVotes { get; set; } = 0;
         public int DownVotes { get; set; } = 0;
+
+        [ForeignKey(nameof(AppUser))]
+        public required string UserId { get; set; }
+
+        [ForeignKey(nameof(Pin))]
         public int PinId { get; set; }
-        public Guid UserId { get; set; }
 
         #endregion
         #region Navigation Properties
 
-        public Pin Pin { get; set; } = null!;
         public AppUser AppUser { get; set; } = null!;
+        public Pin Pin { get; set; } = null!;
         // public /* virtual // Maybe? */ ICollection<Comment> Comments { get; set; } = new(); // TODO
 
         #endregion

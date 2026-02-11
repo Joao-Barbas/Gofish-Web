@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GofishApi.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -170,8 +170,7 @@ namespace GofishApi.Migrations
                     ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Visibility = table.Column<int>(type: "int", nullable: false),
                     PinType = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HookSize = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
                     SpeciesType = table.Column<int>(type: "int", nullable: true),
                     BaitType = table.Column<int>(type: "int", nullable: true),
@@ -182,10 +181,11 @@ namespace GofishApi.Migrations
                 {
                     table.PrimaryKey("PK_Pins", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pins_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
+                        name: "FK_Pins_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -199,16 +199,15 @@ namespace GofishApi.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpVotes = table.Column<int>(type: "int", nullable: false),
                     DownVotes = table.Column<int>(type: "int", nullable: false),
-                    PinId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PinId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Posts_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
+                        name: "FK_Posts_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -259,11 +258,6 @@ namespace GofishApi.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pins_AppUserId",
-                table: "Pins",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Pins_ExpiresAt_CreatedAt",
                 table: "Pins",
                 columns: new[] { "ExpiresAt", "CreatedAt" });
@@ -274,15 +268,20 @@ namespace GofishApi.Migrations
                 columns: new[] { "Latitude", "Longitude" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_AppUserId",
-                table: "Posts",
-                column: "AppUserId");
+                name: "IX_Pins_UserId",
+                table: "Pins",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_PinId",
                 table: "Posts",
                 column: "PinId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_UserId",
+                table: "Posts",
+                column: "UserId");
         }
 
         /// <inheritdoc />
