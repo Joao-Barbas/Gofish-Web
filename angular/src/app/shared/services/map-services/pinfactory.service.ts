@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { PinType } from '../../models/pin-types';
 import mapboxgl from 'mapbox-gl';
 import { PinIconService } from './pin-icon.service';
-import { NearbyPinDTO } from '@gofish/shared/dtos/get-marker.dto';
+import { ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
+
 
 
 @Injectable({
@@ -13,7 +14,7 @@ export class PinfactoryService {
 
   constructor(private pinIcon: PinIconService) { }
 
-  createPin(pin: NearbyPinDTO): mapboxgl.Marker {
+  createPin(pin: ViewportPinDTO): mapboxgl.Marker {
     const el = document.createElement('div');
     el.innerHTML = this.pinIcon.getSvgIcon(pin.pinType);
     el.style.cursor = 'pointer';

@@ -1,8 +1,21 @@
 <label>Descrição</label>
-<input [(ngModel)]="description" />
+<input [(ngModel)]="body"/>
+
+<label> Visibilidade</label>
+<select [(ngModel)]="selectedVisibility" name="visibilty">
+  <option [ngValue]="null" disabled>Selecione uma opção</option>
+  <option *ngFor="let option of visibilityOptions" [ngValue]="option.value">
+    {{ option.name }}
+  </option>
+</select>
 
 <label>Dificuldade de acesso</label>
-<input type="number" [(ngModel)]="accessDifficulty" />
+<select [(ngModel)]="selectedAccessDifficulty" name="accessDifficulty">
+  <option [ngValue]="null" disabled>Selecione uma opção</option>
+  <option *ngFor="let option of accessDifficultyOptions" [ngValue]="option.value">
+    {{ option.name }}
+  </option>
+</select>
 
 <label>Tipo de fundo (SeaBedType)</label>
 <select [(ngModel)]="selectedSeaBed" name="seaBed">

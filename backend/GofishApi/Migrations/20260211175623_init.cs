@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GofishApi.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,30 +50,6 @@ namespace GofishApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Pins",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PinType = table.Column<int>(type: "int", nullable: false),
-                    SpeciesType = table.Column<int>(type: "int", nullable: true),
-                    HookSize = table.Column<int>(type: "int", nullable: true),
-                    BaitType = table.Column<int>(type: "int", nullable: true),
-                    ImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    AccessDifficulty = table.Column<int>(type: "int", nullable: true),
-                    SeaBedType = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pins", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -182,6 +158,67 @@ namespace GofishApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Pins",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Visibility = table.Column<int>(type: "int", nullable: false),
+                    PinType = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    HookSize = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    SpeciesType = table.Column<int>(type: "int", nullable: true),
+                    BaitType = table.Column<int>(type: "int", nullable: true),
+                    AccessDifficulty = table.Column<int>(type: "int", nullable: true),
+                    SeaBedType = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pins", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Pins_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Body = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpVotes = table.Column<int>(type: "int", nullable: false),
+                    DownVotes = table.Column<int>(type: "int", nullable: false),
+                    PinId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Posts_Pins_PinId",
+                        column: x => x.PinId,
+                        principalTable: "Pins",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -222,6 +259,11 @@ namespace GofishApi.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Pins_AppUserId",
+                table: "Pins",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Pins_ExpiresAt_CreatedAt",
                 table: "Pins",
                 columns: new[] { "ExpiresAt", "CreatedAt" });
@@ -230,6 +272,17 @@ namespace GofishApi.Migrations
                 name: "IX_Pins_Latitude_Longitude",
                 table: "Pins",
                 columns: new[] { "Latitude", "Longitude" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_AppUserId",
+                table: "Posts",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_PinId",
+                table: "Posts",
+                column: "PinId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -251,10 +304,13 @@ namespace GofishApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Pins");
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Pins");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

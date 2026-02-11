@@ -8,15 +8,15 @@ import { UserService } from '@gofish/shared/services/user.service';
 import { PinService } from '@gofish/shared/services/map-services/pin.service';
 import { PinfactoryService } from '@gofish/shared/services/map-services/pinfactory.service';
 import { CreatePinComponent } from './create-pin/create-pin.component';
-import { Coords} from '@gofish/shared/models/pin-types';
-import { WaterValidationService } from '@gofish/shared/services/map-services/water-validation.service';
+import { Coords } from '@gofish/shared/models/pin-types';
 import { PreviewMarkerService } from '@gofish/shared/services/map-services/preview-marker.service';
 import { MarkerRegistryService } from '@gofish/shared/services/map-services/marker-registry.service';
-import { GetNearbyPinsResDTO } from '@gofish/shared/dtos/get-marker.dto';
 import { PinDetailService } from '@gofish/shared/services/map-services/pin-detail.service';
 import { PinDetailPanelComponent } from './pin-detail-panel/pin-detail-panel.component';
 import { HeaderComponent } from '@gofish/header/header.component';
 import { PortugalValidationService } from '@gofish/shared/services/map-services/portugal-validation.service';
+import { PinPreviewResDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 
@@ -153,10 +153,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
     */
-   if (!this.portugalValidationService.isPortugalAtLngLat(this.map, coords.longitude, coords.latitude)) {
+    if (!this.portugalValidationService.isPortugalAtLngLat(this.map, coords.longitude, coords.latitude)) {
       alert('Essas coordenadas não fazem parte de Portugal.');
       return;
-   }
+    }
 
     this.setSelectedCoords(coords);
     this.disablePickMode();
@@ -213,39 +213,47 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getPinsInViewport(
-  minLat: number,
-  minLng: number,
-  maxLat: number,
-  maxLng: number
-): void {
-  this.pinService.getInViewport(minLat, minLng, maxLat, maxLng).subscribe({
-    next: (res: GetNearbyPinsResDTO) => {
-      if (!res.success) return;
+    minLat: number,
+    minLng: number,
+    maxLat: number,
+    maxLng: number
+  ): void {
+    this.pinService.getInViewport(minLat, minLng, maxLat, maxLng).subscribe({
+      next: (res: ViewportPinsResDTO) => {
+        if (!res.success || !res.data) return;
 
-      this.markerRegistry.loadPins(this.map, res.pins, (pin) => {
-        const marker = this.pinFactory.createPin(pin);
-        const el = marker.getElement();
+        this.markerRegistry.loadPins(this.map, res.data.pins, (pin) => {
+          const marker = this.pinFactory.createPin(pin);
+          const el = marker.getElement();
 
-        el.addEventListener('click', (e) => {
-          e.stopPropagation();
+          el.addEventListener('click', (e) => {
+            e.stopPropagation();
 
-          this.pinDetailService.open(pin);
+            this.pinService.getPinPreview(pin.id).subscribe({
+              next: (res: PinPreviewResDTO) => {
+                if (!res.success) {
+                  console.error('Failed to get pin preview:', res.errors);
+                  return;
+                }
 
-          this.map.flyTo({
-            center: [pin.longitude, pin.latitude],
-            zoom: 15,
-            speed: 1.2,
+                this.pinDetailService.open(res);
+                this.map.flyTo({
+                  center: [pin.longitude, pin.latitude],
+                  zoom: 15,
+                  speed: 1.2,
+                });
+              }
+            });
           });
-        });
 
-        return marker;
-      });
-    },
-    error: (err: any) => {
-      console.error('Erro GetInViewport:', err);
-    },
-  });
-}
+          return marker;
+        });
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Erro GetInViewport:', err);
+      }
+    });
+  }
 
   // =========================
   // Auth

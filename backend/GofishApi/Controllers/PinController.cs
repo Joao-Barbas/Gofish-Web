@@ -67,8 +67,9 @@ namespace GofishApi.Controllers
         public async Task<IActionResult> GetPinPreview(int id)
         {
             var pin = await _db.Pins
-            .Where(p => p.Id == id)
-            .FirstOrDefaultAsync();
+            .Include(p => p.AppUser)
+            .Include(p => p.Post)
+            .FirstOrDefaultAsync(p => p.Id == id);
 
             if (pin == null)
             {
@@ -341,6 +342,10 @@ namespace GofishApi.Controllers
         [AllowAnonymous]
         [HttpGet("EnumerateVisibilityType")]
         public IActionResult EnumerateVisibilityType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<VisibilityType>() }); }
+
+        [AllowAnonymous]
+        [HttpGet("EnumerateAccessDifficultyType")]
+        public IActionResult EnumerateAccessDifficultyType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<AccessDifficultyType>() }); }
 
         #endregion
     }

@@ -2,11 +2,9 @@ import { environment } from 'environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-import { CreateCatchPinReqDTO, CreateInfoPinReqDTO, CreatePinResDTO, CreateWarnPinReqDTO } from '@gofish/shared/dtos/create-pin.dto';
-import { Form } from '@angular/forms';
+import { CreateInfoPinReqDTO, CreatePinResDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, PinPreviewResDTO } from '@gofish/shared/dtos/pin.dto';
 import { GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
-import { GetNearbyPinsResDTO } from '@gofish/shared/dtos/get-marker.dto';
+
 
 
 @Injectable({
@@ -19,15 +17,6 @@ export class PinService {
 
   constructor(private http: HttpClient) { }
 
-  // Ainda nao esta a ser usado
-  getAll(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/GetAll`);
-  }
-
-  getInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number) {
-    return this.http.get<GetNearbyPinsResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/GetInViewport`,
-      { params: { minLat, minLng, maxLat, maxLng } });
-  }
 
   // Create
   createCatchPin(formData: FormData): Observable<CreatePinResDTO> {
@@ -42,9 +31,21 @@ export class PinService {
     return this.http.post<CreateWarnPinReqDTO>(`${environment.baseApiUrl}/${this.baseUrl}/CreateWarnPin`, dto);
   }
 
+  getInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number) {
+    return this.http.get<ViewportPinsResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/GetInViewport`,
+      { params: { minLat, minLng, maxLat, maxLng } });
+  }
+
+  getPinPreview(pinId: number) {
+    return this.http.get<PinPreviewResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/GetPinPreview/${pinId}`);
+  }
+
   enumeratePinType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumeratePinType`);
   enumerateBaitType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateBaitType`);
   enumerateSeaBedType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateSeaBedType`);
   enumerateWarningType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateWarningType`);
   enumerateSpeciesType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateSpeciesType`);
+  enumerateVisibilityType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateVisibilityType`);
+  enumerateAccessDifficultyType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateAccessDifficultyType`);
+
 }

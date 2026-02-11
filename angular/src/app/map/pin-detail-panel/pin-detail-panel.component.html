@@ -22,11 +22,11 @@
     </header>
 
     <div class="pin-preview-click__image-wrapper">
-      <img [src]="pin.imageUrl || 'assets/images/default-preview.png'" class="pin-preview-click__img" alt="Preview">
+      <img [src]="pin.data?.postImageUrl" class="pin-preview-click__img" alt="Preview">
     </div>
 
     <div class="pin-preview-click__body" style="padding: 0 0 12px 0;">
-       <p class="dark-text font-main" style="font-size: 14px; margin: 0;">{{ pin.description }}</p>
+       <p class="dark-text font-main" style="font-size: 14px; margin: 0;">{{ pin.data?.postBody }}</p>
     </div>
 
     <footer class="horizontal-flow align-center-center" style="justify-content: space-between; width: 100%;">

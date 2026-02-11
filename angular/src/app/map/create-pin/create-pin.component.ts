@@ -5,7 +5,7 @@ import { PinService } from '@gofish/shared/services/map-services/pin.service';
 import { CatchingPinFormComponent } from '../forms/catching-pin-form/catching-pin-form.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@gofish/shared/services/auth.service';
-import { CreateCatchPinReqDTO, CreateInfoPinReqDTO, CreateWarnPinReqDTO } from '@gofish/shared/dtos/create-pin.dto';
+import { CreateInfoPinReqDTO, CreateWarnPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { InfoPinFormComponent } from '../forms/info-pin-form/info-pin-form.component';
 import { WarnPinFormComponent } from '../forms/warn-pin-form/warn-pin-form.component';
 

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
 import { PinType } from '@gofish/shared/models/pin-types';
-import { NearbyPinDTO } from '@gofish/shared/dtos/get-marker.dto';
+import { ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
+
+
 
 type Handlers = {
   enter: () => void;
@@ -21,7 +23,7 @@ export class PinHoverPreviewService {
     maxWidth: '300px',
   });
 
-  attach(map: mapboxgl.Map, marker: mapboxgl.Marker, pin: NearbyPinDTO): void {
+  attach(map: mapboxgl.Map, marker: mapboxgl.Marker, pin: ViewportPinDTO): void {
     const el = marker.getElement();
     el.style.cursor = 'pointer';
 
@@ -44,9 +46,9 @@ export class PinHoverPreviewService {
       if (this.isLocked) return;
 
       this.popup.remove();
-      //console.log("LEAVE FUNCIONA");
     };
 
+    /*
     // Não está em uso
     const click = (e: MouseEvent) => {
       e.stopPropagation(); // para impedir que feche o popup imediatamente após abrir
@@ -61,6 +63,7 @@ export class PinHoverPreviewService {
         .removeClassName('popup-is-tip')
         .addTo(map);
     };
+    */
 
     el.addEventListener('mouseenter', enter);
     el.addEventListener('mouseleave', leave);
@@ -93,7 +96,7 @@ export class PinHoverPreviewService {
       delete (window as any).closePinPopup;
     }
   }
-  private buildHtmlEnter(pin: NearbyPinDTO): string {
+  private buildHtmlEnter(pin: ViewportPinDTO): string {
     const typeClass = `pin-card--${pin.pinType}`;
     const title = this.getFriendlyTitle(pin.pinType);
 
@@ -101,7 +104,6 @@ export class PinHoverPreviewService {
     <div class="pin-card ${typeClass}">
       <div class="pin-card__content">
         <h3 class="pin-card__title">${title}</h3>
-        <h2 class="pin-card__description">${pin.description}</h2>
         <div class="pin-card__coords">
           ${pin.latitude.toFixed(5)}, ${pin.longitude.toFixed(5)}
         </div>
@@ -119,14 +121,9 @@ export class PinHoverPreviewService {
     }
   }
 
-
+  /*
   // Não está em uso
   private buildHtmlClick(pin: NearbyPinDTO): string {
-    const imgUrl = pin.imageUrl || 'assets/images/default-preview.png';
-    const username = /*pin.userName ||*/ 'Anonymous';
-    const timeAgo = '9 Hours'; // TODO: Implementar lógica de cálculo de tempo
-    const score = /*pin.score ||*/ 0;
-    const commentsCount = /* pin.commentsCount ||*/ 0;
 
     // Garantir que a função de fechar está disponível globalmente para o onclick
     (window as any).closePinPopup = () => this.closePopup();
@@ -175,8 +172,9 @@ export class PinHoverPreviewService {
     </article>
   `;
   }
+  */
 
-  /*
+/*
   private buildHtml(pin: PinMarkerDTO): string {
     switch (pin.pinType) {
       case PinType.CATCHING:

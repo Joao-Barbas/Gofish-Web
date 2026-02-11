@@ -7,7 +7,7 @@ namespace GofishApi.Dtos
         double Longitude,
         VisibilityType Visibility,
         string? Body,
-        string AccessDifficulty,
+        AccessDifficultyType AccessDifficulty,
         SeaBedType SeaBedType
     );
 }

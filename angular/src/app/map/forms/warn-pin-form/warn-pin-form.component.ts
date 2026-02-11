@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/create-pin.dto';
 import { EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
+import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { Coords } from '@gofish/shared/models/pin-types';
 import { PinService } from '@gofish/shared/services/map-services/pin.service';
 
@@ -17,10 +17,11 @@ export class WarnPinFormComponent {
   @Input() coords!: Coords;
   @Output() submitForm = new EventEmitter<CreateWarnPinReqDTO>();
 
-  description: string = '';
-
+  body: string = '';
+  visibilityOptions: EnumeratorDTO[] = [];
+  selectedVisibility?: number | null;
   warnTypeOptions: EnumeratorDTO[] = [];
-  selectedWarnType: number | null = null;
+  selectedWarnType?: number | null ;
 
   errorMessage = '';
 
@@ -30,6 +31,15 @@ export class WarnPinFormComponent {
     this.pinService.enumerateWarningType().subscribe({
       next: (res: GetEnumeratorResDTO) => {
         this.warnTypeOptions = res.data!.enumerator;
+      },
+      error: (err: HttpErrorResponse) => {
+        var res = err.error as GetEnumeratorResDTO;
+        console.error(res);
+      }
+    });
+    this.pinService.enumerateVisibilityType().subscribe({
+      next: (res: GetEnumeratorResDTO) => {
+        this.visibilityOptions = res.data!.enumerator;
       },
       error: (err: HttpErrorResponse) => {
         var res = err.error as GetEnumeratorResDTO;
@@ -46,7 +56,7 @@ export class WarnPinFormComponent {
       return;
     }
 
-    if (this.description.trim().length < 5) {
+    if (this.body.trim().length < 5) {
       this.errorMessage = 'A descrição deve ter no minimo 5 caracteres!'
       return;
     }
@@ -54,8 +64,9 @@ export class WarnPinFormComponent {
     const warnPinData: CreateWarnPinReqDTO = {
       latitude: this.coords.latitude,
       longitude: this.coords.longitude,
-      description: this.description.trim() || 'Sem descrição',
-      warnPinType: this.selectedWarnType as any
+      visibility: this.selectedVisibility as number,
+      body: this.body.trim() || null,
+      warnPinType: this.selectedWarnType as number
     };
 
     this.submitForm.emit(warnPinData);

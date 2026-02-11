@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CreateInfoPinReqDTO } from '@gofish/shared/dtos/create-pin.dto';
+import { CreateInfoPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
 import { Coords } from '@gofish/shared/models/pin-types';
 import { PinService } from '@gofish/shared/services/map-services/pin.service';
@@ -18,9 +18,11 @@ export class InfoPinFormComponent {
   @Output() submitForm = new EventEmitter<CreateInfoPinReqDTO>();
   @Output() cancel = new EventEmitter<void>();
 
-  description: string = '';
-  accessDifficulty: number = 1;
-
+  body: string = '';
+  accessDifficultyOptions: EnumeratorDTO[] = [];
+  selectedAccessDifficulty: number | null = null;
+  visibilityOptions: EnumeratorDTO[] = [];
+  selectedVisibility: number | null = null;
   seaBedOptions: EnumeratorDTO[] = [];
   selectedSeaBed: number | null = null;
 
@@ -40,12 +42,30 @@ export class InfoPinFormComponent {
         console.error(res);
       }
     });
+    this.pinService.enumerateAccessDifficultyType().subscribe({
+      next: (res: GetEnumeratorResDTO) => {
+        this.accessDifficultyOptions = res.data!.enumerator;
+      },
+      error: (err: HttpErrorResponse) => {
+        var res = err.error as GetEnumeratorResDTO;
+        console.error(res);
+      }
+    });
+    this.pinService.enumerateVisibilityType().subscribe({
+      next: (res: GetEnumeratorResDTO) => {
+        this.visibilityOptions = res.data!.enumerator;
+      },
+      error: (err: HttpErrorResponse) => {
+        var res = err.error as GetEnumeratorResDTO;
+        console.error(res);
+      }
+    });
   }
 
   onSubmit() {
     this.errorMessage = '';
 
-    if (this.description.trim().length < 5) {
+    if (this.body.trim().length < 5) {
       this.errorMessage = 'A descrição deve ter no minimo 5 caracteres!'
       return;
     }
@@ -58,11 +78,14 @@ export class InfoPinFormComponent {
     this.submitForm.emit({
       latitude: this.coords.latitude,
       longitude: this.coords.longitude,
-      description: this.description.trim() || 'Sem descrição',
-      accessDifficulty: this.accessDifficulty,
-      seaBedType: this.selectedSeaBed as any
+      visibility: this.selectedVisibility as number,
+      body: this.body.trim() || null,
+      accessDifficulty: this.selectedAccessDifficulty as number,
+      seaBedType: this.selectedSeaBed as number
     });
   }
+
+
 
   /* onSubmit(): void {
     if (!this.coords) {

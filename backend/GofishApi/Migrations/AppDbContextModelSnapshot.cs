@@ -93,7 +93,7 @@ namespace GofishApi.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("GofishApi.Models.PinBase", b =>
+            modelBuilder.Entity("GofishApi.Models.Pin", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,11 +101,11 @@ namespace GofishApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ExpiresAt")
                         .HasColumnType("datetime2");
@@ -119,7 +119,15 @@ namespace GofishApi.Migrations
                     b.Property<int>("PinType")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Visibility")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("ExpiresAt", "CreatedAt");
 
@@ -130,6 +138,50 @@ namespace GofishApi.Migrations
                     b.HasDiscriminator<int>("PinType");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("GofishApi.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Body")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DownVotes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<int>("PinId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UpVotes")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("PinId")
+                        .IsUnique();
+
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -267,18 +319,14 @@ namespace GofishApi.Migrations
 
             modelBuilder.Entity("GofishApi.Models.CatchPin", b =>
                 {
-                    b.HasBaseType("GofishApi.Models.PinBase");
+                    b.HasBaseType("GofishApi.Models.Pin");
 
                     b.Property<int?>("BaitType")
                         .HasColumnType("int");
 
-                    b.Property<int?>("HookSize")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                    b.Property<string>("HookSize")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<int?>("SpeciesType")
                         .HasColumnType("int");
@@ -288,7 +336,7 @@ namespace GofishApi.Migrations
 
             modelBuilder.Entity("GofishApi.Models.InfoPin", b =>
                 {
-                    b.HasBaseType("GofishApi.Models.PinBase");
+                    b.HasBaseType("GofishApi.Models.Pin");
 
                     b.Property<int>("AccessDifficulty")
                         .HasColumnType("int");
@@ -301,9 +349,35 @@ namespace GofishApi.Migrations
 
             modelBuilder.Entity("GofishApi.Models.WarnPin", b =>
                 {
-                    b.HasBaseType("GofishApi.Models.PinBase");
+                    b.HasBaseType("GofishApi.Models.Pin");
 
                     b.HasDiscriminator().HasValue(2);
+                });
+
+            modelBuilder.Entity("GofishApi.Models.Pin", b =>
+                {
+                    b.HasOne("GofishApi.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("GofishApi.Models.Post", b =>
+                {
+                    b.HasOne("GofishApi.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("GofishApi.Models.Pin", "Pin")
+                        .WithOne("Post")
+                        .HasForeignKey("GofishApi.Models.Post", "PinId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Pin");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -354,6 +428,12 @@ namespace GofishApi.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GofishApi.Models.Pin", b =>
+                {
+                    b.Navigation("Post")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
