@@ -94,16 +94,11 @@ export class PinHoverPreviewService {
     }
   }
   private buildHtmlEnter(pin: NearbyPinDTO): string {
-    const imgUrl = pin.imageUrl;
-    console.log(imgUrl);
     const typeClass = `pin-card--${pin.pinType}`;
     const title = this.getFriendlyTitle(pin.pinType);
 
     return `
     <div class="pin-card ${typeClass}">
-      <div class="pin-card__image-wrapper">
-        <img src="${imgUrl}" class="pin-card__img" alt="Spot">
-      </div>
       <div class="pin-card__content">
         <h3 class="pin-card__title">${title}</h3>
         <h2 class="pin-card__description">${pin.description}</h2>
@@ -117,10 +112,10 @@ export class PinHoverPreviewService {
 
   private getFriendlyTitle(type: PinType): string {
     switch (type) {
-      case PinType.CATCHING: return 'Zona de Caça';
-      case PinType.INFORMATION: return 'Informação';
-      case PinType.WARNING: return 'Aviso';
-      default: return 'Spot Details';
+      case PinType.CATCHING: return 'Pin de Caça';
+      case PinType.INFORMATION: return 'Pin Informação';
+      case PinType.WARNING: return 'Pin de Aviso';
+      default: return 'DEFAULT';
     }
   }
 

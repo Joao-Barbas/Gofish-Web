@@ -16,6 +16,7 @@ import { GetNearbyPinsResDTO } from '@gofish/shared/dtos/get-marker.dto';
 import { PinDetailService } from '@gofish/shared/services/map-services/pin-detail.service';
 import { PinDetailPanelComponent } from './pin-detail-panel/pin-detail-panel.component';
 import { HeaderComponent } from '@gofish/header/header.component';
+import { PortugalValidationService } from '@gofish/shared/services/map-services/portugal-validation.service';
 
 
 
@@ -44,7 +45,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     private authService: AuthService,
     private userService: UserService,
     private pinFactory: PinfactoryService,
-    private waterValidationService: WaterValidationService,
+    //private waterValidationService: WaterValidationService,
+    private portugalValidationService: PortugalValidationService,
     private previewMarkerService: PreviewMarkerService,
     private markerRegistry: MarkerRegistryService,
     private pinDetailService: PinDetailService
@@ -67,7 +69,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/goncalopro2/cmkpidm7e003601s526nugcv1',
+      //style: 'mapbox://styles/goncalopro2/cmkpidm7e003601s526nugcv1',
+      style: 'mapbox://styles/goncalopro2/cmli4rxhm000q01qzfnbzg3fe',
       center: [-8.8882, 38.5243],
       zoom: 13,
       maxZoom: 13,
@@ -94,10 +97,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   onMapClick(e: mapboxgl.MapMouseEvent): void {
     if (!this.pickingOnMap) return;
 
-    const isWater = this.waterValidationService.isWaterAtPoint(this.map, e.point);
-
+    //const isWater = this.waterValidationService.isWaterAtPoint(this.map, e.point);
+    /*
     if (!isWater) {
       console.log('Only create pins on water.');
+      return;
+    }
+    */
+    const isPortugal = this.portugalValidationService.isPortugalAtPoint(this.map, e.point);
+    if (!isPortugal) {
+      console.log('Os pins só podem ser criados em Portugal.');
       return;
     }
 
@@ -138,10 +147,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   onCoordsSelected(coords: Coords): void {
+    /*
     if (!this.waterValidationService.isWaterAtLngLat(this.map, coords.longitude, coords.latitude)) {
       alert('Selected coordinates are not on water. Please select a valid location.');
       return;
     }
+    */
+   if (!this.portugalValidationService.isPortugalAtLngLat(this.map, coords.longitude, coords.latitude)) {
+      alert('Essas coordenadas não fazem parte de Portugal.');
+      return;
+   }
 
     this.setSelectedCoords(coords);
     this.disablePickMode();

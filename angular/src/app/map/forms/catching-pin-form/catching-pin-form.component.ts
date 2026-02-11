@@ -65,7 +65,7 @@ export class CatchingPinFormComponent {
       return;
     }
 
-    if (this.description.length < length) {
+    if (this.description.length < 5) {
       this.errorMessage = "A descrição tem de ter mais de 5 caracteres"
       return;
     }

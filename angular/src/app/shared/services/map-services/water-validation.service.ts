@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
 
+// Nao esta em uso
 @Injectable({ providedIn: 'root' })
 export class WaterValidationService {
 
