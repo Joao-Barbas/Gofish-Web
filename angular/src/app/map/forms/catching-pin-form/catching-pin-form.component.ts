@@ -17,16 +17,14 @@ export class CatchingPinFormComponent {
   @Output() submitForm = new EventEmitter<FormData>();
   @Output() cancel = new EventEmitter<void>();
 
-  description = '';
-
+  body = '';
+  visibilityOptions: EnumeratorDTO[] = [];
+  selectedVisibilityType!: number;
   speciesTypeOptions: EnumeratorDTO[] = [];
   selectedSpeciesType: number | null = null;
-
   hookSize = 0;
-
   baitTypeOptions: EnumeratorDTO[] = [];
   selectedBaitType: number | null = null;
-
   image: File | null = null;
 
   errorMessage: string = '';
@@ -52,6 +50,15 @@ export class CatchingPinFormComponent {
         console.error(res)
       }
     });
+    this.pinService.enumerateVisibilityType().subscribe({
+      next: (res: GetEnumeratorResDTO) => {
+        this.visibilityOptions = res.data!.enumerator;
+      },
+      error: (err: HttpErrorResponse) => {
+        var res = err.error as GetEnumeratorResDTO;
+        console.error(res)
+      }
+    });
   }
 
   onSubmit(): void {
@@ -65,23 +72,8 @@ export class CatchingPinFormComponent {
       return;
     }
 
-    if (this.description.length < 5) {
-      this.errorMessage = "A descrição tem de ter mais de 5 caracteres"
-      return;
-    }
-
-    if (this.selectedSpeciesType === null) {
-      this.errorMessage = 'Tem que selecionar o tipo da especie';
-      return;
-    }
-
-    if (this.selectedBaitType === null) {
-      this.errorMessage = 'Tem que selecionar o tipo de isco utilizado';
-      return;
-    }
-
-    if (this.hookSize <= 0) {
-      this.errorMessage = 'Tamanho do anzol inválido, selecione um válido'
+    if (this.selectedVisibilityType === null) {
+      this.errorMessage = 'Tem de escolher um tipo de visibilidade'
       return;
     }
 
@@ -90,11 +82,18 @@ export class CatchingPinFormComponent {
 
     formData.append('Latitude', this.coords.latitude.toString());
     formData.append('Longitude', this.coords.longitude.toString());
-    formData.append('Description', this.description);
+    formData.append('Visibility', this.selectedVisibilityType.toString());
+    formData.append('Body', this.body);
     formData.append('Image', this.image);
-    formData.append('SpeciesType', this.selectedSpeciesType.toString());
-    formData.append('HookSize', this.hookSize.toString());
-    formData.append('BaitType', this.selectedBaitType.toString());
+    if (this.selectedSpeciesType !== null && this.selectedSpeciesType !== undefined) {
+      formData.append('SpeciesType', this.selectedSpeciesType.toString());
+    }
+    if (this.hookSize !== null && this.hookSize !== undefined) {
+      formData.append('HookSize', this.hookSize.toString());
+    }
+    if (this.selectedBaitType !== null && this.selectedBaitType !== undefined) {
+      formData.append('BaitType', this.selectedBaitType.toString());
+    }
 
     if (!formData) return;
 

@@ -2,7 +2,7 @@ import { environment } from 'environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateInfoPinReqDTO, CreatePinResDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, PinPreviewResDTO } from '@gofish/shared/dtos/pin.dto';
+import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, PinPreviewResDTO, CreatePinResDTO } from '@gofish/shared/dtos/pin.dto';
 import { GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
 
 
@@ -27,8 +27,8 @@ export class PinService {
     return this.http.post<CreatePinResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/CreateInfoPin`, dto);
   }
 
-  createWarningPin(dto: CreateWarnPinReqDTO): Observable<CreateWarnPinReqDTO> {
-    return this.http.post<CreateWarnPinReqDTO>(`${environment.baseApiUrl}/${this.baseUrl}/CreateWarnPin`, dto);
+  createWarningPin(dto: CreateWarnPinReqDTO): Observable<CreatePinResDTO> {
+    return this.http.post<CreatePinResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/CreateWarnPin`, dto);
   }
 
   getInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number) {

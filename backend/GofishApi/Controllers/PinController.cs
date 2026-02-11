@@ -68,6 +68,7 @@ namespace GofishApi.Controllers
         {
             var pin = await _db.Pins
             .Include(p => p.AppUser)
+            .Include(p => p.AppUser)
             .Include(p => p.Post)
             .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -98,7 +99,7 @@ namespace GofishApi.Controllers
         [Authorize]
         [HttpPost("CreateCatchPin")]
         [RequestSizeLimit(5_000_000)]
-        public async Task<IActionResult> CreateCatchPin(CreateCatchPinReqDTO dto)
+        public async Task<IActionResult> CreateCatchPin([FromForm] CreateCatchPinReqDTO dto)
         {
             var userIdString = User.FindFirstValue("UserId");
             if (userIdString is null)

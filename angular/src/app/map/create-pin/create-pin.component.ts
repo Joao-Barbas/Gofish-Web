@@ -14,9 +14,9 @@ type Step = 'idle' | 'chooseLocation' | 'chooseType' | 'fillForm';
 
 // Ver se da para colocar noutro sitio
 type PinCreatedEvent =
-  | { type: PinType.CATCHING; formData?: FormData; res: any}
-  | { type: PinType.INFORMATION; dto: CreateInfoPinReqDTO; res: any }
-  | { type: PinType.WARNING; dto: CreateInfoPinReqDTO; res: any };
+  | { type: PinType.Catch; formData?: FormData; res: any}
+  | { type: PinType.Info; dto: CreateInfoPinReqDTO; res: any }
+  | { type: PinType.Warning; dto: CreateWarnPinReqDTO; res: any };
 
 @Component({
   selector: 'app-create-pin',
@@ -155,14 +155,12 @@ export class CreatePinComponent {
     this.pinService.createCatchPin(formData).subscribe({
       next: (res) => {
         this.loading = false;
-
-        this.creationComplete.emit({type: PinType.CATCHING, res});
-
+        this.creationComplete.emit({type: PinType.Catch, res});
         this.submitCreatingPin();
       },
       error: (err) => {
         this.loading = false;
-        this.creationFailed.emit('Error creating CatchingPin');
+        this.creationFailed.emit('Error creating CatchingPin' + err.message);
       }
     });
   }
@@ -174,7 +172,7 @@ export class CreatePinComponent {
     this.pinService.createInfoPin(dto).subscribe({
       next: (res) => {
         this.loading = false;
-        this.creationComplete.emit({ type: PinType.INFORMATION, dto, res } as any);
+        this.creationComplete.emit({ type: PinType.Info, dto, res } as any);
         this.submitCreatingPin();
       },
       error: (err) => {
@@ -191,7 +189,7 @@ export class CreatePinComponent {
     this.pinService.createWarningPin(dto).subscribe({
       next: (res) => {
         this.loading = false;
-        this.creationComplete.emit({ type: PinType.WARNING, dto, res } as any);
+        this.creationComplete.emit({ type: PinType.Warning, dto, res } as any);
         this.submitCreatingPin();
       },
       error: (err) => {

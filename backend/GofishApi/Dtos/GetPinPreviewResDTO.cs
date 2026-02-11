@@ -50,7 +50,7 @@ namespace GofishApi.Dtos
             Latitude:         pin.Latitude,
             Longitude:        pin.Longitude,
             CreatedAt:        pin.CreatedAt,
-            PinType:          PinType.Catch,
+            PinType:          PinType.Info,
             AuthorId:         pin.UserId,
             AuthorUserName:   pin.AppUser?.UserName ?? "",
             PostBody:         pin.Post.Body,
@@ -63,7 +63,7 @@ namespace GofishApi.Dtos
             Latitude:       pin.Latitude,
             Longitude:      pin.Longitude,
             CreatedAt:      pin.CreatedAt,
-            PinType:        PinType.Catch,
+            PinType:        PinType.Warning,
             AuthorId:       pin.UserId,
             AuthorUserName: pin.AppUser?.UserName ?? "",
             WarningType:    pin.WarningType

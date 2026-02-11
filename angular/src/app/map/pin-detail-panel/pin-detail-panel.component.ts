@@ -1,5 +1,6 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { PinType } from '@gofish/shared/models/pin-types';
 import { PinDetailService } from '@gofish/shared/services/map-services/pin-detail.service';
 
 
@@ -11,8 +12,10 @@ import { PinDetailService } from '@gofish/shared/services/map-services/pin-detai
 })
 export class PinDetailPanelComponent {
   selectedPin$ = this.pinDetailService.selectedPin$;
+  public pinType = PinType;
 
-  constructor(private pinDetailService: PinDetailService) { }
+  constructor(private pinDetailService: PinDetailService,
+  ) { }
 
 ngOnInit(): void { }
 

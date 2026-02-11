@@ -25,7 +25,15 @@
         <Label>Insira a sua imagem</Label>
         <input type="file" accept="image/" (change)="onFileSelected($event)" />
         <label>Descrição</label>
-        <input [(ngModel)]="description" />
+        <input [(ngModel)]="body" />
+
+        <label>Visibilidade</label>
+        <select [(ngModel)]="selectedVisibilityType" name="visibility">
+          <option [ngValue]="null" disabled>Selecione uma opção</option>
+          <option *ngFor="let option of visibilityOptions" [ngValue]="option.value">
+            {{ option.name }}
+          </option>
+        </select>
 
         <label>Espécies</label>
         <select [(ngModel)]="selectedSpeciesType" name="bait">
