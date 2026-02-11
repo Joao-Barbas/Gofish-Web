@@ -8,9 +8,9 @@
         </div>
 
         <div class="horizontal-flow gap-4 align-center-center">
-          <span class="dark-text text-medium font-main" style="font-size: 14px;">{{ 'Anonymous' }}</span>
+          <span class="dark-text text-medium font-main" style="font-size: 14px;">{{ pin.data?.authorUserName }}</span>
           <span class="dark-text-muted" style="font-size: 12px;">•</span>
-          <span class="dark-text-muted font-main" style="font-size: 12px;">9 Hours ago</span>
+          <span class="dark-text-muted font-main" style="font-size: 12px;">{{ pin.data?.createdAt | timeAgo }}</span>
         </div>
       </div>
 
