@@ -67,10 +67,11 @@ namespace GofishApi.Controllers
         public async Task<IActionResult> GetPinPreview(int id)
         {
             var pin = await _db.Pins
+            .Where(p => p.Id == id)
             .Include(p => p.AppUser)
             .Include(p => p.AppUser)
             .Include(p => p.Post)
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync();
 
             if (pin == null)
             {
@@ -101,8 +102,8 @@ namespace GofishApi.Controllers
         [RequestSizeLimit(5_000_000)]
         public async Task<IActionResult> CreateCatchPin([FromForm] CreateCatchPinReqDTO dto)
         {
-            var userIdString = User.FindFirstValue("UserId");
-            if (userIdString is null)
+            var userId = User.FindFirstValue("UserId");
+            if (userId is null)
             {
                 return Unauthorized(new ApiErrorResponse
                 {
@@ -110,7 +111,6 @@ namespace GofishApi.Controllers
                 });
             }
 
-            var userId = Guid.Parse(userIdString);
             var allowedTypes = new[] { "image/jpeg", "image/png" };
             string? imageUrl = null;
 
@@ -186,8 +186,8 @@ namespace GofishApi.Controllers
         [HttpPost("CreateInfoPin")]
         public async Task<IActionResult> CreateInfoPin(CreateInfoPinReqDTO dto)
         {
-            var userIdString = User.FindFirstValue("UserId");
-            if (userIdString is null)
+            var userId = User.FindFirstValue("UserId");
+            if (userId is null)
             {
                 return Unauthorized(new ApiErrorResponse
                 {
@@ -195,7 +195,6 @@ namespace GofishApi.Controllers
                 });
             }
 
-            var userId = Guid.Parse(userIdString);
             var newPin = new InfoPin
             {
                 Latitude = dto.Latitude,
@@ -240,8 +239,8 @@ namespace GofishApi.Controllers
         [HttpPost("CreateWarnPin")]
         public async Task<IActionResult> CreateWarnPin(CreateWarnPinReqDTO dto)
         {
-            var userIdString = User.FindFirstValue("UserId");
-            if (userIdString is null)
+            var userId = User.FindFirstValue("UserId");
+            if (userId is null)
             {
                 return Unauthorized(new ApiErrorResponse
                 {
@@ -249,7 +248,6 @@ namespace GofishApi.Controllers
                 });
             }
 
-            var userId = Guid.Parse(userIdString);
             var newPin = new WarnPin
             {
                 Latitude = dto.Latitude,

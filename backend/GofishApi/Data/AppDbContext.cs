@@ -31,6 +31,12 @@ namespace GofishApi.Data
                 .HasIndex(p => new { p.ExpiresAt, p.CreatedAt });
 
             builder.Entity<Pin>()
+                .HasOne(p => p.AppUser)
+                .WithMany()
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Pin>()
                 .HasOne(p => p.Post)
                 .WithOne(p => p.Pin)
                 .HasForeignKey<Post>(p => p.PinId)
@@ -40,6 +46,12 @@ namespace GofishApi.Data
             builder.Entity<Post>()
                 .HasIndex(f => f.PinId)
                 .IsUnique();
+
+            builder.Entity<Post>()
+                .HasOne(p => p.AppUser)
+                .WithMany()
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             // TODO: Database constraints
         }

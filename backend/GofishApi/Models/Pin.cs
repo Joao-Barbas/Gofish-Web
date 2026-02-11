@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GofishApi.Models;
 
@@ -19,7 +20,9 @@ public abstract class Pin
     public DateTime? ExpiresAt { get; set; } // Info pin does not expire
     public required VisibilityType Visibility { get; set; }
     public required PinType PinType { get; set; }
-    public Guid UserId { get; set; }
+
+    [ForeignKey(nameof(AppUser))]
+    public required string UserId { get; set; }
 
     #endregion
     #region Navigation Properties
