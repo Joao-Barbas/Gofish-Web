@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GofishApi.Models
 {
-    public class CatchPin : PinBase
+    public class CatchPin : Pin
     {
         public const int ExpiresInDays = 7;
 

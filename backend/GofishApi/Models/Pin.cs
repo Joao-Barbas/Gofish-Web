@@ -1,9 +1,8 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace GofishApi.Models
 {
-    public abstract class PinBase
+    public abstract class Pin
     {
         [Key]
         public int Id { get; set; } = default!;
