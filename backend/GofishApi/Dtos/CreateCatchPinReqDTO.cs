@@ -2,14 +2,16 @@
 
 namespace GofishApi.Dtos
 {
-    public class CreateCatchPinReqDTO
-    {
-        public required double Latitude { get; set; }
-        public required double Longitude { get; set; }
-        public required string Description { get; set; }
-        public required IFormFile Image { get; set; }
-        public required SpeciesType SpeciesType { get; set; }
-        public required int HookSize { get; set; }
-        public required BaitType BaitType { get; set; }
-    }
+    // TODO: So o utilizador logado com este
+    // Guid consegue chamar metodos com este DTO
+    public record CreateCatchPinReqDTO (
+        double Latitude,
+        double Longitude,
+        VisibilityType Visibility,
+        string? Body,
+        IFormFile Image,
+        SpeciesType? SpeciesType,
+        string? HookSize,
+        BaitType? BaitType
+    );
 }
