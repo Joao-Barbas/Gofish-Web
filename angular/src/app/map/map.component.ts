@@ -2,28 +2,27 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
-import mapboxgl, { MapMouseEvent } from 'mapbox-gl';
-
+import mapboxgl from 'mapbox-gl';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { UserService } from '@gofish/shared/services/user.service';
 import { PinService } from '@gofish/shared/services/map-services/pin.service';
 import { PinfactoryService } from '@gofish/shared/services/map-services/pinfactory.service';
-
 import { CreatePinComponent } from './create-pin/create-pin.component';
-
 import { Coords} from '@gofish/shared/models/pin-types';
 import { WaterValidationService } from '@gofish/shared/services/map-services/water-validation.service';
 import { PreviewMarkerService } from '@gofish/shared/services/map-services/preview-marker.service';
 import { MarkerRegistryService } from '@gofish/shared/services/map-services/marker-registry.service';
 import { GetNearbyPinsResDTO } from '@gofish/shared/dtos/get-marker.dto';
+import { PinDetailService } from '@gofish/shared/services/map-services/pin-detail.service';
+import { PinDetailPanelComponent } from './pin-detail-panel/pin-detail-panel.component';
+import { HeaderComponent } from '@gofish/header/header.component';
 
 
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, FormsModule, CreatePinComponent],
+  imports: [CommonModule, FormsModule, CreatePinComponent, PinDetailPanelComponent, HeaderComponent],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
 })
@@ -47,7 +46,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     private pinFactory: PinfactoryService,
     private waterValidationService: WaterValidationService,
     private previewMarkerService: PreviewMarkerService,
-    private markerRegistry: MarkerRegistryService
+    private markerRegistry: MarkerRegistryService,
+    private pinDetailService: PinDetailService
   ) { }
 
   // =========================
@@ -198,21 +198,39 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getPinsInViewport(
-    minLat: number,
-    minLng: number,
-    maxLat: number,
-    maxLng: number
-  ): void {
-    this.pinService.getInViewport(minLat, minLng, maxLat, maxLng).subscribe({
-      next: (res: GetNearbyPinsResDTO) => {
-        if (!res.success) return;
-        this.markerRegistry.loadPins(this.map, res.pins, (pin) => this.pinFactory.createPin(pin));
-      },
-      error: (err: any) => {
-        console.error('Erro GetInViewport:', err);
-      },
-    });
-  }
+  minLat: number,
+  minLng: number,
+  maxLat: number,
+  maxLng: number
+): void {
+  this.pinService.getInViewport(minLat, minLng, maxLat, maxLng).subscribe({
+    next: (res: GetNearbyPinsResDTO) => {
+      if (!res.success) return;
+
+      this.markerRegistry.loadPins(this.map, res.pins, (pin) => {
+        const marker = this.pinFactory.createPin(pin);
+        const el = marker.getElement();
+
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+
+          this.pinDetailService.open(pin);
+
+          this.map.flyTo({
+            center: [pin.longitude, pin.latitude],
+            zoom: 15,
+            speed: 1.2,
+          });
+        });
+
+        return marker;
+      });
+    },
+    error: (err: any) => {
+      console.error('Erro GetInViewport:', err);
+    },
+  });
+}
 
   // =========================
   // Auth

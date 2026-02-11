@@ -613,3 +613,89 @@ body {
 .pin-card--warning .pin-card__title     { color: var(--warning); }
 .pin-card--info .pin-card__title        { color: var(--info); }
 .pin-card--information .pin-card__title { color: var(--info); }
+
+/* Container principal ajustado para Mapbox */
+.popup-is-card .mapboxgl-popup-content {
+  width: 408px !important; /* Largura exata do Figma */
+  background-color: var(--dark-bg) !important;
+  border-radius: 12px !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.pin-preview-click {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  width: 100%;
+  height: 328px; /* Altura exata do Figma */
+  box-sizing: border-box;
+}
+
+/* Header */
+.pin-preview-click__header {
+  justify-content: space-between;
+  width: 100%;
+  height: 32px;
+}
+
+.pin-preview-click__avatar {
+  width: 32px;
+  height: 32px;
+  background-color: var(--dark-text-muted);
+  border-radius: 50%;
+}
+
+/* Imagem Centralizada */
+.pin-preview-click__image-wrapper {
+  flex: 1;
+  width: 100%;
+  background-color: var(--dark-bg-dark);
+  box-shadow: var(--dark-sunk-shadow-s);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.pin-preview-click__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Footer e Badges */
+.pin-preview-click__footer {
+  justify-content: space-between;
+  width: 100%;
+}
+
+.pin-preview-click__badge {
+  background-color: var(--dark-bg-light);
+  box-shadow: var(--dark-lift-shadow-s);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+/* Botões de ícone */
+.pin-preview-click__close-btn,
+.pin-preview-click__share-btn {
+  background: transparent;
+  border: none;
+  color: var(--dark-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+
+.pin-preview-click__close-btn:hover,
+.pin-preview-click__share-btn:hover {
+  color: var(--dark-text);
+}
+
+/* Esconder o botão X nativo do Mapbox para usar o do design */
+.popup-is-card .mapboxgl-popup-close-button {
+  display: none;
+}

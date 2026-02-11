@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import mapboxgl from 'mapbox-gl';
-
-import { Pin } from '@gofish/shared/models/pin.model';
 import { PinHoverPreviewService } from './pin-hover-preview.service';
 import { NearbyPinDTO } from '@gofish/shared/dtos/get-marker.dto';
 
