@@ -2,11 +2,13 @@
 <main class="dark-bg figma-bg-dark-temporary font-main">
 
   <div id="map"></div>
-  <app-create-pin [selectedCoords]="selected" (requestPickOnMap)="enablePickMode()"
+  <app-create-pin
+    class="gf-floating-action"
+    [selectedCoords]="selected" (requestPickOnMap)="enablePickMode()"
     (coordsSelected)="onCoordsSelected($event)" (creationComplete)="onPinCreated()"
     (creationFailed)="onPinCreateFailed($event)">
   </app-create-pin>
 
-  <app-pin-detail-panel></app-pin-detail-panel>
+  <app-pin-detail-panel ></app-pin-detail-panel>
 
 </main>

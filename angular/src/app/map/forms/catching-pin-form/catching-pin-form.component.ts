@@ -99,6 +99,7 @@ export class CatchingPinFormComponent {
 
     this.submitForm.emit(formData);
   }
+  
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;

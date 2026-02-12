@@ -2,9 +2,6 @@
   <div class="menu">
     <!-- HEADER -->
     <div class="header-2">
-      <button type="button" class="close-button" (click)="cancel.emit()">
-        ✕
-      </button>
       <p class="p">O que é que apanhaste hoje campeão?</p>
     </div>
 
@@ -14,7 +11,7 @@
     <div class="image-textbox">
       <div class="header-3">Content</div>
 
-      <!-- (Opcional) zona de imagem - mantém se quiseres o UI -->
+      <!-- zona de imagem -->
       <div class="image-drag-drop">
         <div class="upload-button"></div>
         <div class="drag-and-drop">Drag And Drop</div>
@@ -24,48 +21,9 @@
       <div class="textbox">
         <Label>Insira a sua imagem</Label>
         <input type="file" accept="image/" (change)="onFileSelected($event)" />
+
         <label>Descrição</label>
         <input [(ngModel)]="body" />
-
-        <div class="options">
-          <div class="header-4">Visibility</div>
-          <div class="custom-radio-group">
-            <ng-container *ngFor="let option of visibilityOptions; let i = index">
-              <input type="radio" class="btn-check" name="visibility" [id]="'vis_' + i" [value]="option.value"
-                [(ngModel)]="selectedVisibilityType" autocomplete="off">
-
-              <label class="btn custom-radio-btn" [for]="'vis_' + i">
-                {{ option.name }}
-              </label>
-            </ng-container>
-          </div>
-        </div>
-        <label>Espécies</label>
-        <select [(ngModel)]="selectedSpeciesType" name="bait">
-          <option [ngValue]="null" disabled>Selecione uma opção</option>
-          <option *ngFor="let option of speciesTypeOptions" [ngValue]="option.value">
-            {{ option.name }}
-          </option>
-        </select>
-
-        <label>Anzol</label>
-        <input type="number" [(ngModel)]="hookSize" />
-
-        <label>Isca</label>
-        <select [(ngModel)]="selectedBaitType" name="bait">
-          <option [ngValue]="null" disabled>Selecione uma opção</option>
-          <option *ngFor="let option of baitTypeOptions" [ngValue]="option.value">
-            {{ option.name }}
-          </option>
-        </select>
-      </div>
-    </div>
-
-    <!-- OPTIONS -->
-    <div class="options">
-      <div class="header-4">Options</div>
-
-      <div class="option-5">
         <div class="name">Geolocation</div>
         <div class="set">
           <div class="text-wrapper-3">
@@ -76,23 +34,54 @@
           </div>
         </div>
       </div>
-    </div>
+      <div class="options">
+        <div class="header-4">Visibility</div>
+        <div class="custom-radio-group">
+          <ng-container *ngFor="let option of visibilityOptions; let i = index">
+            <input type="radio" class="btn-check" name="visibility" [id]="'vis_' + i" [value]="option.value"
+              [(ngModel)]="selectedVisibilityType" autocomplete="off">
 
+            <label class="btn custom-radio-btn" [for]="'vis_' + i">
+              {{ option.name }}
+            </label>
+          </ng-container>
+        </div>
+      </div>
+
+      <label>Espécies</label>
+      <select [(ngModel)]="selectedSpeciesType" name="bait">
+        <option [ngValue]="null" disabled>Selecione uma opção</option>
+        <option *ngFor="let option of speciesTypeOptions" [ngValue]="option.value">
+          {{ option.name }}
+        </option>
+      </select>
+
+      <label>Anzol</label>
+      <input type="number" [(ngModel)]="hookSize" />
+
+      <label>Isca</label>
+      <select [(ngModel)]="selectedBaitType" name="bait">
+        <option [ngValue]="null" disabled>Selecione uma opção</option>
+        <option *ngFor="let option of baitTypeOptions" [ngValue]="option.value">
+          {{ option.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- OPTIONS -->
+  <div class="options">
     <!-- ERROR -->
-    <div *ngIf="errorMessage" class="text-wrapper-4">
+     @if (errorMessage) {
+    <div class="text-wrapper-4">
       {{ errorMessage }}
     </div>
-
-    <div class="separator"></div>
+    }
 
     <!-- ACTIONS -->
     <div class="actions">
-      <button type="button" class="cancel-button" (click)="cancel.emit()">
-        <div class="cancel">CANCEL</div>
-      </button>
-
       <button type="button" class="publish-button" (click)="onSubmit()">
-        <div class="publish">PUBLISH</div>
+        <div class="publish">Publicar</div>
       </button>
     </div>
   </div>

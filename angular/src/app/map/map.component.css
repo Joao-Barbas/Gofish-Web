@@ -23,6 +23,9 @@ app-create-pin {
   top: 16px;
   right: 16px;
   z-index: 10;
+  border-radius: var(--gf-border-radius);
+  overflow: hidden;
+  box-shadow: var(--gf-border-radius);
 }
 
 app-pin-detail-panel {
@@ -41,3 +44,4 @@ app-pin-detail-panel {
   overflow-y: auto;
   transition: transform 0.3s ease-in-out;
 }
+

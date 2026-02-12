@@ -19,10 +19,11 @@ export class InfoPinFormComponent {
   @Output() cancel = new EventEmitter<void>();
 
   body: string = '';
-  accessDifficultyOptions: EnumeratorDTO[] = [];
-  selectedAccessDifficulty: number | null = null;
+
   visibilityOptions: EnumeratorDTO[] = [];
   selectedVisibility: number | null = null;
+  accessDifficultyOptions: EnumeratorDTO[] = [];
+  selectedAccessDifficulty: number | null = null;
   seaBedOptions: EnumeratorDTO[] = [];
   selectedSeaBed: number | null = null;
 

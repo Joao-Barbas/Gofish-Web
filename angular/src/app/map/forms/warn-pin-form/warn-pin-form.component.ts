@@ -18,8 +18,10 @@ export class WarnPinFormComponent {
   @Output() submitForm = new EventEmitter<CreateWarnPinReqDTO>();
 
   body: string = '';
+
   visibilityOptions: EnumeratorDTO[] = [];
   selectedVisibility?: number | null;
+
   warnTypeOptions: EnumeratorDTO[] = [];
   selectedWarnType?: number | null ;
 

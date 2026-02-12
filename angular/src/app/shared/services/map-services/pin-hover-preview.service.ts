@@ -105,7 +105,7 @@ export class PinHoverPreviewService {
       <div class="pin-card__content">
         <h3 class="pin-card__title">${title}</h3>
         <div class="pin-card__coords">
-          ${pin.latitude.toFixed(5)}, ${pin.longitude.toFixed(5)}
+          Coordenadas: ${pin.latitude.toFixed(5)}, ${pin.longitude.toFixed(5)}
         </div>
       </div>
     </div>

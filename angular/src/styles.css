@@ -145,6 +145,8 @@ body {
 .icon-instagram     { --icon-url: url('/assets/images/footer/instagram.svg'); }
 .icon-youtube       { --icon-url: url('/assets/images/footer/youtube.svg'); }
 .icon-twitter       { --icon-url: url('/assets/images/footer/twitter.svg'); }
+.icon-info          { --icon-url: url('/assets/images/map/info.svg'); }
+.icon-warn          { --icon-url: url('/assets/images/map/warn.svg'); }
 
 
 /*
@@ -277,6 +279,8 @@ body {
 .gofish-card,
 [class^="gf-card-"],
 [class^="gofish-card-"] {
+  font: var(--font-main);
+  color: white; /* Cor do texto em branco*/
   box-shadow: var(--dark-lift-shadow-m);
 
   border-radius: 12px;
@@ -651,7 +655,7 @@ body {
 /* Imagem Centralizada */
 .pin-preview-click__image-wrapper {
   width: 100%;
-  height: auto; 
+  height: auto;
   aspect-ratio: 16 / 9;
   background-color: var(--dark-bg-dark);
   box-shadow: var(--dark-sunk-shadow-s);
