@@ -19,32 +19,72 @@
 
 <main class="position-fixed top-0 start-0 end-0 bottom-0 overflow-hidden">
   <div id="map" class="w-100 h-100"></div>
-  <div class="position-absolute top-0 start-0 end-0 p-3 d-flex justify-content-between align-items-start map-overlay">
+  <div class="position-absolute vw-100 vh-100 d-flex justify-content-between align-items-start container-overlay">
 
     <!--
      * Divs de Layout do UI devem ter a classe "map-overlay" para se poder clicar no mapa e UI
      * Não é para meter em elementos tipo botões, letras, etc...
     -->
 
-    <!-- header -->
-
-      <app-flyout-header></app-flyout-header>
-    <!--
-      <div class="position-absolute top-0 start-0 end-0 map-overlay">
-        <app-header></app-header>
-      </div>
-      -->
-
-
+    <app-flyout-header></app-flyout-header>
 
     <app-create-pin
-    class="gf-floating-action"
-    [selectedCoords]="selected" (requestPickOnMap)="enablePickMode()"
-    (coordsSelected)="onCoordsSelected($event)" (creationComplete)="onPinCreated()"
-    (creationFailed)="onPinCreateFailed($event)">
-  </app-create-pin>
+      class="gf-floating-action physical-child"
+      [selectedCoords]="selected" (requestPickOnMap)="enablePickMode()"
+      (coordsSelected)="onCoordsSelected($event)" (creationComplete)="onPinCreated()"
+      (creationFailed)="onPinCreateFailed($event)">
+    </app-create-pin>
 
+    <!-- Map actions container -->
+    <!-- Tag order from top-bottom equal right to left -->
+    <div class="position-absolute end-0 bottom-0 d-flex flex-row physical-child gap-12" style="padding: 1.375rem; background-color: rebeccapurple; z-index: 1;">
 
+      <!-- Create pin & ask location -->
+      <div class="position-relative d-flex flex-column gofish-card" style="padding: 0px;">
+        <button class="icon-map-pin-plus icon-white" style="--size: 1.25rem; border: none; max-width: 36px; max-height: 36px; width: 36px; height: 36px; background-color: transparent;" (click)="menuOpen = !menuOpen"></button>
+        <button class="icon-locate icon-white" style="--size: 1.25rem; border: none; max-width: 36px; max-height: 36px; width: 36px; height: 36px; background-color: transparent;"></button>
+
+        <!-- Create pin menu -->
+        <!-- Esta variavel esta em modo de mega examplo -->
+        @if (menuOpen) {
+          <div class="position-absolute d-flex flex-row gofish-card gap-16" style="padding: 16px; z-index: 1; right: calc(100% + 12px); bottom: 0%">
+            <div class="d-flex flex-column">
+
+              <div class="d-flex align-items-center gf-gap-4" style="padding-bottom: 16px;">
+                <input type="checkbox"/>
+                <label style="font-size: 12px;">Select location on map</label>
+              </div>
+
+              <div class="d-flex flex-row gf-gap-16">
+
+                <!-- Create Warning pin -->
+                <div class="d-flex flex-column align-items-center gf-gap-4">
+                  <button style="border-style: none; min-height: 48px; min-width: 64px; max-height: 48px; max-width: 64px; background-color: white; border-radius: 8px;"></button> <!-- Image 64x48 -->
+                  <label style="font-size: 12px;">Warning</label>
+                </div>
+
+                <!-- Create information pin -->
+                <div class="d-flex flex-column align-items-center gf-gap-4">
+                  <button style="border-style: none; min-height: 48px; min-width: 64px; max-height: 48px; max-width: 64px; background-color: white; border-radius: 8px;"></button> <!-- Image 64x48 -->
+                  <label style="font-size: 12px;">Information</label>
+                </div>
+
+                <!-- Create catch pin -->
+                <div class="d-flex flex-column align-items-center gf-gap-4">
+                  <button style="border-style: none; min-height: 48px; min-width: 64px; max-height: 48px; max-width: 64px; background-color: white; border-radius: 8px;"></button> <!-- Image 64x48 -->
+                  <label style="font-size: 12px;">Catch</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Zoom -->
+      <div class="d-flex flex-column">
+        <button style="max-width: 36px; max-height: 36px; width: 36px; height: 36px; background-color: antiquewhite;"></button>
+        <button style="max-width: 36px; max-height: 36px; width: 36px; height: 36px; background-color: rgb(151, 151, 56);"></button>
+      </div>
+    </div>
   </div>
-
 </main>

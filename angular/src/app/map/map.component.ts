@@ -28,6 +28,14 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./map.component.css'],
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
+  menuOpen = false;
+
+  doSomething() {
+    // Exemplo do menu
+    this.menuOpen = false;
+
+  }
+
   // UI / state
   firstName = '';
   selected: Coords | null = null;

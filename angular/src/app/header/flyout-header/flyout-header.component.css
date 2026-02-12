@@ -1,13 +1,22 @@
 /* flyout-header.component.css */
+
 :host {
-  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  pointer-events: auto;
+  z-index: 1000;
+  pointer-events: none;
 }
 
 .flyout-header {
   height: 80px;
   padding-top: 16px;
+}
+
+.left,
+.right {
+  pointer-events: auto;
 }
 
 .navbar-pill {
