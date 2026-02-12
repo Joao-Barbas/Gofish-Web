@@ -153,10 +153,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
     */
+   /*
     if (!this.portugalValidationService.isPortugalAtLngLat(this.map, coords.longitude, coords.latitude)) {
       alert('Essas coordenadas não fazem parte de Portugal.');
       return;
     }
+      */
 
     this.setSelectedCoords(coords);
     this.disablePickMode();
