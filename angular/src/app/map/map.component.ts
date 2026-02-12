@@ -13,7 +13,7 @@ import { PreviewMarkerService } from '@gofish/shared/services/map-services/previ
 import { MarkerRegistryService } from '@gofish/shared/services/map-services/marker-registry.service';
 import { PinDetailService } from '@gofish/shared/services/map-services/pin-detail.service';
 import { PinDetailPanelComponent } from './pin-detail-panel/pin-detail-panel.component';
-import { HeaderComponent } from '@gofish/header/header.component';
+import { FlyoutHeaderComponent } from '@gofish/header/flyout-header/flyout-header.component';
 import { PortugalValidationService } from '@gofish/shared/services/map-services/portugal-validation.service';
 import { PinPreviewResDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -23,7 +23,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, FormsModule, CreatePinComponent, PinDetailPanelComponent, HeaderComponent],
+  imports: [CommonModule, FormsModule, CreatePinComponent, PinDetailPanelComponent, FlyoutHeaderComponent],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
 })

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GofishApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260211215319_init")]
+    [Migration("20260212120154_init")]
     partial class init
     {
         /// <inheritdoc />

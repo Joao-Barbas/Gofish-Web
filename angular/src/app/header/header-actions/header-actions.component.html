@@ -1,0 +1,72 @@
+<!-- header-actions.component.html -->
+<div class="header-actions d-flex align-items-center gap-12 icon-white-muted position-relative">
+  <!-- Search -->
+  <button class="gofish-btn-circle" (click)="toggleDropdown('search')">
+    <div class="icon icon-search icon-size-header"></div>
+  </button>
+
+  <!-- User -->
+  <button class="gofish-btn-circle" (click)="toggleDropdown('user')">
+    <div class="icon icon-user icon-size-header"></div>
+  </button>
+
+  <!-- Admin (conditional) -->
+  <button class="gofish-btn-circle" *ngIf="isAdmin" (click)="toggleDropdown('admin')">
+    <div class="icon icon-shielduser icon-size-header"></div>
+  </button>
+
+  <!-- User Dropdown -->
+  <div class="header-dropdown gf-card" *ngIf="activeDropdown === 'user'">
+    <div class="dropdown-header">
+      <span class="dark-text text-medium">Account</span>
+    </div>
+    <nav class="dropdown-nav">
+      <a routerLink="/user/profile" class="dropdown-item" (click)="closeDropdown()">
+        <div class="icon icon-user icon-size-dropdown"></div>
+        <span>Profile</span>
+      </a>
+      <a routerLink="/user/settings" class="dropdown-item" (click)="closeDropdown()">
+        <div class="icon icon-info icon-size-dropdown"></div>
+        <span>Settings</span>
+      </a>
+    </nav>
+    <div class="dropdown-divider"></div>
+    <button class="dropdown-item dropdown-item--danger" (click)="signOut()">
+      <div class="icon icon-cross icon-size-dropdown"></div>
+      <span>Sign Out</span>
+    </button>
+  </div>
+
+  <!-- Admin Dropdown -->
+  <div class="header-dropdown gf-card" *ngIf="activeDropdown === 'admin'">
+    <div class="dropdown-header">
+      <span class="dark-text text-medium">Admin</span>
+    </div>
+    <nav class="dropdown-nav">
+      <a routerLink="/admin/users" class="dropdown-item" (click)="closeDropdown()">
+        <div class="icon icon-user icon-size-dropdown"></div>
+        <span>Manage Users</span>
+      </a>
+      <a routerLink="/admin/reports" class="dropdown-item" (click)="closeDropdown()">
+        <div class="icon icon-warn icon-size-dropdown"></div>
+        <span>Reports</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Search Dropdown -->
+  <div class="header-dropdown header-dropdown--search gf-card" *ngIf="activeDropdown === 'search'">
+    <div class="search-input-wrapper">
+      <div class="icon icon-search icon-size-dropdown icon-white-muted"></div>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search locations, fish..."
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="onSearch()">
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop to close dropdowns -->
+<div class="dropdown-backdrop" *ngIf="activeDropdown" (click)="closeDropdown()"></div>

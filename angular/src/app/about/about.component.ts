@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from '@gofish/header/header.component';
+import { FlatHeaderComponent } from '@gofish/header/flat-header/flat-header.component';
 import { FooterComponent } from '@gofish/footer/footer.component';
 
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [ HeaderComponent, FooterComponent ],
+  imports: [ FlatHeaderComponent, FooterComponent ],
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.css']
 })

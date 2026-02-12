@@ -1,8 +1,9 @@
-<app-header></app-header>
-<main class="dark-bg figma-bg-dark-temporary font-main">
+<!-- <app-header></app-header>
+<main class="container-fluid h-100 w-100">
+  <div class="dark-bg figma-bg-dark-temporary font-main">
 
-  <div id="map"></div>
-  <app-create-pin
+    <div id="map" class="w-100"></div>
+    <app-create-pin
     class="gf-floating-action"
     [selectedCoords]="selected" (requestPickOnMap)="enablePickMode()"
     (coordsSelected)="onCoordsSelected($event)" (creationComplete)="onPinCreated()"
@@ -10,5 +11,40 @@
   </app-create-pin>
 
   <app-pin-detail-panel ></app-pin-detail-panel>
+</div>
+
+</main>
+-->
+<!-- map.component.html -->
+
+<main class="position-fixed top-0 start-0 end-0 bottom-0 overflow-hidden">
+  <div id="map" class="w-100 h-100"></div>
+  <div class="position-absolute top-0 start-0 end-0 p-3 d-flex justify-content-between align-items-start map-overlay">
+
+    <!--
+     * Divs de Layout do UI devem ter a classe "map-overlay" para se poder clicar no mapa e UI
+     * Não é para meter em elementos tipo botões, letras, etc...
+    -->
+
+    <!-- header -->
+
+      <app-flyout-header></app-flyout-header>
+    <!--
+      <div class="position-absolute top-0 start-0 end-0 map-overlay">
+        <app-header></app-header>
+      </div>
+      -->
+
+
+
+    <app-create-pin
+    class="gf-floating-action"
+    [selectedCoords]="selected" (requestPickOnMap)="enablePickMode()"
+    (coordsSelected)="onCoordsSelected($event)" (creationComplete)="onPinCreated()"
+    (creationFailed)="onPinCreateFailed($event)">
+  </app-create-pin>
+
+
+  </div>
 
 </main>
