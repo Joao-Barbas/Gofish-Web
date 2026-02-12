@@ -146,6 +146,10 @@ body {
 .icon-twitter       { --icon-url: url('/assets/vectors/twitter.svg'); }
 .icon-info          { --icon-url: url('/assets/vectors/info.svg'); }
 .icon-warn          { --icon-url: url('/assets/vectors/warn.svg'); }
+.icon-locate        { --icon-url: url('/assets/vectors/locate.svg'); }
+.icon-locate-fixed  { --icon-url: url('/assets/vectors/locate-fixed.svg'); }
+.icon-locate-off    { --icon-url: url('/assets/vectors/locate-off.svg'); }
+.icon-map-pin-plus  { --icon-url: url('/assets/vectors/map-pin-plus.svg'); }
 
 
 /*
@@ -465,28 +469,22 @@ body {
   border-radius: 0.5rem;
 }
 
-.gap-4 {
-  gap: 0.25rem !important;
-}
+.gap-16 { gap: 1rem !important; } /* Apagar  */
+.gf-gap-16 { gap: 1rem !important; }
+.gf-gap-4  { gap: 0.25rem !important; }
+.gap-4  { gap: 0.25rem !important; } /* Apagar */
+.gap-8  { gap: 0.5rem !important; } /* Mudar para gf-gap-8 */
+.gap-12 { gap: 0.75rem !important; } /* Mudar para gf-gap-12 */
+.gap-20 { gap: 1.25rem !important; } /* Mudar para gf-gap-20 */
 
-.gap-8 {
-  gap: 0.5rem !important;
-}
+.margin-top-12 { margin-top: 0.75rem; }
+.margin-top-16 { margin-top: 1rem; }
 
-.gap-12 {
-  gap: 0.75rem !important;
-}
-
-.gap-16 {
-  gap: 1rem !important;
-}
-
-.gap-20 {
-  gap: 1.25rem !important;
-}
-
-.margin-top-12 {
-  margin-top: 0.75rem;
+.container-overlay {
+  pointer-events: none !important;
+  & .physical-child {
+    pointer-events: auto;
+  }
 }
 
 .text-small-muted {
