@@ -35,14 +35,14 @@
       (creationFailed)="onPinCreateFailed($event)">
     </app-create-pin>
 
-    <!-- Map actions container -->
+    <!-- Map actions box -->
     <!-- Tag order from top-bottom equal right to left -->
-    <div class="position-absolute end-0 bottom-0 d-flex flex-row physical-child gf-gap-12" style="padding: 1.375rem; background-color: rebeccapurple; z-index: 1;">
+    <div class="map-actions-box position-absolute end-0 bottom-0 d-flex flex-row physical-child gf-gap-12">
 
       <!-- Create pin & ask location -->
-      <div class="position-relative d-flex flex-column gofish-card" style="padding: 0px;">
-        <button class="icon-map-pin-plus icon-white" style="--size: 1.25rem; border: none; max-width: 36px; max-height: 36px; width: 36px; height: 36px; background-color: transparent;" (click)="menuOpen = !menuOpen"></button>
-        <button class="icon-locate icon-white" style="--size: 1.25rem; border: none; max-width: 36px; max-height: 36px; width: 36px; height: 36px; background-color: transparent;"></button>
+      <div class="position-relative d-flex flex-column gf-card-size-map-interact" >
+        <button class="icon-map-pin-plus icon-white-muted interact-button generic-button-wrapper-s" (click)="menuOpen = !menuOpen"></button>
+        <button class="icon-locate icon-white-muted interact-button generic-button-wrapper-s"></button>
 
         <!-- Create pin menu -->
         <!-- Esta variavel esta em modo de mega examplo -->
@@ -81,10 +81,11 @@
       </div>
 
       <!-- Zoom -->
-      <div class="d-flex flex-column">
-        <button style="max-width: 36px; max-height: 36px; width: 36px; height: 36px; background-color: antiquewhite;"></button>
-        <button style="max-width: 36px; max-height: 36px; width: 36px; height: 36px; background-color: rgb(151, 151, 56);"></button>
+      <div class="d-flex flex-column gf-card-size-map-interact">
+        <button class="icon-map-pin-plus icon-white-muted interact-button generic-button-wrapper-s"></button>
+        <button class="icon-map-pin-plus icon-white-muted interact-button generic-button-wrapper-s"></button>
       </div>
+      
     </div>
   </div>
 </main>

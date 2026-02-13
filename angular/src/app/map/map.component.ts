@@ -25,7 +25,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   standalone: true,
   imports: [CommonModule, FormsModule, CreatePinComponent, PinDetailPanelComponent, FlyoutHeaderComponent],
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css'],
+  styleUrl: './map.component.css',
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   menuOpen = false;

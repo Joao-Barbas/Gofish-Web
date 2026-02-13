@@ -1,17 +1,17 @@
 <!-- header-actions.component.html -->
 <div class="header-actions d-flex align-items-center gf-gap-12 icon-white-muted position-relative">
   <!-- Search -->
-  <button class="gofish-btn-circle" (click)="toggleDropdown('search')">
+  <button class="gofish-btn-circle generic-button-wrapper-all" (click)="toggleDropdown('search')">
     <div class="icon icon-search icon-size-header"></div>
   </button>
 
   <!-- User -->
-  <button class="gofish-btn-circle" (click)="toggleDropdown('user')">
+  <button class="gofish-btn-circle generic-button-wrapper-all" (click)="toggleDropdown('user')">
     <div class="icon icon-user icon-size-header"></div>
   </button>
 
   <!-- Admin (conditional) -->
-  <button class="gofish-btn-circle" *ngIf="isAdmin" (click)="toggleDropdown('admin')">
+  <button class="gofish-btn-circle generic-button-wrapper-all" *ngIf="isAdmin" (click)="toggleDropdown('admin')">
     <div class="icon icon-shielduser icon-size-header"></div>
   </button>
 
