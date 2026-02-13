@@ -132,7 +132,7 @@ export class PinHoverPreviewService {
     <article class="gf-card pin-preview-click">
       <header class="horizontal-flow align-center-center" style="justify-content: space-between; width: 100%;">
 
-        <div class="horizontal-flow gap-8 align-center-center">
+        <div class="horizontal-flow gf-gap-8 align-center-center">
           <div class="pin-preview-click__avatar" style="background-color: var(--dark-text-muted); border-radius: 50%; width: 32px; height: 32px;"></div>
 
           <div class="horizontal-flow gap-4 align-center-center">
@@ -154,7 +154,7 @@ export class PinHoverPreviewService {
       </div>
 
       <footer class="horizontal-flow align-center-center" style="justify-content: space-between; width: 100%;">
-        <div class="horizontal-flow gap-8">
+        <div class="horizontal-flow gf-gap-8">
           <div class="pin-preview-click__badge">
              <span class="dark-text text-medium" style="font-size: 12px;">👍 ${score}</span>
           </div>

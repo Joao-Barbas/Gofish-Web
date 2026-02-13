@@ -469,13 +469,11 @@ body {
   border-radius: 0.5rem;
 }
 
-.gap-16 { gap: 1rem !important; } /* Apagar  */
-.gf-gap-16 { gap: 1rem !important; }
 .gf-gap-4  { gap: 0.25rem !important; }
-.gap-4  { gap: 0.25rem !important; } /* Apagar */
-.gap-8  { gap: 0.5rem !important; } /* Mudar para gf-gap-8 */
-.gap-12 { gap: 0.75rem !important; } /* Mudar para gf-gap-12 */
-.gap-20 { gap: 1.25rem !important; } /* Mudar para gf-gap-20 */
+.gf-gap-8 { gap: 0.5rem !important; }
+.gf-gap-12 { gap: 0.75rem !important; }
+.gf-gap-16 { gap: 1rem !important; }
+.gf-gap-20 { gap: 1.25rem !important; }
 
 .margin-top-12 { margin-top: 0.75rem; }
 .margin-top-16 { margin-top: 1rem; }
