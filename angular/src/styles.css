@@ -153,8 +153,8 @@ body {
 .icon-locate-fixed  { --icon-url: url('/assets/vectors/locate-fixed.svg'); }
 .icon-locate-off    { --icon-url: url('/assets/vectors/locate-off.svg'); }
 .icon-map-pin-plus  { --icon-url: url('/assets/vectors/map-pin-plus.svg'); }
-.icon-plus  { --icon-url: url('/assets/vectors/plus.svg'); }
-.icon-minus  { --icon-url: url('/assets/vectors/minus.svg'); }
+.icon-plus          { --icon-url: url('/assets/vectors/plus.svg'); }
+.icon-minus         { --icon-url: url('/assets/vectors/minus.svg'); }
 
 
 /*
