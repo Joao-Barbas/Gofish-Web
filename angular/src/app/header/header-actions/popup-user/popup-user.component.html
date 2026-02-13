@@ -1,0 +1,22 @@
+@if (isOpen$ | async) {
+  <div class="position-absolute header-dropdown">
+    <div class="dropdown-header">
+      <span class="dark-text text-medium">Account</span>
+    </div>
+    <nav class="dropdown-nav">
+      <a routerLink="/user/profile" class="dropdown-item" (click)="close()">
+        <div class="icon icon-user icon-size-dropdown"></div>
+        <span>Profile</span>
+      </a>
+      <a routerLink="/user/settings" class="dropdown-item" (click)="close()">
+        <div class="icon icon-info icon-size-dropdown"></div>
+        <span>Settings</span>
+      </a>
+    </nav>
+    <div class="dropdown-divider"></div>
+    <button class="dropdown-item dropdown-item--danger" (click)="signOut()">
+      <div class="icon icon-cross icon-size-dropdown"></div>
+      <span>Sign Out</span>
+    </button>
+  </div>
+}

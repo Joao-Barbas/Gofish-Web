@@ -1,23 +1,39 @@
 /* flat-header.component.css */
+
 .flat-header {
-  height: 80px;
+  height: 5rem;
   display: flex;
   align-items: center;
+  position: relative;
+
+  & .left {
+    padding: 0 0 0 8rem;
+    gap: 4rem;
+  }
+
+  & .right {
+    padding: 0 1.375rem 0 0;
+  }
 }
 
-.header-items a {
-  font-size: 14px;
-  letter-spacing: 0.05em;
-  text-decoration: none;
-  background: linear-gradient(currentColor 0 0) bottom center / var(--underline-width, 0%) 2px no-repeat;
-  transition: background-size 0.2s;
-}
+.flat-header-items {
+  gap: 1.75rem;
 
-.header-items a:hover {
-  --underline-width: 100%;
-}
+  & a {
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    background: linear-gradient(currentColor 0 0) bottom center / var(--underline-width, 0%) 2px no-repeat;
+    transition: background-size 0.2s;
 
-.header-items a.active {
-  color: var(--selected);
-  background: linear-gradient(currentColor 0 0) bottom center / 100% 2px no-repeat;
+    &:hover {
+      --underline-width: 100%;
+      color: var(--dark-text);
+    }
+
+    &.active {
+      color: var(--primary);
+      --underline-width: 100%;
+    }
+  }
 }

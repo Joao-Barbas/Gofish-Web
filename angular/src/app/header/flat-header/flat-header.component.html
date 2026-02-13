@@ -1,31 +1,25 @@
 <!-- flat-header.component.html -->
+
 <header class="flat-header w-100 dark-bg-dark">
-  <div class="container-lg">
-    <div class="row align-items-center">
+  <!-- Left: logo plus nav items -->
+  <div class="left h-100 d-flex flex-row flex-fill align-items-center">
       <!-- Logo -->
-      <div class="col-2 d-flex align-items-center gap-2">
+      <div>
         <a routerLink="/" class="d-flex align-items-center gap-2 text-decoration-none">
           <div class="icon-gofish icon-size-gofish-logo"></div>
           <span class="logo-text">GOFISH</span>
         </a>
       </div>
-
       <!-- Nav Items -->
-      <nav class="col d-flex align-items-center gap-4 font-main header-items">
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-           class="text-slim dark-text-muted">HOME</a>
-        <a routerLink="/map" routerLinkActive="active"
-           class="text-slim dark-text-muted">MAP</a>
-        <a routerLink="/forum" routerLinkActive="active"
-           class="text-slim dark-text-muted">FORUM</a>
-        <a routerLink="/about-us" routerLinkActive="active"
-           class="text-slim dark-text-muted">ABOUT US</a>
+      <nav class="col d-flex align-items-center font-main flat-header-items">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="text-slim dark-text-muted">HOME</a>
+        <a routerLink="/map" routerLinkActive="active" class="text-slim dark-text-muted">MAP</a>
+        <a routerLink="/forum" routerLinkActive="active" class="text-slim dark-text-muted">FORUM</a>
+        <a routerLink="/about-us" routerLinkActive="active" class="text-slim dark-text-muted">ABOUT US</a>
       </nav>
-
-      <!-- Actions -->
-      <div class="col-auto">
-        <app-header-actions variant="flat"></app-header-actions>
-      </div>
-    </div>
+  </div>
+  <!-- Right: toggle menus actions -->
+  <div class="right h-100 d-flex flex-row flex-fill align-items-center justify-content-end">
+    <app-header-actions></app-header-actions>
   </div>
 </header>
