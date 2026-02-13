@@ -47,34 +47,40 @@
         <!-- Create pin menu -->
         <!-- Esta variavel esta em modo de mega examplo -->
         @if (menuOpen) {
-          <div class="position-absolute d-flex flex-row gofish-card gf-gap-16" style="padding: 16px; z-index: 1; right: calc(100% + 12px); bottom: 0%">
+          <div class="position-absolute d-flex flex-row gf-gap-16 gf-card-pin-select">
             <div class="d-flex flex-column">
 
-              <div class="d-flex align-items-center gf-gap-4" style="padding-bottom: 16px;">
+              <!-- Top (Select Location) -->
+
+              <div class="d-flex align-items-center gf-gap-4 enable-location-select">
                 <input type="checkbox"/>
-                <label style="font-size: 12px;">Select location on map</label>
+                <label>Select location on map</label>
               </div>
 
-              <div class="d-flex flex-row gf-gap-16">
+              <!-- Bottom (Select Pin Type) -->
+              <div class="d-flex flex-row gf-gap-16 pin-showcase">
 
-                <!-- Create Warning pin -->
-                <div class="d-flex flex-column align-items-center gf-gap-4">
-                  <button style="border-style: none; min-height: 48px; min-width: 64px; max-height: 48px; max-width: 64px; background-color: white; border-radius: 8px;"></button> <!-- Image 64x48 -->
-                  <label style="font-size: 12px;">Warning</label>
+                <!-- 1. Create Warning pin -->
+                <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
+                  <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
+                  <label class="pin-type-name">Warning</label>
                 </div>
 
-                <!-- Create information pin -->
-                <div class="d-flex flex-column align-items-center gf-gap-4">
-                  <button style="border-style: none; min-height: 48px; min-width: 64px; max-height: 48px; max-width: 64px; background-color: white; border-radius: 8px;"></button> <!-- Image 64x48 -->
-                  <label style="font-size: 12px;">Information</label>
+                <!-- 2. Create information pin -->
+                <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
+                  <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
+                  <label class="pin-type-name">Information</label>
                 </div>
 
-                <!-- Create catch pin -->
-                <div class="d-flex flex-column align-items-center gf-gap-4">
-                  <button style="border-style: none; min-height: 48px; min-width: 64px; max-height: 48px; max-width: 64px; background-color: white; border-radius: 8px;"></button> <!-- Image 64x48 -->
-                  <label style="font-size: 12px;">Catch</label>
+                <!-- 3. Create catch pin -->
+                <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
+                  <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
+                  <label class="pin-type-name">Catch</label>
                 </div>
+
               </div>
+
+
             </div>
           </div>
         }
@@ -82,10 +88,10 @@
 
       <!-- Zoom -->
       <div class="d-flex flex-column gf-card-size-map-interact">
-        <button class="icon-map-pin-plus icon-white-muted interact-button generic-button-wrapper-s"></button>
-        <button class="icon-map-pin-plus icon-white-muted interact-button generic-button-wrapper-s"></button>
+        <button class="icon-plus icon-white-muted interact-button generic-button-wrapper-s"></button>
+        <button class="icon-minus icon-white-muted interact-button generic-button-wrapper-s"></button>
       </div>
-      
+
     </div>
   </div>
 </main>
