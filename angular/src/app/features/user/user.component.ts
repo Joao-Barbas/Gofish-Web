@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SignupComponent } from "./signup/signup.component";
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -8,6 +7,4 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './user.component.html',
   styles: ``
 })
-export class UserComponent {
-
-}
+export class UserComponent {}

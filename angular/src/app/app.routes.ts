@@ -7,10 +7,10 @@ export const routes: Routes = [
     loadComponent: () => import('@gofish/features/home/home.component').then(m => m.HomeComponent)
   },
   {
-    path: 'user', loadComponent: () => import('./user/user.component').then(m => m.UserComponent),
+    path: 'user', loadComponent: () => import('@gofish/features/user/user.component').then(m => m.UserComponent),
     children: [
-      { path: 'signup', loadComponent: () => import('./user/signup/signup.component').then(m => m.SignupComponent) },
-      { path: 'signin', loadComponent: () => import('./user/signin/signin.component').then(m => m.SigninComponent) },
+      { path: 'signup', loadComponent: () => import('@gofish/features/user/components/signup/signup.component').then(m => m.SignupComponent) },
+      { path: 'signin', loadComponent: () => import('@gofish/features/user/components/signin/signin.component').then(m => m.SigninComponent) },
     ]
   },
   {
