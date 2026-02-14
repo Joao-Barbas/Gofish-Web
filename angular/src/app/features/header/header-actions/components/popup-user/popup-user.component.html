@@ -1,41 +1,41 @@
-<!-- @if (isOpen$ | async) { -->
-  <!-- <div class="header-overlay-container" [class.open]="isOpen$ | async">
-    @if (isSignedIn) { -->
-      <!-- Avatar, name & close button -->
-      <!-- <div class="d-flex justify-content-between align-items-start">
-        <div class="d-flex align-items-center gap-3 flex-grow-1">
-          <img src="assets/images/user-placeholder.png" class="rounded-circle" width="40" height="40" style="padding: 0.25rem; background-color: var(--light-bg);">
-          <div class="flex-grow-1">
-            <div class="gf-text-normal text-truncate">John Doe</div>
-            <div class="gf-text-small text-truncate">&#64;johndoe</div>
-          </div>
+<!-- popup-user.component.html -->
+
+<div class="header-overlay-container" animate.enter="enter-animation">
+  @if (isSignedIn) {
+    <!-- Avatar, name & close button -->
+    <div class="d-flex justify-content-between align-items-start">
+      <div class="d-flex align-items-center gap-3 flex-grow-1">
+        <img src="assets/images/user-placeholder.png" class="rounded-circle" width="40" height="40" style="padding: 0.25rem; background-color: var(--light-bg);">
+        <div class="flex-grow-1">
+          <div class="gf-text-normal text-truncate">John Doe</div>
+          <div class="gf-text-small text-truncate">&#64;johndoe</div>
         </div>
-        <button type="button" class="gf-nobg-btn-close d-flex align-items-center justify-content-center">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="yellow" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 6 6 18"/>
-            <path d="m6 6 12 12"/>
-          </svg>
-        </button>
       </div>
-      <div class="separator"></div>
-      <div class="separator"></div> -->
-      <!-- Sign Out Button -->
-      <!-- <button class="gf-hollow-btn d-flex align-items-center justify-content-between w-100" (click)="signOut()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+      <button type="button" class="gf-nobg-btn-close d-flex align-items-center justify-content-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="yellow" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"/>
+          <path d="m6 6 12 12"/>
         </svg>
-        <span>Sign Out</span>
       </button>
-    } @else { -->
-      <!-- Sign In Button -->
-      <!-- <button class="form-submit-button button-fix-icon d-flex align-items-center justify-content-between w-100" (click)="goSignIn()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-        </svg>
-        <span>Sign In</span>
-      </button>
-    }
-  </div> -->
-<!-- } -->
+    </div>
+    <div class="separator"></div>
+    <div class="separator"></div>
+    <!-- Sign Out Button -->
+    <button class="gf-hollow-btn d-flex align-items-center justify-content-between w-100" (click)="signOut()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+      </svg>
+      <span>Sign Out</span>
+    </button>
+  } @else {
+    <!-- Sign In Button -->
+    <button class="form-submit-button button-fix-icon d-flex align-items-center justify-content-between w-100" (click)="signIn()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+      </svg>
+      <span>Sign In</span>
+    </button>
+  }
+</div>

@@ -1,3 +1,5 @@
+/* popup-user.component.css */
+
 .header-overlay-container {
   min-width: 16rem;
   background-color: var(--dark-bg);
@@ -8,8 +10,8 @@
   gap: 0.75rem;
   z-index: var(--z-overlay);
 
-  display: none;
-  pointer-events: none;
+  /* display: none; */
+  /* pointer-events: none; */
 
   /* transition: opacity 0.15s ease, scale 0.15s cubic-bezier(0.34, 1.8, 0.64, 1);
   opacity: 0;
@@ -31,46 +33,6 @@
   /*   pointer-events: auto; */
   /* } */
 }
-
-/**/
-
-/*:host {
-  display: block;
-  height: 200px;
-}
-.enter-container {
-  border: 1px solid #dddddd;
-  margin-top: 1em;
-  padding: 20px;
-  font-weight: bold;
-  font-size: 20px;
-}
-.enter-container p {
-  margin: 0;
-}
-.enter-animation {
-  animation: slide-fade 1s;
-}
-@keyframes slide-fade {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.toggle-btn {
-  background: transparent;
-  border: 1px solid var(--primary-contrast, black);
-  color: var(--primary-contrast, black);
-  padding: 10px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-}*/
-
-/**/
 
 .gf-text-normal {
   color: var(--dark-text);
@@ -94,7 +56,7 @@
   border: none;
   background-color: transparent;
 
-  & svg {
+  & > svg {
     width: 1.25rem;
     height: 1.25rem;
   }

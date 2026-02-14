@@ -6,7 +6,7 @@ import { AuthService } from '@gofish/shared/services/auth.service';
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { PopupAdminComponent } from '@gofish/features/header/header-actions/components/popup-admin/popup-admin.component';
 import { PopupUserComponent } from '@gofish/features/header/header-actions/components/popup-user/popup-user.component';
-import { PopupId } from '@gofish/shared/models/popup.model';
+import { PopupKey } from '@gofish/shared/models/popup.model';
 
 @Component({
   selector: 'app-header-actions',
@@ -15,24 +15,22 @@ import { PopupId } from '@gofish/shared/models/popup.model';
   styleUrl: './header-actions.component.css'
 })
 export class HeaderActionsComponent {
-  private authService = inject(AuthService);
   private popupService = inject(PopupService);
+  private authService  = inject(AuthService);
 
-  public isOpenAdmin$ = this.popupService.isOpen$('header-admin');
-  toggleAdmin() { this.popupService.toggle('header-admin'); }
-  openAdmin() { this.popupService.open('header-admin'); }
-  closeAdmin() { this.popupService.close(); }
+  public isUserPopupOpen$  = this.popupService.isOpen$(PopupUserComponent.key);
+  public isAdminPopupOpen$ = this.popupService.isOpen$(PopupAdminComponent.key);
 
-  get isAdmin(): boolean {
+  public get isAdmin(): boolean {
     return true; // this.authService.isAdmin();
   }
 
-  get isSignedIn(): boolean {
+  public get isSignedIn(): boolean {
     return this.authService.isSignedIn();
   }
 
-  // toggleAdmin() { this.adminPopup.toggle(); }
-  // toggleUser() { this.userPopup.toggle(); }
+  public toggleUserPopup(): void { this.popupService.toggle(PopupUserComponent.key); }
+  public toggleAdminPopup(): void { this.popupService.toggle(PopupAdminComponent.key); }
 
   // @HostListener('document:keydown.escape')
   // onEscapeKey() {
