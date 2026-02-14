@@ -1,0 +1,97 @@
+<!-- <app-header></app-header>
+<main class="container-fluid h-100 w-100">
+  <div class="dark-bg figma-bg-dark-temporary font-main">
+
+    <div id="map" class="w-100"></div>
+    <app-create-pin
+    class="gf-floating-action"
+    [selectedCoords]="selected" (requestPickOnMap)="enablePickMode()"
+    (coordsSelected)="onCoordsSelected($event)" (creationComplete)="onPinCreated()"
+    (creationFailed)="onPinCreateFailed($event)">
+  </app-create-pin>
+
+  <app-pin-detail-panel ></app-pin-detail-panel>
+</div>
+
+</main>
+-->
+<!-- map.component.html -->
+
+<main class="position-fixed top-0 start-0 end-0 bottom-0 overflow-hidden">
+  <div id="map" class="w-100 h-100"></div>
+  <div class="position-absolute vw-100 vh-100 d-flex justify-content-between align-items-start container-overlay">
+
+    <!--
+     * Divs de Layout do UI devem ter a classe "map-overlay" para se poder clicar no mapa e UI
+     * Não é para meter em elementos tipo botões, letras, etc...
+    -->
+
+    <app-overlay-header></app-overlay-header>
+
+    <app-create-pin
+      class="gf-floating-action physical-child"
+      [selectedCoords]="selected" (requestPickOnMap)="enablePickMode()"
+      (coordsSelected)="onCoordsSelected($event)" (creationComplete)="onPinCreated()"
+      (creationFailed)="onPinCreateFailed($event)">
+    </app-create-pin>
+
+    <!-- Map actions box -->
+    <!-- Tag order from top-bottom equal right to left -->
+    <div class="map-actions-box position-absolute end-0 bottom-0 d-flex flex-row physical-child gf-gap-12">
+
+      <!-- Create pin & ask location -->
+      <div class="position-relative d-flex flex-column gf-card-size-map-interact" >
+        <button class="icon-map-pin-plus icon-white-muted interact-button generic-button-wrapper-s" (click)="menuOpen = !menuOpen"></button>
+        <button class="icon-locate icon-white-muted interact-button generic-button-wrapper-s"></button>
+
+        <!-- Create pin menu -->
+        <!-- Esta variavel esta em modo de mega examplo -->
+        @if (menuOpen) {
+          <div class="position-absolute d-flex flex-row gf-gap-16 gf-card-pin-select">
+            <div class="d-flex flex-column">
+
+              <!-- Top (Select Location) -->
+
+              <div class="d-flex align-items-center gf-gap-4 enable-location-select">
+                <input type="checkbox"/>
+                <label>Select location on map</label>
+              </div>
+
+              <!-- Bottom (Select Pin Type) -->
+              <div class="d-flex flex-row gf-gap-16 pin-showcase">
+
+                <!-- 1. Create Warning pin -->
+                <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
+                  <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
+                  <label class="pin-type-name">Warning</label>
+                </div>
+
+                <!-- 2. Create information pin -->
+                <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
+                  <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
+                  <label class="pin-type-name">Information</label>
+                </div>
+
+                <!-- 3. Create catch pin -->
+                <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
+                  <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
+                  <label class="pin-type-name">Catch</label>
+                </div>
+
+              </div>
+
+
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Zoom -->
+      <div class="d-flex flex-column gf-card-size-map-interact">
+        <button class="icon-plus icon-white-muted interact-button generic-button-wrapper-s"></button>
+        <button class="icon-minus icon-white-muted interact-button generic-button-wrapper-s"></button>
+      </div>
+
+    </div>
+  </div>
+</main>

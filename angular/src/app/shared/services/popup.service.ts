@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { PopupId } from '@gofish/shared/interfaces/popup.interface';
+import { PopupId } from '@gofish/shared/models/popup.model';
 
 @Injectable({
   providedIn: 'root'
