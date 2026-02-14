@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { Coords } from '@gofish/shared/models/pin-types';
-import { PinService } from '@gofish/shared/services/map-services/pin.service';
+import { PinService } from '@gofish/features/map/services/pin.service';
 
 @Component({
   selector: 'app-warn-pin-form',

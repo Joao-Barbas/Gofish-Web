@@ -2,7 +2,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { PinType } from '@gofish/shared/models/pin-types';
 import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
-import { PinDetailService } from '@gofish/shared/services/map-services/pin-detail.service';
+import { PinDetailService } from '@gofish/features/map/services/pin-detail.service';
 
 
 @Component({

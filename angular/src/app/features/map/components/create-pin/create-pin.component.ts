@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Coords, PinType } from '@gofish/shared/models/pin-types';
-import { PinService } from '@gofish/shared/services/map-services/pin.service';
+import { PinService } from '@gofish/features/map/services/pin.service';
 import { CatchingPinFormComponent } from '../forms/catching-pin-form/catching-pin-form.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@gofish/shared/services/auth.service';
@@ -14,9 +14,9 @@ type Step = 'idle' | 'chooseLocation' | 'chooseType' | 'fillForm';
 
 // Ver se da para colocar noutro sitio
 type PinCreatedEvent =
-  | { type: PinType.Catch; formData?: FormData; res: any}
-  | { type: PinType.Info; dto: CreateInfoPinReqDTO; res: any }
-  | { type: PinType.Warning; dto: CreateWarnPinReqDTO; res: any };
+  | { type: PinType.CATCH; formData?: FormData; res: any}
+  | { type: PinType.INFORMATION; dto: CreateInfoPinReqDTO; res: any }
+  | { type: PinType.WARNING; dto: CreateWarnPinReqDTO; res: any };
 
 @Component({
   selector: 'app-create-pin',
@@ -155,7 +155,7 @@ export class CreatePinComponent {
     this.pinService.createCatchPin(formData).subscribe({
       next: (res) => {
         this.loading = false;
-        this.creationComplete.emit({type: PinType.Catch, res});
+        this.creationComplete.emit({type: PinType.CATCH, res});
         this.submitCreatingPin();
       },
       error: (err) => {
@@ -172,7 +172,7 @@ export class CreatePinComponent {
     this.pinService.createInfoPin(dto).subscribe({
       next: (res) => {
         this.loading = false;
-        this.creationComplete.emit({ type: PinType.Info, dto, res } as any);
+        this.creationComplete.emit({ type: PinType.INFORMATION, dto, res } as any);
         this.submitCreatingPin();
       },
       error: (err) => {
@@ -189,7 +189,7 @@ export class CreatePinComponent {
     this.pinService.createWarningPin(dto).subscribe({
       next: (res) => {
         this.loading = false;
-        this.creationComplete.emit({ type: PinType.Warning, dto, res } as any);
+        this.creationComplete.emit({ type: PinType.WARNING, dto, res } as any);
         this.submitCreatingPin();
       },
       error: (err) => {

@@ -1,7 +1,7 @@
 export enum PinType {
-  Catch = 0,
-  Info = 1,
-  Warning = 2,
+  CATCH = 0,
+  INFORMATION = 1,
+  WARNING = 2,
   DEFAULT = 999
 }
 

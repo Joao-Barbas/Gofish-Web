@@ -10,7 +10,7 @@ export class PinStyleService {
 
   getColor(pinType: PinType): string {
     switch (pinType) {
-      case PinType.CATCHING:
+      case PinType.CATCH:
         return '#2ecc71'; // Green
       case PinType.INFORMATION:
         return '#3498db'; // Blue
@@ -23,7 +23,7 @@ export class PinStyleService {
 
   getIcon(pinType: PinType): string {
     switch (pinType) {
-      case PinType.CATCHING:
+      case PinType.CATCH:
         return '🎣';
       case PinType.INFORMATION:
         return 'ℹ️';
@@ -36,7 +36,7 @@ export class PinStyleService {
 
   getLabel(pinType: PinType): string {
     switch (pinType) {
-      case PinType.CATCHING:
+      case PinType.CATCH:
         return 'Catching';
       case PinType.INFORMATION:
         return 'Info';

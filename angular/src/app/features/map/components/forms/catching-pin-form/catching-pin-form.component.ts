@@ -4,7 +4,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
 import { Coords } from '@gofish/shared/models/pin-types';
-import { PinService } from '@gofish/shared/services/map-services/pin.service';
+import { PinService } from '@gofish/features/map/services/pin.service';
 
 @Component({
   selector: 'app-catching-pin-form',
@@ -99,7 +99,7 @@ export class CatchingPinFormComponent {
 
     this.submitForm.emit(formData);
   }
-  
+
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;

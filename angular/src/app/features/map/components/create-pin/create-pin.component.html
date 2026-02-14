@@ -29,13 +29,13 @@
   @if (step === 'chooseType') {
   <div class="gf-card">
     <h3>Escolher tipo de Pin</h3>
-    <button type="button" class="gf-btn" (click)="selectTypeAndContinue(PinType.Catch)">
+    <button type="button" class="gf-btn" (click)="selectTypeAndContinue(PinType.CATCH)">
       <i class="icon-fish icon-white"></i>
       Pin de Caça</button>
-    <button type="button" class="gf-btn" (click)="selectTypeAndContinue(PinType.Info)">
+    <button type="button" class="gf-btn" (click)="selectTypeAndContinue(PinType.INFORMATION)">
       <i class="icon-info icon-white"></i>
       Pin de Informacão</button>
-    <button type="button" class="gf-btn" (click)="selectTypeAndContinue(PinType.Warning)">
+    <button type="button" class="gf-btn" (click)="selectTypeAndContinue(PinType.WARNING)">
       <i class="icon-warn icon-white"></i>
       Pin de Aviso</button>
 
@@ -62,17 +62,17 @@
     </header>
 
 
-    @if (pinType === PinType.Catch) {
+    @if (pinType === PinType.CATCH) {
     <app-catching-pin-form [coords]="selectedCoords!" (submitForm)="onCatchingSubmit($event)">
     </app-catching-pin-form>
     }
 
-    @if (pinType === PinType.Info) {
+    @if (pinType === PinType.INFORMATION) {
     <app-info-pin-form [coords]="selectedCoords!" (submitForm)="onInfoSubmit($event)">
     </app-info-pin-form>
     }
 
-    @if (pinType === PinType.Warning) {
+    @if (pinType === PinType.WARNING) {
     <app-warn-pin-form [coords]="selectedCoords!" (submitForm)="onWarnSubmit($event)">
     </app-warn-pin-form>
     }

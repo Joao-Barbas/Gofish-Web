@@ -6,7 +6,6 @@ bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));
 
 /*
-
 BAD (Type-based):
 /app/components/product-list
 /app/components/product-detail

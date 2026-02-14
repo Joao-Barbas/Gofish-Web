@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PinHoverPreviewService } from './pin-hover-preview.service';
+import { PinHoverPreviewService } from '@gofish/features/map/services/pin-hover-preview.service';
 import { ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
 
 

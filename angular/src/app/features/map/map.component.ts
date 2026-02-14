@@ -2,23 +2,21 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import mapboxgl from 'mapbox-gl';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { UserService } from '@gofish/shared/services/user.service';
-import { PinService } from '@gofish/shared/services/map-services/pin.service';
-import { PinfactoryService } from '@gofish/shared/services/map-services/pinfactory.service';
-import { CreatePinComponent } from './create-pin/create-pin.component';
+import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinfactoryService } from '@gofish/features/map/services/pinfactory.service';
+import { CreatePinComponent } from '@gofish/features/map/components/create-pin/create-pin.component';
 import { Coords } from '@gofish/shared/models/pin-types';
-import { PreviewMarkerService } from '@gofish/shared/services/map-services/preview-marker.service';
-import { MarkerRegistryService } from '@gofish/shared/services/map-services/marker-registry.service';
-import { PinDetailService } from '@gofish/shared/services/map-services/pin-detail.service';
-import { PinDetailPanelComponent } from './pin-detail-panel/pin-detail-panel.component';
+import { PreviewMarkerService } from '@gofish/features/map/services/preview-marker.service';
+import { MarkerRegistryService } from '@gofish/features/map/services/marker-registry.service';
+import { PinDetailService } from '@gofish/features/map/services/pin-detail.service';
+import { PinDetailPanelComponent } from './components/pin-detail-panel/pin-detail-panel.component';
 import { FlyoutHeaderComponent } from '@gofish/features/header/flyout-header/flyout-header.component';
-import { PortugalValidationService } from '@gofish/shared/services/map-services/portugal-validation.service';
+import { PortugalValidationService } from '@gofish/features/map/services/portugal-validation.service';
 import { PinPreviewResDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
-
-
+import mapboxgl from 'mapbox-gl';
 
 @Component({
   selector: 'app-map',

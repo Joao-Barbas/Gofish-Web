@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PinType } from '../../models/pin-types';
+import { PinType } from '../../../shared/models/pin-types';
 import mapboxgl from 'mapbox-gl';
 import { PinIconService } from './pin-icon.service';
 import { ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
