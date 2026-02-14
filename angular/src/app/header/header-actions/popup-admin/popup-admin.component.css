@@ -1,18 +1,19 @@
-.header-dropdown {
+/* popup-admin.component.css */
+
+/* .header-dropdown {
   background-color: white;
-  top: calc(100% + 0.75rem);                /* position just below the button */
-  /* margin-top: 12px;         /* 12px gap */
-  right: 0;                 /* align right edge of dropdown with right edge of parent button */
-  /* min-width: 200px;
-  /* background-color: white;
-  /* border-radius: 4px;
-  /* box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  /* z-index: 1000;            /* make sure it overlays other content */
-
-  position: absolute;
-  pointer-events: none;
-
-  & > * {
-    pointer-events: auto;
-  }
 }
+
+.enter-animation {
+  animation: slide-fade 1s;
+}
+@keyframes slide-fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} */

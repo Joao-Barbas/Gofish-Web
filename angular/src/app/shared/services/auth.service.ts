@@ -26,6 +26,11 @@ export class AuthService {
     return this.getToken() != null ? true : false;
   }
 
+  signOut(): boolean {
+    this.deleteToken();
+    return true
+  }
+
   storeToken(token: string): boolean {
     localStorage.setItem(LOCAL_TOKEN_KEY, token);
     return true;

@@ -2,25 +2,32 @@
 
 <div class="header-actions d-flex align-items-center icon-white-muted position-relative">
   <!-- Search toggle -->
-  <button class="gf-toggle-circle">
+  <!-- <button class="gf-toggle-circle">
     <div class="icon icon-search icon-size-header"></div>
-  </button>
+  </button> -->
   <!-- User toggle -->
-  <button class="gf-toggle-circle" (click)="userPopup.toggle()">
+  <!-- <button class="gf-toggle-circle" (click)="userPopup.toggle()">
     <div class="icon icon-user icon-size-header"></div>
-  </button>
+  </button> -->
   <!-- Admin toggle -->
-  @if (isAdmin) {
-    <button class="gf-toggle-circle" (click)="adminPopup.toggle()">
+  <!-- @if (isAdmin) {
+    <button class="gf-toggle-circle" (click)="toggleAdmin()">
       <div class="icon icon-shielduser icon-size-header"></div>
     </button>
-  }
-  <!-- Popups -->
-  <div class="popups-container">
-    <app-popup-admin #adminPopup></app-popup-admin>
-    <app-popup-user #userPopup></app-popup-user>
-    <!--<app-popup-search #searchPopup></app-popup-search>-->
-  </div>
+  } -->
+  <!-- Overlays -->
+  <!-- <app-popup-admin id="overlay" #adminPopup></app-popup-admin> -->
+  <!--<app-popup-user id="overlay" #userPopup></app-popup-user>-->
+  <!--@if (isOpenAdmin$ | async) {
+    <app-popup-admin id="overlay" animate.enter="enter-animation" #adminPopup2></app-popup-admin>
+  }-->
+
+  <!-- @if (isOpenAdmin$ | async) {
+    <div class="enter-container" animate.enter="enter-animation">
+      <p>The box is entering.</p>
+    </div>
+  }-->
+  <!--<app-popup-search #searchPopup></app-popup-search>-->
 </div>
 
 <!-- Backdrop to close dropdowns -->

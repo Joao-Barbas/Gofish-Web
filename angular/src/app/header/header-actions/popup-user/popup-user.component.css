@@ -1,18 +1,140 @@
-.header-dropdown {
-  background-color: white;
-  top: calc(100% + 0.75rem);                /* position just below the button */
-  /* margin-top: 12px;         /* 12px gap */
-  right: 0;                 /* align right edge of dropdown with right edge of parent button */
-  /* min-width: 200px;
-  /* background-color: white;
-  /* border-radius: 4px;
-  /* box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  /* z-index: 1000;            /* make sure it overlays other content */
+.header-overlay-container {
+  min-width: 16rem;
+  background-color: var(--dark-bg);
+  border-radius: 0.75rem;
+  box-shadow: var(--dark-lift-shadow-s);
+  padding: 0.75rem;
+  flex-direction: column;
+  gap: 0.75rem;
+  z-index: var(--z-overlay);
 
-  position: absolute;
+  display: none;
   pointer-events: none;
 
-  & > * {
-    pointer-events: auto;
+  /* transition: opacity 0.15s ease, scale 0.15s cubic-bezier(0.34, 1.8, 0.64, 1);
+  opacity: 0;
+  scale: 0.8;
+
+
+  &.open {
+    opacity: 1;
+    scale: 1;
+    pointer-events: auto !important;
+
+    & * {
+      pointer-events: auto;
+    }
+  } */
+
+  /* &.open { */
+  /*   display: flex; */
+  /*   pointer-events: auto; */
+  /* } */
+}
+
+/**/
+
+/*:host {
+  display: block;
+  height: 200px;
+}
+.enter-container {
+  border: 1px solid #dddddd;
+  margin-top: 1em;
+  padding: 20px;
+  font-weight: bold;
+  font-size: 20px;
+}
+.enter-container p {
+  margin: 0;
+}
+.enter-animation {
+  animation: slide-fade 1s;
+}
+@keyframes slide-fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.toggle-btn {
+  background: transparent;
+  border: 1px solid var(--primary-contrast, black);
+  color: var(--primary-contrast, black);
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+}*/
+
+/**/
+
+.gf-text-normal {
+  color: var(--dark-text);
+  font-size: 16px;
+  line-height: 1.20;
+}
+
+.gf-text-small {
+  color: var(--dark-text-muted);
+  font-size: 14px;
+  line-height: 1.20;
+}
+
+.gf-nobg-btn-close { /* TODO: standardize style in styles.css */
+  color: var(--dark-text-muted);
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+  height: 1.5rem;
+  width: 1.5rem;
+  border: none;
+  background-color: transparent;
+
+  & svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:hover {
+    color: var(--dark-text);
+  }
+}
+
+.gf-hollow-btn { /* TODO: standardize style in styles.css */
+  color: var(--dark-text-muted);
+  border: 0.125rem solid var(--danger);
+  background-color: transparent;
+  line-height: 1;
+  padding: 0 1rem 0 0.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  transition: color 0.15s, background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+
+  & > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:hover {
+    background-color: var(--danger);
+    color: var(--dark-text)
+  }
+}
+
+.button-fix-icon { /* TODO: This is half-assed */
+  padding: 0 1rem 0 0.5rem;
+  & > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+.separator {
+  border-top: 1px solid var(--dark-bg-light);
+  margin: 0 1rem;
 }
