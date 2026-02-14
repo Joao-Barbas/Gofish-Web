@@ -13,7 +13,7 @@ import { PreviewMarkerService } from '@gofish/shared/services/map-services/previ
 import { MarkerRegistryService } from '@gofish/shared/services/map-services/marker-registry.service';
 import { PinDetailService } from '@gofish/shared/services/map-services/pin-detail.service';
 import { PinDetailPanelComponent } from './pin-detail-panel/pin-detail-panel.component';
-import { FlyoutHeaderComponent } from '@gofish/header/flyout-header/flyout-header.component';
+import { FlyoutHeaderComponent } from '@gofish/features/header/flyout-header/flyout-header.component';
 import { PortugalValidationService } from '@gofish/shared/services/map-services/portugal-validation.service';
 import { PinPreviewResDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';

@@ -4,8 +4,8 @@ import { Component, inject, viewChild, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { PopupService } from '@gofish/shared/services/popup.service';
-import { PopupAdminComponent } from '@gofish/header/header-actions/popup-admin/popup-admin.component';
-import { PopupUserComponent } from '@gofish/header/header-actions/popup-user/popup-user.component';
+import { PopupAdminComponent } from '@gofish/features/header/header-actions/popup-admin/popup-admin.component';
+import { PopupUserComponent } from '@gofish/features/header/header-actions/popup-user/popup-user.component';
 import { PopupId } from '@gofish/shared/interfaces/popup.interface';
 
 @Component({
