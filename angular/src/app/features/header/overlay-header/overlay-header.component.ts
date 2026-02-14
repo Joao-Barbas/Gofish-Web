@@ -5,9 +5,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { HeaderActionsComponent } from '../header-actions/header-actions.component';
 
 @Component({
-  selector: 'app-flyout-header',
+  selector: 'app-overlay-header',
   imports: [RouterLink, RouterLinkActive, HeaderActionsComponent],
-  templateUrl: './flyout-header.component.html',
-  styleUrl: './flyout-header.component.css'
+  templateUrl: './overlay-header.component.html',
+  styleUrl: './overlay-header.component.css'
 })
-export class FlyoutHeaderComponent {}
+export class OverlayHeaderComponent {}

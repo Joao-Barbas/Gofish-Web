@@ -12,7 +12,7 @@ import { PreviewMarkerService } from '@gofish/features/map/services/preview-mark
 import { MarkerRegistryService } from '@gofish/features/map/services/marker-registry.service';
 import { PinDetailService } from '@gofish/features/map/services/pin-detail.service';
 import { PinDetailPanelComponent } from './components/pin-detail-panel/pin-detail-panel.component';
-import { FlyoutHeaderComponent } from '@gofish/features/header/flyout-header/flyout-header.component';
+import { OverlayHeaderComponent } from '@gofish/features/header/overlay-header/overlay-header.component';
 import { PortugalValidationService } from '@gofish/features/map/services/portugal-validation.service';
 import { PinPreviewResDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -21,7 +21,7 @@ import mapboxgl from 'mapbox-gl';
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, FormsModule, CreatePinComponent, PinDetailPanelComponent, FlyoutHeaderComponent],
+  imports: [CommonModule, FormsModule, CreatePinComponent, PinDetailPanelComponent, OverlayHeaderComponent],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
 })
