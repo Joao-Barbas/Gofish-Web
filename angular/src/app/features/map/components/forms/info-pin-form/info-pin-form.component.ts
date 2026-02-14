@@ -4,8 +4,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CreateInfoPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
-import { Coords } from '@gofish/shared/models/pin-types';
 import { PinService } from '@gofish/features/map/services/pin.service';
+import { Coords } from '@gofish/shared/models/coords.model';
 
 @Component({
   selector: 'app-info-pin-form',

@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Coords, PinType } from '@gofish/shared/models/pin-types';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { CatchingPinFormComponent } from '../forms/catching-pin-form/catching-pin-form.component';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +7,8 @@ import { AuthService } from '@gofish/shared/services/auth.service';
 import { CreateInfoPinReqDTO, CreateWarnPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { InfoPinFormComponent } from '../forms/info-pin-form/info-pin-form.component';
 import { WarnPinFormComponent } from '../forms/warn-pin-form/warn-pin-form.component';
+import { PinType } from '@gofish/shared/models/pin.model';
+import { Coords } from '@gofish/shared/models/coords.model';
 
 // Vale a pena fazer um padrao state ?
 type Step = 'idle' | 'chooseLocation' | 'chooseType' | 'fillForm';

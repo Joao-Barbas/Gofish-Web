@@ -7,7 +7,6 @@ import { UserService } from '@gofish/shared/services/user.service';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { PinfactoryService } from '@gofish/features/map/services/pinfactory.service';
 import { CreatePinComponent } from '@gofish/features/map/components/create-pin/create-pin.component';
-import { Coords } from '@gofish/shared/models/pin-types';
 import { PreviewMarkerService } from '@gofish/features/map/services/preview-marker.service';
 import { MarkerRegistryService } from '@gofish/features/map/services/marker-registry.service';
 import { PinDetailService } from '@gofish/features/map/services/pin-detail.service';
@@ -17,6 +16,7 @@ import { PortugalValidationService } from '@gofish/features/map/services/portuga
 import { PinPreviewResDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import mapboxgl from 'mapbox-gl';
+import { Coords } from '@gofish/shared/models/coords.model';
 
 @Component({
   selector: 'app-map',

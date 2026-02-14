@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
-import { PinType } from '@gofish/shared/models/pin-types';
 import { ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
-
-
+import { PinType } from '@gofish/shared/models/pin.model';
 
 type Handlers = {
   enter: () => void;

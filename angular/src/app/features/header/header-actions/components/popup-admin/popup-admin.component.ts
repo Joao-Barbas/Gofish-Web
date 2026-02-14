@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { PopupComponent, PopupId } from '@gofish/shared/interfaces/popup.interface';
+import { PopupComponent, PopupId } from '@gofish/shared/models/popup.model';
 import { PopupService } from '@gofish/shared/services/popup.service';
 
 @Component({

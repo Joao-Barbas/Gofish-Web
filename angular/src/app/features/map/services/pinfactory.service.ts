@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
-import { PinType } from '../../../shared/models/pin-types';
 import mapboxgl from 'mapbox-gl';
 import { PinIconService } from './pin-icon.service';
 import { ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
-
-
+import { PinType } from '@gofish/shared/models/pin.model';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class PinfactoryService {
 
   constructor(private pinIcon: PinIconService) { }

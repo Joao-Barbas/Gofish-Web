@@ -6,7 +6,7 @@ import { AuthService } from '@gofish/shared/services/auth.service';
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { PopupAdminComponent } from '@gofish/features/header/header-actions/components/popup-admin/popup-admin.component';
 import { PopupUserComponent } from '@gofish/features/header/header-actions/components/popup-user/popup-user.component';
-import { PopupId } from '@gofish/shared/interfaces/popup.interface';
+import { PopupId } from '@gofish/shared/models/popup.model';
 
 @Component({
   selector: 'app-header-actions',
