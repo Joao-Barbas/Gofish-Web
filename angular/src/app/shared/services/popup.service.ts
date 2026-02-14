@@ -6,7 +6,7 @@ import { PopupKey } from '@gofish/shared/models/popup.model';
   providedIn: 'root'
 })
 export class PopupService {
-  private activePopup$ = new BehaviorSubject<PopupKey | null>(null);
+  private activePopup$ = new BehaviorSubject<PopupKey | null>(null); // TODO: Use signals
   public isAnyOpen$ = this.activePopup$.pipe(map(v => v !== null));
 
   isOpen$(id: PopupKey): Observable<boolean> {

@@ -1,19 +1,13 @@
-/* popup-admin.component.css */
+.header-overlay-container {
+  min-width: 16rem;
+  background-color: var(--dark-bg);
+  border-radius: 0.75rem;
+  box-shadow: var(--dark-lift-shadow-s);
+  padding: 0.75rem;
+  flex-direction: column;
+  gap: 0.75rem;
+  z-index: var(--z-overlay);
 
-/* .header-dropdown {
-  background-color: white;
+  height: 160px;
+  width: 256px;
 }
-
-.enter-animation {
-  animation: slide-fade 1s;
-}
-@keyframes slide-fade {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-} */

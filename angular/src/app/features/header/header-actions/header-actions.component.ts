@@ -1,12 +1,12 @@
 /* header-actions.component.ts */
 
-import { Component, inject, viewChild, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { PopupAdminComponent } from '@gofish/features/header/header-actions/components/popup-admin/popup-admin.component';
 import { PopupUserComponent } from '@gofish/features/header/header-actions/components/popup-user/popup-user.component';
-import { PopupKey } from '@gofish/shared/models/popup.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header-actions',
@@ -15,8 +15,9 @@ import { PopupKey } from '@gofish/shared/models/popup.model';
   styleUrl: './header-actions.component.css'
 })
 export class HeaderActionsComponent {
-  private popupService = inject(PopupService);
-  private authService  = inject(AuthService);
+  private router        = inject(Router);
+  private popupService  = inject(PopupService);
+  private authService   = inject(AuthService);
 
   public isUserPopupOpen$  = this.popupService.isOpen$(PopupUserComponent.key);
   public isAdminPopupOpen$ = this.popupService.isOpen$(PopupAdminComponent.key);
@@ -27,6 +28,10 @@ export class HeaderActionsComponent {
 
   public get isSignedIn(): boolean {
     return this.authService.isSignedIn();
+  }
+
+  routeSignIn() {
+    this.router.navigateByUrl('/user/signin');
   }
 
   public toggleUserPopup(): void { this.popupService.toggle(PopupUserComponent.key); }

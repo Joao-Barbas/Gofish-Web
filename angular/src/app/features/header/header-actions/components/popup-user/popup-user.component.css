@@ -6,6 +6,7 @@
   border-radius: 0.75rem;
   box-shadow: var(--dark-lift-shadow-s);
   padding: 0.75rem;
+  display: flex;
   flex-direction: column;
   gap: 0.75rem;
   z-index: var(--z-overlay);

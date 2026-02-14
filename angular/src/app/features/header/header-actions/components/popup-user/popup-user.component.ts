@@ -14,13 +14,7 @@ import { AuthService } from '@gofish/shared/services/auth.service';
 })
 export class PopupUserComponent extends BasePopupComponent {
   public static readonly key: PopupKey = 'popup-header-user';
-
-  private routerLink = inject(Router);
   private authService = inject(AuthService);
-
-  ngOnInit() {
-    console.log(this.key);
-  }
 
   get isSignedIn(): boolean {
     return this.authService.isSignedIn();
@@ -28,11 +22,6 @@ export class PopupUserComponent extends BasePopupComponent {
 
   signOut() {
     this.authService.signOut();
-    this.close();
-  }
-
-  signIn() {
-    this.routerLink.navigateByUrl('/user/signin');
     this.close();
   }
 }
