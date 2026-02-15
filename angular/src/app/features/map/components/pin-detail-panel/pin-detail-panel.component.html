@@ -1,0 +1,56 @@
+<aside class="pin-side-panel" [class.active]="selectedPin$ | async">
+  <article class="gf-card pin-preview-click" *ngIf="selectedPin$ | async as pin">
+
+    <header class="horizontal-flow align-center-center" style="justify-content: space-between; width: 100%;">
+      <div class="horizontal-flow gf-gap-8 align-center-center">
+        <div class="pin-preview-click__avatar"
+          style="background-color: var(--dark-text-muted); border-radius: 50%; width: 32px; height: 32px;">
+        </div>
+
+        <div class="horizontal-flow gap-4 align-center-center">
+          <span class="dark-text text-medium font-main" style="font-size: 14px;">{{ pin.data?.authorUserName }}</span>
+          <span class="dark-text-muted" style="font-size: 12px;">•</span>
+          <span class="dark-text-muted font-main" style="font-size: 12px;">{{ pin.data?.createdAt | timeAgo }}</span>
+        </div>
+      </div>
+
+      <button class="gf-btn-icon" (click)="closePanel()"
+        style="background: none; border: none; color: var(--dark-text-muted); cursor: pointer;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </header>
+
+    @if (pin.data?.pinType === pinType.CATCH) {
+    <div class="pin-preview-click__image-wrapper">
+      <img [src]="pin.data?.postImageUrl" class="pin-preview-click__img" alt="Preview">
+    </div>
+    }
+
+
+    <div class="pin-preview-click__body" style="padding: 0 0 12px 0;">
+      <p class="dark-text font-main" style="font-size: 14px; margin: 0;">{{ pin.data?.postBody }}</p>
+    </div>
+
+    <footer class="horizontal-flow align-center-center" style="justify-content: space-between; width: 100%;">
+      <div class="horizontal-flow gf-gap-8">
+        <div class="pin-preview-click__badge">
+          <span class="dark-text text-medium" style="font-size: 12px;">👍 {{ 0 }}</span>
+        </div>
+        <div class="pin-preview-click__badge">
+          <span class="dark-text text-medium" style="font-size: 12px;">💬 {{ 0 }}</span>
+        </div>
+      </div>
+
+      <button class="gf-btn-icon" style="background: none; border: none; color: var(--dark-text-muted);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h6v6M10 14L21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+        </svg>
+      </button>
+    </footer>
+
+  </article>
+</aside>

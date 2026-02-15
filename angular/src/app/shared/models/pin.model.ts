@@ -1,3 +1,10 @@
+export enum PinType {
+  CATCH = 0,
+  INFORMATION = 1,
+  WARNING = 2,
+  DEFAULT = 999
+}
+
 export interface Pin {
   id: number;
   latitude: number;

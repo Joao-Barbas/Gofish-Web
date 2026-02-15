@@ -2,7 +2,7 @@ import { environment } from 'environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LOCAL_TOKEN_KEY } from '@gofish/const';
+import { LOCAL_TOKEN_KEY } from '@gofish/shared/constants';
 import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/signup.dto';
 import { SignInReqDTO, SignInResDTO } from '@gofish/shared/dtos/signin.dto';
 
@@ -24,6 +24,11 @@ export class AuthService {
 
   isSignedIn() {
     return this.getToken() != null ? true : false;
+  }
+
+  signOut(): boolean {
+    this.deleteToken();
+    return true
   }
 
   storeToken(token: string): boolean {
