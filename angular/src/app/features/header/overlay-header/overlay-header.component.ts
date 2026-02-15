@@ -6,7 +6,7 @@ import { HeaderActionsComponent } from '../header-actions/header-actions.compone
 
 @Component({
   selector: 'app-overlay-header',
-  imports: [RouterLink, RouterLinkActive, HeaderActionsComponent],
+  imports: [ RouterLink, RouterLinkActive, HeaderActionsComponent ],
   templateUrl: './overlay-header.component.html',
   styleUrl: './overlay-header.component.css'
 })

@@ -203,7 +203,9 @@ html, body {
 */
 .icon-size-gofish-logo {
   --size: 48px;
-
+}
+.icon-size-gofish-logo-small {
+  --size: 28px;
 }
 
 

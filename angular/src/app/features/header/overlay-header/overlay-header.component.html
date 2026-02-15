@@ -1,19 +1,24 @@
 <!-- flyout-header.component.html -->
 
-<header class="flyout-header d-flex justify-content-between align-items-start w-100">
-  <nav class="left navbar-pill d-flex align-items-center gap-3 font-main">
-    <a routerLink="/" class="navbar-logo">
-      <div class="icon-gofish icon-size-flyout-logo"></div>
-    </a>
-    <div class="right nav-divider"></div>
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-       class="nav-link text-slim">HOME</a>
-    <a routerLink="/map" routerLinkActive="active"
-       class="nav-link text-slim">MAP</a>
-    <a routerLink="/forum" routerLinkActive="active"
-       class="nav-link text-slim">FORUM</a>
-    <a routerLink="/about-us" routerLinkActive="active"
-       class="nav-link text-slim">ABOUT US</a>
-  </nav>
-  <app-header-actions variant="flyout"></app-header-actions>
+<header class="overlay-header position-absolute d-flex justify-content-between">
+  <!-- Left: logo plus nav items -->
+  <div class="left d-flex flex-row align-items-center">
+    <!-- Logo -->
+    <div>
+      <a routerLink="/" class="d-flex align-items-center text-decoration-none">
+        <div class="icon-gofish icon-size-gofish-logo-small"></div>
+      </a>
+    </div>
+    <!-- Nav -->
+    <nav class="d-flex flex-rown align-items-center font-main overlay-header-items">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="text-slim dark-text-muted">HOME</a>
+      <a routerLink="/map" routerLinkActive="active" class="text-slim dark-text-muted">MAP</a>
+      <a routerLink="/forum" routerLinkActive="active" class="text-slim dark-text-muted">FORUM</a>
+      <a routerLink="/about-us" routerLinkActive="active" class="text-slim dark-text-muted">ABOUT US</a>
+    </nav>
+  </div>
+  <!-- Right: toggle menus actions -->
+  <div class="right d-flex flex-row align-items-center">
+    <app-header-actions></app-header-actions>
+  </div>
 </header>
