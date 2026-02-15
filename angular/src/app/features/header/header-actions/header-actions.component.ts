@@ -30,12 +30,19 @@ export class HeaderActionsComponent {
     return this.authService.isSignedIn();
   }
 
-  routeSignIn() {
+  public routeSignIn() {
     this.router.navigateByUrl('/user/signin');
   }
 
-  public toggleUserPopup(): void { this.popupService.toggle(PopupUserComponent.key); }
-  public toggleAdminPopup(): void { this.popupService.toggle(PopupAdminComponent.key); }
+  public toggleUserPopup(event: Event): void {
+    this.popupService.toggle(PopupUserComponent.key);
+    event.stopPropagation();
+  }
+
+  public toggleAdminPopup(event: Event): void {
+    this.popupService.toggle(PopupAdminComponent.key);
+    event.stopPropagation();
+  }
 
   // @HostListener('document:keydown.escape')
   // onEscapeKey() {

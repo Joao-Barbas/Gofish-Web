@@ -1,6 +1,6 @@
 <!-- popup-user.component.html -->
 
-<div class="header-overlay-container">
+<div class="header-overlay-container" (clickOutside)="close()">
   @if (isSignedIn) {
     <!-- Avatar, name & close button -->
     <div class="d-flex justify-content-between align-items-start">

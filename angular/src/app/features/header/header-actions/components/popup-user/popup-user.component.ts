@@ -1,14 +1,14 @@
-/* popup-user.component.ts */
+// popup-user.component.ts
 
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ClickOutsideDirective } from '@gofish/shared/directives/click-outside.directive';
 import { BasePopupComponent, PopupKey } from '@gofish/shared/models/popup.model';
 import { AuthService } from '@gofish/shared/services/auth.service';
 
 @Component({
   selector: 'app-popup-user',
-  imports: [ CommonModule ],
+  imports: [ CommonModule, ClickOutsideDirective ],
   templateUrl: './popup-user.component.html',
   styleUrl: './popup-user.component.css'
 })
