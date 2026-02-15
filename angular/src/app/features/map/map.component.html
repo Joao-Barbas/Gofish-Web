@@ -28,11 +28,9 @@
 
     <app-overlay-header></app-overlay-header>
 
-    <app-create-pin
-      class="gf-floating-action physical-child"
-      [selectedCoords]="selected" (requestPickOnMap)="enablePickMode()"
-      (coordsSelected)="onCoordsSelected($event)" (creationComplete)="onPinCreated()"
-      (creationFailed)="onPinCreateFailed($event)">
+    <app-create-pin class="gf-floating-action physical-child" [selectedCoords]="selected"
+      (requestPickOnMap)="enablePickMode()" (coordsSelected)="onCoordsSelected($event)"
+      (creationComplete)="onPinCreated()" (creationFailed)="onPinCreateFailed($event)">
     </app-create-pin>
 
     <!-- Map actions box -->
@@ -40,49 +38,52 @@
     <div class="map-actions-box position-absolute end-0 bottom-0 d-flex flex-row physical-child gf-gap-12">
 
       <!-- Create pin & ask location -->
-      <div class="position-relative d-flex flex-column gf-card-size-map-interact" >
-        <button class="icon-map-pin-plus icon-white-muted interact-button generic-button-wrapper-s" (click)="menuOpen = !menuOpen"></button>
+      <div class="position-relative d-flex flex-column gf-card-size-map-interact">
+
+        <button class="icon-map-pin-plus icon-white-muted
+                       interact-button generic-button-wrapper-s" (click)="menuOpen = !menuOpen"></button>
+
         <button class="icon-locate icon-white-muted interact-button generic-button-wrapper-s"></button>
 
         <!-- Create pin menu -->
         <!-- Esta variavel esta em modo de mega examplo -->
         @if (menuOpen) {
-          <div class="position-absolute d-flex flex-row gf-gap-16 gf-card-pin-select">
-            <div class="d-flex flex-column">
+        <div class="position-absolute d-flex flex-row gf-gap-16 gf-card-pin-select">
+          <div class="d-flex flex-column">
 
-              <!-- Top (Select Location) -->
+            <!-- Top (Select Location) -->
 
-              <div class="d-flex align-items-center gf-gap-4 enable-location-select">
-                <input type="checkbox"/>
-                <label>Select location on map</label>
+            <div class="d-flex align-items-center gf-gap-4 enable-location-select">
+              <input type="checkbox" />
+              <label>Select location on map</label>
+            </div>
+
+            <!-- Bottom (Select Pin Type) -->
+            <div class="d-flex flex-row gf-gap-16 pin-showcase">
+
+              <!-- 1. Create Warning pin -->
+              <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
+                <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
+                <label class="pin-type-name">Warning</label>
               </div>
 
-              <!-- Bottom (Select Pin Type) -->
-              <div class="d-flex flex-row gf-gap-16 pin-showcase">
-
-                <!-- 1. Create Warning pin -->
-                <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
-                  <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
-                  <label class="pin-type-name">Warning</label>
-                </div>
-
-                <!-- 2. Create information pin -->
-                <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
-                  <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
-                  <label class="pin-type-name">Information</label>
-                </div>
-
-                <!-- 3. Create catch pin -->
-                <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
-                  <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
-                  <label class="pin-type-name">Catch</label>
-                </div>
-
+              <!-- 2. Create information pin -->
+              <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
+                <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
+                <label class="pin-type-name">Information</label>
               </div>
 
+              <!-- 3. Create catch pin -->
+              <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
+                <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
+                <label class="pin-type-name">Catch</label>
+              </div>
 
             </div>
+
+
           </div>
+        </div>
         }
       </div>
 
@@ -93,5 +94,6 @@
       </div>
 
     </div>
+
   </div>
 </main>

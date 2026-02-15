@@ -159,6 +159,7 @@ html, body {
 .icon-halfstar      { --icon-url: url('/assets/vectors/star-half.svg'); }
 .icon-check         { --icon-url: url('/assets/vectors/check.svg'); }
 .icon-cross         { --icon-url: url('/assets/vectors/x.svg'); }
+.icon-close         { --icon-url: url('/assets/vectors/close.svg'); }
 .icon-gofish        { --icon-url: url('/assets/images/logo-white-256.png'); }
 .icon-search        { --icon-url: url('/assets/vectors/search.svg'); }
 .icon-user          { --icon-url: url('/assets/vectors/user.svg'); }
@@ -300,8 +301,21 @@ html, body {
   cursor: pointer;
 }
 
+/*.generic-icon-button-wrapper:hover > .icon-white-muted,*/
+.generic-icon-button-wrapper:hover > [class^="icon-"],
 .generic-button-wrapper-s:hover {
   --filter: var(--filter-white);
+}
+
+
+/*
+ * Para quando:
+ <button class="generic-icon-button-wrapper">
+    <div class="icon-close icon-white-muted"></div>
+ </button>
+ */
+.generic-icon-button-wrapper > [class^="icon-"] {
+  --filter: var(--filter-white-muted);
 }
 
 .generic-button-wrapper-all > button {cursor: pointer;}
