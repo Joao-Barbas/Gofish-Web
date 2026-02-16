@@ -1,0 +1,47 @@
+.choose-pin-popup-container {
+  background-color: var(--dark-bg);
+  box-shadow: var(--dark-lift-shadow-s);
+  z-index: var(--z-overlay);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+}
+
+.enable-location-select {
+  & > label {
+    color: var(--dark-text);
+    font-size: 10pt;
+  }
+}
+
+.show-location-field {
+  background-color: var(--dark-bg-dark);
+  color: var(--dark-text-muted);
+  font-size: 9pt;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.pin-types-showcase {
+  color: var(--dark-text);
+}
+
+.pin-types-showcase .pin-type-item {
+  font-size: 10pt;
+
+  & > .pin-img-btn {
+    border-style: none;
+    min-height: 48px;
+    min-width: 72px;
+    max-height: 48px;
+    max-width: 72px;
+    background-color: rgb(80, 80, 80);
+    border-radius: 8px;
+
+    border: 2px solid transparent; /* Always there, invisible */
+    box-sizing: border-box;
+
+    &:hover {
+      border-color: var(--primary);
+    }
+  }
+}

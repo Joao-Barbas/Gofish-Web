@@ -1,0 +1,41 @@
+<!-- choose-pin-popup.component.html -->
+
+<div class="choose-pin-popup-container d-flex flex-column gf-gap-16" (clickOutside)="close()">
+    <!-- Location selection type section -->
+    <div class="d-flex flex-column gf-gap-4">
+      <!-- Toggle -->
+      <div class="d-flex justify-content-between align-items-center enable-location-select">
+        <label>Select location on map</label>
+        <input #manualLocation type="checkbox" [checked]="isManualLocation" [disabled]="isGeolocationDenied" (change)="isManualLocation = $event.target.checked"/> <!-- Bidirectional bind -->
+      </div>
+      <!-- Coordinates display -->
+      <!-- @if (manualLocation.checked) {
+        <div class="d-flex gf-gap-4">
+          <div class="show-location-field d-flex align-items-center flex-grow-1">
+            <span>{{ selectedLatitude }}</span>
+          </div>
+          <div class="show-location-field flex-grow-1">
+            <span>{{ selectedLongitude }}</span>
+          </div>
+        </div>
+      } -->
+    </div>
+    <!-- Select pin type section -->
+    <div class="d-flex flex-row gf-gap-8 pin-types-showcase">
+      <!-- Create Warning pin -->
+      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item">
+        <button class="pin-img-btn" (click)="createWarnPin()"></button> <!-- Image 64x48 -->
+        <label class="pin-name">Warning</label>
+      </div>
+      <!-- Create information pin -->
+      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item">
+        <button class="pin-img-btn" (click)="createInfoPin()"></button> <!-- Image 64x48 -->
+        <label class="pin-name">Information</label>
+      </div>
+      <!-- Create catch pin -->
+      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item">
+        <button class="pin-img-btn" (click)="createCatchPin()"></button> <!-- Image 64x48 -->
+        <label class="pin-name">Catch</label>
+      </div>
+    </div>
+</div>

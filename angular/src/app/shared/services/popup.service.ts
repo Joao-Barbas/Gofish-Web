@@ -13,20 +13,9 @@ export class PopupService {
     return this.activePopup$.pipe(map(active => active === id));
   }
 
-  toggle(id: PopupKey): void {
-    console.log('toggle ' + id);
-    this.activePopup$.next(this.activePopup$.value === id ? null : id);
-  }
-
-  open(id: PopupKey): void {
-    console.log('open ' + id);
-    this.activePopup$.next(id);
-  }
-
-  close(): void {
-    console.log('close');
-    this.activePopup$.next(null);
-  }
+  toggle(id: PopupKey): void { this.activePopup$.next(this.activePopup$.value === id ? null : id); }
+  open(id: PopupKey): void { this.activePopup$.next(id); }
+  close(): void { this.activePopup$.next(null); }
 
   async closeId(id: PopupKey) {
     this.isOpen$(id).subscribe(next => {

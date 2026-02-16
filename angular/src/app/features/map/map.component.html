@@ -18,80 +18,103 @@
 <!-- map.component.html -->
 
 <main class="position-fixed top-0 start-0 end-0 bottom-0 overflow-hidden">
-  <div id="map" class="w-100 h-100"></div>
-  <div class="position-absolute vw-100 vh-100 d-flex justify-content-between align-items-start container-overlay">
-
-    <!--
-     * Divs de Layout do UI devem ter a classe "map-overlay" para se poder clicar no mapa e UI
-     * Não é para meter em elementos tipo botões, letras, etc...
-    -->
-
+  <!-- Mapbox -->
+  <!-- <div id="map" class="w-100 h-100"></div> -->
+  <!-- Overlay -->
+  <!-- Everything else on top of the map goes inside this -->
+  <div class="position-absolute top-0 start-0 w-100 h-100 gf-no-events">
     <app-overlay-header></app-overlay-header>
 
-    <app-create-pin
-      class="gf-floating-action physical-child"
-      [selectedCoords]="selected" (requestPickOnMap)="enablePickMode()"
-      (coordsSelected)="onCoordsSelected($event)" (creationComplete)="onPinCreated()"
+    <!-- <app-create-pin
+      class="gf-floating-action gf-do-events"
+      [selectedCoords]="selected"
+      (requestPickOnMap)="enablePickMode()"
+      (coordsSelected)="onCoordsSelected($event)"
+      (creationComplete)="onPinCreated()"
       (creationFailed)="onPinCreateFailed($event)">
-    </app-create-pin>
+    </app-create-pin> -->
 
-    <!-- Map actions box -->
-    <!-- Tag order from top-bottom equal right to left -->
-    <div class="map-actions-box position-absolute end-0 bottom-0 d-flex flex-row physical-child gf-gap-12">
-
+    <!-- Actions overlay -->
+    <div class="actions-container position-absolute d-flex flex-row gf-do-events gf-gap-12">
       <!-- Create pin & ask location -->
-      <div class="position-relative d-flex flex-column gf-card-size-map-interact" >
-        <button class="icon-map-pin-plus icon-white-muted interact-button generic-button-wrapper-s" (click)="menuOpen = !menuOpen"></button>
-        <button class="icon-locate icon-white-muted interact-button generic-button-wrapper-s"></button>
-
-        <!-- Create pin menu -->
-        <!-- Esta variavel esta em modo de mega examplo -->
-        @if (menuOpen) {
-          <div class="position-absolute d-flex flex-row gf-gap-16 gf-card-pin-select">
-            <div class="d-flex flex-column">
-
-              <!-- Top (Select Location) -->
-
-              <div class="d-flex align-items-center gf-gap-4 enable-location-select">
-                <input type="checkbox"/>
-                <label>Select location on map</label>
-              </div>
-
-              <!-- Bottom (Select Pin Type) -->
-              <div class="d-flex flex-row gf-gap-16 pin-showcase">
-
-                <!-- 1. Create Warning pin -->
-                <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
-                  <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
-                  <label class="pin-type-name">Warning</label>
-                </div>
-
-                <!-- 2. Create information pin -->
-                <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
-                  <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
-                  <label class="pin-type-name">Information</label>
-                </div>
-
-                <!-- 3. Create catch pin -->
-                <div class="d-flex flex-column align-items-center gf-gap-4 pin-showcase-item">
-                  <button class="pin-type-img-btn"></button> <!-- Image 64x48 -->
-                  <label class="pin-type-name">Catch</label>
-                </div>
-
-              </div>
-
-
-            </div>
-          </div>
-        }
+      <div class="d-flex flex-column actions-bundle-container">
+        <!-- Show overlay to selecte pin type to create button -->
+        <button class="map-action" (click)="toggleCreatePinOverlay($event)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19.914 11.105A7.298 7.298 0 0 0 20 10a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 1.202 0 32 32 0 0 0 .824-.738"/>
+            <circle cx="12" cy="10" r="3"/>
+            <path d="M16 18h6"/>
+            <path d="M19 15v6"/>
+          </svg>
+        </button>
+        <!-- Get location permissions button -->
+        <button id="map-action-ask-location" class="map-action" [disabled]="isGeolocationDenied" (click)="requestGeolocation()">
+          @switch (getGeolocationState) {
+          @case ('prompt') {
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="2" x2="5" y1="12" y2="12"/>
+              <line x1="19" x2="22" y1="12" y2="12"/>
+              <line x1="12" x2="12" y1="2" y2="5"/>
+              <line x1="12" x2="12" y1="19" y2="22"/>
+              <circle cx="12" cy="12" r="7"/>
+            </svg>
+          }
+          @case ('granted') {
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="2" x2="5" y1="12" y2="12"/>
+              <line x1="19" x2="22" y1="12" y2="12"/>
+              <line x1="12" x2="12" y1="2" y2="5"/>
+              <line x1="12" x2="12" y1="19" y2="22"/>
+              <circle cx="12" cy="12" r="7"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          }
+          @default {
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 19v3"/>
+              <path d="M12 2v3"/>
+              <path d="M18.89 13.24a7 7 0 0 0-8.13-8.13"/>
+              <path d="M19 12h3"/>
+              <path d="M2 12h3"/>
+              <path d="m2 2 20 20"/>
+              <path d="M7.05 7.05a7 7 0 0 0 9.9 9.9"/>
+            </svg>
+          }}
+        </button>
       </div>
-
       <!-- Zoom -->
-      <div class="d-flex flex-column gf-card-size-map-interact">
-        <button class="icon-plus icon-white-muted interact-button generic-button-wrapper-s"></button>
-        <button class="icon-minus icon-white-muted interact-button generic-button-wrapper-s"></button>
+      <div class="d-flex flex-column actions-bundle-container">
+        <button class="map-action">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/>
+            <path d="M12 5v14"/>
+          </svg>
+        </button>
+        <button class="map-action">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/>
+          </svg>
+        </button>
       </div>
-
+      <!-- popup overlays  -->
+      <!-- Choose pin type -->
+      @if (isCreatePinOverlayOpen$ | async) {
+        <app-choose-pin-popup
+          class="position-action-overlay"
+          animate.enter="on-enter"
+          animate.leave="on-leave"
+          (CreateByPick)="onCreateByPick($event)"
+          (CreateByGeolocation)="onCreateByGeolocation($event)">
+        </app-choose-pin-popup>
+      }
+      <!-- Create pin forms  -->
+      <!-- @switch () {
+      @case () {}
+      @case () {}
+      @case () {}
+      } -->
+      <!-- End popup overlays  -->
     </div>
+    <!-- End actions overlay -->
   </div>
 </main>
