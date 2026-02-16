@@ -1,6 +1,0 @@
-@GofishApi_HostAddress = http://localhost:5153
-
-GET {{GofishApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
