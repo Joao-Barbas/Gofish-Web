@@ -20,7 +20,7 @@
 
 app-create-pin {
   position: absolute;
-  top: 16px;
+  bottom: 150px;
   right: 16px;
   z-index: 10;
   border-radius: var(--gf-border-radius);

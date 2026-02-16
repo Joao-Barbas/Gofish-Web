@@ -1,0 +1,38 @@
+/* MODAL TEST */
+
+.modal-backdrop-custom {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 1050;
+}
+
+.modal-custom {
+  width: 100%;
+  max-width: 640px;
+  background: #22232A;
+  border-radius: 16px;
+  box-shadow: var(--dark-lift-shadow-l);
+}
+
+
+.icon-size-pin-modal {
+  --size: 18px;
+  background-size: 24px 24px;
+}
+
+
+.icon-box {
+  --icon-box-size: 36px;
+  width: var(--icon-box-size);
+  height: var(--icon-box-size);
+
+  border-radius: 8px;
+  border: none;
+  background-color: var(--dark-bg-light);
+  padding: 0px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
