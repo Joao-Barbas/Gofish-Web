@@ -35,5 +35,10 @@ namespace GofishApi.Models
         // public /* virtual // Maybe? */ ICollection<Comment> Comments { get; set; } = new(); // TODO
 
         #endregion
+        #region Computed Properties
+
+        public int Score => UpVotes - DownVotes;
+
+        #endregion
     }
 }
