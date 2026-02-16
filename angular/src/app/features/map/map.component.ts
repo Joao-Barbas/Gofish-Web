@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import { AfterViewInit, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { UserService } from '@gofish/shared/services/user.service';
 import { PinService } from '@gofish/features/map/services/pin.service';
@@ -33,8 +33,9 @@ export type NewPinType = 'catch' | 'info' | 'warn'; // TODO: Refactor. Theres al
     CreatePinComponent,
     PinDetailPanelComponent,
     OverlayHeaderComponent,
-    ChoosePinPopupComponent
-  ],
+    ChoosePinPopupComponent,
+    RouterOutlet
+],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
 })

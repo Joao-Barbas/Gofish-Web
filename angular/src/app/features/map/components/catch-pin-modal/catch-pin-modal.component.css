@@ -15,6 +15,9 @@
   box-shadow: var(--dark-lift-shadow-l);
 }
 
+.modal-header-title {
+  font-size: 18px;
+}
 
 .icon-size-pin-modal {
   --size: 18px;
@@ -35,4 +38,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.modal-body {
+  border-top: 2px solid var(--dark-bg-light);
+}
+
+.modal-body-title {
+  font-size: 16px;
+  font-style: normal;
+font-weight: 400;
 }

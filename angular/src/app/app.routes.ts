@@ -16,14 +16,13 @@ export const routes: Routes = [
   {
     path: 'map',
     loadComponent: () => import('@gofish/features/map/map.component').then(m => m.MapComponent),
-    canActivate: [ authGuard ]
+    canActivate: [ authGuard ],
+    children: [
+      { path: 'create-catch-pin', loadComponent: () => import('@gofish/features/map/components/catch-pin-modal/catch-pin-modal.component').then(c => c.CatchPinModalComponent) }
+    ]
   },
   {
     path: 'about-us',
     loadComponent: () => import('@gofish/features/about/about.component').then(a => a.AboutComponent),
-  },
-  {
-    path: 'catch-pin-test',
-    loadComponent: () => import('@gofish/features/map/components/catch-pin-modal/catch-pin-modal.component').then(c => c.CatchPinModalComponent)
   },
 ];
