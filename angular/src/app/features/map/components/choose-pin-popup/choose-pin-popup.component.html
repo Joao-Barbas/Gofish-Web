@@ -5,8 +5,21 @@
     <div class="d-flex flex-column gf-gap-4">
       <!-- Toggle -->
       <div class="d-flex justify-content-between align-items-center enable-location-select">
-        <label>Select location on map</label>
-        <input #manualLocation type="checkbox" [checked]="isManualLocation" [disabled]="isGeolocationDenied" (change)="isManualLocation = $event.target.checked"/> <!-- Bidirectional bind -->
+        <label>Use my current location</label>
+        <!-- <input
+          #useGeolocation
+          type="checkbox"
+          [checked]="geoService.isAvailable()"
+          [disabled]="geoService.isBad()"
+          (change)="getgeo(onUseGeolocationChange($event))"
+        /> -->
+        <input
+        #useGeolocation
+        type="checkbox"
+        [checked]="isUseGeolocation"
+        [disabled]="geoService.isBad()"
+        (change)="onUseGeolocationChange($any($event.target).checked)"
+        />
       </div>
       <!-- Coordinates display -->
       <!-- @if (manualLocation.checked) {

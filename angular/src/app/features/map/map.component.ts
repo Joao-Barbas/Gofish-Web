@@ -41,14 +41,14 @@ export type NewPinType = 'catch' | 'info' | 'warn'; // TODO: Refactor. Theres al
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly popupService = inject(PopupService);
-  private readonly geolocationService = inject(GeolocationService);
+  private readonly geoService = inject(GeolocationService);
 
   public isCreatePinOverlayOpen$  = this.popupService.isOpen$(ChoosePinPopupComponent.key);
 
   public selectedGeolocation: GeolocationCoordinates | null = null; // User manually selected
   public selectedPinType: NewPinType | null = null;
 
-  public get getGeolocationState() { return this.geolocationService.permissionState(); }
+  public get getGeolocationState() { return this.geoService.state(); }
   public get isGeolocationDenied() { return this.getGeolocationState === 'denied' || this.getGeolocationState === 'inaccurate'; }
 
   // Popup overlays
@@ -78,7 +78,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   // End create pin events
 
   public requestGeolocation() {
-    this.geolocationService.requestLocation();
+    this.geoService.requestGeolocation();
   }
 
 

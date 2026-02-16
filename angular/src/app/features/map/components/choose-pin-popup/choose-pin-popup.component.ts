@@ -19,35 +19,32 @@ export class ChoosePinPopupComponent extends BasePopupComponent {
   @Output() CreateByPick = new EventEmitter<NewPinType>();
   @Output() CreateByGeolocation = new EventEmitter<NewPinType>();
 
-  private readonly geolocationService = inject(GeolocationService);
-  public isManualLocation: boolean = true; // Bidirectional
+  public readonly geoService = inject(GeolocationService);
+  public isUseGeolocation: boolean = false;
 
-  ngOnInit() {
-    if (this.isGeolocationDenied) {
-      this.isManualLocation = true;
-    }
-    else if (this.geolocationService.coords()) {
-      this.isManualLocation = false;
-    }
-  }
-
-  public get getGeolocationState() { return this.geolocationService.permissionState(); }
-  public get isGeolocationDenied() { return this.getGeolocationState === 'denied' || this.getGeolocationState === 'inaccurate'; }
+  // ngOnInit() {
+  //   if (this.geoService.isBad()) {
+  //     this.isUseGeolocation = false;
+  //   } // else if (this.geoService.coords()) {
+  //     // this.isUseGeolocation = true;
+  //   // }
+  // }
 
   private createPin(type: NewPinType) {
-    if (this.isManualLocation || this.isGeolocationDenied) {
-      this.CreateByPick.emit(type);
+    if (this.isUseGeolocation && this.geoService.isAvailable() && this.geoService.coords()) {
+      this.CreateByGeolocation.emit(type);
     } else {
-      if (this.geolocationService.coords()) {
-        this.CreateByGeolocation.emit(type);
-      } else if (this.geolocationService.permissionState() === 'prompt') {
-        this.geolocationService.requestLocation();
-        this.isManualLocation = !this.isGeolocationDenied;
-      }
+      this.CreateByPick.emit(type);
     }
   }
 
   public createCatchPin(): void { this.createPin('catch'); }
   public createInfoPin(): void { this.createPin('info'); }
   public createWarnPin(): void { this.createPin('warn'); }
+
+  public async onUseGeolocationChange(checked: boolean): Promise<void> {
+    this.isUseGeolocation = checked;
+    var success = await this.geoService.requestGeolocation() && !this.geoService.isBad();
+    if (!success) this.isUseGeolocation = false;
+  }
 }
