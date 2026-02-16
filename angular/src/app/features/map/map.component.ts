@@ -1,4 +1,6 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import mapboxgl from 'mapbox-gl';
+
+import { AfterViewInit, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,24 +17,81 @@ import { OverlayHeaderComponent } from '@gofish/features/header/overlay-header/o
 import { PortugalValidationService } from '@gofish/features/map/services/portugal-validation.service';
 import { PinPreviewResDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
-import mapboxgl from 'mapbox-gl';
 import { Coords } from '@gofish/shared/models/coords.model';
+import { PopupService } from '@gofish/shared/services/popup.service';
+import { ChoosePinPopupComponent } from '@gofish/features/map/components/choose-pin-popup/choose-pin-popup.component';
+import { GeolocationService } from '@gofish/shared/services/geolocation.service';
+
+export type NewPinType = 'catch' | 'info' | 'warn'; // TODO: Refactor. Theres already an enum in .model.ts. Prefer this?
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, FormsModule, CreatePinComponent, PinDetailPanelComponent, OverlayHeaderComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CreatePinComponent,
+    PinDetailPanelComponent,
+    OverlayHeaderComponent,
+    ChoosePinPopupComponent
+  ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
-  menuOpen = false;
+  private readonly popupService = inject(PopupService);
+  private readonly geolocationService = inject(GeolocationService);
 
-  doSomething() {
-    // Exemplo do menu
-    this.menuOpen = false;
+  public isCreatePinOverlayOpen$  = this.popupService.isOpen$(ChoosePinPopupComponent.key);
 
+  public selectedGeolocation: GeolocationCoordinates | null = null; // User manually selected
+  public selectedPinType: NewPinType | null = null;
+
+  public get getGeolocationState() { return this.geolocationService.permissionState(); }
+  public get isGeolocationDenied() { return this.getGeolocationState === 'denied' || this.getGeolocationState === 'inaccurate'; }
+
+  // Popup overlays
+
+  public toggleCreatePinOverlay(event: Event): void {
+    this.popupService.toggle(ChoosePinPopupComponent.key);
+    event.stopPropagation();
   }
+
+  // End popup overlays
+  // Create pin events
+
+  onCreateByPick(pinType: NewPinType) {
+    this.selectedPinType = pinType;
+    this.popupService.toggle(ChoosePinPopupComponent.key);
+    // this.enablePickMode();
+    console.log('Create by pick on map');
+  }
+
+  onCreateByGeolocation(pinType: NewPinType) {
+    this.selectedPinType = pinType;
+    this.popupService.toggle(ChoosePinPopupComponent.key);
+    // this.getUserLocationAndCreatePin();
+    console.log('Create by auto geolocation');
+  }
+
+  // End create pin events
+
+  public requestGeolocation() {
+    this.geolocationService.requestLocation();
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // UI / state
   firstName = '';
@@ -110,11 +169,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
     */
-    const isPortugal = this.portugalValidationService.isPortugalAtPoint(this.map, e.point);
+    /*const isPortugal = this.portugalValidationService.isPortugalAtPoint(this.map, e.point);
     if (!isPortugal) {
       console.log('Os pins só podem ser criados em Portugal.');
       return;
-    }
+    }*/
 
     const { lng, lat } = e.lngLat;
     const coords: Coords = { latitude: lat, longitude: lng };
