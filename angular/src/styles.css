@@ -101,10 +101,10 @@ html, body {
  * 2.3. Intensidade do texto (negrito)
 */
 
-.text-slim {font-weight: 400;}
+.text-slim {font-weight: 350;}
 .text-normal {font-weight: normal;}
 .text-medium {font-weight: 500;}
-.text-bold {font-weight: 700 ;}
+.text-bold {font-weight: 700;}
 .text-gofish {font-weight: 900; font-size: 28px;}
 
   /* ===========/
@@ -327,6 +327,31 @@ html, body {
 .button-wrapper-clickable {cursor: pointer;}
 
 .button-wrapper-clickable:active {box-shadow: var(--dark-sunk-shadow-l);}
+
+
+/*
+ * Used for selectable area with text inside
+
+ <div class="generic-select-wrapper-text">
+   <p>dark-text-muted by default, dark-text on hover</p>
+ </div>
+
+ * Add transition time on <p> style class
+
+ transition: color 0.2s ease;
+
+*/
+.generic-select-wrapper-text {
+  cursor: pointer;
+}
+
+.generic-select-wrapper-text > p{
+  color: var(--dark-text-muted);
+}
+
+.generic-select-wrapper-text:hover > p{
+  color: var(--dark-text);
+}
 
   /* ================/
  /* 4. Gofish Card */
