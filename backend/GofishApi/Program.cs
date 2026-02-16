@@ -28,7 +28,7 @@ builder.Services.AddIdentityHandlersAndStores();
 builder.Services.ConfigureIdentityOptions();
 builder.Services.AddAndConfigureCors();
 builder.Services.AddIdentityAuth(builder.Configuration);
-builder.Services.AddControllers();
+builder.Services.AddAndConfigureControllers();
 builder.Services.AddAndConfigureSwaggerGen();
 
 var app = builder.Build();

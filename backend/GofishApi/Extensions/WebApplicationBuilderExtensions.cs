@@ -99,5 +99,13 @@ namespace GofishApi.Extensions
                 });
             });
         }
+
+        public static void AddAndConfigureControllers(this IServiceCollection services)
+        {
+            services.AddControllers()
+            .AddJsonOptions(
+               o => o.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            );
+        }
     }
 }
