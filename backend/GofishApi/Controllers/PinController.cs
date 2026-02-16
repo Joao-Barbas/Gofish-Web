@@ -83,15 +83,41 @@ namespace GofishApi.Controllers
 
             GetPinPreviewResDTO? data = pin.PinType switch
             {
-                PinType.Catch => GetPinPreviewResDTO.FromCatchPin((CatchPin)pin),
-                PinType.Info => GetPinPreviewResDTO.FromInfoPin((InfoPin)pin),
+                PinType.Catch   => GetPinPreviewResDTO.FromCatchPin((CatchPin)pin),
+                PinType.Info    => GetPinPreviewResDTO.FromInfoPin((InfoPin)pin),
                 PinType.Warning => GetPinPreviewResDTO.FromWarnPin((WarnPin)pin),
-                _ => null
+                _               => null
             };
 
             return Ok(new ApiResponse<GetPinPreviewResDTO>
             {
                 Data = data
+            });
+        }
+
+        [Authorize]
+        [HttpPost("GetPinPreviews")]
+        public async Task<IActionResult> GetPinPreviews([FromBody] List<int> ids)
+        {
+            var pins = await _db.Pins
+            .Where(p => ids.Contains(p.Id))
+            .Include(p => p.AppUser)
+            .Include(p => p.Post)
+            .ToListAsync();
+
+            var data = pins
+            .Select(pin => pin.PinType switch
+            {
+                PinType.Catch   => GetPinPreviewResDTO.FromCatchPin((CatchPin)pin),
+                PinType.Info    => GetPinPreviewResDTO.FromInfoPin((InfoPin)pin),
+                PinType.Warning => GetPinPreviewResDTO.FromWarnPin((WarnPin)pin),
+                _               => null
+            })
+            .Where(dto => dto != null);
+
+            return Ok(new ApiResponse<GetPinPreviewsResDTO>
+            {
+                Data = new(data!)
             });
         }
 
