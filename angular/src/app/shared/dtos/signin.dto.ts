@@ -1,13 +1,17 @@
 export interface SignInReqDTO {
-  email: string;
+  emailOrUserName: string;
   password: string;
 }
 
 export interface SignInResDTO {
   success: boolean;
-  token?: string;
-  requiresTwoFactor?: boolean;
-  twoFactorToken?: string;
-  errorCode?: string;
-  errorDescription?: string;
+  data?: {
+    token?: string;
+    requiresTwoFactor?: boolean;
+    twoFactorToken?: string;
+  };
+  errors?: {
+    code: string;
+    description: string;
+  }[];
 }
