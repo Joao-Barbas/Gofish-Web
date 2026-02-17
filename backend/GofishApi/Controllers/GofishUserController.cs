@@ -6,6 +6,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
+/*
+ * TODO:
+ * Rename this to 'UserController'
+ * 
+ * Other controllers like:
+ * UserStatsController
+ * UserAccountController (?)
+ * UserAuthController (?)
+ * UserInventoryController (?)
+ * UserProfileController (?)
+ * 
+ * (?) - Maybe
+ */
+
 namespace GofishApi.Controllers
 {
     [Route("api/[controller]")]

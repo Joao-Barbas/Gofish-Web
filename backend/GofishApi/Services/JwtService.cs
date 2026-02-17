@@ -22,9 +22,12 @@ namespace GofishApi.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Secret!));
             var claims = new List<Claim>
             {
-                new("UserId", user.Id)
-                // new Claim(ClaimTypes.Name, user.UserName),
-                // new Claim(ClaimTypes.Email, user.Email)
+                // TODO: Make these our own enumerator?
+                new("UserId", user.Id ?? ""),
+                new(ClaimTypes.Name, user.UserName ?? ""),
+                new("FirstName", user.FirstName ?? ""),
+                new("LastName", user.LastName ?? ""),
+                new(ClaimTypes.Email, user.Email ?? "")
             };
             var descriptor = new SecurityTokenDescriptor
             {
