@@ -19,7 +19,7 @@
 
 <main class="position-fixed top-0 start-0 end-0 bottom-0 overflow-hidden">
   <!-- Mapbox -->
-  <!-- <div id="map" class="w-100 h-100"></div> -->
+  <div id="map" class="w-100 h-100"></div>
   <!-- Overlay -->
   <!-- Everything else on top of the map goes inside this -->
   <div class="position-absolute top-0 start-0 w-100 h-100 gf-no-events">
@@ -40,72 +40,78 @@
       <div class="d-flex flex-column actions-bundle-container">
         <!-- Show overlay to selecte pin type to create button -->
         <button class="map-action" (click)="toggleCreatePinOverlay($event)">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19.914 11.105A7.298 7.298 0 0 0 20 10a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 1.202 0 32 32 0 0 0 .824-.738"/>
-            <circle cx="12" cy="10" r="3"/>
-            <path d="M16 18h6"/>
-            <path d="M19 15v6"/>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M19.914 11.105A7.298 7.298 0 0 0 20 10a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 1.202 0 32 32 0 0 0 .824-.738" />
+            <circle cx="12" cy="10" r="3" />
+            <path d="M16 18h6" />
+            <path d="M19 15v6" />
           </svg>
         </button>
         <!-- Get location permissions button -->
-        <button id="map-action-ask-location" class="map-action" [disabled]="isGeolocationDenied" (click)="requestGeolocation()">
+        <button id="map-action-ask-location" class="map-action" [disabled]="isGeolocationDenied"
+          (click)="requestGeolocation()">
           @switch (getGeolocationState) {
           @case ('prompt') {
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="2" x2="5" y1="12" y2="12"/>
-              <line x1="19" x2="22" y1="12" y2="12"/>
-              <line x1="12" x2="12" y1="2" y2="5"/>
-              <line x1="12" x2="12" y1="19" y2="22"/>
-              <circle cx="12" cy="12" r="7"/>
-            </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="2" x2="5" y1="12" y2="12" />
+            <line x1="19" x2="22" y1="12" y2="12" />
+            <line x1="12" x2="12" y1="2" y2="5" />
+            <line x1="12" x2="12" y1="19" y2="22" />
+            <circle cx="12" cy="12" r="7" />
+          </svg>
           }
           @case ('granted') {
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="2" x2="5" y1="12" y2="12"/>
-              <line x1="19" x2="22" y1="12" y2="12"/>
-              <line x1="12" x2="12" y1="2" y2="5"/>
-              <line x1="12" x2="12" y1="19" y2="22"/>
-              <circle cx="12" cy="12" r="7"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="2" x2="5" y1="12" y2="12" />
+            <line x1="19" x2="22" y1="12" y2="12" />
+            <line x1="12" x2="12" y1="2" y2="5" />
+            <line x1="12" x2="12" y1="19" y2="22" />
+            <circle cx="12" cy="12" r="7" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
           }
           @default {
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 19v3"/>
-              <path d="M12 2v3"/>
-              <path d="M18.89 13.24a7 7 0 0 0-8.13-8.13"/>
-              <path d="M19 12h3"/>
-              <path d="M2 12h3"/>
-              <path d="m2 2 20 20"/>
-              <path d="M7.05 7.05a7 7 0 0 0 9.9 9.9"/>
-            </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19v3" />
+            <path d="M12 2v3" />
+            <path d="M18.89 13.24a7 7 0 0 0-8.13-8.13" />
+            <path d="M19 12h3" />
+            <path d="M2 12h3" />
+            <path d="m2 2 20 20" />
+            <path d="M7.05 7.05a7 7 0 0 0 9.9 9.9" />
+          </svg>
           }}
         </button>
       </div>
       <!-- Zoom -->
       <div class="d-flex flex-column actions-bundle-container">
         <button class="map-action">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14"/>
-            <path d="M12 5v14"/>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14" />
+            <path d="M12 5v14" />
           </svg>
         </button>
         <button class="map-action">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14"/>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14" />
           </svg>
         </button>
       </div>
       <!-- popup overlays  -->
       <!-- Choose pin type -->
       @if (isCreatePinOverlayOpen$ | async) {
-        <app-choose-pin-popup
-          class="position-action-overlay"
-          animate.enter="on-enter"
-          animate.leave="on-leave"
-          (CreateByPick)="onCreateByPick($event)"
-          (CreateByGeolocation)="onCreateByGeolocation($event)">
-        </app-choose-pin-popup>
+      <app-choose-pin-popup class="position-action-overlay" animate.enter="on-enter" animate.leave="on-leave"
+        [selectedCoords]="selected" (requestPickOnMap)="onRequestPickOnMap()" (typeSelected)="onTypeSelected($event)"
+        (coordsSelected)="onCoordsSelected($event)">
+        (cancel)="onPopupCancel()">
+      </app-choose-pin-popup>
       }
       <!-- Create pin forms  -->
       <!-- @switch () {
@@ -113,6 +119,18 @@
       @case () {}
       @case () {}
       } -->
+
+      @if (activePinModal !== null) {
+    @switch (activePinModal) {
+      @case (0) { <app-catch-pin-modal
+          [coords]="selected"
+          (cancelled)="onModalCancelled()"
+          (confirmed)="onModalConfirmed()"
+          (pickOnMap)="onRequestPickOnMap()">
+        </app-catch-pin-modal>
+      }
+    }
+  }
       <!-- End popup overlays  -->
     </div>
     <!-- End actions overlay -->

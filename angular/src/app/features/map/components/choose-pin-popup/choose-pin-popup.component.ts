@@ -1,50 +1,72 @@
 // choose-pin-popup.component.ts
 
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
-import { NewPinType } from '@gofish/features/map/map.component';
+import { Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ClickOutsideDirective } from '@gofish/shared/directives/click-outside.directive';
+import { Coords } from '@gofish/shared/models/coords.model';
+import { PinType } from '@gofish/shared/models/pin.model';
 import { BasePopupComponent, PopupKey } from '@gofish/shared/models/popup.model';
 import { GeolocationService } from '@gofish/shared/services/geolocation.service';
 
 @Component({
   selector: 'app-choose-pin-popup',
-  imports: [ CommonModule, ClickOutsideDirective ],
+  imports: [CommonModule, ClickOutsideDirective],
   templateUrl: './choose-pin-popup.component.html',
   styleUrl: './choose-pin-popup.component.css',
 })
 export class ChoosePinPopupComponent extends BasePopupComponent {
   public static readonly key: PopupKey = 'popup-choose-pin';
 
-  @Output() CreateByPick = new EventEmitter<NewPinType>();
-  @Output() CreateByGeolocation = new EventEmitter<NewPinType>();
+  @Input() selectedCoords: Coords | null = null;
 
-  public readonly geoService = inject(GeolocationService);
-  public isUseGeolocation: boolean = false;
+  @Output() coordsSelected = new EventEmitter<Coords>();
+  @Output() requestPickOnMap = new EventEmitter<void>();
+  @Output() typeSelected = new EventEmitter<PinType>();
+  @Output() cancel = new EventEmitter<void>();
 
-  // ngOnInit() {
-  //   if (this.geoService.isBad()) {
-  //     this.isUseGeolocation = false;
-  //   } // else if (this.geoService.coords()) {
-  //     // this.isUseGeolocation = true;
-  //   // }
-  // }
+  //private geoService = inject(GeolocationService);
 
-  private createPin(type: NewPinType) {
-    if (this.isUseGeolocation && this.geoService.isAvailable() && this.geoService.coords()) {
-      this.CreateByGeolocation.emit(type);
-    } else {
-      this.CreateByPick.emit(type);
+  public showTypes = false;
+  public errorMessage = '';
+
+  onCreateByGeolocation() {
+  if (!navigator.geolocation) {
+    this.errorMessage = 'Geolocation not supported.';
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const coords: Coords = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      };
+      this.coordsSelected.emit(coords);
+      // this.popupService.toggle(ChoosePinPopupComponent.key);
+    },
+    () => {
+      this.errorMessage = 'Not possible to get location.';
+    },
+  );
+}
+
+  public chooseOnMap() {
+    this.requestPickOnMap.emit();
+    this.close();
+  }
+
+  public goToChooseType() {
+    if (this.selectedCoords) {
+      this.showTypes = true;
     }
   }
 
-  public createCatchPin(): void { this.createPin('catch'); }
-  public createInfoPin(): void { this.createPin('info'); }
-  public createWarnPin(): void { this.createPin('warn'); }
-
-  public async onUseGeolocationChange(checked: boolean): Promise<void> {
-    this.isUseGeolocation = checked;
-    var success = await this.geoService.requestGeolocation() && !this.geoService.isBad();
-    if (!success) this.isUseGeolocation = false;
+  public cancelCreatingPin() {
+    this.cancel.emit();
+    this.close();
   }
+
+  public createWarnPin() { this.typeSelected.emit(PinType.WARNING); }
+  public createInfoPin() { this.typeSelected.emit(PinType.INFORMATION); }
+  public createCatchPin() { this.typeSelected.emit(PinType.CATCH); }
 }
