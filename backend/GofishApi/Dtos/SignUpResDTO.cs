@@ -2,8 +2,6 @@
 
 namespace GofishApi.Dtos
 {
-    public record SignUpResDTO(
-        bool Success = true,
-        IEnumerable<IdentityError> Errors = default!
+    public record SignUpResDTO( // TODO: Send token after successful account creation
     );
 }

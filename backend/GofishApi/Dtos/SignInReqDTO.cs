@@ -1,7 +1,7 @@
 ﻿namespace GofishApi.Dtos
 {
     public record SignInReqDTO(
-        string Email, // TODO: Email -> EmailOrUserName
+        string EmailOrUserName,
         string Password
     );
 }
