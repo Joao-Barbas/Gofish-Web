@@ -8,13 +8,13 @@ export const LOCAL_TOKEN_KEY = 'token';
 
 // Browser's local storage keys being used
 
-export const LocalStorage = {
-  KEY_TOKEN: 'token',
+export const LocalStorageKey = {
+  TOKEN: 'token',
 } as const;
 
 // Routing
 
-export const RoutePaths = {
+export const RoutePath = {
   HOME: '',
   SIGN_UP: 'signup',
   SIGN_IN: 'signin',
@@ -31,21 +31,21 @@ export const RoutePaths = {
   ABOUT_US: 'about-us',
 } as const;
 
-export const Routes = {
+export const Route = {
   HOME: '/',
-  SIGN_UP: `/${RoutePaths.SIGN_UP}`,
-  SIGN_IN: `/${RoutePaths.SIGN_IN}`,
+  SIGN_UP: `/${RoutePath.SIGN_UP}`,
+  SIGN_IN: `/${RoutePath.SIGN_IN}`,
   MAP: {
-    ROOT: `/${RoutePaths.MAP.ROOT}`,
-    CREATE_CATCH_PIN: `/${RoutePaths.MAP.ROOT}/${RoutePaths.MAP.CREATE_CATCH_PIN}`,
+    ROOT: `/${RoutePath.MAP.ROOT}`,
+    CREATE_CATCH_PIN: `/${RoutePath.MAP.ROOT}/${RoutePath.MAP.CREATE_CATCH_PIN}`,
   },
   SETTINGS: {
-    ROOT: `/${RoutePaths.SETTINGS}`,
-    GENERAL: `/${RoutePaths.SETTINGS}/${RoutePaths.SETTINGS.GENERAL}`,
-    PERSONAL_DATA: `/${RoutePaths.SETTINGS}/${RoutePaths.SETTINGS.PERSONAL_DATA}`,
-    SECURITY: `/${RoutePaths.SETTINGS}/${RoutePaths.SETTINGS.SECURITY}`,
+    ROOT: `/${RoutePath.SETTINGS}`,
+    GENERAL: `/${RoutePath.SETTINGS}/${RoutePath.SETTINGS.GENERAL}`,
+    PERSONAL_DATA: `/${RoutePath.SETTINGS}/${RoutePath.SETTINGS.PERSONAL_DATA}`,
+    SECURITY: `/${RoutePath.SETTINGS}/${RoutePath.SETTINGS.SECURITY}`,
   },
-  ABOUT_US: `/${RoutePaths.ABOUT_US}`,
+  ABOUT_US: `/${RoutePath.ABOUT_US}`,
 } as const;
 
 // profile: (username: string) => `/profiles/${username}`,
