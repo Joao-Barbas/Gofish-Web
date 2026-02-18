@@ -11,14 +11,14 @@ import { MarkerRegistryService } from '@gofish/features/map/services/marker-regi
 import { PinDetailService } from '@gofish/features/map/services/pin-detail.service';
 import { PinDetailPanelComponent } from './components/pin-detail-panel/pin-detail-panel.component';
 import { OverlayHeaderComponent } from '@gofish/features/header/overlay-header/overlay-header.component';
-import { PinPreviewResDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
+import { PinPreviewResDTO, ViewportPinDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { ChoosePinPopupComponent } from '@gofish/features/map/components/choose-pin-popup/choose-pin-popup.component';
 import { GeolocationService } from '@gofish/shared/services/geolocation.service';
 import { PinType } from '@gofish/shared/models/pin.model';
-import { CatchPinModalComponent } from '@gofish/features/map/components/catch-pin-modal/catch-pin-modal.component';
+import { CatchPinModalComponent } from '@gofish/features/map/components/modals/catch-pin-modal/catch-pin-modal.component';
 
 
 
@@ -32,6 +32,8 @@ const PIN_CONFIG: Record<PinType, any> = {
   [PinType.WARNING]: { color: '#3B82F6', position: [18, 14] }, // Info
   [PinType.DEFAULT]: {}
 };
+
+
 
 @Component({
   selector: 'app-map',
@@ -48,24 +50,14 @@ const PIN_CONFIG: Record<PinType, any> = {
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
 })
-export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MapComponent implements AfterViewInit, OnDestroy {
   private readonly popupService = inject(PopupService);
   private readonly geoService = inject(GeolocationService);
-
-  public isCreatePinOverlayOpen$ = this.popupService.isOpen$(ChoosePinPopupComponent.key);
-
-  public selectedGeolocation: GeolocationCoordinates | null = null; // User manually selected
-  public selectedPinType: PinType | null = null;
-
-  public get getGeolocationState() { return this.geoService.state(); }
-  public get isGeolocationDenied() { return this.getGeolocationState === 'denied' || this.getGeolocationState === 'inaccurate'; }
-
-  // Popup overlays
-
-  public toggleCreatePinOverlay(event: Event): void {
-    this.popupService.toggle(ChoosePinPopupComponent.key);
-    event.stopPropagation();
-  }
+  private readonly router = inject(Router);
+  private readonly pinService = inject(PinService);
+  private readonly previewMarkerService = inject(PreviewMarkerService);
+  private readonly markerRegistry = inject(MarkerRegistryService);
+  private readonly pinDetailService = inject(PinDetailService);
 
   // End popup overlays
   // Create pin events
@@ -76,11 +68,58 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.enablePickMode();
     console.log('Create by pick on map');
   } */
+  pickingOnMap = false;
+  isCreating: boolean = false;
+  activePinModal: PinType | null = null;
+  selected: Coords | null = null;
+  private map!: mapboxgl.Map;
+  public isCreatePinOverlayOpen$ = this.popupService.isOpen$(ChoosePinPopupComponent.key);
+  public selectedGeolocation: GeolocationCoordinates | null = null; // User manually selected
+  public selectedPinType: PinType | null = null;
+
+  public get getGeolocationState() { return this.geoService.state(); }
+  public get isGeolocationDenied() { return this.geoService.isBad(); }
 
 
+  // =========================
+  // Lifecycle
+  // =========================
+  ngAfterViewInit(): void {
+    mapboxgl.accessToken =
+      'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
 
+    this.map = new mapboxgl.Map({
+      container: 'map',
+      //style: 'mapbox://styles/mapbox/standard',
+      style: 'mapbox://styles/goncalopro2/cmli4rxhm000q01qzfnbzg3fe',
+      center: [-8.8882, 38.5243],
+      zoom: 13,
+      maxZoom: 13,
+      minZoom: 4,
+      pitch: 0,
+      bearing: 0,
+    });
 
-  // End create pin events
+    this.map.dragRotate.disable();
+    this.map.touchZoomRotate.disableRotation();
+    this.map.keyboard.disableRotation();
+
+    this.map.on('load', () => {
+      this.setupLayers();
+      //this.setupInteractions();
+      this.loadPinsInViewport();
+
+      this.map.on('moveend', () => this.loadPinsInViewport());
+      this.map.on('zoomend', () => this.loadPinsInViewport());
+      this.map.on('click', (e) => this.onMapClick(e));
+
+    });
+  }
+
+  public toggleCreatePinOverlay(event: Event): void {
+    this.popupService.toggle(ChoosePinPopupComponent.key);
+    event.stopPropagation();
+  }
 
   public requestGeolocation() {
     this.geoService.requestGeolocation();
@@ -110,77 +149,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.clearPreviewAndSelection();
     this.loadPinsInViewport();
   }
-
-
-
-
-
-  activePinModal: PinType | null = null;
-
-  // UI / state
-  firstName = '';
-  selected: Coords | null = null;
-
-  pickingOnMap = false;
-  isCreating: boolean = false;
-
-  // Mapbox
-  private map!: mapboxgl.Map;
-
-
-  constructor(
-    private router: Router,
-    private pinService: PinService,
-    private authService: AuthService,
-    private userService: UserService,
-    private previewMarkerService: PreviewMarkerService,
-    private markerRegistry: MarkerRegistryService,
-    private pinDetailService: PinDetailService
-  ) { }
-
-  // =========================
-  // Lifecycle
-  // =========================
-  ngOnInit(): void {
-    this.userService.getUserProfile().subscribe({
-      next: (res: any) => (this.firstName = res.firstName),
-      error: (err: any) =>
-        console.log('Error while retrieving user profile:\n', err),
-    });
-  }
-
-  ngAfterViewInit(): void {
-    mapboxgl.accessToken =
-      'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
-
-    this.map = new mapboxgl.Map({
-      container: 'map',
-      //style: 'mapbox://styles/goncalopro2/cmkpidm7e003601s526nugcv1',
-      style: 'mapbox://styles/goncalopro2/cmli4rxhm000q01qzfnbzg3fe',
-      center: [-8.8882, 38.5243],
-      zoom: 13,
-      maxZoom: 13,
-      minZoom: 4,
-      pitch: 0,
-      bearing: 0,
-    });
-
-    this.map.dragRotate.disable();
-    this.map.touchZoomRotate.disableRotation();
-    this.map.keyboard.disableRotation();
-
-    this.map.on('load', () => {
-      this.setupLayers();
-      this.setupInteractions();
-      this.loadPinsInViewport();
-
-      this.map.on('moveend', () => this.loadPinsInViewport());
-      this.map.on('zoomend', () => this.loadPinsInViewport());
-      this.map.on('click', (e) => this.onMapClick(e));
-
-    });
-  }
-
 
   onMapClick(e: mapboxgl.MapMouseEvent): void {
     if (!this.pickingOnMap) return;
@@ -273,36 +241,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getPinsInViewport(minLat, minLng, maxLat, maxLng);
   }
 
+  private allPins: ViewportPinDTO[] = [];
   private getPinsInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number): void {
     this.pinService.getInViewport(minLat, minLng, maxLat, maxLng).subscribe({
       next: (res: ViewportPinsResDTO) => {
-        const pins = res.data?.pins.map(pin => ({
-          type: 'Feature' as const,
-          geometry: {
-            type: 'Point' as const,
-            coordinates: [pin.longitude, pin.latitude]
-          },
-          properties: {
-            id: pin.id,
-            category: pin.pinType,
-            pinType: pin.pinType // Add more categories ?
-          }
-        })) || [];
-
-        const geoJsonData: GeoJSON.FeatureCollection = {
-          type: 'FeatureCollection',
-          features: pins
-        };
-
-        const source = this.map.getSource('pins-source') as mapboxgl.GeoJSONSource;
-
-        if (source) {
-          source.setData(geoJsonData);
-          //console.log('Features na source:', this.map.querySourceFeatures('pins-source'));
-        } else {
-          this.setupLayers();
-          (this.map.getSource('pins-source') as mapboxgl.GeoJSONSource).setData(geoJsonData);
-        }
+        this.allPins = res.data?.pins || [];
+        this.setupLayers();
       },
       error: (err: HttpErrorResponse) => {
         console.error('Erro ao carregar pins:', err);
@@ -311,18 +255,108 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // =========================
-  // Auth
-  // =========================
-  onSignOut(): void {
-    this.authService.deleteToken();
-    this.router.navigateByUrl('');
-  }
-
-
-  // =========================
   // Clusters test
   // =========================
+
   private setupLayers(): void {
+    const config = [
+      { type: PinType.CATCH, color: '#f30000' },
+      { type: PinType.INFORMATION, color: '#3b82f6' },
+      { type: PinType.WARNING, color: '#ff6a00' }
+    ];
+
+    config.forEach(({ type, color }) => {
+      const pinsOfType = this.allPins.filter(pin => pin.pinType === type);
+      const sourceId = `pins-${type}`;
+
+      const geojsonData: GeoJSON.FeatureCollection = {
+        type: 'FeatureCollection',
+        features: pinsOfType.map(pin => ({
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [pin.longitude, pin.latitude]
+          },
+          properties: {
+            id: pin.id,
+            type: pin.pinType
+          }
+        }))
+      };
+
+      const existingSource = this.map.getSource(sourceId) as mapboxgl.GeoJSONSource;
+
+      if (existingSource) {
+        existingSource.setData(geojsonData);
+      } else {
+        this.map.addSource(sourceId, {
+          type: 'geojson',
+          data: geojsonData,
+          cluster: true,
+          clusterMaxZoom: 14,
+          clusterRadius: 50
+        });
+
+        console.log(color);
+        this.addClusterLayers(type, color);
+      }
+    });
+  }
+
+  addClusterLayers(type: PinType, color: string) {
+    // Cluster circles
+    this.map.setPaintProperty(`clusters-${type}`, 'circle-color', color);
+
+    this.map.addLayer({
+      id: `clusters-${type}`,
+      type: 'circle',
+      source: `pins-${type}`,
+      filter: ['has', 'point_count'],
+      paint: {
+        'circle-color': color,
+        'circle-radius': [
+          'step',
+          ['get', 'point_count'],
+          15,      // Default
+          10, 20,  // 10+ pins
+          50, 25   // 50+ pins
+        ],
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#fff'
+      }
+    });
+
+    // Cluster count text
+    this.map.addLayer({
+      id: `cluster-count-${type}`,
+      type: 'symbol',
+      source: `pins-${type}`,
+      filter: ['has', 'point_count'],
+      layout: {
+        'text-field': ['get', 'point_count_abbreviated'],
+        'text-size': 12
+      },
+      paint: {
+        'text-color': '#ffffff'
+      }
+    });
+
+    // Individual pins (unclustered)
+    this.map.addLayer({
+      id: `unclustered-${type}`,
+      type: 'circle',
+      source: `pins-${type}`,
+      filter: ['!', ['has', 'point_count']],
+      paint: {
+        'circle-color': color,
+        'circle-radius': 8,
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#fff'
+      }
+    });
+  }
+
+  /* private setupLayers(): void {
     this.map.addSource('pins-source', {
       type: 'geojson',
       data: { type: 'FeatureCollection', features: [] },
@@ -505,4 +539,5 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       this.map.on('mouseleave', layer, () => this.map.getCanvas().style.cursor = '');
     });
   }
+  */
 }

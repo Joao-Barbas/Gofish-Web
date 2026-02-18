@@ -18,7 +18,7 @@ export const routes: Routes = [
     loadComponent: () => import('@gofish/features/map/map.component').then(m => m.MapComponent),
     canActivate: [ authGuard ],
     children: [
-      { path: 'create-catch-pin', loadComponent: () => import('@gofish/features/map/components/catch-pin-modal/catch-pin-modal.component').then(c => c.CatchPinModalComponent) }
+      { path: 'create-catch-pin', loadComponent: () => import('@gofish/features/map/components/modals/catch-pin-modal/catch-pin-modal.component').then(c => c.CatchPinModalComponent) }
     ]
   },
   {

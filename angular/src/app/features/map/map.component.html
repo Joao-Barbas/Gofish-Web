@@ -121,16 +121,13 @@
       } -->
 
       @if (activePinModal !== null) {
-    @switch (activePinModal) {
-      @case (0) { <app-catch-pin-modal
-          [coords]="selected"
-          (cancelled)="onModalCancelled()"
-          (confirmed)="onModalConfirmed()"
-          (pickOnMap)="onRequestPickOnMap()">
-        </app-catch-pin-modal>
+      @switch (activePinModal) {
+      @case (0) { <app-catch-pin-modal [coords]="selected" (cancelled)="onModalCancelled()"
+        (confirmed)="onModalConfirmed()" (pickOnMap)="onRequestPickOnMap()">
+      </app-catch-pin-modal>
       }
-    }
-  }
+      }
+      }
       <!-- End popup overlays  -->
     </div>
     <!-- End actions overlay -->

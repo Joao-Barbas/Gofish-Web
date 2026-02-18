@@ -27,39 +27,34 @@ export class ChoosePinPopupComponent extends BasePopupComponent {
   public readonly geoService = inject(GeolocationService);
   public isUseGeolocation: boolean = false;
 
-  public showTypes = false;
+
   public errorMessage = '';
 
   onCreateByGeolocation() {
-  if (!navigator.geolocation) {
-    this.errorMessage = 'Geolocation not supported.';
-    return;
-  }
+    if (!navigator.geolocation) {
+      this.errorMessage = 'Geolocation not supported.';
+      return;
+    }
 
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const coords: Coords = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      };
-      this.coordsSelected.emit(coords);
-      //this.popupService.toggle(ChoosePinPopupComponent.key);
-    },
-    () => {
-      this.errorMessage = 'Not possible to get location.';
-    },
-  );
-}
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const coords: Coords = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        this.coordsSelected.emit(coords);
+        //this.popupService.toggle(ChoosePinPopupComponent.key);
+      },
+      () => {
+        this.errorMessage = 'Not possible to get location.';
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }
 
   public chooseOnMap() {
     this.requestPickOnMap.emit();
     //this.close();
-  }
-
-  public goToChooseType() {
-    if (this.selectedCoords) {
-      this.showTypes = true;
-    }
   }
 
   public cancelCreatingPin() {
@@ -67,9 +62,27 @@ export class ChoosePinPopupComponent extends BasePopupComponent {
     this.close();
   }
 
-  public createWarnPin() { this.typeSelected.emit(PinType.WARNING); }
-  public createInfoPin() { this.typeSelected.emit(PinType.INFORMATION); }
-  public createCatchPin() { this.typeSelected.emit(PinType.CATCH); }
+  public createWarnPin() {
+    if (!this.selectedCoords) {
+      this.errorMessage = 'Coordinates not selected.';
+      return;
+    } this.typeSelected.emit(PinType.WARNING);
+  }
+
+  public createInfoPin() {
+    if (!this.selectedCoords) {
+      this.errorMessage = 'Coordinates not selected.';
+      return;
+    } this.typeSelected.emit(PinType.INFORMATION);
+  }
+
+  public createCatchPin() {
+    if (!this.selectedCoords) {
+      this.errorMessage = 'Coordinates not selected.';
+      return;
+    }
+    this.typeSelected.emit(PinType.CATCH);
+  }
 }
 
 

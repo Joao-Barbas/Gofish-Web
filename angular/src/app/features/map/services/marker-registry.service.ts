@@ -36,7 +36,7 @@ export class MarkerRegistryService {
       const marker = createMarker(pin);
       marker.setLngLat(lngLat);
       marker.addTo(map);
-      this.pinHoverPreviewService.attach(map, marker, pin);
+      //this.pinHoverPreviewService.attach(map, marker, pin);
 
       this.markers.set(pin.id, marker);
     }

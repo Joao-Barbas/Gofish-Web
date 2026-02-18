@@ -7,7 +7,6 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class PinDetailService {
-  // Tem que ter 2 por questões de seguranca, porque se não qualquer componente poderia alterar o valor do pin selecionado
   private selectedPinSubject = new BehaviorSubject<Pick<PinPreviewResDTO, "data"> | null>(null);
   selectedPin$ = this.selectedPinSubject.asObservable();
 
