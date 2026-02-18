@@ -24,7 +24,8 @@ export class ChoosePinPopupComponent extends BasePopupComponent {
   @Output() typeSelected = new EventEmitter<PinType>();
   @Output() cancel = new EventEmitter<void>();
 
-  //private geoService = inject(GeolocationService);
+  public readonly geoService = inject(GeolocationService);
+  public isUseGeolocation: boolean = false;
 
   public showTypes = false;
   public errorMessage = '';
@@ -42,7 +43,7 @@ export class ChoosePinPopupComponent extends BasePopupComponent {
         longitude: position.coords.longitude,
       };
       this.coordsSelected.emit(coords);
-      // this.popupService.toggle(ChoosePinPopupComponent.key);
+      //this.popupService.toggle(ChoosePinPopupComponent.key);
     },
     () => {
       this.errorMessage = 'Not possible to get location.';
@@ -52,7 +53,7 @@ export class ChoosePinPopupComponent extends BasePopupComponent {
 
   public chooseOnMap() {
     this.requestPickOnMap.emit();
-    this.close();
+    //this.close();
   }
 
   public goToChooseType() {
@@ -70,3 +71,6 @@ export class ChoosePinPopupComponent extends BasePopupComponent {
   public createInfoPin() { this.typeSelected.emit(PinType.INFORMATION); }
   public createCatchPin() { this.typeSelected.emit(PinType.CATCH); }
 }
+
+
+

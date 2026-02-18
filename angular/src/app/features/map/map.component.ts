@@ -6,13 +6,11 @@ import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { UserService } from '@gofish/shared/services/user.service';
 import { PinService } from '@gofish/features/map/services/pin.service';
-import { PinfactoryService } from '@gofish/features/map/services/pinfactory.service';
 import { PreviewMarkerService } from '@gofish/features/map/services/preview-marker.service';
 import { MarkerRegistryService } from '@gofish/features/map/services/marker-registry.service';
 import { PinDetailService } from '@gofish/features/map/services/pin-detail.service';
 import { PinDetailPanelComponent } from './components/pin-detail-panel/pin-detail-panel.component';
 import { OverlayHeaderComponent } from '@gofish/features/header/overlay-header/overlay-header.component';
-import { PortugalValidationService } from '@gofish/features/map/services/portugal-validation.service';
 import { PinPreviewResDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Coords } from '@gofish/shared/models/coords.model';
@@ -57,7 +55,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   public isCreatePinOverlayOpen$ = this.popupService.isOpen$(ChoosePinPopupComponent.key);
 
   public selectedGeolocation: GeolocationCoordinates | null = null; // User manually selected
-  public selectedPinType: NewPinType | null = null;
+  public selectedPinType: PinType | null = null;
 
   public get getGeolocationState() { return this.geoService.state(); }
   public get isGeolocationDenied() { return this.getGeolocationState === 'denied' || this.getGeolocationState === 'inaccurate'; }
@@ -189,7 +187,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const { lng, lat } = e.lngLat;
     const coords: Coords = { latitude: lat, longitude: lng };
-
     this.setSelectedCoords(coords);
 
     this.disablePickMode();
@@ -222,19 +219,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onCoordsSelected(coords: Coords): void {
-    /*
-    if (!this.waterValidationService.isWaterAtLngLat(this.map, coords.longitude, coords.latitude)) {
-      alert('Selected coordinates are not on water. Please select a valid location.');
-      return;
-    }
-    */
-    /*
-     if (!this.portugalValidationService.isPortugalAtLngLat(this.map, coords.longitude, coords.latitude)) {
-       alert('Essas coordenadas não fazem parte de Portugal.');
-       return;
-     }
-       */
-
     this.setSelectedCoords(coords);
     this.disablePickMode();
   }

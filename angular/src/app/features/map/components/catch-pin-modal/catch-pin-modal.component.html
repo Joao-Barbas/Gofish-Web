@@ -51,10 +51,16 @@
         <!-- Visibilidade -->
         <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
           <h5 class="modal-body-options-text text-slim mb-0">Visibility</h5>
-          <div class="d-flex align-items-center gap-1">
+          <div class="d-flex align-items-center gap-1 radio-group-container">
             @for (option of visibilityOptions; track option.value) {
-            <button class="modal-visibility-btn" [class.active]="selectedVisibility === option.value"
-              (click)="selectedVisibility = option.value">{{ option.name }}</button>
+            <div class="visibility-option">
+              <input type="radio" [id]="'vis-' + option.value" name="visibility" [value]="option.value"
+                [checked]="selectedVisibility === option.value" (change)="selectedVisibility = option.value"
+                class="d-none"> <label [for]="'vis-' + option.value" class="modal-visibility-btn"
+                [class.active]="selectedVisibility === option.value">
+                {{ option.name }}
+              </label>
+            </div>
             }
           </div>
         </div>
