@@ -1,3 +1,5 @@
+// signup.component.ts
+
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
