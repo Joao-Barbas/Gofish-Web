@@ -23,6 +23,7 @@ export class InfoPinModalComponent implements OnInit {
   visibilityOptions: EnumeratorDTO[] = [];
   accessDifficultyOptions: EnumeratorDTO[] = [];
   seaBedOptions: EnumeratorDTO[] = [];
+
   selectedVisibility: number = 0;
   selectedAccessDifficulty: number | null = null;
   selectedSeaBed: number | null = null;
@@ -84,7 +85,7 @@ export class InfoPinModalComponent implements OnInit {
       return;
     }
 
-    const newPin: CreateInfoPinReqDTO = {
+    const dto: CreateInfoPinReqDTO = {
       latitude: this.coords.latitude,
       longitude: this.coords.longitude,
       visibility: this.selectedVisibility,
@@ -92,10 +93,10 @@ export class InfoPinModalComponent implements OnInit {
       accessDifficulty: this.selectedAccessDifficulty,
       seaBedType: this.selectedSeaBed
     };
-    console.log('Creating Info Pin with data:', newPin);
+    console.log('Creating Info Pin with data:', dto);
     this.isSubmitting = true;
 
-    this.pinService.createInfoPin(newPin).subscribe({
+    this.pinService.createInfoPin(dto).subscribe({
       next: (res) => {
         this.isSubmitting = false;
         if (res.success) {
@@ -111,30 +112,4 @@ export class InfoPinModalComponent implements OnInit {
     });
   }
 
-
-
 }
-
-
-/*  onSubmit() {
-   this.errorMessage = '';
-
-   if (this.body.trim().length < 5) {
-     this.errorMessage = 'A descrição deve ter no minimo 5 caracteres!'
-     return;
-   }
-
-   if (!this.selectedSeaBed) {
-     this.errorMessage = 'Tem que selecionar um seabedtype';
-     return;
-   }
-
-   this.submitForm.emit({
-     latitude: this.coords.latitude,
-     longitude: this.coords.longitude,
-     visibility: this.selectedVisibility as number,
-     body: this.body.trim() || null,
-     accessDifficulty: this.selectedAccessDifficulty as number,
-     seaBedType: this.selectedSeaBed as number
-   });
- } */

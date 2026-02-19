@@ -1,24 +1,30 @@
 <div class="modal-backdrop-custom d-flex justify-content-center align-items-center">
   <div class="modal-custom gf-card">
 
+    <!-- Header -->
     <div class="modal-header text-white align-items-center mb-3">
-      <h5 class="mb-0 text-bold modal-header-title">Share spot information</h5>
+      <h5 class="mb-0 text-bold modal-header-title">Informations?</h5>
       <button class="ms-auto generic-icon-button-wrapper" (click)="onCancel()">
         <div class="icon-close icon-size-pin-modal"></div>
       </button>
     </div>
 
+    <!-- Body -->
     <div class="modal-body">
 
-      <h5 class="text-slim modal-body-section-title mt-3">Description</h5>
+      <!-- Content -->
+      <h5 class="text-slim modal-body-section-title mt-3">Content</h5>
       <section class="d-flex flex-column">
-        <textarea name="description" id="infoPinDescription" class="modal-body-description dark-bg-dark dark-text"
-          placeholder="Describe water conditions, currents or general tips..." [(ngModel)]="body"></textarea>
+        <!-- Descrição -->
+        <textarea name="description" id="catchPinDescription" class="modal-body-description dark-bg-dark dark-text"
+          placeholder="Add a description..." [(ngModel)]="body"></textarea>
       </section>
 
-      <h5 class="text-slim modal-body-section-title mt-3">Details</h5>
+      <!-- Options -->
+      <h5 class="text-slim modal-body-section-title mt-3">Options</h5>
       <section class="d-flex flex-column">
 
+        <!-- Geolocalização -->
         <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
           <h5 class="modal-body-options-text text-slim mb-0">Geolocation</h5>
           <div class="d-flex align-items-center gap-1">
@@ -27,6 +33,7 @@
           </div>
         </div>
 
+        <!-- Visibilidade -->
         <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
           <h5 class="modal-body-options-text text-slim mb-0">Visibility</h5>
           <div class="d-flex align-items-center gap-1 radio-group-container">
@@ -34,8 +41,7 @@
             <div class="visibility-option">
               <input type="radio" [id]="'vis-' + option.value" name="visibility" [value]="option.value"
                 [checked]="selectedVisibility === option.value" (change)="selectedVisibility = option.value"
-                class="d-none">
-              <label [for]="'vis-' + option.value" class="modal-visibility-btn"
+                class="d-none"> <label [for]="'vis-' + option.value" class="modal-visibility-btn"
                 [class.active]="selectedVisibility === option.value">
                 {{ option.name }}
               </label>
@@ -44,12 +50,12 @@
           </div>
         </div>
 
-        <div class="options-line d-flex align-items-center justify-content-between dark-text-muted mb-2">
-          <h5 class="modal-body-options-text text-slim mb-0">Sea Bed</h5>
+        <!-- Espécie -->
+        <div class="options-line d-flex align-items-center justify-content-between dark-text-muted mb-3">
+          <h5 class="modal-body-options-text text-slim mb-0">Access Difficulty</h5>
           <div class="d-flex align-items-center">
-            <select class="form-select form-select-sm custom-dropdown" [(ngModel)]="selectedSeaBed">
-              <option [value]="null" disabled>Select seabed...</option>
-              @for (option of seaBedOptions; track option.value) {
+            <select class="form-select form-select-sm custom-dropdown" [(ngModel)]="selectedAccessDifficulty">
+              @for (option of accessDifficultyOptions; track option.value) {
               <option [value]="option.value">{{ option.name }}</option>
               }
             </select>
@@ -57,11 +63,10 @@
         </div>
 
         <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
-          <h5 class="modal-body-options-text text-slim mb-0">Access</h5>
+          <h5 class="modal-body-options-text text-slim mb-0">Sea Bed</h5>
           <div class="d-flex align-items-center">
-            <select class="form-select form-select-sm custom-dropdown" [(ngModel)]="selectedAccessDifficulty">
-              <option [value]="null" disabled>Select access...</option>
-              @for (option of accessDifficultyOptions; track option.value) {
+            <select class="form-select form-select-sm custom-dropdown" [(ngModel)]="selectedSeaBed">
+              @for (option of seaBedOptions; track option.value) {
               <option [value]="option.value">{{ option.name }}</option>
               }
             </select>
@@ -70,12 +75,14 @@
 
       </section>
 
+      <!-- Erro -->
       @if (errorMessage) {
       <p class="text-danger mt-2 mb-0">{{ errorMessage }}</p>
       }
 
     </div>
 
+    <!-- Footer -->
     <div class="modal-footer mt-2">
       <button class="btn btn-secondary" [disabled]="isSubmitting" (click)="onCancel()">
         Cancel

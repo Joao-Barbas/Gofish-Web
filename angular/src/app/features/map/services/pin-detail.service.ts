@@ -20,9 +20,4 @@ export class PinDetailService {
     this.selectedPinSubject.next(null);
   }
 
-  /*
-  getCurrentPin(): PinPreviewResDTO | null {
-    return this.selectedPinSubject.getValue();
-  }
-    */
 }
