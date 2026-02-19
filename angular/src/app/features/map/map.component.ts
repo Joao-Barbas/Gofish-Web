@@ -358,10 +358,13 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   private setupInteractions(): void {
+    if (this.pickingOnMap) return;
     PIN_CONFIG.forEach(({ type }) => {
       const clusterId = `clusters-${type}`;
       const unclusteredId = `unclustered-${type}`;
       const sourceId = `pins-${type}`;
+
+      if (!this.pickingOnMap) return;
 
       this.map.on('click', clusterId, (e) => {
         if (!this.map.getLayer(clusterId)) return;
