@@ -25,8 +25,8 @@ export class InfoPinModalComponent implements OnInit {
   seaBedOptions: EnumeratorDTO[] = [];
 
   selectedVisibility: number = 0;
-  selectedAccessDifficulty: number | null = null;
-  selectedSeaBed: number | null = null;
+  selectedAccessDifficulty: number = 0;
+  selectedSeaBed: number = 0;
 
   errorMessage: string = '';
   isSubmitting: boolean = false;
@@ -75,12 +75,12 @@ export class InfoPinModalComponent implements OnInit {
       return;
     }
 
-    if (!this.selectedAccessDifficulty) {
+    if (this.selectedAccessDifficulty === null) {
       this.errorMessage = 'Please select an access difficulty.';
       return;
     }
 
-    if (!this.selectedSeaBed) {
+    if (this.selectedSeaBed === null) {
       this.errorMessage = 'Please select a sea bed type.';
       return;
     }
