@@ -38,6 +38,33 @@ export class PinHoverPreviewService {
     this.popup.remove();
   }
 
+  public showCard(map: mapboxgl.Map, pin: ViewportPinDTO): void {
+    this.isLocked = false;
+    this.popup
+      .setLngLat([pin.longitude, pin.latitude])
+      .setHTML(this.buildHtmlCard(pin))
+      .removeClassName('popup-is-tip')
+      .addClassName('popup-is-card')
+      .addTo(map);
+    this.isLocked = true;
+  }
+
+  private buildHtmlCard(pin: ViewportPinDTO): string {
+    const typeClass = `pin-card--${pin.pinType}`;
+    const title = this.getFriendlyTitle(pin.pinType);
+    return `
+    <div class="pin-card pin-card--expanded ${typeClass}">
+      <div class="pin-card__content">
+        <h3 class="pin-card__title">${title}</h3>
+        <div class="pin-card__coords">
+          Coordenadas: ${pin.latitude.toFixed(5)}, ${pin.longitude.toFixed(5)}
+        </div>
+        <!-- expandes aqui com mais detalhes do pin -->
+      </div>
+    </div>
+  `;
+  }
+
   private buildHtmlEnter(pin: ViewportPinDTO): string {
     const typeClass = `pin-card--${pin.pinType}`;
     const title = this.getFriendlyTitle(pin.pinType);

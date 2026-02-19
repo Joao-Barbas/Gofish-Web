@@ -16,7 +16,7 @@ export class CatchPinModalComponent {
   @Input() coords: Coords | null = null;
   @Output() cancelled = new EventEmitter<void>();
   @Output() confirmed = new EventEmitter<void>();
-  @Output() pickOnMap = new EventEmitter<void>();
+
 
   constructor(private pinService: PinService) { }
   visibilityOptions: EnumeratorDTO[] = [];
@@ -57,9 +57,6 @@ export class CatchPinModalComponent {
     }
   }
 
-  onPickOnMap(): void {
-    this.pickOnMap.emit();
-  }
 
   onCancel(): void {
     this.cancelled.emit();

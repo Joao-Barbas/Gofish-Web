@@ -1,5 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateInfoPinReqDTO } from '@gofish/shared/dtos/pin.dto';
@@ -7,25 +9,26 @@ import { Coords } from '@gofish/shared/models/coords.model';
 
 @Component({
   selector: 'app-info-pin-modal',
-  imports: [],
+  imports: [CommonModule, FormsModule],
   templateUrl: './info-pin-modal.component.html',
   styleUrl: './info-pin-modal.component.css',
 })
-export class InfoPinModalComponent {
-  @Input() coords!: Coords;
-  @Output() submitForm = new EventEmitter<CreateInfoPinReqDTO>();
-  @Output() cancel = new EventEmitter<void>();
+export class InfoPinModalComponent implements OnInit {
+  @Input() coords: Coords | null = null;
+  @Output() cancelled = new EventEmitter<void>();
+  @Output() confirmed = new EventEmitter<void>();
 
   body: string = '';
 
   visibilityOptions: EnumeratorDTO[] = [];
   accessDifficultyOptions: EnumeratorDTO[] = [];
   seaBedOptions: EnumeratorDTO[] = [];
-  selectedVisibility: number | null = null;
+  selectedVisibility: number = 0;
   selectedAccessDifficulty: number | null = null;
   selectedSeaBed: number | null = null;
 
   errorMessage: string = '';
+  isSubmitting: boolean = false;
 
   constructor(private pinService: PinService) { }
 
@@ -59,26 +62,79 @@ export class InfoPinModalComponent {
     });
   }
 
-  onSubmit() {
+  onCancel(): void {
+    this.cancelled.emit();
+  }
+
+  onPublish(): void {
     this.errorMessage = '';
 
-    if (this.body.trim().length < 5) {
-      this.errorMessage = 'A descrição deve ter no minimo 5 caracteres!'
+    if (!this.coords) {
+      this.errorMessage = 'No coords';
+      return;
+    }
+
+    if (!this.selectedAccessDifficulty) {
+      this.errorMessage = 'Please select an access difficulty.';
       return;
     }
 
     if (!this.selectedSeaBed) {
-      this.errorMessage = 'Tem que selecionar um seabedtype';
+      this.errorMessage = 'Please select a sea bed type.';
       return;
     }
 
-    this.submitForm.emit({
+    const newPin: CreateInfoPinReqDTO = {
       latitude: this.coords.latitude,
       longitude: this.coords.longitude,
-      visibility: this.selectedVisibility as number,
+      visibility: this.selectedVisibility,
       body: this.body.trim() || null,
-      accessDifficulty: this.selectedAccessDifficulty as number,
-      seaBedType: this.selectedSeaBed as number
+      accessDifficulty: this.selectedAccessDifficulty,
+      seaBedType: this.selectedSeaBed
+    };
+    console.log('Creating Info Pin with data:', newPin);
+    this.isSubmitting = true;
+
+    this.pinService.createInfoPin(newPin).subscribe({
+      next: (res) => {
+        this.isSubmitting = false;
+        if (res.success) {
+          this.confirmed.emit();
+        } else {
+          this.errorMessage = res.errors?.[0]?.description ?? 'Something went wrong.';
+        }
+      },
+      error: () => {
+        this.isSubmitting = false;
+        this.errorMessage = 'Failed to create pin. Please try again.';
+      }
     });
   }
+
+
+
 }
+
+
+/*  onSubmit() {
+   this.errorMessage = '';
+
+   if (this.body.trim().length < 5) {
+     this.errorMessage = 'A descrição deve ter no minimo 5 caracteres!'
+     return;
+   }
+
+   if (!this.selectedSeaBed) {
+     this.errorMessage = 'Tem que selecionar um seabedtype';
+     return;
+   }
+
+   this.submitForm.emit({
+     latitude: this.coords.latitude,
+     longitude: this.coords.longitude,
+     visibility: this.selectedVisibility as number,
+     body: this.body.trim() || null,
+     accessDifficulty: this.selectedAccessDifficulty as number,
+     seaBedType: this.selectedSeaBed as number
+   });
+ } */
