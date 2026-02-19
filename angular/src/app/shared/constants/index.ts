@@ -40,10 +40,10 @@ export const Route = {
     CREATE_CATCH_PIN: `/${RoutePath.MAP.ROOT}/${RoutePath.MAP.CREATE_CATCH_PIN}`,
   },
   SETTINGS: {
-    ROOT: `/${RoutePath.SETTINGS}`,
-    GENERAL: `/${RoutePath.SETTINGS}/${RoutePath.SETTINGS.GENERAL}`,
-    PERSONAL_DATA: `/${RoutePath.SETTINGS}/${RoutePath.SETTINGS.PERSONAL_DATA}`,
-    SECURITY: `/${RoutePath.SETTINGS}/${RoutePath.SETTINGS.SECURITY}`,
+    ROOT: `/${RoutePath.SETTINGS.ROOT}`,
+    GENERAL: `/${RoutePath.SETTINGS.ROOT}/${RoutePath.SETTINGS.GENERAL}`,
+    PERSONAL_DATA: `/${RoutePath.SETTINGS.ROOT}/${RoutePath.SETTINGS.PERSONAL_DATA}`,
+    SECURITY: `/${RoutePath.SETTINGS.ROOT}/${RoutePath.SETTINGS.SECURITY}`,
   },
   ABOUT_US: `/${RoutePath.ABOUT_US}`,
 } as const;

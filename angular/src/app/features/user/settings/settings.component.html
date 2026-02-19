@@ -1,4 +1,23 @@
 <!-- settings.component.html -->
 
-<p>settings works!</p>
+<app-flat-header></app-flat-header>
+<div>
+  <!-- Tab navigarion -->
+  <nav class="settings-nav-tab">
+    <a [routerLink]="[routes.GENERAL]" routerLinkActive="active">General</a>
+    <a [routerLink]="[routes.SECURITY]" routerLinkActive="active">Security</a>
+    <a [routerLink]="[routes.PERSONAL_DATA]" routerLinkActive="active">Personal Data</a>
+    <!-- @for (item of routes; track item.path) {
+      <a [routerLink]="item.path" routerLinkActive="active">{{ item.label }}</a>
+    } -->
+  </nav>
+  <!-- Dropdown navigation -->
+  <div>
+    <select class="settings-nav-select" (change)="onNavSelectChange($event)">
+      <option [value]="[routes.GENERAL]">General</option>
+      <option [value]="[routes.SECURITY]">Security</option>
+      <option [value]="[routes.PERSONAL_DATA]">Personal Data</option>
+    </select>
+  </div>
+</div>
 <router-outlet></router-outlet>
