@@ -27,7 +27,7 @@ export class PinService {
     return this.http.post<CreatePinResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/CreateInfoPin`, dto);
   }
 
-  createWarningPin(dto: CreateWarnPinReqDTO): Observable<CreatePinResDTO> {
+  createWarnPin(dto: CreateWarnPinReqDTO): Observable<CreatePinResDTO> {
     return this.http.post<CreatePinResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/CreateWarnPin`, dto);
   }
 
@@ -43,7 +43,7 @@ export class PinService {
   enumeratePinType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumeratePinType`);
   enumerateBaitType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateBaitType`);
   enumerateSeaBedType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateSeaBedType`);
-  enumerateWarningType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateWarningType`);
+  enumerateWarnType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateWarningType`);
   enumerateSpeciesType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateSpeciesType`);
   enumerateVisibilityType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateVisibilityType`);
   enumerateAccessDifficultyType = () => this.http.get<GetEnumeratorResDTO>(`${environment.baseApiUrl}/${this.baseUrl}/EnumerateAccessDifficultyType`);

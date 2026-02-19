@@ -19,6 +19,8 @@ import { PinType } from '@gofish/shared/models/pin.model';
 import { CatchPinModalComponent } from '@gofish/features/map/components/modals/catch-pin-modal/catch-pin-modal.component';
 import { PinHoverPreviewService } from '@gofish/features/map/services/pin-hover-preview.service';
 import { InfoPinModalComponent } from '@gofish/features/map/components/modals/info-pin-modal/info-pin-modal.component';
+import { WarnPinFormComponent } from '@gofish/features/map/components/forms/warn-pin-form/warn-pin-form.component';
+import { WarnPinModalComponent } from '@gofish/features/map/components/modals/warn-pin-modal/warn-pin-modal.component';
 
 
 
@@ -51,7 +53,8 @@ const PIN_CONFIG = [
     ChoosePinPopupComponent,
     RouterOutlet,
     CatchPinModalComponent,
-    InfoPinModalComponent
+    InfoPinModalComponent,
+    WarnPinModalComponent
   ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',

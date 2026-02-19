@@ -2,34 +2,36 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { PinService } from '@gofish/features/map/services/pin.service';
 import { EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/pin.dto';
-import { PinService } from '@gofish/features/map/services/pin.service';
 import { Coords } from '@gofish/shared/models/coords.model';
 
 @Component({
-  selector: 'app-warn-pin-form',
+  selector: 'app-warn-pin-modal',
   imports: [CommonModule, FormsModule],
-  templateUrl: './warn-pin-form.component.html',
-  styles: ``
+  templateUrl: './warn-pin-modal.component.html',
+  styleUrl: './warn-pin-modal.component.css',
 })
-export class WarnPinFormComponent {
-  @Input() coords!: Coords;
-  @Output() submitForm = new EventEmitter<CreateWarnPinReqDTO>();
+export class WarnPinModalComponent {
+  @Input() coords: Coords | null = null;
+  @Output() cancelled = new EventEmitter<void>();
+  @Output() confirmed = new EventEmitter<void>();
 
   body: string = '';
 
-  visibilityOptions: EnumeratorDTO[] = [];
-  selectedVisibility?: number | null;
-
   warnTypeOptions: EnumeratorDTO[] = [];
-  selectedWarnType?: number | null ;
+  visibilityOptions: EnumeratorDTO[] = [];
+
+  selectedVisibility?: number = 0;
+  selectedWarnType?: number = 0;
 
   errorMessage = '';
+  isSubmitting: boolean = false;
 
   constructor(private pinService: PinService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.pinService.enumerateWarnType().subscribe({
       next: (res: GetEnumeratorResDTO) => {
         this.warnTypeOptions = res.data!.enumerator;
@@ -50,27 +52,43 @@ export class WarnPinFormComponent {
     });
   }
 
-  onSubmit() {
+  onCancel(): void {
+    this.cancelled.emit();
+  }
+
+  onPublish(): void {
     this.errorMessage = '';
 
-    if(!this.selectedWarnType) {
-      this.errorMessage = 'Tem que selecionar um tipo de aviso!'
+    if (!this.coords) {
+      this.errorMessage = 'No coords';
       return;
     }
 
-    if (this.body.trim().length < 5) {
-      this.errorMessage = 'A descrição deve ter no minimo 5 caracteres!'
-      return;
-    }
-
-    const warnPinData: CreateWarnPinReqDTO = {
+    const dto: CreateWarnPinReqDTO = {
       latitude: this.coords.latitude,
       longitude: this.coords.longitude,
       visibility: this.selectedVisibility as number,
       body: this.body.trim() || null,
       warnPinType: this.selectedWarnType as number
     };
+    console.log('Creating Warn Pin with data:', dto);
+    this.isSubmitting = true;
 
-    this.submitForm.emit(warnPinData);
+    this.pinService.createWarnPin(dto).subscribe({
+      next: (res) => {
+        this.isSubmitting = false;
+        if (res.success) {
+          this.confirmed.emit();
+        } else {
+          this.errorMessage = res.errors?.[0]?.description ?? 'Something went wrong.';
+        }
+      },
+      error: () => {
+        this.isSubmitting = false;
+        this.errorMessage = 'Failed to create pin. Please try again.';
+      }
+    });
   }
+
+
 }

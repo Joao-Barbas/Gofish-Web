@@ -24,7 +24,7 @@
   <!-- Everything else on top of the map goes inside this -->
   <div class="position-absolute top-0 start-0 w-100 h-100 gf-no-events">
     <app-overlay-header></app-overlay-header>
-    <app-pin-detail-panel ></app-pin-detail-panel>
+    <app-pin-detail-panel></app-pin-detail-panel>
 
     <!-- <app-create-pin
       class="gf-floating-action gf-do-events"
@@ -130,6 +130,10 @@
       @case (1) { <app-info-pin-modal [coords]="selected" (cancelled)="onModalCancelled()"
         (confirmed)="onModalConfirmed()" (pickOnMap)="onRequestPickOnMap()">
       </app-info-pin-modal>
+      }
+      @case (2) { <app-warn-pin-modal [coords]="selected" (cancelled)="onModalCancelled()"
+        (confirmed)="onModalConfirmed()" (pickOnMap)="onRequestPickOnMap()">
+      </app-warn-pin-modal>
       }
       }
       }
