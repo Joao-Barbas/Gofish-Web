@@ -25,10 +25,10 @@ namespace GofishApi.Services
                 new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")), // No dashes
                 new(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
-                new(ClaimTypes.Name, user.UserName ?? ""),
-                new(ClaimTypes.GivenName, user.FirstName ?? ""), // First name
-                new(ClaimTypes.Surname, user.FirstName ?? ""), // Last name
-                new(ClaimTypes.Email, user.Email ?? "")
+                new(JwtRegisteredClaimNames.UniqueName, user.UserName ?? ""),
+                new(JwtRegisteredClaimNames.GivenName, user.FirstName ?? ""),
+                new(JwtRegisteredClaimNames.FamilyName, user.LastName ?? ""),
+                new(JwtRegisteredClaimNames.Email, user.Email ?? "")
             };
             var descriptor = new SecurityTokenDescriptor
             {

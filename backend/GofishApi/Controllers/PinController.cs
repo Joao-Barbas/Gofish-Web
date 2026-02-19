@@ -14,6 +14,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace GofishApi.Controllers
 {
@@ -128,7 +129,7 @@ namespace GofishApi.Controllers
         [RequestSizeLimit(5_000_000)]
         public async Task<IActionResult> CreateCatchPin([FromForm] CreateCatchPinReqDTO dto)
         {
-            var userId = User.FindFirstValue("UserId");
+            var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             if (userId is null)
             {
                 return Unauthorized(new ApiErrorResponse
@@ -212,7 +213,7 @@ namespace GofishApi.Controllers
         [HttpPost("CreateInfoPin")]
         public async Task<IActionResult> CreateInfoPin(CreateInfoPinReqDTO dto)
         {
-            var userId = User.FindFirstValue("UserId");
+            var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             if (userId is null)
             {
                 return Unauthorized(new ApiErrorResponse
@@ -226,9 +227,8 @@ namespace GofishApi.Controllers
                 Latitude = dto.Latitude,
                 Longitude = dto.Longitude,
                 CreatedAt = DateTime.UtcNow,
-                ExpiresAt = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
                 Visibility = dto.Visibility,
-                PinType = PinType.Catch,
+                PinType = PinType.Info,
                 UserId = userId,
 
                 AccessDifficulty = dto.AccessDifficulty,
@@ -265,7 +265,7 @@ namespace GofishApi.Controllers
         [HttpPost("CreateWarnPin")]
         public async Task<IActionResult> CreateWarnPin(CreateWarnPinReqDTO dto)
         {
-            var userId = User.FindFirstValue("UserId");
+            var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             if (userId is null)
             {
                 return Unauthorized(new ApiErrorResponse
@@ -279,9 +279,9 @@ namespace GofishApi.Controllers
                 Latitude = dto.Latitude,
                 Longitude = dto.Longitude,
                 CreatedAt = DateTime.UtcNow,
-                ExpiresAt = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
+                ExpiresAt = DateTime.UtcNow.AddDays(WarnPin.ExpiresInDays),
                 Visibility = dto.Visibility,
-                PinType = PinType.Catch,
+                PinType = PinType.Warning,
                 UserId = userId,
 
                 WarningType = dto.WarningType,

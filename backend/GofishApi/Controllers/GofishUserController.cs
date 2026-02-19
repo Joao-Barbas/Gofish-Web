@@ -38,19 +38,19 @@ namespace GofishApi.Controllers
             _userManager = userManager;
         }
 
-        [Authorize]
-        [HttpGet("GetProfile")]
-        public async Task<IActionResult> GetProfile()
-        {
-            var userId = User.Claims.First(c => c.Type == "UserId").Value;
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user is null) return NotFound();
-            return Ok(new
-            {
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName
-            });
-        }
+        // [Authorize]
+        // [HttpGet("GetProfile")]
+        // public async Task<IActionResult> GetProfile()
+        // {
+        //     var userId = User.Claims.First(c => c.Type == "UserId").Value;
+        //     var user = await _userManager.FindByIdAsync(userId);
+        //     if (user is null) return NotFound();
+        //     return Ok(new
+        //     {
+        //         Email = user.Email,
+        //         FirstName = user.FirstName,
+        //         LastName = user.LastName
+        //     });
+        // }
     }
 }

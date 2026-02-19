@@ -5,7 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using GofishApi.Data;
 using GofishApi.Models;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace GofishApi.Extensions
 {
@@ -13,8 +14,9 @@ namespace GofishApi.Extensions
     {
         public static void AddIdentityHandlersAndStores(this IServiceCollection services)
         {
-            services.AddIdentityApiEndpoints<AppUser>()
-                    .AddEntityFrameworkStores<AppDbContext>();
+            services
+            .AddIdentityApiEndpoints<AppUser>()
+            .AddEntityFrameworkStores<AppDbContext>();
         }
 
         public static void ConfigureIdentityOptions(this IServiceCollection services)
@@ -41,21 +43,30 @@ namespace GofishApi.Extensions
             });
         }
 
-        public static void AddIdentityAuth(this IServiceCollection services, IConfiguration configuration)
+        public static void AddAndConfigureIdentityAuth(this IServiceCollection services, IConfiguration configuration)
         {
+            // JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            // JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
+
             services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer((options) => 
             {
+                options.MapInboundClaims = false;
                 options.SaveToken = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("Jwt")["Secret"]!)),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
+                    NameClaimType = JwtRegisteredClaimNames.UniqueName,
+                    RoleClaimType = ClaimTypes.Role
                 };
             });
+
             // services
             // .AddAuthorizationBuilder()
             // .AddFallbackPolicy(
@@ -65,6 +76,7 @@ namespace GofishApi.Extensions
             //     .RequireAuthenticatedUser()
             //     .Build()
             // );
+
             services.AddAuthorization();
         }
 
@@ -102,7 +114,8 @@ namespace GofishApi.Extensions
 
         public static void AddAndConfigureControllers(this IServiceCollection services)
         {
-            services.AddControllers()
+            services
+            .AddControllers()
             .AddJsonOptions(
                o => o.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
             );
