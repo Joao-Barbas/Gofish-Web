@@ -1,1 +1,60 @@
 /* personal-data.component.css */
+
+:host {
+  display: block;
+  margin: 0 auto;
+  max-width: var(--gf-container-md);
+  width: 90%;
+}
+
+h4 {
+  margin: var(--gf-32) 0;
+}
+
+p {
+  font-size: var(--gf-14);
+  line-height: 1.30em;
+  margin-bottom: var(--gf-12);
+}
+
+small {
+  display: block;
+  font-size: var(--gf-12);
+  margin: 0;
+  color: var(--dark-text-muted);
+  line-height: 1.30em;
+}
+
+div {
+  display: block;
+  margin: var(--gf-32) 0;
+}
+
+button {
+  outline: none;
+  border: none;
+  padding: var(--gf-10) var(--gf-32);
+  margin-right: var(--gf-10);
+  border-radius: 8px;
+
+  &.good {
+    background-color: var(--primary);
+    color: var(--dark-text);
+  }
+
+  &.bad {
+    background-color: var(--danger);
+    color: var(--dark-text);
+  }
+}
+
+/* Media */
+
+@media (max-width: 36rem) {
+  button {
+    display: block;
+    margin-right: 0;
+    margin-bottom: var(--gf-10);
+    width: 100%;
+  }
+}

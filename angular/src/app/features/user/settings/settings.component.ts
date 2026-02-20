@@ -15,8 +15,14 @@ export class SettingsComponent {
   public readonly router = inject(Router);
   public readonly routes = RoutePath.SETTINGS;
 
+  public get currentRoute(): string {
+    return this.router.url.split('/').pop() || this.routes.GENERAL;
+  }
+
   public onNavSelectChange(event: Event) {
     var select = event.target as HTMLSelectElement;
     this.router.navigate([`${this.routes.ROOT}/${select.value}`]);
   }
+
+  foo = 2;
 }

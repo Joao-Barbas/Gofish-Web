@@ -13,11 +13,12 @@
   </nav>
   <!-- Dropdown navigation -->
   <div>
-    <select class="settings-nav-select" (change)="onNavSelectChange($event)">
-      <option [value]="[routes.GENERAL]">General</option>
-      <option [value]="[routes.SECURITY]">Security</option>
-      <option [value]="[routes.PERSONAL_DATA]">Personal Data</option>
+    <select class="settings-nav-select" [value]="foo" (change)="onNavSelectChange($event)">
+      <option [value]="0">General</option>
+      <option [value]="1">Security</option>
+      <option [value]="2">Personal Data</option>
     </select>
   </div>
 </div>
 <router-outlet></router-outlet>
+TODO: Popup a comfirmar (sim nao), se 2fa ativado pede password e codigo
