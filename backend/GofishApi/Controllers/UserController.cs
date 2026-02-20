@@ -24,12 +24,12 @@ namespace GofishApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GofishUserController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly ILogger<AuthController> _logger;
         private readonly UserManager<AppUser> _userManager;
 
-        public GofishUserController(
+        public UserController(
             ILogger<AuthController> logger,
             UserManager<AppUser> userManager
         )
