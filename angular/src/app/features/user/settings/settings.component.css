@@ -28,20 +28,33 @@
 }
 
 .settings-nav-select {
+  appearance: none;
+  -webkit-appearance: none;
+
   display: none;
   border: none;
-  appearance: none;
   outline: none;
   margin: 0 auto;
   width: 90%;
   height: 3rem;
-  padding: var(--gf-12) var(--gf-16);
-  border-radius: var(--gf-12);
+  padding-left: var(--gf-24);
+  border-radius: var(--gf-10);
   background-color: var(--dark-bg);
   color: var(--dark-text);
+
+  background-image: url("/assets/vectors/chevrons-down-up-white.svg");
+  background-repeat: no-repeat;
+  background-position: right var(--gf-24) center;
+  background-size: 20px;
 }
 
 /* Media */
+
+@media (prefers-color-scheme: light) {
+  .settings-nav-select {
+    background-image: url("/assets/vectors/chevrons-down-up-black.svg");
+  }
+}
 
 @media (max-width: 36rem) {
   .settings-nav-tab { display: none; }

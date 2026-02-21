@@ -4,19 +4,16 @@
 <div>
   <!-- Tab navigarion -->
   <nav class="settings-nav-tab">
-    <a [routerLink]="[routes.GENERAL]" routerLinkActive="active">General</a>
-    <a [routerLink]="[routes.SECURITY]" routerLinkActive="active">Security</a>
-    <a [routerLink]="[routes.PERSONAL_DATA]" routerLinkActive="active">Personal Data</a>
-    <!-- @for (item of routes; track item.path) {
-      <a [routerLink]="item.path" routerLinkActive="active">{{ item.label }}</a>
-    } -->
+    @for (n of navPaths; track n.path) {
+      <a [routerLink]="n.path" routerLinkActive="active">{{ n.label }}</a>
+    }
   </nav>
   <!-- Dropdown navigation -->
   <div>
-    <select class="settings-nav-select" [value]="foo" (change)="onNavSelectChange($event)">
-      <option [value]="0">General</option>
-      <option [value]="1">Security</option>
-      <option [value]="2">Personal Data</option>
+    <select class="settings-nav-select" (change)="onNavSelectChange($event)">
+      @for (n of navPaths; track n.path) {
+        <option [value]="n.path" [selected]="currentPath() === n.path">{{ n.label }}</option>
+      }
     </select>
   </div>
 </div>

@@ -1,9 +1,16 @@
 // settings.component.ts
 
-import { Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, WritableSignal, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FlatHeaderComponent } from "@gofish/features/header/flat-header/flat-header.component";
-import { RoutePath } from '@gofish/shared/constants';
+import { Path } from '@gofish/shared/constants';
+import { filter } from 'rxjs';
+
+type NavPath = {
+  path: string;
+  label: string;
+}
 
 @Component({
   selector: 'app-settings',
@@ -12,17 +19,26 @@ import { RoutePath } from '@gofish/shared/constants';
   styleUrl: './settings.component.css',
 })
 export class SettingsComponent {
-  public readonly router = inject(Router);
-  public readonly routes = RoutePath.SETTINGS;
+  private readonly router: Router = inject(Router);
 
-  public get currentRoute(): string {
-    return this.router.url.split('/').pop() || this.routes.GENERAL;
+  public currentPath: WritableSignal<string> = signal(this.router.url);
+  public navPaths: NavPath[] = [
+    { path: Path.SETTINGS.GENERAL,       label: 'General'       },
+    { path: Path.SETTINGS.SECURITY,      label: 'Security'      },
+    { path: Path.SETTINGS.PERSONAL_DATA, label: 'Personal Data' },
+  ];
+
+  constructor() {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      takeUntilDestroyed()
+    ).subscribe((event: NavigationEnd) => {
+      this.currentPath.set(event.urlAfterRedirects);
+    });
   }
 
   public onNavSelectChange(event: Event) {
     var select = event.target as HTMLSelectElement;
-    this.router.navigate([`${this.routes.ROOT}/${select.value}`]);
+    this.router.navigate([select.value]);
   }
-
-  foo = 2;
 }

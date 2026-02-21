@@ -14,7 +14,7 @@ export const LocalStorageKey = {
 
 // Routing
 
-export const RoutePath = {
+export const PathName = {
   HOME: '',
   SIGN_UP: 'signup',
   SIGN_IN: 'signin',
@@ -31,21 +31,21 @@ export const RoutePath = {
   ABOUT_US: 'about-us',
 } as const;
 
-export const Route = {
+export const Path = {
   HOME: '/',
-  SIGN_UP: `/${RoutePath.SIGN_UP}`,
-  SIGN_IN: `/${RoutePath.SIGN_IN}`,
+  SIGN_UP: `/${PathName.SIGN_UP}`,
+  SIGN_IN: `/${PathName.SIGN_IN}`,
   MAP: {
-    ROOT: `/${RoutePath.MAP.ROOT}`,
-    CREATE_CATCH_PIN: `/${RoutePath.MAP.ROOT}/${RoutePath.MAP.CREATE_CATCH_PIN}`,
+    ROOT: `/${PathName.MAP.ROOT}`,
+    CREATE_CATCH_PIN: `/${PathName.MAP.ROOT}/${PathName.MAP.CREATE_CATCH_PIN}`,
   },
   SETTINGS: {
-    ROOT: `/${RoutePath.SETTINGS.ROOT}`,
-    GENERAL: `/${RoutePath.SETTINGS.ROOT}/${RoutePath.SETTINGS.GENERAL}`,
-    PERSONAL_DATA: `/${RoutePath.SETTINGS.ROOT}/${RoutePath.SETTINGS.PERSONAL_DATA}`,
-    SECURITY: `/${RoutePath.SETTINGS.ROOT}/${RoutePath.SETTINGS.SECURITY}`,
+    ROOT: `/${PathName.SETTINGS.ROOT}`,
+    GENERAL: `/${PathName.SETTINGS.ROOT}/${PathName.SETTINGS.GENERAL}`,
+    PERSONAL_DATA: `/${PathName.SETTINGS.ROOT}/${PathName.SETTINGS.PERSONAL_DATA}`,
+    SECURITY: `/${PathName.SETTINGS.ROOT}/${PathName.SETTINGS.SECURITY}`,
   },
-  ABOUT_US: `/${RoutePath.ABOUT_US}`,
+  ABOUT_US: `/${PathName.ABOUT_US}`,
 } as const;
 
 // profile: (username: string) => `/profiles/${username}`,

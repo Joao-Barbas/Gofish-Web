@@ -150,7 +150,7 @@
     cursor: pointer;
     flex: 1;
     padding: 10px var(--gf-32);
-    border-radius: var(--gf-8);
+    border-radius: var(--gf-10);
     box-shadow: var(--gf-shadow-lift-sm);
     transition: box-shadow .2s ease;
 

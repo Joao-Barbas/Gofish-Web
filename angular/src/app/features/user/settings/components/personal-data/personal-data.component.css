@@ -35,7 +35,7 @@ button {
   border: none;
   padding: var(--gf-10) var(--gf-32);
   margin-right: var(--gf-10);
-  border-radius: 8px;
+  border-radius: var(--gf-10);
 
   &.good {
     background-color: var(--primary);
@@ -47,21 +47,6 @@ button {
     color: var(--dark-text);
   }
 }
-
-/* Components */
-
-app-confirm-modal {
-
-  &.on-enter {
-  }
-
-  &.on-leave {
-  }
-}
-
-/* Keyframes */
-
-
 
 /* Media */
 
