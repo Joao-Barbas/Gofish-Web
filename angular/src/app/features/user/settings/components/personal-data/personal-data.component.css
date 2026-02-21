@@ -48,6 +48,21 @@ button {
   }
 }
 
+/* Components */
+
+app-confirm-modal {
+
+  &.on-enter {
+  }
+
+  &.on-leave {
+  }
+}
+
+/* Keyframes */
+
+
+
 /* Media */
 
 @media (max-width: 36rem) {

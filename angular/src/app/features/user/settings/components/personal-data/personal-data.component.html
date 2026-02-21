@@ -10,6 +10,19 @@
   WARNING: Deleting your data includes permanent deletion of your account and that action cannot be undone.
 </small>
 <div>
-  <button class="good">Download</button>
-  <button class="bad">Delete</button>
+  <button class="good" (click)="onDownload()" [disabled]="busyState.isBusy()">Download</button>
+  <button class="bad" (click)="onDelete()" [disabled]="busyState.isBusy()">Delete</button>
 </div>
+@if (isConfirmModalActive()) {
+  <app-confirm-modal
+    animate.enter="on-enter"
+    animate.leave="on-leave"
+    title="Delete Account?"
+    warningText="Are you sure you want to permanently delete your account? This action is permanent and cannot be undone. All of your data and history will be erased, and you will immediately lose access."
+    [errorText]="modalErrorText"
+    [requiresPassword]="true"
+    [requiresTwoFactor]="hasTwoFactor"
+    (cancel)="onModalCancel()"
+    (confirm)="onModalConfirm($event)">
+  </app-confirm-modal>
+}
