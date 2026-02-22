@@ -1,3 +1,5 @@
+// signin.component.ts
+
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
@@ -29,7 +31,7 @@ export class SigninComponent implements OnInit {
   }
 
   form: FormGroup = this.formBuilder.group({
-    email: [ '', [ Validators.required ]],
+    emailOrUserName: [ '', [ Validators.required ]],
     password: [ '', [ Validators.required ]],
   });
 
@@ -46,14 +48,14 @@ export class SigninComponent implements OnInit {
         this.setBusy(false);
         this.isSubmitted = false;
         this.form.reset();
-        this.authService.storeToken(res.token!);
-        this.router.navigateByUrl('/map');
+        this.authService.insertToken(res.data?.token!);
+        this.router.navigate(['/map']);
       },
       error: (err: HttpErrorResponse) => {
         this.setBusy(false);
         this.isSubmitted = false;
         var res = err.error as SignInResDTO;
-        this.formErrors.push(res.errorDescription ?? 'Server error. Try again later.');
+        this.formErrors.push(res.errors?.[0].description ?? 'Server error. Try again later.');
       }
     });
   }

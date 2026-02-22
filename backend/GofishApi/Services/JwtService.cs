@@ -22,15 +22,21 @@ namespace GofishApi.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Secret!));
             var claims = new List<Claim>
             {
-                new("UserId", user.Id)
-                // new Claim(ClaimTypes.Name, user.UserName),
-                // new Claim(ClaimTypes.Email, user.Email)
+                new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")), // No dashes
+                new(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
+                new(JwtRegisteredClaimNames.UniqueName, user.UserName ?? ""),
+                new(JwtRegisteredClaimNames.GivenName, user.FirstName ?? ""),
+                new(JwtRegisteredClaimNames.FamilyName, user.LastName ?? ""),
+                new(JwtRegisteredClaimNames.Email, user.Email ?? "")
             };
             var descriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(_jwt.ExpirationMinutes),
-                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
+                Subject            = new ClaimsIdentity(claims),
+                Expires            = DateTime.UtcNow.AddMinutes(_jwt.ExpirationMinutes),
+                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature),
+                Issuer             = _jwt.Issuer,
+                Audience           = _jwt.Audience
             };
             var handler = new JwtSecurityTokenHandler();
             var token = handler.WriteToken(handler.CreateToken(descriptor));

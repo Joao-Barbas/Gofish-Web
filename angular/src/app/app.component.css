@@ -2,6 +2,5 @@
 
 :host {
   display: block;
-  background-color: var(--dark-bg);
-  font-family: var(--font-main);
+  min-height: inherit;
 }

@@ -1,9 +1,9 @@
 export interface SignUpReqDTO {
-  email: string,
-  password: string,
-  userName: string,
-  firstName: string,
-  lastName: string
+  email: string;
+  password: string;
+  userName: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface SignUpResDTO {
@@ -11,5 +11,5 @@ export interface SignUpResDTO {
   errors?: {
     code: string;
     description: string;
-  }[]
+  }[];
 }

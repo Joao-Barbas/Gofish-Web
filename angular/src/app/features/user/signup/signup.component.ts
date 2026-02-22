@@ -1,3 +1,5 @@
+// signup.component.ts
+
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -67,7 +69,7 @@ export class SignupComponent implements OnInit {
     if (this.form.invalid) return;
     this.setBusy(true);
 
-    this.authService.postUser(this.form.value as SignUpReqDTO).subscribe({
+    this.authService.signUpUser(this.form.value as SignUpReqDTO).subscribe({
       next: (res: SignUpResDTO) => {
         this.setBusy(false);
         this.isSubmitted = false;
