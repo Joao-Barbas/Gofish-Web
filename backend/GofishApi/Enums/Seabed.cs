@@ -1,6 +1,4 @@
-﻿#pragma warning disable IDE0130
-
-namespace GofishApi.Enums;
+﻿namespace GofishApi.Enums;
 
 public enum Seabed
 {
