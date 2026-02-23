@@ -38,12 +38,10 @@ namespace GofishApi.Services
                 new(JwtRegisteredClaimNames.FamilyName, user.LastName ?? ""),
                 new(JwtRegisteredClaimNames.Email, user.Email ?? "")
             };
-
             foreach (var role in roles)
             {
                 claims.Add(new(ClaimTypes.Role, role));
             }
-
             var descriptor = new SecurityTokenDescriptor
             {
                 Subject            = new ClaimsIdentity(claims),
