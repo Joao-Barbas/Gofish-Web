@@ -10,11 +10,11 @@ namespace GofishApi.Controllers;
 [Route("Enumerate/[action]")]
 public class EnumsController : ControllerBase
 {
-    [HttpGet] public IActionResult AccessDifficulty() => Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<AccessDifficulty>() });
-    [HttpGet] public IActionResult Bait()             => Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<Bait>() });
-    [HttpGet] public IActionResult PinKind()          => Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<PinKind>() });
-    [HttpGet] public IActionResult Seabed()           => Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<Seabed>() });
-    [HttpGet] public IActionResult Species()          => Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<Species>() });
-    [HttpGet] public IActionResult VisibilityLevel()  => Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<VisibilityLevel>() });
-    [HttpGet] public IActionResult WarningKind()      => Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<WarningKind>() });
+    [HttpGet] public IActionResult AccessDifficulty() => Ok(EnumDTO.FromEnum<AccessDifficulty>());
+    [HttpGet] public IActionResult Bait()             => Ok(EnumDTO.FromEnum<Bait>());
+    [HttpGet] public IActionResult PinKind()          => Ok(EnumDTO.FromEnum<PinKind>());
+    [HttpGet] public IActionResult Seabed()           => Ok(EnumDTO.FromEnum<Seabed>());
+    [HttpGet] public IActionResult Species()          => Ok(EnumDTO.FromEnum<Species>());
+    [HttpGet] public IActionResult VisibilityLevel()  => Ok(EnumDTO.FromEnum<VisibilityLevel>());
+    [HttpGet] public IActionResult WarningKind()      => Ok(EnumDTO.FromEnum<WarningKind>());
 }

@@ -1,5 +1,9 @@
 ﻿namespace GofishApi.Dtos;
 
+/// <summary>
+/// Use <see cref="Dtos.GetEnumDTO"/> instead.
+/// </summary>
+[Obsolete($"Use {nameof(EnumDTO)} instead")]
 public record GetEnumeratorResDTO(
     IEnumerable<EnumeratorDTO> Enumerator
 ){
@@ -13,6 +17,10 @@ public record GetEnumeratorResDTO(
     }
 };
 
+/// <summary>
+/// Use <see cref="Dtos.GetEnumDTO"/> instead.
+/// </summary>
+[Obsolete($"Use {nameof(EnumDTO)} instead")]
 public record EnumeratorDTO(
     string Name,
     int Value
