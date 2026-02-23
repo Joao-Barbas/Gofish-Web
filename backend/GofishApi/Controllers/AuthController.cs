@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using GofishApi.Exceptions;
 using GofishApi.Dtos;
 using GofishApi.Models;
 using GofishApi.Services;
@@ -39,16 +39,29 @@ namespace GofishApi.Controllers
                 FirstName = dto.FirstName,
                 LastName = dto.LastName
             };
-            var result = await _userManager.CreateAsync(user, dto.Password);
-            if (result.Succeeded)
+            try
             {
+                IdentityResult result;
+                result = await _userManager.CreateAsync(user, dto.Password);
+                if (!result.Succeeded) { throw new IdentityException(result.Errors); }
+                result = await _userManager.AddToRoleAsync(user, "User");
+                if (!result.Succeeded) { throw new IdentityException(result.Errors); }
                 return Ok(new ApiResponse<object>());
             }
-            else
+            catch (IdentityException ex)
             {
                 return BadRequest(new ApiErrorResponse
                 {
-                    Errors = [.. result.Errors.Select(e => new ApiError(e.Code, e.Description))]
+                    Errors = ex.Errors
+                               .Select(e => new ApiError(e.Code, e.Description))
+                               .ToList()
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiErrorResponse
+                {
+                    Errors = [new("UnexpectedError", ex.Message)]
                 });
             }
         }

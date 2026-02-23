@@ -25,6 +25,7 @@ builder.Services.AddAndConfigureControllers();
 builder.Services.AddAndConfigureSwaggerGen();
 
 var app = builder.Build();
+await app.SeedDataAsync();
 
 app.EnableSwaggerIfDevelopment();
 app.UseHttpsRedirection();
