@@ -13,14 +13,11 @@ import { AuthService } from '@gofish/shared/services/auth.service';
   styleUrl: './popup-user.component.css'
 })
 export class PopupUserComponent extends BasePopupComponent {
-  public static readonly key: PopupKey = 'popup-header-user';
-  private authService = inject(AuthService);
+  static readonly key: PopupKey = 'popup-header-user';
 
-  get isSignedIn(): boolean {
-    return this.authService.isSignedIn();
-  }
+  readonly authService = inject(AuthService);
 
-  signOut() {
+  onSignOutClick() {
     this.authService.signOut();
     this.close();
   }

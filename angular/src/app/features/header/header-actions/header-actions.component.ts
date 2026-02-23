@@ -7,6 +7,7 @@ import { PopupService } from '@gofish/shared/services/popup.service';
 import { PopupAdminComponent } from '@gofish/features/header/header-actions/components/popup-admin/popup-admin.component';
 import { PopupUserComponent } from '@gofish/features/header/header-actions/components/popup-user/popup-user.component';
 import { Router } from '@angular/router';
+import { Path } from '@gofish/shared/constants';
 
 @Component({
   selector: 'app-header-actions',
@@ -15,37 +16,25 @@ import { Router } from '@angular/router';
   styleUrl: './header-actions.component.css'
 })
 export class HeaderActionsComponent {
-  private router        = inject(Router);
-  private popupService  = inject(PopupService);
-  private authService   = inject(AuthService);
+  private router = inject(Router);
+
+  readonly popupService  = inject(PopupService);
+  readonly authService   = inject(AuthService);
 
   public isUserPopupOpen$  = this.popupService.isOpen$(PopupUserComponent.key);
   public isAdminPopupOpen$ = this.popupService.isOpen$(PopupAdminComponent.key);
 
-  public get isAdmin(): boolean {
-    return true; // this.authService.isAdmin();
+  onSignInClick() {
+    this.router.navigate([Path.SIGN_IN]);
   }
 
-  public get isSignedIn(): boolean {
-    return this.authService.isSignedIn();
-  }
-
-  public routeSignIn() {
-    this.router.navigateByUrl('/user/signin');
-  }
-
-  public toggleUserPopup(event: Event): void {
+  onUserClick(event: Event): void {
     this.popupService.toggle(PopupUserComponent.key);
     event.stopPropagation();
   }
 
-  public toggleAdminPopup(event: Event): void {
+  onAdminClick(event: Event): void {
     this.popupService.toggle(PopupAdminComponent.key);
     event.stopPropagation();
   }
-
-  // @HostListener('document:keydown.escape')
-  // onEscapeKey() {
-  //   this.closeDropdown();
-  // }
 }

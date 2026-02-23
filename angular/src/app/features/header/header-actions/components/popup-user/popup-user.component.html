@@ -1,7 +1,7 @@
 <!-- popup-user.component.html -->
 
 <div class="header-overlay-container" (clickOutside)="close()">
-  @if (isSignedIn) {
+  @if (authService.isAuthenticated()) {
     <!-- Avatar, name & close button -->
     <div class="d-flex justify-content-between align-items-start">
       <div class="d-flex align-items-center gap-3 flex-grow-1">
@@ -21,7 +21,7 @@
     <div class="separator"></div>
     <div class="separator"></div>
     <!-- Sign Out Button -->
-    <button class="gf-hollow-btn d-flex align-items-center justify-content-between w-100" (click)="signOut()">
+    <button class="gf-hollow-btn d-flex align-items-center justify-content-between w-100" (click)="onSignOutClick()">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>
         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
