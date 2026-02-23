@@ -1,5 +1,9 @@
 ﻿namespace GofishApi.Models
 {
+    /// <summary>
+    /// Use <see cref="Enums.Species"/> instead.
+    /// </summary>
+    [Obsolete($"Use {nameof(Enums.Species)} instead.")]
     public enum SpeciesType
     {
         Unknown,

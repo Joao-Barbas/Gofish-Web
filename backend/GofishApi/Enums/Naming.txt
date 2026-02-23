@@ -1,0 +1,37 @@
+﻿As per https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces#naming-enumerations:
+
+Names of enumeration types (also called enums) in general should follow the standard type-naming rules (PascalCasing, etc.).
+However, there are additional guidelines that apply specifically to enums.
+
+DO use a singular type name for an enumeration unless its values are bit fields.
+DO use a plural type name for an enumeration with bit fields as values, also called flags enum.
+
+DO NOT use an "Enum" suffix in enum type names.
+DO NOT use "Flag" or "Flags" suffixes in enum type names.
+DO NOT use a prefix on enumeration value names (e.g., "ad" for ADO enums, "rtf" for rich text enums, etc.).
+
+Examples:
+
+[Flags]
+public enum FileAccesses
+{
+    Read    = 0b_0000_0001, // 1
+    Write   = 0b_0000_0010, // 2
+    Execute = 0b_0000_0100  // 4
+}
+
+public enum AccessDifficulty
+{
+    Easy,
+    Moderate,
+    Hard
+}
+
+Most enumerator names can end in:
+- Kind: Is the most idiomatic in .NET;
+- Level: Reads naturally for anything that implies a scale or degree;
+- State: For lifecycle/status;
+- Behavior: For configuration-style enums;
+- Mode: For operational modes;
+- Option(s): For flags/settings;
+- No suffix at all: When the name is already unambiguous
