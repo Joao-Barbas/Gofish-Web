@@ -105,4 +105,8 @@ public class AuthController : ControllerBase
             Data = new(token)
         });
     }
+
+    // [Authorize(Roles = "Admin")]
+    // private static string AdminOnly()
+    // { return "Admin Only"; }
 }
