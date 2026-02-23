@@ -1,6 +1,4 @@
-﻿using GofishApi.Models;
-
-namespace GofishApi.Dtos;
+﻿namespace GofishApi.Dtos;
 
 public record GetEnumeratorResDTO(
     IEnumerable<EnumeratorDTO> Enumerator
@@ -9,17 +7,13 @@ public record GetEnumeratorResDTO(
     {
         return new GetEnumeratorResDTO(
             Enum.GetValues<TEnum>()
-            .Select(e => new EnumeratorDTO(Convert.ToInt32(e),e.ToString()))
+            .Select(e => new EnumeratorDTO(e.ToString(), Convert.ToInt32(e)))
             .ToList()
         );
     }
 };
 
 public record EnumeratorDTO(
-    int Value, 
-    string Name
+    string Name,
+    int Value
 );
-
-
-
-
