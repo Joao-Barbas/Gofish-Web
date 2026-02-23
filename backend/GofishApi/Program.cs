@@ -26,7 +26,7 @@ builder.Services.AddAndConfigureSwaggerGen();
 
 var app = builder.Build();
 
-app.EnableSwaggerIfIsDevelopment();
+app.EnableSwaggerIfDevelopment();
 app.UseHttpsRedirection();
 app.UseCors("angular");
 app.UseAuthentication();
