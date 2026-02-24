@@ -1,7 +1,9 @@
-﻿namespace GofishApi.Dtos
+﻿using GofishApi.Enums;
+
+namespace GofishApi.Dtos
 {
     public record SecurityInfoResDTO(
         bool TwoFactorEnabled,
-        bool HasAuthenticatorApp
+        TwoFactorMethod TwoFactorMethod
     );    
 }

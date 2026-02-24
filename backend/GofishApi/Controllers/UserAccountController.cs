@@ -29,14 +29,6 @@ namespace GofishApi.Controllers
             _signInManager = signInManager;
         }
 
-        // [Authorize]
-        // [HttpPost("ChangePassword")]
-        // public async Task<IActionResult> ChangePassword() // This goes to UserAuthController maybe?
-        // {
-        //     string userId = User.Claims.First(x => x.Type == "UserId").Value;
-        //     return StatusCode(StatusCodes.Status501NotImplemented);
-        // }
-
         [HttpDelete("DeleteAccount")]
         public async Task<IActionResult> DeleteAccount([FromBody] DeleteAccountReqDTO request)
         {
