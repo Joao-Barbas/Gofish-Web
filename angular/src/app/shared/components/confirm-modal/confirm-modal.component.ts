@@ -5,13 +5,14 @@ import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NumbersOnlyDirective } from '@gofish/shared/directives/numbers-only.directive';
-import { ModalKey, ModalTitle, SimpleModalComponent } from '@gofish/shared/models/modal.model';
+import { ModalKey, SimpleModalComponent } from '@gofish/shared/models/modal.model';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { BusyState } from '@gofish/shared/services/busy.service';
 import { ModalService } from '@gofish/shared/services/modal.service';
 import { UserAccountService } from '@gofish/shared/services/user-account.service';
 
 export interface ConfirmModal {
+  headerText: string;
   normalText?: string;
   warningText?: string;
   footerText?: string;
@@ -29,7 +30,7 @@ export interface ConfirmModal {
   styleUrl: './confirm-modal.component.css',
 })
 export class ConfirmModalComponent extends SimpleModalComponent implements ConfirmModal, OnInit {
-  static readonly key: ModalKey = 'confirm-delete-account';
+  static readonly key: ModalKey = 'confirm-action-modal';
 
   private readonly modal = inject(ModalService);
   private readonly userAccount = inject(UserAccountService);
@@ -45,7 +46,7 @@ export class ConfirmModalComponent extends SimpleModalComponent implements Confi
     twofa: ['', [ Validators.required, Validators.pattern('^[0-9]*$') ]]
   });
 
-  @Input() title!: ModalTitle;
+  @Input() headerText!: string;
   @Input() normalText?: string;
   @Input() warningText?: string;
   @Input() footerText?: string;

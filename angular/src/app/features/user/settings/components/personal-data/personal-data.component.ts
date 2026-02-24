@@ -55,18 +55,17 @@ export class PersonalDataComponent {
     this.busyState.setBusy(true);
     this.userAccountService.deleteAccount({ password: data.password! }).subscribe({
       next: () => {
+        this.busyState.setBusy(false);
         this.authService.signOut();
         this.router.navigate(['/']);
       },
       error: (err: HttpErrorResponse) => {
+        this.busyState.setBusy(false);
         var res = err.error as DeleteAccountResDTO;
         if (res.errors?.[0].code === 'InvalidCredentials') {
           this.modalErrorText = "Invalid credentials";
         }
         this.modalService.open(ConfirmModalComponent.key);
-      },
-      complete: () => {
-        this.busyState.setBusy(false);
       }
     });
   }
