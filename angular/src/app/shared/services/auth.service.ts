@@ -1,3 +1,5 @@
+// auth.service.ts
+
 import { environment } from 'environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
@@ -26,7 +28,7 @@ export class AuthService {
 
   constructor() {
     const et = localStorage.getItem(LocalStorageKey.TOKEN);
-    if (et && this.insertToken(et)) return;
+    if (et && this.insertToken(et)) return; // This checks token too
     this.signOut();
   }
 

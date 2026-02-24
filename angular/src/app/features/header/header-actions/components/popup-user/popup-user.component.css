@@ -101,3 +101,26 @@
   border-top: 1px solid var(--dark-bg-light);
   margin: 0 1rem;
 }
+
+.popup-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  gap: 8px;
+  padding: var(--gf-8) var(--gf-8);
+  background-color: transparent;
+  color: var(--dark-text);
+  border-radius: var(--gf-8);
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--dark-bg-light);
+  }
+
+  & > svg {
+    width: 20px;
+    height: 20px;
+  }
+}
