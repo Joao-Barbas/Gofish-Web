@@ -1,0 +1,73 @@
+<div class="modal-backdrop" (click)="$event.stopPropagation()"> <!-- TODO: Backdrop on app.component.* (Maybe???) -->
+  <div class="modal-container" role="dialog" aria-modal="true">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <h5>Delete account?</h5>
+      <button (click)="onNegative()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"/>
+          <path d="m6 6 12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="separator"></div>
+
+    @if (loadingState.isLoading()) {
+      <!-- Loading state -->
+      <div class="modal-body modal-loading">
+        <div class="spinner"></div>
+        <span>Loading...</span>
+      </div>
+    } @else if (loadingState.isError()) {
+      <!-- Error state -->
+      <div class="modal-body modal-error">
+        <p>{{ loadingState.error() }}</p>
+        <button class="btn-secondary" (click)="onNegative()">Close</button>
+      </div>
+    } @else {
+      <!-- Body -->
+      <div class="modal-body">
+        <p class="warning">
+          Are you sure you want to permanently delete your account? This action is permanent and cannot be undone.<br>
+          All of your data and history will be erased, and you will immediately lose access.
+        </p>
+        <form id="form" class="modal-form vertical-flow gf-gap-8" [formGroup]="form" (ngSubmit)="onPositive()">
+          <div class="vertical-flow">
+            <label>Password</label>
+            <input type="password" id="password" formControlName="password">
+          </div>
+          @if (requireTwoFactorApp) {
+            <div class="vertical-flow">
+              <label>Two-Factor Code</label>
+              <input type="text" id="code" formControlName="code" placeholder="Enter 6-digit code" maxlength="6" appNumbersOnly>
+            </div>
+          }
+        </form>
+      </div>
+
+      <div class="separator"></div>
+
+      <!-- Actions -->
+      <div>
+        @if (errorText) {
+          <small class="error-text">{{ errorText }}</small>
+        }
+        <div class="modal-actions">
+          <button class="btn-secondary" (click)="onNegative()" [disabled]="busyState.isBusy()">
+            Cancel
+          </button>
+          <button class="btn-primary" type="submit" form="form" [disabled]="form.invalid || busyState.isBusy()">
+            @if (busyState.isBusy()) {
+              Deleting...
+            } @else {
+              Confirm
+            }
+          </button>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

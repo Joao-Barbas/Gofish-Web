@@ -1,36 +1,45 @@
 // personal-data.component.ts
 
-import { Component, computed, inject, Signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '@gofish/shared/services/auth.service';
-import { ModalService } from '@gofish/shared/services/modal.service';
-import { PopupService } from '@gofish/shared/services/popup.service';
 import { UserAccountService } from '@gofish/shared/services/user-account.service';
-import { ConfirmModalComponent } from "@gofish/shared/components/confirm-modal/confirm-modal.component";
+import { ModalService } from '@gofish/shared/services/modal.service';
+import { ConfirmDeletionModalComponent } from '@gofish/features/user/settings/components/personal-data/components/confirm-deletion-modal/confirm-deletion-modal.component';
+import { BusyState } from '@gofish/shared/core/busy-state';
+import { UserSecurityService } from '@gofish/shared/services/user-security.service';
+import { TwoFactorMethod } from '@gofish/shared/models/user-security.models';
+import { Path } from '@gofish/shared/constants';
+import { AuthService } from '@gofish/shared/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DeleteAccountResDTO } from '@gofish/shared/dtos/user-account.dto';
-import { BusyState } from '@gofish/shared/services/busy.service';
 
 @Component({
   selector: 'app-personal-data',
-  imports: [ ConfirmModalComponent ],
+  imports: [ ConfirmDeletionModalComponent ],
   templateUrl: './personal-data.component.html',
   styleUrl: './personal-data.component.css',
 })
 export class PersonalDataComponent {
-  private readonly modalService       = inject(ModalService);
-  private readonly popupService       = inject(PopupService);
-  private readonly authService        = inject(AuthService);
-  private readonly userAccountService = inject(UserAccountService);
-  private readonly router             = inject(Router);
-
   readonly busyState = new BusyState();
 
-  isConfirmModalActive: Signal<boolean> = computed(() => this.modalService.activeModal() === ConfirmModalComponent.key);
-  hasTwoFactor: boolean = false; // this.authService.has
-  modalErrorText?: string;
+  readonly Path = Path;
+  readonly TwoFactorMethod = TwoFactorMethod;
 
-  onDownload(): void {
+  modalErrorText: string | null = null;
+
+  // Lifecycle
+
+  constructor(
+    private readonly router: Router,
+    private readonly userAccountService: UserAccountService,
+    private readonly authService: AuthService,
+    public  readonly userSecurityService: UserSecurityService,
+    public  readonly modalService: ModalService,
+  ){}
+
+  // End lifecycle
+
+  onDownloadClick() {
     this.busyState.setBusy(true);
     this.userAccountService.downloadPersonalData().subscribe({
       next: (blob: Blob) => {
@@ -45,32 +54,31 @@ export class PersonalDataComponent {
     });
   }
 
-  onDelete(): void {
-    this.modalService.open(ConfirmModalComponent.key);
+  onDeleteClick() {
+    this.modalErrorText = null;
+    this.modalService.open('confirm-deletion-modal');
   }
 
-  /* Modal events */
+  // Modal events
 
-  onModalConfirm(data: { password?: string; twofa?: string; }): void {
+  onModalPositive(data: { password?: string; code?: string; }): void {
     this.busyState.setBusy(true);
     this.userAccountService.deleteAccount({ password: data.password! }).subscribe({
-      next: () => {
+      next: (res: void) => {
         this.busyState.setBusy(false);
         this.authService.signOut();
-        this.router.navigate(['/']);
+        this.router.navigate([Path.HOME]);
       },
       error: (err: HttpErrorResponse) => {
         this.busyState.setBusy(false);
         var res = err.error as DeleteAccountResDTO;
-        if (res.errors?.[0].code === 'InvalidCredentials') {
-          this.modalErrorText = "Invalid credentials";
-        }
-        this.modalService.open(ConfirmModalComponent.key);
+        this.modalErrorText = res.errors?.[0]?.code === 'InvalidCredentials' ? 'Invalid credential' : 'Something went wrong. Try again later'
+        this.modalService.open('confirm-deletion-modal');
       }
     });
   }
 
-  onModalCancel() {
+  onModalNegative() {
     // Nothing to do here
   }
 }
