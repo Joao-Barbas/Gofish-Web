@@ -60,7 +60,8 @@ const PIN_CONFIG = [
   styleUrl: './map.component.css',
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
-  private readonly popupService = inject(PopupService);
+  readonly popupService = inject(PopupService);
+
   private readonly geoService = inject(GeolocationService);
   private readonly pinService = inject(PinService);
   private readonly previewMarkerService = inject(PreviewMarkerService);
@@ -82,7 +83,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   activePinModal: PinType | null = null;
   selected: Coords | null = null;
   private map!: mapboxgl.Map;
-  public isCreatePinOverlayOpen$ = this.popupService.isOpen$(ChoosePinPopupComponent.key);
+  public isCreatePinOverlayOpen = this.popupService.activePopup() === 'choose-pin-popup';
   public selectedGeolocation: GeolocationCoordinates | null = null; // User manually selected
   public selectedPinType: PinType | null = null;
 
@@ -126,7 +127,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   public toggleCreatePinOverlay(event: Event): void {
-    this.popupService.toggle(ChoosePinPopupComponent.key);
+    this.popupService.toggle('choose-pin-popup');
     event.stopPropagation();
   }
 
@@ -140,12 +141,12 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   onTypeSelected(pinType: PinType): void {
     this.activePinModal = pinType;
-    this.popupService.toggle(ChoosePinPopupComponent.key);
+    this.popupService.toggle('choose-pin-popup');
   }
 
   onPopupCancel(): void {
     this.clearPreviewAndSelection();
-    this.popupService.toggle(ChoosePinPopupComponent.key);
+    this.popupService.toggle('choose-pin-popup');
   }
 
   onModalCancelled(): void {

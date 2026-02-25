@@ -7,7 +7,7 @@ namespace GofishApi.Controllers;
 
 [AllowAnonymous]
 [ApiController]
-[Route("Enumerate/[action]")]
+[Route("api/Enumerate/[action]")]
 public class EnumsController : ControllerBase
 {
     [HttpGet] public IActionResult AccessDifficulty() => Ok(EnumDTO.FromEnum<AccessDifficulty>());
@@ -17,4 +17,5 @@ public class EnumsController : ControllerBase
     [HttpGet] public IActionResult Species()          => Ok(EnumDTO.FromEnum<Species>());
     [HttpGet] public IActionResult VisibilityLevel()  => Ok(EnumDTO.FromEnum<VisibilityLevel>());
     [HttpGet] public IActionResult WarningKind()      => Ok(EnumDTO.FromEnum<WarningKind>());
+    [HttpGet] public IActionResult TwoFactorMethod()  => Ok(EnumDTO.FromEnum<TwoFactorMethod>());
 }

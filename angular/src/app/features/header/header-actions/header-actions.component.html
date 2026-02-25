@@ -1,5 +1,3 @@
-<!-- header-actions.component.html -->
-
 <div class="header-actions d-flex align-items-center icon-white-muted position-relative">
   <!-- Search toggle -->
   <button class="gf-toggle-circle">
@@ -35,6 +33,6 @@
     </button>
   }
   <!-- Overlays -->
-  @if (isUserPopupOpen$ | async) { <app-popup-user class="position-overlay" animate.enter="on-enter" animate.leave="on-leave"></app-popup-user> }
-  @if (isAdminPopupOpen$ | async) { <app-popup-admin class="position-overlay" animate.enter="on-enter" animate.leave="on-leave"></app-popup-admin> }
+  @if (this.popupService.activePopup() === 'header-user-popup') { <app-user-popup class="position-overlay" animate.enter="on-enter" animate.leave="on-leave"></app-user-popup> }
+  @if (this.popupService.activePopup() === 'header-admin-popup') { <app-admin-popup class="position-overlay" animate.enter="on-enter" animate.leave="on-leave"></app-admin-popup> }
 </div>

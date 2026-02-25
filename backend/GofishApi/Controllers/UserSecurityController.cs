@@ -1,4 +1,5 @@
 ﻿using GofishApi.Dtos;
+using GofishApi.Enums;
 using GofishApi.Exceptions;
 using GofishApi.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -12,13 +13,13 @@ namespace GofishApi.Controllers;
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class UserAuthController : ControllerBase
+public class UserSecurityController : ControllerBase
 {
-    private readonly ILogger<UserAuthController> _logger;
+    private readonly ILogger<UserSecurityController> _logger;
     private readonly UserManager<AppUser> _userManager;
 
-    public UserAuthController(
-        ILogger<UserAuthController> logger,
+    public UserSecurityController(
+        ILogger<UserSecurityController> logger,
         UserManager<AppUser> userManager
     ){
         _logger = logger;
@@ -39,11 +40,9 @@ public class UserAuthController : ControllerBase
             });
         }
 
-        var authenticatorKey = await _userManager.GetAuthenticatorKeyAsync(user!);
-
         return Ok(new ApiResponse<SecurityInfoResDTO>
         {
-            Data = new(user!.TwoFactorEnabled, authenticatorKey is { Length: > 0 })
+            Data = new(user.TwoFactorEnabled, user.TwoFactorMethod)
         });
     }
 

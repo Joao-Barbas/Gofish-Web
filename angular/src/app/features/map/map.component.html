@@ -107,7 +107,7 @@
       </div>
       <!-- popup overlays  -->
       <!-- Choose pin type -->
-      @if (isCreatePinOverlayOpen$ | async) {
+      @if (this.popupService.activePopup() === 'choose-pin-popup') {
       <app-choose-pin-popup class="position-action-overlay" animate.enter="on-enter" animate.leave="on-leave"
         [selectedCoords]="selected" (requestPickOnMap)="onRequestPickOnMap()" (typeSelected)="onTypeSelected($event)"
         (coordsSelected)="onCoordsSelected($event)">
