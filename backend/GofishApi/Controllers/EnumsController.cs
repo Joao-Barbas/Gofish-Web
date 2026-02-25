@@ -7,7 +7,7 @@ namespace GofishApi.Controllers;
 
 [AllowAnonymous]
 [ApiController]
-[Route("Enumerate/[action]")]
+[Route("api/Enumerate/[action]")]
 public class EnumsController : ControllerBase
 {
     [HttpGet] public IActionResult AccessDifficulty() => Ok(EnumDTO.FromEnum<AccessDifficulty>());
