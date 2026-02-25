@@ -1,8 +1,6 @@
-// modal-controller.ts
-
 import { computed, inject } from "@angular/core";
-import { ModalKey } from "@gofish/shared/models/modal.model";
 import { ModalService } from "@gofish/shared/services/modal.service";
+import { ModalKey } from "@gofish/shared/models/modal.model";
 
 export class ModalController {
   private readonly modalService = inject(ModalService);

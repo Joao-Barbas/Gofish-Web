@@ -1,9 +1,6 @@
-// modal.model.ts
-
-export type ModalKey = // Update this when creating new concrete modals
-  'example-modal' |
-  'confirm-action-modal' |
-  'confirm-deletion-modal';
+export type ModalKey = 'example-modal' // Update this when creating new modal components
+  | 'confirm-action-modal'
+  | 'confirm-deletion-modal';
 
 export interface SimpleModal {
   onPositive: () => void;
