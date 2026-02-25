@@ -5,21 +5,29 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using GofishApi.Options;
 using GofishApi.Models;
+using System.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace GofishApi.Services
 {
     public class JwtService : IJwtService
     {
         private readonly JwtOptions _jwt;
+        private readonly UserManager<AppUser> _userManager;
 
-        public JwtService(IOptions<JwtOptions> options)
-        {
+        public JwtService(
+            IOptions<JwtOptions> options,
+            UserManager<AppUser> userManager
+        ){
             _jwt = options.Value;
+            _userManager = userManager;
         }
 
-        public Task<string> CreateTokenAsync(AppUser user)
+        public async Task<string> CreateTokenAsync(AppUser user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Secret!));
+            var roles = await _userManager.GetRolesAsync(user);
+
             var claims = new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
@@ -30,6 +38,10 @@ namespace GofishApi.Services
                 new(JwtRegisteredClaimNames.FamilyName, user.LastName ?? ""),
                 new(JwtRegisteredClaimNames.Email, user.Email ?? "")
             };
+            foreach (var role in roles)
+            {
+                claims.Add(new(ClaimTypes.Role, role));
+            }
             var descriptor = new SecurityTokenDescriptor
             {
                 Subject            = new ClaimsIdentity(claims),
@@ -38,9 +50,11 @@ namespace GofishApi.Services
                 Issuer             = _jwt.Issuer,
                 Audience           = _jwt.Audience
             };
+            
             var handler = new JwtSecurityTokenHandler();
             var token = handler.WriteToken(handler.CreateToken(descriptor));
-            return Task.FromResult(token);
+
+            return await Task.FromResult(token);
         }
 
         // Optional Future Improvement:

@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { Path } from '@gofish/shared/constants';
 import { SignInReqDTO, SignInResDTO } from '@gofish/shared/dtos/signin.dto';
 import { AuthService } from '@gofish/shared/services/auth.service';
 
@@ -26,8 +27,8 @@ export class SigninComponent implements OnInit {
   ){}
 
   ngOnInit() {
-    if (!this.authService.isSignedIn()) return;
-    this.router.navigateByUrl('');
+    if (!this.authService.isAuthenticated()) return;
+    this.router.navigate([Path.HOME]);
   }
 
   form: FormGroup = this.formBuilder.group({
@@ -49,7 +50,7 @@ export class SigninComponent implements OnInit {
         this.isSubmitted = false;
         this.form.reset();
         this.authService.insertToken(res.data?.token!);
-        this.router.navigate(['/map']);
+        this.router.navigate([Path.MAP]);
       },
       error: (err: HttpErrorResponse) => {
         this.setBusy(false);

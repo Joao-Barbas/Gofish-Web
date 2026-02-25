@@ -8,6 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FirstKeyPipe } from '@gofish/shared/pipes/first-key.pipe';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/signup.dto';
+import { Path } from '@gofish/shared/constants';
 
 @Component({
   selector: 'app-signup',
@@ -28,8 +29,8 @@ export class SignupComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-    if (!this.authService.isSignedIn()) return;
-    this.router.navigateByUrl('');
+    if (!this.authService.isAuthenticated()) return;
+    this.router.navigate([Path.HOME]);
   }
 
   passwordMatch: ValidatorFn = (control: AbstractControl): null => {
@@ -75,7 +76,7 @@ export class SignupComponent implements OnInit {
         this.isSubmitted = false;
         if (!res.success) return;
         this.form.reset();
-        this.router.navigateByUrl('');
+        this.router.navigate([Path.HOME]);
       },
       error: (err: HttpErrorResponse) => {
         this.setBusy(false);

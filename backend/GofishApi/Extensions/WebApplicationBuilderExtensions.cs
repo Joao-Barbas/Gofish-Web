@@ -16,6 +16,7 @@ public static class WebApplicationBuilderExtensions
     {
         services
         .AddIdentityApiEndpoints<AppUser>()
+        .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>();
     }
 

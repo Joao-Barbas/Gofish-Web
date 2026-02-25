@@ -2,10 +2,11 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
+import { PopupController } from '@gofish/shared/core/popup-controller';
 import { ClickOutsideDirective } from '@gofish/shared/directives/click-outside.directive';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { PinType } from '@gofish/shared/models/pin.model';
-import { BasePopupComponent, PopupKey } from '@gofish/shared/models/popup.model';
+import { SimplePopup } from '@gofish/shared/models/popup.model';
 import { GeolocationService } from '@gofish/shared/services/geolocation.service';
 
 @Component({
@@ -14,8 +15,8 @@ import { GeolocationService } from '@gofish/shared/services/geolocation.service'
   templateUrl: './choose-pin-popup.component.html',
   styleUrl: './choose-pin-popup.component.css',
 })
-export class ChoosePinPopupComponent extends BasePopupComponent {
-  public static readonly key: PopupKey = 'popup-choose-pin';
+export class ChoosePinPopupComponent implements SimplePopup {
+  readonly popupController = new PopupController('choose-pin-popup');
 
   @Input() selectedCoords: Coords | null = null;
 
@@ -59,7 +60,7 @@ export class ChoosePinPopupComponent extends BasePopupComponent {
 
   public cancelCreatingPin() {
     this.cancel.emit();
-    this.close();
+    this.popupController.close();
   }
 
   public createWarnPin() {
@@ -84,6 +85,3 @@ export class ChoosePinPopupComponent extends BasePopupComponent {
     this.typeSelected.emit(PinType.CATCH);
   }
 }
-
-
-

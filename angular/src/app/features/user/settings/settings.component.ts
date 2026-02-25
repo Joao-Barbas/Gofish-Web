@@ -1,11 +1,11 @@
 // settings.component.ts
 
+import { filter } from 'rxjs';
 import { Component, WritableSignal, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FlatHeaderComponent } from "@gofish/features/header/flat-header/flat-header.component";
 import { Path } from '@gofish/shared/constants';
-import { filter } from 'rxjs';
 
 type NavPath = {
   path: string;
@@ -23,9 +23,9 @@ export class SettingsComponent {
 
   public currentPath: WritableSignal<string> = signal(this.router.url);
   public navPaths: NavPath[] = [
-    { path: Path.SETTINGS.GENERAL,       label: 'General'       },
-    { path: Path.SETTINGS.SECURITY,      label: 'Security'      },
-    { path: Path.SETTINGS.PERSONAL_DATA, label: 'Personal Data' },
+    { path: Path.GENERAL_SETTINGS,       label: 'General'       },
+    { path: Path.SECURITY_SETTINGS,      label: 'Security'      },
+    { path: Path.PERSONAL_DATA_SETTINGS, label: 'Personal Data' },
   ];
 
   constructor() {

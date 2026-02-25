@@ -42,9 +42,11 @@ namespace GofishApi.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("LastName")
+                        .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -75,6 +77,9 @@ namespace GofishApi.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<int>("TwoFactorMethod")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
