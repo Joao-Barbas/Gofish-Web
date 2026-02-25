@@ -19,7 +19,6 @@ import { PinType } from '@gofish/shared/models/pin.model';
 import { CatchPinModalComponent } from '@gofish/features/map/components/modals/catch-pin-modal/catch-pin-modal.component';
 import { PinHoverPreviewService } from '@gofish/features/map/services/pin-hover-preview.service';
 import { InfoPinModalComponent } from '@gofish/features/map/components/modals/info-pin-modal/info-pin-modal.component';
-import { WarnPinFormComponent } from '@gofish/features/map/components/forms/warn-pin-form/warn-pin-form.component';
 import { WarnPinModalComponent } from '@gofish/features/map/components/modals/warn-pin-modal/warn-pin-modal.component';
 
 
@@ -78,6 +77,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.enablePickMode();
     console.log('Create by pick on map');
   } */
+
   pickingOnMap = false;
   isCreating: boolean = false;
   activePinModal: PinType | null = null;
@@ -267,7 +267,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   // =========================
   // Clusters test
   // =========================
-
   private setupLayers(): void {
     PIN_CONFIG.forEach(({ type, color }) => {
       const pinsOfType = this.allPins.filter(pin => pin.pinType === type);
@@ -365,7 +364,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       const unclusteredId = `unclustered-${type}`;
       const sourceId = `pins-${type}`;
 
-      if (!this.pickingOnMap) return;
+      //if (!this.pickingOnMap) return;
 
       this.map.on('click', clusterId, (e) => {
         if (!this.map.getLayer(clusterId)) return;

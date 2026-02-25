@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GofishApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260224231913_Initial")]
-    partial class Initial
+    [Migration("20260225091439_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
