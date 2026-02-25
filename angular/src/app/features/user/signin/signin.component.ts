@@ -50,7 +50,7 @@ export class SigninComponent implements OnInit {
         this.isSubmitted = false;
         this.form.reset();
         this.authService.insertToken(res.data?.token!);
-        this.router.navigate([Path.MAP.ROOT]);
+        this.router.navigate([Path.MAP]);
       },
       error: (err: HttpErrorResponse) => {
         this.setBusy(false);

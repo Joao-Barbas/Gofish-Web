@@ -1,15 +1,12 @@
-// auth.service.ts
-
-import { environment } from 'environments/environment';
+import { jwtDecode } from 'jwt-decode';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { Observable } from 'rxjs';
-import { LocalStorageKey, Path } from '@gofish/shared/constants';
+import { Router } from '@angular/router';
+import { JwtClaim, JwtEncoded, JwtPayload, JwtRole } from '@gofish/shared/models/jwt.model';
+import { Api, LocalStorageKey, Path } from '@gofish/shared/constants';
 import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/signup.dto';
 import { SignInReqDTO, SignInResDTO } from '@gofish/shared/dtos/signin.dto';
-import { JwtClaim, JwtEncoded, JwtPayload, JwtRole } from '@gofish/shared/models/jwt.model';
-import { jwtDecode } from 'jwt-decode';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +14,6 @@ import { Router } from '@angular/router';
 export class AuthService {
   private readonly http   = inject(HttpClient);
   private readonly router = inject(Router)
-
-  private readonly url = 'Auth';
 
   private _encodedToken = signal<JwtEncoded | null>(null);
   private _decodedToken = signal<JwtPayload | null>(null);
@@ -34,8 +29,13 @@ export class AuthService {
 
   // Api endpoints
 
-  signUpUser(data: SignUpReqDTO): Observable<SignUpResDTO> { return this.http.post<SignUpResDTO>(`${environment.baseApiUrl}/${this.url}/SignUp`, data); }
-  signInUser(data: SignInReqDTO): Observable<SignInResDTO> { return this.http.post<SignInResDTO>(`${environment.baseApiUrl}/${this.url}/SignIn`, data); }
+  signUpUser(dto: SignUpReqDTO): Observable<SignUpResDTO> {
+    return this.http.post<SignUpResDTO>(Api.Auth.action('SignUp'), dto);
+  }
+
+  signInUser(dto: SignInReqDTO): Observable<SignInResDTO> {
+    return this.http.post<SignInResDTO>(Api.Auth.action('SignIn'), dto);
+  }
 
   // End Api endpoints
   // Load & decode token

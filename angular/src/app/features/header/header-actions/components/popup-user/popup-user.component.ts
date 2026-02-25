@@ -20,7 +20,7 @@ export class PopupUserComponent extends BasePopupComponent {
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
 
-  readonly path = Path;
+  readonly Path = Path;
 
   onSignOutClick() {
     this.authService.signOut();
