@@ -18,4 +18,5 @@ public class EnumsController : ControllerBase
     [HttpGet] public IActionResult VisibilityLevel()  => Ok(EnumDTO.FromEnum<VisibilityLevel>());
     [HttpGet] public IActionResult WarningKind()      => Ok(EnumDTO.FromEnum<WarningKind>());
     [HttpGet] public IActionResult TwoFactorMethod()  => Ok(EnumDTO.FromEnum<TwoFactorMethod>());
+    [HttpGet] public IActionResult FriendshipState()  => Ok(EnumDTO.FromEnum<FriendshipState>());
 }

@@ -1,20 +1,13 @@
-﻿using Azure.Core;
+﻿using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using GofishApi.Data;
 using GofishApi.Dtos;
 using GofishApi.Models;
 using GofishApi.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
 using GofishApi.Enums;
 
 namespace GofishApi.Controllers
@@ -24,17 +17,20 @@ namespace GofishApi.Controllers
     public class PinController : ControllerBase
     {
         private readonly ILogger<PinController> _logger;
-        private readonly AppDbContext _db;
         private readonly IBlobStorageService _blobStorage;
+        private readonly AppDbContext _db;
+        private readonly UserManager<AppUser> _userManager;
 
         public PinController(
             ILogger<PinController> logger,
+            IBlobStorageService blobStorage,
             AppDbContext db,
-            IBlobStorageService blobStorage
+            UserManager<AppUser> userManager
         ){
             _logger = logger;
-            _db = db;
             _blobStorage = blobStorage;
+            _db = db;
+            _userManager = userManager;
         }
 
         [Authorize]
@@ -45,6 +41,7 @@ namespace GofishApi.Controllers
             [FromQuery] double maxLat,
             [FromQuery] double maxLng
         ){
+            // TODO: Visibility level is not being accounted for yet
             var pins = await _db.Pins
             .Where(p =>
                 (p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng) &&
@@ -54,6 +51,7 @@ namespace GofishApi.Controllers
                 p.Latitude,
                 p.Longitude,
                 p.CreatedAt,
+                p.VisibilityLevel,
                 p.Kind
             ))
             .ToListAsync();
@@ -63,68 +61,56 @@ namespace GofishApi.Controllers
             });
         }
 
-        /*
-
         [Authorize]
-        [HttpGet("GetPinPreview/{id}")]
-        public async Task<IActionResult> GetPinPreview(int id)
+        [HttpPost("GetPins")]
+        public async Task<IActionResult> GetPins(GetPinsReqDTO dto)
         {
-            var pin = await _db.Pins
-            .Where(p => p.Id == id)
-            .Include(p => p.AppUser)
-            .Include(p => p.AppUser)
-            .Include(p => p.Post)
-            .FirstOrDefaultAsync();
+            // TODO: Visibility level is not being accounted for yet
 
-            if (pin == null)
+            var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            var user   = userId is null ? null : await _userManager.FindByIdAsync(userId);
+
+            if (user is null)
             {
-                return NotFound(new ApiErrorResponse
+                return Unauthorized(new ApiErrorResponse
                 {
-                    Errors = [new("PinNotFound", "Id returned no results")]
+                    Errors = [new("NoUser", "No such user")]
                 });
             }
 
-            GetPinPreviewResDTO? data = pin.Kind switch
-            {
-                PinKind.Catch       => GetPinPreviewResDTO.FromCatchPin((CatchPin)pin),
-                PinKind.Information => GetPinPreviewResDTO.FromInfoPin((InfoPin)pin),
-                PinKind.Warning     => GetPinPreviewResDTO.FromWarnPin((WarnPin)pin),
-                _                   => null
-            };
+            var pinIds = new List<int>();
 
-            return Ok(new ApiResponse<GetPinPreviewResDTO>
+            foreach (var id in dto.Ids)
             {
-                Data = data
-            });
-        }
+                if (id.PinId is not null)
+                {
+                    pinIds.Add(id.PinId.Value);
+                }
+                if (id.AuthorId is not null && id.AuthorId != "")
+                {
+                    pinIds.AddRange(await _db.Pins
+                    .Where(p => p.UserId == id.AuthorId)
+                    .Select(p => p.Id)
+                    .ToListAsync());
+                }
+                // TODO: Implement group logic when are added
+            }
 
-        [Authorize]
-        [HttpPost("GetPinPreviews")]
-        public async Task<IActionResult> GetPinPreviews([FromBody] List<int> ids)
-        {
             var pins = await _db.Pins
-            .Where(p => ids.Contains(p.Id))
-            .Include(p => p.AppUser)
-            .Include(p => p.Post)
+            .Where((p) => pinIds.Contains(p.Id))
+            .Include((p) => p.AppUser)
+            .Include((p) => p.Post)
             .ToListAsync();
 
             var data = pins
-            .Select(pin => pin.Kind switch
-            {
-                PinKind.Catch       => GetPinPreviewResDTO.FromCatchPin((CatchPin)pin),
-                PinKind.Information => GetPinPreviewResDTO.FromInfoPin((InfoPin)pin),
-                PinKind.Warning     => GetPinPreviewResDTO.FromWarnPin((WarnPin)pin),
-                _                   => null
-            })
-            .Where(dto => dto != null);
+            .Select(p => PinDTO.FromPin(p, dto.DataRequest))
+            .ToList();
 
-            return Ok(new ApiResponse<GetPinPreviewsResDTO>
+            return Ok(new ApiResponse<GetPinsResDTO>
             {
-                Data = new(data!)
+                Data = new(data)
             });
         }
-
-        */
 
         #region CreatePins
 

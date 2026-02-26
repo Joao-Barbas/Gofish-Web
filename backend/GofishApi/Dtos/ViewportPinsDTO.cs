@@ -16,5 +16,6 @@ public record ViewportPinDTO(
     double Latitude,
     double Longitude,
     DateTime CreatedAt,
+    VisibilityLevel VisibilityLevel,
     PinKind Kind
 );

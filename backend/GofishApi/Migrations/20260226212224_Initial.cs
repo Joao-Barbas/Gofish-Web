@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GofishApi.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -160,6 +160,33 @@ namespace GofishApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Friendships",
+                columns: table => new
+                {
+                    RequesterUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReceiverUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    State = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RepliedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Friendships", x => new { x.RequesterUserId, x.ReceiverUserId });
+                    table.ForeignKey(
+                        name: "FK_Friendships_AspNetUsers_ReceiverUserId",
+                        column: x => x.ReceiverUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Friendships_AspNetUsers_RequesterUserId",
+                        column: x => x.RequesterUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Pins",
                 columns: table => new
                 {
@@ -169,15 +196,15 @@ namespace GofishApi.Migrations
                     Longitude = table.Column<double>(type: "float", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Visibility = table.Column<int>(type: "int", nullable: false),
-                    PinType = table.Column<int>(type: "int", nullable: false),
+                    VisibilityLevel = table.Column<int>(type: "int", nullable: false),
+                    Kind = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HookSize = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
-                    SpeciesType = table.Column<int>(type: "int", nullable: true),
-                    BaitType = table.Column<int>(type: "int", nullable: true),
+                    Species = table.Column<int>(type: "int", nullable: true),
+                    Bait = table.Column<int>(type: "int", nullable: true),
                     AccessDifficulty = table.Column<int>(type: "int", nullable: true),
-                    SeaBedType = table.Column<int>(type: "int", nullable: true),
-                    WarningType = table.Column<int>(type: "int", nullable: true)
+                    Seabed = table.Column<int>(type: "int", nullable: true),
+                    WarningKind = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -260,6 +287,11 @@ namespace GofishApi.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Friendships_ReceiverUserId",
+                table: "Friendships",
+                column: "ReceiverUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Pins_ExpiresAt_CreatedAt",
                 table: "Pins",
                 columns: new[] { "ExpiresAt", "CreatedAt" });
@@ -303,6 +335,9 @@ namespace GofishApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Friendships");
 
             migrationBuilder.DropTable(
                 name: "Posts");

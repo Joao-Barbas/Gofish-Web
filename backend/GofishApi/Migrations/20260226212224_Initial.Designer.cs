@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GofishApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260225091439_initial")]
-    partial class initial
+    [Migration("20260226212224_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,6 +101,30 @@ namespace GofishApi.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("GofishApi.Models.Friendship", b =>
+                {
+                    b.Property<string>("RequesterUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ReceiverUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RepliedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.HasKey("RequesterUserId", "ReceiverUserId");
+
+                    b.HasIndex("ReceiverUserId");
+
+                    b.ToTable("Friendships");
+                });
+
             modelBuilder.Entity("GofishApi.Models.Pin", b =>
                 {
                     b.Property<int>("Id")
@@ -115,20 +139,20 @@ namespace GofishApi.Migrations
                     b.Property<DateTime?>("ExpiresAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Kind")
+                        .HasColumnType("int");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
-                    b.Property<int>("PinType")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Visibility")
+                    b.Property<int>("VisibilityLevel")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -141,7 +165,7 @@ namespace GofishApi.Migrations
 
                     b.ToTable("Pins", (string)null);
 
-                    b.HasDiscriminator<int>("PinType");
+                    b.HasDiscriminator<int>("Kind");
 
                     b.UseTphMappingStrategy();
                 });
@@ -325,14 +349,14 @@ namespace GofishApi.Migrations
                 {
                     b.HasBaseType("GofishApi.Models.Pin");
 
-                    b.Property<int?>("BaitType")
+                    b.Property<int?>("Bait")
                         .HasColumnType("int");
 
                     b.Property<string>("HookSize")
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
-                    b.Property<int?>("SpeciesType")
+                    b.Property<int?>("Species")
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue(0);
@@ -345,7 +369,7 @@ namespace GofishApi.Migrations
                     b.Property<int>("AccessDifficulty")
                         .HasColumnType("int");
 
-                    b.Property<int>("SeaBedType")
+                    b.Property<int>("Seabed")
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue(1);
@@ -355,10 +379,29 @@ namespace GofishApi.Migrations
                 {
                     b.HasBaseType("GofishApi.Models.Pin");
 
-                    b.Property<int>("WarningType")
+                    b.Property<int>("WarningKind")
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue(2);
+                });
+
+            modelBuilder.Entity("GofishApi.Models.Friendship", b =>
+                {
+                    b.HasOne("GofishApi.Models.AppUser", "Receiver")
+                        .WithMany("Friendships")
+                        .HasForeignKey("ReceiverUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GofishApi.Models.AppUser", "Requester")
+                        .WithMany()
+                        .HasForeignKey("RequesterUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Requester");
                 });
 
             modelBuilder.Entity("GofishApi.Models.Pin", b =>
@@ -440,6 +483,11 @@ namespace GofishApi.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GofishApi.Models.AppUser", b =>
+                {
+                    b.Navigation("Friendships");
                 });
 
             modelBuilder.Entity("GofishApi.Models.Pin", b =>

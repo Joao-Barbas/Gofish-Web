@@ -18,4 +18,9 @@ public class AppUser : IdentityUser
     [PersonalData]
     [DefaultValue(TwoFactorMethod.None)]
     public TwoFactorMethod TwoFactorMethod { get; set; } = TwoFactorMethod.None;
+
+    // Navigation Properties
+
+    public List<Friendship> RequestedFriendships { get; set; } = [];
+    public List<Friendship> ReceivedFriendships { get; set; } = [];
 }
