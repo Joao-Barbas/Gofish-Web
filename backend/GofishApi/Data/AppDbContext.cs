@@ -1,4 +1,5 @@
-﻿using GofishApi.Models;
+﻿using GofishApi.Enums;
+using GofishApi.Models;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -19,10 +20,10 @@ namespace GofishApi.Data
 
             builder.Entity<Pin>()
                 .ToTable("Pins")
-                .HasDiscriminator<PinType>("PinType")
-                .HasValue<CatchPin>(PinType.Catch)
-                .HasValue<InfoPin>(PinType.Info)
-                .HasValue<WarnPin>(PinType.Warning);
+                .HasDiscriminator<PinKind>("Kind")
+                .HasValue<CatchPin>(PinKind.Catch)
+                .HasValue<InfoPin>(PinKind.Information)
+                .HasValue<WarnPin>(PinKind.Warning);
 
             builder.Entity<Pin>()
                 .HasIndex(p => new { p.Latitude, p.Longitude }); // TODO: Spacial index?

@@ -1,4 +1,6 @@
-﻿namespace GofishApi.Models;
+﻿using GofishApi.Enums;
+
+namespace GofishApi.Models;
 
 public class WarnPin : Pin
 {
@@ -9,7 +11,7 @@ public class WarnPin : Pin
     #endregion
     #region Scalar Properties
 
-    public required WarningType WarningType { get; set; }
+    public required WarningKind WarningKind { get; set; }
 
     #endregion
 }

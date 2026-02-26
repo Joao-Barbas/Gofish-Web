@@ -30,7 +30,7 @@ namespace GofishApi.Controllers
         }
 
         [HttpDelete("DeleteAccount")]
-        public async Task<IActionResult> DeleteAccount([FromBody] DeleteAccountReqDTO request)
+        public async Task<IActionResult> DeleteAccount([FromBody] DeleteAccountReqDTO dto)
         {
             var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             var user   = userId == null ? null : await _userManager.FindByIdAsync(userId);
@@ -44,7 +44,7 @@ namespace GofishApi.Controllers
             }
 
             // TODO: Also 2FA if enabled
-            var passwordValid = await _userManager.CheckPasswordAsync(user, request.Password);
+            var passwordValid = await _userManager.CheckPasswordAsync(user, dto.Password);
             if (!passwordValid)
             {
                 return BadRequest(new ApiErrorResponse
@@ -69,9 +69,9 @@ namespace GofishApi.Controllers
         }
 
         [HttpDelete("DeletePersonalData")]
-        public async Task<IActionResult> DeletePersonalData([FromBody] DeleteAccountReqDTO request)
+        public async Task<IActionResult> DeletePersonalData([FromBody] DeleteAccountReqDTO dto)
         {
-            return await DeleteAccount(request);
+            return await DeleteAccount(dto);
         }
 
         [HttpGet("DownloadPersonalData")]

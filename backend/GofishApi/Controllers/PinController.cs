@@ -15,6 +15,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using GofishApi.Enums;
 
 namespace GofishApi.Controllers
 {
@@ -53,15 +54,16 @@ namespace GofishApi.Controllers
                 p.Latitude,
                 p.Longitude,
                 p.CreatedAt,
-                p.PinType
+                p.Kind
             ))
             .ToListAsync();
-            return Ok(new ApiResponse<GetViewportPinsResDTO>
+            return Ok(new ApiResponse<ViewportPinsResDTO>
             {
                 Data = new (pins)
             });
         }
 
+        /*
 
         [Authorize]
         [HttpGet("GetPinPreview/{id}")]
@@ -82,12 +84,12 @@ namespace GofishApi.Controllers
                 });
             }
 
-            GetPinPreviewResDTO? data = pin.PinType switch
+            GetPinPreviewResDTO? data = pin.Kind switch
             {
-                PinType.Catch   => GetPinPreviewResDTO.FromCatchPin((CatchPin)pin),
-                PinType.Info    => GetPinPreviewResDTO.FromInfoPin((InfoPin)pin),
-                PinType.Warning => GetPinPreviewResDTO.FromWarnPin((WarnPin)pin),
-                _               => null
+                PinKind.Catch       => GetPinPreviewResDTO.FromCatchPin((CatchPin)pin),
+                PinKind.Information => GetPinPreviewResDTO.FromInfoPin((InfoPin)pin),
+                PinKind.Warning     => GetPinPreviewResDTO.FromWarnPin((WarnPin)pin),
+                _                   => null
             };
 
             return Ok(new ApiResponse<GetPinPreviewResDTO>
@@ -107,12 +109,12 @@ namespace GofishApi.Controllers
             .ToListAsync();
 
             var data = pins
-            .Select(pin => pin.PinType switch
+            .Select(pin => pin.Kind switch
             {
-                PinType.Catch   => GetPinPreviewResDTO.FromCatchPin((CatchPin)pin),
-                PinType.Info    => GetPinPreviewResDTO.FromInfoPin((InfoPin)pin),
-                PinType.Warning => GetPinPreviewResDTO.FromWarnPin((WarnPin)pin),
-                _               => null
+                PinKind.Catch       => GetPinPreviewResDTO.FromCatchPin((CatchPin)pin),
+                PinKind.Information => GetPinPreviewResDTO.FromInfoPin((InfoPin)pin),
+                PinKind.Warning     => GetPinPreviewResDTO.FromWarnPin((WarnPin)pin),
+                _                   => null
             })
             .Where(dto => dto != null);
 
@@ -121,6 +123,8 @@ namespace GofishApi.Controllers
                 Data = new(data!)
             });
         }
+
+        */
 
         #region CreatePins
 
@@ -171,12 +175,12 @@ namespace GofishApi.Controllers
                 Longitude = dto.Longitude,
                 CreatedAt = DateTime.UtcNow,
                 ExpiresAt = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
-                Visibility = dto.Visibility,
-                PinType = PinType.Catch,
+                VisibilityLevel = dto.VisibilityLevel,
+                Kind = PinKind.Catch,
                 UserId = userId,
 
-                SpeciesType = dto.SpeciesType,
-                BaitType = dto.BaitType,
+                Species  = dto.Species,
+                Bait = dto.Bait,
                 HookSize = dto.HookSize,
 
                 Post = new Post
@@ -227,12 +231,12 @@ namespace GofishApi.Controllers
                 Latitude = dto.Latitude,
                 Longitude = dto.Longitude,
                 CreatedAt = DateTime.UtcNow,
-                Visibility = dto.Visibility,
-                PinType = PinType.Info,
+                VisibilityLevel = dto.VisibilityLevel,
+                Kind = PinKind.Information,
                 UserId = userId,
 
                 AccessDifficulty = dto.AccessDifficulty,
-                SeaBedType = dto.SeaBedType,
+                Seabed = dto.Seabed,
 
                 Post = new Post
                 {
@@ -280,11 +284,11 @@ namespace GofishApi.Controllers
                 Longitude = dto.Longitude,
                 CreatedAt = DateTime.UtcNow,
                 ExpiresAt = DateTime.UtcNow.AddDays(WarnPin.ExpiresInDays),
-                Visibility = dto.Visibility,
-                PinType = PinType.Warning,
+                VisibilityLevel = dto.VisibilityLevel,
+                Kind = PinKind.Warning,
                 UserId = userId,
 
-                WarningType = dto.WarningType,
+                WarningKind = dto.WarningKind,
 
                 Post = new Post
                 {
@@ -341,37 +345,5 @@ namespace GofishApi.Controllers
             }
             return Ok(new ApiResponse<object>());
         }
-
-        #region EnumeratorEndpoints
-
-        [AllowAnonymous]
-        [HttpGet("EnumeratePinType")]
-        public IActionResult EnumeratePinType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<PinType>() }); }
-
-        [AllowAnonymous]
-        [HttpGet("EnumerateBaitType")]
-        public IActionResult EnumerateBaitType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<BaitType>() }); }
-
-        [AllowAnonymous]
-        [HttpGet("EnumerateSeaBedType")]
-        public IActionResult EnumerateSeaBedType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<SeaBedType>() }); }
-
-        [AllowAnonymous]
-        [HttpGet("EnumerateWarningType")]
-        public IActionResult EnumerateWarningType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<WarningType>() }); }
-
-        [AllowAnonymous]
-        [HttpGet("EnumerateSpeciesType")]
-        public IActionResult EnumerateSpeciesType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<SpeciesType>() }); }
-
-        [AllowAnonymous]
-        [HttpGet("EnumerateVisibilityType")]
-        public IActionResult EnumerateVisibilityType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<VisibilityType>() }); }
-
-        [AllowAnonymous]
-        [HttpGet("EnumerateAccessDifficultyType")]
-        public IActionResult EnumerateAccessDifficultyType() { return Ok(new ApiResponse<GetEnumeratorResDTO> { Data = GetEnumeratorResDTO.FromEnum<AccessDifficultyType>() }); }
-
-        #endregion
     }
 }

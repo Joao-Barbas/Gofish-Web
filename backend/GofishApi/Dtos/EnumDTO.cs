@@ -2,7 +2,7 @@
 
 public record EnumDTO(
     string Label,
-    int Value
+    int    Value
 ){
     public static IEnumerable<EnumDTO> FromEnum<TEnum>() where TEnum : struct, Enum
     {

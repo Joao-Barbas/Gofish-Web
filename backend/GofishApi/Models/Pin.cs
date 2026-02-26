@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GofishApi.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GofishApi.Models;
@@ -18,8 +19,8 @@ public abstract class Pin
 
     public required DateTime CreatedAt { get; set; }
     public DateTime? ExpiresAt { get; set; } // Info pin does not expire
-    public required VisibilityType Visibility { get; set; }
-    public required PinType PinType { get; set; }
+    public required VisibilityLevel VisibilityLevel { get; set; }
+    public required PinKind Kind { get; set; }
 
     [ForeignKey(nameof(AppUser))]
     public required string UserId { get; set; }

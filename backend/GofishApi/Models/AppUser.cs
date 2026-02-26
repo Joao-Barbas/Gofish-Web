@@ -15,6 +15,7 @@ public class AppUser : IdentityUser
     [StringLength(256)]
     public string? LastName { get; set; }
 
+    [PersonalData]
     [DefaultValue(TwoFactorMethod.None)]
     public TwoFactorMethod TwoFactorMethod { get; set; } = TwoFactorMethod.None;
 }
