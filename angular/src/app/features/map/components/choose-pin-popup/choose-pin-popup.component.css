@@ -45,3 +45,36 @@
     }
   }
 }
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-info-box {
+  border-radius: 8px;
+  padding: 4px 10px;
+}
+
+.location-toggle-btn {
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: var(--dark-text-muted);
+  transition: all 0.2s ease;
+  min-width: 140px;
+}
+
+.location-toggle-btn:hover {
+  color: var(--dark-text);
+}
+
+.location-toggle-btn.active {
+  background-color: var(--dark-bg-dark);
+  color: var(--dark-text);
+  border: 1px solid var(--primary);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.05) inset;
+}

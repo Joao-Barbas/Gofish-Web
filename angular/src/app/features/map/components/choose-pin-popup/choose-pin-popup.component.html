@@ -6,22 +6,20 @@
     <!-- Botões de escolha de localização -->
     <div class="d-flex flex-row gf-gap-16 pin-types-showcase justify-content-center">
       <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="onCreateByGeolocation()">
-        <button class="pin-img-btn gps-btn"></button>
-        <label class="pin-name">Current Location</label>
+        <button class = "modal-info-box location-toggle-btn" [class.active]="selectedLocationMode === 'geo'">Current Location</button>
       </div>
       <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="chooseOnMap()">
-        <button class="pin-img-btn map-btn"></button>
-        <label class="pin-name">On Map</label>
+        <button class = "modal-info-box location-toggle-btn" [class.active]="selectedLocationMode === 'map'">On Map</button>
       </div>
     </div>
 
     <!-- Coordenadas selecionadas -->
     @if (selectedCoords) {
-      <div class="text-center mt-2 animate-fade-in">
-        <small class="text-success d-block fw-bold">Success</small>
-        <span class="small opacity-75 text-white">
-          {{ selectedCoords.latitude | number:'1.4-4' }}, {{ selectedCoords.longitude | number:'1.4-4' }}
-        </span>
+      <div class="text-center mt-2 animate-fade-in d-flex align-items-center gap-1">
+        <div class="d-flex align-items-center gap-1">
+            <p class="mb-0 dark-bg-dark modal-info-box">{{ selectedCoords.latitude | number:'1.4-4' }}</p>
+            <p class="mb-0 dark-bg-dark modal-info-box">{{ selectedCoords.longitude | number:'1.4-4' }}</p>
+          </div>
       </div>
     }
 
@@ -32,6 +30,7 @@
 
   </div>
 
+  <hr>
   <!-- Seção de tipos de pin -->
   <div class="d-flex flex-row gf-gap-8 pin-types-showcase justify-content-center">
     <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="createWarnPin()">

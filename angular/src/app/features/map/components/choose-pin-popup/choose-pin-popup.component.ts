@@ -27,12 +27,13 @@ export class ChoosePinPopupComponent implements SimplePopup {
 
   public readonly geoService = inject(GeolocationService);
   public isUseGeolocation: boolean = false;
-
+  selectedLocationMode = 'map';
 
   public errorMessage = '';
 
   onCreateByGeolocation() {
-    if (!navigator.geolocation) {
+      this.selectedLocationMode = 'geo';
+      if (!navigator.geolocation) {
       this.errorMessage = 'Geolocation not supported.';
       return;
     }
@@ -54,6 +55,7 @@ export class ChoosePinPopupComponent implements SimplePopup {
   }
 
   public chooseOnMap() {
+    this.selectedLocationMode = 'map';
     this.requestPickOnMap.emit();
     //this.close();
   }
