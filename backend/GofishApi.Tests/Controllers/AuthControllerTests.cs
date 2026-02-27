@@ -72,13 +72,40 @@ namespace GofishApi.Tests.Controllers
         // -- SIGNIN --
 
         [Fact]
-        public async Task SignIn_UserDoesntExist_Returns400() { }
+        public async Task SignIn_UserDoesntExist_Returns400() 
+        {
+            var body = new
+            {
+                EmailOrUserName = "noexist@email.com",
+                Password = "Password@123"
+            };
+            var response = await _client.PostAsJsonAsync("/api/auth/signin", body);
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
 
         [Fact]
-        public async Task SignIn_BadPassword_Returns400() { }
+        public async Task SignIn_BadPassword_Returns400() 
+        {
+            var body = new
+            {
+                EmailOrUserName = "fixture@test.com",
+                Password = "Password@123"
+            };
+            var response = await _client.PostAsJsonAsync("/api/auth/signin", body);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
 
         [Fact]
-        public async Task SignIn_ValidCredentials_Returns200WithToken() { }
+        public async Task SignIn_ValidCredentials_Returns200WithToken() 
+        {
+            var body = new
+            {
+                EmailOrUserName = "fixture@test.com",
+                Password = "Password123!"
+            };
+            var response = await _client.PostAsJsonAsync("/api/auth/signin", body);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
         
     }
 }

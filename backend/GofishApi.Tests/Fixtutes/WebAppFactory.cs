@@ -14,29 +14,31 @@ using System.Threading.Tasks;
 
 namespace GofishApi.Tests.Fixtutes;
 
-// Fixtures/WebAppFactory.cs
-public class WebAppFactory : WebApplicationFactory<Program>
+public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
+    private readonly string _dbName = Guid.NewGuid().ToString();
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.UseEnvironment("Testing");
+
         builder.ConfigureServices(services =>
         {
-            // 1. Remover o SQL Server real
             var descriptor = services.SingleOrDefault(
                 d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
-
             if (descriptor != null)
                 services.Remove(descriptor);
 
-            // 2. Adicionar base de dados falsa em memória
             services.AddDbContext<AppDbContext>(options =>
-                options.UseInMemoryDatabase("TestDb"));
+                options.UseInMemoryDatabase(_dbName));
         });
     }
-    protected override void ConfigureClient(HttpClient client)
+
+    public async Task InitializeAsync()
     {
         using var scope = Services.CreateScope();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+
         var existingUser = new AppUser
         {
             Email = "fixture@test.com",
@@ -46,7 +48,8 @@ public class WebAppFactory : WebApplicationFactory<Program>
             EmailConfirmed = true
         };
 
-        if (userManager.FindByEmailAsync(existingUser.Email).Result is null)
-            userManager.CreateAsync(existingUser, "Password123!").Wait();
+        await userManager.CreateAsync(existingUser, "Password123!");
     }
+
+    public Task DisposeAsync() => Task.CompletedTask;
 }
