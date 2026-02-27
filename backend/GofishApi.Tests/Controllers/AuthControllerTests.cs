@@ -1,0 +1,60 @@
+﻿using GofishApi.Tests.Fixtutes;
+using FluentAssertions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GofishApi.Tests.Controllers
+{
+    public class AuthControllerTests : IClassFixture<WebAppFactory>
+    {
+        //False User that makes requests for the api
+        private readonly HttpClient _client;
+
+        public AuthControllerTests(WebAppFactory factory)
+        {
+            _client = factory.CreateClient();
+        }
+
+        // -- SIGNUP --
+
+        [Fact]
+        public async Task SignUp_ValidCredentials_Returns200() 
+        {
+            var body = new
+            {
+                Email = "test@test.com",
+                UserName = "testuser",
+                FirstName = "Test",
+                LastName = "User",
+                Password = "Password123!"
+            };
+            var response = await _client.PostAsJsonAsync("/api/auth/signup", body);
+            object value = response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        }
+
+        /*
+        [Fact]
+        public async Task SignUp_EmailAlreadyExists_Returns400() { }
+
+        [Fact]
+        public async Task SignUp_WeakPassword_Returns400() { }
+
+        // -- SIGNIN --
+
+        [Fact]
+        public async Task SignIn_UserDoesntExist_Returns400() { }
+
+        [Fact]
+        public async Task SignIn_BadPassword_Returns400() { }
+
+        [Fact]
+        public async Task SignIn_ValidCredentials_Returns200WithToken() { }
+        */
+    }
+}
