@@ -37,7 +37,7 @@
     background-color: rgb(80, 80, 80);
     border-radius: 8px;
 
-    border: 2px solid transparent; /* Always there, invisible */
+    border: 2px solid transparent;
     box-sizing: border-box;
 
     &:hover {

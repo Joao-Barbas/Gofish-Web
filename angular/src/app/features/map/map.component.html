@@ -91,14 +91,14 @@
       </div>
       <!-- Zoom -->
       <div class="d-flex flex-column actions-bundle-container">
-        <button class="map-action">
+        <button class="map-action" (click)="zoomIn()">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14" />
             <path d="M12 5v14" />
           </svg>
         </button>
-        <button class="map-action">
+        <button class="map-action" (click)="zoomOut()">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14" />
@@ -120,7 +120,6 @@
       @case () {}
       @case () {}
       } -->
-
       @if (activePinModal !== null) {
       @switch (activePinModal) {
       @case (0) { <app-catch-pin-modal [coords]="selected" (cancelled)="onModalCancelled()"

@@ -20,6 +20,7 @@ import { CatchPinModalComponent } from '@gofish/features/map/components/modals/c
 import { PinHoverPreviewService } from '@gofish/features/map/services/pin-hover-preview.service';
 import { InfoPinModalComponent } from '@gofish/features/map/components/modals/info-pin-modal/info-pin-modal.component';
 import { WarnPinModalComponent } from '@gofish/features/map/components/modals/warn-pin-modal/warn-pin-modal.component';
+import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 
 
 
@@ -53,8 +54,9 @@ const PIN_CONFIG = [
     RouterOutlet,
     CatchPinModalComponent,
     InfoPinModalComponent,
-    WarnPinModalComponent
-  ],
+    WarnPinModalComponent,
+    ClickOutsideDirective
+],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
 })
@@ -89,7 +91,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   public get getGeolocationState() { return this.geoService.state(); }
   public get isGeolocationDenied() { return this.geoService.isBad(); }
-
 
   // =========================
   // Lifecycle
@@ -158,6 +159,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.activePinModal = null;
     this.clearPreviewAndSelection();
     this.loadPinsInViewport();
+  }
+
+  zoomIn(): void {
+    this.map.zoomIn({ duration: 300 });
+  }
+
+  zoomOut(): void {
+    this.map.zoomOut({ duration: 300 });
   }
 
   onMapClick(e: mapboxgl.MapMouseEvent): void {
