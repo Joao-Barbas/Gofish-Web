@@ -177,7 +177,7 @@ namespace GofishApi.Migrations
                         column: x => x.ReceiverUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Friendships_AspNetUsers_RequesterUserId",
                         column: x => x.RequesterUserId,
@@ -221,15 +221,13 @@ namespace GofishApi.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Body = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     ImageUrl = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpVotes = table.Column<int>(type: "int", nullable: false),
                     DownVotes = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PinId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -240,8 +238,8 @@ namespace GofishApi.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Posts_Pins_PinId",
-                        column: x => x.PinId,
+                        name: "FK_Posts_Pins_Id",
+                        column: x => x.Id,
                         principalTable: "Pins",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -305,12 +303,6 @@ namespace GofishApi.Migrations
                 name: "IX_Pins_UserId",
                 table: "Pins",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Posts_PinId",
-                table: "Posts",
-                column: "PinId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_UserId",

@@ -61,16 +61,11 @@ namespace GofishApi.Data
             builder.Entity<Pin>()
                 .HasOne(p => p.Post)
                 .WithOne(p => p.Pin)
-                .HasForeignKey<Post>(p => p.PinId)
-                .IsRequired()
+                .HasForeignKey<Post>(p => p.Id)
                 .OnDelete(DeleteBehavior.Cascade);
 
             #endregion // Pin
             #region Post
-
-            builder.Entity<Post>()
-                .HasIndex(f => f.PinId)
-                .IsUnique();
 
             builder.Entity<Post>()
                 .HasOne(p => p.AppUser)

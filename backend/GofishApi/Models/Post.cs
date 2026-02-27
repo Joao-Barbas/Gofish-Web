@@ -8,6 +8,7 @@ public class Post
     #region Scalar Properties
 
     [Key]
+    [ForeignKey(nameof(Pin))]
     public int Id { get; set; }
 
     [MaxLength(2000)]
@@ -23,9 +24,6 @@ public class Post
 
     [ForeignKey(nameof(AppUser))]
     public required string UserId { get; set; }
-
-    [ForeignKey(nameof(Pin))]
-    public int PinId { get; set; }
 
     #endregion
     #region Navigation Properties

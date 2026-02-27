@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GofishApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260226212224_Initial")]
+    [Migration("20260227031936_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -173,10 +173,7 @@ namespace GofishApi.Migrations
             modelBuilder.Entity("GofishApi.Models.Post", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Body")
                         .HasMaxLength(2000)
@@ -192,9 +189,6 @@ namespace GofishApi.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
-                    b.Property<int>("PinId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UpVotes")
                         .HasColumnType("int");
 
@@ -203,9 +197,6 @@ namespace GofishApi.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PinId")
-                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -388,13 +379,13 @@ namespace GofishApi.Migrations
             modelBuilder.Entity("GofishApi.Models.Friendship", b =>
                 {
                     b.HasOne("GofishApi.Models.AppUser", "Receiver")
-                        .WithMany("Friendships")
+                        .WithMany("ReceivedFriendships")
                         .HasForeignKey("ReceiverUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("GofishApi.Models.AppUser", "Requester")
-                        .WithMany()
+                        .WithMany("RequestedFriendships")
                         .HasForeignKey("RequesterUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -419,7 +410,7 @@ namespace GofishApi.Migrations
                 {
                     b.HasOne("GofishApi.Models.Pin", "Pin")
                         .WithOne("Post")
-                        .HasForeignKey("GofishApi.Models.Post", "PinId")
+                        .HasForeignKey("GofishApi.Models.Post", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -487,7 +478,9 @@ namespace GofishApi.Migrations
 
             modelBuilder.Entity("GofishApi.Models.AppUser", b =>
                 {
-                    b.Navigation("Friendships");
+                    b.Navigation("ReceivedFriendships");
+
+                    b.Navigation("RequestedFriendships");
                 });
 
             modelBuilder.Entity("GofishApi.Models.Pin", b =>
