@@ -37,7 +37,7 @@ public record PinDataRequestDTO(
 public record PinDTO(
     int Id,
     DateTime CreatedAt,
-    VisibilityLevel VisibilityLevel,
+    VisibilityLevel Visibility,
     PinKind Kind,
     // Optional includes
     PinDetailsDTO? Details,
@@ -49,7 +49,7 @@ public record PinDTO(
     public static PinDTO FromPin(Pin pin, PinDataRequestDTO? request) => new(
         pin.Id,
         pin.CreatedAt,
-        pin.VisibilityLevel,
+        pin.Visibility,
         pin.Kind,
         request?.IncludeDetails ?? false ? PinDetailsDTO.FromPin(pin) : null,
         request?.IncludeGeolocation ?? false ? GeolocationDTO.FromPin(pin) : null,

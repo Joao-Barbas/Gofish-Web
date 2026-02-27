@@ -19,7 +19,7 @@ public abstract class Pin
 
     public required DateTime CreatedAt { get; set; }
     public DateTime? ExpiresAt { get; set; } // Info pin does not expire
-    public required VisibilityLevel VisibilityLevel { get; set; }
+    public required VisibilityLevel Visibility { get; set; }
     public required PinKind Kind { get; set; }
 
     [ForeignKey(nameof(AppUser))]

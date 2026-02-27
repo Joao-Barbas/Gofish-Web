@@ -149,7 +149,7 @@ namespace GofishApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("VisibilityLevel")
+                    b.Property<int>("Visibility")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

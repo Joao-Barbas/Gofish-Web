@@ -6,7 +6,7 @@ public record CreateWarnPinReqDTO(
     double Latitude,
     double Longitude,
     string? Body,
-    VisibilityLevel VisibilityLevel,
+    VisibilityLevel Visibility,
     WarningKind WarningKind
 );
 

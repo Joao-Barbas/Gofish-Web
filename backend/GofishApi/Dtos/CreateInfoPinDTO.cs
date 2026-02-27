@@ -6,7 +6,7 @@ public record CreateInfoPinReqDTO(
     double Latitude,
     double Longitude,
     string? Body,
-    VisibilityLevel VisibilityLevel,
+    VisibilityLevel Visibility,
     AccessDifficulty AccessDifficulty,
     Seabed Seabed
 );

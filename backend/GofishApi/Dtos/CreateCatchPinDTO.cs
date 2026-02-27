@@ -7,7 +7,7 @@ public record CreateCatchPinReqDTO(
     double Longitude,
     string? Body,
     IFormFile Image,
-    VisibilityLevel VisibilityLevel,
+    VisibilityLevel Visibility,
     Species? Species,
     Bait? Bait,
     string? HookSize

@@ -196,7 +196,7 @@ namespace GofishApi.Migrations
                     Longitude = table.Column<double>(type: "float", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    VisibilityLevel = table.Column<int>(type: "int", nullable: false),
+                    Visibility = table.Column<int>(type: "int", nullable: false),
                     Kind = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HookSize = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GofishApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260227031936_Initial")]
+    [Migration("20260227032740_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -152,7 +152,7 @@ namespace GofishApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("VisibilityLevel")
+                    b.Property<int>("Visibility")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

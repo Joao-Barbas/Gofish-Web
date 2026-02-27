@@ -51,7 +51,7 @@ namespace GofishApi.Controllers
                 p.Latitude,
                 p.Longitude,
                 p.CreatedAt,
-                p.VisibilityLevel,
+                p.Visibility,
                 p.Kind
             ))
             .ToListAsync();
@@ -161,7 +161,7 @@ namespace GofishApi.Controllers
                 Longitude = dto.Longitude,
                 CreatedAt = DateTime.UtcNow,
                 ExpiresAt = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
-                VisibilityLevel = dto.VisibilityLevel,
+                Visibility = dto.Visibility,
                 Kind = PinKind.Catch,
                 UserId = userId,
 
@@ -217,7 +217,7 @@ namespace GofishApi.Controllers
                 Latitude = dto.Latitude,
                 Longitude = dto.Longitude,
                 CreatedAt = DateTime.UtcNow,
-                VisibilityLevel = dto.VisibilityLevel,
+                Visibility = dto.Visibility,
                 Kind = PinKind.Information,
                 UserId = userId,
 
@@ -270,7 +270,7 @@ namespace GofishApi.Controllers
                 Longitude = dto.Longitude,
                 CreatedAt = DateTime.UtcNow,
                 ExpiresAt = DateTime.UtcNow.AddDays(WarnPin.ExpiresInDays),
-                VisibilityLevel = dto.VisibilityLevel,
+                Visibility = dto.Visibility,
                 Kind = PinKind.Warning,
                 UserId = userId,
 
