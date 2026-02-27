@@ -42,7 +42,7 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program { } // ← adiciona aqui
+public partial class Program { } 
 
 
 /*
