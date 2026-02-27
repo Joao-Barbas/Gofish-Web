@@ -43,7 +43,7 @@
                 [checked]="selectedVisibility === option.value" (change)="selectedVisibility = option.value"
                 class="d-none"> <label [for]="'vis-' + option.value" class="modal-visibility-btn"
                 [class.active]="selectedVisibility === option.value">
-                {{ option.name }}
+                {{ option.label }}
               </label>
             </div>
             }
@@ -56,7 +56,7 @@
           <div class="d-flex align-items-center">
             <select class="form-select form-select-sm custom-dropdown" [(ngModel)]="selectedAccessDifficulty">
               @for (option of accessDifficultyOptions; track option.value) {
-              <option [value]="option.value">{{ option.name }}</option>
+              <option [value]="option.value">{{ option.label }}</option>
               }
             </select>
           </div>
@@ -67,7 +67,7 @@
           <div class="d-flex align-items-center">
             <select class="form-select form-select-sm custom-dropdown" [(ngModel)]="selectedSeaBed">
               @for (option of seaBedOptions; track option.value) {
-              <option [value]="option.value">{{ option.name }}</option>
+              <option [value]="option.value">{{ option.label }}</option>
               }
             </select>
           </div>

@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PinService } from '@gofish/features/map/services/pin.service';
-import { EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
+import { EnumDTO, EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateInfoPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 
@@ -20,9 +20,9 @@ export class InfoPinModalComponent implements OnInit {
 
   body: string = '';
 
-  visibilityOptions: EnumeratorDTO[] = [];
-  accessDifficultyOptions: EnumeratorDTO[] = [];
-  seaBedOptions: EnumeratorDTO[] = [];
+  visibilityOptions: EnumDTO[] = [];
+  accessDifficultyOptions: EnumDTO[] = [];
+  seaBedOptions: EnumDTO[] = [];
 
   selectedVisibility: number = 0;
   selectedAccessDifficulty: number = 0;
@@ -35,30 +35,27 @@ export class InfoPinModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.pinService.enumerateSeaBedType().subscribe({
-      next: (res: GetEnumeratorResDTO) => {
-        this.seaBedOptions = res.data!.enumerator;
+      next: (res: EnumDTO[]) => {
+        this.seaBedOptions = res;
       },
       error: (err: HttpErrorResponse) => {
-        var res = err.error as GetEnumeratorResDTO;
-        console.error(res);
+        console.error(err);
       }
     });
     this.pinService.enumerateAccessDifficultyType().subscribe({
-      next: (res: GetEnumeratorResDTO) => {
-        this.accessDifficultyOptions = res.data!.enumerator;
+      next: (res: EnumDTO[]) => {
+        this.accessDifficultyOptions = res;
       },
       error: (err: HttpErrorResponse) => {
-        var res = err.error as GetEnumeratorResDTO;
-        console.error(res);
+        console.error(err);
       }
     });
     this.pinService.enumerateVisibilityType().subscribe({
-      next: (res: GetEnumeratorResDTO) => {
-        this.visibilityOptions = res.data!.enumerator;
+      next: (res: EnumDTO[]) => {
+        this.visibilityOptions = res;
       },
       error: (err: HttpErrorResponse) => {
-        var res = err.error as GetEnumeratorResDTO;
-        console.error(res);
+        console.error(err);
       }
     });
   }

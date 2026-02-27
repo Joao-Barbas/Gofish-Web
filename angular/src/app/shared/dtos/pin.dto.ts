@@ -1,4 +1,3 @@
-
 // Create CatchPin
 export interface CreateCatchPinReqDTO {
   latitude: number;
@@ -80,14 +79,7 @@ export type PinPreviewResDTO = {
 
 
 export interface ViewportPinsResDTO {
-  success: boolean;
-  data?: {
-    pins: ViewportPinDTO[];
-  }
-  errors?: {
-    code: string;
-    description: string;
-  }[]
+  pins: ViewportPinDTO[];
 }
 
 export interface ViewportPinDTO {
@@ -95,5 +87,8 @@ export interface ViewportPinDTO {
   latitude: number;
   longitude: number;
   createdAt: string;
-  pinType: number;
+  visibility: number;
+  kind: number;
 }
+
+

@@ -264,7 +264,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private getPinsInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number): void {
     this.pinService.getInViewport(minLat, minLng, maxLat, maxLng).subscribe({
       next: (res: ViewportPinsResDTO) => {
-        this.allPins = res.data?.pins || [];
+        this.allPins = res.pins || [];
         this.setupLayers();
       },
       error: (err: HttpErrorResponse) => {
@@ -278,7 +278,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   // =========================
   private setupLayers(): void {
     PIN_CONFIG.forEach(({ type, color }) => {
-      const pinsOfType = this.allPins.filter(pin => pin.pinType === type);
+      const pinsOfType = this.allPins.filter(pin => pin.kind === type);
       const sourceId = `pins-${type}`;
 
       const geojsonData: GeoJSON.FeatureCollection = {
@@ -291,7 +291,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
           },
           properties: {
             id: pin.id,
-            type: pin.pinType
+            type: pin.kind,
           }
         }))
       };

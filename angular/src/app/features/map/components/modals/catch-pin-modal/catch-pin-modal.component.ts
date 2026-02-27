@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NewPinType } from '@gofish/features/map/map.component';
 import { PinService } from '@gofish/features/map/services/pin.service';
-import { EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
+import { EnumDTO, EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 
 @Component({
@@ -19,9 +19,9 @@ export class CatchPinModalComponent {
 
 
   constructor(private pinService: PinService) { }
-  visibilityOptions: EnumeratorDTO[] = [];
-  speciesOptions: EnumeratorDTO[] = [];
-  baitOptions: EnumeratorDTO[] = [];
+  visibilityOptions: EnumDTO[] = [];
+  speciesOptions: EnumDTO[] = [];
+  baitOptions: EnumDTO[] = [];
 
   selectedVisibility!: number;
   selectedSpecies: number | null = null;
@@ -35,18 +35,18 @@ export class CatchPinModalComponent {
 
   ngOnInit(): void {
     this.pinService.enumerateVisibilityType().subscribe({
-      next: (res) => {
-        this.visibilityOptions = res.data?.enumerator ?? [];
+      next: (res: EnumDTO[]) => {
+        this.visibilityOptions = res;
         this.selectedVisibility = this.visibilityOptions[0]?.value;
       }
     });
 
     this.pinService.enumerateSpeciesType().subscribe({
-      next: (res) => this.speciesOptions = res.data?.enumerator ?? []
+      next: (res: EnumDTO[]) => this.speciesOptions = res
     });
 
     this.pinService.enumerateBaitType().subscribe({
-      next: (res) => this.baitOptions = res.data?.enumerator ?? []
+      next: (res) => this.baitOptions = res
     });
   }
 

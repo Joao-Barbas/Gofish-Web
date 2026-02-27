@@ -50,8 +50,8 @@ export class PinHoverPreviewService {
   }
 
   private buildHtmlCard(pin: ViewportPinDTO): string {
-    const typeClass = `pin-card--${pin.pinType}`;
-    const title = this.getFriendlyTitle(pin.pinType);
+    const typeClass = `pin-card--${pin.kind}`;
+    const title = this.getFriendlyTitle(pin.kind);
     return `
     <div class="pin-card pin-card--expanded ${typeClass}">
       <div class="pin-card__content">
@@ -66,8 +66,8 @@ export class PinHoverPreviewService {
   }
 
   private buildHtmlEnter(pin: ViewportPinDTO): string {
-    const typeClass = `pin-card--${pin.pinType}`;
-    const title = this.getFriendlyTitle(pin.pinType);
+    const typeClass = `pin-card--${pin.kind}`;
+    const title = this.getFriendlyTitle(pin.kind);
 
     return `
       <div class="pin-card ${typeClass}">

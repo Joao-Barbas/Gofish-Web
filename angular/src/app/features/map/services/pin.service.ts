@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, PinPreviewResDTO, CreatePinResDTO } from '@gofish/shared/dtos/pin.dto';
-import { GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
+import { EnumDTO, GetEnumeratorResDTO, GetEnumResDTO } from '@gofish/shared/dtos/enum.dto';
 import { Api } from '@gofish/shared/constants';
 
 @Injectable({
@@ -33,12 +33,21 @@ export class PinService {
     return this.http.get<PinPreviewResDTO>(`${Api.Pin.action('GetPinPreview')}/${pinId}`);
   }
 
-  enumeratePinType = () => this.http.get<GetEnumeratorResDTO>(Api.Pin.action('EnumeratePinType'));
+  /* enumeratePinType = () => this.http.get<GetEnumeratorResDTO>(Api.Pin.action('EnumeratePinType'));
   enumerateBaitType = () => this.http.get<GetEnumeratorResDTO>(Api.Pin.action('EnumerateBaitType'));
   enumerateSeaBedType = () => this.http.get<GetEnumeratorResDTO>(Api.Pin.action('EnumerateSeaBedType'));
   enumerateWarnType = () => this.http.get<GetEnumeratorResDTO>(Api.Pin.action('EnumerateWarningType'));
   enumerateSpeciesType = () => this.http.get<GetEnumeratorResDTO>(Api.Pin.action('EnumerateSpeciesType'));
   enumerateVisibilityType = () => this.http.get<GetEnumeratorResDTO>(Api.Pin.action('EnumerateVisibilityType'));
   enumerateAccessDifficultyType = () => this.http.get<GetEnumeratorResDTO>(Api.Pin.action('EnumerateAccessDifficultyType'));
+ */
+  enumeratePinType = () => this.http.get<EnumDTO[]>(Api.Enums.action('PinKind'));
+  enumerateBaitType = () => this.http.get<EnumDTO[]>(Api.Enums.action('Bait'));
+  enumerateSeaBedType = () => this.http.get<EnumDTO[]>(Api.Enums.action('Seabed'));
+  enumerateWarnType = () => this.http.get<EnumDTO[]>(Api.Enums.action('WarningKind'));
+  enumerateSpeciesType = () => this.http.get<EnumDTO[]>(Api.Enums.action('Species'));
+  enumerateVisibilityType = () => this.http.get<EnumDTO[]>(Api.Enums.action('VisibilityLevel'));
+  enumerateAccessDifficultyType = () => this.http.get<EnumDTO[]>(Api.Enums.action('AccessDifficulty'));
+
 
 }

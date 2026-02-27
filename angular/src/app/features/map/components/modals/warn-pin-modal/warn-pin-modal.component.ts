@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PinService } from '@gofish/features/map/services/pin.service';
-import { EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
+import { EnumDTO, EnumeratorDTO, GetEnumeratorResDTO, GetEnumResDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 
@@ -20,8 +20,8 @@ export class WarnPinModalComponent {
 
   body: string = '';
 
-  warnTypeOptions: EnumeratorDTO[] = [];
-  visibilityOptions: EnumeratorDTO[] = [];
+  warnTypeOptions: EnumDTO[] = [];
+  visibilityOptions: EnumDTO[] = [];
 
   selectedVisibility?: number = 0;
   selectedWarnType?: number = 0;
@@ -33,21 +33,19 @@ export class WarnPinModalComponent {
 
   ngOnInit(): void {
     this.pinService.enumerateWarnType().subscribe({
-      next: (res: GetEnumeratorResDTO) => {
-        this.warnTypeOptions = res.data!.enumerator;
+      next: (res: EnumDTO[]) => {
+        this.warnTypeOptions = res;
       },
       error: (err: HttpErrorResponse) => {
-        var res = err.error as GetEnumeratorResDTO;
-        console.error(res);
+        console.error(err);
       }
     });
     this.pinService.enumerateVisibilityType().subscribe({
-      next: (res: GetEnumeratorResDTO) => {
-        this.visibilityOptions = res.data!.enumerator;
+      next: (res: EnumDTO[]) => {
+        this.visibilityOptions = res;
       },
       error: (err: HttpErrorResponse) => {
-        var res = err.error as GetEnumeratorResDTO;
-        console.error(res);
+        console.error(err);
       }
     });
   }
