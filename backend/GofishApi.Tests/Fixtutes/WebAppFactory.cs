@@ -1,5 +1,7 @@
 ﻿using GofishApi.Data;
+using GofishApi.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,5 +32,21 @@ public class WebAppFactory : WebApplicationFactory<Program>
             services.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase("TestDb"));
         });
+    }
+    protected override void ConfigureClient(HttpClient client)
+    {
+        using var scope = Services.CreateScope();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+        var existingUser = new AppUser
+        {
+            Email = "fixture@test.com",
+            UserName = "existinguser",
+            FirstName = "Existing",
+            LastName = "User",
+            EmailConfirmed = true
+        };
+
+        if (userManager.FindByEmailAsync(existingUser.Email).Result is null)
+            userManager.CreateAsync(existingUser, "Password123!").Wait();
     }
 }

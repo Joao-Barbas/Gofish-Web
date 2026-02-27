@@ -35,15 +35,39 @@ namespace GofishApi.Tests.Controllers
             };
             var response = await _client.PostAsJsonAsync("/api/auth/signup", body);
             object value = response.StatusCode.Should().Be(HttpStatusCode.OK);
-
         }
 
-        /*
+        
         [Fact]
-        public async Task SignUp_EmailAlreadyExists_Returns400() { }
+        public async Task SignUp_EmailAlreadyExists_Returns400()
+        {   
+            var body = new
+              {
+                Email = "fixture@test.com", 
+                UserName = "testuser",
+                FirstName = "Test",
+                LastName = "User",
+                Password = "Password123!"
+              };
+
+           var response = await _client.PostAsJsonAsync("/api/auth/signup", body);
+           response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
 
         [Fact]
-        public async Task SignUp_WeakPassword_Returns400() { }
+        public async Task SignUp_WeakPassword_Returns400() 
+        {
+            var body = new
+            {
+                Email = "jonatas@test.com",
+                UserName = "testuser",
+                FirstName = "Test",
+                LastName = "User",
+                Password = "pass"
+            };
+            var response = await _client.PostAsJsonAsync("/api/auth/signup", body);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
 
         // -- SIGNIN --
 
@@ -55,6 +79,6 @@ namespace GofishApi.Tests.Controllers
 
         [Fact]
         public async Task SignIn_ValidCredentials_Returns200WithToken() { }
-        */
+        
     }
 }
