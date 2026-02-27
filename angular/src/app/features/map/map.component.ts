@@ -9,13 +9,13 @@ import { MarkerRegistryService } from '@gofish/features/map/services/marker-regi
 import { PinDetailService } from '@gofish/features/map/services/pin-detail.service';
 import { PinDetailPanelComponent } from './components/pin-detail-panel/pin-detail-panel.component';
 import { OverlayHeaderComponent } from '@gofish/features/header/overlay-header/overlay-header.component';
-import { ViewportPinDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
+import { ApiResponse, ViewportPinDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { ChoosePinPopupComponent } from '@gofish/features/map/components/choose-pin-popup/choose-pin-popup.component';
 import { GeolocationService } from '@gofish/shared/services/geolocation.service';
-import { PinType } from '@gofish/shared/models/pin.model';
+import { PinKind} from '@gofish/shared/models/pin.model';
 import { CatchPinModalComponent } from '@gofish/features/map/components/modals/catch-pin-modal/catch-pin-modal.component';
 import { PinHoverPreviewService } from '@gofish/features/map/services/pin-hover-preview.service';
 import { InfoPinModalComponent } from '@gofish/features/map/components/modals/info-pin-modal/info-pin-modal.component';
@@ -24,21 +24,21 @@ import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.d
 
 
 
-export type NewPinType = 'catch' | 'info' | 'warn'; // TODO: Refactor. Theres already an enum in .model.ts. Prefer this?
+export type NewPinKind = 'catch' | 'info' | 'warn'; // TODO: Refactor. Theres already an enum in .model.ts. Prefer this?
 
-const PIN_TYPES: PinType[] = [PinType.CATCH, PinType.INFORMATION, PinType.WARNING];
+const PIN_KINDS: PinKind[] = [PinKind.CATCH, PinKind.INFORMATION, PinKind.WARNING];
 
-/* const PIN_CONFIG: Record<PinType, any> = {
-  [PinType.CATCH]: { color: '#EF4444', position: [-18, 14] }, // Catch
-  [PinType.INFORMATION]: { color: '#F59E0B', position: [0, -20] }, // Warn
-  [PinType.WARNING]: { color: '#3B82F6', position: [18, 14] }, // Info
-  [PinType.DEFAULT]: {}
+/* const PIN_CONFIG: Record<PinKind, any> = {
+  [PinKind.CATCH]: { color: '#EF4444', position: [-18, 14] }, // Catch
+  [PinKind.INFORMATION]: { color: '#F59E0B', position: [0, -20] }, // Warn
+  [PinKind.WARNING]: { color: '#3B82F6', position: [18, 14] }, // Info
+  [PinKind.DEFAULT]: {}
 }; */
 
 const PIN_CONFIG = [
-  { type: PinType.CATCH, color: '#f30000' },
-  { type: PinType.INFORMATION, color: '#3b82f6' },
-  { type: PinType.WARNING, color: '#ff6a00' }
+  { kind: PinKind.CATCH, color: '#f30000' },
+  { kind: PinKind.INFORMATION, color: '#3b82f6' },
+  { kind: PinKind.WARNING, color: '#ff6a00' }
 ];
 
 
@@ -82,12 +82,13 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   pickingOnMap = false;
   isCreating: boolean = false;
-  activePinModal: PinType | null = null;
+  activePinModal: PinKind | null = null;
   selected: Coords | null = null;
   private map!: mapboxgl.Map;
+  private allPins: ViewportPinDTO[] = [];
   public isCreatePinOverlayOpen = this.popupService.activePopup() === 'choose-pin-popup';
   public selectedGeolocation: GeolocationCoordinates | null = null; // User manually selected
-  public selectedPinType: PinType | null = null;
+  public selectedPinKind: PinKind | null = null;
 
   public get getGeolocationState() { return this.geoService.state(); }
   public get isGeolocationDenied() { return this.geoService.isBad(); }
@@ -102,7 +103,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map = new mapboxgl.Map({
       container: 'map',
       //style: 'mapbox://styles/mapbox/standard',
-      style: 'mapbox://styles/goncalopro2/cmli4rxhm000q01qzfnbzg3fe',
+      //style: 'mapbox://styles/goncalopro2/cmli4rxhm000q01qzfnbzg3fe',
+      style: 'mapbox://styles/goncalopro2/cmm4ybep5002p01s2eexw84v1',
       center: [-8.8882, 38.5243],
       zoom: 13,
       maxZoom: 16,
@@ -140,8 +142,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.enablePickMode();
   }
 
-  onTypeSelected(pinType: PinType): void {
-    this.activePinModal = pinType;
+  onTypeSelected(pinKind: PinKind): void {
+    this.activePinModal = pinKind;
     this.popupService.toggle('choose-pin-popup');
   }
 
@@ -260,15 +262,16 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.getPinsInViewport(minLat, minLng, maxLat, maxLng);
   }
 
-  private allPins: ViewportPinDTO[] = [];
+
   private getPinsInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number): void {
     this.pinService.getInViewport(minLat, minLng, maxLat, maxLng).subscribe({
-      next: (res: ViewportPinsResDTO) => {
-        this.allPins = res.pins || [];
+      next: (res: ApiResponse<ViewportPinsResDTO>) => {
+        //console.log('Pins in viewport loaded:', res.data?.pins);
+        this.allPins = res.data?.pins || [];
         this.setupLayers();
       },
       error: (err: HttpErrorResponse) => {
-        console.error('Erro ao carregar pins:', err);
+        console.error('Error loading pins in viewport:', err);
       }
     });
   }
@@ -277,13 +280,13 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   // Clusters test
   // =========================
   private setupLayers(): void {
-    PIN_CONFIG.forEach(({ type, color }) => {
-      const pinsOfType = this.allPins.filter(pin => pin.kind === type);
-      const sourceId = `pins-${type}`;
+    PIN_CONFIG.forEach(({ kind, color }) => {
+      const pinsOfKind = this.allPins.filter(pin => pin.kind === kind);
+      const sourceId = `pins-${kind}`;
 
       const geojsonData: GeoJSON.FeatureCollection = {
         type: 'FeatureCollection',
-        features: pinsOfType.map(pin => ({
+        features: pinsOfKind.map(pin => ({
           type: 'Feature',
           geometry: {
             type: 'Point',
@@ -291,7 +294,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
           },
           properties: {
             id: pin.id,
-            type: pin.kind,
+            kind: pin.kind,
           }
         }))
       };
@@ -310,17 +313,17 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         });
 
         console.log(color);
-        this.addClusterLayers(type, color);
+        this.addClusterLayers(kind, color);
       }
     });
   }
 
-  addClusterLayers(type: PinType, color: string) {
+  addClusterLayers(kind: PinKind, color: string) {
     // Cluster circles
     this.map.addLayer({
-      id: `clusters-${type}`,
+      id: `clusters-${kind}`,
       type: 'circle',
-      source: `pins-${type}`,
+      source: `pins-${kind}`,
       filter: ['has', 'point_count'],
       paint: {
         'circle-color': color,
@@ -332,15 +335,16 @@ export class MapComponent implements AfterViewInit, OnDestroy {
           50, 25   // 50+ pins
         ],
         'circle-stroke-width': 2,
-        'circle-stroke-color': '#fff'
+        'circle-stroke-color': '#fff',
+        'circle-emissive-strength': 1,
       }
     });
 
     // Cluster count text
     this.map.addLayer({
-      id: `cluster-count-${type}`,
+      id: `cluster-count-${kind}`,
       type: 'symbol',
-      source: `pins-${type}`,
+      source: `pins-${kind}`,
       filter: ['has', 'point_count'],
       layout: {
         'text-field': ['get', 'point_count_abbreviated'],
@@ -353,25 +357,26 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
     // Individual pins (unclustered)
     this.map.addLayer({
-      id: `unclustered-${type}`,
+      id: `unclustered-${kind}`,
       type: 'circle',
-      source: `pins-${type}`,
+      source: `pins-${kind}`,
       filter: ['!', ['has', 'point_count']],
       paint: {
         'circle-color': color,
         'circle-radius': 8,
         'circle-stroke-width': 2,
-        'circle-stroke-color': '#fff'
+        'circle-stroke-color': '#fff',
+        'circle-emissive-strength': 1,
       }
     });
   }
 
   private setupInteractions(): void {
     if (this.pickingOnMap) return;
-    PIN_CONFIG.forEach(({ type }) => {
-      const clusterId = `clusters-${type}`;
-      const unclusteredId = `unclustered-${type}`;
-      const sourceId = `pins-${type}`;
+    PIN_CONFIG.forEach(({ kind }) => {
+      const clusterId = `clusters-${kind}`;
+      const unclusteredId = `unclustered-${kind}`;
+      const sourceId = `pins-${kind}`;
 
       //if (!this.pickingOnMap) return;
 
@@ -446,7 +451,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       if (this.pickingOnMap) return;
 
       const layers = PIN_CONFIG
-        .flatMap(({ type }) => [`clusters-${type}`, `unclustered-${type}`])
+        .flatMap(({ kind }) => [`clusters-${kind}`, `unclustered-${kind}`])
         .filter(id => this.map.getLayer(id));
 
       const hits = this.map.queryRenderedFeatures(e.point, { layers });

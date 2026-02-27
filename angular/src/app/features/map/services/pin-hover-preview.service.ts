@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
 import { ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
-import { PinType } from '@gofish/shared/models/pin.model';
+import { PinKind } from '@gofish/shared/models/pin.model';
 
 @Injectable({ providedIn: 'root' })
 export class PinHoverPreviewService {
@@ -81,11 +81,11 @@ export class PinHoverPreviewService {
     `;
   }
 
-  private getFriendlyTitle(type: PinType): string {
-    switch (type) {
-      case PinType.CATCH: return 'Pin de Caça';
-      case PinType.INFORMATION: return 'Pin Informação';
-      case PinType.WARNING: return 'Pin de Aviso';
+  private getFriendlyTitle(kind: PinKind): string {
+    switch (kind) {
+      case PinKind.CATCH: return 'Pin de Caça';
+      case PinKind.INFORMATION: return 'Pin Informação';
+      case PinKind.WARNING: return 'Pin de Aviso';
       default: return 'Pin';
     }
   }

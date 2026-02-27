@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PinService } from '@gofish/features/map/services/pin.service';
-import { EnumDTO, EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
+import { EnumDTO} from '@gofish/shared/dtos/enum.dto';
 import { CreateInfoPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 
@@ -96,10 +96,10 @@ export class InfoPinModalComponent implements OnInit {
     this.pinService.createInfoPin(dto).subscribe({
       next: (res) => {
         this.isSubmitting = false;
-        if (res.success) {
+        if (res) {
           this.confirmed.emit();
         } else {
-          this.errorMessage = res.errors?.[0]?.description ?? 'Something went wrong.';
+          this.errorMessage = 'Failed to create info pin.';
         }
       },
       error: () => {

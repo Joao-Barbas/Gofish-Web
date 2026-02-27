@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NewPinType } from '@gofish/features/map/map.component';
 import { PinService } from '@gofish/features/map/services/pin.service';
-import { EnumDTO, EnumeratorDTO, GetEnumeratorResDTO } from '@gofish/shared/dtos/enum.dto';
+import { EnumDTO} from '@gofish/shared/dtos/enum.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 
 @Component({
@@ -91,10 +90,10 @@ export class CatchPinModalComponent {
     this.pinService.createCatchPin(formData).subscribe({
       next: (res) => {
         this.isSubmitting = false;
-        if (res.success) {
+        if (res) {
           this.confirmed.emit();
         } else {
-          this.errorMessage = res.errors?.[0]?.description ?? 'Something went wrong.';
+          this.errorMessage = 'Failed to create catch pin.';
         }
       },
       error: () => {

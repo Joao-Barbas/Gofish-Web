@@ -275,13 +275,14 @@ namespace GofishApi.Controllers
                 UserId = userId,
 
                 WarningKind = dto.WarningKind,
-
+                
                 Post = new Post
                 {
                     Body = dto.Body,
                     CreatedAt = DateTime.UtcNow,
                     UserId = userId
                 }
+                
             };
 
             try

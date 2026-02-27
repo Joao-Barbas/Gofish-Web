@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PinService } from '@gofish/features/map/services/pin.service';
-import { EnumDTO, EnumeratorDTO, GetEnumeratorResDTO, GetEnumResDTO } from '@gofish/shared/dtos/enum.dto';
+import { EnumDTO} from '@gofish/shared/dtos/enum.dto';
 import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 
@@ -66,8 +66,8 @@ export class WarnPinModalComponent {
       latitude: this.coords.latitude,
       longitude: this.coords.longitude,
       visibility: this.selectedVisibility as number,
-      body: this.body.trim() || null,
-      warnPinType: this.selectedWarnType as number
+      body: this.body.trim() || undefined,
+      warningKind: this.selectedWarnType as number
     };
     console.log('Creating Warn Pin with data:', dto);
     this.isSubmitting = true;
@@ -75,10 +75,10 @@ export class WarnPinModalComponent {
     this.pinService.createWarnPin(dto).subscribe({
       next: (res) => {
         this.isSubmitting = false;
-        if (res.success) {
+        if (res) {
           this.confirmed.emit();
         } else {
-          this.errorMessage = res.errors?.[0]?.description ?? 'Something went wrong.';
+          this.errorMessage = 'Failed to create warn pin.';
         }
       },
       error: () => {

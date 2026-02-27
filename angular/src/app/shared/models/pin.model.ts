@@ -1,4 +1,4 @@
-export enum PinType {
+export enum PinKind {
   CATCH = 0,
   INFORMATION = 1,
   WARNING = 2,

@@ -1,3 +1,9 @@
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  errors?: any[];
+}
+
 // Create CatchPin
 export interface CreateCatchPinReqDTO {
   latitude: number;
@@ -25,20 +31,13 @@ export interface CreateWarnPinReqDTO {
   latitude: number;
   longitude: number;
   visibility: number;
-  body?: string | null;
-  warnPinType: number;
+  body?: string;
+  warningKind: number;
 }
 
 // Basta 1 reponse para todos os pins
 export interface CreatePinResDTO {
-  success: boolean;
-  data?: {
     id: number;
-  }
-  errors?: {
-    code: string;
-    description: string;
-  }[]
 }
 
 export type PinPreviewResDTO = {

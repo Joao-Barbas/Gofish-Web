@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, PinPreviewResDTO, CreatePinResDTO } from '@gofish/shared/dtos/pin.dto';
-import { EnumDTO, GetEnumeratorResDTO, GetEnumResDTO } from '@gofish/shared/dtos/enum.dto';
+import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, PinPreviewResDTO, CreatePinResDTO, ApiResponse } from '@gofish/shared/dtos/pin.dto';
+import { EnumDTO} from '@gofish/shared/dtos/enum.dto';
 import { Api } from '@gofish/shared/constants';
 
 @Injectable({
@@ -24,7 +24,7 @@ export class PinService {
   }
 
   getInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number) {
-    return this.http.get<ViewportPinsResDTO>(Api.Pin.action('GetInViewport'), {
+    return this.http.get<ApiResponse<ViewportPinsResDTO>>(Api.Pin.action('GetInViewport'), {
       params: { minLat, minLng, maxLat, maxLng }
     });
   }
