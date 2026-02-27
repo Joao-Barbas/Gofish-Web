@@ -55,6 +55,22 @@ namespace GofishApi.Tests.Controllers
         }
 
         [Fact]
+        public async Task SignUp_UserAlreadyExists_Returns400() 
+        {
+            var body = new
+            {
+                Email = "fixture2@test.com",
+                UserName = "existinguser",
+                FirstName = "Test",
+                LastName = "User",
+                Password = "Password123!"
+            };
+            var response = await _client.PostAsJsonAsync("/api/auth/signup", body);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+
+        [Fact]
         public async Task SignUp_WeakPassword_Returns400() 
         {
             var body = new
