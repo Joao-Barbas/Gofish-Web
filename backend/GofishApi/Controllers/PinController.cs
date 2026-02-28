@@ -10,7 +10,6 @@ using GofishApi.Models;
 using GofishApi.Services;
 using GofishApi.Enums;
 using GofishApi.Exceptions;
-using GofishApi.Extensions;
 
 namespace GofishApi.Controllers
 {
@@ -119,54 +118,48 @@ namespace GofishApi.Controllers
             }
 
             var allowedTypes = new[] { "image/jpeg", "image/png" };
-            string? imageUrl = null;
+            string imageUrl;
 
             if (!allowedTypes.Contains(dto.Image.ContentType))
             {
-                throw new ApiException(
-                    "Catch pin creation failed",
-                    StatusCodes.Status400BadRequest,
-                    [new("InvalidFileType", "Invalid file type")]
-                );
+                throw new ApiException("Catch pin creation failed", StatusCodes.Status400BadRequest, [
+                    new("InvalidFileType", "Invalid file type")
+                ]);
             }
-            else
+            try
             {
-                try
-                {
-                    imageUrl = await _blobStorage.UploadImageAsync(dto.Image);
-                }
-                catch (Exception ex)
-                {
-                    throw new ApiException(
-                        "Catch pin creation failed",
-                        StatusCodes.Status503ServiceUnavailable,
-                        [new("ImageUploadFailed", ex.Message)]
-                    );
-                }
+                imageUrl = await _blobStorage.UploadImageAsync(dto.Image);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error during image upload to blob storage");
+                throw new ApiException("Catch pin creation failed", StatusCodes.Status503ServiceUnavailable, [
+                    new("ImageUploadFailed", "Image upload resulted in failure")
+                ]);
             }
 
             // Aqui podias criar um metodo ToCatchPin no CreateCatchPinReqDTO
             // Se se repetisse mais que esta vez
             var newPin = new CatchPin
             {
-                Latitude = dto.Latitude,
-                Longitude = dto.Longitude,
-                CreatedAt = DateTime.UtcNow,
-                ExpiresAt = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
+                Latitude   = dto.Latitude,
+                Longitude  = dto.Longitude,
+                CreatedAt  = DateTime.UtcNow,
+                ExpiresAt  = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
                 Visibility = dto.Visibility,
-                Kind = PinKind.Catch,
-                UserId = userId,
+                Kind       = PinKind.Catch,
+                UserId     = userId,
 
                 Species  = dto.Species,
-                Bait = dto.Bait,
+                Bait     = dto.Bait,
                 HookSize = dto.HookSize,
 
                 Post = new Post
                 {
-                    Body = dto.Body,
-                    ImageUrl = imageUrl,
+                    Body      = dto.Body,
+                    ImageUrl  = imageUrl,
                     CreatedAt = DateTime.UtcNow,
-                    UserId = userId
+                    UserId    = userId
                 }
             };
 
@@ -177,16 +170,14 @@ namespace GofishApi.Controllers
                 _db.Pins.Add(newPin);
                 await _db.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new ApiException(
-                    "Catch pin creation failed",
-                    StatusCodes.Status503ServiceUnavailable,
-                    [new("GenericDatabaseFail", ex.Message)]
-                );
+                throw new ApiException("Catch pin creation failed", StatusCodes.Status503ServiceUnavailable, [
+                    new("DatabaseFailure", "Failed to save the provided catch pin to the database")
+                ]);
             }
 
-            return Ok(new CreateCatchPinResDTO(Id: newPin.Id));
+            return Ok(new CreateCatchPinResDTO(newPin.Id));
         }
 
         [Authorize]
@@ -196,49 +187,39 @@ namespace GofishApi.Controllers
             var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             if (userId is null)
             {
-                return Unauthorized(new ApiErrorResponse
-                {
-                    Errors = [new("Unauthorized", "Access denied")]
-                });
+                throw new UnauthorizedException([new("NoUser", "Access Denied")]);
             }
-
             var newPin = new InfoPin
             {
-                Latitude = dto.Latitude,
-                Longitude = dto.Longitude,
-                CreatedAt = DateTime.UtcNow,
+                Latitude   = dto.Latitude,
+                Longitude  = dto.Longitude,
+                CreatedAt  = DateTime.UtcNow,
                 Visibility = dto.Visibility,
-                Kind = PinKind.Information,
-                UserId = userId,
+                Kind       = PinKind.Information,
+                UserId     = userId,
 
                 AccessDifficulty = dto.AccessDifficulty,
-                Seabed = dto.Seabed,
+                Seabed           = dto.Seabed,
 
                 Post = new Post
                 {
-                    Body = dto.Body,
+                    Body      = dto.Body,
                     CreatedAt = DateTime.UtcNow,
-                    UserId = userId
+                    UserId    = userId
                 }
             };
-
             try
             {
                 _db.Pins.Add(newPin);
                 await _db.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(503, new ApiErrorResponse
-                {
-                    Errors = [new("GenericDatabaseFail", ex.Message)]
-                });
+                throw new ApiException("Information pin creation failed", StatusCodes.Status503ServiceUnavailable, [
+                    new("DatabaseFailure", "Failed to save the provided information pin to the database")
+                ]);
             }
-
-            return Ok(new ApiResponse<CreateInfoPinResDTO>
-            {
-                Data = new(Id: newPin.Id)
-            });
+            return Ok(new CreateInfoPinResDTO(newPin.Id));
         }
 
         [Authorize]
@@ -248,50 +229,40 @@ namespace GofishApi.Controllers
             var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             if (userId is null)
             {
-                return Unauthorized(new ApiErrorResponse
-                {
-                    Errors = [new("Unauthorized", "Access denied")]
-                });
+                throw new UnauthorizedException([new("NoUser", "Access Denied")]);
             }
-
             var newPin = new WarnPin
             {
-                Latitude = dto.Latitude,
-                Longitude = dto.Longitude,
-                CreatedAt = DateTime.UtcNow,
-                ExpiresAt = DateTime.UtcNow.AddDays(WarnPin.ExpiresInDays),
+                Latitude   = dto.Latitude,
+                Longitude  = dto.Longitude,
+                CreatedAt  = DateTime.UtcNow,
+                ExpiresAt  = DateTime.UtcNow.AddDays(WarnPin.ExpiresInDays),
                 Visibility = dto.Visibility,
-                Kind = PinKind.Warning,
-                UserId = userId,
+                Kind       = PinKind.Warning,
+                UserId     = userId,
 
                 WarningKind = dto.WarningKind,
                 
                 Post = new Post
                 {
-                    Body = dto.Body,
+                    Body      = dto.Body,
                     CreatedAt = DateTime.UtcNow,
-                    UserId = userId
+                    UserId    = userId
                 }
                 
             };
-
             try
             {
                 _db.Pins.Add(newPin);
                 await _db.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(503, new ApiErrorResponse
-                {
-                    Errors = [new("GenericDatabaseFail", ex.Message)]
-                });
+                throw new ApiException("Warning pin creation failed", StatusCodes.Status503ServiceUnavailable, [
+                    new("DatabaseFailure", "Failed to save the provided warning pin to the database")
+                ]);
             }
-
-            return Ok(new ApiResponse<CreateWarnPinResDTO>
-            {
-                Data = new(Id: newPin.Id)
-            });
+            return Ok(new CreateWarnPinResDTO(newPin.Id));
         }
 
         #endregion
@@ -300,27 +271,30 @@ namespace GofishApi.Controllers
         [HttpDelete("DeletePin/{id}")]
         public async Task<IActionResult> DeletePin(int id)
         {
+            var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            if (userId is null)
+            {
+                throw new UnauthorizedException([new("NoUser", "Access Denied")]);
+            }
+            var pin = await _db.Pins.FindAsync(id);
+            if (pin is null)
+            {
+                throw new ApiException("Pin deletion failed", StatusCodes.Status404NotFound, [
+                    new("NoSuchPin", "The specified pin id returned no results")
+                ]);
+            }
             try
             {
-                var pin = await _db.Pins.FindAsync(id);
-                if (pin == null)
-                {
-                    return NotFound(new ApiErrorResponse
-                    {
-                        Errors = [new("PinNotFound", "Id returned no results")]
-                    });
-                }
                 _db.Pins.Remove(pin);
                 await _db.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(503, new ApiErrorResponse
-                {
-                    Errors = [new("GenericDatabaseFail", ex.Message)]
-                });
+                throw new ApiException("Pin deletion failed", StatusCodes.Status503ServiceUnavailable, [
+                    new("DatabaseFailure", "Failed to delete the provided pin from the database")
+                ]);
             }
-            return Ok(new ApiResponse<object>());
+            return NoContent();
         }
     }
 }
