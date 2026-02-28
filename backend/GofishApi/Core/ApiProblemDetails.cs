@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +17,34 @@ public class ApiProblemDetails : ProblemDetails
     /// Application-level errors.
     /// Each with a machine-readable <c>Code</c> and human-readable <c>Description</c>.
     /// </summary>
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("errors")]
     public IEnumerable<ApiError>? Errors { get; set; }
+
+    /// <summary>
+    /// Creates an instance from an existing ProblemDetails.
+    /// Copies all standard ProblemDetails properties except <see cref="ProblemDetails.Extensions"/>.
+    /// </summary>
+    /// <param name="pd">
+    /// The ProblemDetails to copy from.
+    /// </param>
+    public ApiProblemDetails(ProblemDetails pd, IEnumerable<ApiError>? errors)
+    {
+        ArgumentNullException.ThrowIfNull(pd);
+
+        Status   = pd.Status;
+        Title    = pd.Title;
+        Type     = pd.Type;
+        Detail   = pd.Detail;
+        Instance = pd.Instance;
+
+        Errors   = errors;
+
+        // We do not copy extensions dictionary for now
+        // Not needed
+    }
+
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public ApiProblemDetails() { }
 }

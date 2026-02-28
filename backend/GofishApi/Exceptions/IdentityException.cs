@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using GofishApi.Core;
 
 namespace GofishApi.Exceptions;
 
-public class IdentityException : Exception
+public class IdentityException : ApiException
 {
-    public IEnumerable<IdentityError> Errors { get; set; }
-
     public IdentityException(IEnumerable<IdentityError> errors)
-        : base("Identity operation failed")
-    {
-        Errors = errors;
-    }
+        : this(errors.Select(e => new ApiError(e.Code, e.Description)))
+    { }
+
+    public IdentityException(IEnumerable<ApiError> errors)
+        : base("Identity operation failed", StatusCodes.Status400BadRequest, errors)
+    { }
 }

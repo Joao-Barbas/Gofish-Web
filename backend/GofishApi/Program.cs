@@ -27,6 +27,7 @@ builder.Services.AddAndConfigureSwaggerGen();
 var app = builder.Build();
 await app.SeedDataAsync();
 
+app.UseAndConfigureExceptionHandler();
 app.EnableSwaggerIfDevelopment();
 app.UseHttpsRedirection();
 app.UseCors("angular");
