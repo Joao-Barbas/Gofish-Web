@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using GofishApi.Core;
+﻿using GofishApi.Core;
 
 namespace GofishApi.Exceptions;
 
-public class UnauthorizedException : ApiException
+public sealed class UnauthorizedException : ApiException
 {
     public UnauthorizedException(IEnumerable<ApiError>? errors)
-        : base("Authorization failed", StatusCodes.Status400BadRequest, errors)
+        : base("Authorization failed", StatusCodes.Status401Unauthorized, errors)
     { }
 
     public UnauthorizedException(string? message, IEnumerable<ApiError>? errors)

@@ -1,5 +1,4 @@
 ﻿using GofishApi.Core;
-using System.Text.Json;
 
 namespace GofishApi.Exceptions;
 
@@ -12,22 +11,22 @@ public class ApiException : Exception
     public int? Status { get; set; }
     public IEnumerable<ApiError>? Errors { get; set; }
 
-    public ApiException(string? message)
-        : this(message, null, null)
-    { }
-
-    public ApiException(IEnumerable<ApiError>? errors)
-        : this(null, null, errors)
-    { }
-
-    public ApiException(string? message, IEnumerable<ApiError>? errors)
-        : this(message, null, errors)
-    { }
-
     public ApiException(string? message, int? status, IEnumerable<ApiError>? errors)
         : base(message)
     {
         Status  = status;
         Errors  = errors;
     }
+
+    public ApiException(string? message, IEnumerable<ApiError>? errors)
+        : this(message, null, errors)
+    { }
+
+    public ApiException(IEnumerable<ApiError>? errors)
+        : this(null, null, errors)
+    { }
+
+    public ApiException(string? message)
+        : this(message, null, null)
+    { }
 }

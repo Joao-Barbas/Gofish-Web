@@ -3,7 +3,7 @@ using GofishApi.Core;
 
 namespace GofishApi.Exceptions;
 
-public class IdentityException : ApiException
+public sealed class IdentityException : ApiException
 {
     public IdentityException(IEnumerable<IdentityError>? errors)
         : this(errors?.Select(e => new ApiError(e.Code, e.Description)))
