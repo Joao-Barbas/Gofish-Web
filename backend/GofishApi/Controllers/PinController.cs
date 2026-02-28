@@ -9,6 +9,8 @@ using GofishApi.Dtos;
 using GofishApi.Models;
 using GofishApi.Services;
 using GofishApi.Enums;
+using GofishApi.Exceptions;
+using GofishApi.Extensions;
 
 namespace GofishApi.Controllers
 {
@@ -55,10 +57,7 @@ namespace GofishApi.Controllers
                 p.Kind
             ))
             .ToListAsync();
-            return Ok(new ApiResponse<ViewportPinsResDTO>
-            {
-                Data = new (pins)
-            });
+            return Ok(new ViewportPinsResDTO(pins));
         }
 
         [Authorize]
@@ -72,10 +71,7 @@ namespace GofishApi.Controllers
 
             if (user is null)
             {
-                return Unauthorized(new ApiErrorResponse
-                {
-                    Errors = [new("NoUser", "No such user")]
-                });
+                throw new UnauthorizedException([new("NoUser", "Access Denied")]);
             }
 
             var pinIds = new List<int>();
@@ -106,10 +102,7 @@ namespace GofishApi.Controllers
             .Select(p => PinDTO.FromPin(p, dto.DataRequest))
             .ToList();
 
-            return Ok(new ApiResponse<GetPinsResDTO>
-            {
-                Data = new(data)
-            });
+            return Ok(new GetPinsResDTO(data));
         }
 
         #region CreatePins
@@ -122,10 +115,7 @@ namespace GofishApi.Controllers
             var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             if (userId is null)
             {
-                return Unauthorized(new ApiErrorResponse
-                {
-                    Errors = [new("Unauthorized", "Access denied")]
-                });
+                throw new UnauthorizedException([new("NoUser", "Access Denied")]);
             }
 
             var allowedTypes = new[] { "image/jpeg", "image/png" };
@@ -133,10 +123,11 @@ namespace GofishApi.Controllers
 
             if (!allowedTypes.Contains(dto.Image.ContentType))
             {
-                return BadRequest(new ApiErrorResponse
-                {
-                    Errors = [new("InvalidFileType", "Invalid file type")]
-                });
+                throw new ApiException(
+                    "Catch pin creation failed",
+                    StatusCodes.Status400BadRequest,
+                    [new("InvalidFileType", "Invalid file type")]
+                );
             }
             else
             {
@@ -146,10 +137,11 @@ namespace GofishApi.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return StatusCode(503, new ApiErrorResponse
-                    {
-                        Errors = [new("ImageUploadFailed", ex.Message)]
-                    });
+                    throw new ApiException(
+                        "Catch pin creation failed",
+                        StatusCodes.Status503ServiceUnavailable,
+                        [new("ImageUploadFailed", ex.Message)]
+                    );
                 }
             }
 
@@ -187,16 +179,14 @@ namespace GofishApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(503, new ApiErrorResponse
-                {
-                    Errors = [new("GenericDatabaseFail", ex.Message)]
-                });
+                throw new ApiException(
+                    "Catch pin creation failed",
+                    StatusCodes.Status503ServiceUnavailable,
+                    [new("GenericDatabaseFail", ex.Message)]
+                );
             }
 
-            return Ok(new ApiResponse<CreateCatchPinResDTO>
-            {
-                Data = new(Id: newPin.Id)
-            });
+            return Ok(new CreateCatchPinResDTO(Id: newPin.Id));
         }
 
         [Authorize]
