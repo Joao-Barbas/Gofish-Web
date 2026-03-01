@@ -31,7 +31,7 @@ public static class ControllerBaseExtensions
         }
         else
         {
-            domainProblemDetails = controllerBase.ProblemDetailsFactory.CreateApplicationProblemDetails(
+            domainProblemDetails = controllerBase.ProblemDetailsFactory.CreateDomainProblemDetails(
                 httpContext: controllerBase.HttpContext,
                 statusCode:  statusCode ?? 500,
                 title:       title,
