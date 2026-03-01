@@ -58,7 +58,7 @@ public class AuthController : ControllerBase
 
         if (user is null)
         {
-            throw new ApiException(
+            throw new Exceptions.ApplicationException(
                 "Sign in operation failed",
                 StatusCodes.Status404NotFound,
                 [new("NoSuchUser", "Email or username returned no results")]
@@ -66,7 +66,7 @@ public class AuthController : ControllerBase
         }
         if (!await _userManager.CheckPasswordAsync(user, dto.Password))
         {
-            throw new ApiException(
+            throw new Exceptions.ApplicationException(
                 "Sign in operation failed",
                 StatusCodes.Status400BadRequest,
                 [new("InvalidCredentials", "Email/username or password is incorrect")]

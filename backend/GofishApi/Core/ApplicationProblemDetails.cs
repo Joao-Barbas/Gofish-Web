@@ -11,7 +11,7 @@ namespace GofishApi.Core;
 /// Extends <see cref="ProblemDetails"/> to support returning multiple errors at once,
 /// following the same convention/way as <see cref="IdentityResult"/>.
 /// </remarks>
-public sealed class ApiProblemDetails : ProblemDetails
+public sealed class ApplicationProblemDetails : ProblemDetails
 {
     /// <summary>
     /// Application-level errors.
@@ -27,7 +27,7 @@ public sealed class ApiProblemDetails : ProblemDetails
     /// <param name="problemDetails">
     /// The ProblemDetails to copy from.
     /// </param>
-    public ApiProblemDetails(ProblemDetails problemDetails, IEnumerable<ApiError>? errors)
+    public ApplicationProblemDetails(ProblemDetails problemDetails, IEnumerable<ApiError>? errors)
     {
         ArgumentNullException.ThrowIfNull(problemDetails);
 
@@ -43,12 +43,12 @@ public sealed class ApiProblemDetails : ProblemDetails
         // Not needed
     }
 
-    public ApiProblemDetails(ProblemDetails problemDetails)
+    public ApplicationProblemDetails(ProblemDetails problemDetails)
         : this(problemDetails, null)
     { } 
 
     /// <summary>
     /// Default constructor.
     /// </summary>
-    public ApiProblemDetails() { }
+    public ApplicationProblemDetails() { }
 }

@@ -43,7 +43,7 @@ namespace GofishApi.Controllers
             var passwordValid = await _userManager.CheckPasswordAsync(user, dto.Password);
             if (!passwordValid)
             {
-                throw new ApiException("Given credentials do not match", StatusCodes.Status400BadRequest, [
+                throw new Exceptions.ApplicationException("Given credentials do not match", StatusCodes.Status400BadRequest, [
                     new("InvalidCredentials", "Given credentials do not match")
                 ]);
             }

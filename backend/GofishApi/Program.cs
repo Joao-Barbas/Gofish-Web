@@ -4,6 +4,7 @@ using GofishApi.Models;
 using GofishApi.Extensions;
 using GofishApi.Services;
 using GofishApi.Options;
+using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,12 +23,16 @@ builder.Services.ConfigureIdentityOptions();
 builder.Services.AddAndConfigureCors();
 builder.Services.AddAndConfigureIdentityAuth(builder.Configuration);
 builder.Services.AddAndConfigureControllers();
+builder.Services.AddExceptionHandler<ApplicationExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddAndConfigureSwaggerGen();
 
 var app = builder.Build();
 await app.SeedDataAsync();
 
-app.UseAndConfigureExceptionHandler();
+app.UseExceptionHandler();
+app.UseStatusCodePages();
 app.EnableSwaggerIfDevelopment();
 app.UseHttpsRedirection();
 app.UseCors("angular");

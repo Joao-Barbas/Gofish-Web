@@ -122,7 +122,7 @@ public class PinController : ControllerBase
 
         if (!allowedTypes.Contains(dto.Image.ContentType))
         {
-            throw new ApiException("Catch pin creation failed", StatusCodes.Status400BadRequest, [
+            throw new Exceptions.ApplicationException("Catch pin creation failed", StatusCodes.Status400BadRequest, [
                 new("InvalidFileType", "Invalid file type")
             ]);
         }
@@ -133,7 +133,7 @@ public class PinController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unexpected error during image upload to blob storage");
-            throw new ApiException("Catch pin creation failed", StatusCodes.Status503ServiceUnavailable, [
+            throw new Exceptions.ApplicationException("Catch pin creation failed", StatusCodes.Status503ServiceUnavailable, [
                 new("ImageUploadFailed", "Image upload resulted in failure")
             ]);
         }
@@ -172,7 +172,7 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new ApiException("Catch pin creation failed", StatusCodes.Status503ServiceUnavailable, [
+            throw new Exceptions.ApplicationException("Catch pin creation failed", StatusCodes.Status503ServiceUnavailable, [
                 new("DatabaseFailure", "Failed to save the provided catch pin to the database")
             ]);
         }
@@ -215,7 +215,7 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new ApiException("Information pin creation failed", StatusCodes.Status503ServiceUnavailable, [
+            throw new Exceptions.ApplicationException("Information pin creation failed", StatusCodes.Status503ServiceUnavailable, [
                 new("DatabaseFailure", "Failed to save the provided information pin to the database")
             ]);
         }
@@ -258,7 +258,7 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new ApiException("Warning pin creation failed", StatusCodes.Status503ServiceUnavailable, [
+            throw new Exceptions.ApplicationException("Warning pin creation failed", StatusCodes.Status503ServiceUnavailable, [
                 new("DatabaseFailure", "Failed to save the provided warning pin to the database")
             ]);
         }
@@ -279,7 +279,7 @@ public class PinController : ControllerBase
         var pin = await _db.Pins.FindAsync(id);
         if (pin is null)
         {
-            throw new ApiException("Pin deletion failed", StatusCodes.Status404NotFound, [
+            throw new Exceptions.ApplicationException("Pin deletion failed", StatusCodes.Status404NotFound, [
                 new("NoSuchPin", "The specified pin id returned no results")
             ]);
         }
@@ -290,7 +290,7 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new ApiException("Pin deletion failed", StatusCodes.Status503ServiceUnavailable, [
+            throw new Exceptions.ApplicationException("Pin deletion failed", StatusCodes.Status503ServiceUnavailable, [
                 new("DatabaseFailure", "Failed to delete the provided pin from the database")
             ]);
         }

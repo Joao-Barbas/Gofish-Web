@@ -47,7 +47,7 @@ public class UserSecurityController : ControllerBase
         }
         if (dto.CurrentPassword == dto.NewPassword)
         {
-            throw new ApiException("Attempted password change with existing password", StatusCodes.Status400BadRequest, [
+            throw new Exceptions.ApplicationException("Attempted password change with existing password", StatusCodes.Status400BadRequest, [
                 new("SamePassword", "Your new password must be different from your current password")
             ]);
         }

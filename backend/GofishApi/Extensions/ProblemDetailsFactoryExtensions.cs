@@ -5,7 +5,7 @@ namespace GofishApi.Extensions;
 
 public static class ProblemDetailsFactoryExtensions
 {
-    public static ApiProblemDetails CreateApiProblemDetails(this ProblemDetailsFactory factory,
+    public static ApplicationProblemDetails CreateApplicationProblemDetails(this ProblemDetailsFactory factory,
         HttpContext httpContext,
         int? statusCode = null,
         string? title = null,
@@ -15,6 +15,6 @@ public static class ProblemDetailsFactoryExtensions
         IEnumerable<ApiError>? errors = null
     ){
         var problemDetails = factory.CreateProblemDetails(httpContext, statusCode, title, type, detail, instance);
-        return new ApiProblemDetails(problemDetails, errors);
+        return new ApplicationProblemDetails(problemDetails, errors);
     }
 }

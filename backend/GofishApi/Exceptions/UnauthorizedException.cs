@@ -2,7 +2,7 @@
 
 namespace GofishApi.Exceptions;
 
-public sealed class UnauthorizedException : ApiException
+public sealed class UnauthorizedException : ApplicationException
 {
     public UnauthorizedException(string? message, IEnumerable<ApiError>? errors)
         : base(message, StatusCodes.Status401Unauthorized, errors)

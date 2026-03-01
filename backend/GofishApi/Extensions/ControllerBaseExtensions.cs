@@ -6,7 +6,7 @@ namespace GofishApi.Extensions;
 public static class ControllerBaseExtensions
 {
     [NonAction]
-    public static ObjectResult ApiProblem(this ControllerBase controllerBase,
+    public static ObjectResult ApplicationProblem(this ControllerBase controllerBase,
         string? detail = null,
         string? instance = null,
         int? statusCode = null,
@@ -14,12 +14,12 @@ public static class ControllerBaseExtensions
         string? type = null,
         IEnumerable<ApiError>? errors = null
     ){
-        ApiProblemDetails apiProblemDetails;
+        ApplicationProblemDetails apiProblemDetails;
         if (controllerBase.ProblemDetailsFactory == null)
         {
             // ProblemDetailsFactory may be null in unit testing scenarios.
             // Improvise to make this more testable.
-            apiProblemDetails = new ApiProblemDetails
+            apiProblemDetails = new ApplicationProblemDetails
             {
                 Detail = detail,
                 Instance = instance,
@@ -31,7 +31,7 @@ public static class ControllerBaseExtensions
         }
         else
         {
-            apiProblemDetails = controllerBase.ProblemDetailsFactory.CreateApiProblemDetails(
+            apiProblemDetails = controllerBase.ProblemDetailsFactory.CreateApplicationProblemDetails(
                 controllerBase.HttpContext,
                 statusCode: statusCode ?? 500,
                 title: title,
