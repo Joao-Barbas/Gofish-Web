@@ -6,44 +6,44 @@ namespace GofishApi.Extensions;
 public static class ControllerBaseExtensions
 {
     [NonAction]
-    public static ObjectResult ApplicationProblem(this ControllerBase controllerBase,
+    public static ObjectResult DomainProblem(this ControllerBase controllerBase,
         string? detail = null,
         string? instance = null,
         int? statusCode = null,
         string? title = null,
         string? type = null,
-        IEnumerable<ApiError>? errors = null
+        IDictionary<string, string>? errors = null
     ){
-        ApplicationProblemDetails apiProblemDetails;
+        DomainProblemDetails domainProblemDetails;
         if (controllerBase.ProblemDetailsFactory == null)
         {
             // ProblemDetailsFactory may be null in unit testing scenarios.
             // Improvise to make this more testable.
-            apiProblemDetails = new ApplicationProblemDetails
+            domainProblemDetails = new DomainProblemDetails
             {
-                Detail = detail,
+                Detail   = detail,
                 Instance = instance,
-                Status = statusCode ?? 500,
-                Title = title,
-                Type = type,
-                Errors = errors
+                Status   = statusCode ?? 500,
+                Title    = title,
+                Type     = type,
+                Errors   = errors
             };
         }
         else
         {
-            apiProblemDetails = controllerBase.ProblemDetailsFactory.CreateApplicationProblemDetails(
-                controllerBase.HttpContext,
-                statusCode: statusCode ?? 500,
-                title: title,
-                type: type,
-                detail: detail,
-                instance: instance,
-                errors: errors
+            domainProblemDetails = controllerBase.ProblemDetailsFactory.CreateApplicationProblemDetails(
+                httpContext: controllerBase.HttpContext,
+                statusCode:  statusCode ?? 500,
+                title:       title,
+                type:        type,
+                detail:      detail,
+                instance:    instance,
+                errors:      errors
             );
         }
-        return new ObjectResult(apiProblemDetails)
+        return new ObjectResult(domainProblemDetails)
         {
-            StatusCode = apiProblemDetails.Status
+            StatusCode = domainProblemDetails.Status
         };
     }
 }

@@ -5,20 +5,26 @@ using Microsoft.AspNetCore.Mvc;
 namespace GofishApi.Core;
 
 /// <summary>
-/// A machine-readable format for specifying errors in HTTP API responses based on <see href="https://tools.ietf.org/html/rfc7807"/>.
+/// A machine-readable format for specifying errors in HTTP API
+/// responses based on <see href="https://tools.ietf.org/html/rfc7807"/>.
 /// </summary>
 /// <remarks>
 /// Extends <see cref="ProblemDetails"/> to support returning multiple errors at once,
-/// following the same convention/way as <see cref="IdentityResult"/>.
+/// following the same convention/way as <see cref="IdentityResult"/> but
+/// with the shape similar of <see cref="ValidationProblemDetails.Errors"/>.
 /// </remarks>
-public sealed class ApplicationProblemDetails : ProblemDetails
+public sealed class DomainProblemDetails : ProblemDetails
 {
     /// <summary>
-    /// Application-level errors.
-    /// Each with a machine-readable <c>Code</c> and human-readable <c>Description</c>.
+    /// Application-level errors as key-value pairs.
+    /// Keys are machine-readable error codes; values are human-readable descriptions.
     /// </summary>
+    /// <remarks>
+    /// Mirrors the shape of <see cref="ValidationProblemDetails.Errors"/> but with single-string values
+    /// instead of string arrays, allowing clients to distinguish between validation errors and application errors.
+    /// </remarks>
     [JsonPropertyName("errors")]
-    public IEnumerable<ApiError>? Errors { get; set; }
+    public IDictionary<string, string>? Errors { get; set; }
 
     /// <summary>
     /// Creates an instance from an existing ProblemDetails.
@@ -27,7 +33,7 @@ public sealed class ApplicationProblemDetails : ProblemDetails
     /// <param name="problemDetails">
     /// The ProblemDetails to copy from.
     /// </param>
-    public ApplicationProblemDetails(ProblemDetails problemDetails, IEnumerable<ApiError>? errors)
+    public DomainProblemDetails(ProblemDetails problemDetails, IDictionary<string, string>? errors)
     {
         ArgumentNullException.ThrowIfNull(problemDetails);
 
@@ -43,12 +49,12 @@ public sealed class ApplicationProblemDetails : ProblemDetails
         // Not needed
     }
 
-    public ApplicationProblemDetails(ProblemDetails problemDetails)
+    public DomainProblemDetails(ProblemDetails problemDetails)
         : this(problemDetails, null)
-    { } 
+    { }
 
     /// <summary>
     /// Default constructor.
     /// </summary>
-    public ApplicationProblemDetails() { }
+    public DomainProblemDetails() { }
 }
