@@ -31,19 +31,8 @@ public class UserSecurityController : ControllerBase
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         var user   = userId is null ? null : await _userManager.FindByIdAsync(userId);
-
-        if (user is null)
-        {
-            return NotFound(new ApiErrorResponse
-            {
-                Errors = [new("UserNotFound", "Id returned no results")]
-            });
-        }
-
-        return Ok(new ApiResponse<SecurityInfoResDTO>
-        {
-            Data = new(user.TwoFactorEnabled, user.TwoFactorMethod)
-        });
+        if (user is null) throw new UnauthorizedException();
+        return Ok(new SecurityInfoResDTO(user.TwoFactorEnabled, user.TwoFactorMethod));
     }
 
     [HttpPost("ChangePassword")]
@@ -52,33 +41,24 @@ public class UserSecurityController : ControllerBase
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
 
-        if (dto.CurrentPassword == dto.NewPassword)
-        {
-            return BadRequest(new ApiErrorResponse
-            {
-                Errors = [new("EqualPasswords", "New password equals current password")]
-            });
-        }
         if (user is null)
         {
-            return NotFound(new ApiErrorResponse
-            {
-                Errors = [new("UserNotFound", "Id returned no results")]
-            });
+            throw new UnauthorizedException();
+        }
+        if (dto.CurrentPassword == dto.NewPassword)
+        {
+            throw new ApiException("Attempted password change with existing password", StatusCodes.Status400BadRequest, [
+                new("SamePassword", "Your new password must be different from your current password")
+            ]);
         }
 
         var result = await _userManager.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
 
-        if (result.Succeeded is false)
+        if (!result.Succeeded)
         {
-            return BadRequest(new ApiErrorResponse
-            {
-                Errors = result.Errors
-                               .Select(e => new ApiError(e.Code, e.Description))
-                               .ToList()
-            });
+            throw new IdentityException(result.Errors);
         }
 
-        return Ok(new ApiResponse<object>());
+        return Ok();
     }
 }

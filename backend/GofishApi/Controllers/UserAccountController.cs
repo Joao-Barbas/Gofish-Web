@@ -1,4 +1,5 @@
 ﻿using GofishApi.Dtos;
+using GofishApi.Exceptions;
 using GofishApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -32,39 +33,29 @@ namespace GofishApi.Controllers
         [HttpDelete("DeleteAccount")]
         public async Task<IActionResult> DeleteAccount([FromBody] DeleteAccountReqDTO dto)
         {
+            // TODO: Also 2FA if enabled
             var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             var user   = userId == null ? null : await _userManager.FindByIdAsync(userId);
 
-            if (user == null)
+            if (user is null)
             {
-                return NotFound(new ApiErrorResponse
-                {
-                    Errors = [new("UserNotFound", "Id returned no results")]
-                });
+                throw new UnauthorizedException();
             }
 
-            // TODO: Also 2FA if enabled
             var passwordValid = await _userManager.CheckPasswordAsync(user, dto.Password);
+            
             if (!passwordValid)
             {
-                return BadRequest(new ApiErrorResponse
-                {
-                    Errors = [new("InvalidCredentials", "Incorrect password")]
-                });
+                throw new ApiException([new("InvalidCredentials", "Given credentials do not match")]);
             }
 
             var result = await _userManager.DeleteAsync(user);
+            
             if (!result.Succeeded)
             {
-                return StatusCode(502, new ApiErrorResponse
-                {
-                    Errors = [.. result.Errors.Select(e => new ApiError(e.Code, e.Description))]
-                });
+                throw new IdentityException(result.Errors);
             }
 
-            // 204
-            // Account deleted
-            // Angular should redirect to login
             return NoContent();
         }
 
@@ -80,9 +71,9 @@ namespace GofishApi.Controllers
             var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             var user   = userId == null ? null : await _userManager.FindByIdAsync(userId);
 
-            if (user == null)
+            if (user is null)
             {
-                return NotFound(new ApiErrorResponse { Errors = [new("UserNotFound", "Id returned no results")] });
+                throw new UnauthorizedException();
             }
 
             // Reflect over all [PersonalData] properties on AppUser

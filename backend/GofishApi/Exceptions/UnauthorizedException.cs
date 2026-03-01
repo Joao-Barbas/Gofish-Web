@@ -4,8 +4,12 @@ namespace GofishApi.Exceptions;
 
 public sealed class UnauthorizedException : ApiException
 {
+    public UnauthorizedException()
+        : this(null)
+    { }
+
     public UnauthorizedException(IEnumerable<ApiError>? errors)
-        : base("Authorization failed", StatusCodes.Status401Unauthorized, errors)
+        : this("Authentication failed", errors)
     { }
 
     public UnauthorizedException(string? message, IEnumerable<ApiError>? errors)
