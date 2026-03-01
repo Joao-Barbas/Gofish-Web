@@ -3,13 +3,13 @@ using GofishApi.Core;
 
 namespace GofishApi.Exceptions;
 
-public sealed class IdentityException : DomainException
+public sealed class IdentityException : ApplicationOperationException
 {
-    public IdentityException(Dictionary<string, string>? errors)
+    public IdentityException(IEnumerable<ApplicationError>? errors)
         : base("One or more identity validation errors occurred", StatusCodes.Status400BadRequest, errors)
     { }
 
     public IdentityException(IEnumerable<IdentityError>? errors)
-        : this(errors?.ToDictionary((e) => e.Code, (e) => e.Description))
+        : this(errors?.Select(e => new ApplicationError { Code = e.Code, Description = e.Description }))
     { }
 }

@@ -4,6 +4,7 @@ using GofishApi.Exceptions;
 using GofishApi.Dtos;
 using GofishApi.Models;
 using GofishApi.Services;
+using GofishApi.Core;
 
 namespace GofishApi.Controllers;
 
@@ -47,7 +48,7 @@ public class AuthController : ControllerBase
         result = await _userManager.AddToRoleAsync(user, "User");
         if (!result.Succeeded) throw new IdentityException(result.Errors);
 
-        return Created();
+        return StatusCode(StatusCodes.Status201Created);
     }
 
     [HttpPost("SignIn")]
@@ -58,19 +59,11 @@ public class AuthController : ControllerBase
 
         if (user is null)
         {
-            throw new Exceptions.ApplicationException(
-                "Sign in operation failed",
-                StatusCodes.Status404NotFound,
-                [new("NoSuchUser", "Email or username returned no results")]
-            );
+            return Unauthorized();
         }
         if (!await _userManager.CheckPasswordAsync(user, dto.Password))
         {
-            throw new Exceptions.ApplicationException(
-                "Sign in operation failed",
-                StatusCodes.Status400BadRequest,
-                [new("InvalidCredentials", "Email/username or password is incorrect")]
-            );
+            return Unauthorized();
         }
         if (user.TwoFactorEnabled)
         {

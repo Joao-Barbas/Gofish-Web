@@ -31,7 +31,7 @@ public class UserSecurityController : ControllerBase
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         var user   = userId is null ? null : await _userManager.FindByIdAsync(userId);
-        if (user is null) throw new UnauthorizedException();
+        if (user is null) return Unauthorized();
         return Ok(new SecurityInfoResDTO(user.TwoFactorEnabled, user.TwoFactorMethod));
     }
 
@@ -39,26 +39,22 @@ public class UserSecurityController : ControllerBase
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordReqDTO dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
-
+        var user   = userId is null ? null : await _userManager.FindByIdAsync(userId);
         if (user is null)
         {
-            throw new UnauthorizedException();
+            return Unauthorized();
         }
         if (dto.CurrentPassword == dto.NewPassword)
         {
-            throw new Exceptions.ApplicationException("Attempted password change with existing password", StatusCodes.Status400BadRequest, [
-                new("SamePassword", "Your new password must be different from your current password")
-            ]);
+            throw new ApplicationOperationException("Attempted password change with existing password", StatusCodes.Status400BadRequest,
+                [new() { Code = "SamePassword", Description = "Your new password must be different from your current password" }]
+            );
         }
-
         var result = await _userManager.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
-
         if (!result.Succeeded)
         {
             throw new IdentityException(result.Errors);
         }
-
         return Ok();
     }
 }

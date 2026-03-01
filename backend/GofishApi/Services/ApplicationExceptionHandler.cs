@@ -22,7 +22,7 @@ public class ApplicationExceptionHandler : IExceptionHandler
     {
         var problem = exception switch
         {
-            DomainException ex => _factory.CreateDomainProblemDetails(
+            ApplicationOperationException ex => _factory.CreateDomainProblemDetails(
                 httpContext: httpContext,
                 statusCode:  ex.Status,
                 title:       ex.Title ?? ex.Message,

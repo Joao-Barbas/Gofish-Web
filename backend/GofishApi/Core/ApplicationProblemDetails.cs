@@ -13,27 +13,24 @@ namespace GofishApi.Core;
 /// following the same convention/way as <see cref="IdentityResult"/> but
 /// with the shape similar of <see cref="ValidationProblemDetails.Errors"/>.
 /// </remarks>
-public sealed class DomainProblemDetails : ProblemDetails
+public sealed class ApplicationProblemDetails : ProblemDetails
 {
     /// <summary>
-    /// Application-level errors as key-value pairs.
-    /// Keys are machine-readable error codes; values are human-readable descriptions.
+    /// Application-level errors,
+    /// each with a machine-readable <c>Code</c>
+    /// and human-readable <c>Description</c>.
     /// </summary>
-    /// <remarks>
-    /// Mirrors the shape of <see cref="ValidationProblemDetails.Errors"/> but with single-string values
-    /// instead of string arrays, allowing clients to distinguish between validation errors and application errors.
-    /// </remarks>
     [JsonPropertyName("errors")]
-    public IDictionary<string, string>? Errors { get; set; }
+    public IEnumerable<ApplicationError>? Errors { get; set; }
 
     /// <summary>
-    /// Creates an instance from an existing ProblemDetails.
-    /// Copies all standard ProblemDetails properties except <see cref="ProblemDetails.Extensions"/>.
+    /// Creates an instance from an existing <see cref="ProblemDetails"/>.
+    /// Copies all standard properties except <see cref="ProblemDetails.Extensions"/>.
     /// </summary>
     /// <param name="problemDetails">
-    /// The ProblemDetails to copy from.
+    /// The ProblemDetails to copy values from.
     /// </param>
-    public DomainProblemDetails(ProblemDetails problemDetails, IDictionary<string, string>? errors)
+    public ApplicationProblemDetails(ProblemDetails problemDetails, IEnumerable<ApplicationError>? errors)
     {
         ArgumentNullException.ThrowIfNull(problemDetails);
 
@@ -49,12 +46,12 @@ public sealed class DomainProblemDetails : ProblemDetails
         // Not needed
     }
 
-    public DomainProblemDetails(ProblemDetails problemDetails)
+    /* public ApplicationProblemDetails(ProblemDetails problemDetails)
         : this(problemDetails, null)
-    { }
+    { } */
 
     /// <summary>
     /// Default constructor.
     /// </summary>
-    public DomainProblemDetails() { }
+    public ApplicationProblemDetails() { }
 }

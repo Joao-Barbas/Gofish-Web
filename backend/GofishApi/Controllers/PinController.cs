@@ -70,7 +70,7 @@ public class PinController : ControllerBase
 
         if (user is null)
         {
-            throw new UnauthorizedException([new("NoUser", "Access Denied")]);
+            return Unauthorized();
         }
 
         var pinIds = new List<int>();
@@ -111,20 +111,15 @@ public class PinController : ControllerBase
     [RequestSizeLimit(5_000_000)]
     public async Task<IActionResult> CreateCatchPin([FromForm] CreateCatchPinReqDTO dto)
     {
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        if (userId is null)
-        {
-            throw new UnauthorizedException([new("NoUser", "Access Denied")]);
-        }
-
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         var allowedTypes = new[] { "image/jpeg", "image/png" };
         string imageUrl;
 
         if (!allowedTypes.Contains(dto.Image.ContentType))
         {
-            throw new Exceptions.ApplicationException("Catch pin creation failed", StatusCodes.Status400BadRequest, [
-                new("InvalidFileType", "Invalid file type")
-            ]);
+            throw new ApplicationOperationException("Catch pin creation failed", StatusCodes.Status400BadRequest,
+                [new() { Code = "InvalidFileType", Description = "Invalid file type" }]
+            );
         }
         try
         {
@@ -133,9 +128,9 @@ public class PinController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unexpected error during image upload to blob storage");
-            throw new Exceptions.ApplicationException("Catch pin creation failed", StatusCodes.Status503ServiceUnavailable, [
-                new("ImageUploadFailed", "Image upload resulted in failure")
-            ]);
+            throw new ApplicationOperationException("Catch pin creation failed", StatusCodes.Status503ServiceUnavailable,
+                [new() { Code = "ImageUploadFailed", Description = "Image upload resulted in failure" }]
+            );
         }
 
         // Aqui podias criar um metodo ToCatchPin no CreateCatchPinReqDTO
@@ -172,9 +167,9 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new Exceptions.ApplicationException("Catch pin creation failed", StatusCodes.Status503ServiceUnavailable, [
-                new("DatabaseFailure", "Failed to save the provided catch pin to the database")
-            ]);
+            throw new ApplicationOperationException("Catch pin creation failed", StatusCodes.Status503ServiceUnavailable,
+                [new() { Code = "DatabaseFailure", Description = "Failed to save the provided catch pin to the database" }]
+            );
         }
 
         return Ok(new CreateCatchPinResDTO(newPin.Id));
@@ -184,11 +179,7 @@ public class PinController : ControllerBase
     [HttpPost("CreateInfoPin")]
     public async Task<IActionResult> CreateInfoPin(CreateInfoPinReqDTO dto)
     {
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        if (userId is null)
-        {
-            throw new UnauthorizedException([new("NoUser", "Access Denied")]);
-        }
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         var newPin = new InfoPin
         {
             Latitude   = dto.Latitude,
@@ -215,9 +206,9 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new Exceptions.ApplicationException("Information pin creation failed", StatusCodes.Status503ServiceUnavailable, [
-                new("DatabaseFailure", "Failed to save the provided information pin to the database")
-            ]);
+            throw new ApplicationOperationException("Information pin creation failed", StatusCodes.Status503ServiceUnavailable,
+                [new() { Code = "DatabaseFailure", Description = "Failed to save the provided information pin to the database" }]
+            );
         }
         return Ok(new CreateInfoPinResDTO(newPin.Id));
     }
@@ -226,11 +217,7 @@ public class PinController : ControllerBase
     [HttpPost("CreateWarnPin")]
     public async Task<IActionResult> CreateWarnPin(CreateWarnPinReqDTO dto)
     {
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        if (userId is null)
-        {
-            throw new UnauthorizedException([new("NoUser", "Access Denied")]);
-        }
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         var newPin = new WarnPin
         {
             Latitude   = dto.Latitude,
@@ -249,7 +236,6 @@ public class PinController : ControllerBase
                 CreatedAt = DateTime.UtcNow,
                 UserId    = userId
             }
-            
         };
         try
         {
@@ -258,9 +244,9 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new Exceptions.ApplicationException("Warning pin creation failed", StatusCodes.Status503ServiceUnavailable, [
-                new("DatabaseFailure", "Failed to save the provided warning pin to the database")
-            ]);
+            throw new ApplicationOperationException("Warning pin creation failed", StatusCodes.Status503ServiceUnavailable,
+                [new() { Code = "DatabaseFailure", Description = "Failed to save the provided warning pin to the database" }]
+            );
         }
         return Ok(new CreateWarnPinResDTO(newPin.Id));
     }
@@ -271,17 +257,11 @@ public class PinController : ControllerBase
     [HttpDelete("DeletePin/{id}")]
     public async Task<IActionResult> DeletePin(int id)
     {
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        if (userId is null)
-        {
-            throw new UnauthorizedException([new("NoUser", "Access Denied")]);
-        }
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         var pin = await _db.Pins.FindAsync(id);
         if (pin is null)
         {
-            throw new Exceptions.ApplicationException("Pin deletion failed", StatusCodes.Status404NotFound, [
-                new("NoSuchPin", "The specified pin id returned no results")
-            ]);
+            return NotFound();
         }
         try
         {
@@ -290,9 +270,9 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new Exceptions.ApplicationException("Pin deletion failed", StatusCodes.Status503ServiceUnavailable, [
-                new("DatabaseFailure", "Failed to delete the provided pin from the database")
-            ]);
+            throw new ApplicationOperationException("Pin deletion failed", StatusCodes.Status503ServiceUnavailable,
+                [new() { Code = "DatabaseFailure", Description = "Failed to delete the provided pin from the database" }]
+            );
         }
         return NoContent();
     }

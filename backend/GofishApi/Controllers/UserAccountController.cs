@@ -34,18 +34,15 @@ namespace GofishApi.Controllers
         public async Task<IActionResult> DeleteAccount([FromBody] DeleteAccountReqDTO dto)
         {
             // TODO: Also 2FA if enabled
-            var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-            var user   = userId == null ? null : await _userManager.FindByIdAsync(userId);
+            var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+            var user   = await _userManager.FindByIdAsync(userId);
             if (user is null)
             {
-                throw new UnauthorizedException();
+                return Unauthorized();
             }
-            var passwordValid = await _userManager.CheckPasswordAsync(user, dto.Password);
-            if (!passwordValid)
+            if (!await _userManager.CheckPasswordAsync(user, dto.Password))
             {
-                throw new Exceptions.ApplicationException("Given credentials do not match", StatusCodes.Status400BadRequest, [
-                    new("InvalidCredentials", "Given credentials do not match")
-                ]);
+                return Unauthorized();
             }
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
@@ -64,12 +61,12 @@ namespace GofishApi.Controllers
         [HttpGet("DownloadPersonalData")]
         public async Task<IActionResult> DownloadPersonalData()
         {
-            var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-            var user   = userId == null ? null : await _userManager.FindByIdAsync(userId);
+            var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+            var user   = await _userManager.FindByIdAsync(userId);
 
             if (user is null)
             {
-                throw new UnauthorizedException();
+                return Unauthorized();
             }
 
             // Reflect over all [PersonalData] properties on AppUser
