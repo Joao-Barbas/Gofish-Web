@@ -3,30 +3,47 @@
 namespace GofishApi.Exceptions;
 
 /// <summary>
-/// Base exception for application-level errors with custom HTTP status codes.
+/// Base exception for application-level errors with settable HTTP status codes.
 /// Properties are intended to follow machine-readable format for specifying errors in HTTP API responses based on <see href="https://tools.ietf.org/html/rfc7807"/>.
 /// </summary>
 public class ApiException : Exception
 {
-    public int? Status { get; set; }
-    public IEnumerable<ApiError>? Errors { get; set; }
+    public IEnumerable<ApiError>? Errors { get; private set; }
 
-    public ApiException(string? message, int? status, IEnumerable<ApiError>? errors)
+    public string? Title { get; private set; }
+    public int? Status { get; private set; }
+    public string? Detail { get; private set; }
+
+    public ApiException(string? message, string? title, string? detail, int? status, IEnumerable<ApiError>? errors)
         : base(message)
     {
-        Status  = status;
-        Errors  = errors;
+        Errors = errors;
+        Title  = title;
+        Status = status;
+        Detail = detail;
     }
 
-    public ApiException(string? message, IEnumerable<ApiError>? errors)
-        : this(message, null, errors)
+    public ApiException(string? message, string? detail, int? status, IEnumerable<ApiError>? errors)
+        : this(message, null, detail, status, errors)
     { }
 
-    public ApiException(IEnumerable<ApiError>? errors)
-        : this(null, null, errors)
+    public ApiException(string? message, int? status, IEnumerable<ApiError>? errors)
+        : this(message, null, null, status, errors)
+    { }
+
+    public ApiException(string? message, IEnumerable<ApiError>? errors)
+        : this(message, null, null, null, errors)
     { }
 
     public ApiException(string? message)
-        : this(message, null, null)
+        : this(message, null, null, null, null)
+    { }
+
+    /// <remarks>
+    /// This constructor is required by .NET exception design guidelines
+    /// to support proper exception chaining and diagnostic preservation.
+    /// </remarks>
+    public ApiException(string? message, Exception? innerException)
+        : base(message, innerException)
     { }
 }

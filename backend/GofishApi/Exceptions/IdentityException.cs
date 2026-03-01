@@ -5,11 +5,11 @@ namespace GofishApi.Exceptions;
 
 public sealed class IdentityException : ApiException
 {
-    public IdentityException(IEnumerable<IdentityError>? errors)
-        : this(errors?.Select(e => new ApiError(e.Code, e.Description)))
+    public IdentityException(IEnumerable<ApiError>? errors)
+        : base("One or more identity validation errors occurred", StatusCodes.Status400BadRequest, errors)
     { }
 
-    public IdentityException(IEnumerable<ApiError>? errors)
-        : base("Identity operation failed", StatusCodes.Status400BadRequest, errors)
+    public IdentityException(IEnumerable<IdentityError>? errors)
+        : this(errors?.Select(e => new ApiError(e.Code, e.Description)))
     { }
 }

@@ -36,26 +36,22 @@ namespace GofishApi.Controllers
             // TODO: Also 2FA if enabled
             var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             var user   = userId == null ? null : await _userManager.FindByIdAsync(userId);
-
             if (user is null)
             {
                 throw new UnauthorizedException();
             }
-
             var passwordValid = await _userManager.CheckPasswordAsync(user, dto.Password);
-            
             if (!passwordValid)
             {
-                throw new ApiException([new("InvalidCredentials", "Given credentials do not match")]);
+                throw new ApiException("Given credentials do not match", StatusCodes.Status400BadRequest, [
+                    new("InvalidCredentials", "Given credentials do not match")
+                ]);
             }
-
             var result = await _userManager.DeleteAsync(user);
-            
             if (!result.Succeeded)
             {
                 throw new IdentityException(result.Errors);
             }
-
             return NoContent();
         }
 

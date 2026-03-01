@@ -24,7 +24,7 @@ public sealed class ApiProblemDetails : ProblemDetails
     /// Creates an instance from an existing ProblemDetails.
     /// Copies all standard ProblemDetails properties except <see cref="ProblemDetails.Extensions"/>.
     /// </summary>
-    /// <param name="pd">
+    /// <param name="problemDetails">
     /// The ProblemDetails to copy from.
     /// </param>
     public ApiProblemDetails(ProblemDetails problemDetails, IEnumerable<ApiError>? errors)

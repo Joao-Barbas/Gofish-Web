@@ -24,24 +24,26 @@ public static class WebApplicationExtensions
             action.Run(async context =>
             {
                 var factory   = context.RequestServices.GetRequiredService<ProblemDetailsFactory>();
-                var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+                var feature   = context.Features.Get<IExceptionHandlerFeature>();
+                var exception = feature?.Error;
                 var problem   = exception switch
                 {
                     ApiException ex => factory.CreateApiProblemDetails(
                         httpContext: context,
-                        title: ex.Message,
-                        statusCode: ex.Status,
-                        errors: ex.Errors
+                        statusCode:  ex.Status,
+                        title:       ex.Title ?? ex.Message,
+                        detail:      ex.Detail,
+                        errors:      ex.Errors
                     ),
                     _ => factory.CreateProblemDetails(
                         httpContext: context,
-                        title: "Unexpected server error",
-                        detail: "An unexpected error on the server has occurred",
-                        statusCode: StatusCodes.Status500InternalServerError
+                        statusCode:  StatusCodes.Status500InternalServerError,
+                        title:       "Unexpected server error",
+                        detail:      "An unexpected error on the server has occurred"
                     )
                 };
                 context.Response.StatusCode = problem.Status ?? StatusCodes.Status500InternalServerError;
-                context.Response.ContentType = "application/json";
+                context.Response.ContentType = "application/problem+json"; // RFC 7807 media type
                 await context.Response.WriteAsJsonAsync<object>(problem);
             });
         });
