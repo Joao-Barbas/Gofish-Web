@@ -9,12 +9,4 @@ import { Api } from '@gofish/shared/constants';
 export class UserService {
   private readonly http = inject(HttpClient);
   private readonly auth = inject(AuthService);
-
-  /**
-   * @deprecated
-   * Alternative not implemented for now
-   */
-  getUserProfile() {
-    return this.http.get(Api.User.action('GetProfile'));
-  }
 }
