@@ -2,7 +2,7 @@ import mapboxgl from 'mapbox-gl';
 import { AfterViewInit, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { PreviewMarkerService } from '@gofish/features/map/services/preview-marker.service';
 import { MarkerRegistryService } from '@gofish/features/map/services/marker-registry.service';
@@ -15,12 +15,13 @@ import { Coords } from '@gofish/shared/models/coords.model';
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { ChoosePinPopupComponent } from '@gofish/features/map/components/choose-pin-popup/choose-pin-popup.component';
 import { GeolocationService } from '@gofish/shared/services/geolocation.service';
-import { PinKind} from '@gofish/shared/models/pin.model';
+import { PinKind } from '@gofish/shared/models/pin.model';
 import { CatchPinModalComponent } from '@gofish/features/map/components/modals/catch-pin-modal/catch-pin-modal.component';
 import { PinHoverPreviewService } from '@gofish/features/map/services/pin-hover-preview.service';
 import { InfoPinModalComponent } from '@gofish/features/map/components/modals/info-pin-modal/info-pin-modal.component';
 import { WarnPinModalComponent } from '@gofish/features/map/components/modals/warn-pin-modal/warn-pin-modal.component';
 import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
+import { ModalKey } from '@gofish/shared/models/modal.model';
 
 
 
@@ -56,7 +57,7 @@ const PIN_CONFIG = [
     InfoPinModalComponent,
     WarnPinModalComponent,
     ClickOutsideDirective
-],
+  ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
 })
@@ -69,6 +70,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private readonly markerRegistry = inject(MarkerRegistryService);
   private readonly pinDetailService = inject(PinDetailService);
   private readonly pinHoverPreview = inject(PinHoverPreviewService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
 
   // End popup overlays
   // Create pin events
@@ -96,19 +100,67 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   // =========================
   // Lifecycle
   // =========================
+  ngOnInit() {
+    this.route.queryParamMap.subscribe(q => {
+      const modal = q.get('modal');
+      const lat = q.get('lat');
+      const lng = q.get('lng');
+
+      this.activePinModal = null;
+
+      switch (modal) {
+        case 'catch':
+          this.activePinModal = 0;
+          break;
+        case 'info':
+          this.activePinModal = 1;
+          break;
+        case 'warn':
+          this.activePinModal = 2;
+          break;
+        default:
+          break;
+      }
+
+      if (lat && lng) {
+        const latitude = Number(lat);
+        const longitude = Number(lng);
+
+        if (!Number.isNaN(latitude) && !Number.isNaN(longitude)) {
+          this.selected = { latitude, longitude };
+        }
+      }
+    });
+  }
+
+  private getInitialView() {
+    const q = this.route.snapshot.queryParamMap;
+    const lat = Number(q.get('lat'));
+    const lng = Number(q.get('lng'));
+    const z = Number(q.get('z'));
+
+    const hasValid = !Number.isNaN(lat) && !Number.isNaN(lng) && !Number.isNaN(z);
+
+    return {
+      center: hasValid ? [lat, lng] as [number, number] : [-8.8909328, 38.5260437],
+      zoom: hasValid ? z : 5
+    }
+  }
+
   ngAfterViewInit(): void {
+    const view = this.getInitialView();
+    if (!view) return;
     mapboxgl.accessToken =
       'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
 
     this.map = new mapboxgl.Map({
       container: 'map',
       //style: 'mapbox://styles/mapbox/standard',
-      //style: 'mapbox://styles/goncalopro2/cmli4rxhm000q01qzfnbzg3fe',
       style: 'mapbox://styles/goncalopro2/cmm4ybep5002p01s2eexw84v1',
-      center: [-8.8882, 38.5243],
-      zoom: 13,
+      center: [view.center[0], view.center[1]],
+      zoom: view.zoom,
       maxZoom: 16,
-      minZoom: 4,
+      minZoom: 4.5,
       pitch: 0,
       bearing: 0,
     });
@@ -117,13 +169,20 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map.touchZoomRotate.disableRotation();
     this.map.keyboard.disableRotation();
 
-    this.map.on('load', () => {
-      this.setupLayers();
-      this.setupInteractions();
-      this.loadPinsInViewport();
 
-      this.map.on('moveend', () => this.loadPinsInViewport());
-      this.map.on('zoomend', () => this.loadPinsInViewport());
+    this.map.on('load', () => {
+      /* this.setupLayers();
+      this.setupInteractions();
+      this.loadPinsInViewport(); */
+
+      this.map.on('moveend', () => {
+        if(this.map.getZoom() < 14)return;
+        this.loadPinsInViewport();
+      });
+      this.map.on('zoomend', () =>{
+        if(this.map.getZoom() < 10)return;
+        this.loadPinsInViewport();
+      });
       this.map.on('click', (e) => this.onMapClick(e));
 
     });
@@ -276,6 +335,22 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  public openModal(modal: ModalKey): void {
+    if (!this.selected) {
+      this.enablePickMode();
+      return;
+    }
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        modal,
+        lat: this.selected.latitude,
+        lng: this.selected.longitude
+      },
+      queryParamsHandling: 'merge'
+    });
+  }
   // =========================
   // Clusters test
   // =========================
@@ -308,7 +383,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
           type: 'geojson',
           data: geojsonData,
           cluster: true,
-          clusterMaxZoom: 14,
+          clusterMaxZoom: 10,
           clusterRadius: 50
         });
 
@@ -461,189 +536,4 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       }
     });
   }
-
-  /* private setupLayers(): void {
-    this.map.addSource('pins-source', {
-      type: 'geojson',
-      data: { type: 'FeatureCollection', features: [] },
-      cluster: true,
-      clusterMaxZoom: 10,
-      clusterRadius: 50, //Pixeis
-      clusterProperties: {
-        count_catch: ['+', ['case', ['==', ['get', 'pinType'], 'catch'], 1, 0]],
-        count_warn: ['+', ['case', ['==', ['get', 'pinType'], 'warn'], 1, 0]],
-        count_info: ['+', ['case', ['==', ['get', 'pinType'], 'info'], 1, 0]],
-      }
-    });
-
-    // Cluster layer (Circle) - Main
-    this.map.addLayer({
-      id: 'clusters-layer',
-      type: 'circle',
-      source: 'pins-source',
-      filter: ['has', 'point_count'],
-      paint: {
-        'circle-color': '#1E293B',
-        'circle-radius': ['step', ['get', 'point_count'], 24, 10, 32, 50, 42],
-        'circle-stroke-width': 2,
-        'circle-stroke-color': '#475569',
-        'circle-opacity': 0.95,
-      },
-    });
-
-    // Sub-Clusters
-
-    PIN_TYPES.forEach(type => {
-      this.addSubClusterLayers(type, PIN_CONFIG[type]);
-    });
-
-    // Layer Count
-    this.map.addLayer({
-      id: 'cluster-count',
-      type: 'symbol',
-      source: 'pins-source',
-      filter: ['has', 'point_count'],
-      layout: {
-        'text-field': ['get', 'point_count_abbreviated'],
-        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-        'text-size': 12
-      },
-      paint: {
-        'text-color': '#F8FAFC',
-      }
-    });
-
-    this.addUnclusteredLayers();
-  }
-
-  private addSubClusterLayers(type: PinType, config: { color: string; position: number[] }): void {
-    const countProp = `count_${type}`;
-
-    this.map.addLayer({
-      id: `cluster-sub-${type}`,
-      type: `circle`,
-      source: `pins-source`,
-      filter: ['all',
-        ['has', 'point_count'],
-        ['>', ['get', countProp], 0]
-      ],
-      paint: {
-        'circle-color': config.color,
-        'circle-radius': [
-          'interpolate', ['linear'], ['get', countProp],
-          1, 8,
-          10, 12,
-          50, 15,
-        ],
-        'circle-translate': [config.position[0], config.position[1]],
-        'circle-stroke-width': 1.5,
-        'circle-stroke-color': '#1E293B',
-        'circle-opacity': 0.95,
-      }
-    });
-
-    this.map.addLayer({
-      id: `cluster-sub-label-${type}`,
-      type: 'symbol',
-      source: 'pins-source',
-      filter: ['all',
-        ['has', 'point_count'],
-        ['>', ['get', countProp], 0]
-      ],
-      layout: {
-        'text-field': ['to-string', ['get', countProp]],
-        'text-font': ['DIN Offc Pro Bold', 'Arial Unicode MS Bold'],
-        'text-size': 9,
-        'text-offset': [config.position[0] / 12, config.position[1] / 12],
-        'text-anchor': 'center',
-      },
-      paint: {
-        'text-color': '#FFFFFF',
-      }
-    });
-  }
-
-  private addUnclusteredLayers(): void {
-    PIN_TYPES.forEach(type => {
-      const { color } = PIN_CONFIG[type];
-      const isUnclustered = ['all',
-        ['!', ['has', 'point_count']],
-        ['==', ['get', 'pinType'], type]
-      ] as mapboxgl.FilterSpecification;
-
-      this.map.addLayer({
-        id: `unclustered-halo-${type}`,
-        type: 'circle',
-        source: 'pins-source',
-        filter: isUnclustered,
-        paint: {
-          'circle-color': color,
-          'circle-radius': 14,
-          'circle-opacity': 0.2,
-        }
-      });
-
-      this.map.addLayer({
-        id: `unclustered-point-${type}`,
-        type: 'circle',
-        source: 'pins-source',
-        filter: isUnclustered,
-        paint: {
-          'circle-color': color,
-          'circle-radius': 8,
-          'circle-stroke-width': 2,
-          'circle-stroke-color': '#FFFFFF',
-          'circle-emissive-strength': 1,
-        }
-      });
-    });
-  }
-
-  private setupInteractions(): void {
-    this.map.on('click', 'clusters-layer', (e) => {
-      const features = this.map.queryRenderedFeatures(e.point, { layers: ['clusters-layer'] });
-      if (!features.length) return;
-
-      const clusterId = features[0].properties?.['cluster_id'];
-      const source = this.map.getSource('pins-source') as mapboxgl.GeoJSONSource;
-
-      source.getClusterExpansionZoom(clusterId, (err, zoom) => {
-        if (err) return;
-        this.map.easeTo({
-          center: (features[0].geometry as GeoJSON.Point).coordinates as [number, number],
-          zoom: zoom as number
-        });
-      });
-    });
-
-
-    const unclusteredLayers = ([0, 1, 2] as PinType[])
-      .map(t => `unclustered-point-${t}`);
-
-    unclusteredLayers.forEach(layerId => {
-      this.map.on('click', layerId, (e) => {
-        if (!e.features?.length) return;
-
-        const feature = e.features[0];
-        const pinId = feature.properties?.['id'];
-        const coordinates = (feature.geometry as GeoJSON.Point).coordinates as [number, number];
-
-        this.pinService.getPinPreview(pinId).subscribe({
-          next: (res: PinPreviewResDTO) => {
-            if (!res.success) return;
-            this.pinDetailService.open(res);
-            this.map.flyTo({ center: coordinates, zoom: 15, speed: 1.2 });
-          }
-        });
-      });
-    });
-
-
-    const interactiveLayers = ['clusters-layer', ...unclusteredLayers];
-    interactiveLayers.forEach(layer => {
-      this.map.on('mouseenter', layer, () => this.map.getCanvas().style.cursor = 'pointer');
-      this.map.on('mouseleave', layer, () => this.map.getCanvas().style.cursor = '');
-    });
-  }
-  */
 }
