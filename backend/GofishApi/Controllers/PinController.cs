@@ -117,9 +117,7 @@ public class PinController : ControllerBase
 
         if (!allowedTypes.Contains(dto.Image.ContentType))
         {
-            throw new ApplicationOperationException("Catch pin creation failed", StatusCodes.Status400BadRequest,
-                [new() { Code = "InvalidFileType", Description = "Invalid file type" }]
-            );
+            throw new AppException("Bad Request", "Invalid file type.", StatusCodes.Status400BadRequest);
         }
         try
         {
@@ -128,9 +126,7 @@ public class PinController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unexpected error during image upload to blob storage");
-            throw new ApplicationOperationException("Catch pin creation failed", StatusCodes.Status503ServiceUnavailable,
-                [new() { Code = "ImageUploadFailed", Description = "Image upload resulted in failure" }]
-            );
+            throw new AppException("Service Unavailable", "Image upload failed.", StatusCodes.Status503ServiceUnavailable);
         }
 
         // Aqui podias criar um metodo ToCatchPin no CreateCatchPinReqDTO
@@ -167,9 +163,7 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new ApplicationOperationException("Catch pin creation failed", StatusCodes.Status503ServiceUnavailable,
-                [new() { Code = "DatabaseFailure", Description = "Failed to save the provided catch pin to the database" }]
-            );
+            throw new AppException("Service Unavailable", "Unable to save this catch pin.", StatusCodes.Status503ServiceUnavailable);
         }
 
         return Ok(new CreateCatchPinResDTO(newPin.Id));
@@ -206,9 +200,7 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new ApplicationOperationException("Information pin creation failed", StatusCodes.Status503ServiceUnavailable,
-                [new() { Code = "DatabaseFailure", Description = "Failed to save the provided information pin to the database" }]
-            );
+            throw new AppException("Service Unavailable", "Unable to save this information pin.", StatusCodes.Status503ServiceUnavailable);
         }
         return Ok(new CreateInfoPinResDTO(newPin.Id));
     }
@@ -244,9 +236,7 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new ApplicationOperationException("Warning pin creation failed", StatusCodes.Status503ServiceUnavailable,
-                [new() { Code = "DatabaseFailure", Description = "Failed to save the provided warning pin to the database" }]
-            );
+            throw new AppException("Service Unavailable", "Unable to save this warning pin.", StatusCodes.Status503ServiceUnavailable);
         }
         return Ok(new CreateWarnPinResDTO(newPin.Id));
     }
@@ -270,9 +260,7 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new ApplicationOperationException("Pin deletion failed", StatusCodes.Status503ServiceUnavailable,
-                [new() { Code = "DatabaseFailure", Description = "Failed to delete the provided pin from the database" }]
-            );
+            throw new AppException("Service Unavailable", "Failed to delete the provided pin.", StatusCodes.Status503ServiceUnavailable);
         }
         return NoContent();
     }

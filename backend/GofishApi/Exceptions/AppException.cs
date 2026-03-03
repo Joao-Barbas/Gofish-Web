@@ -1,0 +1,60 @@
+﻿namespace GofishApi.Exceptions;
+
+/// <summary>
+/// Base exception for application-level errors with settable HTTP status codes.
+/// This is intended to follow the machine-readable format for specifying errors in HTTP API responses based on <see href="https://tools.ietf.org/html/rfc7807"/>.
+/// </summary>
+public class AppException : Exception
+{
+    public string? Title { get; private set; }
+    public int? Status { get; private set; }
+    public string? Detail { get; private set; }
+
+    public AppException(string? message, string? title, string? detail, int? status)
+        : base(message)
+    {
+        Title  = title;
+        Status = status;
+        Detail = detail;
+    }
+
+    public AppException(string? message, string? detail, int? status)
+        : this(message, null, detail, status)
+    { }
+
+    public AppException(string? message, int? status)
+        : this(message, null, null, status)
+    { }
+
+    /// <remarks>
+    /// This constructor is required by .NET exception design guidelines
+    /// to support proper exception chaining and diagnostic preservation.
+    /// </remarks>
+    public AppException(string? message, Exception? innerException)
+        : base(message, innerException)
+    { }
+
+    public AppException(string? message)
+        : base(message)
+    { }
+}
+
+/*
+
+NotFoundException (404) — resource not found
+ConflictException (409) — duplicate or state conflict
+ValidationException (400) — input validation failures
+BadRequestException (400) — general malformed request
+UnauthorizedException (401) — missing or invalid authentication
+ForbiddenException (403) — authenticated but insufficient permissions
+UnprocessableEntityException (422) — semantically invalid request
+TooManyRequestsException (429) — rate limiting
+GoneException (410) — resource permanently removed
+PayloadTooLargeException (413) — request body exceeds limit
+ExternalServiceException (502) — downstream API or service failure
+ServiceUnavailableException (503) — temporary unavailability
+BusinessRuleViolationException (409 or 422) — domain invariant broken
+ConcurrencyException (409) — optimistic concurrency conflict
+TimeoutException (504) — operation timed out
+
+*/

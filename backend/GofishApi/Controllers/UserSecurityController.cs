@@ -46,9 +46,7 @@ public class UserSecurityController : ControllerBase
         }
         if (dto.CurrentPassword == dto.NewPassword)
         {
-            throw new ApplicationOperationException("Attempted password change with existing password", StatusCodes.Status400BadRequest,
-                [new() { Code = "SamePassword", Description = "Your new password must be different from your current password" }]
-            );
+            throw new AppException("Bad Request", "Your new password must be different from your current password.", StatusCodes.Status400BadRequest);
         }
         var result = await _userManager.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
         if (!result.Succeeded)

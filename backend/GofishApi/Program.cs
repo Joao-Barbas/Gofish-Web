@@ -23,7 +23,7 @@ builder.Services.ConfigureIdentityOptions();
 builder.Services.AddAndConfigureCors();
 builder.Services.AddAndConfigureIdentityAuth(builder.Configuration);
 builder.Services.AddAndConfigureControllers();
-builder.Services.AddExceptionHandler<ApplicationExceptionHandler>();
+builder.Services.AddExceptionHandler<AppExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddAndConfigureSwaggerGen();

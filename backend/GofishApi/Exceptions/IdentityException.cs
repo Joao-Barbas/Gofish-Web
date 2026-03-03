@@ -1,15 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using GofishApi.Core;
 
 namespace GofishApi.Exceptions;
 
-public sealed class IdentityException : ApplicationOperationException
+public sealed class IdentityException : AppException
 {
-    public IdentityException(IEnumerable<ApplicationError>? errors)
-        : base("One or more identity validation errors occurred", StatusCodes.Status400BadRequest, errors)
+    public IdentityException(string? message, string? detail)
+        : base(message, detail, StatusCodes.Status400BadRequest)
+    { }
+
+    public IdentityException(string? detail)
+        : this("Identity Error", detail)
     { }
 
     public IdentityException(IEnumerable<IdentityError>? errors)
-        : this(errors?.Select(e => new ApplicationError { Code = e.Code, Description = e.Description }))
+        : this("Identity Error", errors?.First().Description)
     { }
 }

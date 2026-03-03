@@ -1,10 +1,5 @@
-﻿using GofishApi.Core;
+﻿using Microsoft.AspNetCore.Identity;
 using GofishApi.Data;
-using GofishApi.Exceptions;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace GofishApi.Extensions;
 

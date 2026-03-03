@@ -4,7 +4,6 @@ using GofishApi.Exceptions;
 using GofishApi.Dtos;
 using GofishApi.Models;
 using GofishApi.Services;
-using GofishApi.Core;
 
 namespace GofishApi.Controllers;
 
