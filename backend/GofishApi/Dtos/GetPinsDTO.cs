@@ -9,7 +9,7 @@ public record GetPinsReqDTO(
 );
 
 public record GetPinsResDTO(
-    IReadOnlyCollection<PinDTO> Pins
+    IReadOnlyCollection<GetPinsPinDTO> Pins
 );
 
 #region Request
@@ -34,57 +34,57 @@ public record PinDataRequestDTO(
 #endregion
 #region Response
 
-public record PinDTO(
+public record GetPinsPinDTO(
     int Id,
     DateTime CreatedAt,
     VisibilityLevel Visibility,
     PinKind Kind,
     // Optional includes
-    PinDetailsDTO? Details,
-    GeolocationDTO? Geolocation,
-    AuthorDTO? Author,
-    PostDTO? Post
+    GetPinsPinDetailsDTO? Details,
+    GetPinsGeolocationDTO? Geolocation,
+    GetPinsAuthorDTO? Author,
+    GetPinsPostDTO? Post
     // TODO: GroupDTO? List of group this pin could be part of if group visibility
 ){
-    public static PinDTO FromPin(Pin pin, PinDataRequestDTO? request) => new(
+    public static GetPinsPinDTO FromPin(Pin pin, PinDataRequestDTO? request) => new(
         pin.Id,
         pin.CreatedAt,
         pin.Visibility,
         pin.Kind,
-        request?.IncludeDetails ?? false ? PinDetailsDTO.FromPin(pin) : null,
-        request?.IncludeGeolocation ?? false ? GeolocationDTO.FromPin(pin) : null,
-        request?.IncludeAuthor ?? false && pin.AppUser is not null ? AuthorDTO.FromPin(pin) : null,
-        request?.IncludePost ?? false && pin.Post is not null ? PostDTO.FromPin(pin) : null
+        request?.IncludeDetails ?? false ? GetPinsPinDetailsDTO.FromPin(pin) : null,
+        request?.IncludeGeolocation ?? false ? GetPinsGeolocationDTO.FromPin(pin) : null,
+        request?.IncludeAuthor ?? false && pin.AppUser is not null ? GetPinsAuthorDTO.FromPin(pin) : null,
+        request?.IncludePost ?? false && pin.Post is not null ? GetPinsPostDTO.FromPin(pin) : null
     );
 };
 
-public record GeolocationDTO(
+public record GetPinsGeolocationDTO(
     double Latitude,
     double Longitude
 ){
-    public static GeolocationDTO FromPin(Pin pin) => new(
+    public static GetPinsGeolocationDTO FromPin(Pin pin) => new(
         pin.Latitude,
         pin.Longitude
     );
 };
 
-public record AuthorDTO(
+public record GetPinsAuthorDTO(
     string Id,
     string UserName
 ){
-    public static AuthorDTO FromPin(Pin pin) => new(
+    public static GetPinsAuthorDTO FromPin(Pin pin) => new(
         pin.AppUser.Id,
         pin.AppUser.UserName ?? ""
     );
 };
 
-public record PostDTO(
+public record GetPinsPostDTO(
     string? Body = null,
     string? ImageUrl = null,
     int? Score = null, // TODO: Are these really nullable in the future?
     int? CommentCount = null  // ^^^^
 ){
-    public static PostDTO FromPin(Pin pin) => new(
+    public static GetPinsPostDTO FromPin(Pin pin) => new(
         pin.Post.Body,
         pin.Post.ImageUrl,
         pin.Post.Score,
@@ -92,7 +92,7 @@ public record PostDTO(
     );
 };
 
-public record PinDetailsDTO(
+public record GetPinsPinDetailsDTO(
     // Catch pin
     Species? Species = null,
     Bait? Bait = null,
@@ -103,13 +103,13 @@ public record PinDetailsDTO(
     // Warning pin
     WarningKind? WarningKind = null
 ){
-    public static PinDetailsDTO FromPin(Pin pin) => new(
+    public static GetPinsPinDetailsDTO FromPin(Pin pin) => new(
         (pin as CatchPin)?.Species,
         (pin as CatchPin)?.Bait,
         (pin as CatchPin)?.HookSize,
-        (pin as InfoPin)?.AccessDifficulty,
-        (pin as InfoPin)?.Seabed,
-        (pin as WarnPin)?.WarningKind
+        (pin as InfoPin) ?.AccessDifficulty,
+        (pin as InfoPin) ?.Seabed,
+        (pin as WarnPin) ?.WarningKind
     );
 };
 

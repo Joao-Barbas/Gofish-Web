@@ -98,7 +98,7 @@ public class PinController : ControllerBase
         .ToListAsync();
 
         var data = pins
-        .Select(p => PinDTO.FromPin(p, dto.DataRequest))
+        .Select(p => GetPinsPinDTO.FromPin(p, dto.DataRequest))
         .ToList();
 
         return Ok(new GetPinsResDTO(data));
