@@ -3,9 +3,5 @@ export interface DeleteAccountReqDTO {
 }
 
 export interface DeleteAccountResDTO {
-  success?: boolean;
-  errors?: {
-    code: string;
-    description: string;
-  }[]
+  // Unused
 }

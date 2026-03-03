@@ -2,13 +2,17 @@
 
 namespace GofishApi.Exceptions;
 
-public class IdentityException : Exception
+public sealed class IdentityException : AppException
 {
-    public IEnumerable<IdentityError> Errors { get; set; }
+    public IdentityException(string? message, string? detail)
+        : base(message, detail, StatusCodes.Status400BadRequest)
+    { }
 
-    public IdentityException(IEnumerable<IdentityError> errors)
-        : base("Identity operation failed")
-    {
-        Errors = errors;
-    }
+    public IdentityException(string? detail)
+        : this("Identity Error", detail)
+    { }
+
+    public IdentityException(IEnumerable<IdentityError>? errors)
+        : this("Identity Error", errors?.First().Description)
+    { }
 }

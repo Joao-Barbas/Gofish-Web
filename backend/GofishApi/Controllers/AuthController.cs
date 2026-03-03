@@ -39,31 +39,15 @@ public class AuthController : ControllerBase
             FirstName = dto.FirstName,
             LastName = dto.LastName
         };
-        try
-        {
-            IdentityResult result;
-            result = await _userManager.CreateAsync(user, dto.Password);
-            if (!result.Succeeded) { throw new IdentityException(result.Errors); }
-            result = await _userManager.AddToRoleAsync(user, "User");
-            if (!result.Succeeded) { throw new IdentityException(result.Errors); }
-            return Ok(new ApiResponse<object>());
-        }
-        catch (IdentityException ex)
-        {
-            return BadRequest(new ApiErrorResponse
-            {
-                Errors = ex.Errors
-                           .Select(e => new ApiError(e.Code, e.Description))
-                           .ToList()
-            });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new ApiErrorResponse
-            {
-                Errors = [new("UnexpectedError", ex.Message)]
-            });
-        }
+
+        IdentityResult result;
+
+        result = await _userManager.CreateAsync(user, dto.Password);
+        if (!result.Succeeded) throw new IdentityException(result.Errors);
+        result = await _userManager.AddToRoleAsync(user, "User");
+        if (!result.Succeeded) throw new IdentityException(result.Errors);
+
+        return StatusCode(StatusCodes.Status201Created);
     }
 
     [HttpPost("SignIn")]
@@ -74,17 +58,11 @@ public class AuthController : ControllerBase
 
         if (user is null)
         {
-            return NotFound(new ApiErrorResponse
-            {
-                Errors = [new("NoSuchUser", "Email or username returned no results")]
-            });
+            return Unauthorized();
         }
         if (!await _userManager.CheckPasswordAsync(user, dto.Password))
         {
-            return BadRequest(new ApiErrorResponse
-            {
-                Errors = [new("InvalidCredentials", "Email/username or password is incorrect")]
-            });
+            return Unauthorized();
         }
         if (user.TwoFactorEnabled)
         {
@@ -92,18 +70,12 @@ public class AuthController : ControllerBase
             if (hasAuthenticator)
             {
                 var twoFactorToken = _twoFactorService.CreateTwoFactorToken(user);
-                return Ok(new ApiResponse<SignInResDTO>
-                {
-                    Data = new(null, true, twoFactorToken)
-                });
+                return Ok(new SignInResDTO(null, true, twoFactorToken));
             }
         }
 
         var token = await _jwtService.CreateTokenAsync(user);
-        return Ok(new ApiResponse<SignInResDTO>
-        {
-            Data = new(token)
-        });
+        return Ok(new SignInResDTO(token));
     }
 
     // [Authorize(Roles = "Admin")]

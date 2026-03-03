@@ -31,54 +31,28 @@ public class UserSecurityController : ControllerBase
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         var user   = userId is null ? null : await _userManager.FindByIdAsync(userId);
-
-        if (user is null)
-        {
-            return NotFound(new ApiErrorResponse
-            {
-                Errors = [new("UserNotFound", "Id returned no results")]
-            });
-        }
-
-        return Ok(new ApiResponse<SecurityInfoResDTO>
-        {
-            Data = new(user.TwoFactorEnabled, user.TwoFactorMethod)
-        });
+        if (user is null) return Unauthorized();
+        return Ok(new SecurityInfoResDTO(user.TwoFactorEnabled, user.TwoFactorMethod));
     }
 
     [HttpPost("ChangePassword")]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordReqDTO dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
-
-        if (dto.CurrentPassword == dto.NewPassword)
-        {
-            return BadRequest(new ApiErrorResponse
-            {
-                Errors = [new("EqualPasswords", "New password equals current password")]
-            });
-        }
+        var user   = userId is null ? null : await _userManager.FindByIdAsync(userId);
         if (user is null)
         {
-            return NotFound(new ApiErrorResponse
-            {
-                Errors = [new("UserNotFound", "Id returned no results")]
-            });
+            return Unauthorized();
         }
-
-        var result = await _userManager.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
-
-        if (result.Succeeded is false)
+        if (dto.CurrentPassword == dto.NewPassword)
         {
-            return BadRequest(new ApiErrorResponse
-            {
-                Errors = result.Errors
-                               .Select(e => new ApiError(e.Code, e.Description))
-                               .ToList()
-            });
+            throw new AppException("Bad Request", "Your new password must be different from your current password.", StatusCodes.Status400BadRequest);
         }
-
-        return Ok(new ApiResponse<object>());
+        var result = await _userManager.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
+        if (!result.Succeeded)
+        {
+            throw new IdentityException(result.Errors);
+        }
+        return Ok();
     }
 }

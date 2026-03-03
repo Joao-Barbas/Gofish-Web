@@ -7,9 +7,5 @@ export interface SignUpReqDTO {
 }
 
 export interface SignUpResDTO {
-  success: boolean;
-  errors?: {
-    code: string;
-    description: string;
-  }[];
+  // Unused
 }

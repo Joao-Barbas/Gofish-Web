@@ -12,6 +12,7 @@ import { Path } from '@gofish/shared/constants';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DeleteAccountResDTO } from '@gofish/shared/dtos/user-account.dto';
+import { getFirstError, ProblemDetails } from '@gofish/shared/core/problem-details';
 
 @Component({
   selector: 'app-personal-data',
@@ -71,8 +72,8 @@ export class PersonalDataComponent {
       },
       error: (err: HttpErrorResponse) => {
         this.busyState.setBusy(false);
-        var res = err.error as DeleteAccountResDTO;
-        this.modalErrorText = res.errors?.[0]?.code === 'InvalidCredentials' ? 'Invalid credential' : 'Something went wrong. Try again later'
+        let problem = err.error as ProblemDetails;
+        this.modalErrorText = getFirstError(problem) ?? 'Something went wrong. Try again later'
         this.modalService.open('confirm-deletion-modal');
       }
     });

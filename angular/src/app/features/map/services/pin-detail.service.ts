@@ -7,12 +7,12 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class PinDetailService {
-  private selectedPinSubject = new BehaviorSubject<Pick<PinPreviewResDTO, "data"> | null>(null);
+  private selectedPinSubject = new BehaviorSubject<PinPreviewResDTO | null>(null);
   selectedPin$ = this.selectedPinSubject.asObservable();
 
   constructor() { }
 
-  open(pin: Pick<PinPreviewResDTO, "data">): void {
+  open(pin: PinPreviewResDTO): void {
     this.selectedPinSubject.next(pin);
   }
 

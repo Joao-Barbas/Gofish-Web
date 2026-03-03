@@ -4,14 +4,7 @@ export interface SignInReqDTO {
 }
 
 export interface SignInResDTO {
-  success: boolean;
-  data?: {
-    token?: string;
-    requiresTwoFactor?: boolean;
-    twoFactorToken?: string;
-  };
-  errors?: {
-    code: string;
-    description: string;
-  }[];
+  token?: string;
+  requiresTwoFactor?: boolean;
+  twoFactorToken?: string;
 }
