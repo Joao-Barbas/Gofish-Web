@@ -9,6 +9,7 @@ import { FirstKeyPipe } from '@gofish/shared/pipes/first-key.pipe';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/signup.dto';
 import { Path } from '@gofish/shared/constants';
+import { getFirstError, ProblemDetails } from '@gofish/shared/core/problem-details';
 
 @Component({
   selector: 'app-signup',
@@ -74,15 +75,14 @@ export class SignupComponent implements OnInit {
       next: (res: SignUpResDTO) => {
         this.setBusy(false);
         this.isSubmitted = false;
-        if (!res.success) return;
         this.form.reset();
         this.router.navigate([Path.HOME]);
       },
       error: (err: HttpErrorResponse) => {
         this.setBusy(false);
         this.isSubmitted = false;
-        var res = err.error as SignUpResDTO;
-        this.formErrors.push(res.errors?.[0]?.description ?? 'Server error. Try again later.');
+        let problem = err.error as ProblemDetails
+        this.formErrors.push(getFirstError(problem) ?? 'Server error. Try again later');
       }
     })
   }

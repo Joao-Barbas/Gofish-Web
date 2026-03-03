@@ -8,9 +8,9 @@
         </div>
 
         <div class="horizontal-flow gap-4 align-center-center">
-          <span class="dark-text text-medium font-main" style="font-size: 14px;">{{ pin.data?.authorUserName }}</span>
+          <span class="dark-text text-medium font-main" style="font-size: 14px;">{{ pin?.authorUserName }}</span>
           <span class="dark-text-muted" style="font-size: 12px;">•</span>
-          <span class="dark-text-muted font-main" style="font-size: 12px;">{{ pin.data?.createdAt | timeAgo }}</span>
+          <span class="dark-text-muted font-main" style="font-size: 12px;">{{ pin?.createdAt | timeAgo }}</span>
         </div>
       </div>
 
@@ -23,15 +23,15 @@
       </button>
     </header>
 
-    @if (pin.data?.pinType === pinKind.CATCH) {
+    @if (pin?.pinType === pinKind.CATCH) {
     <div class="pin-preview-click__image-wrapper">
-      <img [src]="pin.data?.postImageUrl" class="pin-preview-click__img" alt="Preview">
+      <img [src]="pin?.postImageUrl" class="pin-preview-click__img" alt="Preview">
     </div>
     }
 
 
     <div class="pin-preview-click__body" style="padding: 0 0 12px 0;">
-      <p class="dark-text font-main" style="font-size: 14px; margin: 0;">{{ pin.data?.postBody }}</p>
+      <p class="dark-text font-main" style="font-size: 14px; margin: 0;">{{ pin?.postBody }}</p>
     </div>
 
     <footer class="horizontal-flow align-center-center" style="justify-content: space-between; width: 100%;">

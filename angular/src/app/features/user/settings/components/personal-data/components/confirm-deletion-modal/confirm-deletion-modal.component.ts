@@ -41,7 +41,7 @@ export class ConfirmDeletionModalComponent implements SimpleModal, OnInit {
     this.userSecurityService.getSecurityInfo().subscribe({
       next: (res: SecurityInfoResDTO) => {
         console.log(res)
-        this.requireTwoFactorApp = res.data?.twoFactorEnabled ?? false;
+        this.requireTwoFactorApp = res.twoFactorEnabled;
         this.loadingState.success();
       },
       error: (err: HttpErrorResponse) => {

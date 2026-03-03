@@ -1,9 +1,3 @@
-export interface ApiResponse<T> {
-  success: boolean;
-  data: T;
-  errors?: any[];
-}
-
 // Create CatchPin
 export interface CreateCatchPinReqDTO {
   latitude: number;
@@ -41,41 +35,33 @@ export interface CreatePinResDTO {
 }
 
 export type PinPreviewResDTO = {
-  success: boolean;
-  data?: {
-    // Pin
-    id: number;
-    latitude: number;
-    longitude: number;
-    createdAt: string;
-    pinType: number;
+  // Pin
+  id: number;
+  latitude: number;
+  longitude: number;
+  createdAt: string;
+  pinType: number;
 
-    // User
-    authorId: number;
-    authorUserName: string;
+  // User
+  authorId: number;
+  authorUserName: string;
 
-    // Post
-    postBody?: string;
-    postImageUrl?: string;
+  // Post
+  postBody?: string;
+  postImageUrl?: string;
 
-    // Catch Pin
-    speciesType?: number;
-    baitType?: number;
-    hookSize?: number;
+  // Catch Pin
+  speciesType?: number;
+  baitType?: number;
+  hookSize?: number;
 
-    // Info Pin
-    accessDifficulty?: number;
-    seaBedType?: number;
+  // Info Pin
+  accessDifficulty?: number;
+  seaBedType?: number;
 
-    // Warn Pin
-    warningType?: number;
-  }
-  errors?: {
-    code: string;
-    description: string;
-  }[]
+  // Warn Pin
+  warningType?: number;
 }
-
 
 export interface ViewportPinsResDTO {
   pins: ViewportPinDTO[];
@@ -89,5 +75,3 @@ export interface ViewportPinDTO {
   visibility: number;
   kind: number;
 }
-
-

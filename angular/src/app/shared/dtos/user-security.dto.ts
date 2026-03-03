@@ -1,12 +1,12 @@
-import { SecurityInfo } from "@gofish/shared/models/user-security.models";
+import { TwoFactorMethod } from "@gofish/shared/models/user-security.models"
+
+export interface SecurityInfoReqDTO {
+  // Unused
+}
 
 export interface SecurityInfoResDTO {
-  success: boolean;
-  data?: SecurityInfo;
-  errors?: {
-    code: string;
-    description: string;
-  }[]
+  twoFactorEnabled: boolean,
+  twoFactorMethod: TwoFactorMethod
 }
 
 export interface ChangePasswordReqDTO {
@@ -16,9 +16,5 @@ export interface ChangePasswordReqDTO {
 }
 
 export interface ChangePasswordResDTO {
-  success: boolean;
-  errors?: {
-    code: string;
-    description: string;
-  }[]
+  // Unused
 }

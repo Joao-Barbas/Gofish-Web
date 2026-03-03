@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Path } from '@gofish/shared/constants';
+import { getFirstError, ProblemDetails } from '@gofish/shared/core/problem-details';
 import { SignInReqDTO, SignInResDTO } from '@gofish/shared/dtos/signin.dto';
 import { AuthService } from '@gofish/shared/services/auth.service';
 
@@ -49,14 +50,14 @@ export class SigninComponent implements OnInit {
         this.setBusy(false);
         this.isSubmitted = false;
         this.form.reset();
-        this.authService.insertToken(res.data?.token!);
+        this.authService.insertToken(res.token!); // TODO: This wont work if 2fa enabled
         this.router.navigate([Path.MAP]);
       },
       error: (err: HttpErrorResponse) => {
         this.setBusy(false);
         this.isSubmitted = false;
-        var res = err.error as SignInResDTO;
-        this.formErrors.push(res.errors?.[0].description ?? 'Server error. Try again later.');
+        let problem = err.error as ProblemDetails
+        this.formErrors.push(getFirstError(problem) ?? 'Server error. Try again later');
       }
     });
   }

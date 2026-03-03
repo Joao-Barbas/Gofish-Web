@@ -9,7 +9,7 @@ import { MarkerRegistryService } from '@gofish/features/map/services/marker-regi
 import { PinDetailService } from '@gofish/features/map/services/pin-detail.service';
 import { PinDetailPanelComponent } from './components/pin-detail-panel/pin-detail-panel.component';
 import { OverlayHeaderComponent } from '@gofish/features/header/overlay-header/overlay-header.component';
-import { ApiResponse, ViewportPinDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
+import { PinPreviewResDTO, ViewportPinDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { PopupService } from '@gofish/shared/services/popup.service';
@@ -324,9 +324,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   private getPinsInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number): void {
     this.pinService.getInViewport(minLat, minLng, maxLat, maxLng).subscribe({
-      next: (res: ApiResponse<ViewportPinsResDTO>) => {
+      next: (res: ViewportPinsResDTO) => {
         //console.log('Pins in viewport loaded:', res.data?.pins);
-        this.allPins = res.data?.pins || [];
+        this.allPins = res?.pins || [];
         this.setupLayers();
       },
       error: (err: HttpErrorResponse) => {
@@ -503,10 +503,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.pinHoverPreview.clear();
 
         this.pinService.getPinPreview(pin.id).subscribe({
-          next: (res) => {
-            if (!res.success) return;
-            console.log('Pin details loaded:', res.data);
-            this.pinDetailService.open({ data: res.data });
+          next: (res: PinPreviewResDTO) => {
+            console.log('Pin details loaded:', res);
+            this.pinDetailService.open(res);
             this.map.flyTo({ center: [pin.longitude, pin.latitude], zoom: 13 });
           },
           error: (err) => console.error('Erro ao carregar pin:', err)

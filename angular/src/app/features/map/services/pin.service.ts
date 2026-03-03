@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, PinPreviewResDTO, CreatePinResDTO, ApiResponse } from '@gofish/shared/dtos/pin.dto';
+import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, PinPreviewResDTO, CreatePinResDTO } from '@gofish/shared/dtos/pin.dto';
 import { EnumDTO} from '@gofish/shared/dtos/enum.dto';
 import { Api } from '@gofish/shared/constants';
 
@@ -23,13 +23,13 @@ export class PinService {
     return this.http.post<CreatePinResDTO>(Api.Pin.action('CreateWarnPin'), dto);
   }
 
-  getInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number) {
-    return this.http.get<ApiResponse<ViewportPinsResDTO>>(Api.Pin.action('GetInViewport'), {
+  getInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number): Observable<ViewportPinsResDTO> {
+    return this.http.get<ViewportPinsResDTO>(Api.Pin.action('GetInViewport'), {
       params: { minLat, minLng, maxLat, maxLng }
     });
   }
 
-  getPinPreview(pinId: number) {
+  getPinPreview(pinId: number): Observable<PinPreviewResDTO> {
     return this.http.get<PinPreviewResDTO>(`${Api.Pin.action('GetPinPreview')}/${pinId}`);
   }
 
