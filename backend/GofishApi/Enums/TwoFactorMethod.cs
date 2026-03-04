@@ -3,7 +3,7 @@
 public enum TwoFactorMethod
 {
     None  = 0,
-    App   = 1,
+    Totp  = 1,
     Email = 2,
-    Sms   = 3
+    Sms   = 3  // Just here. Won't implement
 }
