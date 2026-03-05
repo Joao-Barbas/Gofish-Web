@@ -1,18 +1,22 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using GofishApi.Enums;
 
-namespace GofishApi.Models
+namespace GofishApi.Models;
+
+public class CatchPin : Pin
 {
-    public class CatchPin : PinBase
-    {
-        public const int ExpiresInDays = 7;
+    #region Constant Properties
 
-        public SpeciesType? SpeciesType { get; set; }
-        public int? HookSize { get; set; }
-        public BaitType? BaitType { get; set; }
-        
-        [Required]
-        [MaxLength(500)]
-        public required string ImageUrl { get; set; }
-    }
+    public const int ExpiresInDays = 7;
+
+    #endregion
+    #region Scalar Properties
+
+    [MaxLength(5)]
+    public string? HookSize { get; set; } // European standard
+
+    public Species? Species { get; set; }
+    public Bait? Bait { get; set; }
+
+    #endregion
 }

@@ -1,17 +1,26 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using GofishApi.Enums;
+using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
-namespace GofishApi.Models
+namespace GofishApi.Models;
+
+public class AppUser : IdentityUser
 {
-    public class AppUser : IdentityUser
-    {
-        [PersonalData]
-        // [Required]
-        [Column(TypeName = "nvarchar(256)")]
-        public string? FirstName { get; set; }
+    [PersonalData]
+    [StringLength(256)]
+    public string? FirstName { get; set; }
 
-        [PersonalData]
-        [Column(TypeName = "nvarchar(256)")]
-        public string? LastName { get; set; }
-    }
+    [PersonalData]
+    [StringLength(256)]
+    public string? LastName { get; set; }
+
+    [PersonalData]
+    [DefaultValue(TwoFactorMethod.None)]
+    public TwoFactorMethod TwoFactorMethod { get; set; } = TwoFactorMethod.None;
+
+    // Navigation Properties
+
+    public List<Friendship> RequestedFriendships { get; set; } = [];
+    public List<Friendship> ReceivedFriendships { get; set; } = [];
 }

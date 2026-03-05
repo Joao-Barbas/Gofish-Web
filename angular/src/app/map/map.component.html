@@ -1,9 +1,0 @@
-<app-create-pin
-  [selectedCoords]="selected"
-  (requestPickOnMap)="enablePickMode()"
-  (coordsSelected)="onCoordsSelected($event)"
-  (creationComplete)="onPinCreated()"
-  (creationFailed)="onPinCreateFailed($event)">
-</app-create-pin>
-
-<div id="map"></div>

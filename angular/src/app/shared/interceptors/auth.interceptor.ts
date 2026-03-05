@@ -1,34 +1,23 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { Path } from '@gofish/shared/constants';
 import { AuthService } from '@gofish/shared/services/auth.service';
+import { catchError, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService: AuthService = inject(AuthService);
-  if (!authService.isSignedIn()) return next(req);
-  var clonedReq = req.clone({
-    headers: req.headers.set('Authorization', `Bearer ${authService.getToken()}`)
-  });
-  return next(clonedReq);
-};
-
-/*export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService: AuthService = inject(AuthService);
   const router = inject(Router);
 
-  if (!authService.isSignedIn()) {
-    return next(req).pipe(
-      catchError(err => {
-        if (err.status === 401) {
-          authService.deleteToken();
-          router.navigate(['/users/signin']);
-        }
-        return throwError(() => err);
-      })
-    );
+  if (authService.isAuthenticated()) {
+    req = req.clone({
+      headers: req.headers.set('Authorization', `Bearer ${authService.getEncodedToken()}`)
+    });
   }
 
-  var newReq = req.clone({
-    headers: req.headers.set('Authorization', `Bearer ${authService.getToken()}`)
-  });
-  return next(newReq);
-};*/
+  return next(req).pipe(catchError(err => {
+    if (err.status === 401) authService.signOut();
+    if (err.status === 403) router.navigate([Path.HOME]);
+    return throwError(() => err);
+  }));
+};

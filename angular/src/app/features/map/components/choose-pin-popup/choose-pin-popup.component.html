@@ -1,0 +1,52 @@
+<div class="choose-pin-popup-container d-flex flex-column gf-gap-16">
+
+  <!-- Seção de seleção de localização -->
+  <div class="d-flex flex-column align-items-center gf-gap-12">
+
+    <!-- Botões de escolha de localização -->
+    <div class="d-flex flex-row gf-gap-16 pin-types-showcase justify-content-center">
+      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="onCreateByGeolocation()">
+        <button class = "modal-info-box location-toggle-btn" [class.active]="selectedLocationMode === 'geo'">Current Location</button>
+      </div>
+      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="chooseOnMap()">
+        <button class = "modal-info-box location-toggle-btn" [class.active]="selectedLocationMode === 'map'">On Map</button>
+      </div>
+    </div>
+
+    <!-- Coordenadas selecionadas -->
+    @if (selectedCoords) {
+      <div class="text-center mt-2 animate-fade-in d-flex align-items-center gap-1">
+        <div class="d-flex align-items-center gap-1">
+            <p class="mb-0 dark-bg-dark modal-info-box">{{ selectedCoords.latitude | number:'1.4-4' }}</p>
+            <p class="mb-0 dark-bg-dark modal-info-box">{{ selectedCoords.longitude | number:'1.4-4' }}</p>
+          </div>
+      </div>
+    }
+
+    <!-- Mensagem de erro -->
+    @if(errorMessage.length > 0) {
+      <p class="text-danger small mt-1">{{ errorMessage }}</p>
+    }
+
+  </div>
+
+  <hr>
+  <!-- Seção de tipos de pin -->
+  <div class="d-flex flex-row gf-gap-8 pin-types-showcase justify-content-center">
+    <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="createWarnPin()">
+      <button class="pin-img-btn warn"></button>
+      <label class="pin-name">Warning</label>
+    </div>
+
+    <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="createInfoPin()">
+      <button class="pin-img-btn info"></button>
+      <label class="pin-name">Information</label>
+    </div>
+
+    <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="createCatchPin()">
+      <button class="pin-img-btn catch"></button>
+      <label class="pin-name">Catch</label>
+    </div>
+  </div>
+
+</div>

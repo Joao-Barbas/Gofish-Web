@@ -1,0 +1,24 @@
+<!-- personal-data.component.html -->
+
+<h4>Personal Data</h4>
+<p>
+  Your account contains personal data that you have provided to us.
+  This page allows you to download a copy of your data or request its deletion.
+  For more details on how we collect, use, and protect your information, please review our privacy policy.
+</p>
+<small>
+  WARNING: Deleting your data includes permanent deletion of your account and that action cannot be undone.
+</small>
+<div>
+  <button class="good" (click)="onDownloadClick()" [disabled]="busyState.isBusy()">Download</button>
+  <button class="bad" (click)="onDeleteClick()" [disabled]="busyState.isBusy()">Delete</button>
+</div>
+@if (this.modalService.activeModal() === 'confirm-deletion-modal') {
+  <app-confirm-deletion-modal
+    animate.enter="on-enter"
+    animate.leave="on-leave"
+    [errorText]="modalErrorText"
+    (negative)="onModalNegative()"
+    (positive)="onModalPositive($event)"
+  ></app-confirm-deletion-modal>
+}

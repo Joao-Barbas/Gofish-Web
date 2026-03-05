@@ -1,8 +1,17 @@
-﻿namespace GofishApi.Models
+﻿using GofishApi.Enums;
+
+namespace GofishApi.Models;
+
+public class WarnPin : Pin
 {
-    public class WarnPin : PinBase
-    {
-        public const int ExpiresInDays = 1;
-        public WarnPinType WarnPinType;
-    }
+    #region Constant Properties
+
+    public const int ExpiresInDays = 1;
+
+    #endregion
+    #region Scalar Properties
+
+    public required WarningKind WarningKind { get; set; }
+
+    #endregion
 }

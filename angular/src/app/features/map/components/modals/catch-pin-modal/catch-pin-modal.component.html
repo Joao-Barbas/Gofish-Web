@@ -1,0 +1,118 @@
+<div class="modal-backdrop-custom d-flex justify-content-center align-items-center">
+  <div class="modal-custom gf-card">
+
+    <!-- Header -->
+    <div class="modal-header text-white align-items-center mb-3">
+      <h5 class="mb-0 text-bold modal-header-title">What did you catch today?</h5>
+      <button class="ms-auto generic-icon-button-wrapper" (click)="onCancel()">
+        <div class="icon-close icon-size-pin-modal"></div>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+
+      <!-- Content -->
+      <h5 class="text-slim modal-body-section-title mt-3">Content</h5>
+      <section class="d-flex flex-column">
+
+        <!-- Drag And Drop -->
+        <div
+          class="modal-body-drag-n-drop d-flex flex-column justify-content-center align-items-center generic-select-wrapper-text"
+          (click)="fileInput.click()">
+          @if (image) {
+          <p class="drag-text mb-0">{{ image.name }}</p>
+          } @else {
+          <div class="drag-icon mb-3 mt-1"></div>
+          <p class="drag-text mb-0">Drag And Drop</p>
+          }
+        </div>
+        <input #fileInput type="file" accept="image/*" hidden (change)="onImageSelected($event)" />
+
+        <!-- Descrição -->
+        <textarea name="description" id="catchPinDescription" class="modal-body-description dark-bg-dark dark-text"
+          placeholder="Add a description..." [(ngModel)]="body"></textarea>
+
+      </section>
+
+      <!-- Options -->
+      <h5 class="text-slim modal-body-section-title mt-3">Options</h5>
+      <section class="d-flex flex-column">
+
+        <!-- Geolocalização -->
+        <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
+          <h5 class="modal-body-options-text text-slim mb-0">Geolocation</h5>
+          <div class="d-flex align-items-center gap-1">
+            <p class="mb-0 dark-bg-dark modal-info-box">{{ coords?.latitude || '—' }}</p>
+            <p class="mb-0 dark-bg-dark modal-info-box">{{ coords?.longitude || '—' }}</p>
+          </div>
+        </div>
+
+        <!-- Visibilidade -->
+        <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
+          <h5 class="modal-body-options-text text-slim mb-0">Visibility</h5>
+          <div class="d-flex align-items-center gap-1 radio-group-container">
+            @for (option of visibilityOptions; track option.value) {
+            <div class="visibility-option">
+              <input type="radio" [id]="'vis-' + option.value" name="visibility" [value]="option.value"
+                [checked]="selectedVisibility === option.value" (change)="selectedVisibility = option.value"
+                class="d-none"> <label [for]="'vis-' + option.value" class="modal-visibility-btn"
+                [class.active]="selectedVisibility === option.value">
+                {{ option.label }}
+              </label>
+            </div>
+            }
+          </div>
+        </div>
+
+        <!-- Espécie -->
+        <div class="options-line d-flex align-items-center justify-content-between dark-text-muted mb-3">
+          <h5 class="modal-body-options-text text-slim mb-0">Species</h5>
+          <div class="d-flex align-items-center">
+            <select class="form-select form-select-sm custom-dropdown" [(ngModel)]="selectedSpecies">
+              @for (option of speciesOptions; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
+          <h5 class="modal-body-options-text text-slim mb-0">Bait</h5>
+          <div class="d-flex align-items-center">
+            <select class="form-select form-select-sm custom-dropdown" [(ngModel)]="selectedBait">
+              @for (option of baitOptions; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <!-- Tamanho do anzol -->
+        <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
+          <h5 class="modal-body-options-text text-slim mb-0">Hook Size</h5>
+          <input type="text" class="dark-bg-dark dark-text modal-info-box" placeholder="ex: 2/0"
+            [(ngModel)]="hookSize" />
+        </div>
+
+      </section>
+
+      <!-- Erro -->
+      @if (errorMessage) {
+      <p class="text-danger mt-2 mb-0">{{ errorMessage }}</p>
+      }
+
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer mt-2">
+      <button class="btn btn-secondary" [disabled]="isSubmitting" (click)="onCancel()">
+        Cancel
+      </button>
+      <button class="btn btn-primary" [disabled]="isSubmitting" (click)="onPublish()">
+        @if (isSubmitting) { Publishing... } @else { Publish }
+      </button>
+    </div>
+
+  </div>
+</div>

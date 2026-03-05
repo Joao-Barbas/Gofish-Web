@@ -1,247 +1,267 @@
-﻿using Azure.Core;
+﻿using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using GofishApi.Data;
 using GofishApi.Dtos;
 using GofishApi.Models;
 using GofishApi.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using static GofishApi.Dtos.GetNearbyPinsResDTO;
+using GofishApi.Enums;
+using GofishApi.Exceptions;
 
-namespace GofishApi.Controllers
+namespace GofishApi.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class PinController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PinController : ControllerBase
+    private readonly ILogger<PinController> _logger;
+    private readonly IBlobStorageService _blobStorage;
+    private readonly AppDbContext _db;
+    private readonly UserManager<AppUser> _userManager;
+
+    public PinController(
+        ILogger<PinController> logger,
+        IBlobStorageService blobStorage,
+        AppDbContext db,
+        UserManager<AppUser> userManager
+    ){
+        _logger = logger;
+        _blobStorage = blobStorage;
+        _db = db;
+        _userManager = userManager;
+    }
+
+    [Authorize]
+    [HttpGet("GetInViewport")]
+    public async Task<IActionResult> GetInViewport(
+        [FromQuery] double minLat,
+        [FromQuery] double minLng,
+        [FromQuery] double maxLat,
+        [FromQuery] double maxLng
+    ){
+        // TODO: Visibility level is not being accounted for yet
+        var pins = await _db.Pins
+        .Where(p =>
+            (p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng) &&
+            (p.ExpiresAt == null || p.ExpiresAt > DateTime.UtcNow))
+        .Select(p => new ViewportPinDTO(
+            p.Id,
+            p.Latitude,
+            p.Longitude,
+            p.CreatedAt,
+            p.Visibility,
+            p.Kind
+        ))
+        .ToListAsync();
+        return Ok(new ViewportPinsResDTO(pins));
+    }
+
+    [Authorize]
+    [HttpPost("GetPins")]
+    public async Task<IActionResult> GetPins(GetPinsReqDTO dto)
     {
-        private readonly ILogger<PinController> _logger;
-        private readonly AppDbContext _db;
-        private readonly IBlobStorageService _blobStorage;        
+        // TODO: Visibility level is not being accounted for yet
 
-        public PinController(
-            ILogger<PinController> logger,
-            AppDbContext db,
-            IBlobStorageService blobStorage
-        ){
-            _logger = logger;
-            _db = db;
-            _blobStorage = blobStorage;
-        }
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        var user   = userId is null ? null : await _userManager.FindByIdAsync(userId);
 
-        [Authorize]
-        [HttpGet("GetInViewport")]
-        public async Task<IActionResult> GetInViewport(
-            [FromQuery] double minLat,
-            [FromQuery] double minLon,
-            [FromQuery] double maxLat,
-            [FromQuery] double maxLon
-        ){
-            var pins = await _db.Pins
-            .Where(p => 
-                (p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLon && p.Longitude <= maxLon) &&
-                (p.ExpiresAt == null || p.ExpiresAt > DateTime.UtcNow))
-            .Select(p => new NearbyPinDTO
-            {
-                Id = p.Id,
-                Latitude = p.Latitude,
-                Longitude = p.Longitude,
-                CreatedAt = p.CreatedAt,
-                PinType = p.PinType
-            })
-            .ToListAsync();
-            return Ok(new GetNearbyPinsResDTO { Success = true, Pins = pins });
-        }
-
-
-        [Authorize]
-        [HttpGet("GetPinPreview/{id}")]
-        public async Task<IActionResult> GetPinPreview(int id)
+        if (user is null)
         {
-            var pin = await _db.Pins
-            .Where(p => p.Id == id)
-            .FirstOrDefaultAsync();
+            return Unauthorized();
+        }
+
+        var pinIds = new List<int>();
+
+        foreach (var id in dto.Ids)
+        {
+            if (id.PinId is not null)
+            {
+                pinIds.Add(id.PinId.Value);
+            }
+            if (id.AuthorId is not null && id.AuthorId != "")
+            {
+                pinIds.AddRange(await _db.Pins
+                .Where(p => p.UserId == id.AuthorId)
+                .Select(p => p.Id)
+                .ToListAsync());
+            }
+            // TODO: Implement group logic when are added
+        }
+
+        var pins = await _db.Pins
+        .Where((p) => pinIds.Contains(p.Id))
+        .Include((p) => p.AppUser)
+        .Include((p) => p.Post)
+        .ToListAsync();
+
+        var data = pins
+        .Select(p => GetPinsPinDTO.FromPin(p, dto.DataRequest))
+        .ToList();
+
+        return Ok(new GetPinsResDTO(data));
+    }
+
+    #region CreatePins
+
+    [Authorize]
+    [HttpPost("CreateCatchPin")]
+    [RequestSizeLimit(5_000_000)]
+    public async Task<IActionResult> CreateCatchPin([FromForm] CreateCatchPinReqDTO dto)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var allowedTypes = new[] { "image/jpeg", "image/png" };
+        string imageUrl;
+
+        if (!allowedTypes.Contains(dto.Image.ContentType))
+        {
+            throw new AppException("Bad Request", "Invalid file type.", StatusCodes.Status400BadRequest);
+        }
+        try
+        {
+            imageUrl = await _blobStorage.UploadImageAsync(dto.Image);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error during image upload to blob storage");
+            throw new AppException("Service Unavailable", "Image upload failed.", StatusCodes.Status503ServiceUnavailable);
+        }
+
+        // Aqui podias criar um metodo ToCatchPin no CreateCatchPinReqDTO
+        // Se se repetisse mais que esta vez
+        var newPin = new CatchPin
+        {
+            Latitude   = dto.Latitude,
+            Longitude  = dto.Longitude,
+            CreatedAt  = DateTime.UtcNow,
+            ExpiresAt  = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
+            Visibility = dto.Visibility,
+            Kind       = PinKind.Catch,
+            UserId     = userId,
+
+            Species  = dto.Species,
+            Bait     = dto.Bait,
+            HookSize = dto.HookSize,
+
+            Post = new Post
+            {
+                Body      = dto.Body,
+                ImageUrl  = imageUrl,
+                CreatedAt = DateTime.UtcNow,
+                UserId    = userId
+            }
+        };
+
+        try
+        {
+            // _db.Posts.Add() and also set PinId on Post is not needed
+            // Entity framework should do it correctly behind the scenes
+            _db.Pins.Add(newPin);
+            await _db.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            throw new AppException("Service Unavailable", "Unable to save this catch pin.", StatusCodes.Status503ServiceUnavailable);
+        }
+
+        return Ok(new CreateCatchPinResDTO(newPin.Id));
+    }
+
+    [Authorize]
+    [HttpPost("CreateInfoPin")]
+    public async Task<IActionResult> CreateInfoPin(CreateInfoPinReqDTO dto)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var newPin = new InfoPin
+        {
+            Latitude   = dto.Latitude,
+            Longitude  = dto.Longitude,
+            CreatedAt  = DateTime.UtcNow,
+            Visibility = dto.Visibility,
+            Kind       = PinKind.Information,
+            UserId     = userId,
+
+            AccessDifficulty = dto.AccessDifficulty,
+            Seabed           = dto.Seabed,
+
+            Post = new Post
+            {
+                Body      = dto.Body,
+                CreatedAt = DateTime.UtcNow,
+                UserId    = userId
+            }
+        };
+        try
+        {
+            _db.Pins.Add(newPin);
+            await _db.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            throw new AppException("Service Unavailable", "Unable to save this information pin.", StatusCodes.Status503ServiceUnavailable);
+        }
+        return Ok(new CreateInfoPinResDTO(newPin.Id));
+    }
+
+    [Authorize]
+    [HttpPost("CreateWarnPin")]
+    public async Task<IActionResult> CreateWarnPin(CreateWarnPinReqDTO dto)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var newPin = new WarnPin
+        {
+            Latitude   = dto.Latitude,
+            Longitude  = dto.Longitude,
+            CreatedAt  = DateTime.UtcNow,
+            ExpiresAt  = DateTime.UtcNow.AddDays(WarnPin.ExpiresInDays),
+            Visibility = dto.Visibility,
+            Kind       = PinKind.Warning,
+            UserId     = userId,
+
+            WarningKind = dto.WarningKind,
             
-            if (pin == null)
+            Post = new Post
             {
-                return NotFound(new ApiErrorResponse
-                {
-                    Errors = [new("PinNotFound", "Id returned no results")]
-                });
-            }
-
-            GetPinPreviewResDTO? data = pin.PinType switch
-            {
-                PinType.Catch => GetPinPreviewResDTO.FromCatchPin((CatchPin)pin),
-                PinType.Info => GetPinPreviewResDTO.FromInfoPin((InfoPin)pin),
-                PinType.Warning => GetPinPreviewResDTO.FromWarnPin((WarnPin)pin),
-                _ => null
-            };
-
-            return Ok(new ApiResponse<GetPinPreviewResDTO>
-            {
-                Data = data
-            });
-        }
-
-        [Authorize]
-        [HttpPost("CreateCatchPin")]
-        [RequestSizeLimit(5_000_000)]
-        public async Task<IActionResult> CreateCatchPin(CreateCatchPinReqDTO dto)
-        {
-            var allowedTypes = new[] { "image/jpeg", "image/png" };
-            string? imageUrl = null;
-
-            if (!allowedTypes.Contains(dto.Image.ContentType))
-            {
-                return BadRequest(new ApiErrorResponse
-                {
-                    Errors = [new("InvalidFileType", "Invalid file type")]
-                });
-            }
-            else
-            {
-                try
-                {
-                    imageUrl = await _blobStorage.UploadImageAsync(dto.Image);
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(503, new ApiErrorResponse {
-                        Errors = [new("ImageUploadFailed", ex.Message)]
-                    });
-                }
-            }
-
-            var pin = new CatchPin // Aqui podias criar um metodo ToCatchPin no CreateCatchPinReqDTO (Se se repetir mais que esta vez)
-            {
-                Latitude = dto.Latitude,
-                Longitude = dto.Longitude,
-                Description = dto.Description,
+                Body      = dto.Body,
                 CreatedAt = DateTime.UtcNow,
-                ExpiresAt = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
-                PinType = PinType.Catch,
-                SpeciesType = dto.SpeciesType,
-                HookSize = dto.HookSize,
-                BaitType = dto.BaitType,
-                ImageUrl = imageUrl,
-            };
-
-            try
-            {
-                _db.Pins.Add(pin);
-                await _db.SaveChangesAsync();
+                UserId    = userId
             }
-            catch (Exception ex)
-            {
-                return StatusCode(503, new ApiErrorResponse
-                {
-                    Errors = [new("GenericDatabaseFail", ex.Message)]
-                });
-            }
-
-            return Ok(new ApiResponse<CreateCatchPinResDTO>
-            {
-                Data = new(Id: pin.Id)
-            });
-        }
-
-        [Authorize]
-        [HttpPost("CreateInfoPin")]
-        public async Task<IActionResult> CreateInfoPin(CreateInfoPinReqDTO dto)
+        };
+        try
         {
-            var pin = new InfoPin
-            {
-                Latitude = dto.Latitude,
-                Longitude = dto.Longitude,
-                Description = dto.Description,
-                CreatedAt = DateTime.UtcNow,
-                ExpiresAt = null,
-                PinType = PinType.Info,
-                AccessDifficulty = dto.AccessDifficulty,
-                SeaBedType = dto.SeaBedType,
-            };
-
-            try
-            {
-                _db.Pins.Add(pin);
-                await _db.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(503, new ApiErrorResponse
-                {
-                    Errors = [new("GenericDatabaseFail", ex.Message)]
-                });
-            }
-
-            return Ok(new ApiResponse<CreateInfoPinResDTO>
-            {
-                Data = new (Id: pin.Id)
-            });
+            _db.Pins.Add(newPin);
+            await _db.SaveChangesAsync();
         }
-
-        [Authorize]
-        [HttpPost("CreateWarnPin")]
-        public async Task<IActionResult> CreateWarnPin(CreateWarnPinReqDTO dto)
+        catch (Exception)
         {
-            var pin = new WarnPin
-            {
-                Latitude = dto.Latitude,
-                Longitude = dto.Longitude,
-                CreatedAt = DateTime.UtcNow,
-                ExpiresAt = DateTime.UtcNow.AddDays(WarnPin.ExpiresInDays),
-                PinType = PinType.Warning,
-                WarnPinType = dto.WarnPinType,
-            };
-
-            try
-            {
-                _db.Pins.Add(pin);
-                await _db.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(503, new ApiErrorResponse
-                {
-                    Errors = [new("GenericDatabaseFail", ex.Message)]
-                });
-            }
-
-            return Ok(new ApiResponse<CreateWarnPinResDTO>
-            {
-                Data = new(Id: pin.Id)
-            });
+            throw new AppException("Service Unavailable", "Unable to save this warning pin.", StatusCodes.Status503ServiceUnavailable);
         }
+        return Ok(new CreateWarnPinResDTO(newPin.Id));
+    }
 
-        [Authorize]
-        [HttpDelete("DeletePin/{id}")]
-        public async Task<IActionResult> DeletePin(int id)
+    #endregion
+
+    [Authorize]
+    [HttpDelete("DeletePin/{id}")]
+    public async Task<IActionResult> DeletePin(int id)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var pin = await _db.Pins.FindAsync(id);
+        if (pin is null)
         {
-            try
-            {
-                var pin = await _db.Pins.FindAsync(id);
-                if (pin == null)
-                {
-                    return NotFound(new ApiErrorResponse
-                    {
-                        Errors = [new("PinNotFound", "Id returned no results")]
-                    });
-                }
-                _db.Pins.Remove(pin);
-                await _db.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(503, new ApiErrorResponse
-                {
-                    Errors = [new("GenericDatabaseFail", ex.Message)]
-                });
-            }
-            return Ok(new ApiResponse<object>());
+            return NotFound();
         }
+        try
+        {
+            _db.Pins.Remove(pin);
+            await _db.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            throw new AppException("Service Unavailable", "Failed to delete the provided pin.", StatusCodes.Status503ServiceUnavailable);
+        }
+        return NoContent();
     }
 }

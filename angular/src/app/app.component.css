@@ -1,0 +1,6 @@
+/* app.component.css */
+
+:host {
+  display: block;
+  min-height: inherit;
+}

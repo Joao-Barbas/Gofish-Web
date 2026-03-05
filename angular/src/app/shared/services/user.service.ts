@@ -1,20 +1,12 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from 'environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { AuthService } from '@gofish/shared/services/auth.service';
+import { Api } from '@gofish/shared/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private readonly baseUserUrl = 'GofishUser';
-
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService
-  ){}
-
-  getUserProfile() {
-    return this.http.get(`${environment.baseApiUrl}/${this.baseUserUrl}/GetProfile`);
-  }
+  private readonly http = inject(HttpClient);
+  private readonly auth = inject(AuthService);
 }

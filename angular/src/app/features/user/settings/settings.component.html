@@ -1,0 +1,20 @@
+<!-- settings.component.html -->
+
+<app-flat-header></app-flat-header>
+<div>
+  <!-- Tab navigarion -->
+  <nav class="settings-nav-tab">
+    @for (n of navPaths; track n.path) {
+      <a [routerLink]="n.path" routerLinkActive="active">{{ n.label }}</a>
+    }
+  </nav>
+  <!-- Dropdown navigation -->
+  <div>
+    <select class="settings-nav-select" (change)="onNavSelectChange($event)">
+      @for (n of navPaths; track n.path) {
+        <option [value]="n.path" [selected]="currentPath() === n.path">{{ n.label }}</option>
+      }
+    </select>
+  </div>
+</div>
+<router-outlet></router-outlet>

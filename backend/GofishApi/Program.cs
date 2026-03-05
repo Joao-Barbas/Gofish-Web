@@ -1,16 +1,10 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using GofishApi.Data;
 using GofishApi.Models;
 using GofishApi.Extensions;
 using GofishApi.Services;
 using GofishApi.Options;
+using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,19 +21,24 @@ builder.Services.AddDbContext<AppDbContext>((options) => options.UseSqlServer(bu
 builder.Services.AddIdentityHandlersAndStores();
 builder.Services.ConfigureIdentityOptions();
 builder.Services.AddAndConfigureCors();
-builder.Services.AddIdentityAuth(builder.Configuration);
-builder.Services.AddControllers();
+builder.Services.AddAndConfigureIdentityAuth(builder.Configuration);
+builder.Services.AddAndConfigureControllers();
+builder.Services.AddExceptionHandler<AppExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddAndConfigureSwaggerGen();
 
 var app = builder.Build();
+await app.SeedDataAsync();
 
-app.EnableSwaggerIfIsDevelopment();
+app.UseExceptionHandler();
+app.UseStatusCodePages();
+app.EnableSwaggerIfDevelopment();
 app.UseHttpsRedirection();
 app.UseCors("angular");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapGroup("/api").MapIdentityApi<AppUser>();
 
 app.Run();
 

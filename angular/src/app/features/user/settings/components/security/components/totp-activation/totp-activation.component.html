@@ -1,0 +1,83 @@
+<!-- totp-activation.component.html -->
+
+<div class="activation-panel">
+
+  @if (view === 'setup') {
+    @switch (loadingState.status()) {
+      @case ('loading') {
+        <div class="state-center">
+          <div class="spinner"></div>
+          <span>Loading...</span>
+        </div>
+      }
+      @case ('error') {
+        <div class="state-center">
+          <span>{{ loadingState.error() }}</span>
+          <button class="btn-retry" (click)="ngOnInit()">Retry</button>
+        </div>
+      }
+      @case ('success') {
+        <h6>Authenticator setup</h6>
+        <ol>
+          <li>Download a two-factor authenticator app like Microsoft Authenticator or Google Authenticator, both available for Android and iOS.</li>
+          <li>Scan the QR Code or enter the key into your two factor authenticator app. If you opt to use the key, spaces and casing do not matter.</li>
+        </ol>
+        <div class="qr-container">
+          <img class="qr-code" [src]="qrCodeImageUrl" alt="Authenticator QR Code">
+        </div>
+        <div class="key-pill">{{ authenticatorKey }}</div>
+        <ol start="3">
+          <li>Once you have scanned the QR code or input the key above, your two factor authentication app will provide you with a unique code. Enter the code in the confirmation box below.</li>
+        </ol>
+        <form id="totp-activation-form" [formGroup]="form" (ngSubmit)="onVerify()">
+          <input
+            type="text"
+            formControlName="totpCode"
+            placeholder="Enter 6-digit code"
+            maxlength="6"
+            autocomplete="one-time-code">
+        </form>
+        @if (codeErrorText) {
+          <small class="error-text">{{ codeErrorText }}</small>
+        }
+        <div class="actions">
+          <button class="btn-secondary" type="button" (click)="onCancel()">Cancel</button>
+          <button
+            class="btn-primary"
+            type="submit"
+            form="totp-activation-form"
+            [disabled]="busyState.isBusy()">
+            @if (busyState.isBusy()) {
+              <span class="btn-spinner"></span>
+            }
+            <span>Verify</span>
+          </button>
+        </div>
+      }
+    }
+  }
+
+  @if (view === 'backup-codes') {
+    <h6>Backup codes</h6>
+    <p>These are your new backup codes. You are required to save them in a safe space as you will not be able to check these codes again later on.</p>
+    <div class="backup-codes-grid">
+      @for (code of backupCodes; track code) {
+        <span class="backup-code">{{ code }}</span>
+      }
+    </div>
+    <label class="saved-checkbox">
+      <input type="checkbox" [(ngModel)]="savedCodesChecked">
+      I have saved my backup codes
+    </label>
+    <div class="actions">
+      <button
+        class="btn-primary"
+        type="button"
+        [disabled]="!savedCodesChecked"
+        (click)="onClose()">
+        Close
+      </button>
+    </div>
+  }
+
+</div>
