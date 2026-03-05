@@ -1,6 +1,6 @@
 <!-- map.component.html -->
 <main class="position-fixed top-0 start-0 end-0 bottom-0 overflow-hidden">
-  <ngx-sonner-toaster position="top-right" richColors />
+  <ngx-sonner-toaster position="bottom-center" richColors />
   <!-- Mapbox -->
   <div id="map" class="w-100 h-100"></div>
   <!-- Overlay -->
@@ -13,16 +13,6 @@
       </app-pin-detail-panel>
     </div>
     }
-
-    <!-- <app-create-pin
-      class="gf-floating-action gf-do-events"
-      [selectedCoords]="selected"
-      (requestPickOnMap)="enablePickMode()"
-      (coordsSelected)="onCoordsSelected($event)"
-      (creationComplete)="onPinCreated()"
-      (creationFailed)="onPinCreateFailed($event)">
-    </app-create-pin> -->
-
     <!-- Actions overlay -->
     <div class="actions-container position-absolute d-flex flex-row gf-do-events gf-gap-12">
       <!-- Create pin & ask location -->
@@ -124,8 +114,6 @@
       }
       }
       <!-- End popup overlays  -->
-
-
     </div>
     <!-- End actions overlay -->
   </div>

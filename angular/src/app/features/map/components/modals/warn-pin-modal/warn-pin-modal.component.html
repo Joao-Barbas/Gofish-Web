@@ -39,9 +39,10 @@
           <div class="d-flex align-items-center gap-1 radio-group-container">
             @for (option of visibilityOptions; track option.value) {
             <div class="visibility-option">
-              <input type="radio" [id]="'vis-' + option.value" name="visibility" [value]="option.value"
-                [checked]="selectedVisibility === option.value" (change)="selectedVisibility = option.value"
-                class="d-none"> <label [for]="'vis-' + option.value" class="modal-visibility-btn"
+              <input type="radio" class="d-none" name="visibility" [value]="option.value"
+                [(ngModel)]="selectedVisibility" [id]="'vis-' + option.value">
+
+              <label [for]="'vis-' + option.value" class="modal-visibility-btn"
                 [class.active]="selectedVisibility === option.value">
                 {{ option.label }}
               </label>
