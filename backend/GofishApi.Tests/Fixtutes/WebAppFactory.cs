@@ -1,21 +1,19 @@
 ﻿using GofishApi.Data;
 using GofishApi.Models;
-using GofishApi.Tests.Fixtures;
+using GofishApi.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GofishApi.Tests.Fixtutes;
-
+namespace GofishApi.Tests.Fixtures;
 public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly string _dbName = Guid.NewGuid().ToString();
@@ -42,6 +40,15 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
             })
             .AddScheme<AuthenticationSchemeOptions, FakeAuthenticationHandler>(
                 FakeAuthenticationHandler.SchemeName, options => { });
+
+            // 3) Substituir IBlobStorageService por FakeBlobStorageService
+            var blobDescriptor = services.SingleOrDefault(
+                d => d.ServiceType == typeof(IBlobStorageService));
+
+            if (blobDescriptor != null)
+                services.Remove(blobDescriptor);
+
+            services.AddSingleton<IBlobStorageService, FakeBlobStorageService>();
         });
     }
 
@@ -52,6 +59,7 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
         var existingUser = new AppUser
         {
+            Id = "test-user-id",
             Email = "fixture@test.com",
             UserName = "existinguser",
             FirstName = "Existing",
