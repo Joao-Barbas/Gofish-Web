@@ -30,10 +30,10 @@ export interface CreateWarnPinReqDTO {
 }
 
 // Basta 1 reponse para todos os pins
-export interface CreatePinResDTO {
+ export interface CreatePinResDTO {
     id: number;
 }
-
+/*
 export type PinPreviewResDTO = {
   // Pin
   id: number;
@@ -61,7 +61,7 @@ export type PinPreviewResDTO = {
 
   // Warn Pin
   warningType?: number;
-}
+} */
 
 export interface ViewportPinsResDTO {
   pins: ViewportPinDTO[];
@@ -74,4 +74,62 @@ export interface ViewportPinDTO {
   createdAt: string;
   visibility: number;
   kind: number;
+}
+
+export interface GetPinsReqDTO {
+  ids: PinIdDTO[],
+  dataRequest: PinDataReqDTO
+}
+
+export interface GetPinsResDTO{
+  pins: PinDataResDTO[]
+}
+
+export interface PinDataReqDTO {
+  includeGeolocation?: boolean | null;
+  includeAuthor?: boolean | null;
+  includePost?: boolean | null;
+  includeDetails?: boolean | null;
+  includeGroups?: boolean | null;
+}
+
+export interface PinDataResDTO {
+  id: number;
+  createdAt: string;
+  visibility: number;
+  pinKind: number;
+  details?: PinDetailsDTO | null;
+  geolocation?: GeoLocationDTO | null;
+  author?: AuthorDTO | null;
+  post?: PostDTO | null;
+}
+export interface PinIdDTO {
+  pinId?: number,
+  authorId?: string,
+  groupId?: number
+}
+export interface PinDetailsDTO {
+  species: number;
+  bait: number;
+  hookSize: string;
+  accessDificulty: number;
+  seabed: number;
+  warningKind: number;
+}
+
+export interface GeoLocationDTO {
+  latitude: number;
+  longitude: number;
+}
+
+export interface AuthorDTO {
+  id: string;
+  userName: string;
+}
+
+export interface PostDTO {
+  body?: string | null;
+  imageUrl?: string | null;
+  score?: number;
+  commentCount?: number | null;
 }

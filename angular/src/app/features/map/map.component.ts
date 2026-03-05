@@ -1,15 +1,14 @@
 import mapboxgl from 'mapbox-gl';
-import { AfterViewInit, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { PreviewMarkerService } from '@gofish/features/map/services/preview-marker.service';
 import { MarkerRegistryService } from '@gofish/features/map/services/marker-registry.service';
-import { PinDetailService } from '@gofish/features/map/services/pin-detail.service';
 import { PinDetailPanelComponent } from './components/pin-detail-panel/pin-detail-panel.component';
 import { OverlayHeaderComponent } from '@gofish/features/header/overlay-header/overlay-header.component';
-import { PinPreviewResDTO, ViewportPinDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
+import { GetPinsReqDTO, GetPinsResDTO, PinDataReqDTO, PinDataResDTO, ViewportPinDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { PopupService } from '@gofish/shared/services/popup.service';
@@ -22,6 +21,7 @@ import { InfoPinModalComponent } from '@gofish/features/map/components/modals/in
 import { WarnPinModalComponent } from '@gofish/features/map/components/modals/warn-pin-modal/warn-pin-modal.component';
 import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 import { ModalKey } from '@gofish/shared/models/modal.model';
+import { PopupKey } from '@gofish/shared/models/popup.model';
 
 
 
@@ -68,7 +68,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private readonly pinService = inject(PinService);
   private readonly previewMarkerService = inject(PreviewMarkerService);
   private readonly markerRegistry = inject(MarkerRegistryService);
-  private readonly pinDetailService = inject(PinDetailService);
   private readonly pinHoverPreview = inject(PinHoverPreviewService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -93,6 +92,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public isCreatePinOverlayOpen = this.popupService.activePopup() === 'choose-pin-popup';
   public selectedGeolocation: GeolocationCoordinates | null = null; // User manually selected
   public selectedPinKind: PinKind | null = null;
+  public isPinDetailsOpen = this.popupService.activePopup() === 'pin-preview';
+  protected selectedPin = signal<PinDataResDTO | null>(null);
 
   public get getGeolocationState() { return this.geoService.state(); }
   public get isGeolocationDenied() { return this.geoService.isBad(); }
@@ -101,7 +102,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   // Lifecycle
   // =========================
   ngOnInit() {
-    this.route.queryParamMap.subscribe(q => {
+    /* this.route.queryParamMap.subscribe(q => {
       const modal = q.get('modal');
       const lat = q.get('lat');
       const lng = q.get('lng');
@@ -130,7 +131,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
           this.selected = { latitude, longitude };
         }
       }
-    });
+    }); */
   }
 
   private getInitialView() {
@@ -148,8 +149,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    const view = this.getInitialView();
-    if (!view) return;
+    /* const view = this.getInitialView();
+    if (!view) return; */
     mapboxgl.accessToken =
       'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
 
@@ -157,8 +158,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       container: 'map',
       //style: 'mapbox://styles/mapbox/standard',
       style: 'mapbox://styles/goncalopro2/cmm4ybep5002p01s2eexw84v1',
-      center: [view.center[0], view.center[1]],
-      zoom: view.zoom,
+      center: [-8.8909328, 38.5260437], // [-8.8909328, 38.5260437]
+      zoom: 10,
       maxZoom: 16,
       minZoom: 4.5,
       pitch: 0,
@@ -171,16 +172,16 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
 
     this.map.on('load', () => {
-      /* this.setupLayers();
+      this.setupLayers();
       this.setupInteractions();
-      this.loadPinsInViewport(); */
+
 
       this.map.on('moveend', () => {
-        if(this.map.getZoom() < 14)return;
+        if (this.map.getZoom() < 14) return;
         this.loadPinsInViewport();
       });
-      this.map.on('zoomend', () =>{
-        if(this.map.getZoom() < 10)return;
+      this.map.on('zoomend', () => {
+        if (this.map.getZoom() < 10) return;
         this.loadPinsInViewport();
       });
       this.map.on('click', (e) => this.onMapClick(e));
@@ -188,9 +189,17 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  private togglePopup(key: PopupKey, event?: Event): void {
+    this.popupService.toggle(key);
+    event?.stopPropagation();
+  }
+
   public toggleCreatePinOverlay(event: Event): void {
-    this.popupService.toggle('choose-pin-popup');
-    event.stopPropagation();
+    this.togglePopup('choose-pin-popup', event);
+  }
+
+  public togglePinPreview(event: Event): void {
+    this.togglePopup('pin-preview', event);
   }
 
   public requestGeolocation() {
@@ -335,7 +344,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  public openModal(modal: ModalKey): void {
+  /* public openModal(modal: ModalKey): void {
     if (!this.selected) {
       this.enablePickMode();
       return;
@@ -350,7 +359,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       },
       queryParamsHandling: 'merge'
     });
-  }
+  } */
   // =========================
   // Clusters test
   // =========================
@@ -500,13 +509,31 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         const pin = this.allPins.find(p => p.id === features[0].properties?.['id']);
         if (!pin) return;
 
+        const request: PinDataReqDTO = {
+          includeGeolocation: true,
+          includeAuthor: true,
+          includePost: true,
+          includeDetails: false,
+          includeGroups: true,
+        }
+
+        const getPin: GetPinsReqDTO = {
+          ids: [{ pinId: pin.id }],
+          dataRequest: request
+        }
+
         this.pinHoverPreview.clear();
 
-        this.pinService.getPinPreview(pin.id).subscribe({
-          next: (res: PinPreviewResDTO) => {
+        this.pinService.getPinPreview(getPin).subscribe({
+          next: (res: GetPinsResDTO) => {
             console.log('Pin details loaded:', res);
-            this.pinDetailService.open(res);
-            this.map.flyTo({ center: [pin.longitude, pin.latitude], zoom: 13 });
+            const pin = res.pins[0];
+            if (!pin) return;
+            this.selectedPin.set(pin);
+            this.popupService.open('pin-preview');
+
+            if (pin.geolocation == null) return;
+            this.map.flyTo({ center: [pin.geolocation!.longitude, pin.geolocation!.latitude], zoom: 13 });
           },
           error: (err) => console.error('Erro ao carregar pin:', err)
         });
@@ -523,15 +550,18 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
     this.map.on('click', (e) => {
       if (this.pickingOnMap) return;
-
+      //console.log("BOAS PESSOAS");
       const layers = PIN_CONFIG
         .flatMap(({ kind }) => [`clusters-${kind}`, `unclustered-${kind}`])
         .filter(id => this.map.getLayer(id));
 
       const hits = this.map.queryRenderedFeatures(e.point, { layers });
-      if (!hits.length) {
+
+      if (hits.length > 0) {
+        this.togglePinPreview(e.originalEvent);
+      } else {
+        this.selectedPin.set(null);
         this.pinHoverPreview.closePopup();
-        this.pinDetailService.close();
       }
     });
   }
