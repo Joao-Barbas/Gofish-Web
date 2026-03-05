@@ -57,7 +57,7 @@ const PIN_CONFIG = [
     CatchPinModalComponent,
     InfoPinModalComponent,
     WarnPinModalComponent,
-    ClickOutsideDirective
+    NgxSonnerToaster
   ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
@@ -234,12 +234,16 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   onModalCancelled(): void {
     this.activePinModal = null;
     this.clearPreviewAndSelection();
+
+    toast.error('You cancel the pin creation');
   }
 
   onModalConfirmed(): void {
     this.activePinModal = null;
     this.clearPreviewAndSelection();
     this.loadPinsInViewport();
+
+    toast.success('Pin created successfully.');
   }
 
   zoomIn(): void {
@@ -291,13 +295,15 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.disablePickMode();
   }
 
-  onPinCreated(): void {
+  /* onPinCreated(): void {
     this.clearPreviewAndSelection();
     this.disablePickMode();
     this.loadPinsInViewport();
 
     this.isCreating = false;
-    console.log('Pin created successfully.');
+    toast.success('Pin created successfully.');
+    alert('Pin created successfully.');
+    console.log("aqui lindo")
   }
 
   onPinCreateFailed(msg: string): void {
@@ -305,7 +311,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.disablePickMode();
     this.clearPreviewAndSelection();
     this.isCreating = false;
-  }
+  } */
 
   // =========================
   // Selection / Preview marker

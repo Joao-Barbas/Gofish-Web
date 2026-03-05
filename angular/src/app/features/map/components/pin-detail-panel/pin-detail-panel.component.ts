@@ -7,7 +7,7 @@ import {PinDataResDTO} from '@gofish/shared/dtos/pin.dto';
 
 @Component({
   selector: 'app-pin-detail-panel',
-  imports: [CommonModule, AsyncPipe, TimeAgoPipe],
+  imports: [CommonModule, TimeAgoPipe],
   templateUrl: './pin-detail-panel.component.html',
   styleUrls: ['./pin-detail-panel.component.css']
 })
@@ -18,7 +18,6 @@ export class PinDetailPanelComponent {
   @Output() cancel = new EventEmitter<void>();
 
   closePanel(): void {
-    console.log("ESTOU AQUI ");
     this.cancel.emit();
     this.popupController.close();
   }

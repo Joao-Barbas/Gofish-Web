@@ -11,7 +11,7 @@ import { GeolocationService } from '@gofish/shared/services/geolocation.service'
 
 @Component({
   selector: 'app-choose-pin-popup',
-  imports: [CommonModule, ClickOutsideDirective],
+  imports: [CommonModule],
   templateUrl: './choose-pin-popup.component.html',
   styleUrl: './choose-pin-popup.component.css',
 })

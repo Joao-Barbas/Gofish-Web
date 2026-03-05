@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { EnumDTO} from '@gofish/shared/dtos/enum.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-catch-pin-modal',
@@ -94,6 +95,7 @@ export class CatchPinModalComponent {
           this.confirmed.emit();
         } else {
           this.errorMessage = 'Failed to create catch pin.';
+          toast.error(this.errorMessage);
         }
       },
       error: () => {
