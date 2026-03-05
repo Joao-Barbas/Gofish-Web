@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GofishApi.Services;
+using Microsoft.AspNetCore.Http;
 
-namespace GofishApi.Tests.Fixtutes
+namespace GofishApi.Tests.Fixtures;
+
+public class FakeBlobStorageService : IBlobStorageService
 {
-    internal class FakeBlobStorageService
+    public Task<string> UploadImageAsync(IFormFile file)
     {
+        // devolve sempre um URL fake
+        return Task.FromResult("https://fake.blobstorage.local/test-image.png");
+    }
+
+
+    public Task DeleteImageAsync(string imageUrl)
+    {
+        // Não faz nada (fake)
+        return Task.CompletedTask;
     }
 }
