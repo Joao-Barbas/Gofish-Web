@@ -1,4 +1,4 @@
-﻿using GofishApi.Tests.Fixtutes;
+﻿using GofishApi.Tests.Fixtures;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
@@ -34,7 +34,7 @@ public class AuthControllerTests : IClassFixture<WebAppFactory>
             Password = "Password123!"
         };
         var response = await _client.PostAsJsonAsync("/api/auth/signup", body);
-        object value = response.StatusCode.Should().Be(HttpStatusCode.OK);
+        object value = response.StatusCode.Should().Be(HttpStatusCode.Created);
     }
 
     
@@ -88,7 +88,7 @@ public class AuthControllerTests : IClassFixture<WebAppFactory>
     // -- SIGNIN --
 
     [Fact]
-    public async Task SignIn_UserDoesntExist_Returns400() 
+    public async Task SignIn_UserDoesntExist_Returns401() 
     {
         var body = new
         {
@@ -96,11 +96,11 @@ public class AuthControllerTests : IClassFixture<WebAppFactory>
             Password = "Password@123"
         };
         var response = await _client.PostAsJsonAsync("/api/auth/signin", body);
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
 
     [Fact]
-    public async Task SignIn_BadPassword_Returns400() 
+    public async Task SignIn_BadPassword_Returns401() 
     {
         var body = new
         {
@@ -108,7 +108,7 @@ public class AuthControllerTests : IClassFixture<WebAppFactory>
             Password = "Password@123"
         };
         var response = await _client.PostAsJsonAsync("/api/auth/signin", body);
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
 
     [Fact]

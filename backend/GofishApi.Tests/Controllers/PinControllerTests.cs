@@ -1,13 +1,17 @@
-﻿using GofishApi.Tests.Fixtutes;
+﻿using FluentAssertions;
+using GofishApi.Dtos;
+using GofishApi.Tests.Fixtures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GofishApi.Tests.Controllers;
 
-public class PinControllerTests
+public class PinControllerTests : IClassFixture<WebAppFactory>
 {
     private readonly HttpClient _client;
 
@@ -19,22 +23,37 @@ public class PinControllerTests
     #region GetInViewport
 
     [Fact]
-    public async Task GetInViewPort_WithoutToken_Returns401() { }
+    public async Task GetInViewport_ReturnsOk()
+    {
+        var url = "/api/Pin/GetInViewport?minLat=-90&minLng=-180&maxLat=90&maxLng=180";
+        var res = await _client.GetAsync(url);
+
+        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+    }
+
+    #endregion GetInViewport
+
 
     [Fact]
-    public async Task GetInViewPort_WithToken_Returns200() { }
+    public async Task CreateInfoPin_ReturnsPinId()
+    {
+        var body = new
+        {
+            Latitude = 38.7169,
+            Longitude = -9.1399,
+            Visibility = 0,
+            Body = "Test pin",
+            AccessDifficulty = 1,
+            Seabed = 1
+        };
 
-    #endregion // GetInViewport
-    #region GetPins
+        var res = await _client.PostAsJsonAsync("/api/Pin/CreateInfoPin", body);
 
-    [Fact]
-    public async Task GetPins_WithToken_Returns200() { }
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
 
-    [Fact]
-    public async Task GetPins_WithoutToken_Returns401() { }
+        var dto = await res.Content.ReadFromJsonAsync<CreateInfoPinResDTO>();
 
-
-    #endregion // GetPins
-
-
+        dto.Should().NotBeNull();
+        dto!.Id.Should().BeGreaterThan(0);
+    }
 }
