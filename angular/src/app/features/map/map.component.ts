@@ -159,7 +159,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map.dragRotate.disable();
     this.map.touchZoomRotate.disableRotation();
     this.map.keyboard.disableRotation();
-
+    // Choose better cursor sytle idk
+    this.map.getCanvas().style.cursor = 'default';
 
     this.map.on('load', () => {
       this.setupLayers();
@@ -331,22 +332,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  /* public openModal(modal: ModalKey): void {
-    if (!this.selected) {
-      this.enablePickMode();
-      return;
-    }
-
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        modal,
-        lat: this.selected.latitude,
-        lng: this.selected.longitude
-      },
-      queryParamsHandling: 'merge'
-    });
-  } */
   // =========================
   // Clusters test
   // =========================
@@ -382,6 +367,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
           clusterMaxZoom: 10,
           clusterRadius: 50
         });
+
 
         console.log(color);
         this.addClusterLayers(kind, color);
@@ -419,10 +405,11 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       filter: ['has', 'point_count'],
       layout: {
         'text-field': ['get', 'point_count_abbreviated'],
-        'text-size': 12
+        'text-size': 12,
+        'text-font': ['DIN Offc Pro Bold']
       },
       paint: {
-        'text-color': '#ffffff'
+        'text-color': '#ffffff',
       }
     });
 
@@ -449,8 +436,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       const unclusteredId = `unclustered-${kind}`;
       const sourceId = `pins-${kind}`;
 
-      //if (!this.pickingOnMap) return;
-
+      if (this.pickingOnMap) return;
       this.map.on('click', clusterId, (e) => {
         if (!this.map.getLayer(clusterId)) return;
 
@@ -483,7 +469,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       });
 
       this.map.on('mouseleave', unclusteredId, () => {
-        this.map.getCanvas().style.cursor = '';
+        this.map.getCanvas().style.cursor = 'default';
         this.pinHoverPreview.clear();
       });
 
@@ -531,7 +517,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.map.getCanvas().style.cursor = 'pointer';
       });
       this.map.on('mouseleave', clusterId, () => {
-        this.map.getCanvas().style.cursor = '';
+        this.map.getCanvas().style.cursor = 'default';
       });
     });
 
