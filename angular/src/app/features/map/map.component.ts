@@ -235,7 +235,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.activePinModal = null;
     this.clearPreviewAndSelection();
 
-    toast.error('You cancel the pin creation');
+    toast.info('You cancel the pin creation');
   }
 
   onModalConfirmed(): void {

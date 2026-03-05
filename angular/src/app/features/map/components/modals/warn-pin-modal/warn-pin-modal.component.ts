@@ -6,10 +6,11 @@ import { PinService } from '@gofish/features/map/services/pin.service';
 import { EnumDTO} from '@gofish/shared/dtos/enum.dto';
 import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
+import { NgxSonnerToaster, toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-warn-pin-modal',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,NgxSonnerToaster],
   templateUrl: './warn-pin-modal.component.html',
   styleUrl: './warn-pin-modal.component.css',
 })
@@ -69,21 +70,20 @@ export class WarnPinModalComponent {
       body: this.body.trim() || undefined,
       warningKind: this.selectedWarnType as number
     };
-    console.log('Creating Warn Pin with data:', dto);
+
     this.isSubmitting = true;
+    const toastId = toast.loading('Publishing your pin!');
 
     this.pinService.createWarnPin(dto).subscribe({
-      next: (res) => {
+      next: () => {
         this.isSubmitting = false;
-        if (res) {
-          this.confirmed.emit();
-        } else {
-          this.errorMessage = 'Failed to create warn pin.';
-        }
+        toast.dismiss(toastId);
+        this.confirmed.emit();
       },
       error: () => {
         this.isSubmitting = false;
         this.errorMessage = 'Failed to create pin. Please try again.';
+        toast.error(this.errorMessage);
       }
     });
   }

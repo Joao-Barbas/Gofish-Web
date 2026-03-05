@@ -89,14 +89,9 @@ export class CatchPinModalComponent {
     this.isSubmitting = true;
 
     this.pinService.createCatchPin(formData).subscribe({
-      next: (res) => {
+      next: () => {
         this.isSubmitting = false;
-        if (res) {
-          this.confirmed.emit();
-        } else {
-          this.errorMessage = 'Failed to create catch pin.';
-          toast.error(this.errorMessage);
-        }
+        this.confirmed.emit();
       },
       error: () => {
         this.isSubmitting = false;
