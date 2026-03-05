@@ -72,18 +72,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private readonly pinHoverPreview = inject(PinHoverPreviewService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-
-
-  // End popup overlays
-  // Create pin events
-
-  /* onCreateByPick(pinType: NewPinType) {
-    this.selectedPinType = pinType;
-    this.popupService.toggle(ChoosePinPopupComponent.key);
-    this.enablePickMode();
-    console.log('Create by pick on map');
-  } */
-
   pickingOnMap = false;
   isCreating: boolean = false;
   activePinModal: PinKind | null = null;
@@ -294,24 +282,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.setSelectedCoords(coords);
     this.disablePickMode();
   }
-
-  /* onPinCreated(): void {
-    this.clearPreviewAndSelection();
-    this.disablePickMode();
-    this.loadPinsInViewport();
-
-    this.isCreating = false;
-    toast.success('Pin created successfully.');
-    alert('Pin created successfully.');
-    console.log("aqui lindo")
-  }
-
-  onPinCreateFailed(msg: string): void {
-    console.error('Failed create pin:', msg);
-    this.disablePickMode();
-    this.clearPreviewAndSelection();
-    this.isCreating = false;
-  } */
 
   // =========================
   // Selection / Preview marker
