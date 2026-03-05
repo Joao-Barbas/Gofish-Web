@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PinService } from '@gofish/features/map/services/pin.service';
-import { EnumDTO} from '@gofish/shared/dtos/enum.dto';
+import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { toast } from 'ngx-sonner';
 
@@ -52,9 +52,18 @@ export class CatchPinModalComponent {
 
   onImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files?.length) {
-      this.image = input.files[0];
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+
+    const allowedTypes = ['image/png', 'image/jpeg'];
+
+    if (!allowedTypes.includes(file.type)) {
+      alert('Only PNG or JPEG images are allowed');
+      return;
     }
+
+    this.image = file;
   }
 
 
