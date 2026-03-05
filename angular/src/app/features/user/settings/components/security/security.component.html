@@ -1,3 +1,120 @@
 <!-- security.component.html -->
 
-<p>security works!</p>
+@switch (loadingState.status()) {
+@case('loading') {
+  <div class="modal-loading">
+    <div class="spinner"></div>
+    <span>Loading...</span>
+  </div>
+}
+@case('error') {
+  <div class="modal-loading">
+    <span>{{ loadingState.error() }}</span>
+    <button (click)="ngOnInit()">Retry</button>
+  </div>
+}
+@case('success') {
+  <!-- Change password -->
+  <div class="change-password-container">
+    <h4>Change password</h4>
+    <form id="change-password-form" class="change-password-form vertical-flow gf-gap-8" [formGroup]="changePasswordForm" (ngSubmit)="onChangePassword()">
+      <div class="vertical-flow">
+        <label>Current Password</label>
+        <input type="password" id="current-password" formControlName="currentPassword">
+      </div>
+      <div class="vertical-flow">
+        <label>New Password</label>
+        <input type="password" id="new-password" formControlName="newPassword">
+      </div>
+      <div class="vertical-flow">
+        <label>Confirm Password</label>
+        <input type="password" id="confirm-password" formControlName="confirmPassword">
+      </div>
+    </form>
+    @if (getError(); as errorText) {
+      <div class="error-feedback">
+        {{ errorText }}
+      </div>
+    }
+    <div class="actions">
+      <button
+        type="submit"
+        form="change-password-form"
+        [disabled]="busyState.isBusy() || passwordChangeSuccess"
+        [class.loading]="busyState.isBusy()"
+        [class.success]="passwordChangeSuccess">
+        @if (busyState.isBusy()) {
+          <span class="btn-spinner"></span>
+        } @else if (passwordChangeSuccess) {
+          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        }
+        <span>Confirm</span>
+      </button>
+    </div>
+  </div>
+  <!-- End change password -->
+  <!-- Two-step verification methods -->
+  <div>
+    <h4>Two-step verification</h4>
+    <p>
+      Add an extra layer of protection to your account with 2-Step Verification at login, account recovery, and high-value transactions.
+      You can only enable one of the following options at a time.
+    </p>
+    <small>
+      IMPORTANT: Don't share your security codes with anyone.
+      This can include things like texting your code, screen sharing, etc.
+      Do not change security settings at someone else's request.
+      GOFISH will never ask you for your codes or to change settings to prove account ownership.
+    </small>
+    <!-- Options -->
+    <div role="radiogroup" aria-label="Two-step verification method">
+      <!-- None -->
+      <label [class.active]="!hasTwoFactor">
+        <input
+          type="radio"
+          name="twoFactorMethod"
+          value="none"
+          [checked]="!hasTwoFactor"
+          (change)="onTwoFactorDisable()">
+        <div>
+          <p>None</p>
+          <small>Do not protect my account with any of the 2-Factor verification methods</small>
+        </div>
+      </label>
+      <!-- Time-based one time password -->
+      <label [class.active]="hasTwoFactor && twoFactorMethod === TwoFactorMethod.Totp">
+        <input
+          type="radio"
+          name="twoFactorMethod"
+          value="totp"
+          [checked]="hasTwoFactor && twoFactorMethod === TwoFactorMethod.Totp"
+          (change)="onTwoFactorToTotp()">
+        <div>
+          <p>Authenticator App</p>
+          <small>Download an app on your phone to generate unique security codes.</small>
+        </div>
+      </label>
+    </div>
+    <!-- TOTP activation panel -->
+    @if (showTotpActivation) {
+      <app-totp-activation
+        (cancelled)="onTotpActivationCancelled()"
+        (completed)="onTotpActivationCompleted()">
+      </app-totp-activation>
+    }
+  </div>
+  <!-- End Two-step verification methods -->
+  <!-- 2fa validation modal -->
+  @if (modalService.activeModal() === 'totp-validation-modal') {
+    <app-totp-validation-modal
+      key="totp-validation-modal"
+      animate.enter="on-enter"
+      animate.leave="on-leave"
+      [errorText]="modalErrorText"
+      (positive)="onModalConfirm($event)"
+      (negative)="onModalCancel()">
+    </app-totp-validation-modal>
+  }
+}}

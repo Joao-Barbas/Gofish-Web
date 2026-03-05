@@ -1,5 +1,5 @@
-export type ModalKey = 'example-modal' // Update this when creating new modal components
-  | 'confirm-action-modal'
+export type ModalKey = 'example-name-modal' // Update this when creating new concrete modals
+  | 'totp-validation-modal'
   | 'confirm-deletion-modal';
 
 export interface SimpleModal {
