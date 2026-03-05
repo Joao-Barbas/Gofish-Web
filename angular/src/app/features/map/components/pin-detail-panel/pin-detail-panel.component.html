@@ -23,9 +23,9 @@
         </button>
       </header>
 
-      @if (pin.pinKind === pinKind.CATCH && pin.post?.imageUrl) {
+      @if (pin.kind == pinKind.CATCH ) {
         <div class="pin-preview-click__image-wrapper">
-          <img [src]="pin.post?.imageUrl" class="pin-preview-click__img" alt="Foto do Post">
+          <img [src]="pin.post!.imageUrl" class="pin-preview-click__img" alt="Foto do Post">
         </div>
       }
 
@@ -38,7 +38,6 @@
           <span class="dark-text-muted" style="font-size: 12px;">Isca: {{ pin.details.bait }}</span>
         </div>
       }
-
       <footer class="horizontal-flow align-center-center" style="justify-content: space-between; width: 100%;">
         <div class="horizontal-flow gf-gap-8">
           <div class="pin-preview-click__badge">

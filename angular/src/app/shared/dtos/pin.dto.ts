@@ -97,7 +97,7 @@ export interface PinDataResDTO {
   id: number;
   createdAt: string;
   visibility: number;
-  pinKind: number;
+  kind: number;
   details?: PinDetailsDTO | null;
   geolocation?: GeoLocationDTO | null;
   author?: AuthorDTO | null;

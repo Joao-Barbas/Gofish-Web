@@ -25,8 +25,9 @@
   <div class="position-absolute top-0 start-0 w-100 h-100 gf-no-events">
     <app-overlay-header></app-overlay-header>
     @if (this.popupService.activePopup() === 'pin-preview') {
-    <div class="pin-detail-panel fade show">
-      <app-pin-detail-panel [pinData]="selectedPin()" />
+    <div class="pin-detail-panel fade show gf-do-events">
+      <app-pin-detail-panel [pinData]="selectedPin()" (cancel)="onPopupCancelPinPreview()">
+      </app-pin-detail-panel>
     </div>
     }
 
@@ -114,8 +115,7 @@
       @if (this.popupService.activePopup() === 'choose-pin-popup') {
       <app-choose-pin-popup class="position-action-overlay" animate.enter="on-enter" animate.leave="on-leave"
         [selectedCoords]="selected" (requestPickOnMap)="onRequestPickOnMap()" (typeSelected)="onTypeSelected($event)"
-        (coordsSelected)="onCoordsSelected($event)">
-        (cancel)="onPopupCancel()">
+        (coordsSelected)="onCoordsSelected($event)" (cancel)="(onPopupCancelPinOverlay())">
       </app-choose-pin-popup>
       }
       <!-- Create pin forms  -->

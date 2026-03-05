@@ -1,12 +1,9 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, EventEmitter, input, Input, OnInit, signal } from '@angular/core';
+import { Component, EventEmitter, input, Output} from '@angular/core';
 import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { PopupController } from '@gofish/shared/core/popup-controller';
-import { Coords } from '@gofish/shared/models/coords.model';
-import { InvokeFunctionExpr } from '@angular/compiler';
-import { AuthorDTO, GeoLocationDTO, PinDataResDTO, PostDTO } from '@gofish/shared/dtos/pin.dto';
-import { isNotFound } from '@angular/core/primitives/di';
+import {PinDataResDTO} from '@gofish/shared/dtos/pin.dto';
 
 @Component({
   selector: 'app-pin-detail-panel',
@@ -17,12 +14,13 @@ import { isNotFound } from '@angular/core/primitives/di';
 export class PinDetailPanelComponent {
   readonly popupController = new PopupController('pin-preview');
   readonly pinData = input<PinDataResDTO | null>(null);
-  pinKind = PinKind;
-
-
+  public pinKind = PinKind;
+  @Output() cancel = new EventEmitter<void>();
 
   closePanel(): void {
-    this.popupController.close;
+    console.log("ESTOU AQUI ");
+    this.cancel.emit();
+    this.popupController.close();
   }
 }
 

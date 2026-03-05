@@ -22,6 +22,7 @@ import { WarnPinModalComponent } from '@gofish/features/map/components/modals/wa
 import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 import { ModalKey } from '@gofish/shared/models/modal.model';
 import { PopupKey } from '@gofish/shared/models/popup.model';
+import { NgxSonnerToaster, toast } from 'ngx-sonner';
 
 
 
@@ -94,6 +95,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public selectedPinKind: PinKind | null = null;
   public isPinDetailsOpen = this.popupService.activePopup() === 'pin-preview';
   protected selectedPin = signal<PinDataResDTO | null>(null);
+
 
   public get getGeolocationState() { return this.geoService.state(); }
   public get isGeolocationDenied() { return this.geoService.isBad(); }
@@ -215,10 +217,19 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.popupService.toggle('choose-pin-popup');
   }
 
-  onPopupCancel(): void {
+  onPopupCancel(key: PopupKey): void {
     this.clearPreviewAndSelection();
-    this.popupService.toggle('choose-pin-popup');
+    this.popupService.toggle(key);
   }
+
+  onPopupCancelPinOverlay(): void {
+    this.onPopupCancel('choose-pin-popup');
+  }
+
+  onPopupCancelPinPreview(): void {
+    this.onPopupCancel('pin-preview');
+  }
+
 
   onModalCancelled(): void {
     this.activePinModal = null;
