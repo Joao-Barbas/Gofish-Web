@@ -49,8 +49,14 @@ export class SigninComponent implements OnInit {
       next: (res: SignInResDTO) => {
         this.setBusy(false);
         this.isSubmitted = false;
+
+        if (res.requiresTwoFactor && res.twoFactorToken) {
+          this.router.navigate([Path.SIGN_IN_VERIFY], { queryParams: { token: res.twoFactorToken } });
+          return;
+        }
+
         this.form.reset();
-        this.authService.insertToken(res.token!); // TODO: This wont work if 2fa enabled
+        this.authService.insertToken(res.token!);
         this.router.navigate([Path.MAP]);
       },
       error: (err: HttpErrorResponse) => {

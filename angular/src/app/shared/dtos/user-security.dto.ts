@@ -10,11 +10,32 @@ export interface SecurityInfoResDTO {
 }
 
 export interface ChangePasswordReqDTO {
-  currentPassword: string,
-  newPassword: string,
-  confirmPasswor: string
+  currentPassword: string;
+  newPassword: string;
+  totpCode?: string;
 }
 
 export interface ChangePasswordResDTO {
+  // Unused
+}
+
+export interface GetTotpSetupResDTO {
+  authenticatorKey: string;
+  qrCodeUri: string;
+}
+
+export interface EnableTotpReqDTO {
+  totpCode: string;
+}
+
+export interface EnableTotpResDTO {
+  backupCodes: string[];
+}
+
+export interface DisableTotpReqDTO {
+  totpCode: string;
+}
+
+export interface DisableTotpResDTO {
   // Unused
 }

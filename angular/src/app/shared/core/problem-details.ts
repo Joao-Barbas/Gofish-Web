@@ -7,7 +7,7 @@ export interface ProblemDetails {
 }
 
 export interface ValidationProblemDetails extends ProblemDetails {
-  errors: Record<string, string[]>;
+  errors?: Record<string, string[]>;
 }
 
 export function isValidationProblemDetails(problem: ProblemDetails): problem is ValidationProblemDetails {

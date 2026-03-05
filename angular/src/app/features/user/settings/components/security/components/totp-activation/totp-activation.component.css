@@ -1,0 +1,218 @@
+/* totp-activation.component.css */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.activation-panel {
+  background-color: var(--dark-bg-light);
+  border-radius: var(--gf-12);
+  padding: var(--gf-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gf-16);
+
+  & h6 {
+    margin: 0;
+    font-size: var(--gf-16);
+    color: var(--dark-text);
+  }
+
+  & ol {
+    margin: 0;
+    padding-left: var(--gf-24);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gf-8);
+
+    & li {
+      font-size: var(--gf-14);
+      color: var(--dark-text-muted);
+      line-height: 1.4;
+    }
+  }
+
+  & p {
+    font-size: var(--gf-14);
+    color: var(--dark-text-muted);
+    line-height: 1.4;
+    margin: 0;
+  }
+}
+
+/* Loading / error state */
+
+.state-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gf-12);
+  padding: var(--gf-24) 0;
+  color: var(--dark-text-muted);
+  font-size: var(--gf-14);
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--dark-bg-dark);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.btn-retry {
+  padding: var(--gf-8) var(--gf-24);
+  background-color: var(--dark-bg-dark);
+  color: var(--dark-text);
+  border: none;
+  border-radius: var(--gf-8);
+  cursor: pointer;
+  box-shadow: var(--gf-shadow-lift-sm);
+
+  &:hover {
+    box-shadow: var(--gf-shadow-lift-md);
+  }
+}
+
+/* QR code */
+
+.qr-container {
+  display: flex;
+  justify-content: center;
+}
+
+.qr-code {
+  width: 180px;
+  height: 180px;
+  border-radius: var(--gf-8);
+}
+
+/* Key pill */
+
+.key-pill {
+  display: block;
+  text-align: center;
+  font-family: monospace;
+  font-size: var(--gf-13);
+  letter-spacing: 0.05em;
+  background-color: var(--dark-bg-dark);
+  color: var(--dark-text);
+  border-radius: var(--gf-8);
+  padding: var(--gf-10) var(--gf-16);
+  word-break: break-all;
+}
+
+/* Input */
+
+form input {
+  display: block;
+  width: 100%;
+  height: 3rem;
+  background-color: var(--dark-bg);
+  box-shadow: var(--gf-shadow-sink-sm);
+  color: var(--dark-text);
+  border: none;
+  outline: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  font-size: var(--gf-14);
+}
+
+/* Error */
+
+.error-text {
+  display: inline-block;
+  font-size: var(--gf-12);
+  color: var(--danger);
+  margin: 0;
+}
+
+/* Backup codes grid */
+
+.backup-codes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gf-8) var(--gf-16);
+  background-color: var(--dark-bg-dark);
+  border-radius: var(--gf-8);
+  padding: var(--gf-16);
+
+  & .backup-code {
+    font-family: monospace;
+    font-size: var(--gf-13);
+    color: var(--dark-text);
+    letter-spacing: 0.05em;
+  }
+}
+
+/* Saved checkbox */
+
+.saved-checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--gf-8);
+  font-size: var(--gf-14);
+  color: var(--dark-text-muted);
+  cursor: pointer;
+
+  & input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--primary);
+  }
+}
+
+/* Actions row */
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: var(--gf-10);
+
+  & button {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px var(--gf-32);
+    border-radius: var(--gf-10);
+    box-shadow: var(--gf-shadow-lift-sm);
+    transition: box-shadow .2s ease, opacity .2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gf-8);
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
+      box-shadow: var(--gf-shadow-lift-lg);
+    }
+  }
+
+  & .btn-secondary {
+    background-color: var(--light-bg-dark);
+    color: var(--light-text);
+  }
+
+  & .btn-primary {
+    background-color: var(--primary);
+    color: white;
+    min-width: 120px;
+  }
+}
+
+.btn-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}

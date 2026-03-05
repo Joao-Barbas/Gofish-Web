@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { JwtClaim, JwtEncoded, JwtPayload, JwtRole } from '@gofish/shared/models/jwt.model';
 import { Api, LocalStorageKey, Path } from '@gofish/shared/constants';
 import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/signup.dto';
-import { SignInReqDTO, SignInResDTO } from '@gofish/shared/dtos/signin.dto';
+import { SignInReqDTO, SignInResDTO, TwoFactorSignInReqDTO, TwoFactorSignInResDTO } from '@gofish/shared/dtos/signin.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +35,10 @@ export class AuthService {
 
   signInUser(dto: SignInReqDTO): Observable<SignInResDTO> {
     return this.http.post<SignInResDTO>(Api.Auth.action('SignIn'), dto);
+  }
+
+  signIn2fa(dto: TwoFactorSignInReqDTO): Observable<TwoFactorSignInResDTO> {
+    return this.http.post<TwoFactorSignInResDTO>(Api.Auth.action('TwoFactorSignIn'), dto);
   }
 
   // End Api endpoints

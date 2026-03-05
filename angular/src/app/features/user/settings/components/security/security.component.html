@@ -97,35 +97,15 @@
         </div>
       </label>
     </div>
+    <!-- TOTP activation panel -->
+    @if (showTotpActivation) {
+      <app-totp-activation
+        (cancelled)="onTotpActivationCancelled()"
+        (completed)="onTotpActivationCompleted()">
+      </app-totp-activation>
+    }
   </div>
   <!-- End Two-step verification methods -->
-  <!-- Authenticator app setup -->
-  <!-- <div>
-    <h6>Authenticator setup</h6>
-    <ol start="1">
-      <li>Download a two-factor authenticator app like Microsoft Authenticator or Google Authenticator, both available for Android and iOS.</li>
-      <li>Scan the QR Code or enter the key into your two factor authenticator app. If your opt to use the key, spaces and casing do not matter.</li>
-    </ol>
-    --> <!-- QR code & code --> <!--
-    <div>
-
-    </div>
-    <ol start="3">
-      <li>Once you have scanned the QR code or input the key above, your two factor authentication app will provide you with a unique code. Enter the code in the confirmation box below.</li>
-    </ol>
-    <div>
-      <div>
-        <small>Confirm</small>
-        <input type="password" id="confirm-current-password">
-      </div>
-      <small>error-text-goes-here</small>
-    </div>
-    <div>
-      <button>Cancel</button>
-      <button>Verify</button>
-    </div>
-  </div> -->
-  <!-- End authenticator app setup -->
   <!-- 2fa validation modal -->
   @if (modalService.activeModal() === 'totp-validation-modal') {
     <app-totp-validation-modal
