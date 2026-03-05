@@ -82,6 +82,7 @@ export class WarnPinModalComponent {
       },
       error: () => {
         this.isSubmitting = false;
+        toast.dismiss(toastId);
         this.errorMessage = 'Failed to create pin. Please try again.';
         toast.error(this.errorMessage);
       }

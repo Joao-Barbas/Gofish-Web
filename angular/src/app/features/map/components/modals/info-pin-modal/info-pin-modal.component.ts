@@ -3,9 +3,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PinService } from '@gofish/features/map/services/pin.service';
-import { EnumDTO} from '@gofish/shared/dtos/enum.dto';
+import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateInfoPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-info-pin-modal',
@@ -90,21 +91,21 @@ export class InfoPinModalComponent implements OnInit {
       accessDifficulty: this.selectedAccessDifficulty,
       seaBedType: this.selectedSeaBed
     };
-    console.log('Creating Info Pin with data:', dto);
+
     this.isSubmitting = true;
+    const toastId = toast.loading('Publishing your pin!');
 
     this.pinService.createInfoPin(dto).subscribe({
-      next: (res) => {
+      next: () => {
+        toast.dismiss(toastId);
         this.isSubmitting = false;
-        if (res) {
-          this.confirmed.emit();
-        } else {
-          this.errorMessage = 'Failed to create info pin.';
-        }
+        this.confirmed.emit();
       },
       error: () => {
         this.isSubmitting = false;
         this.errorMessage = 'Failed to create pin. Please try again.';
+        toast.dismiss(toastId);
+        toast.error(this.errorMessage);
       }
     });
   }

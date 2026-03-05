@@ -87,15 +87,19 @@ export class CatchPinModalComponent {
     if (this.selectedBait) formData.append('BaitType', this.selectedBait.toString());
 
     this.isSubmitting = true;
+    const toastId = toast.loading('Publishing your pin!');
 
     this.pinService.createCatchPin(formData).subscribe({
       next: () => {
+        toast.dismiss(toastId);
         this.isSubmitting = false;
         this.confirmed.emit();
       },
       error: () => {
+        toast.dismiss(toastId);
         this.isSubmitting = false;
         this.errorMessage = 'Failed to create pin. Please try again.';
+        toast.error(this.errorMessage);
       }
     });
   }
