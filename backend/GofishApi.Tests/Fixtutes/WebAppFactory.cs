@@ -1,5 +1,7 @@
 ﻿using GofishApi.Data;
 using GofishApi.Models;
+using GofishApi.Tests.Fixtures;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -31,6 +33,15 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase(_dbName));
+
+            // Registar auteticação fake
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = FakeAuthenticationHandler.SchemeName;
+                options.DefaultChallengeScheme = FakeAuthenticationHandler.SchemeName;
+            })
+            .AddScheme<AuthenticationSchemeOptions, FakeAuthenticationHandler>(
+                FakeAuthenticationHandler.SchemeName, options => { });
         });
     }
 
