@@ -78,6 +78,29 @@ public class AuthController : ControllerBase
         return Ok(new SignInResDTO(token));
     }
 
+    [HttpPost("TwoFactorSignIn")]
+    public async Task<IActionResult> TwoFactorSignIn([FromBody] TwoFactorSignInReqDTO dto)
+    {
+        if (!_twoFactorService.VerifyTwoFactorToken(dto.TwoFactorToken, out var userId))
+        {
+            return Unauthorized();
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user is null)
+        {
+            return Unauthorized();
+        }
+        if (!await _userManager.VerifyTwoFactorTokenAsync(user, _userManager.Options.Tokens.AuthenticatorTokenProvider, dto.TwoFactorCode))
+        {
+            throw new AppException("Bad Request", "Incorrect code.", StatusCodes.Status400BadRequest);
+        }
+
+        var token = await _jwtService.CreateTokenAsync(user);
+        return Ok(new SignInResDTO(token));
+    }
+
     // [Authorize(Roles = "Admin")]
     // private static string AdminOnly()
     // { return "Admin Only"; }

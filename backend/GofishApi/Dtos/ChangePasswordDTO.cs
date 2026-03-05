@@ -1,9 +1,13 @@
-﻿namespace GofishApi.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GofishApi.Dtos;
 
 public record ChangePasswordReqDTO(
+    [Required]
     string CurrentPassword,
+    [Required]
     string NewPassword,
-    string ConfirmPassword
+    string? TotpCode
 );
 
 public record ChangePasswordResDTO(

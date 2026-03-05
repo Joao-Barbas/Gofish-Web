@@ -1,4 +1,6 @@
-﻿namespace GofishApi.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GofishApi.Dtos;
 
 public record SignInReqDTO(
     string EmailOrUserName,
@@ -9,4 +11,13 @@ public record SignInResDTO(
     string? Token           = null,
     bool? RequiresTwoFactor = null,
     string? TwoFactorToken  = null
+);
+
+public record TwoFactorSignInReqDTO(
+    [Required] string TwoFactorToken,
+    [Required] string TwoFactorCode
+);
+
+public record TwoFactorSignInResDTO(
+    string Token
 );
