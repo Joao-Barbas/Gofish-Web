@@ -6,18 +6,19 @@ import { Component, inject, OnInit } from '@angular/core';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { ModalService } from '@gofish/shared/services/modal.service';
 import { TotpValidationModalComponent } from '@gofish/features/user/settings/components/security/components/totp-validation-modal/totp-validation-modal.component';
+import { TotpActivationComponent } from '@gofish/features/user/settings/components/security/components/totp-activation/totp-activation.component';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { TwoFactorMethod } from '@gofish/shared/models/user-security.models';
 import { UserSecurityService } from '@gofish/shared/services/user-security.service';
 import { ChangePasswordReqDTO, ChangePasswordResDTO, SecurityInfoResDTO } from '@gofish/shared/dtos/user-security.dto';
-import { ProblemDetails } from '@gofish/shared/core/problem-details';
+import { ProblemDetails, ValidationProblemDetails } from '@gofish/shared/core/problem-details';
 import { Api } from '@gofish/shared/constants';
 
 type ModalOperation = 'change-password' | 'disable-2fa';
 
 @Component({
   selector: 'app-security',
-  imports: [ TotpValidationModalComponent, ReactiveFormsModule ],
+  imports: [ TotpValidationModalComponent, TotpActivationComponent, ReactiveFormsModule ],
   templateUrl: './security.component.html',
   styleUrl: './security.component.css',
 })
@@ -36,7 +37,10 @@ export class SecurityComponent implements OnInit {
   twoFactorMethod: TwoFactorMethod = TwoFactorMethod.None;
   modalErrorText: string | null = null;
   passwordChangeSuccess: boolean = false;
+  showTotpActivation: boolean = false;
+  private modalOperation: ModalOperation = 'change-password';
 
+  changePasswordFormServerErrors?: ValidationProblemDetails;
   changePasswordForm: FormGroup = this.formBuilder.group({
     currentPassword: [ '', [ Validators.required ]],
     newPassword: [ '', [
@@ -44,7 +48,8 @@ export class SecurityComponent implements OnInit {
       Validators.minLength(6),
       Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/)
     ]],
-    confirmPassword: [ '', [ Validators.required ]]
+    confirmPassword: [ '', [ Validators.required ]],
+    totpCode: [ '', []]
   }, { validators: [
     (control: AbstractControl) => this.passwordsMatch(control),
     (control: AbstractControl) => this.notDuplicatePassword(control)
@@ -91,19 +96,21 @@ export class SecurityComponent implements OnInit {
   getError(): string | null {
     const e = (field: string) => this.controlError(field);
     const g = this.changePasswordForm.errors;
+    const s = this.changePasswordFormServerErrors;
     // Field-level
-    if (e('currentPassword')?.['required']) return 'Current password is required';
-    if (e('newPassword')?.['required']) return 'New password is required';
-    if (e('newPassword')?.['minlength']) return 'New Password needs atleast 6 characters';
-    if (e('newPassword')?.['pattern']) return 'New Password required one or more special character(s)';
-    if (e('confirmPassword')?.['required']) return 'Please confirm your new password';
+    if (e('currentPassword')?.['required']) return 'Current password is required.';
+    if (e('newPassword')?.['required']) return 'New password is required.';
+    if (e('newPassword')?.['minlength']) return 'New Password needs atleast 6 characters.';
+    if (e('newPassword')?.['pattern']) return 'New Password required one or more special character(s).';
+    if (e('confirmPassword')?.['required']) return 'Please confirm your new password.';
     // Group-level
-    if (g?.['passwordmismatch']) return 'Passwords don\'t match';
-    if (g?.['duplicatepassword']) return 'New password must differ from current password';
+    if (g?.['passwordmismatch']) return 'Passwords don\'t match.';
+    if (g?.['duplicatepassword']) return 'New password must differ from current password.';
     // Server errors
-    if (g?.['incorrectCredentials']) return 'Current password is incorrect';
-    if (g?.['serverError']) return 'Something went wrong. Please try again later.';
-    return null;
+    if (s?.errors && Object.entries(s.errors).length > 0) {
+      return Object.values(s.errors).flat()[0];
+    }
+    return s?.detail ?? null;
   }
 
   // End form errors/validation
@@ -112,13 +119,19 @@ export class SecurityComponent implements OnInit {
   onChangePassword(): void {
     this.changePasswordForm.markAllAsTouched();
     if (this.changePasswordForm.invalid) return;
+    this.changePasswordFormServerErrors = undefined;
 
     if (this.hasTwoFactor) {
       this.modalErrorText = null;
-      this.modalService.open('confirm-deletion-modal');
+      this.modalOperation = 'change-password';
+      this.modalService.open('totp-validation-modal');
       return;
     }
 
+    this.submitChangePassword();
+  }
+
+  private submitChangePassword(): void {
     this.busyState.setBusy(true);
     this.passwordChangeSuccess = false;
 
@@ -133,22 +146,67 @@ export class SecurityComponent implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         this.busyState.setBusy(false);
-        let problem = err.error as ProblemDetails;
-        this.changePasswordForm.setErrors(problem.title === 'Identity Error'
-          ? { incorrectCredentials: true }
-          : { serverError: true }
-        );
+        let problem = err.error as ValidationProblemDetails;
+        this.changePasswordFormServerErrors = problem;
       }
-    })
+    });
   }
 
-  onTwoFactorDisable(): void {}
-  onTwoFactorToTotp(): void {}
+  onTwoFactorDisable(): void {
+    if (!this.hasTwoFactor) return;
+    this.modalErrorText = null;
+    this.modalOperation = 'disable-2fa';
+    this.modalService.open('totp-validation-modal');
+  }
+
+  onTwoFactorToTotp(): void {
+    if (this.hasTwoFactor && this.twoFactorMethod === TwoFactorMethod.Totp) return;
+    this.showTotpActivation = true;
+  }
+
+  onTotpActivationCancelled(): void {
+    this.showTotpActivation = false;
+  }
+
+  onTotpActivationCompleted(): void {
+    this.showTotpActivation = false;
+    this.hasTwoFactor    = true;
+    this.twoFactorMethod = TwoFactorMethod.Totp;
+  }
 
   // End events
   // Modal events
 
-  onModalConfirm(totp: string): void {}
+  onModalConfirm(totp: string): void {
+    switch (this.modalOperation) {
+    case ('change-password'): {
+      this.modalService.close();
+      this.changePasswordForm.controls['totpCode'].setValue(totp);
+      this.submitChangePassword();
+      return;
+    }
+    case ('disable-2fa'): {
+      this.busyState.setBusy(true);
+      this.userSecurityService.disableTotp({ totpCode: totp }).subscribe({
+        next: () => {
+          this.busyState.setBusy(false);
+          this.hasTwoFactor    = false;
+          this.twoFactorMethod = TwoFactorMethod.None;
+          this.modalService.close();
+        },
+        error: (err: HttpErrorResponse) => {
+          this.busyState.setBusy(false);
+          let problem = err.error as ProblemDetails;
+          this.modalErrorText = 'Incorrect code';
+        }
+      });
+      break;
+    }
+    default: {
+      return;
+    }}
+  }
+
   onModalCancel(): void {}
 
   // End modal events

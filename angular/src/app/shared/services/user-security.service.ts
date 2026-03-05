@@ -1,9 +1,8 @@
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Api } from '@gofish/shared/constants';
-import { ChangePasswordReqDTO, ChangePasswordResDTO, SecurityInfoResDTO } from '@gofish/shared/dtos/user-security.dto';
-import { SecurityInfo } from '@gofish/shared/models/user-security.models';
+import { ChangePasswordReqDTO, ChangePasswordResDTO, EnableTotpReqDTO, EnableTotpResDTO, GetTotpSetupResDTO, SecurityInfoResDTO } from '@gofish/shared/dtos/user-security.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +18,18 @@ export class UserSecurityService {
 
   changePassword(dto: ChangePasswordReqDTO): Observable<ChangePasswordResDTO> {
     return this.http.post<ChangePasswordResDTO>(Api.UserSecurity.action('ChangePassword'), dto);
+  }
+
+  getTotpSetup(): Observable<GetTotpSetupResDTO> {
+    return this.http.get<GetTotpSetupResDTO>(Api.UserSecurity.action('GetTotpSetup'));
+  }
+
+  enableTotp(dto: EnableTotpReqDTO): Observable<EnableTotpResDTO> {
+    return this.http.post<EnableTotpResDTO>(Api.UserSecurity.action('EnableTotp'), dto);
+  }
+
+  disableTotp(dto: EnableTotpReqDTO): Observable<void> {
+    return this.http.post<void>(Api.UserSecurity.action('DisableTotp'), dto);
   }
 
   // End api endpoints
