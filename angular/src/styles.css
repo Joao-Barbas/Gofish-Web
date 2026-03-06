@@ -185,7 +185,59 @@
 }
 
 /*
+
+  Keyframes
+
+*/
+
+@keyframes gf-popover-scale-in {
+  from { transform: scale(0.8); }
+  to { transform: scale(1); }
+}
+@keyframes gf-popover-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes gf-modal-scale-in {
+  from { transform: scale(0.8); }
+  to { transform: scale(1); }
+}
+@keyframes gf-modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes gf-basic-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes overlay-popup-scale { /* TODO: Change to "gf-popover-scale-in" project wide */
+  from { transform: scale(0.8); }
+  to { transform: scale(1); }
+}
+@keyframes overlay-popup-fade { /* TODO: Change to "gf-popover-fade-in" project wide */
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-scale { /* TODO: Change to "gf-modal-scale-in" project wide */
+  from { transform: scale(0.8); }
+  to { transform: scale(1); }
+}
+@keyframes modal-fade { /* TODO: Change to "gf-modal-fade-in" project wide */
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes spin { /* TODO: Change to "gf-basic-spin" project wide */
+  to { transform: rotate(360deg); }
+}
+
+/*
+
   Base html elements
+
 */
 
 * {
@@ -209,54 +261,73 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 }
 
 /*
-  Keyframes
+
+  Custom elements/components
+
 */
 
-@keyframes popover-scale-in {
-  from { transform: scale(0.8); }
-  to { transform: scale(1); }
-}
-@keyframes popover-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.gf-gap-4  { gap: var(--gf-4);  }
+.gf-gap-8  { gap: var(--gf-8);  }
+.gf-gap-12 { gap: var(--gf-12); }
+.gf-gap-16 { gap: var(--gf-16); }
+.gf-gap-20 { gap: var(--gf-20); }
+.gf-gap-24 { gap: var(--gf-24); }
+.gf-gap-32 { gap: var(--gf-32); }
+
+.gf-no-events { pointer-events: none !important; }
+.gf-do-events { pointer-events: auto; }
+
+.gf-text-error {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--danger);
+  display: inline-block;
 }
 
-@keyframes modal-scale-in {
-  from { transform: scale(0.8); }
-  to { transform: scale(1); }
-}
-@keyframes modal-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes basic-spin {
-  to { transform: rotate(360deg); }
+.gf-text-logo {
+  color: var(--dark-text);
+  font-family: var(--font-heading);
+  font-size: var(--gf-32);
+  font-weight: 900;
+  letter-spacing: -0.125rem;
+  user-select: none;
 }
 
-@keyframes overlay-popup-scale { /* TODO: Change to "popover-scale-in" project wide */
-  from { transform: scale(0.8); }
-  to { transform: scale(1); }
-}
-@keyframes overlay-popup-fade { /* TODO: Change to "popover-fade-in" project wide */
-  from { opacity: 0; }
-  to { opacity: 1; }
+.gf-vertical-flow {
+  display: flex;
+  flex-direction: column;
 }
 
-@keyframes modal-scale { /* TODO: Change to "modal-scale-in" project wide */
-  from { transform: scale(0.8); }
-  to { transform: scale(1); }
-}
-@keyframes modal-fade { /* TODO: Change to "modal-fade-in" project wide */
-  from { opacity: 0; }
-  to { opacity: 1; }
+.gf-horizontal-flow {
+  display: flex;
+  flex-direction: row;
 }
 
-@keyframes spin { /* TODO: Change to "basic-spin" project wide */
-  to { transform: rotate(360deg); }
+.gf-center-axes {
+  justify-content: center; /* horizontal */
+  align-items: center;     /* vertical */
 }
 
-/* Media queries */
+.gf-card, [class*="gf-card-"] {
+  font: var(--gf-font-main);
+  color: var(--gf-dark-text);
+  box-shadow: var(--dark-lift-shadow-m);
+  border-radius: var(--gf-12);
+  border: none;
+  border-width: 0px;
+  background: var(--gf-dark-bg);
+  padding: var(--gf-24);
+}
+
+.gf-popover, [class*="gf-popover-"] {
+  /* TODO: styles for .gf-card.gf-popover */
+}
+
+/*
+
+  Media queries
+
+*/
 
 @media (max-width: 36rem) {}
 @media (max-width: 62rem) {}
@@ -582,9 +653,9 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
  * 4.1. Gofish Card Base
 */
 
-[class*="gf-card-"],
+/* [class*="gf-card-"], */
 [class*="gofish-card-"],
-.gf-card,
+/* .gf-card, */
 .gofish-card {
   font: var(--font-main);
   color: white; /* Cor do texto em branco*/
@@ -645,37 +716,7 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
  /* Outros */
 /* ====== */
 
-.error-feedback {
-  font-size: 0.75rem;
-  color: var(--danger);
-}
-
-.fixed-map-image-background {
-  min-height: 100vh;
-  min-width: 100vw;
-  background-image: url('/assets/images/backgroung-map.png');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-attachment: fixed;
-}
-
-.auth-parent-container {
-  background-color: var(--dark-bg);
-  box-shadow: var(--dark-lift-shadow-m);
-  border-radius: 1.25rem;
-  padding: 2.5rem 2.5rem 2.5rem 2.5rem; /* top, right, bottom, left */
-}
-
-.container-align-items-center {
-  min-height: 100vh;
-  min-width: 100vw;
-  display: flex;
-  justify-content: center;  /* horizontal */
-  align-items: center;      /* vertical */
-}
-
-.logo-text {
+.logo-text { /* TODO: Use ".gf-text-logo" instead */
   color: var(--dark-text);
   font-family: var(--font-heading);
   font-size: 2rem;
@@ -684,109 +725,17 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   user-select: none;
 }
 
-.form-auth-container {
-  width: 20rem;
-  max-width: 20rem;
-}
-
-.form-divider {
-  display: flex;
-  margin: 0rem 1rem; /* top & bottom / left & right */
-}
-
-.form-divider::before,
-.form-divider::after {
-  content: "";
-  flex: 1;
-  border-bottom: 1px solid var(--dark-text-muted);
-}
-
-.form-divider::before {
-  margin-right: 10px;
-}
-
-.form-divider::after {
-  margin-left: 10px;
-}
-
-.form-divider span {
-  color: var(--dark-text-muted);
-}
-
-.form-input {
-  width: 100%;
-  height: 2.5rem;
-  background-color: var(--dark-bg-light);
-  box-shadow: var(--dark-sunk-shadow-s);
-  color: var(--dark-text);
-  border: none;
-  outline: none;
-  border-radius: 0.75rem;
-  padding: 0.75rem;
-  font-size: 1rem;
-  transition: box-shadow .15s ease-in-out;
-}
-.form-input:focus {
-  box-shadow: var(--dark-lift-shadow-s);
-}
-
-.form-input-label {
-  color: var(--dark-text-muted);
-  font-size: 0.75rem;
-}
-
-.form-submit-button {
-  width: 100%;
-  height: 2.5rem;
-  box-shadow: var(--dark-lift-shadow-s);
-  background-color: var(--primary);
-  color: var(--dark-text);
-  border-radius: 0.5rem;
-  border: none;
-  transition: background-color 0.35s ease, box-shadow 0.05s ease, transform 0.05s ease;
-}
-.form-submit-button:disabled {
-  background-color: var(--tertiary);
-}
-.form-submit-button:not(:disabled):active {
-  box-shadow: var(--dark-sunk-shadow-s);
-}
-
-.form-secondary-button {
-  box-shadow: var(--dark-lift-shadow-s);
-  background-color: var(--tertiary);
-  border: none;
-  border-radius: 0.5rem;
-}
-
-.gf-gap-4  { gap: 0.25rem !important; }
-.gf-gap-8  { gap: 0.5rem !important; }
-.gf-gap-12 { gap: 0.75rem !important; }
-.gf-gap-16 { gap: 1rem !important; }
-.gf-gap-20 { gap: 1.25rem !important; }
-
-.margin-top-12 { margin-top: 0.75rem; }
-.margin-top-16 { margin-top: 1rem; }
-
-.gf-no-events { pointer-events: none !important; }
-.gf-do-events { pointer-events: auto; }
-
-.text-small-muted {
-  color: var(--dark-text-muted);
-  font-size: 0.75rem;
-}
-
-.vertical-flow {
+.vertical-flow { /* TODO: Use ".gf-vertical-flow" instead */
   display: flex;
   flex-direction: column;
 }
 
-.horizontal-flow {
+.horizontal-flow { /* TODO: Use ".gf-horizontal-flow" instead */
   display: flex;
   flex-direction: row;
 }
 
-.align-center-center {
+.align-center-center { /* TODO: Use ".gf-center-axes" instead */
   justify-content: center; /* horizontal */
   align-items: center;     /* vertical */
 }

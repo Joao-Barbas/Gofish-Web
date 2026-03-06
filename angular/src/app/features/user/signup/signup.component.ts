@@ -15,7 +15,7 @@ import { getFirstError, ProblemDetails } from '@gofish/shared/core/problem-detai
   selector: 'app-signup',
   imports: [ ReactiveFormsModule, CommonModule, RouterLink ],
   templateUrl: './signup.component.html',
-  styles: ``
+  styleUrl: './signup.component.css',
 })
 export class SignupComponent implements OnInit {
   isSubmitted: boolean = false;
