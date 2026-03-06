@@ -79,7 +79,7 @@
   --gf-z-tooltip:  1080;
 
   /*
-   * Rem-based spacing helpers.
+   * Rem-based spacing helpers
    *
    * Variable names represent pixel values based on a 16px root font size.
    * Example: --gf-16 = 16px = 1rem.
@@ -266,16 +266,69 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 
 */
 
-.gf-gap-4  { gap: var(--gf-4);  }
-.gf-gap-8  { gap: var(--gf-8);  }
+/* Spacing utilities */
+
+.gf-gap-0  { gap: 0; }
+.gf-gap-4  { gap: var(--gf-4); }
+.gf-gap-6  { gap: var(--gf-6); }
+.gf-gap-8  { gap: var(--gf-8); }
+.gf-gap-10 { gap: var(--gf-10); }
 .gf-gap-12 { gap: var(--gf-12); }
 .gf-gap-16 { gap: var(--gf-16); }
 .gf-gap-20 { gap: var(--gf-20); }
 .gf-gap-24 { gap: var(--gf-24); }
 .gf-gap-32 { gap: var(--gf-32); }
 
+.gf-m-0  { margin: 0; }
+.gf-m-4  { margin: var(--gf-4); }
+.gf-m-8  { margin: var(--gf-8); }
+.gf-m-10 { margin: var(--gf-10); }
+.gf-m-12 { margin: var(--gf-12); }
+.gf-m-16 { margin: var(--gf-16); }
+.gf-m-20 { margin: var(--gf-20); }
+.gf-m-24 { margin: var(--gf-24); }
+.gf-m-32 { margin: var(--gf-32); }
+
+.gf-my-0    { margin-top: 0;  margin-bottom: 0; }
+.gf-my-4    { margin-top: var(--gf-4);  margin-bottom: var(--gf-4); }
+.gf-my-6    { margin-top: var(--gf-6);  margin-bottom: var(--gf-6); }
+.gf-my-8    { margin-top: var(--gf-8);  margin-bottom: var(--gf-8); }
+.gf-my-10   { margin-top: var(--gf-10); margin-bottom: var(--gf-10); }
+.gf-my-12   { margin-top: var(--gf-12); margin-bottom: var(--gf-12); }
+.gf-my-16   { margin-top: var(--gf-16); margin-bottom: var(--gf-16); }
+.gf-my-20   { margin-top: var(--gf-20); margin-bottom: var(--gf-20); }
+.gf-my-24   { margin-top: var(--gf-24); margin-bottom: var(--gf-24); }
+.gf-my-32   { margin-top: var(--gf-32); margin-bottom: var(--gf-32); }
+.gf-my-auto { margin-top: auto; margin-bottom: auto; }
+
+.gf-mx-0    { margin-left: 0;  margin-right: 0; }
+.gf-mx-4    { margin-left: var(--gf-4);  margin-right: var(--gf-4); }
+.gf-mx-6    { margin-left: var(--gf-6);  margin-right: var(--gf-6); }
+.gf-mx-8    { margin-left: var(--gf-8);  margin-right: var(--gf-8); }
+.gf-mx-10   { margin-left: var(--gf-10); margin-right: var(--gf-10); }
+.gf-mx-12   { margin-left: var(--gf-12); margin-right: var(--gf-12); }
+.gf-mx-16   { margin-left: var(--gf-16); margin-right: var(--gf-16); }
+.gf-mx-20   { margin-left: var(--gf-20); margin-right: var(--gf-20); }
+.gf-mx-24   { margin-left: var(--gf-24); margin-right: var(--gf-24); }
+.gf-mx-auto { margin-left: auto; margin-right: auto; }
+
+.gf-p-0  { padding: 0; }
+.gf-p-4  { padding: var(--gf-4); }
+.gf-p-6  { padding: var(--gf-6); }
+.gf-p-8  { padding: var(--gf-8); }
+.gf-p-10 { padding: var(--gf-10); }
+.gf-p-12 { padding: var(--gf-12); }
+.gf-p-16 { padding: var(--gf-16); }
+.gf-p-20 { padding: var(--gf-20); }
+.gf-p-24 { padding: var(--gf-24); }
+.gf-p-32 { padding: var(--gf-32); }
+
+/* Pointer utilities */
+
 .gf-no-events { pointer-events: none !important; }
 .gf-do-events { pointer-events: auto; }
+
+/* Typography */
 
 .gf-text-error {
   margin: 0;
@@ -293,6 +346,8 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   user-select: none;
 }
 
+/* Layout utilities */
+
 .gf-vertical-flow {
   display: flex;
   flex-direction: column;
@@ -308,6 +363,8 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   align-items: center;     /* vertical */
 }
 
+/* Cards */
+
 .gf-card, [class*="gf-card-"] {
   font: var(--gf-font-main);
   color: var(--gf-dark-text);
@@ -319,9 +376,22 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   padding: var(--gf-24);
 }
 
+/* Popovers */
+
 .gf-popover, [class*="gf-popover-"] {
   /* TODO: styles for .gf-card.gf-popover */
 }
+
+/* Buttons */
+/* Inputs */
+/* Modals */
+/* Badges */
+/* Avatars */
+/* Tooltips */
+/* Loaders */
+/* Alerts / Toasts */
+/* Separators */
+/* Icons / Svgs */
 
 /*
 
