@@ -18,7 +18,7 @@ export const routes: Routes = [
   },
   {
     path: 'signin/verify',
-    loadComponent: () => import('@gofish/features/user/signin-verify/signin-verify.component').then(m => m.SigninVerifyComponent)
+    loadComponent: () => import('@gofish/features/user/auth/signin-verify/signin-verify.component').then(m => m.SigninVerifyComponent)
   },
   {
     path: 'settings',
