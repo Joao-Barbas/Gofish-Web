@@ -1,9 +1,5 @@
 /* security.component.css */
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
 :host {
   display: block;
   margin: 0 auto;

@@ -1,9 +1,5 @@
 /* totp-activation.component.css */
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
 .activation-panel {
   background-color: var(--dark-bg-light);
   border-radius: var(--gf-12);
