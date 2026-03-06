@@ -10,7 +10,7 @@ export const routes: Routes = [
   },
   {
     path: 'signup',
-    loadComponent: () => import('@gofish/features/user/signup/signup.component').then(m => m.SignupComponent)
+    loadComponent: () => import('@gofish/features/user/auth/signup/signup.component').then(m => m.SignupComponent)
   },
   {
     path: 'signin',
