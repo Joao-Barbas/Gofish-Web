@@ -24,8 +24,8 @@ public static class WebApplicationBuilderExtensions
     {
         services.Configure<IdentityOptions>((options) =>
         {
-            options.Password.RequireDigit = false;
-            options.Password.RequireUppercase = false;
+            options.Password.RequireDigit = true;
+            options.Password.RequireUppercase = true;
             options.Password.RequireLowercase = false;
             options.User.RequireUniqueEmail = true;
         });
