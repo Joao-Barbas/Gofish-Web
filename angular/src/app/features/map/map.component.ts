@@ -247,10 +247,25 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     if (!this.pickingOnMap) return;
 
     const { lng, lat } = e.lngLat;
+
     const coords: Coords = { latitude: lat, longitude: lng };
     this.setSelectedCoords(coords);
 
+    this.router.navigate([], {
+      queryParams : {
+        lat,
+        lng,
+        z: this.map.getZoom()
+      },
+      queryParamsHandling: 'merge' // Serve para nao apagar o query params que possam existir
+    });
+
     this.disablePickMode();
+  }
+
+  urlUpdate() {
+    const center = this.map.getCenter();
+    const zoom = this.map.getZoom();
   }
 
   ngOnDestroy(): void {

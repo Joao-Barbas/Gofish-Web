@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouteReuseStrategy } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { EnumDTO} from '@gofish/shared/dtos/enum.dto';
 import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/pin.dto';
@@ -10,14 +11,16 @@ import { NgxSonnerToaster, toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-warn-pin-modal',
-  imports: [CommonModule, FormsModule,NgxSonnerToaster],
+  imports: [CommonModule, ReactiveFormsModule,NgxSonnerToaster],
   templateUrl: './warn-pin-modal.component.html',
   styleUrl: './warn-pin-modal.component.css',
 })
 export class WarnPinModalComponent {
+  private readonly router = inject(Router);
+  private readonly pinService = inject(PinService);
+  private readonly fb = inject(FormBuilder);
+
   @Input() coords: Coords | null = null;
-  @Output() cancelled = new EventEmitter<void>();
-  @Output() confirmed = new EventEmitter<void>();
 
   body: string = '';
 
@@ -30,7 +33,11 @@ export class WarnPinModalComponent {
   errorMessage = '';
   isSubmitting: boolean = false;
 
-  constructor(private pinService: PinService) { }
+  form = this.fb.group({
+    visibility: [0, Validators.required],
+    body: [''],
+    warningKind: [0, Validators.required]
+  });
 
   ngOnInit(): void {
     this.pinService.enumerateWarnType().subscribe({
@@ -52,7 +59,7 @@ export class WarnPinModalComponent {
   }
 
   onCancel(): void {
-    this.cancelled.emit();
+    this.router.navigate(['/map']);
   }
 
   onPublish(): void {
@@ -66,9 +73,9 @@ export class WarnPinModalComponent {
     const dto: CreateWarnPinReqDTO = {
       latitude: this.coords.latitude,
       longitude: this.coords.longitude,
-      visibility: this.selectedVisibility as number,
-      body: this.body.trim() || undefined,
-      warningKind: this.selectedWarnType as number
+      visibility: this.form.value.visibility!,
+      body: this.form.value.body ?? '',
+      warningKind: this.form.value.warningKind!
     };
 
     this.isSubmitting = true;
@@ -78,7 +85,7 @@ export class WarnPinModalComponent {
       next: () => {
         this.isSubmitting = false;
         toast.dismiss(toastId);
-        this.confirmed.emit();
+        this.router.navigate(['/map']);
       },
       error: () => {
         this.isSubmitting = false;
