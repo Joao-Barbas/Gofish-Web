@@ -122,7 +122,7 @@
 
   /* Container sizes */
   --gf-container-xs: 20rem; /* 320px */
-  --gf-container-sm: 24rem; /* 384px */
+  --gf-container-sm: 28rem; /* 448px */
   --gf-container-md: 48rem; /* 768px */
   --gf-container-lg: 64rem; /* 1024px */
   --gf-container-xl: 75rem; /* 1200px */
@@ -262,12 +262,39 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 
 /*
 
-  Custom elements/components
+  Utility classes
 
 */
 
-/* Spacing utilities */
+/* Texts */
+.gf-text-3xs { font-size: var(--gf-text-3xs); }
+.gf-text-2xs { font-size: var(--gf-text-2xs); }
+.gf-text-xs  { font-size: var(--gf-text-xs); }
+.gf-text-sm  { font-size: var(--gf-text-sm); }
+.gf-text-md  { font-size: var(--gf-text-md); }
+.gf-text-lg  { font-size: var(--gf-text-lg); }
+.gf-text-xl  { font-size: var(--gf-text-xl); }
+.gf-text-2xl { font-size: var(--gf-text-2xl); }
+.gf-text-3xl { font-size: var(--gf-text-3xl); }
+.gf-text-4xl { font-size: var(--gf-text-4xl); }
 
+/* Displays */
+.gf-display-block { display: block; }
+
+/* Container max-widths */
+.gf-container-xs { max-width: var(--gf-container-xs); }
+.gf-container-sm { max-width: var(--gf-container-sm); }
+.gf-container-md { max-width: var(--gf-container-md); }
+.gf-container-lg { max-width: var(--gf-container-lg); }
+.gf-container-xl { max-width: var(--gf-container-xl); }
+
+/* width percentages */
+.gf-w-50  { width: 50%; }
+.gf-w-80  { width: 80%; }
+.gf-w-90  { width: 90%; }
+.gf-w-100 { width: 100%; }
+
+/* Gaps */
 .gf-gap-0  { gap: 0; }
 .gf-gap-4  { gap: var(--gf-4); }
 .gf-gap-6  { gap: var(--gf-6); }
@@ -279,6 +306,7 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 .gf-gap-24 { gap: var(--gf-24); }
 .gf-gap-32 { gap: var(--gf-32); }
 
+/* Margins */
 .gf-m-0  { margin: 0; }
 .gf-m-4  { margin: var(--gf-4); }
 .gf-m-8  { margin: var(--gf-8); }
@@ -323,13 +351,17 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 .gf-p-24 { padding: var(--gf-24); }
 .gf-p-32 { padding: var(--gf-32); }
 
-/* Pointer utilities */
-
+/* Pointer events */
 .gf-no-events { pointer-events: none !important; }
 .gf-do-events { pointer-events: auto; }
 
-/* Typography */
+/*
 
+  Custom element/component classes
+
+*/
+
+/* Typography */
 .gf-text-error {
   margin: 0;
   font-size: 0.75rem;
@@ -346,14 +378,13 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   user-select: none;
 }
 
-/* Layout utilities */
-
-.gf-vertical-flow {
+/* Layouts */
+.gf-flow-vertical {
   display: flex;
   flex-direction: column;
 }
 
-.gf-horizontal-flow {
+.gf-flow-horizontal {
   display: flex;
   flex-direction: row;
 }
@@ -364,22 +395,31 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 }
 
 /* Cards */
-
 .gf-card, [class*="gf-card-"] {
   font: var(--gf-font-main);
   color: var(--gf-dark-text);
-  box-shadow: var(--dark-lift-shadow-m);
+  box-shadow: var(--gf-shadow-lift-md);
+  background: var(--gf-dark-bg);
+  padding: var(--gf-24);
   border-radius: var(--gf-12);
   border: none;
   border-width: 0px;
-  background: var(--gf-dark-bg);
-  padding: var(--gf-24);
 }
 
 /* Popovers */
-
 .gf-popover, [class*="gf-popover-"] {
   /* TODO: styles for .gf-card.gf-popover */
+}
+
+/* Spinners */
+.gf-basic-spinner {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--dark-bg-dark);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: gf-basic-spin 1s linear infinite;
 }
 
 /* Buttons */
@@ -392,6 +432,19 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 /* Alerts / Toasts */
 /* Separators */
 /* Icons / Svgs */
+
+/* Backgrounds */
+
+.gf-background-map-fixed {
+  min-height: 100vh;
+  min-width: 100vw;
+  background-image: url('/assets/images/backgroung-map.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
 
 /*
 
@@ -795,12 +848,12 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   user-select: none;
 }
 
-.vertical-flow { /* TODO: Use ".gf-vertical-flow" instead */
+.vertical-flow { /* TODO: Use ".gf-flow-vertical" instead */
   display: flex;
   flex-direction: column;
 }
 
-.horizontal-flow { /* TODO: Use ".gf-horizontal-flow" instead */
+.horizontal-flow { /* TODO: Use ".gf-flow-horizontal" instead */
   display: flex;
   flex-direction: row;
 }

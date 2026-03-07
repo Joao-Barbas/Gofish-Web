@@ -1,1 +1,42 @@
 /* signup.component.css */
+
+@import '../auth-styles.css';
+
+/* .password-rules li .form-icon-check { display: none; } */
+/* .password-rules li .form-icon-x { display: block; } */
+
+/* .password-rules li.valid .form-icon-check { display: block; } */
+/* .password-rules li.valid .form-icon-x { display: none; } */
+
+.password-rules {
+  list-style: none;
+  margin: 0 0;
+  padding: 0;
+
+  & li {
+    display: flex;
+    align-items: center;
+    color: var(--gf-danger);
+    gap: var(--gf-4);
+    margin: var(--gf-2) 0;
+
+    & svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    & span {
+      font-size: var(--gf-text-xs);
+    }
+
+    & .form-icon-check { display: none; }
+    & .form-icon-x { display: block; }
+
+    &.valid {
+      color: var(--gf-success);
+
+      & .form-icon-check { display: block; }
+      & .form-icon-x { display: none; }
+    }
+  }
+}

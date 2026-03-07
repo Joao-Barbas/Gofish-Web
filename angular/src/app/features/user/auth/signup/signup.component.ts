@@ -8,18 +8,26 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FirstKeyPipe } from '@gofish/shared/pipes/first-key.pipe';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/signup.dto';
-import { Path } from '@gofish/shared/constants';
+import { Api, Path } from '@gofish/shared/constants';
 import { getFirstError, ProblemDetails } from '@gofish/shared/core/problem-details';
+import { RegexMatchesPipe } from '@gofish/shared/pipes/regex-matches.pipe';
+import { LoadingState } from '@gofish/shared/core/loading-state';
+import { BusyState } from '@gofish/shared/core/busy-state';
 
 @Component({
   selector: 'app-signup',
-  imports: [ ReactiveFormsModule, CommonModule, RouterLink ],
+  imports: [ ReactiveFormsModule, CommonModule, RouterLink, RegexMatchesPipe ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
 })
 export class SignupComponent implements OnInit {
+  readonly loadingState: LoadingState = new LoadingState();
+  readonly busyState: BusyState       = new BusyState();
+
+  readonly Path = Path;
+  readonly Api  = Api;
+
   isSubmitted: boolean = false;
-  busyCount: number = 0;
   formErrors: string[] = [];
 
   constructor(
@@ -45,6 +53,21 @@ export class SignupComponent implements OnInit {
     return null;
   }
 
+  hasNumberRegex = /\d/;
+  hasUppercaseRegex = /[A-Z]/;
+  hasSpecialRegex = /[^a-zA-Z0-9]/;
+
+  passwordStrength: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value || '';
+    const errors: ValidationErrors = {};
+
+    if (!/\d/.test(value)) errors['noNumber'] = true;
+    if (!/[A-Z]/.test(value)) errors['noUppercase'] = true;
+    if (!/[^a-zA-Z0-9 ]/.test(value)) errors['noSpecial'] = true;
+
+    return Object.keys(errors).length ? errors : null;
+  }
+
   form = this.formBuilder.group({
     email: ['', [
       Validators.required,
@@ -53,7 +76,7 @@ export class SignupComponent implements OnInit {
     password: ['', [
       Validators.required,
       Validators.minLength(6),
-      Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/)
+      this.passwordStrength
     ]],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
@@ -69,17 +92,17 @@ export class SignupComponent implements OnInit {
     this.formErrors = [];
 
     if (this.form.invalid) return;
-    this.setBusy(true);
+    this.busyState.setBusy(true);
 
     this.authService.signUpUser(this.form.value as SignUpReqDTO).subscribe({
       next: (res: SignUpResDTO) => {
-        this.setBusy(false);
+        this.busyState.setBusy(false);
         this.isSubmitted = false;
         this.form.reset();
         this.router.navigate([Path.HOME]);
       },
       error: (err: HttpErrorResponse) => {
-        this.setBusy(false);
+        this.busyState.setBusy(false);
         this.isSubmitted = false;
         let problem = err.error as ProblemDetails
         this.formErrors.push(getFirstError(problem) ?? 'Server error. Try again later');
@@ -121,13 +144,5 @@ export class SignupComponent implements OnInit {
       case 'passwordmismatch': return 'Password\'s don\'t match';
     }
     return null;
-  }
-
-  setBusy(busy: boolean) {
-    this.busyCount = busy ? this.busyCount + 1 : Math.max(0, this.busyCount - 1);
-  }
-
-  isBusy(): boolean {
-    return this.busyCount > 0;
   }
 }

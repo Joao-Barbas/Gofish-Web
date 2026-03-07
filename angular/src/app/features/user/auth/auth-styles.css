@@ -1,0 +1,141 @@
+/* auth-styles.css */
+
+.gf-card {
+  padding-top: var(--gf-24);
+  padding-right: var(--gf-32);
+  padding-bottom: var(--gf-12);
+  padding-left: var(--gf-32);
+}
+
+.thrid-party-button {
+  flex: 1;
+  padding: var(--gf-12) var(--gf-32);
+  margin:  var(--gf-2) var(--gf-4);
+  box-shadow: 0 0 0 2px var(--gf-primary);
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 0 0 4px var(--gf-primary);
+  }
+
+  & svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.choice-divider {
+  display: flex;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 0;
+  margin-bottom: calc(-8rem / 16);
+
+  &::before, &::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid var(--dark-text-muted);
+  }
+
+  &::before {
+    margin-right: 10px;
+  }
+
+  &::after {
+    margin-left: 10px;
+  }
+
+  & span {
+    color: var(--dark-text-muted);
+  }
+}
+
+.form {
+  & small {
+    display: block;
+    color: var(--dark-text-muted);
+  }
+
+  & input {
+    box-shadow: none;
+    border: none;
+    outline: none;
+    color: var(--dark-text);
+    background-color: var(--dark-bg-dark);
+    border-radius: var(--gf-8);
+    padding: 0 var(--gf-8);
+    height: var(--gf-40);
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 0 0 2px var(--gf-primary);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px var(--gf-primary);
+    }
+  }
+}
+
+.submit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  gap: 8px;
+  width: 100%;
+  height: var(--gf-40);
+  box-shadow: var(--gf-shadow-lift-sm);
+  background-color: var(--gf-primary);
+  color: var(--gf-dark-text);
+  border-radius: var(--gf-8);
+  transition: box-shadow 0.5s ease;
+
+  & .gf-basic-spinner {
+    display: none;
+  }
+
+  &.busy .gf-basic-spinner {
+    display: block;
+  }
+
+  &.busy {
+    opacity: 0.8;
+    cursor: wait;
+  }
+
+  &:disabled {
+    background-color: var(--tertiary);
+  }
+
+  &:not(:disabled):hover {
+    box-shadow: var(--gf-shadow-lift-md);
+  }
+}
+
+.signin-invite {
+  font-size: var(--gf-text-xs);
+  color: var(--gf-dark-text-muted);
+
+  & a {
+    text-decoration: none;
+    color: var(--gf-primary);
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: var(--gf-text-xs);
+  color: var(--gf-dark-text-muted);
+
+  & svg {
+    width: 18px;
+    height: 18px;
+  }
+}
