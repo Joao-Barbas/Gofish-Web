@@ -18,7 +18,15 @@
     align-items: center;
     color: var(--gf-danger);
     gap: var(--gf-4);
-    margin: var(--gf-2) 0;
+    margin: calc(1rem / 16) 0;
+
+    &:first-child {
+      margin-top: var(--gf-4);
+    }
+
+    &:last-child {
+      margin-bottom: var(--gf-4);
+    }
 
     & svg {
       width: 20px;

@@ -1,7 +1,7 @@
 // signup.component.ts
 
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -9,7 +9,7 @@ import { FirstKeyPipe } from '@gofish/shared/pipes/first-key.pipe';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/signup.dto';
 import { Api, Path } from '@gofish/shared/constants';
-import { getFirstError, ProblemDetails } from '@gofish/shared/core/problem-details';
+import { ValidationProblemDetails } from '@gofish/shared/core/problem-details';
 import { RegexMatchesPipe } from '@gofish/shared/pipes/regex-matches.pipe';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { BusyState } from '@gofish/shared/core/busy-state';
@@ -21,54 +21,18 @@ import { BusyState } from '@gofish/shared/core/busy-state';
   styleUrl: './signup.component.css',
 })
 export class SignupComponent implements OnInit {
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  readonly formBuilder = inject(FormBuilder);
+  readonly firstKey = inject(FirstKeyPipe);
+
   readonly loadingState: LoadingState = new LoadingState();
   readonly busyState: BusyState       = new BusyState();
 
   readonly Path = Path;
   readonly Api  = Api;
 
-  isSubmitted: boolean = false;
-  formErrors: string[] = [];
-
-  constructor(
-    public formBuilder: FormBuilder,
-    public firstKey: FirstKeyPipe,
-    private router: Router,
-    private authService: AuthService
-  ){}
-
-  ngOnInit(): void {
-    if (!this.authService.isAuthenticated()) return;
-    this.router.navigate([Path.HOME]);
-  }
-
-  passwordMatch: ValidatorFn = (control: AbstractControl): null => {
-    const password = control.get('password');
-    const confirmPassword = control.get('confirmPassword');
-    if (password && confirmPassword && password.value != confirmPassword.value) {
-      confirmPassword.setErrors({ passwordmismatch: true })
-      return null;
-    }
-    confirmPassword?.setErrors(null);
-    return null;
-  }
-
-  hasNumberRegex = /\d/;
-  hasUppercaseRegex = /[A-Z]/;
-  hasSpecialRegex = /[^a-zA-Z0-9]/;
-
-  passwordStrength: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value || '';
-    const errors: ValidationErrors = {};
-
-    if (!/\d/.test(value)) errors['noNumber'] = true;
-    if (!/[A-Z]/.test(value)) errors['noUppercase'] = true;
-    if (!/[^a-zA-Z0-9 ]/.test(value)) errors['noSpecial'] = true;
-
-    return Object.keys(errors).length ? errors : null;
-  }
-
-  form = this.formBuilder.group({
+  signinForm = this.formBuilder.group({
     email: ['', [
       Validators.required,
       Validators.email
@@ -76,73 +40,92 @@ export class SignupComponent implements OnInit {
     password: ['', [
       Validators.required,
       Validators.minLength(6),
-      this.passwordStrength
+      (control: AbstractControl) => this.passwordStrong(control)
     ]],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     userName: ['', Validators.required],
     confirmPassword: [''],
-  }, {
-    validators: this.passwordMatch
-  });
+  }, { validators: [
+    (control: AbstractControl) => this.passwordMatch(control)
+  ]});
+
+  apiProblems: ValidationProblemDetails | null = null;
+  formErrors: ValidationErrors | null = this.signinForm.errors;
+
+  ngOnInit(): void {
+    if (!this.authService.isAuthenticated()) return;
+    this.router.navigate([Path.HOME]);
+  }
+
+  // Form errors/validations
+
+  private passwordMatch(control: AbstractControl): ValidationErrors | null {
+    let password = control.get('password')?.value;
+    let confirm = control.get('confirmPassword')?.value;
+    if (password && password != confirm) return { 'passwordmismatch': true };
+    return null;
+  }
+
+  private passwordStrong(control: AbstractControl): ValidationErrors | null {
+    const value = control.value || '';
+    const errors: ValidationErrors = {};
+
+    if (!/\d/.test(value)) errors['nonumber'] = true;
+    if (!/[A-Z]/.test(value)) errors['nouppercase'] = true;
+    if (!/[^a-zA-Z0-9 ]/.test(value)) errors['nospecial'] = true;
+
+    return Object.keys(errors).length ? errors : null;
+  }
+
+  private controlError(name: string): ValidationErrors | null {
+    let control = this.signinForm.get(name);
+    if (!control) return null;
+    if (!control.invalid || (!control.touched && !control.dirty)) return null;
+    return control.errors;
+  }
+
+  getError(): string | null {
+    const e = (field: string) => this.controlError(field);
+    const g = this.signinForm.errors;
+    const s = this.apiProblems;
+    // Field-level
+    if (e('email')?.['required']) return 'Email is required.';
+    if (e('email')?.['email']) return 'Enter a valid e-mail address.';
+    if (e('firstName')?.['required']) return 'First name is required.';
+    if (e('lastName')?.['required']) return 'Last name is required.';
+    if (e('userName')?.['required']) return 'Unique user name is required.';
+    if (e('password')?.['required']) return 'Password is required.';
+    if (e('password')?.['minlength']) return 'Password needs atleast six characters.';
+    if (e('password')?.['nonumber']) return 'Password needs at least one number.';
+    if (e('password')?.['nouppercase']) return 'Passowrd needs at least one uppercase character.';
+    if (e('password')?.['nospecial']) return 'Password needs one or more special character(s).';
+    // Group-level
+    if (g?.['passwordmismatch']) return 'Password\'s don\'t match.';
+    // Api errors
+    return s?.detail ?? null;
+  }
+
+  // End form errors/validations
 
   onSubmit() {
-    this.isSubmitted = true;
-    this.form.markAllAsTouched();
-    this.formErrors = [];
-
-    if (this.form.invalid) return;
+    this.signinForm.markAllAsTouched();
+    this.apiProblems = null;
+    if (this.signinForm.invalid) return;
     this.busyState.setBusy(true);
 
-    this.authService.signUpUser(this.form.value as SignUpReqDTO).subscribe({
+    this.authService.signUpUser(this.signinForm.value as SignUpReqDTO).subscribe({
       next: (res: SignUpResDTO) => {
         this.busyState.setBusy(false);
-        this.isSubmitted = false;
-        this.form.reset();
+        this.signinForm.reset();
         this.router.navigate([Path.HOME]);
       },
       error: (err: HttpErrorResponse) => {
         this.busyState.setBusy(false);
-        this.isSubmitted = false;
-        let problem = err.error as ProblemDetails
-        this.formErrors.push(getFirstError(problem) ?? 'Server error. Try again later');
+        let problem = err.error as ValidationProblemDetails;
+        problem.detail = problem.detail ?? 'Server Error. Try again later.';
+        this.apiProblems = problem;
       }
     })
-  }
-
-  hasError(): boolean {
-    return (this.form.invalid && (this.isSubmitted || this.form.touched || this.form.dirty)) || this.formErrors.length > 0;
-  }
-
-  getControlError(name: string): ValidationErrors | null | undefined {
-    var control = this.form.get(name);
-    if (Boolean(control?.invalid) && (this.isSubmitted || Boolean(control?.touched) || Boolean(control?.dirty))) return control?.errors;
-    return null;
-  }
-
-  getError(): string | null {
-    if (this.formErrors.length > 0) return this.formErrors[0];
-    switch (this.firstKey.transform(this.getControlError('email'))) {
-      case 'required': return 'Email is required';
-      case 'email': return 'Enter a valid e-mail address';
-    }
-    switch (this.firstKey.transform(this.getControlError('firstName'))) {
-      case 'required': return 'First name is required';
-    }
-    switch (this.firstKey.transform(this.getControlError('lastName'))) {
-      case 'required': return 'Last name is required';
-    }
-    switch (this.firstKey.transform(this.getControlError('userName'))) {
-      case 'required': return 'Unique user name is required';
-    }
-    switch (this.firstKey.transform(this.getControlError('password'))) {
-      case 'required': return 'Password is required';
-      case 'minlength': return 'Password needs atleast 6 characters';
-      case 'pattern': return 'Password required one or more special character(s)';
-    }
-    switch (this.firstKey.transform(this.getControlError('confirmPassword'))) {
-      case 'passwordmismatch': return 'Password\'s don\'t match';
-    }
-    return null;
   }
 }

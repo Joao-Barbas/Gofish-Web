@@ -437,7 +437,6 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 
 .gf-background-map-fixed {
   min-height: 100vh;
-  min-width: 100vw;
   background-image: url('/assets/images/backgroung-map.png');
   background-repeat: no-repeat;
   background-position: center center;
@@ -445,15 +444,22 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   background-attachment: fixed;
 }
 
-
 /*
 
   Media queries
 
 */
 
-@media (max-width: 36rem) {}
-@media (max-width: 62rem) {}
+@media (max-width: 36rem) {
+  .gf-background-map-fixed {
+    background-image: none;
+    background-color: var(--gf-dark-bg-dark);
+  }
+}
+
+@media (max-width: 62rem) {
+  /* Nothing to see here */
+}
 
 @media (prefers-color-scheme: light) {
   :root {

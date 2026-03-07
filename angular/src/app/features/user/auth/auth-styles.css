@@ -66,8 +66,9 @@
     color: var(--dark-text);
     background-color: var(--dark-bg-dark);
     border-radius: var(--gf-8);
-    padding: 0 var(--gf-8);
+    padding: 0 var(--gf-8) 0 var(--gf-8);
     height: var(--gf-40);
+    line-height: var(--gf-40);
     transition: box-shadow 0.2s ease;
 
     &:hover {
@@ -93,7 +94,7 @@
   background-color: var(--gf-primary);
   color: var(--gf-dark-text);
   border-radius: var(--gf-8);
-  transition: box-shadow 0.5s ease;
+  transition: box-shadow 0.5s ease, background-color 0.5s ease;
 
   & .gf-basic-spinner {
     display: none;
