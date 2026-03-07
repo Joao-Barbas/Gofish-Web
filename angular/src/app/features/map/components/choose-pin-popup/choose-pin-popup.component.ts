@@ -3,12 +3,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { ActivatedRoute, RouteConfigLoadEnd, Router, RouterLinkActive } from '@angular/router';
+import { UrlService } from '@gofish/features/map/services/url.service';
 import { PopupController } from '@gofish/shared/core/popup-controller';
 import { ClickOutsideDirective } from '@gofish/shared/directives/click-outside.directive';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { SimplePopup } from '@gofish/shared/models/popup.model';
 import { GeolocationService } from '@gofish/shared/services/geolocation.service';
+import { isArrayLike } from 'rxjs/internal/util/isArrayLike';
 
 @Component({
   selector: 'app-choose-pin-popup',
@@ -21,6 +23,7 @@ export class ChoosePinPopupComponent implements SimplePopup {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   public readonly geoService = inject(GeolocationService);
+  public readonly urlService = inject(UrlService);
 
   selectedLocationMode = '';
   selectedCoords: Coords | null = null;
@@ -30,15 +33,13 @@ export class ChoosePinPopupComponent implements SimplePopup {
   @Output() requestPickOnMap = new EventEmitter<void>();
 
   ngOnInit() {
-    const lat = this.query.get('lat');
-    const lng = this.query.get('lng');
-    const mode = this.query.get('mode');
+    const urlValues = this.urlService.getUrlValues(this.query);
 
-    if (mode === 'pick') {
+    if (urlValues?.mode === 'pick') {
       this.selectedLocationMode = 'pick';
     }
 
-    if (mode === 'geo') {
+    if (urlValues?.mode === 'geo') {
       this.selectedLocationMode = 'geo';
     }
 
@@ -47,7 +48,7 @@ export class ChoosePinPopupComponent implements SimplePopup {
   }
 
   setSelectedCoords(lng: number, lat: number): void {
-    if (Number.isNaN(lng) || Number.isNaN(lat)) return;
+    if (this.urlService.isLngLatValid(lng,lat)) return;
 
     this.selectedCoords = {
       longitude: lng,

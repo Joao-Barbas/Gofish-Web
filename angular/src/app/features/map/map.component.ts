@@ -1,8 +1,8 @@
 import mapboxgl from 'mapbox-gl';
-import { AfterViewInit, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit, Query, signal } from '@angular/core';
 import { CommonModule, NgStyle, ɵnormalizeQueryParams } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet, UrlSegment } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { PreviewMarkerService } from '@gofish/features/map/services/preview-marker.service';
 import { MarkerRegistryService } from '@gofish/features/map/services/marker-registry.service';
@@ -24,6 +24,9 @@ import { ModalKey } from '@gofish/shared/models/modal.model';
 import { PopupKey } from '@gofish/shared/models/popup.model';
 import { NgxSonnerToaster, toast } from 'ngx-sonner';
 import { merge } from 'rxjs';
+import { UrlCodec } from '@angular/common/upgrade';
+import { UrlService } from '@gofish/features/map/services/url.service';
+import { reportUnhandledError } from 'rxjs/internal/util/reportUnhandledError';
 
 
 
@@ -73,10 +76,12 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private readonly pinHoverPreview = inject(PinHoverPreviewService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly urlService = inject(UrlService);
   pickingOnMap = false;
   isCreating: boolean = false;
   activePinModal: PinKind | null = null;
   selected: Coords | null = null;
+  query = this.route.snapshot.queryParamMap;
   private map!: mapboxgl.Map;
   private allPins: ViewportPinDTO[] = [];
   public isCreatePinOverlayOpen = this.popupService.activePopup() === 'choose-pin-popup';
@@ -84,7 +89,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public selectedPinKind: PinKind | null = null;
   public isPinDetailsOpen = this.popupService.activePopup() === 'pin-preview';
   protected selectedPin = signal<PinDataResDTO | null>(null);
-  
+
 
 
   public get getGeolocationState() { return this.geoService.state(); }
@@ -94,7 +99,12 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   // Lifecycle
   // =========================
   ngOnInit() {
-    //this.urlUpdate();
+    if (!this.urlService.isUrlValuesValid(this.query)) {
+    alert('Alerta engracadinho!');
+    return;
+  }
+
+
   }
 
   private getInitialView() {
