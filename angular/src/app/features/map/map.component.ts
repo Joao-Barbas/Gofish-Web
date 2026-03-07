@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import { AfterViewInit, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgStyle, ɵnormalizeQueryParams } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
@@ -23,6 +23,7 @@ import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.d
 import { ModalKey } from '@gofish/shared/models/modal.model';
 import { PopupKey } from '@gofish/shared/models/popup.model';
 import { NgxSonnerToaster, toast } from 'ngx-sonner';
+import { merge } from 'rxjs';
 
 
 
@@ -83,6 +84,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public selectedPinKind: PinKind | null = null;
   public isPinDetailsOpen = this.popupService.activePopup() === 'pin-preview';
   protected selectedPin = signal<PinDataResDTO | null>(null);
+  
 
 
   public get getGeolocationState() { return this.geoService.state(); }
@@ -92,36 +94,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   // Lifecycle
   // =========================
   ngOnInit() {
-    /* this.route.queryParamMap.subscribe(q => {
-      const modal = q.get('modal');
-      const lat = q.get('lat');
-      const lng = q.get('lng');
-
-      this.activePinModal = null;
-
-      switch (modal) {
-        case 'catch':
-          this.activePinModal = 0;
-          break;
-        case 'info':
-          this.activePinModal = 1;
-          break;
-        case 'warn':
-          this.activePinModal = 2;
-          break;
-        default:
-          break;
-      }
-
-      if (lat && lng) {
-        const latitude = Number(lat);
-        const longitude = Number(lng);
-
-        if (!Number.isNaN(latitude) && !Number.isNaN(longitude)) {
-          this.selected = { latitude, longitude };
-        }
-      }
-    }); */
+    //this.urlUpdate();
   }
 
   private getInitialView() {
@@ -133,14 +106,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     const hasValid = !Number.isNaN(lat) && !Number.isNaN(lng) && !Number.isNaN(z);
 
     return {
-      center: hasValid ? [lat, lng] as [number, number] : [-8.8909328, 38.5260437],
+      center: hasValid ? [lng, lat] as [number, number] : [38.5260437, -8.8909328],
       zoom: hasValid ? z : 5
     }
   }
 
   ngAfterViewInit(): void {
-    /* const view = this.getInitialView();
-    if (!view) return; */
+     const view = this.getInitialView();
+    if (!view) return;
     mapboxgl.accessToken =
       'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
 
@@ -148,8 +121,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       container: 'map',
       //style: 'mapbox://styles/mapbox/standard',
       style: 'mapbox://styles/goncalopro2/cmm4ybep5002p01s2eexw84v1',
-      center: [-8.8909328, 38.5260437], // [-8.8909328, 38.5260437]
-      zoom: 10,
+      center: [-8.8909328, 38.5260437], // [38.5260437, -8.8909328]
+      zoom: view.zoom,
       maxZoom: 16,
       minZoom: 4.5,
       pitch: 0,
@@ -166,12 +139,19 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       this.setupLayers();
       this.setupInteractions();
 
+      const urlCoords = this.getUrlCoords();
+      //if (urlCoords) this.setSelectedCoords(urlCoords);
+      const urlMode = this.getUrlMode();
+      if (urlMode === 'pick' || urlMode === 'geo') this.popupService.open('choose-pin-popup');
+
 
       this.map.on('moveend', () => {
+        this.urlUpdate();
         if (this.map.getZoom() < 14) return;
         this.loadPinsInViewport();
       });
       this.map.on('zoomend', () => {
+        this.urlUpdate();
         if (this.map.getZoom() < 10) return;
         this.loadPinsInViewport();
       });
@@ -251,21 +231,57 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     const coords: Coords = { latitude: lat, longitude: lng };
     this.setSelectedCoords(coords);
 
-    this.router.navigate([], {
-      queryParams : {
+    this.router.navigate([],{
+      relativeTo: this.route,
+      queryParams: {
         lat,
         lng,
-        z: this.map.getZoom()
+        z: this.map.getZoom(),
+        mode: 'pick'
       },
-      queryParamsHandling: 'merge' // Serve para nao apagar o query params que possam existir
+      queryParamsHandling: 'merge',
+      replaceUrl:true
     });
 
     this.disablePickMode();
   }
 
+
+
   urlUpdate() {
     const center = this.map.getCenter();
     const zoom = this.map.getZoom();
+
+    this.router.navigate([],{
+      queryParams: {
+        lat: center.lat,
+        lng: center.lng,
+        z: zoom
+      },
+      queryParamsHandling: 'merge',// Serve para nao apagar o query params que possam existir
+      replaceUrl: true
+    }
+    );
+  }
+
+  private getUrlCoords(): Coords | null{
+    const query = this.route.snapshot.queryParamMap;
+
+    const lat = Number(query.get('lat'));
+    const lng = Number(query.get('lng'));
+
+    if (Number.isNaN(lat) || Number.isNaN(lng)) {
+      return null;
+    }
+
+    return {
+      latitude: lat,
+      longitude: lng
+    };
+  }
+
+  private getUrlMode(): string | null {
+    return this.route.snapshot.queryParamMap.get('mode');
   }
 
   ngOnDestroy(): void {
