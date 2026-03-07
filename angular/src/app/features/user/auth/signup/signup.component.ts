@@ -52,6 +52,7 @@ export class SignupComponent implements OnInit {
 
   apiProblems: ValidationProblemDetails | null = null;
   formErrors: ValidationErrors | null = this.signinForm.errors;
+  signInSuccess: boolean = false;
 
   ngOnInit(): void {
     if (!this.authService.isAuthenticated()) return;
@@ -113,12 +114,17 @@ export class SignupComponent implements OnInit {
     this.apiProblems = null;
     if (this.signinForm.invalid) return;
     this.busyState.setBusy(true);
+    this.signInSuccess = false;
 
     this.authService.signUpUser(this.signinForm.value as SignUpReqDTO).subscribe({
       next: (res: SignUpResDTO) => {
         this.busyState.setBusy(false);
-        this.signinForm.reset();
-        this.router.navigate([Path.HOME]);
+        this.signInSuccess = true;
+        setTimeout(() => {
+          this.signInSuccess = false;
+          this.signinForm.reset();
+          this.router.navigate([Path.HOME]);
+        }, 3000);
       },
       error: (err: HttpErrorResponse) => {
         this.busyState.setBusy(false);

@@ -48,3 +48,8 @@
     }
   }
 }
+
+#password::placeholder {
+  font-size: 0.8em;
+  transform: translateY(-1px);
+}

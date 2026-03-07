@@ -209,7 +209,18 @@
 }
 
 @keyframes gf-basic-spin {
+  from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+@keyframes gf-icon-scale-in {
+  from { opacity: 0; transform: scale(0); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes gf-icon-scale-out {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0); }
 }
 
 @keyframes overlay-popup-scale { /* TODO: Change to "gf-popover-scale-in" project wide */
