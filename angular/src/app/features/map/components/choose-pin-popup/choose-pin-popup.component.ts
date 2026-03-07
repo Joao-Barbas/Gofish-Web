@@ -26,16 +26,15 @@ export class ChoosePinPopupComponent implements SimplePopup {
   public readonly urlService = inject(UrlService);
 
   selectedLocationMode = '';
-  selectedCoords: Coords | null = null;
   query = this.route.snapshot.queryParamMap;
 
   public errorMessage = '';
+  @Input() coords: Coords | null = null;
   @Output() requestPickOnMap = new EventEmitter<void>();
-  @Output() requestGeoOnMap = new EventEmitter<void>();
+  @Output() requestGeoOnMap = new EventEmitter<Coords>();
 
   ngOnInit() {
     const urlValues = this.urlService.getUrlValues(this.query);
-
     if (urlValues?.mode === 'pick') {
       this.selectedLocationMode = 'pick';
     }
@@ -46,14 +45,6 @@ export class ChoosePinPopupComponent implements SimplePopup {
 
   }
 
-  setSelectedCoords(lng: number, lat: number): void {
-    if (this.urlService.isLngLatValid(lng,lat)) return;
-
-    this.selectedCoords = {
-      longitude: lng,
-      latitude: lat
-    }
-  }
 
   onCreateByGeolocation() {
     this.selectedLocationMode = 'geo';
@@ -67,7 +58,6 @@ export class ChoosePinPopupComponent implements SimplePopup {
       (position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-        this.setSelectedCoords(lng, lat);
         const zoom = Number(this.query.get('z'));
 
         this.router.navigate(['/map'], {
@@ -81,7 +71,10 @@ export class ChoosePinPopupComponent implements SimplePopup {
           replaceUrl: true
         });
 
-        this.requestGeoOnMap.emit();
+        this.requestGeoOnMap.emit({
+          longitude: lng,
+          latitude: lat
+        });
       },
       () => {
         this.errorMessage = 'Not possible to get location.';
@@ -94,16 +87,14 @@ export class ChoosePinPopupComponent implements SimplePopup {
     this.errorMessage = '';
     this.selectedLocationMode = 'pick';
     this.requestPickOnMap.emit();
-    //this.close();
   }
 
   public cancelCreatingPin() {
-    //this.cancel.emit();
     this.popupController.close();
   }
 
   public createWarnPin() {
-    if (!this.selectedCoords) {
+    if (!this.coords) {
       this.errorMessage = 'Coordinates not selected.';
       return;
     }
@@ -117,14 +108,14 @@ export class ChoosePinPopupComponent implements SimplePopup {
   }
 
   public createInfoPin() {
-    if (!this.selectedCoords) {
+    if (!this.coords) {
       this.errorMessage = 'Coordinates not selected.';
       return;
     } //this.typeSelected.emit(PinKind.INFORMATION);
   }
 
   public createCatchPin() {
-    if (!this.selectedCoords) {
+    if (!this.coords) {
       this.errorMessage = 'Coordinates not selected.';
       return;
     }

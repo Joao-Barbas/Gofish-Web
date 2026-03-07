@@ -14,11 +14,11 @@
     </div>
 
     <!-- Coordenadas selecionadas -->
-    @if (selectedCoords) {
+    @if (coords) {
       <div class="text-center mt-2 animate-fade-in d-flex align-items-center gap-1">
         <div class="d-flex align-items-center gap-1">
-            <p class="mb-0 dark-bg-dark modal-info-box">{{ selectedCoords.latitude | number:'1.4-4' }}</p>
-            <p class="mb-0 dark-bg-dark modal-info-box">{{ selectedCoords.longitude | number:'1.4-4' }}</p>
+            <p class="mb-0 dark-bg-dark modal-info-box">{{ coords!.longitude | number:'1.4-4' }}</p>
+            <p class="mb-0 dark-bg-dark modal-info-box">{{ coords!.latitude | number:'1.4-4' }}</p>
           </div>
       </div>
     }

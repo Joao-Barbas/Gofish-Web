@@ -23,7 +23,7 @@ import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.d
 import { ModalKey } from '@gofish/shared/models/modal.model';
 import { PopupKey } from '@gofish/shared/models/popup.model';
 import { NgxSonnerToaster, toast } from 'ngx-sonner';
-import { merge } from 'rxjs';
+import { ignoreElements, merge } from 'rxjs';
 import { UrlCodec } from '@angular/common/upgrade';
 import { UrlService } from '@gofish/features/map/services/url.service';
 import { reportUnhandledError } from 'rxjs/internal/util/reportUnhandledError';
@@ -264,11 +264,11 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.disablePickMode();
   }
 
-  onGeo() {
-    const values = this.urlService.getUrlValues(this.query);
+  onGeo(coords: Coords) {
+    if(!coords) return;
     this.selected.set({
-      longitude:values.lng!,
-      latitude: values.lat!
+      longitude:coords.longitude,
+      latitude: coords.latitude
     });
 
     this.setSelectedCoords(this.selected()!);

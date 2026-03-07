@@ -87,7 +87,8 @@
       <!-- Choose pin type -->
       @if (this.popupService.activePopup() === 'choose-pin-popup') {
       <app-choose-pin-popup class="position-action-overlay" animate.enter="on-enter" animate.leave="on-leave"
-        (requestPickOnMap)="onRequestPickOnMap()" (requestGeoOnMap)="onGeo()" (cancel)="(onPopupCancelPinOverlay())">
+        [coords]="selected()"
+        (requestPickOnMap)="onRequestPickOnMap()" (requestGeoOnMap)="onGeo($event)" (cancel)="(onPopupCancelPinOverlay())">
       </app-choose-pin-popup>
       }
       <!-- Create pin forms  -->
