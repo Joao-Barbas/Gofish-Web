@@ -18,9 +18,16 @@ export class UrlService {
 
   isUrlValuesValid(paramMap: ParamMap): boolean {
     const values = this.getUrlValues(paramMap);
-    if (!values) return false;
 
-    if (!this.isLngLatValid(Number(values.lng), Number(values.lat))) return false;
+    const hasLat = values.lat !== null;
+    const hasLng = values.lng !== null;
+
+    // só entra mesta condicao se um for true e outro false(com se fosse uma balanca)
+    if (hasLat !== hasLng) return false;
+
+    if (hasLat && hasLng) {
+      if (!this.isLngLatValid(values.lng!, values.lat!)) return false;
+    }
 
     if (values.z !== null && (values.z < 0 || values.z > 22)) return false;
 
@@ -30,23 +37,16 @@ export class UrlService {
     return true;
   }
 
-  getUrlValues(paramMap: ParamMap): UrlQuery | null {
+  getUrlValues(paramMap: ParamMap): UrlQuery {
     const lat = this.parseNumber(paramMap.get('lat'));
     const lng = this.parseNumber(paramMap.get('lng'));
     const z = this.parseNumber(paramMap.get('z'));
     const mode = this.parseMode(paramMap.get('mode'));
 
-    if (lat === null || lng === null) return null;
-
-    return {
-      lat,
-      lng,
-      z,
-      mode,
-    };
+    return { lat, lng, z, mode };
   }
 
-  public isLngLatValid(lng: number, lat: number): boolean {
+  isLngLatValid(lng: number, lat: number): boolean {
     if (lat < -90 || lat > 90) return false;
     if (lng < -180 || lng > 180) return false;
     return true;
@@ -64,8 +64,7 @@ export class UrlService {
   }
 
   private parseMode(value: string | null): UrlMode | null {
-    if (value === null || value.trim() === '') return null;
-
+    if (!value) return null;
     return this.isValidMode(value) ? value : null;
   }
 }

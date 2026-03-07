@@ -27,6 +27,8 @@ import { merge } from 'rxjs';
 import { UrlCodec } from '@angular/common/upgrade';
 import { UrlService } from '@gofish/features/map/services/url.service';
 import { reportUnhandledError } from 'rxjs/internal/util/reportUnhandledError';
+import { IfStmt } from '@angular/compiler';
+import { REACTIVE_NODE } from '@angular/core/primitives/signals';
 
 
 
@@ -100,10 +102,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   // =========================
   ngOnInit() {
     if (!this.urlService.isUrlValuesValid(this.query)) {
-    alert('Alerta engracadinho!');
-    return;
-  }
-
+      alert('Alerta engracadinho!');
+      return;
+    }
 
   }
 
@@ -122,7 +123,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-     const view = this.getInitialView();
+    const view = this.getInitialView();
     if (!view) return;
     mapboxgl.accessToken =
       'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
@@ -149,11 +150,18 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       this.setupLayers();
       this.setupInteractions();
 
-      const urlCoords = this.getUrlCoords();
+      //const urlCoords = this.getUrlCoords();
       //if (urlCoords) this.setSelectedCoords(urlCoords);
       const urlMode = this.getUrlMode();
       if (urlMode === 'pick' || urlMode === 'geo') this.popupService.open('choose-pin-popup');
 
+      if (this.urlService.isLngLatValid(Number(this.query.get('lng')), Number(this.query.get('lat')))) {
+        this.selected = {
+          longitude: Number(this.query.get('lng')),
+          latitude: Number(this.query.get('lat'))
+        }
+        this.setSelectedCoords(this.selected);
+      }
 
       this.map.on('moveend', () => {
         this.urlUpdate();
@@ -241,7 +249,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     const coords: Coords = { latitude: lat, longitude: lng };
     this.setSelectedCoords(coords);
 
-    this.router.navigate([],{
+    this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
         lat,
@@ -250,7 +258,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         mode: 'pick'
       },
       queryParamsHandling: 'merge',
-      replaceUrl:true
+      replaceUrl: true
     });
 
     this.disablePickMode();
@@ -262,7 +270,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     const center = this.map.getCenter();
     const zoom = this.map.getZoom();
 
-    this.router.navigate([],{
+    this.router.navigate([], {
       queryParams: {
         lat: center.lat,
         lng: center.lng,
@@ -274,7 +282,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     );
   }
 
-  private getUrlCoords(): Coords | null{
+  private getUrlCoords(): Coords | null {
     const query = this.route.snapshot.queryParamMap;
 
     const lat = Number(query.get('lat'));
