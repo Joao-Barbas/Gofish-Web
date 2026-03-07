@@ -82,7 +82,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   pickingOnMap = false;
   isCreating: boolean = false;
   activePinModal: PinKind | null = null;
-  selected: Coords | null = null;
+  selected = signal<Coords | null>(null);
   query = this.route.snapshot.queryParamMap;
   private map!: mapboxgl.Map;
   private allPins: ViewportPinDTO[] = [];
@@ -150,19 +150,20 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       this.setupLayers();
       this.setupInteractions();
 
-      //const urlCoords = this.getUrlCoords();
-      //if (urlCoords) this.setSelectedCoords(urlCoords);
-      const urlMode = this.getUrlMode();
-      if (urlMode === 'pick' || urlMode === 'geo') this.popupService.open('choose-pin-popup');
+      const values = this.urlService.getUrlValues(this.query);
 
-      if (this.urlService.isLngLatValid(Number(this.query.get('lng')), Number(this.query.get('lat')))) {
-        this.selected = {
-          longitude: Number(this.query.get('lng')),
-          latitude: Number(this.query.get('lat'))
+      if (values.mode === 'pick' || values.mode === 'geo') this.popupService.open('choose-pin-popup');
+
+      if (this.selected() !== null) {
+        if (this.urlService.isLngLatValid(Number(values.lng), Number(values.lat))) {
+          this.selected.set({
+            longitude: Number(this.query.get('lng')),
+            latitude: Number(this.query.get('lat'))
+          });
+
+          this.setSelectedCoords(this.selected()!);
         }
-        this.setSelectedCoords(this.selected);
       }
-
       this.map.on('moveend', () => {
         this.urlUpdate();
         if (this.map.getZoom() < 14) return;
@@ -174,7 +175,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.loadPinsInViewport();
       });
       this.map.on('click', (e) => this.onMapClick(e));
-
     });
   }
 
@@ -264,6 +264,27 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.disablePickMode();
   }
 
+  onGeo() {
+    const values = this.urlService.getUrlValues(this.query);
+    this.selected.set({
+      longitude:values.lng!,
+      latitude: values.lat!
+    });
+
+    this.setSelectedCoords(this.selected()!);
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        lat: this.selected()!.latitude,
+        lng: this.selected()!.latitude,
+        z: this.map.getZoom(),
+        mode: 'pick'
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
+  }
 
 
   urlUpdate() {
@@ -282,25 +303,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     );
   }
 
-  private getUrlCoords(): Coords | null {
-    const query = this.route.snapshot.queryParamMap;
 
-    const lat = Number(query.get('lat'));
-    const lng = Number(query.get('lng'));
-
-    if (Number.isNaN(lat) || Number.isNaN(lng)) {
-      return null;
-    }
-
-    return {
-      latitude: lat,
-      longitude: lng
-    };
-  }
-
-  private getUrlMode(): string | null {
-    return this.route.snapshot.queryParamMap.get('mode');
-  }
 
   ngOnDestroy(): void {
     this.previewMarkerService.clear();
@@ -337,7 +340,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   // Selection / Preview marker
   // =========================
   private setSelectedCoords(coords: Coords): void {
-    this.selected = coords;
+    this.selected.set(coords);
 
     this.previewMarkerService.clear();
     this.previewMarkerService.set(this.map, coords.longitude, coords.latitude);
@@ -347,7 +350,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   private clearPreviewAndSelection(): void {
     this.previewMarkerService.clear();
-    this.selected = null;
+    this.selected.set(null);
   }
 
   // =========================

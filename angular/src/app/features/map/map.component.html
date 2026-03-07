@@ -87,7 +87,7 @@
       <!-- Choose pin type -->
       @if (this.popupService.activePopup() === 'choose-pin-popup') {
       <app-choose-pin-popup class="position-action-overlay" animate.enter="on-enter" animate.leave="on-leave"
-        (requestPickOnMap)="onRequestPickOnMap()" (cancel)="(onPopupCancelPinOverlay())">
+        (requestPickOnMap)="onRequestPickOnMap()" (requestGeoOnMap)="onGeo()" (cancel)="(onPopupCancelPinOverlay())">
       </app-choose-pin-popup>
       }
       <!-- Create pin forms  -->
@@ -98,15 +98,15 @@
       } -->
       @if (activePinModal !== null) {
       @switch (activePinModal) {
-      @case (0) { <app-catch-pin-modal [coords]="selected" (cancelled)="onModalCancelled()"
+      @case (0) { <app-catch-pin-modal [coords]="selected()" (cancelled)="onModalCancelled()"
         (confirmed)="onModalConfirmed()" (pickOnMap)="onRequestPickOnMap()">
       </app-catch-pin-modal>
       }
-      @case (1) { <app-info-pin-modal [coords]="selected" (cancelled)="onModalCancelled()"
+      @case (1) { <app-info-pin-modal [coords]="selected()" (cancelled)="onModalCancelled()"
         (confirmed)="onModalConfirmed()" (pickOnMap)="onRequestPickOnMap()">
       </app-info-pin-modal>
       }
-      @case (2) { <app-warn-pin-modal [coords]="selected" (cancelled)="onModalCancelled()"
+      @case (2) { <app-warn-pin-modal [coords]="selected()" (cancelled)="onModalCancelled()"
         (confirmed)="onModalConfirmed()" (pickOnMap)="onRequestPickOnMap()">
       </app-warn-pin-modal>
       }

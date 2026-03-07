@@ -31,6 +31,7 @@ export class ChoosePinPopupComponent implements SimplePopup {
 
   public errorMessage = '';
   @Output() requestPickOnMap = new EventEmitter<void>();
+  @Output() requestGeoOnMap = new EventEmitter<void>();
 
   ngOnInit() {
     const urlValues = this.urlService.getUrlValues(this.query);
@@ -42,8 +43,6 @@ export class ChoosePinPopupComponent implements SimplePopup {
     if (urlValues?.mode === 'geo') {
       this.selectedLocationMode = 'geo';
     }
-
-
 
   }
 
@@ -81,6 +80,8 @@ export class ChoosePinPopupComponent implements SimplePopup {
           queryParamsHandling: 'merge',
           replaceUrl: true
         });
+
+        this.requestGeoOnMap.emit();
       },
       () => {
         this.errorMessage = 'Not possible to get location.';
