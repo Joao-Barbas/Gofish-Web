@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using GofishApi.Data;
 using GofishApi.Models;
 using GofishApi.Extensions;
@@ -41,6 +41,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { } 
+
 
 /*
  * AuthController -> authentication

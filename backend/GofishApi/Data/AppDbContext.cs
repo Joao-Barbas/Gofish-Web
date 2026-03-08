@@ -1,6 +1,7 @@
 ﻿using GofishApi.Enums;
 using GofishApi.Models;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
@@ -18,6 +19,11 @@ namespace GofishApi.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            var hasher = new PasswordHasher<AppUser>();
+            var users = new List<AppUser>();
+
+
 
             #region Friendship
 
@@ -75,7 +81,26 @@ namespace GofishApi.Data
 
             #endregion // Post
 
-            // TODO: Database constraints
+            for (int i = 1; i <= 5; i++)
+            {
+                var user = new AppUser
+                {
+                    Id = $"seed-player-{i}",
+                    UserName = $"player{i}",
+                    NormalizedUserName = $"PLAYER{i}",
+                    Email = $"player{i}@gofish.com",
+                    NormalizedEmail = $"PLAYER{i}@GOFISH.COM",
+                    EmailConfirmed = true,
+                    SecurityStamp = $"seed-stamp-{i}",
+                    ConcurrencyStamp = $"seed-cstamp-{i}",
+                    LockoutEnabled = false
+                };
+
+                user.PasswordHash = hasher.HashPassword(user, "123456@");
+                users.Add(user);
+            }
+
+            builder.Entity<AppUser>().HasData(users);
         }
     }
 }
