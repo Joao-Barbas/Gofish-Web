@@ -19,4 +19,10 @@ export class PopupService {
   public close(): void {
     this._activePopup.set(null);
   }
+
+  public closeKey(key: PopupKey): void {
+    this._activePopup.update((current) =>
+      current === key ? null : current
+    );
+  }
 }

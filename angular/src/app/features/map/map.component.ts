@@ -115,14 +115,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   private getInitialView() {
     const q = this.route.snapshot.queryParamMap;
-    const lat = Number(q.get('lat'));
-    const lng = Number(q.get('lng'));
+    const vLat = Number(q.get('vLat'));
+    const vLng = Number(q.get('vLng'));
     const z = Number(q.get('z'));
 
-    const hasValid = !Number.isNaN(lat) && !Number.isNaN(lng) && !Number.isNaN(z);
+    const hasValid = !Number.isNaN(vLng) && !Number.isNaN(vLat) && !Number.isNaN(z);
 
     return {
-      center: hasValid ? [lng, lat] as [number, number] : [38.5260437, -8.8909328],
+      center: hasValid ? [vLng, vLat] as [number, number] : [38.5260437, -8.8909328],
       zoom: hasValid ? z : 5
     }
   }
