@@ -19,7 +19,7 @@
   color: var(--gf-dark-text);
   background-color: transparent;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--gf-8);
   transition: box-shadow 0.2s ease;
 
   &:hover {

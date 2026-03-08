@@ -95,7 +95,7 @@
     <!-- Submit area -->
     <div class="gf-flow-vertical gf-my-12 gf-gap-4">
       @if (getError(); as errorText) {
-        <span class="gf-text-error">{{ getError() }}</span>
+        <span class="gf-text-error">{{ errorText }}</span>
       }
       <app-async-button
         type="submit"

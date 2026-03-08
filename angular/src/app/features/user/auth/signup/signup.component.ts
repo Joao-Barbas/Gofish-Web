@@ -56,7 +56,8 @@ export class SignupComponent implements OnInit {
     userName: ['', Validators.required],
     confirmPassword: [''],
   }, { validators: [
-    (control: AbstractControl) => this.passwordMatch(control)
+    (control: AbstractControl) => this.passwordMatch(control),
+    (control: AbstractControl) => this.passwordNotEmail(control)
   ]});
 
   apiProblems: ValidationProblemDetails | null = null;
@@ -69,6 +70,13 @@ export class SignupComponent implements OnInit {
   }
 
   // Form errors/validations
+
+  private passwordNotEmail(control: AbstractControl): ValidationErrors | null {
+    let email = control.get('email')?.value;
+    let password = control.get('password')?.value;
+    if (password && email && password != email) return { 'passwordnotemail': true };
+    return null;
+  }
 
   private passwordMatch(control: AbstractControl): ValidationErrors | null {
     let password = control.get('password')?.value;
@@ -112,6 +120,7 @@ export class SignupComponent implements OnInit {
     if (e('password')?.['nospecial']) return 'Password needs one or more special character(s).';
     // Group-level
     if (g?.['passwordmismatch']) return 'Password\'s don\'t match.';
+    if (g?.['passwordnotemail']) return 'Password can\'t be the same as email.';
     // Api errors
     return s?.detail ?? null;
   }

@@ -273,6 +273,95 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 
 /*
 
+  Custom element/component classes
+
+*/
+
+/* Typography */
+.gf-text-error {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--danger);
+  display: inline-block;
+}
+
+.gf-text-logo {
+  color: var(--dark-text);
+  font-family: var(--font-heading);
+  font-size: var(--gf-32);
+  font-weight: 900;
+  letter-spacing: -0.125rem;
+  user-select: none;
+}
+
+/* Layouts */
+.gf-flow-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.gf-flow-horizontal {
+  display: flex;
+  flex-direction: row;
+}
+
+.gf-center-axes {
+  justify-content: center; /* horizontal */
+  align-items: center;     /* vertical */
+}
+
+/* Cards */
+.gf-card, [class*="gf-card-"] {
+  font: var(--gf-font-main);
+  color: var(--gf-dark-text);
+  box-shadow: var(--gf-shadow-lift-sm);
+  background: var(--gf-dark-bg);
+  padding: var(--gf-24);
+  border-radius: var(--gf-12);
+  border: none;
+  border-width: 0px;
+}
+
+/* Popovers */
+.gf-popover, [class*="gf-popover-"] {
+  /* TODO: styles for .gf-card.gf-popover */
+}
+
+/* Spinners */
+.gf-basic-spinner {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--dark-bg-dark);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: gf-basic-spin 1s linear infinite;
+}
+
+/* Buttons */
+/* Inputs */
+/* Modals */
+/* Badges */
+/* Avatars */
+/* Tooltips */
+/* Loaders */
+/* Alerts / Toasts */
+/* Separators */
+/* Icons / Svgs */
+
+/* Backgrounds */
+
+.gf-background-map-fixed {
+  min-height: 100vh;
+  background-image: url('/assets/images/backgroung-map.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/*
+
   Utility classes
 
 */
@@ -365,95 +454,6 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 /* Pointer events */
 .gf-no-events { pointer-events: none !important; }
 .gf-do-events { pointer-events: auto; }
-
-/*
-
-  Custom element/component classes
-
-*/
-
-/* Typography */
-.gf-text-error {
-  margin: 0;
-  font-size: 0.75rem;
-  color: var(--danger);
-  display: inline-block;
-}
-
-.gf-text-logo {
-  color: var(--dark-text);
-  font-family: var(--font-heading);
-  font-size: var(--gf-32);
-  font-weight: 900;
-  letter-spacing: -0.125rem;
-  user-select: none;
-}
-
-/* Layouts */
-.gf-flow-vertical {
-  display: flex;
-  flex-direction: column;
-}
-
-.gf-flow-horizontal {
-  display: flex;
-  flex-direction: row;
-}
-
-.gf-center-axes {
-  justify-content: center; /* horizontal */
-  align-items: center;     /* vertical */
-}
-
-/* Cards */
-.gf-card, [class*="gf-card-"] {
-  font: var(--gf-font-main);
-  color: var(--gf-dark-text);
-  box-shadow: var(--gf-shadow-lift-md);
-  background: var(--gf-dark-bg);
-  padding: var(--gf-24);
-  border-radius: var(--gf-12);
-  border: none;
-  border-width: 0px;
-}
-
-/* Popovers */
-.gf-popover, [class*="gf-popover-"] {
-  /* TODO: styles for .gf-card.gf-popover */
-}
-
-/* Spinners */
-.gf-basic-spinner {
-  display: block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--dark-bg-dark);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: gf-basic-spin 1s linear infinite;
-}
-
-/* Buttons */
-/* Inputs */
-/* Modals */
-/* Badges */
-/* Avatars */
-/* Tooltips */
-/* Loaders */
-/* Alerts / Toasts */
-/* Separators */
-/* Icons / Svgs */
-
-/* Backgrounds */
-
-.gf-background-map-fixed {
-  min-height: 100vh;
-  background-image: url('/assets/images/backgroung-map.png');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-attachment: fixed;
-}
 
 /*
 

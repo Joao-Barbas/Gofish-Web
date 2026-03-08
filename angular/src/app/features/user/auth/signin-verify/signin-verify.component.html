@@ -42,7 +42,7 @@
         labels="Verify"
         [state]="busyState.isBusy() ? 'busy' : verifySuccess ? 'success' : 'idle'"/>
       @if (getError(); as errorText) {
-        <span class="gf-text-error">{{ getError() }}</span>
+        <span class="gf-text-error">{{ errorText }}</span>
       }
       <p class="signin-invite">
         Return to <a [routerLink]="Path.SIGN_IN">sign in</a>.
