@@ -192,7 +192,18 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   onRequestPickOnMap(): void {
+
     this.enablePickMode();
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        mode: 'pick',
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
+
+
   }
 
   /* onTypeSelected(pinKind: PinKind): void {
@@ -259,44 +270,45 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private applyUrlState(): void {
     if (!this.queryValues) return;
 
-    const lat = this.queryValues.lat !== null ? Number(this.queryValues.lat) : null;
-    const lng = this.queryValues.lng !== null ? Number(this.queryValues.lng) : null;
-    const z = this.queryValues.z !== null ? Number(this.queryValues.z) : null;
+    const selectedLng = this.route.snapshot.queryParamMap.get('sLng');
+    const selectedLat = this.route.snapshot.queryParamMap.get('sLat');
+    const zoom = this.route.snapshot.queryParamMap.get('z');
 
-    if (lat !== null && lng !== null && this.urlService.isLngLatValid(lng, lat)) {
+    if (!selectedLat || !selectedLng) return;
 
-      const coords: Coords = {
-        latitude: lat,
-        longitude: lng
-      };
-      this.selected.set(coords);
+    const lng = Number(selectedLng);
+    const lat = Number(selectedLat);
+    const z = Number(zoom);
 
-      if (!this.selected()) return;
-    }
+    if (!this.urlService.isLngLatValid(lng, lat)) return;
+
+    this.selected.set({
+      longitude: lng,
+      latitude: lat
+    });
 
     switch (this.queryValues.mode) {
       case 'pick':
+        this.enablePickMode()
+        this.popupService.open('choose-pin-popup');
+        this.previewMarkerService.clear();
+        this.selected.set(null)
+        break;
+      case 'picked':
+        this.disablePickMode();
         this.popupService.open('choose-pin-popup');
         this.previewMarkerService.clear();
         this.previewMarkerService.set(this.map, this.selected()!.longitude, this.selected()!.latitude);
-        this.map.flyTo({
-          center: [this.selected()!.longitude, this.selected()!.latitude],
-          zoom: z ?? 14
-        });
         break;
-
       case 'geo':
         this.popupService.open('choose-pin-popup');
         this.previewMarkerService.clear();
         this.previewMarkerService.set(this.map, this.selected()!.longitude, this.selected()!.latitude);
-        this.map.flyTo({
-          center: [this.selected()!.longitude, this.selected()!.latitude],
-          zoom: z ?? 14
-        });
         break;
 
       default:
         this.disablePickMode();
+        this.previewMarkerService.clear();
         break;
     }
   }
@@ -311,15 +323,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        lat,
-        lng,
+        sLat: lat,
+        sLng: lng,
         z: this.map.getZoom(),
-        mode: 'pick'
+        mode: 'picked'
       },
       queryParamsHandling: 'merge',
       replaceUrl: true
     });
-
     this.disablePickMode();
   }
 
@@ -335,10 +346,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        lat: this.selected()!.latitude,
-        lng: this.selected()!.longitude,
+        sLat: this.selected()!.latitude,
+        sLng: this.selected()!.longitude,
         z: this.map.getZoom(),
-        mode: 'pick'
+        mode: 'picked'
       },
       queryParamsHandling: 'merge',
       replaceUrl: true
@@ -351,8 +362,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
     this.router.navigate([], {
       queryParams: {
-        lat: center.lat,
-        lng: center.lng,
+        vLat: center.lat,
+        vLng: center.lng,
         z: zoom
       },
       queryParamsHandling: 'merge',// Serve para nao apagar o query params que possam existir

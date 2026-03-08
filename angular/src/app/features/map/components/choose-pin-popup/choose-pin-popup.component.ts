@@ -102,8 +102,8 @@ export class ChoosePinPopupComponent implements SimplePopup {
     this.router.navigate(['create-warn-pin'], {
       relativeTo: this.route, // pra mostrar apartir do url atual
       queryParams: {
-        lat: this.coords.latitude,
-        lng: this.coords.longitude,
+        sLat: this.coords.latitude,
+        sLng: this.coords.longitude
       }
     });
   }
@@ -116,8 +116,8 @@ export class ChoosePinPopupComponent implements SimplePopup {
     this.router.navigate(['create-info-pin'],{
       relativeTo: this.route,
       queryParams: {
-        lat: this.coords.latitude,
-        lng: this.coords.longitude
+        sLat: this.coords.latitude,
+        sLng: this.coords.longitude
       }
     });
   }
@@ -130,8 +130,8 @@ export class ChoosePinPopupComponent implements SimplePopup {
     this.router.navigate(['create-catch-pin'], {
       relativeTo: this.route,
       queryParams: {
-        lat: this.coords.latitude,
-        lng: this.coords.longitude
+        sLat: this.coords.latitude,
+        sLng: this.coords.longitude
       }
     });
   }

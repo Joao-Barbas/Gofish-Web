@@ -65,8 +65,8 @@ export class WarnPinModalComponent {
         return;
       }
 
-      const lng = Number(values.lng);
-      const lat = Number(values.lat);
+      const lng = Number(values.sLng);
+      const lat = Number(values.sLat);
 
       if (!this.urlService.isLngLatValid(lng, lat)) {
         this.coordsUrl = null;
@@ -83,8 +83,8 @@ export class WarnPinModalComponent {
   onCancel(): void {
     this.router.navigate(['/map'], {
       queryParams: {
-        lat: this.coordsUrl?.latitude,
-        lng: this.coordsUrl?.longitude,
+        vLat: this.coordsUrl?.latitude,
+        vLng: this.coordsUrl?.longitude,
         z: this.route.snapshot.queryParamMap.get('z')
       }
     });

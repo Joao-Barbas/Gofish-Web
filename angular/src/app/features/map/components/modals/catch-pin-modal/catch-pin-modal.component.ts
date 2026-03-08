@@ -68,8 +68,8 @@ export class CatchPinModalComponent {
       if (!values) return;
 
       this.coords = {
-        longitude: values.lng!,
-        latitude: values.lat!
+        longitude: values.sLng!,
+        latitude: values.sLat!
       }
     });
   }

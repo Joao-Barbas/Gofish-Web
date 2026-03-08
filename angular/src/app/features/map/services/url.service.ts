@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ParamMap } from '@angular/router';
 
-export type UrlMode = 'geo' | 'pick' | 'warn' | 'info' | 'catch';
+export type UrlMode = 'geo' | 'picked' | 'pick' | 'warn' | 'info' | 'catch';
 
 export interface UrlQuery {
-  lat: number | null;
-  lng: number | null;
+  vLat: number | null; // view
+  vLng: number | null; // view
   z: number | null;
+  sLat: number | null;  // selected
+  sLng: number | null;
   mode: UrlMode | null;
 }
 
@@ -14,19 +16,27 @@ export interface UrlQuery {
   providedIn: 'root',
 })
 export class UrlService {
-  private readonly allowedModes: UrlMode[] = ['geo', 'pick', 'warn', 'info', 'catch'];
+  private readonly allowedModes: UrlMode[] = ['geo', 'picked', 'pick', 'warn', 'info', 'catch'];
 
   isUrlValuesValid(paramMap: ParamMap): boolean {
     const values = this.getUrlValues(paramMap);
 
-    const hasLat = values.lat !== null;
-    const hasLng = values.lng !== null;
+    const hasViewLat = values.vLat !== null;
+    const hasViewLng = values.vLng !== null;
+
+    const hasSelectedLat = values.sLat !== null;
+    const hasSelectedLng = values.sLng !== null;
 
     // só entra mesta condicao se um for true e outro false(com se fosse uma balanca)
-    if (hasLat !== hasLng) return false;
+    if (hasViewLat !== hasViewLng) return false;
+    if (hasSelectedLat !== hasSelectedLng) return false;
 
-    if (hasLat && hasLng) {
-      if (!this.isLngLatValid(values.lng!, values.lat!)) return false;
+    if (hasViewLat && hasViewLng) {
+      if (!this.isLngLatValid(values.vLng!, values.vLat!)) return false;
+    }
+
+    if (hasSelectedLat && hasSelectedLng) {
+      if (!this.isLngLatValid(values.sLng!, values.sLat!)) return false;
     }
 
     if (values.z !== null && (values.z < 0 || values.z > 22)) return false;
@@ -38,12 +48,14 @@ export class UrlService {
   }
 
   getUrlValues(paramMap: ParamMap): UrlQuery {
-    const lat = this.parseNumber(paramMap.get('lat'));
-    const lng = this.parseNumber(paramMap.get('lng'));
+    const vLat = this.parseNumber(paramMap.get('vLat'));
+    const vLng = this.parseNumber(paramMap.get('vLng'));
     const z = this.parseNumber(paramMap.get('z'));
+    const sLat = this.parseNumber(paramMap.get('sLat'));
+    const sLng = this.parseNumber(paramMap.get('sLng'));
     const mode = this.parseMode(paramMap.get('mode'));
 
-    return { lat, lng, z, mode };
+    return { vLat, vLng, z, sLat, sLng, mode };
   }
 
   isLngLatValid(lng: number, lat: number): boolean {
