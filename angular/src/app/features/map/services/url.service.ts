@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ParamMap } from '@angular/router';
 
-export type UrlMode = 'geo' | 'picked' | 'pick' | 'warn' | 'info' | 'catch';
+export type UrlMode = 'geo' | 'picked' | 'pick';
 
 export interface UrlQuery {
   vLat: number | null; // view
@@ -16,7 +16,7 @@ export interface UrlQuery {
   providedIn: 'root',
 })
 export class UrlService {
-  private readonly allowedModes: UrlMode[] = ['geo', 'picked', 'pick', 'warn', 'info', 'catch'];
+  private readonly allowedModes: UrlMode[] = ['geo', 'picked', 'pick'];
 
   isUrlValuesValid(paramMap: ParamMap): boolean {
     const values = this.getUrlValues(paramMap);

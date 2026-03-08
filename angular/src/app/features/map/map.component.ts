@@ -155,9 +155,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       this.setupLayers();
       this.setupInteractions();
 
-      //const values = this.urlService.getUrlValues(this.query);
-
-
       this.applyUrlState();
 
       this.map.on('moveend', () => {
@@ -202,18 +199,21 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       queryParamsHandling: 'merge',
       replaceUrl: true
     });
-
-
   }
-
-  /* onTypeSelected(pinKind: PinKind): void {
-    this.activePinModal = pinKind;
-    this.popupService.toggle('choose-pin-popup');
-  } */
 
   onPopupCancel(key: PopupKey): void {
     this.clearPreviewAndSelection();
     this.popupService.toggle(key);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        mode: null,
+        sLat: null,
+        sLng: null
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
   }
 
   onPopupCancelPinOverlay(): void {
@@ -222,41 +222,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   onPopupCancelPinPreview(): void {
     this.onPopupCancel('pin-preview');
-  }
-
-
-  public onModalCancel(): void {
-    console.error("daaaaaaaaaaaaaaaaaaaaaaaa");
-    this.activePinModal = null;
-    this.clearPreviewAndSelection();
-    console.log(2);
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        lng: null,
-        lat: null,
-        z: null,
-        mode: null,
-      },
-      replaceUrl: true
-    });
-    console.log(1);
-    toast.info('You cancel the pin creation');
-  }
-
-  onModalConfirmed(): void {
-    this.activePinModal = null;
-    this.clearPreviewAndSelection();
-    this.loadPinsInViewport();
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        mode: null
-      },
-      queryParamsHandling: 'merge',
-      replaceUrl: true
-    });
-    toast.success('Pin created successfully.');
   }
 
   zoomIn(): void {
@@ -274,18 +239,21 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     const selectedLat = this.route.snapshot.queryParamMap.get('sLat');
     const zoom = this.route.snapshot.queryParamMap.get('z');
 
-    if (!selectedLat || !selectedLng) return;
+    const hasSelectedCoords =
+      selectedLng !== null &&
+      selectedLat !== null;
 
-    const lng = Number(selectedLng);
-    const lat = Number(selectedLat);
-    const z = Number(zoom);
+    if (hasSelectedCoords) {
+      const lng = Number(selectedLng);
+      const lat = Number(selectedLat);
 
-    if (!this.urlService.isLngLatValid(lng, lat)) return;
-
-    this.selected.set({
-      longitude: lng,
-      latitude: lat
-    });
+      if (this.urlService.isLngLatValid(lng, lat)) {
+        this.selected.set({
+          longitude: lng,
+          latitude: lat
+        });
+      }
+    }
 
     switch (this.queryValues.mode) {
       case 'pick':
@@ -305,10 +273,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.previewMarkerService.clear();
         this.previewMarkerService.set(this.map, this.selected()!.longitude, this.selected()!.latitude);
         break;
-
       default:
         this.disablePickMode();
         this.previewMarkerService.clear();
+        this.selected.set(null);
         break;
     }
   }
@@ -364,6 +332,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       queryParams: {
         vLat: center.lat,
         vLng: center.lng,
+        sLat: null,
+        sLng: null,
         z: zoom
       },
       queryParamsHandling: 'merge',// Serve para nao apagar o query params que possam existir

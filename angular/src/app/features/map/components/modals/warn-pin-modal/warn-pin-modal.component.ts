@@ -85,7 +85,7 @@ export class WarnPinModalComponent {
       queryParams: {
         vLat: this.coordsUrl?.latitude,
         vLng: this.coordsUrl?.longitude,
-        z: this.route.snapshot.queryParamMap.get('z')
+        z: this.route.snapshot.queryParamMap.get('z'),
       }
     });
   }
