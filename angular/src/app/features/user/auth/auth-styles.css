@@ -8,10 +8,15 @@
 }
 
 .thrid-party-button {
-  flex: 1;
-  padding: var(--gf-12) var(--gf-32);
-  margin:  var(--gf-2) var(--gf-4);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5%;
+  width: 100%;
+  padding: var(--gf-10) var(--gf-32);
   box-shadow: 0 0 0 2px var(--gf-primary);
+  color: var(--gf-dark-text);
   background-color: transparent;
   border: none;
   border-radius: 8px;
@@ -19,6 +24,10 @@
 
   &:hover {
     box-shadow: 0 0 0 4px var(--gf-primary);
+  }
+
+  & span {
+    font-size: var(--gf-text-sm);
   }
 
   & svg {
