@@ -60,9 +60,6 @@ const PIN_CONFIG = [
     OverlayHeaderComponent,
     ChoosePinPopupComponent,
     RouterOutlet,
-    CatchPinModalComponent,
-    InfoPinModalComponent,
-    WarnPinModalComponent,
     NgxSonnerToaster
   ],
   templateUrl: './map.component.html',

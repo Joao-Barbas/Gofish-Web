@@ -34,7 +34,7 @@ export class WarnPinModalComponent {
 
   form = this.fb.group({
     visibility: [0, Validators.required],
-    body: ['', Validators.required],
+    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
     warningKind: [0, Validators.required]
   });
 
@@ -81,7 +81,6 @@ export class WarnPinModalComponent {
   }
 
   onCancel(): void {
-    console.log("funfa");
     this.router.navigate(['/map'], {
       queryParams: {
         lat: this.coordsUrl?.latitude,
@@ -89,7 +88,6 @@ export class WarnPinModalComponent {
         z: this.route.snapshot.queryParamMap.get('z')
       }
     });
-    console.log("tambem tive auqi");
   }
 
   onPublish(): void {
@@ -120,14 +118,13 @@ export class WarnPinModalComponent {
       next: () => {
         this.isSubmitting = false;
         toast.dismiss(toastId);
-        //this.confirmed.emit();
-        toast.success('Pin created successfully.');
+        toast.success('Warn Pin created successfully.');
         this.router.navigate(['/map']);
       },
       error: () => {
         this.isSubmitting = false;
         toast.dismiss(toastId);
-        this.errorMessage = 'Failed to create pin. Please try again.';
+        this.errorMessage = 'Failed to create warn pin. Please try again.';
         toast.error(this.errorMessage);
       }
     });

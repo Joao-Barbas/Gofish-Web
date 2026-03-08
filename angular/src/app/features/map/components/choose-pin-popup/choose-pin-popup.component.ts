@@ -112,7 +112,14 @@ export class ChoosePinPopupComponent implements SimplePopup {
     if (!this.coords) {
       this.errorMessage = 'Coordinates not selected.';
       return;
-    } //this.typeSelected.emit(PinKind.INFORMATION);
+    }
+    this.router.navigate(['create-info-pin'],{
+      relativeTo: this.route,
+      queryParams: {
+        lat: this.coords.latitude,
+        lng: this.coords.longitude
+      }
+    });
   }
 
   public createCatchPin() {
@@ -120,6 +127,12 @@ export class ChoosePinPopupComponent implements SimplePopup {
       this.errorMessage = 'Coordinates not selected.';
       return;
     }
-    //this.typeSelected.emit(PinKind.CATCH);
+    this.router.navigate(['create-catch-pin'], {
+      relativeTo: this.route,
+      queryParams: {
+        lat: this.coords.latitude,
+        lng: this.coords.longitude
+      }
+    });
   }
 }

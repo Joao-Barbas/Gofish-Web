@@ -1,23 +1,37 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
+import { UrlService } from '@gofish/features/map/services/url.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateInfoPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { toast } from 'ngx-sonner';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-info-pin-modal',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './info-pin-modal.component.html',
   styleUrl: './info-pin-modal.component.css',
 })
 export class InfoPinModalComponent implements OnInit {
-  @Input() coords: Coords | null = null;
-  @Output() cancelled = new EventEmitter<void>();
-  @Output() confirmed = new EventEmitter<void>();
+  private readonly pinService = inject(PinService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly urlService = inject(UrlService);
+  private readonly fb = inject(FormBuilder);
+
+  form = this.fb.group({
+    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
+    visibility: [0, [Validators.required]],
+    acccessDifficulty: [0, [Validators.required]],
+    seaBed: [0, [Validators.required]]
+  });
+
+  coords: Coords | null = null;
 
   body: string = '';
 
@@ -32,7 +46,6 @@ export class InfoPinModalComponent implements OnInit {
   errorMessage: string = '';
   isSubmitting: boolean = false;
 
-  constructor(private pinService: PinService) { }
 
   ngOnInit(): void {
     this.pinService.enumerateSeaBedType().subscribe({
@@ -59,10 +72,28 @@ export class InfoPinModalComponent implements OnInit {
         console.error(err);
       }
     });
+
+    this.route.queryParamMap.subscribe(queryParamMap => {
+      const values = this.urlService.getUrlValues(queryParamMap);
+
+      if (!values) return;
+
+      this.coords = {
+        longitude: values.lng!,
+        latitude: values.lat!
+      }
+    });
+
   }
 
   onCancel(): void {
-    this.cancelled.emit();
+    this.router.navigate(['/map'], {
+      queryParams: {
+        lat: this.coords?.latitude,
+        lng: this.coords?.longitude,
+        z: this.route.snapshot.queryParamMap.get('z')
+      }
+    });
   }
 
   onPublish(): void {
@@ -73,23 +104,18 @@ export class InfoPinModalComponent implements OnInit {
       return;
     }
 
-    if (this.selectedAccessDifficulty === null) {
-      this.errorMessage = 'Please select an access difficulty.';
-      return;
-    }
-
-    if (this.selectedSeaBed === null) {
-      this.errorMessage = 'Please select a sea bed type.';
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
       return;
     }
 
     const dto: CreateInfoPinReqDTO = {
       latitude: this.coords.latitude,
       longitude: this.coords.longitude,
-      visibility: this.selectedVisibility,
-      body: this.body.trim() || null,
-      accessDifficulty: this.selectedAccessDifficulty,
-      seaBedType: this.selectedSeaBed
+      visibility: this.form.value.visibility!,
+      body: this.form.value.body,
+      accessDifficulty: this.form.value.acccessDifficulty!,
+      seaBedType: this.form.value.seaBed!
     };
 
     this.isSubmitting = true;
@@ -99,11 +125,12 @@ export class InfoPinModalComponent implements OnInit {
       next: () => {
         toast.dismiss(toastId);
         this.isSubmitting = false;
-        this.confirmed.emit();
+        toast.success('Info Pin created successfully.');
+        this.router.navigate(['/map']);
       },
       error: () => {
         this.isSubmitting = false;
-        this.errorMessage = 'Failed to create pin. Please try again.';
+        this.errorMessage = 'Failed to create info pin. Please try again.';
         toast.dismiss(toastId);
         toast.error(this.errorMessage);
       }
