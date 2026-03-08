@@ -106,6 +106,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         return;
       }
       this.queryValues = this.urlService.getUrlValues(paramMap);
+
+      if (this.map && this.queryValues) {
+        this.applyUrlState();
+      }
     });
   }
 
@@ -153,24 +157,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
       //const values = this.urlService.getUrlValues(this.query);
 
-      if (this.queryValues?.mode === 'pick' || this.queryValues?.mode === 'geo') this.popupService.open('choose-pin-popup');
 
-      if (this.queryValues?.mode === null) {
-        this.pickingOnMap = false;
-        this.disablePickMode();
-        this.previewMarkerService.clear();
-      }
+      this.applyUrlState();
 
-      if (this.selected() !== null) {
-        if (this.urlService.isLngLatValid(Number(this.queryValues?.lng), Number(this.queryValues?.lat))) {
-          this.selected.set({
-            longitude: Number(this.queryValues?.lng),
-            latitude: Number(this.queryValues?.lat)
-          });
-
-          this.setSelectedCoords(this.selected()!);
-        }
-      }
       this.map.on('moveend', () => {
         this.urlUpdate();
         if (this.map.getZoom() < 14) return;
@@ -267,6 +256,50 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map.zoomOut({ duration: 300 });
   }
 
+  private applyUrlState(): void {
+    if (!this.queryValues) return;
+
+    const lat = this.queryValues.lat !== null ? Number(this.queryValues.lat) : null;
+    const lng = this.queryValues.lng !== null ? Number(this.queryValues.lng) : null;
+    const z = this.queryValues.z !== null ? Number(this.queryValues.z) : null;
+
+    if (lat !== null && lng !== null && this.urlService.isLngLatValid(lng, lat)) {
+
+      const coords: Coords = {
+        latitude: lat,
+        longitude: lng
+      };
+      this.selected.set(coords);
+
+      if (!this.selected()) return;
+    }
+
+    switch (this.queryValues.mode) {
+      case 'pick':
+        this.popupService.open('choose-pin-popup');
+        this.previewMarkerService.clear();
+        this.previewMarkerService.set(this.map, this.selected()!.longitude, this.selected()!.latitude);
+        this.map.flyTo({
+          center: [this.selected()!.longitude, this.selected()!.latitude],
+          zoom: z ?? 14
+        });
+        break;
+
+      case 'geo':
+        this.popupService.open('choose-pin-popup');
+        this.previewMarkerService.clear();
+        this.previewMarkerService.set(this.map, this.selected()!.longitude, this.selected()!.latitude);
+        this.map.flyTo({
+          center: [this.selected()!.longitude, this.selected()!.latitude],
+          zoom: z ?? 14
+        });
+        break;
+
+      default:
+        this.disablePickMode();
+        break;
+    }
+  }
   onMapClick(e: mapboxgl.MapMouseEvent): void {
     if (!this.pickingOnMap) return;
 
@@ -303,7 +336,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       relativeTo: this.route,
       queryParams: {
         lat: this.selected()!.latitude,
-        lng: this.selected()!.latitude,
+        lng: this.selected()!.longitude,
         z: this.map.getZoom(),
         mode: 'pick'
       },
@@ -331,7 +364,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.previewMarkerService.clear();
     this.markerRegistry.clear();
-
+    this.query?.unsubscribe();
     if (this.map) this.map.remove();
   }
 

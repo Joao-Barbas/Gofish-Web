@@ -125,7 +125,6 @@ export class CatchPinModalComponent {
     formData.append('bait', String(this.form.value.bait));
     formData.append('hook', this.form.value.hook ?? '');
 
-
     this.isSubmitting = true;
     const toastId = toast.loading('Publishing your pin!');
 
