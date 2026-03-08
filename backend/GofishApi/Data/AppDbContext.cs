@@ -1,10 +1,12 @@
 ﻿using GofishApi.Enums;
 using GofishApi.Models;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
+using static System.Net.WebRequestMethods;
 
 namespace GofishApi.Data
 {
@@ -102,6 +104,7 @@ namespace GofishApi.Data
             var catchPins = new List<CatchPin>();
             var warnPins = new List<WarnPin>();
             var infoPins = new List<InfoPin>();
+            var posts = new List<Post>();
 
             int pinId = 1;
 
@@ -109,60 +112,100 @@ namespace GofishApi.Data
             double baseLng = -8.8730;
 
             var createdAt = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
-            var expiresAt = new DateTime(2026, 3, 8, 12, 0, 0, DateTimeKind.Utc);
+            var expiresAt = new DateTime(2026, 3, 11, 12, 0, 0, DateTimeKind.Utc);
+
+            var random = new Random();
 
             for (int i = 0; i < 10; i++)
             {
+                var id = pinId++;
+                var userId = $"seed-player-{(i % 5) + 1}";
+
                 catchPins.Add(new CatchPin
                 {
-                    Id = pinId++,
+                    Id = id,
                     Kind = PinKind.Catch,
                     Visibility = VisibilityLevel.Public,
-                    UserId = $"seed-player-{(i % 5) + 1}",
-                    Latitude = baseLat + (i * 0.001),
-                    Longitude = baseLng + (i * 0.001),
+                    UserId = userId,
+                    Latitude = baseLat + (i * (random.Next(1, 6) / 1000.0)),
+                    Longitude = baseLng + (i * (random.Next(1, 6) / 1000.0)),
                     CreatedAt = createdAt,
-                    ExpiresAt = expiresAt
+                    ExpiresAt = expiresAt,
+                    Species = Species.Achiga,
+                    Bait = Bait.Worm
+                });
+
+                posts.Add(new Post
+                {
+                    Id = id,
+                    Body = "body",
+                    ImageUrl = "https://gofishstorage.blob.core.windows.net/post-images/0091b5cc-a77a-4b77-bb6d-c01d23b23ab5.png",
+                    CreatedAt = createdAt,
+                    UserId = userId
                 });
             }
 
             for (int i = 0; i < 10; i++)
             {
+                var id = pinId++;
+                var userId = $"seed-player-{(i % 5) + 1}";
+
                 warnPins.Add(new WarnPin
                 {
-                    Id = pinId++,
+                    Id = id,
                     Kind = PinKind.Warning,
                     Visibility = VisibilityLevel.Public,
                     WarningKind = WarningKind.AlgaePresence,
-                    UserId = $"seed-player-{(i % 5) + 1}",
-                    Latitude = baseLat - (i * 0.001),
-                    Longitude = baseLng + (i * 0.001),
+                    UserId = userId,
+                    Latitude = baseLat - (i * (random.Next(1, 6) / 1000.0)),
+                    Longitude = baseLng + (i * (random.Next(1, 6) / 1000.0)),
                     CreatedAt = createdAt,
                     ExpiresAt = expiresAt
+                });
+
+                posts.Add(new Post
+                {
+                    Id = id,
+                    Body = "Body",
+                    ImageUrl = null,
+                    CreatedAt = createdAt,
+                    UserId = userId
                 });
             }
 
             for (int i = 0; i < 10; i++)
             {
+                var id = pinId++;
+                var userId = $"seed-player-{(i % 5) + 1}";
+
                 infoPins.Add(new InfoPin
                 {
-                    Id = pinId++,
+                    Id = id,
                     Kind = PinKind.Information,
                     Visibility = VisibilityLevel.Public,
                     AccessDifficulty = 0,
                     Seabed = Seabed.Sand,
-                    UserId = $"seed-player-{(i % 5) + 1}",
-                    Latitude = baseLat + (i * 0.001),
-                    Longitude = baseLng - (i * 0.001),
+                    UserId = userId,
+                    Latitude = baseLat + (i * (random.Next(1, 6) / 1000.0)),
+                    Longitude = baseLng - (i * (random.Next(1, 6) / 1000.0)),
                     CreatedAt = createdAt,
                     ExpiresAt = expiresAt
+                });
+
+                posts.Add(new Post
+                {
+                    Id = id,
+                    Body = "body",
+                    ImageUrl = null,
+                    CreatedAt = createdAt,
+                    UserId = userId
                 });
             }
 
             builder.Entity<CatchPin>().HasData(catchPins);
             builder.Entity<WarnPin>().HasData(warnPins);
             builder.Entity<InfoPin>().HasData(infoPins);
-
+            builder.Entity<Post>().HasData(posts);
             builder.Entity<AppUser>().HasData(users);
         }
     }
