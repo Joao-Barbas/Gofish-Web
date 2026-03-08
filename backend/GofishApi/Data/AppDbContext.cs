@@ -99,6 +99,69 @@ namespace GofishApi.Data
                 user.PasswordHash = hasher.HashPassword(user, "123456@");
                 users.Add(user);
             }
+            var catchPins = new List<CatchPin>();
+            var warnPins = new List<WarnPin>();
+            var infoPins = new List<InfoPin>();
+
+            int pinId = 1;
+
+            double baseLat = 38.5130;
+            double baseLng = -8.8730;
+
+            var createdAt = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
+            var expiresAt = new DateTime(2026, 3, 8, 12, 0, 0, DateTimeKind.Utc);
+
+            for (int i = 0; i < 10; i++)
+            {
+                catchPins.Add(new CatchPin
+                {
+                    Id = pinId++,
+                    Kind = PinKind.Catch,
+                    Visibility = VisibilityLevel.Public,
+                    UserId = $"seed-player-{(i % 5) + 1}",
+                    Latitude = baseLat + (i * 0.001),
+                    Longitude = baseLng + (i * 0.001),
+                    CreatedAt = createdAt,
+                    ExpiresAt = expiresAt
+                });
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                warnPins.Add(new WarnPin
+                {
+                    Id = pinId++,
+                    Kind = PinKind.Warning,
+                    Visibility = VisibilityLevel.Public,
+                    WarningKind = WarningKind.AlgaePresence,
+                    UserId = $"seed-player-{(i % 5) + 1}",
+                    Latitude = baseLat - (i * 0.001),
+                    Longitude = baseLng + (i * 0.001),
+                    CreatedAt = createdAt,
+                    ExpiresAt = expiresAt
+                });
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                infoPins.Add(new InfoPin
+                {
+                    Id = pinId++,
+                    Kind = PinKind.Information,
+                    Visibility = VisibilityLevel.Public,
+                    AccessDifficulty = 0,
+                    Seabed = Seabed.Sand,
+                    UserId = $"seed-player-{(i % 5) + 1}",
+                    Latitude = baseLat + (i * 0.001),
+                    Longitude = baseLng - (i * 0.001),
+                    CreatedAt = createdAt,
+                    ExpiresAt = expiresAt
+                });
+            }
+
+            builder.Entity<CatchPin>().HasData(catchPins);
+            builder.Entity<WarnPin>().HasData(warnPins);
+            builder.Entity<InfoPin>().HasData(infoPins);
 
             builder.Entity<AppUser>().HasData(users);
         }
