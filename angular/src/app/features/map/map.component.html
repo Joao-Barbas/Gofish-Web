@@ -1,40 +1,18 @@
-<!-- <app-header></app-header>
-<main class="container-fluid h-100 w-100">
-  <div class="dark-bg figma-bg-dark-temporary font-main">
-
-    <div id="map" class="w-100"></div>
-    <app-create-pin
-    class="gf-floating-action"
-    [selectedCoords]="selected" (requestPickOnMap)="enablePickMode()"
-    (coordsSelected)="onCoordsSelected($event)" (creationComplete)="onPinCreated()"
-    (creationFailed)="onPinCreateFailed($event)">
-  </app-create-pin>
-
-  <app-pin-detail-panel ></app-pin-detail-panel>
-</div>
-
-</main>
--->
 <!-- map.component.html -->
-
 <main class="position-fixed top-0 start-0 end-0 bottom-0 overflow-hidden">
+  <ngx-sonner-toaster position="bottom-center" richColors />
   <!-- Mapbox -->
   <div id="map" class="w-100 h-100"></div>
   <!-- Overlay -->
   <!-- Everything else on top of the map goes inside this -->
   <div class="position-absolute top-0 start-0 w-100 h-100 gf-no-events">
     <app-overlay-header></app-overlay-header>
-    <app-pin-detail-panel></app-pin-detail-panel>
-
-    <!-- <app-create-pin
-      class="gf-floating-action gf-do-events"
-      [selectedCoords]="selected"
-      (requestPickOnMap)="enablePickMode()"
-      (coordsSelected)="onCoordsSelected($event)"
-      (creationComplete)="onPinCreated()"
-      (creationFailed)="onPinCreateFailed($event)">
-    </app-create-pin> -->
-
+    @if (this.popupService.isOpen('pin-preview')) {
+    <div class="pin-detail-panel fade show gf-do-events">
+      <app-pin-detail-panel [pinData]="selectedPin()" (cancel)="onPopupCancelPinPreview()">
+      </app-pin-detail-panel>
+    </div>
+    }
     <!-- Actions overlay -->
     <div class="actions-container position-absolute d-flex flex-row gf-do-events gf-gap-12">
       <!-- Create pin & ask location -->
@@ -107,35 +85,13 @@
       </div>
       <!-- popup overlays  -->
       <!-- Choose pin type -->
-      @if (this.popupService.activePopup() === 'choose-pin-popup') {
+      @if (this.popupService.isOpen('choose-pin-popup')) {
       <app-choose-pin-popup class="position-action-overlay" animate.enter="on-enter" animate.leave="on-leave"
-        [selectedCoords]="selected" (requestPickOnMap)="onRequestPickOnMap()" (typeSelected)="onTypeSelected($event)"
-        (coordsSelected)="onCoordsSelected($event)">
-        (cancel)="onPopupCancel()">
+        [coords]="selected()"
+        (requestPickOnMap)="onRequestPickOnMap()" (requestGeoOnMap)="onGeo($event)" (cancel)="(onPopupCancelPinOverlay())">
       </app-choose-pin-popup>
       }
-      <!-- Create pin forms  -->
-      <!-- @switch () {
-      @case () {}
-      @case () {}
-      @case () {}
-      } -->
-      @if (activePinModal !== null) {
-      @switch (activePinModal) {
-      @case (0) { <app-catch-pin-modal [coords]="selected" (cancelled)="onModalCancelled()"
-        (confirmed)="onModalConfirmed()" (pickOnMap)="onRequestPickOnMap()">
-      </app-catch-pin-modal>
-      }
-      @case (1) { <app-info-pin-modal [coords]="selected" (cancelled)="onModalCancelled()"
-        (confirmed)="onModalConfirmed()" (pickOnMap)="onRequestPickOnMap()">
-      </app-info-pin-modal>
-      }
-      @case (2) { <app-warn-pin-modal [coords]="selected" (cancelled)="onModalCancelled()"
-        (confirmed)="onModalConfirmed()" (pickOnMap)="onRequestPickOnMap()">
-      </app-warn-pin-modal>
-      }
-      }
-      }
+
       <!-- End popup overlays  -->
     </div>
     <!-- End actions overlay -->

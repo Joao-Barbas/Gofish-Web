@@ -1,7 +1,8 @@
 export type PopupKey = 'example-key-popup' // Update this when creating new popup components
   | 'header-user-popup'
   | 'header-admin-popup'
-  | 'choose-pin-popup';
+  | 'choose-pin-popup'
+  | 'pin-preview';
 
 export interface SimplePopup {
   // toggle(): void;

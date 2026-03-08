@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, PinPreviewResDTO, CreatePinResDTO } from '@gofish/shared/dtos/pin.dto';
+import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, CreatePinResDTO, GetPinsReqDTO, PinDataResDTO, GetPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { EnumDTO} from '@gofish/shared/dtos/enum.dto';
 import { Api } from '@gofish/shared/constants';
 
@@ -29,9 +29,11 @@ export class PinService {
     });
   }
 
-  getPinPreview(pinId: number): Observable<PinPreviewResDTO> {
-    return this.http.get<PinPreviewResDTO>(`${Api.Pin.action('GetPinPreview')}/${pinId}`);
+  getPinPreview(getPin: GetPinsReqDTO): Observable<GetPinsResDTO> {
+    return this.http.post<GetPinsResDTO>(Api.Pin.action('GetPins'), getPin);
   }
+
+
 
   /* enumeratePinType = () => this.http.get<GetEnumeratorResDTO>(Api.Pin.action('EnumeratePinType'));
   enumerateBaitType = () => this.http.get<GetEnumeratorResDTO>(Api.Pin.action('EnumerateBaitType'));

@@ -1,24 +1,27 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, input, Output} from '@angular/core';
 import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
-import { PinDetailService } from '@gofish/features/map/services/pin-detail.service';
 import { PinKind } from '@gofish/shared/models/pin.model';
+import { PopupController } from '@gofish/shared/core/popup-controller';
+import {PinDataResDTO} from '@gofish/shared/dtos/pin.dto';
 
 @Component({
   selector: 'app-pin-detail-panel',
-  imports: [ CommonModule,AsyncPipe, TimeAgoPipe ],
+  imports: [CommonModule, TimeAgoPipe],
   templateUrl: './pin-detail-panel.component.html',
   styleUrls: ['./pin-detail-panel.component.css']
 })
 export class PinDetailPanelComponent {
-  selectedPin$ = this.pinDetailService.selectedPin$;
+  readonly popupController = new PopupController('pin-preview');
+  readonly pinData = input<PinDataResDTO | null>(null);
   public pinKind = PinKind;
-
-  constructor(private pinDetailService: PinDetailService) {}
-
-  ngOnInit(): void {}
+  @Output() cancel = new EventEmitter<void>();
 
   closePanel(): void {
-    this.pinDetailService.close();
+    this.cancel.emit();
+    this.popupController.close();
   }
 }
+
+
+

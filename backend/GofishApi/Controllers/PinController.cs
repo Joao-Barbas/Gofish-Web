@@ -61,7 +61,7 @@ public class PinController : ControllerBase
 
     [Authorize]
     [HttpPost("GetPins")]
-    public async Task<IActionResult> GetPins(GetPinsReqDTO dto)
+    public async Task<IActionResult> GetPins([FromBody] GetPinsReqDTO dto)
     {
         // TODO: Visibility level is not being accounted for yet
 

@@ -1,15 +1,14 @@
 import mapboxgl from 'mapbox-gl';
-import { AfterViewInit, Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit, Query, signal } from '@angular/core';
+import { CommonModule, NgStyle, ɵnormalizeQueryParams } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet, UrlSegment } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { PreviewMarkerService } from '@gofish/features/map/services/preview-marker.service';
 import { MarkerRegistryService } from '@gofish/features/map/services/marker-registry.service';
-import { PinDetailService } from '@gofish/features/map/services/pin-detail.service';
 import { PinDetailPanelComponent } from './components/pin-detail-panel/pin-detail-panel.component';
 import { OverlayHeaderComponent } from '@gofish/features/header/overlay-header/overlay-header.component';
-import { PinPreviewResDTO, ViewportPinDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
+import { GetPinsReqDTO, GetPinsResDTO, PinDataReqDTO, PinDataResDTO, ViewportPinDTO, ViewportPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { PopupService } from '@gofish/shared/services/popup.service';
@@ -22,6 +21,14 @@ import { InfoPinModalComponent } from '@gofish/features/map/components/modals/in
 import { WarnPinModalComponent } from '@gofish/features/map/components/modals/warn-pin-modal/warn-pin-modal.component';
 import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 import { ModalKey } from '@gofish/shared/models/modal.model';
+import { PopupKey } from '@gofish/shared/models/popup.model';
+import { NgxSonnerToaster, toast } from 'ngx-sonner';
+import { ignoreElements, last, merge, Subscription } from 'rxjs';
+import { UrlCodec } from '@angular/common/upgrade';
+import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
+import { reportUnhandledError } from 'rxjs/internal/util/reportUnhandledError';
+import { IfStmt } from '@angular/compiler';
+import { REACTIVE_NODE } from '@angular/core/primitives/signals';
 
 
 
@@ -53,10 +60,7 @@ const PIN_CONFIG = [
     OverlayHeaderComponent,
     ChoosePinPopupComponent,
     RouterOutlet,
-    CatchPinModalComponent,
-    InfoPinModalComponent,
-    WarnPinModalComponent,
-    ClickOutsideDirective
+    NgxSonnerToaster
   ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
@@ -68,31 +72,26 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private readonly pinService = inject(PinService);
   private readonly previewMarkerService = inject(PreviewMarkerService);
   private readonly markerRegistry = inject(MarkerRegistryService);
-  private readonly pinDetailService = inject(PinDetailService);
   private readonly pinHoverPreview = inject(PinHoverPreviewService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-
-
-  // End popup overlays
-  // Create pin events
-
-  /* onCreateByPick(pinType: NewPinType) {
-    this.selectedPinType = pinType;
-    this.popupService.toggle(ChoosePinPopupComponent.key);
-    this.enablePickMode();
-    console.log('Create by pick on map');
-  } */
-
+  private readonly urlService = inject(UrlService);
   pickingOnMap = false;
   isCreating: boolean = false;
   activePinModal: PinKind | null = null;
-  selected: Coords | null = null;
+  selected = signal<Coords | null>(null);
+  query?: Subscription;
+  queryValues: UrlQuery | null = null;
   private map!: mapboxgl.Map;
   private allPins: ViewportPinDTO[] = [];
   public isCreatePinOverlayOpen = this.popupService.activePopup() === 'choose-pin-popup';
   public selectedGeolocation: GeolocationCoordinates | null = null; // User manually selected
   public selectedPinKind: PinKind | null = null;
+  public isPinDetailsOpen = this.popupService.activePopup() === 'pin-preview';
+  protected selectedPin = signal<PinDataResDTO | null>(null);
+  protected readonly PinKind: PinKind | undefined;
+
+
 
   public get getGeolocationState() { return this.geoService.state(); }
   public get isGeolocationDenied() { return this.geoService.isBad(); }
@@ -101,48 +100,29 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   // Lifecycle
   // =========================
   ngOnInit() {
-    this.route.queryParamMap.subscribe(q => {
-      const modal = q.get('modal');
-      const lat = q.get('lat');
-      const lng = q.get('lng');
-
-      this.activePinModal = null;
-
-      switch (modal) {
-        case 'catch':
-          this.activePinModal = 0;
-          break;
-        case 'info':
-          this.activePinModal = 1;
-          break;
-        case 'warn':
-          this.activePinModal = 2;
-          break;
-        default:
-          break;
+    this.query = this.route.queryParamMap.subscribe(paramMap => {
+      if (!this.urlService.isUrlValuesValid(paramMap)) {
+        alert('Alerta engracadinho!');
+        return;
       }
+      this.queryValues = this.urlService.getUrlValues(paramMap);
 
-      if (lat && lng) {
-        const latitude = Number(lat);
-        const longitude = Number(lng);
-
-        if (!Number.isNaN(latitude) && !Number.isNaN(longitude)) {
-          this.selected = { latitude, longitude };
-        }
+      if (this.map && this.queryValues) {
+        this.applyUrlState();
       }
     });
   }
 
   private getInitialView() {
     const q = this.route.snapshot.queryParamMap;
-    const lat = Number(q.get('lat'));
-    const lng = Number(q.get('lng'));
+    const vLat = Number(q.get('vLat'));
+    const vLng = Number(q.get('vLng'));
     const z = Number(q.get('z'));
 
-    const hasValid = !Number.isNaN(lat) && !Number.isNaN(lng) && !Number.isNaN(z);
+    const hasValid = !Number.isNaN(vLng) && !Number.isNaN(vLat) && !Number.isNaN(z);
 
     return {
-      center: hasValid ? [lat, lng] as [number, number] : [-8.8909328, 38.5260437],
+      center: hasValid ? [vLng, vLat] as [number, number] : [38.5260437, -8.8909328],
       zoom: hasValid ? z : 5
     }
   }
@@ -157,7 +137,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       container: 'map',
       //style: 'mapbox://styles/mapbox/standard',
       style: 'mapbox://styles/goncalopro2/cmm4ybep5002p01s2eexw84v1',
-      center: [view.center[0], view.center[1]],
+      center: [-8.8909328, 38.5260437], // [38.5260437, -8.8909328]
       zoom: view.zoom,
       maxZoom: 16,
       minZoom: 4.5,
@@ -168,29 +148,57 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map.dragRotate.disable();
     this.map.touchZoomRotate.disableRotation();
     this.map.keyboard.disableRotation();
-
+    // Choose better cursor sytle idk
+    this.map.getCanvas().style.cursor = 'default';
 
     this.map.on('load', () => {
-      /* this.setupLayers();
+      this.setupLayers();
       this.setupInteractions();
-      this.loadPinsInViewport(); */
+
+      this.applyUrlState();
 
       this.map.on('moveend', () => {
-        if(this.map.getZoom() < 14)return;
+        this.urlUpdate();
+        if (this.map.getZoom() < 14) return;
         this.loadPinsInViewport();
       });
-      this.map.on('zoomend', () =>{
-        if(this.map.getZoom() < 10)return;
+      this.map.on('zoomend', () => {
+        this.urlUpdate();
+        if (this.map.getZoom() < 10) return;
         this.loadPinsInViewport();
       });
       this.map.on('click', (e) => this.onMapClick(e));
-
     });
   }
 
+  private togglePopup(key: PopupKey, event?: Event): void {
+    const wasOpen = this.popupService.isOpen(key);
+
+    this.popupService.toggle(key);
+
+    if (wasOpen) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          sLat: null,
+          sLng: null,
+          mode: null
+        },
+        queryParamsHandling: 'merge',
+        replaceUrl: true
+      });
+    } else {
+      console.log('Popup foi aberto');
+    }
+    event?.stopPropagation();
+  }
+
   public toggleCreatePinOverlay(event: Event): void {
-    this.popupService.toggle('choose-pin-popup');
-    event.stopPropagation();
+    this.togglePopup('choose-pin-popup', event);
+  }
+
+  public togglePinPreview(event: Event): void {
+    this.togglePopup('pin-preview', event);
   }
 
   public requestGeolocation() {
@@ -199,27 +207,37 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   onRequestPickOnMap(): void {
     this.enablePickMode();
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        mode: 'pick',
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
   }
 
-  onTypeSelected(pinKind: PinKind): void {
-    this.activePinModal = pinKind;
-    this.popupService.toggle('choose-pin-popup');
-  }
-
-  onPopupCancel(): void {
+  onPopupCancel(key: PopupKey): void {
     this.clearPreviewAndSelection();
-    this.popupService.toggle('choose-pin-popup');
+    this.popupService.toggle(key);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        mode: null,
+        sLat: null,
+        sLng: null
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
   }
 
-  onModalCancelled(): void {
-    this.activePinModal = null;
-    this.clearPreviewAndSelection();
+  onPopupCancelPinOverlay(): void {
+    this.onPopupCancel('choose-pin-popup');
   }
 
-  onModalConfirmed(): void {
-    this.activePinModal = null;
-    this.clearPreviewAndSelection();
-    this.loadPinsInViewport();
+  onPopupCancelPinPreview(): void {
+    this.onPopupCancel('pin-preview');
   }
 
   zoomIn(): void {
@@ -230,20 +248,122 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map.zoomOut({ duration: 300 });
   }
 
+  private applyUrlState(): void {
+    if (!this.queryValues) return;
+
+    const selectedLng = this.route.snapshot.queryParamMap.get('sLng');
+    const selectedLat = this.route.snapshot.queryParamMap.get('sLat');
+    const zoom = this.route.snapshot.queryParamMap.get('z');
+
+    const hasSelectedCoords =
+      selectedLng !== null &&
+      selectedLat !== null;
+
+    if (hasSelectedCoords) {
+      const lng = Number(selectedLng);
+      const lat = Number(selectedLat);
+
+      if (this.urlService.isLngLatValid(lng, lat)) {
+        this.selected.set({
+          longitude: lng,
+          latitude: lat
+        });
+      }
+      return;
+    }
+
+    switch (this.queryValues.mode) {
+      case 'pick':
+        this.enablePickMode()
+        this.popupService.open('choose-pin-popup');
+        this.previewMarkerService.clear();
+        this.selected.set(null)
+        break;
+      case 'picked':
+        this.disablePickMode();
+        this.popupService.open('choose-pin-popup');
+        this.previewMarkerService.clear();
+        this.previewMarkerService.set(this.map, this.selected()!.longitude, this.selected()!.latitude);
+        break;
+      case 'geo':
+        this.popupService.open('choose-pin-popup');
+        this.previewMarkerService.clear();
+        this.previewMarkerService.set(this.map, this.selected()!.longitude, this.selected()!.latitude);
+        break;
+      default:
+        this.disablePickMode();
+        this.previewMarkerService.clear();
+        this.selected.set(null);
+        break;
+    }
+  }
+
   onMapClick(e: mapboxgl.MapMouseEvent): void {
     if (!this.pickingOnMap) return;
 
     const { lng, lat } = e.lngLat;
+
     const coords: Coords = { latitude: lat, longitude: lng };
     this.setSelectedCoords(coords);
 
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        sLat: lat,
+        sLng: lng,
+        z: this.map.getZoom(),
+        mode: 'picked'
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
     this.disablePickMode();
+  }
+
+  onGeo(coords: Coords) {
+    if (!coords) return;
+    this.selected.set({
+      longitude: coords.longitude,
+      latitude: coords.latitude
+    });
+
+    this.setSelectedCoords(coords);
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        sLat: this.selected()!.latitude,
+        sLng: this.selected()!.longitude,
+        z: this.map.getZoom(),
+        mode: 'picked'
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
+  }
+
+  urlUpdate() {
+    const center = this.map.getCenter();
+    const zoom = this.map.getZoom();
+
+    this.router.navigate([], {
+      queryParams: {
+        vLat: center.lat,
+        vLng: center.lng,
+        sLat: null,
+        sLng: null,
+        z: zoom
+      },
+      queryParamsHandling: 'merge',// Serve para nao apagar o query params que possam existir
+      replaceUrl: true
+    }
+    );
   }
 
   ngOnDestroy(): void {
     this.previewMarkerService.clear();
     this.markerRegistry.clear();
-
+    this.query?.unsubscribe();
     if (this.map) this.map.remove();
   }
 
@@ -271,37 +391,23 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.disablePickMode();
   }
 
-  onPinCreated(): void {
-    this.clearPreviewAndSelection();
-    this.disablePickMode();
-    this.loadPinsInViewport();
-
-    this.isCreating = false;
-    console.log('Pin created successfully.');
-  }
-
-  onPinCreateFailed(msg: string): void {
-    console.error('Failed create pin:', msg);
-    this.disablePickMode();
-    this.clearPreviewAndSelection();
-    this.isCreating = false;
-  }
-
   // =========================
   // Selection / Preview marker
   // =========================
   private setSelectedCoords(coords: Coords): void {
-    this.selected = coords;
+    if(!coords) return;
+    this.selected.set(coords);
 
     this.previewMarkerService.clear();
     this.previewMarkerService.set(this.map, coords.longitude, coords.latitude);
 
-    this.map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 14 });
+    this.map.jumpTo({ center: [coords.longitude, coords.latitude], zoom: 14 });
+    //this.map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 14 });
   }
 
   private clearPreviewAndSelection(): void {
     this.previewMarkerService.clear();
-    this.selected = null;
+    this.selected.set(null);
   }
 
   // =========================
@@ -335,22 +441,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  public openModal(modal: ModalKey): void {
-    if (!this.selected) {
-      this.enablePickMode();
-      return;
-    }
-
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        modal,
-        lat: this.selected.latitude,
-        lng: this.selected.longitude
-      },
-      queryParamsHandling: 'merge'
-    });
-  }
   // =========================
   // Clusters test
   // =========================
@@ -386,6 +476,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
           clusterMaxZoom: 10,
           clusterRadius: 50
         });
+
 
         console.log(color);
         this.addClusterLayers(kind, color);
@@ -423,10 +514,11 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       filter: ['has', 'point_count'],
       layout: {
         'text-field': ['get', 'point_count_abbreviated'],
-        'text-size': 12
+        'text-size': 12,
+        'text-font': ['DIN Offc Pro Bold']
       },
       paint: {
-        'text-color': '#ffffff'
+        'text-color': '#ffffff',
       }
     });
 
@@ -453,8 +545,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       const unclusteredId = `unclustered-${kind}`;
       const sourceId = `pins-${kind}`;
 
-      //if (!this.pickingOnMap) return;
-
+      if (this.pickingOnMap) return;
       this.map.on('click', clusterId, (e) => {
         if (!this.map.getLayer(clusterId)) return;
 
@@ -487,7 +578,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       });
 
       this.map.on('mouseleave', unclusteredId, () => {
-        this.map.getCanvas().style.cursor = '';
+        this.map.getCanvas().style.cursor = 'default';
         this.pinHoverPreview.clear();
       });
 
@@ -500,13 +591,31 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         const pin = this.allPins.find(p => p.id === features[0].properties?.['id']);
         if (!pin) return;
 
+        const request: PinDataReqDTO = {
+          includeGeolocation: true,
+          includeAuthor: true,
+          includePost: true,
+          includeDetails: false,
+          includeGroups: true,
+        }
+
+        const getPin: GetPinsReqDTO = {
+          ids: [{ pinId: pin.id }],
+          dataRequest: request
+        }
+
         this.pinHoverPreview.clear();
 
-        this.pinService.getPinPreview(pin.id).subscribe({
-          next: (res: PinPreviewResDTO) => {
+        this.pinService.getPinPreview(getPin).subscribe({
+          next: (res: GetPinsResDTO) => {
             console.log('Pin details loaded:', res);
-            this.pinDetailService.open(res);
-            this.map.flyTo({ center: [pin.longitude, pin.latitude], zoom: 13 });
+            const pin = res.pins[0];
+            if (!pin) return;
+            this.selectedPin.set(pin);
+            this.popupService.open('pin-preview');
+
+            if (pin.geolocation == null) return;
+            this.map.flyTo({ center: [pin.geolocation!.longitude, pin.geolocation!.latitude], zoom: 13 });
           },
           error: (err) => console.error('Erro ao carregar pin:', err)
         });
@@ -517,21 +626,24 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.map.getCanvas().style.cursor = 'pointer';
       });
       this.map.on('mouseleave', clusterId, () => {
-        this.map.getCanvas().style.cursor = '';
+        this.map.getCanvas().style.cursor = 'default';
       });
     });
 
     this.map.on('click', (e) => {
       if (this.pickingOnMap) return;
-
+      //console.log("BOAS PESSOAS");
       const layers = PIN_CONFIG
         .flatMap(({ kind }) => [`clusters-${kind}`, `unclustered-${kind}`])
         .filter(id => this.map.getLayer(id));
 
       const hits = this.map.queryRenderedFeatures(e.point, { layers });
-      if (!hits.length) {
+
+      if (hits.length > 0) {
+        this.togglePinPreview(e.originalEvent);
+      } else {
+        this.selectedPin.set(null);
         this.pinHoverPreview.closePopup();
-        this.pinDetailService.close();
       }
     });
   }
