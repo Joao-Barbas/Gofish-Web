@@ -45,4 +45,12 @@ export const routes: Routes = [
     path: 'about-us',
     loadComponent: () => import('@gofish/features/about/about.component').then(a => a.AboutComponent),
   },
+  {
+    path: 'terms-of-service',
+    loadComponent: () => import('@gofish/features/about/about.component').then(a => a.AboutComponent), /* TODO: Component */
+  },
+  {
+    path: 'privacy-policy',
+    loadComponent: () => import('@gofish/features/about/about.component').then(a => a.AboutComponent), /* TODO: Component */
+  },
 ];
