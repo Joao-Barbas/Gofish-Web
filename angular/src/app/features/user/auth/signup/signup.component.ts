@@ -13,10 +13,11 @@ import { ValidationProblemDetails } from '@gofish/shared/core/problem-details';
 import { RegexMatchesPipe } from '@gofish/shared/pipes/regex-matches.pipe';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { BusyState } from '@gofish/shared/core/busy-state';
+import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 
 @Component({
   selector: 'app-signup',
-  imports: [ ReactiveFormsModule, CommonModule, RouterLink, RegexMatchesPipe ],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, RegexMatchesPipe, AsyncButtonComponent],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
 })
