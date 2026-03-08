@@ -60,14 +60,14 @@ export class WarnPinModalComponent {
     this.route.queryParamMap.subscribe(paramMap => {
       const values = this.urlService.getUrlValues(paramMap);
 
-      if (!values) {
+      if (values === null) {
         this.coordsUrl = null;
         return;
       }
 
       const lng = Number(values.sLng);
       const lat = Number(values.sLat);
-
+      console.log(lng,lat);
       if (!this.urlService.isLngLatValid(lng, lat)) {
         this.coordsUrl = null;
         return;
@@ -77,6 +77,7 @@ export class WarnPinModalComponent {
         longitude: lng,
         latitude: lat
       };
+      console.log("aqui"+this.coordsUrl);
     });
   }
 

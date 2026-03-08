@@ -98,7 +98,7 @@ export class ChoosePinPopupComponent implements SimplePopup {
       this.errorMessage = 'Coordinates not selected.';
       return;
     }
-
+    console.log(this.coords);
     this.router.navigate(['create-warn-pin'], {
       relativeTo: this.route, // pra mostrar apartir do url atual
       queryParams: {

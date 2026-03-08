@@ -206,7 +206,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   onRequestPickOnMap(): void {
-
     this.enablePickMode();
     this.router.navigate([], {
       relativeTo: this.route,
@@ -270,6 +269,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
           latitude: lat
         });
       }
+      return;
     }
 
     switch (this.queryValues.mode) {
@@ -297,6 +297,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         break;
     }
   }
+
   onMapClick(e: mapboxgl.MapMouseEvent): void {
     if (!this.pickingOnMap) return;
 
@@ -326,7 +327,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       latitude: coords.latitude
     });
 
-    this.setSelectedCoords(this.selected()!);
+    this.setSelectedCoords(coords);
 
     this.router.navigate([], {
       relativeTo: this.route,
@@ -394,12 +395,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   // Selection / Preview marker
   // =========================
   private setSelectedCoords(coords: Coords): void {
+    if(!coords) return;
     this.selected.set(coords);
 
     this.previewMarkerService.clear();
     this.previewMarkerService.set(this.map, coords.longitude, coords.latitude);
 
-    this.map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 14 });
+    this.map.jumpTo({ center: [coords.longitude, coords.latitude], zoom: 14 });
+    //this.map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 14 });
   }
 
   private clearPreviewAndSelection(): void {
