@@ -1,17 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouteReuseStrategy } from '@angular/router';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
-import { EnumDTO} from '@gofish/shared/dtos/enum.dto';
+import { UrlService } from '@gofish/features/map/services/url.service';
+import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { NgxSonnerToaster, toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-warn-pin-modal',
-  imports: [CommonModule, ReactiveFormsModule,NgxSonnerToaster],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './warn-pin-modal.component.html',
   styleUrl: './warn-pin-modal.component.css',
 })
@@ -19,23 +20,21 @@ export class WarnPinModalComponent {
   private readonly router = inject(Router);
   private readonly pinService = inject(PinService);
   private readonly fb = inject(FormBuilder);
+  private readonly urlService = inject(UrlService);
+  private readonly route = inject(ActivatedRoute);
 
-  @Input() coords: Coords | null = null;
 
-  body: string = '';
+  coordsUrl: Coords | null = null;
 
   warnTypeOptions: EnumDTO[] = [];
   visibilityOptions: EnumDTO[] = [];
 
-  selectedVisibility?: number = 0;
-  selectedWarnType?: number = 0;
-
   errorMessage = '';
-  isSubmitting: boolean = false;
+  isSubmitting = false;
 
   form = this.fb.group({
     visibility: [0, Validators.required],
-    body: [''],
+    body: ['', Validators.required],
     warningKind: [0, Validators.required]
   });
 
@@ -48,6 +47,7 @@ export class WarnPinModalComponent {
         console.error(err);
       }
     });
+
     this.pinService.enumerateVisibilityType().subscribe({
       next: (res: EnumDTO[]) => {
         this.visibilityOptions = res;
@@ -56,23 +56,58 @@ export class WarnPinModalComponent {
         console.error(err);
       }
     });
+
+    this.route.queryParamMap.subscribe(paramMap => {
+      const values = this.urlService.getUrlValues(paramMap);
+
+      if (!values) {
+        this.coordsUrl = null;
+        return;
+      }
+
+      const lng = Number(values.lng);
+      const lat = Number(values.lat);
+
+      if (!this.urlService.isLngLatValid(lng, lat)) {
+        this.coordsUrl = null;
+        return;
+      }
+
+      this.coordsUrl = {
+        longitude: lng,
+        latitude: lat
+      };
+    });
   }
 
   onCancel(): void {
-    this.router.navigate(['/map']);
+    console.log("funfa");
+    this.router.navigate(['/map'], {
+      queryParams: {
+        lat: this.coordsUrl?.latitude,
+        lng: this.coordsUrl?.longitude,
+        z: this.route.snapshot.queryParamMap.get('z')
+      }
+    });
+    console.log("tambem tive auqi");
   }
 
   onPublish(): void {
     this.errorMessage = '';
 
-    if (!this.coords) {
+    if (!this.coordsUrl) {
       this.errorMessage = 'No coords';
       return;
     }
 
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
     const dto: CreateWarnPinReqDTO = {
-      latitude: this.coords.latitude,
-      longitude: this.coords.longitude,
+      latitude: this.coordsUrl.latitude,
+      longitude: this.coordsUrl.longitude,
       visibility: this.form.value.visibility!,
       body: this.form.value.body ?? '',
       warningKind: this.form.value.warningKind!
@@ -85,6 +120,8 @@ export class WarnPinModalComponent {
       next: () => {
         this.isSubmitting = false;
         toast.dismiss(toastId);
+        //this.confirmed.emit();
+        toast.success('Pin created successfully.');
         this.router.navigate(['/map']);
       },
       error: () => {
@@ -95,6 +132,4 @@ export class WarnPinModalComponent {
       }
     });
   }
-
-
 }

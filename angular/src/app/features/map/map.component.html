@@ -91,28 +91,7 @@
         (requestPickOnMap)="onRequestPickOnMap()" (requestGeoOnMap)="onGeo($event)" (cancel)="(onPopupCancelPinOverlay())">
       </app-choose-pin-popup>
       }
-      <!-- Create pin forms  -->
-      <!-- @switch () {
-      @case () {}
-      @case () {}
-      @case () {}
-      } -->
-      @if (activePinModal !== null) {
-      @switch (activePinModal) {
-      @case (0) { <app-catch-pin-modal [coords]="selected()" (cancelled)="onModalCancelled()"
-        (confirmed)="onModalConfirmed()" (pickOnMap)="onRequestPickOnMap()">
-      </app-catch-pin-modal>
-      }
-      @case (1) { <app-info-pin-modal [coords]="selected()" (cancelled)="onModalCancelled()"
-        (confirmed)="onModalConfirmed()" (pickOnMap)="onRequestPickOnMap()">
-      </app-info-pin-modal>
-      }
-      @case (2) { <app-warn-pin-modal [coords]="selected()" (cancelled)="onModalCancelled()"
-        (confirmed)="onModalConfirmed()" (pickOnMap)="onRequestPickOnMap()">
-      </app-warn-pin-modal>
-      }
-      }
-      }
+      
       <!-- End popup overlays  -->
     </div>
     <!-- End actions overlay -->

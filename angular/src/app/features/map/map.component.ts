@@ -23,9 +23,9 @@ import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.d
 import { ModalKey } from '@gofish/shared/models/modal.model';
 import { PopupKey } from '@gofish/shared/models/popup.model';
 import { NgxSonnerToaster, toast } from 'ngx-sonner';
-import { ignoreElements, merge } from 'rxjs';
+import { ignoreElements, last, merge, Subscription } from 'rxjs';
 import { UrlCodec } from '@angular/common/upgrade';
-import { UrlService } from '@gofish/features/map/services/url.service';
+import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
 import { reportUnhandledError } from 'rxjs/internal/util/reportUnhandledError';
 import { IfStmt } from '@angular/compiler';
 import { REACTIVE_NODE } from '@angular/core/primitives/signals';
@@ -83,7 +83,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   isCreating: boolean = false;
   activePinModal: PinKind | null = null;
   selected = signal<Coords | null>(null);
-  query = this.route.snapshot.queryParamMap;
+  query?: Subscription;
+  queryValues: UrlQuery | null = null;
   private map!: mapboxgl.Map;
   private allPins: ViewportPinDTO[] = [];
   public isCreatePinOverlayOpen = this.popupService.activePopup() === 'choose-pin-popup';
@@ -91,6 +92,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public selectedPinKind: PinKind | null = null;
   public isPinDetailsOpen = this.popupService.activePopup() === 'pin-preview';
   protected selectedPin = signal<PinDataResDTO | null>(null);
+  protected readonly PinKind: PinKind | undefined;
 
 
 
@@ -101,11 +103,13 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   // Lifecycle
   // =========================
   ngOnInit() {
-    if (!this.urlService.isUrlValuesValid(this.query)) {
-      alert('Alerta engracadinho!');
-      return;
-    }
-
+    this.query = this.route.queryParamMap.subscribe(paramMap => {
+      if (!this.urlService.isUrlValuesValid(paramMap)) {
+        alert('Alerta engracadinho!');
+        return;
+      }
+      this.queryValues = this.urlService.getUrlValues(paramMap);
+    });
   }
 
   private getInitialView() {
@@ -150,15 +154,21 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       this.setupLayers();
       this.setupInteractions();
 
-      const values = this.urlService.getUrlValues(this.query);
+      //const values = this.urlService.getUrlValues(this.query);
 
-      if (values.mode === 'pick' || values.mode === 'geo') this.popupService.open('choose-pin-popup');
+      if (this.queryValues?.mode === 'pick' || this.queryValues?.mode === 'geo') this.popupService.open('choose-pin-popup');
+
+      if (this.queryValues?.mode === null) {
+        this.pickingOnMap = false;
+        this.disablePickMode();
+        this.previewMarkerService.clear();
+      }
 
       if (this.selected() !== null) {
-        if (this.urlService.isLngLatValid(Number(values.lng), Number(values.lat))) {
+        if (this.urlService.isLngLatValid(Number(this.queryValues?.lng), Number(this.queryValues?.lat))) {
           this.selected.set({
-            longitude: Number(this.query.get('lng')),
-            latitude: Number(this.query.get('lat'))
+            longitude: Number(this.queryValues?.lng),
+            latitude: Number(this.queryValues?.lat)
           });
 
           this.setSelectedCoords(this.selected()!);
@@ -199,10 +209,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.enablePickMode();
   }
 
-  onTypeSelected(pinKind: PinKind): void {
+  /* onTypeSelected(pinKind: PinKind): void {
     this.activePinModal = pinKind;
     this.popupService.toggle('choose-pin-popup');
-  }
+  } */
 
   onPopupCancel(key: PopupKey): void {
     this.clearPreviewAndSelection();
@@ -218,10 +228,22 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
 
-  onModalCancelled(): void {
+  public onModalCancel(): void {
+    console.error("daaaaaaaaaaaaaaaaaaaaaaaa");
     this.activePinModal = null;
     this.clearPreviewAndSelection();
-
+    console.log(2);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        lng: null,
+        lat: null,
+        z: null,
+        mode: null,
+      },
+      replaceUrl: true
+    });
+    console.log(1);
     toast.info('You cancel the pin creation');
   }
 
@@ -229,7 +251,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.activePinModal = null;
     this.clearPreviewAndSelection();
     this.loadPinsInViewport();
-
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        mode: null
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
     toast.success('Pin created successfully.');
   }
 
@@ -265,9 +294,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   onGeo(coords: Coords) {
-    if(!coords) return;
+    if (!coords) return;
     this.selected.set({
-      longitude:coords.longitude,
+      longitude: coords.longitude,
       latitude: coords.latitude
     });
 
@@ -286,7 +315,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-
   urlUpdate() {
     const center = this.map.getCenter();
     const zoom = this.map.getZoom();
@@ -302,8 +330,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     }
     );
   }
-
-
 
   ngOnDestroy(): void {
     this.previewMarkerService.clear();

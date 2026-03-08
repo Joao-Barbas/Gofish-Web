@@ -10,6 +10,7 @@ import { Coords } from '@gofish/shared/models/coords.model';
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { SimplePopup } from '@gofish/shared/models/popup.model';
 import { GeolocationService } from '@gofish/shared/services/geolocation.service';
+import { LngLat } from 'mapbox-gl';
 import { isArrayLike } from 'rxjs/internal/util/isArrayLike';
 
 @Component({
@@ -44,7 +45,6 @@ export class ChoosePinPopupComponent implements SimplePopup {
     }
 
   }
-
 
   onCreateByGeolocation() {
     this.selectedLocationMode = 'geo';
@@ -102,7 +102,8 @@ export class ChoosePinPopupComponent implements SimplePopup {
     this.router.navigate(['create-warn-pin'], {
       relativeTo: this.route, // pra mostrar apartir do url atual
       queryParams: {
-
+        lat: this.coords.latitude,
+        lng: this.coords.longitude,
       }
     });
   }

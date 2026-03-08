@@ -1,6 +1,5 @@
 <div class="modal-backdrop-custom d-flex justify-content-center align-items-center">
   <div class="modal-custom gf-card">
-
     <form [formGroup]="form" (ngSubmit)="onPublish()">
 
       <!-- Header -->
@@ -23,17 +22,14 @@
         <!-- Content -->
         <h5 class="text-slim modal-body-section-title mt-3">Content</h5>
         <section class="d-flex flex-column">
-          <textarea
-            id="catchPinDescription"
-            class="modal-body-description dark-bg-dark dark-text"
-            placeholder="Add a description..."
-            formControlName="body">
+          <textarea id="catchPinDescription" class="modal-body-description dark-bg-dark dark-text"
+            placeholder="Add a description..." formControlName="body">
           </textarea>
 
           @if (form.controls.body.touched && form.controls.body.invalid) {
-            <p class="text-danger mt-2 mb-0">
-              A descrição é obrigatória.
-            </p>
+          <p class="text-danger mt-2 mb-0">
+            A descrição é obrigatória.
+          </p>
           }
         </section>
 
@@ -44,10 +40,12 @@
           <!-- Geolocation -->
           <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
             <h5 class="modal-body-options-text text-slim mb-0">Geolocation</h5>
+            @if (coordsUrl) {
             <div class="d-flex align-items-center gap-1">
-              <p class="mb-0 dark-bg-dark modal-info-box">{{ coords?.latitude || '—' }}</p>
-              <p class="mb-0 dark-bg-dark modal-info-box">{{ coords?.longitude || '—' }}</p>
+              <p class="mb-0 dark-bg-dark modal-info-box">{{ coordsUrl.latitude || '—' }}</p>
+              <p class="mb-0 dark-bg-dark modal-info-box">{{ coordsUrl.longitude || '—' }}</p>
             </div>
+            }
           </div>
 
           <!-- Visibility -->
@@ -56,22 +54,15 @@
 
             <div class="d-flex align-items-center gap-1 radio-group-container">
               @for (option of visibilityOptions; track option.value) {
-                <div class="visibility-option">
-                  <input
-                    type="radio"
-                    class="d-none"
-                    name="visibility"
-                    [id]="'vis-' + option.value"
-                    [value]="option.value"
-                    formControlName="visibility">
+              <div class="visibility-option">
+                <input type="radio" class="d-none" name="visibility" [id]="'vis-' + option.value" [value]="option.value"
+                  formControlName="visibility">
 
-                  <label
-                    [for]="'vis-' + option.value"
-                    class="modal-visibility-btn"
-                    [class.active]="form.controls.visibility.value === option.value">
-                    {{ option.label }}
-                  </label>
-                </div>
+                <label [for]="'vis-' + option.value" class="modal-visibility-btn"
+                  [class.active]="form.controls.visibility.value === option.value">
+                  {{ option.label }}
+                </label>
+              </div>
               }
             </div>
           </div>
@@ -81,9 +72,9 @@
             <h5 class="modal-body-options-text text-slim mb-0">Warning Type</h5>
 
             <div class="d-flex align-items-center">
-              <select class="form-select form-select-sm custom-dropdown" formControlName="warnType">
+              <select class="form-select form-select-sm custom-dropdown" formControlName="warningKind">
                 @for (option of warnTypeOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
+                <option [value]="option.value">{{ option.label }}</option>
                 }
               </select>
             </div>
@@ -92,7 +83,7 @@
 
         <!-- Error -->
         @if (errorMessage) {
-          <p class="text-danger mt-2 mb-0">{{ errorMessage }}</p>
+        <p class="text-danger mt-2 mb-0">{{ errorMessage }}</p>
         }
 
       </div>
