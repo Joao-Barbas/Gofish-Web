@@ -7,7 +7,7 @@
 .settings-nav-tab {
   display: block;
   text-align: center;
-  min-width: 100vw;
+  min-width: 100%;
   background-color: var(--dark-bg);
   padding: var(--gf-12) 0;
 

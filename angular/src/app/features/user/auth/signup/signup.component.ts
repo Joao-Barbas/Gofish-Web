@@ -74,7 +74,7 @@ export class SignupComponent implements OnInit {
   private passwordNotEmail(control: AbstractControl): ValidationErrors | null {
     let email = control.get('email')?.value;
     let password = control.get('password')?.value;
-    if (password && email && password != email) return { 'passwordnotemail': true };
+    if (password && email && password === email) return { 'passwordnotemail': true };
     return null;
   }
 
