@@ -20,6 +20,8 @@ export const PathSegment = {
   PERSONAL_DATA_SETTINGS: 'personal-data',
   SECURITY_SETTINGS:      'security',
   ABOUT_US:               'about-us',
+  TERMS:                  'terms-of-service',
+  PRIVACY:                'privacy-policy',
 } as const;
 
 export const Path = {
@@ -34,6 +36,8 @@ export const Path = {
   PERSONAL_DATA_SETTINGS: `/${PathSegment.SETTINGS}/${PathSegment.PERSONAL_DATA_SETTINGS}`,
   SECURITY_SETTINGS:      `/${PathSegment.SETTINGS}/${PathSegment.SECURITY_SETTINGS}`,
   ABOUT_US:               `/${PathSegment.ABOUT_US}`,
+  TERMS:                  `/${PathSegment.TERMS}`,
+  PRIVACY:                `/${PathSegment.PRIVACY}`,
 } as const;
 
 /* Backend endpoints */

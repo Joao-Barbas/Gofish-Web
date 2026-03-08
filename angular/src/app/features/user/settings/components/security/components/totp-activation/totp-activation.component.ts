@@ -1,17 +1,19 @@
+import QRCode from 'qrcode';
+
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import QRCode from 'qrcode';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { UserSecurityService } from '@gofish/shared/services/user-security.service';
 import { EnableTotpResDTO } from '@gofish/shared/dtos/user-security.dto';
-import { ProblemDetails } from '@gofish/shared/core/problem-details';
+import { ProblemDetails, ValidationProblemDetails } from '@gofish/shared/core/problem-details';
+import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 
 @Component({
   selector: 'app-totp-activation',
-  imports: [ ReactiveFormsModule, FormsModule ],
+  imports: [ReactiveFormsModule, FormsModule, AsyncButtonComponent],
   templateUrl: './totp-activation.component.html',
   styleUrl: './totp-activation.component.css',
 })
@@ -28,14 +30,16 @@ export class TotpActivationComponent implements OnInit {
   view: 'setup' | 'backup-codes' = 'setup';
 
   authenticatorKey: string = '';
-  qrCodeImageUrl:   string = '';
-  backupCodes:      string[] = [];
-  codeErrorText:    string | null = null;
+  qrCodeImageUrl: string = '';
+  backupCodes: string[] = [];
   savedCodesChecked: boolean = false;
 
-  form: FormGroup = this.formBuilder.group({
+  verifyForm: FormGroup = this.formBuilder.group({
     totpCode: ['', [ Validators.required, Validators.pattern('^[0-9]*$') ]]
   });
+
+  apiProblems: ValidationProblemDetails | null = null;
+  formErrors: ValidationErrors | null = this.verifyForm.errors;
 
   ngOnInit(): void {
     this.loadingState.start();
@@ -51,23 +55,31 @@ export class TotpActivationComponent implements OnInit {
     });
   }
 
+  getError(): string | null {
+    const s = this.apiProblems;
+    return s?.detail ?? null;
+  }
+
   onVerify(): void {
-    this.form.markAllAsTouched();
-    if (this.form.invalid) return;
+    this.verifyForm.markAllAsTouched();
+    this.apiProblems = null;
+    if (this.verifyForm.invalid) return;
+    this.busyState.setBusy(true);
 
-    this.codeErrorText = null;
-    const endBusy = this.busyState.beginBusy();
-
-    this.userSecurityService.enableTotp({ totpCode: this.form.value.totpCode }).subscribe({
+    this.userSecurityService.enableTotp({ totpCode: this.verifyForm.value.totpCode }).subscribe({
       next: (res: EnableTotpResDTO) => {
-        endBusy();
-        this.backupCodes = res.backupCodes;
-        this.view = 'backup-codes';
+        this.busyState.setBusy(false);
+        setTimeout(() => {
+          this.backupCodes = res.backupCodes;
+          this.view = 'backup-codes';
+          this.verifyForm.reset();
+        }, 1000);
       },
       error: (err: HttpErrorResponse) => {
-        endBusy();
-        const problem = err.error as ProblemDetails;
-        this.codeErrorText = problem?.detail ?? 'Incorrect code.';
+        this.busyState.setBusy(false);
+        let problem = err.error as ValidationProblemDetails;
+        problem.detail = problem.detail ?? problem.status === 401 ? 'Incorrect code.' : 'Server Error. Try again later.';
+        this.apiProblems = problem;
       }
     });
   }

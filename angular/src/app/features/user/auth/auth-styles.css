@@ -1,0 +1,117 @@
+/* auth-styles.css */
+
+.gf-card {
+  padding-top: var(--gf-24);
+  padding-right: var(--gf-32);
+  padding-bottom: var(--gf-12);
+  padding-left: var(--gf-32);
+}
+
+.thrid-party-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5%;
+  width: 100%;
+  padding: var(--gf-10) var(--gf-32);
+  box-shadow: 0 0 0 2px var(--gf-primary);
+  color: var(--gf-dark-text);
+  background-color: transparent;
+  border: none;
+  border-radius: var(--gf-8);
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 0 0 4px var(--gf-primary);
+  }
+
+  & span {
+    font-size: var(--gf-text-sm);
+  }
+
+  & svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.choice-divider {
+  display: flex;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 0;
+  margin-bottom: calc(-8rem / 16);
+
+  &::before, &::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid var(--dark-text-muted);
+  }
+
+  &::before {
+    margin-right: 10px;
+  }
+
+  &::after {
+    margin-left: 10px;
+  }
+
+  & span {
+    color: var(--dark-text-muted);
+  }
+}
+
+.form {
+  & small {
+    display: block;
+    color: var(--dark-text-muted);
+    font-size: var(--gf-text-xs);
+  }
+
+  & input {
+    box-shadow: none;
+    border: none;
+    outline: none;
+    color: var(--dark-text);
+    background-color: var(--dark-bg-dark);
+    border-radius: var(--gf-8);
+    font-size: var(--gf-text-sm);
+    padding: calc(1em / 2) var(--gf-8);
+    /* height: var(--gf-40); */
+    /* line-height: var(--gf-40); */
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 0 0 2px var(--gf-primary);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px var(--gf-primary);
+    }
+  }
+}
+
+.signin-invite,
+.signup-invite {
+  font-size: var(--gf-text-xs);
+  color: var(--gf-dark-text-muted);
+
+  & a {
+    text-decoration: none;
+    color: var(--gf-primary);
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: var(--gf-text-xs);
+  color: var(--gf-dark-text-muted);
+
+  & svg {
+    width: 18px;
+    height: 18px;
+  }
+}

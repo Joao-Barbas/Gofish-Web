@@ -1,3 +1,5 @@
+export type ValidationProblem = Record<string, string[]>;
+
 export interface ProblemDetails {
   type?: string;
   title?: string;
@@ -7,7 +9,7 @@ export interface ProblemDetails {
 }
 
 export interface ValidationProblemDetails extends ProblemDetails {
-  errors?: Record<string, string[]>;
+  errors?: ValidationProblem;
 }
 
 export function isValidationProblemDetails(problem: ProblemDetails): problem is ValidationProblemDetails {

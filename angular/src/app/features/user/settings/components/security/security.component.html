@@ -2,15 +2,22 @@
 
 @switch (loadingState.status()) {
 @case('loading') {
-  <div class="modal-loading">
-    <div class="spinner"></div>
+  <div class="loading-container gf-flow-vertical align-items-center justify-content-center">
+    <svg animate.enter="spinner-enter" xmlns="http://www.w3.org/2000/svg"
+         width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/>
+      <path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/>
+      <path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/>
+      <path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/>
+    </svg>
     <span>Loading...</span>
   </div>
 }
 @case('error') {
-  <div class="modal-loading">
+  <div class="failed-container gf-flow-vertical align-items-center justify-content-center">
     <span>{{ loadingState.error() }}</span>
-    <button (click)="ngOnInit()">Retry</button>
+    <button (click)="ngOnInit()">Try Again</button>
   </div>
 }
 @case('success') {
@@ -30,33 +37,21 @@
         <label>Confirm Password</label>
         <input type="password" id="confirm-password" formControlName="confirmPassword">
       </div>
+      @if (getError(); as errorText) {
+        <div class="gf-text-error d-inline">{{ errorText }}</div>
+      }
     </form>
-    @if (getError(); as errorText) {
-      <div class="error-feedback">
-        {{ errorText }}
-      </div>
-    }
     <div class="actions">
-      <button
+      <app-async-button
         type="submit"
         form="change-password-form"
-        [disabled]="busyState.isBusy() || passwordChangeSuccess"
-        [class.loading]="busyState.isBusy()"
-        [class.success]="passwordChangeSuccess">
-        @if (busyState.isBusy()) {
-          <span class="btn-spinner"></span>
-        } @else if (passwordChangeSuccess) {
-          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        }
-        <span>Confirm</span>
-      </button>
+        labels="Change Password"
+        [state]="busyState.isBusy() ? 'busy' : passwordChangeSuccess ? 'success' : 'idle'"/>
     </div>
   </div>
   <!-- End change password -->
   <!-- Two-step verification methods -->
-  <div>
+  <div class="two-step-container">
     <h4>Two-step verification</h4>
     <p>
       Add an extra layer of protection to your account with 2-Step Verification at login, account recovery, and high-value transactions.
@@ -69,32 +64,48 @@
       GOFISH will never ask you for your codes or to change settings to prove account ownership.
     </small>
     <!-- Options -->
-    <div role="radiogroup" aria-label="Two-step verification method">
+    <div class="gf-my-16" role="radiogroup" aria-label="Two-step verification method">
       <!-- None -->
-      <label [class.active]="!hasTwoFactor">
-        <input
-          type="radio"
-          name="twoFactorMethod"
-          value="none"
-          [checked]="!hasTwoFactor"
-          (change)="onTwoFactorDisable()">
+      <label class="two-step-option gf-card gf-flow-horizontal gf-p-12 gf-my-8 justify-content-start" [class.active]="!hasTwoFactor">
         <div>
           <p>None</p>
           <small>Do not protect my account with any of the 2-Factor verification methods</small>
         </div>
+        <input type="radio" name="twoFactorMethod" value="none"
+               [checked]="!hasTwoFactor"
+               (click)="$event.preventDefault(); onTwoFactorDisable()">
+        <svg class="icon-checked" xmlns="http://www.w3.org/2000/svg"
+             width="24" height="24" viewBox="0 0 24 24"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" fill="none"/>
+          <circle cx="12" cy="12" r="6" fill="currentColor"/>
+        </svg>
+        <svg class="icon-unchecked" xmlns="http://www.w3.org/2000/svg"
+             width="24" height="24" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+        </svg>
       </label>
       <!-- Time-based one time password -->
-      <label [class.active]="hasTwoFactor && twoFactorMethod === TwoFactorMethod.Totp">
-        <input
-          type="radio"
-          name="twoFactorMethod"
-          value="totp"
-          [checked]="hasTwoFactor && twoFactorMethod === TwoFactorMethod.Totp"
-          (change)="onTwoFactorToTotp()">
+      <label class="two-step-option gf-card gf-flow-horizontal gf-p-12 gf-my-8 justify-content-start" [class.active]="hasTwoFactor && twoFactorMethod === TwoFactorMethod.Totp">
         <div>
           <p>Authenticator App</p>
-          <small>Download an app on your phone to generate unique security codes.</small>
+          <small>Download an app on your phone to generate unique security codes. Suggested apps include Google Authenticator and Microsoft Authenticator</small>
         </div>
+        <input type="radio" name="twoFactorMethod" value="totp"
+               [checked]="hasTwoFactor && twoFactorMethod === TwoFactorMethod.Totp"
+               (click)="$event.preventDefault(); onTwoFactorToTotp()">
+        <svg class="icon-checked" xmlns="http://www.w3.org/2000/svg"
+             width="24" height="24" viewBox="0 0 24 24"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" fill="none"/>
+          <circle cx="12" cy="12" r="6" fill="currentColor"/>
+        </svg>
+        <svg class="icon-unchecked" xmlns="http://www.w3.org/2000/svg"
+             width="24" height="24" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+        </svg>
       </label>
     </div>
     <!-- TOTP activation panel -->

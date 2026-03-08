@@ -1,0 +1,97 @@
+/* async-button.component.css */
+
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  border: none;
+  outline: none;
+
+  /* Customizable via css variables */
+  width: var(--async-btn-width, 100%);
+  height: var(--async-btn-height, auto);
+  padding: var(--async-btn-padding, calc(1em / 2) var(--gf-8));
+  font-size: var(--async-btn-font-size, var(--gf-text-sm));
+  border-radius: var(--async-btn-radius, var(--gf-8));
+  background-color: var(--async-btn-bg, var(--gf-primary));
+  color: var(--async-btn-color, var(--gf-dark-text));
+
+  /* Hover shadow */
+  --async-btn-hover-shadow: var(--gf-shadow-lift-md);
+
+  /* State colors */
+  --async-btn-busy-bg: var(--gf-tertiary);
+  --async-btn-busy-color: var(--gf-dark-text);
+  --async-btn-success-bg: var(--gf-success);
+  --async-btn-success-color: var(--gf-light-text);
+
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &.busy {
+    background-color: var(--async-btn-busy-bg);
+    color: var(--async-btn-busy-color);
+  }
+
+  &.success {
+    background-color: var(--async-btn-success-bg);
+    color: var(--async-btn-success-color);
+  }
+
+  &:not(:disabled):hover {
+    box-shadow: var(--async-btn-hover-shadow);
+  }
+}
+
+.icon-slot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: 18px;
+  width: 0;
+  transition: width 0.2s ease;
+
+  & svg {
+    width: 18px;
+    height: 18px;
+
+    &.spinner-icon {
+      position: absolute;
+      animation: gf-basic-spin 1.5s linear infinite;
+    }
+
+    &.check-icon {
+      position: absolute;
+    }
+
+    &.spinner-enter {
+      animation: gf-icon-scale-in .2s ease-out;
+    }
+
+    &.check-enter {
+      animation: gf-icon-scale-in .2s ease-out;
+    }
+  }
+}
+
+button.busy .icon-slot,
+button.success .icon-slot {
+  width: 18px;
+}
+
+.label-slot {
+  transition: margin 0.2s ease;
+  margin: 0;
+}
+
+button.busy .label-slot,
+button.success .label-slot {
+  margin-left: 8px;
+}

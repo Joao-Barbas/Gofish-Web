@@ -10,15 +10,15 @@ export const routes: Routes = [
   },
   {
     path: 'signup',
-    loadComponent: () => import('@gofish/features/user/signup/signup.component').then(m => m.SignupComponent)
+    loadComponent: () => import('@gofish/features/user/auth/signup/signup.component').then(m => m.SignupComponent)
   },
   {
     path: 'signin',
-    loadComponent: () => import('@gofish/features/user/signin/signin.component').then(m => m.SigninComponent)
+    loadComponent: () => import('@gofish/features/user/auth/signin/signin.component').then(m => m.SigninComponent)
   },
   {
     path: 'signin/verify',
-    loadComponent: () => import('@gofish/features/user/signin-verify/signin-verify.component').then(m => m.SigninVerifyComponent)
+    loadComponent: () => import('@gofish/features/user/auth/signin-verify/signin-verify.component').then(m => m.SigninVerifyComponent)
   },
   {
     path: 'settings',
@@ -44,5 +44,13 @@ export const routes: Routes = [
   {
     path: 'about-us',
     loadComponent: () => import('@gofish/features/about/about.component').then(a => a.AboutComponent),
+  },
+  {
+    path: 'terms-of-service',
+    loadComponent: () => import('@gofish/features/about/about.component').then(a => a.AboutComponent), /* TODO: Component */
+  },
+  {
+    path: 'privacy-policy',
+    loadComponent: () => import('@gofish/features/about/about.component').then(a => a.AboutComponent), /* TODO: Component */
   },
 ];

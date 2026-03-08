@@ -22,9 +22,8 @@ export class AuthService {
   readonly decodedToken = this._decodedToken.asReadonly();
 
   constructor() {
-    const et = localStorage.getItem(LocalStorageKey.TOKEN);
-    if (et && this.insertToken(et)) return; // This checks token too
-    this.signOut();
+    let encodedToken = localStorage.getItem(LocalStorageKey.TOKEN);
+    if (encodedToken) this.insertToken(encodedToken);
   }
 
   // Api endpoints
@@ -62,7 +61,8 @@ export class AuthService {
   // Token storage
 
   insertToken(et: JwtEncoded): boolean {
-    const dt = this.decodeToken(et);
+    if (!et?.trim()) return false;
+    let dt = this.decodeToken(et);
     if (!this.checkToken(dt)) return false;
     localStorage.setItem(LocalStorageKey.TOKEN, et);
     this._encodedToken.set(et);

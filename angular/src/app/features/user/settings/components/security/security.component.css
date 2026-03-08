@@ -1,9 +1,5 @@
 /* security.component.css */
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
 :host {
   display: block;
   margin: 0 auto;
@@ -11,107 +7,82 @@
   width: 90%;
 }
 
-/* Loading state */
-
-.modal-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--gf-12);
-  padding: var(--gf-32);
-  color: var(--dark-text-muted);
-  font-size: var(--gf-14);
-}
-
-.spinner {
-  width: 24px;
-  height: 24px;
-  border: 2px solid var(--dark-bg-light);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-/* End loading state */
-
 h4 {
   margin: var(--gf-32) 0;
 }
 
-p {
+/* Loading state */
+
+.loading-container {
+  gap: var(--gf-6);
+  padding: var(--gf-32);
+  color: var(--dark-text-muted);
   font-size: var(--gf-14);
-  line-height: 1.30em;
-  margin-bottom: var(--gf-12);
-}
 
-.change-password-container {
-  display: block;
+  & svg {
+    width: 32px;
+    height: 32px;
+    animation: gf-basic-spin 1.5s linear infinite;
 
-  & > .error-feedback {
-    display: inline-block;
-    margin: 0;
-    color: var(--danger);
+    &.spinner-enter {
+      animation: gf-icon-scale-in .2s ease-out;
+    }
   }
 
-  & > .actions {
-    text-align: right;
+  & span {
+    font-size: var(--gf-text-sm);
+  }
+}
 
-    & button {
-      margin-top: var(--gf-8);
-      outline: none;
-      border: none;
-      cursor: pointer;
-      background-color: var(--primary);
-      color: white;
-      padding: 10px 4rem;
-      border-radius: var(--gf-10);
-      box-shadow: var(--gf-shadow-lift-sm);
-      transition: background-color .3s ease, box-shadow .2s ease, opacity .2s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--gf-8);
-      min-width: 160px;
+/* End loading state */
+/* Failed state */
 
-      &:disabled {
-        cursor: not-allowed;
-      }
+.failed-container {
+  padding: var(--gf-32);
 
-      &:not(:disabled):not(.loading):not(.success):hover {
-        box-shadow: var(--gf-shadow-lift-lg);
-      }
+  & span {
+    font-size: var(--gf-text-md);
+  }
 
-      &.loading {
-        opacity: 0.8;
-      }
+  & button {
+    display: block;
+    background-color: transparent;
+    border: none;
+    width: 25%;
+    padding: calc(1em / 2) var(--gf-8);
+    margin: var(--gf-12) 0;
+    box-shadow: 0 0 0 2px var(--gf-primary);
+    color: var(--gf-dark-text);
+    border-radius: var(--gf-8);
+    transition: box-shadow 0.2s ease;
 
-      &.success {
-        background-color: var(--success);
-      }
+    &:hover {
+      box-shadow: 0 0 0 4px var(--gf-primary);
+    }
+
+    & span {
+      font-size: var(--gf-text-md);
     }
   }
 }
 
-.btn-spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+/* End failed state */
+/* Change password */
+
+.change-password-container {
+  display: block;
+
+  & .actions {
+    text-align: right;
+    margin-top: calc(var(--gf-8) + var(--gf-18) + var(--gf-2));
+
+    & app-async-button {
+      --async-btn-padding: calc(1em / 2) var(--gf-48);
+    }
+  }
 }
-
-.btn-icon {
-  width: 18px;
-  height: 18px;
-}
-
-
 
 .change-password-form {
-  margin-top: var(--gf-16);
-
   & label {
     display: block;
     margin-bottom: var(--gf-2);
@@ -121,13 +92,65 @@ p {
 
   & input {
     width: 100%;
-    height: 3rem;
-    background-color: var(--dark-bg);
-    box-shadow: var(--gf-shadow-sink-sm);
-    color: var(--dark-text);
+    box-shadow: none;
     border: none;
     outline: none;
-    border-radius: 0.75rem;
-    padding: 0.75rem;
+    color: var(--dark-text);
+    background-color: var(--dark-bg);
+    border-radius: var(--gf-8);
+    font-size: var(--gf-text-sm);
+    padding: calc(1em / 2) var(--gf-8);
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 0 0 2px var(--gf-primary);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px var(--gf-primary);
+    }
   }
 }
+
+/* End change password */
+/* Two step */
+
+.two-step-container {
+  & > p {
+    font-size: var(--gf-14);
+    margin-bottom: var(--gf-12);
+  }
+
+  & > small {
+    display: inline-block;
+    color: var(--gf-dark-text-muted);
+    font-size: var(--gf-12);
+  }
+}
+
+.two-step-option {
+  color: var(--gf-dark-text-muted);
+
+  p { font-size: var(--gf-14); font-weight: 600; }
+  small { display: inline-block; font-size: var(--gf-12); width: 70%; margin-top: var(--gf-6); }
+  div { width: 100%; }
+  svg { width: 20px; height: 20px; }
+
+  input {
+    align-self: flex-start;
+    margin: 0;
+    cursor: pointer;
+    appearance: none;
+
+    &:checked ~ .icon-checked { display: block; color: var(--gf-primary); }
+    &:checked ~ .icon-unchecked { display: none; }
+  }
+
+  .icon-checked { display: none; }
+  .icon-unchecked { display: block; }
+
+  &.active { color: var(--gf-dark-text); }
+  &:hover { color: var(--gf-dark-text); cursor: pointer; }
+}
+
+/* End two step */

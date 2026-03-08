@@ -13,12 +13,13 @@ import { UserSecurityService } from '@gofish/shared/services/user-security.servi
 import { ChangePasswordReqDTO, ChangePasswordResDTO, SecurityInfoResDTO } from '@gofish/shared/dtos/user-security.dto';
 import { ProblemDetails, ValidationProblemDetails } from '@gofish/shared/core/problem-details';
 import { Api } from '@gofish/shared/constants';
+import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 
 type ModalOperation = 'change-password' | 'disable-2fa';
 
 @Component({
   selector: 'app-security',
-  imports: [ TotpValidationModalComponent, TotpActivationComponent, ReactiveFormsModule ],
+  imports: [TotpValidationModalComponent, TotpActivationComponent, ReactiveFormsModule, AsyncButtonComponent],
   templateUrl: './security.component.html',
   styleUrl: './security.component.css',
 })
@@ -33,8 +34,9 @@ export class SecurityComponent implements OnInit {
   readonly Api = Api;
   readonly TwoFactorMethod = TwoFactorMethod;
 
-  hasTwoFactor: boolean = false;
+  hasTwoFactor: boolean            = false;
   twoFactorMethod: TwoFactorMethod = TwoFactorMethod.None;
+
   modalErrorText: string | null = null;
   passwordChangeSuccess: boolean = false;
   showTotpActivation: boolean = false;
@@ -65,7 +67,7 @@ export class SecurityComponent implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         let res = err.error as ProblemDetails;
-        this.loadingState.fail('Failed to load security info');
+        this.loadingState.fail('Something went wrong while trying to load security information.');
       }
     });
   }
@@ -114,27 +116,10 @@ export class SecurityComponent implements OnInit {
   }
 
   // End form errors/validation
-  // Events
-
-  onChangePassword(): void {
-    this.changePasswordForm.markAllAsTouched();
-    if (this.changePasswordForm.invalid) return;
-    this.changePasswordFormServerErrors = undefined;
-
-    if (this.hasTwoFactor) {
-      this.modalErrorText = null;
-      this.modalOperation = 'change-password';
-      this.modalService.open('totp-validation-modal');
-      return;
-    }
-
-    this.submitChangePassword();
-  }
 
   private submitChangePassword(): void {
     this.busyState.setBusy(true);
     this.passwordChangeSuccess = false;
-
     this.userSecurityService.changePassword(this.changePasswordForm.value as ChangePasswordReqDTO).subscribe({
       next: () => {
         this.busyState.setBusy(false);
@@ -150,6 +135,23 @@ export class SecurityComponent implements OnInit {
         this.changePasswordFormServerErrors = problem;
       }
     });
+  }
+
+  // Template events
+
+  onChangePassword(): void {
+    this.changePasswordForm.markAllAsTouched();
+    if (this.changePasswordForm.invalid) return;
+    this.changePasswordFormServerErrors = undefined;
+
+    if (this.hasTwoFactor) {
+      this.modalErrorText = null;
+      this.modalOperation = 'change-password';
+      this.modalService.open('totp-validation-modal');
+      return;
+    }
+
+    this.submitChangePassword();
   }
 
   onTwoFactorDisable(): void {
@@ -170,11 +172,11 @@ export class SecurityComponent implements OnInit {
 
   onTotpActivationCompleted(): void {
     this.showTotpActivation = false;
-    this.hasTwoFactor    = true;
-    this.twoFactorMethod = TwoFactorMethod.Totp;
+    this.hasTwoFactor       = true;
+    this.twoFactorMethod    = TwoFactorMethod.Totp;
   }
 
-  // End events
+  // End template events
   // Modal events
 
   onModalConfirm(totp: string): void {
@@ -200,14 +202,13 @@ export class SecurityComponent implements OnInit {
           this.modalErrorText = 'Incorrect code';
         }
       });
-      break;
-    }
-    default: {
       return;
     }}
   }
 
-  onModalCancel(): void {}
+  onModalCancel(): void {
+    // Nothing
+  }
 
   // End modal events
 }

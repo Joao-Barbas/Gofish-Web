@@ -1,83 +1,67 @@
 <!-- totp-activation.component.html -->
 
-<div class="activation-panel">
-
-  @if (view === 'setup') {
-    @switch (loadingState.status()) {
-      @case ('loading') {
-        <div class="state-center">
-          <div class="spinner"></div>
-          <span>Loading...</span>
-        </div>
+@if (view === 'setup') {
+  @switch (loadingState.status()) {
+  @case ('loading') {
+    <div class="loading-container gf-flow-vertical align-items-center justify-content-center">
+      <svg animate.enter="spinner-enter" xmlns="http://www.w3.org/2000/svg"
+           width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/>
+        <path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/>
+        <path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/>
+        <path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/>
+      </svg>
+      <span>Loading...</span>
+    </div>
+  }
+  @case ('error') {
+    <div class="failed-container gf-flow-vertical align-items-center justify-content-center">
+      <span>{{ loadingState.error() }}</span>
+      <button (click)="ngOnInit()">Retry</button>
+    </div>
+  }
+  @case ('success') {
+    <h6>Authenticator setup</h6>
+    <ol>
+      <li>Download a two-factor authenticator app like Microsoft Authenticator or Google Authenticator, both available for Android and iOS.</li>
+      <li>Scan the QR Code or enter the key into your two factor authenticator app. If you opt to use the key, spaces and casing do not matter.</li>
+    </ol>
+    <div class="qr-container">
+      <div class="qr-code-img">
+        <img [src]="qrCodeImageUrl" alt="Authenticator QR Code">
+      </div>
+      <div class="qr-key-pill">{{ authenticatorKey }}</div>
+    </div>
+    <ol start="3">
+      <li>Once you have scanned the QR code or input the key above, your two factor authentication app will provide you with a unique code. Enter the code in the confirmation box below.</li>
+    </ol>
+    <form id="verify-form" class="vertical-flow gf-gap-8" [formGroup]="verifyForm" (ngSubmit)="onVerify()">
+      <input type="text" formControlName="totpCode" placeholder="Enter 6-digit code" maxlength="6" autocomplete="one-time-code">
+      @if (getError(); as errorText) {
+        <span class="gf-text-error">{{ errorText }}</span>
       }
-      @case ('error') {
-        <div class="state-center">
-          <span>{{ loadingState.error() }}</span>
-          <button class="btn-retry" (click)="ngOnInit()">Retry</button>
-        </div>
-      }
-      @case ('success') {
-        <h6>Authenticator setup</h6>
-        <ol>
-          <li>Download a two-factor authenticator app like Microsoft Authenticator or Google Authenticator, both available for Android and iOS.</li>
-          <li>Scan the QR Code or enter the key into your two factor authenticator app. If you opt to use the key, spaces and casing do not matter.</li>
-        </ol>
-        <div class="qr-container">
-          <img class="qr-code" [src]="qrCodeImageUrl" alt="Authenticator QR Code">
-        </div>
-        <div class="key-pill">{{ authenticatorKey }}</div>
-        <ol start="3">
-          <li>Once you have scanned the QR code or input the key above, your two factor authentication app will provide you with a unique code. Enter the code in the confirmation box below.</li>
-        </ol>
-        <form id="totp-activation-form" [formGroup]="form" (ngSubmit)="onVerify()">
-          <input
-            type="text"
-            formControlName="totpCode"
-            placeholder="Enter 6-digit code"
-            maxlength="6"
-            autocomplete="one-time-code">
-        </form>
-        @if (codeErrorText) {
-          <small class="error-text">{{ codeErrorText }}</small>
-        }
-        <div class="actions">
-          <button class="btn-secondary" type="button" (click)="onCancel()">Cancel</button>
-          <button
-            class="btn-primary"
-            type="submit"
-            form="totp-activation-form"
-            [disabled]="busyState.isBusy()">
-            @if (busyState.isBusy()) {
-              <span class="btn-spinner"></span>
-            }
-            <span>Verify</span>
-          </button>
-        </div>
-      }
+    </form>
+    <div class="actions verify">
+      <button class="secondary" type="button" (click)="onCancel()">Cancel</button>
+      <app-async-button type="submit" form="verify-form" labels="Verify" [state]="busyState.isBusy() ? 'busy' : 'idle'"></app-async-button>
+    </div>
+  }}
+} @else if (view === 'backup-codes') {
+  <h6>Backup codes</h6>
+  <p>These are your new backup codes. You are required to save them in a safe space as you will not be able to check these codes again later on.</p>
+  <div class="backup-codes-grid">
+    @for (code of backupCodes; track code) {
+      <span class="backup-code">{{ code }}</span>
     }
-  }
-
-  @if (view === 'backup-codes') {
-    <h6>Backup codes</h6>
-    <p>These are your new backup codes. You are required to save them in a safe space as you will not be able to check these codes again later on.</p>
-    <div class="backup-codes-grid">
-      @for (code of backupCodes; track code) {
-        <span class="backup-code">{{ code }}</span>
-      }
-    </div>
+  </div>
+  <div class="actions backup-codes">
     <label class="saved-checkbox">
+      <span>I have saved my backup codes</span>
       <input type="checkbox" [(ngModel)]="savedCodesChecked">
-      I have saved my backup codes
     </label>
-    <div class="actions">
-      <button
-        class="btn-primary"
-        type="button"
-        [disabled]="!savedCodesChecked"
-        (click)="onClose()">
-        Close
-      </button>
-    </div>
-  }
-
-</div>
+    <button class="primary" type="button" [disabled]="!savedCodesChecked" (click)="onClose()">
+      Close
+    </button>
+  </div>
+}

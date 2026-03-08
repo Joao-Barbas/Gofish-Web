@@ -57,16 +57,6 @@
   }
 }
 
-@keyframes overlay-popup-scale {
-  from { transform: scale(0.8); }
-  to { transform: scale(1); }
-}
-
-@keyframes overlay-popup-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
 .position-overlay {
   top: calc(100% + 0.75rem);
   right: 0;
