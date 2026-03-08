@@ -172,7 +172,24 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   private togglePopup(key: PopupKey, event?: Event): void {
+    const wasOpen = this.popupService.isOpen(key);
+
     this.popupService.toggle(key);
+
+    if (wasOpen) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          sLat: null,
+          sLng: null,
+          mode: null
+        },
+        queryParamsHandling: 'merge',
+        replaceUrl: true
+      });
+    } else {
+      console.log('Popup foi aberto');
+    }
     event?.stopPropagation();
   }
 

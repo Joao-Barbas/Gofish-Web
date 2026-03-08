@@ -7,7 +7,7 @@
   <!-- Everything else on top of the map goes inside this -->
   <div class="position-absolute top-0 start-0 w-100 h-100 gf-no-events">
     <app-overlay-header></app-overlay-header>
-    @if (this.popupService.activePopup() === 'pin-preview') {
+    @if (this.popupService.isOpen('pin-preview')) {
     <div class="pin-detail-panel fade show gf-do-events">
       <app-pin-detail-panel [pinData]="selectedPin()" (cancel)="onPopupCancelPinPreview()">
       </app-pin-detail-panel>
@@ -85,13 +85,13 @@
       </div>
       <!-- popup overlays  -->
       <!-- Choose pin type -->
-      @if (this.popupService.activePopup() === 'choose-pin-popup') {
+      @if (this.popupService.isOpen('choose-pin-popup')) {
       <app-choose-pin-popup class="position-action-overlay" animate.enter="on-enter" animate.leave="on-leave"
         [coords]="selected()"
         (requestPickOnMap)="onRequestPickOnMap()" (requestGeoOnMap)="onGeo($event)" (cancel)="(onPopupCancelPinOverlay())">
       </app-choose-pin-popup>
       }
-      
+
       <!-- End popup overlays  -->
     </div>
     <!-- End actions overlay -->

@@ -25,4 +25,8 @@ export class PopupService {
       current === key ? null : current
     );
   }
+
+  public isOpen(key: PopupKey):boolean {
+    return this._activePopup() === key;
+  }
 }
