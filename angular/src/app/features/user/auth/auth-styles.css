@@ -83,7 +83,8 @@
   }
 }
 
-.signin-invite {
+.signin-invite,
+.signup-invite {
   font-size: var(--gf-text-xs);
   color: var(--gf-dark-text-muted);
 

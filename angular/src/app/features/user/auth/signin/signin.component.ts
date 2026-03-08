@@ -2,85 +2,94 @@
 
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Path } from '@gofish/shared/constants';
-import { getFirstError, ProblemDetails } from '@gofish/shared/core/problem-details';
+import { Api, Path } from '@gofish/shared/constants';
+import { ValidationProblemDetails } from '@gofish/shared/core/problem-details';
 import { SignInReqDTO, SignInResDTO } from '@gofish/shared/dtos/signin.dto';
 import { AuthService } from '@gofish/shared/services/auth.service';
+import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
+import { BusyState } from '@gofish/shared/core/busy-state';
+import { LoadingState } from '@gofish/shared/core/loading-state';
 
 @Component({
   selector: 'app-signin',
-  imports: [ ReactiveFormsModule, CommonModule, RouterLink ],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, AsyncButtonComponent],
   templateUrl: './signin.component.html',
-  styles: ``
+  styleUrl: './signin.component.css',
 })
 export class SigninComponent implements OnInit {
-  formErrors: string[] = [];
-  busyCount: number = 0;
-  isSubmitted: boolean = false;
+  private readonly authService = inject(AuthService);
+  private readonly router      = inject(Router);
+  readonly formBuilder         = inject(FormBuilder);
 
-  constructor(
-    public formBuilder: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ){}
+  readonly loadingState: LoadingState = new LoadingState();
+  readonly busyState: BusyState       = new BusyState();
+
+  readonly Path = Path;
+  readonly Api  = Api;
+
+  signInForm: FormGroup = this.formBuilder.group({
+    emailOrUserName: [ '', [ Validators.required ]],
+    password: [ '', [ Validators.required ]],
+  });
+
+  apiProblems: ValidationProblemDetails | null = null;
+  formErrors: ValidationErrors | null = this.signInForm.errors;
+  signInSuccess: boolean = false;
 
   ngOnInit() {
     if (!this.authService.isAuthenticated()) return;
     this.router.navigate([Path.HOME]);
   }
 
-  form: FormGroup = this.formBuilder.group({
-    emailOrUserName: [ '', [ Validators.required ]],
-    password: [ '', [ Validators.required ]],
-  });
-
-  onSubmit() {
-    this.isSubmitted = true;
-    this.form.markAllAsTouched();
-    this.formErrors = [];
-
-    if (this.form.invalid) return;
-    this.setBusy(true);
-
-    this.authService.signInUser(this.form.value as SignInReqDTO).subscribe({
-      next: (res: SignInResDTO) => {
-        this.setBusy(false);
-        this.isSubmitted = false;
-
-        if (res.requiresTwoFactor && res.twoFactorToken) {
-          this.router.navigate([Path.SIGN_IN_VERIFY], { queryParams: { token: res.twoFactorToken } });
-          return;
-        }
-
-        this.form.reset();
-        this.authService.insertToken(res.token!);
-        this.router.navigate([Path.MAP]);
-      },
-      error: (err: HttpErrorResponse) => {
-        this.setBusy(false);
-        this.isSubmitted = false;
-        let problem = err.error as ProblemDetails
-        this.formErrors.push(getFirstError(problem) ?? 'Server error. Try again later');
-      }
-    });
-  }
-
-  hasError(): boolean {
-    return this.formErrors.length > 0;
+  private controlError(name: string): ValidationErrors | null {
+    let control = this.signInForm.get(name);
+    if (!control) return null;
+    if (!control.invalid || (!control.touched && !control.dirty)) return null;
+    return control.errors;
   }
 
   getError(): string | null {
-    return this.hasError() ? this.formErrors[0] : null;
+    const e = (field: string) => this.controlError(field);
+    const g = this.signInForm.errors;
+    const s = this.apiProblems;
+    // Field-level
+    if (e('emailOrUserName')?.['required']) return 'Enter an email or username.';
+    if (e('password')?.['required']) return 'Enter your password.';
+    // Api errors
+    return s?.detail ?? null;
   }
 
-  setBusy(busy: boolean) {
-    this.busyCount = busy ? this.busyCount + 1 : Math.max(0, this.busyCount - 1);
-  }
+  onSubmit() {
+    this.signInForm.markAllAsTouched();
+    this.apiProblems = null;
+    if (this.signInForm.invalid) return;
+    this.busyState.setBusy(true);
+    this.signInSuccess = false;
 
-  isBusy(): boolean {
-    return this.busyCount > 0;
+    this.authService.signInUser(this.signInForm.value as SignInReqDTO).subscribe({
+      next: (res: SignInResDTO) => {
+        this.busyState.setBusy(false);
+        this.signInSuccess = true;
+        setTimeout(() => {
+          this.signInSuccess = false;
+          this.signInForm.reset();
+          if (res.requiresTwoFactor && res.twoFactorToken) {
+            this.router.navigate([Path.SIGN_IN_VERIFY], { queryParams: { token: res.twoFactorToken } });
+          } else {
+            this.authService.insertToken(res.token!);
+            this.router.navigate([Path.MAP]);
+          }
+        }, 1000);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.busyState.setBusy(false);
+        let problem = err.error as ValidationProblemDetails;
+        problem.detail = problem.detail ?? problem.status === 401 ? 'Invalid credentials.' : 'Server Error. Try again later.';
+        this.apiProblems = problem;
+      }
+    });
   }
 }

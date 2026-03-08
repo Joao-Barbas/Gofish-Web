@@ -1,6 +1,6 @@
 // signup.component.ts
 
-import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -14,10 +14,18 @@ import { RegexMatchesPipe } from '@gofish/shared/pipes/regex-matches.pipe';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
+import { LettersOnlyDirective } from '@gofish/shared/directives/letters-only.directive';
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, RegexMatchesPipe, AsyncButtonComponent],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterLink,
+    RegexMatchesPipe,
+    AsyncButtonComponent,
+    LettersOnlyDirective
+  ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
 })
@@ -33,7 +41,7 @@ export class SignupComponent implements OnInit {
   readonly Path = Path;
   readonly Api  = Api;
 
-  signinForm = this.formBuilder.group({
+  signUpForm = this.formBuilder.group({
     email: ['', [
       Validators.required,
       Validators.email
@@ -52,8 +60,8 @@ export class SignupComponent implements OnInit {
   ]});
 
   apiProblems: ValidationProblemDetails | null = null;
-  formErrors: ValidationErrors | null = this.signinForm.errors;
-  signInSuccess: boolean = false;
+  formErrors: ValidationErrors | null = this.signUpForm.errors;
+  signUpSuccess: boolean = false;
 
   ngOnInit(): void {
     if (!this.authService.isAuthenticated()) return;
@@ -81,7 +89,7 @@ export class SignupComponent implements OnInit {
   }
 
   private controlError(name: string): ValidationErrors | null {
-    let control = this.signinForm.get(name);
+    let control = this.signUpForm.get(name);
     if (!control) return null;
     if (!control.invalid || (!control.touched && !control.dirty)) return null;
     return control.errors;
@@ -89,7 +97,7 @@ export class SignupComponent implements OnInit {
 
   getError(): string | null {
     const e = (field: string) => this.controlError(field);
-    const g = this.signinForm.errors;
+    const g = this.signUpForm.errors;
     const s = this.apiProblems;
     // Field-level
     if (e('email')?.['required']) return 'Email is required.';
@@ -111,21 +119,21 @@ export class SignupComponent implements OnInit {
   // End form errors/validations
 
   onSubmit() {
-    this.signinForm.markAllAsTouched();
+    this.signUpForm.markAllAsTouched();
     this.apiProblems = null;
-    if (this.signinForm.invalid) return;
+    if (this.signUpForm.invalid) return;
     this.busyState.setBusy(true);
-    this.signInSuccess = false;
+    this.signUpSuccess = false;
 
-    this.authService.signUpUser(this.signinForm.value as SignUpReqDTO).subscribe({
+    this.authService.signUpUser(this.signUpForm.value as SignUpReqDTO).subscribe({
       next: (res: SignUpResDTO) => {
         this.busyState.setBusy(false);
-        this.signInSuccess = true;
+        this.signUpSuccess = true;
         setTimeout(() => {
-          this.signInSuccess = false;
-          this.signinForm.reset();
+          this.signUpSuccess = false;
+          this.signUpForm.reset();
           this.router.navigate([Path.HOME]);
-        }, 3000);
+        }, 1000);
       },
       error: (err: HttpErrorResponse) => {
         this.busyState.setBusy(false);

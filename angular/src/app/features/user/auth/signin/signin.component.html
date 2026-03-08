@@ -1,42 +1,81 @@
 <!-- signin.component.html -->
 
-<div class="fixed-map-image-background">
-  <div class="container-align-items-center">
-    <div class="auth-parent-container">
-      <div class="vertical-flow gf-gap-20">
-        <div class="vertical-flow align-center-center">
-          <img src="assets/images/logo-white-256.png" width="96" height="96">
-          <label class="logo-text">GOFISH</label>
-        </div>
-        <button class="btn btn-success w-100 rounded-3 form-secondary-button">Google</button>
-        <div class="form-divider align-center-center text-small-muted">
-          <span>OR</span>
-        </div>
-        <form class="form-auth-container vertical-flow gf-gap-8" [formGroup]="form" (ngSubmit)="onSubmit()">
-          <div class="vertical-flow">
-            <label class="form-input-label">E-mail / Username</label>
-            <input type="text" class="form-input" formControlName="emailOrUserName">
-          </div>
-          <div class="vertical-flow">
-            <label class="form-input-label">Password</label>
-            <input type="text" class="form-input" formControlName="password">
-          </div>
-          <div class="vertical-flow margin-top-12 gf-gap-4">
-            @if (hasError()) {
-              <div class="error-feedback">
-                {{ getError() }}
-              </div>
-            }
-            <button type="submit" class="form-submit-button" [disabled]="isBusy()">
-              Sign Up
-            </button>
-            <div class="text-small-muted">
-              Need an account?
-              <a routerLink="/signup">Sign Up</a> <!-- TODO: Use Path.SIGNUP when reworked -->
-            </div>
-          </div>
-        </form>
-      </div>
+<div class="gf-background-map-fixed gf-center-axes d-flex">
+  <div class="gf-card gf-flow-vertical gf-container-sm gf-gap-12 gf-w-90">
+
+    <!-- Logo -->
+    <div class="gf-flow-vertical gf-center-axes">
+      <img class="gf-display-block" src="assets/images/logo-white-256.png" width="96" height="96">
+      <label class="gf-text-logo">GOFISH</label>
     </div>
+
+    <!-- Third-party action -->
+    <div class="gf-w-100 gf-gap-8 d-flex">
+      <button class="thrid-party-button" title="Continue with Google">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path d="M501.8 261.8c0-18.2-1.6-35.6-4.7-52.4H256v99.1h137.8c-6.1 31.9-24.2 58.9-51.4 77V450h83.1c48.3-44.6 76.3-110.2 76.3-188.2" style="fill:#4285f4"/>
+          <path d="M256 512c69.1 0 127.1-22.8 169.4-61.9l-83.1-64.5c-22.8 15.4-51.9 24.7-86.3 24.7-66.6 0-123.1-44.9-143.4-105.4H27.5V371C69.6 454.5 155.9 512 256 512" style="fill:#34a853"/>
+          <path d="M112.6 304.6c-5.1-15.4-8.1-31.7-8.1-48.6s3-33.3 8.1-48.6v-66.1H27.5C10 175.7 0 214.6 0 256s10 80.3 27.5 114.7L93.8 319c0 .1 18.8-14.4 18.8-14.4" style="fill:#fbbc05"/>
+          <path d="M256 101.9c37.7 0 71.2 13 98 38.2l73.3-73.3C382.8 25.4 325.1 0 256 0 155.9 0 69.6 57.5 27.5 141.3l85.2 66.1c20.2-60.5 76.7-105.5 143.3-105.5" style="fill:#ea4335"/>
+        </svg>
+      </button>
+      <button class="thrid-party-button" title="Continue with Microsoft">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path d="M22.3 22.3h222.6v222.6H22.3z" style="fill:#f35325"/>
+          <path d="M267.1 22.3h222.6v222.6H267.1z" style="fill:#81bc06"/>
+          <path d="M22.3 267.1h222.6v222.6H22.3z" style="fill:#05a6f0"/>
+          <path d="M267.1 267.1h222.6v222.6H267.1z" style="fill:#ffba08"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Divider -->
+    <div class="choice-divider gf-center-axes text-small-muted">
+      <span class="gf-text-xs">OR</span>
+    </div>
+
+    <!-- Body -->
+    <form id="signin-form" class="form gf-flow-vertical gf-gap-6" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+      <div class="d-block">
+        <small>E-mail / Username</small>
+        <input type="text" class="gf-w-100" formControlName="emailOrUserName">
+      </div>
+      <div class="d-block">
+        <small>Password</small>
+        <input id="password" type="password" class="gf-w-100" formControlName="password">
+      </div>
+    </form>
+
+    <!-- Submit area -->
+    <div class="gf-flow-vertical gf-my-12 gf-gap-4">
+      @if (getError(); as errorText) {
+        <span class="gf-text-error">{{ getError() }}</span>
+      }
+      <app-async-button
+        type="submit"
+        form="signin-form"
+        labels="Sign In"
+        [state]="busyState.isBusy() ? 'busy' : signInSuccess ? 'success' : 'idle'"/>
+      <p class="signup-invite">
+        Or <a [routerLink]="Path.SIGN_UP">sign up</a> instead.
+      </p>
+    </div>
+
+    <!-- Other options -->
+    <div style="text-align: center;">
+      <a class="gf-center-axes gf-flow-horizontal gf-mx-12 gf-gap-4 d-inline-flex link" href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><mask id="question-mask"><circle cx="12" cy="12" r="10" fill="white"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" stroke="black" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M12 17h.01" stroke="black" stroke-width="2" stroke-linecap="round"/></mask></defs><circle cx="12" cy="12" r="10" fill="currentColor" mask="url(#question-mask)"/></svg>
+        <span>Help</span>
+      </a>
+      <a class="gf-center-axes gf-flow-horizontal gf-mx-12 gf-gap-4 d-inline-flex link" href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7" fill="currentColor"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7" fill="currentColor"/><path d="M7 21h10"/></svg>
+        <span>Terms</span>
+      </a>
+      <a class="gf-center-axes gf-flow-horizontal gf-mx-12 gf-gap-4 d-inline-flex link" href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" fill="none" stroke="none" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor"/></svg>
+        <span>Privacy</span>
+      </a>
+    </div>
+
   </div>
 </div>

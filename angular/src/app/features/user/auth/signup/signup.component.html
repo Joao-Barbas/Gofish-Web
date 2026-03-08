@@ -11,7 +11,7 @@
 
     <!-- Third-party action -->
     <div class="gf-w-100 gf-gap-8 d-flex">
-      <button class="thrid-party-button" title="Sign in with Google">
+      <button class="thrid-party-button" title="Sign up with Google">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <path d="M501.8 261.8c0-18.2-1.6-35.6-4.7-52.4H256v99.1h137.8c-6.1 31.9-24.2 58.9-51.4 77V450h83.1c48.3-44.6 76.3-110.2 76.3-188.2" style="fill:#4285f4"/>
           <path d="M256 512c69.1 0 127.1-22.8 169.4-61.9l-83.1-64.5c-22.8 15.4-51.9 24.7-86.3 24.7-66.6 0-123.1-44.9-143.4-105.4H27.5V371C69.6 454.5 155.9 512 256 512" style="fill:#34a853"/>
@@ -19,7 +19,7 @@
           <path d="M256 101.9c37.7 0 71.2 13 98 38.2l73.3-73.3C382.8 25.4 325.1 0 256 0 155.9 0 69.6 57.5 27.5 141.3l85.2 66.1c20.2-60.5 76.7-105.5 143.3-105.5" style="fill:#ea4335"/>
         </svg>
       </button>
-      <button class="thrid-party-button" title="Sign in with Microsoft">
+      <button class="thrid-party-button" title="Sign up with Microsoft">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <path d="M22.3 22.3h222.6v222.6H22.3z" style="fill:#f35325"/>
           <path d="M267.1 22.3h222.6v222.6H267.1z" style="fill:#81bc06"/>
@@ -35,7 +35,7 @@
     </div>
 
     <!-- Body -->
-    <form id="signin-form" class="form gf-flow-vertical gf-gap-6" [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+    <form id="signup-form" class="form gf-flow-vertical gf-gap-6" [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
       <div class="d-block">
         <small>E-mail</small>
         <input type="text" class="gf-w-100" formControlName="email">
@@ -43,11 +43,11 @@
       <div class="gf-flow-horizontal gf-gap-8">
         <div class="d-block">
           <small>First Name</small>
-          <input type="text" class="gf-w-100" formControlName="firstName">
+          <input type="text" class="gf-w-100" appLettersOnly formControlName="firstName">
         </div>
         <div class="d-block">
           <small>Last Name</small>
-          <input type="text" class="gf-w-100" formControlName="lastName">
+          <input type="text" class="gf-w-100" appLettersOnly formControlName="lastName">
         </div>
       </div>
       <div class="d-block">
@@ -58,17 +58,17 @@
         <small>Password</small>
         <input id="password" type="password" class="gf-w-100" formControlName="password" placeholder="Enter a password at least 6 characters long">
         <ul class="password-rules">
-          <li [class.valid]="signinForm.get('password')?.value | regexMatches:'[A-Z]'">
+          <li [class.valid]="signUpForm.get('password')?.value | regexMatches:'[A-Z]'">
             <svg class="form-icon-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
             <svg class="form-icon-check" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
             <span>Must include atleast one uppercase letter.</span>
           </li>
-          <li [class.valid]="signinForm.get('password')?.value | regexMatches:'\\d'">
+          <li [class.valid]="signUpForm.get('password')?.value | regexMatches:'\\d'">
             <svg class="form-icon-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
             <svg class="form-icon-check" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
             <span>Must include atleast one number.</span>
           </li>
-          <li [class.valid]="signinForm.get('password')?.value | regexMatches:'[^a-zA-Z0-9]'">
+          <li [class.valid]="signUpForm.get('password')?.value | regexMatches:'[^a-zA-Z0-9]'">
             <svg class="form-icon-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
             <svg class="form-icon-check" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
             <span>Must include atleast one special character.</span>
@@ -88,10 +88,10 @@
       }
       <app-async-button
         type="submit"
-        form="signin-form"
+        form="signup-form"
         labels="Sign Up"
-        [state]="busyState.isBusy() ? 'busy' : signInSuccess ? 'success' : 'idle'"/>
-      <p class="signin-invite">
+        [state]="busyState.isBusy() ? 'busy' : signUpSuccess ? 'success' : 'idle'"/>
+      <p class="signup-invite">
         Or <a [routerLink]="Path.SIGN_IN">sign in</a> instead.
       </p>
     </div>

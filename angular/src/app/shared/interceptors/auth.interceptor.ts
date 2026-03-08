@@ -16,8 +16,16 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   return next(req).pipe(catchError(err => {
-    if (err.status === 401) authService.signOut();
-    if (err.status === 403) router.navigate([Path.HOME]);
+    switch (err.status) {
+    case 401: {
+      // authService.removeToken();
+      // router.navigate([Path.SIGN_IN]);
+      break;
+    }
+    case 403: {
+      router.navigate([Path.HOME]);
+      break;
+    }}
     return throwError(() => err);
   }));
 };

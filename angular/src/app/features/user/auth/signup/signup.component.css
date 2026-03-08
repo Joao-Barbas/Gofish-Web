@@ -2,12 +2,6 @@
 
 @import '../auth-styles.css';
 
-/* .password-rules li .form-icon-check { display: none; } */
-/* .password-rules li .form-icon-x { display: block; } */
-
-/* .password-rules li.valid .form-icon-check { display: block; } */
-/* .password-rules li.valid .form-icon-x { display: none; } */
-
 .password-rules {
   list-style: none;
   margin: 0 0;
@@ -37,19 +31,30 @@
       font-size: var(--gf-text-xs);
     }
 
-    & .form-icon-check { display: none; }
-    & .form-icon-x { display: block; }
-
     &.valid {
       color: var(--gf-success);
-
-      & .form-icon-check { display: block; }
-      & .form-icon-x { display: none; }
     }
   }
 }
 
+
+.password-rules li .form-icon-check { display: none; }
+.password-rules li .form-icon-x { display: block; }
+
+.password-rules li.valid .form-icon-check { display: block; }
+.password-rules li.valid .form-icon-x { display: none; }
+
 #password::placeholder {
   font-size: 0.8em;
   transform: translateY(-1px);
+}
+
+@media (max-width: 36rem) {
+  #password::placeholder {
+    transform: none;
+  }
+}
+
+@media (max-width: 62rem) {
+  /* Nothing to see here */
 }
