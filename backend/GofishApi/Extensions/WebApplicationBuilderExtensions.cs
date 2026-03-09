@@ -35,12 +35,13 @@ public static class WebApplicationBuilderExtensions
     {
         services.AddCors((options) =>
         {
-            options
-            .AddPolicy("angular", (policy) => policy
-            .WithOrigins("http://localhost:4200")
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials());
+            options.AddPolicy("angular", (policy) =>
+            {
+                policy.WithOrigins("http://localhost:4200", "https://purple-sea-059c7c603.4.azurestaticapps.net")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+            });
         });
     }
 
