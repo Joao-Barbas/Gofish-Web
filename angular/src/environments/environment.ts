@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: 'https://gofish-afdubwcnejh4apcm.spaincentral-01.azurewebsites.net/api'
+  apiUrl: 'https://gofish-api-staging.azurewebsites.net/api'
 } as const;
