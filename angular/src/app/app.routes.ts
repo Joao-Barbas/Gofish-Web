@@ -2,6 +2,7 @@
 
 import { Routes } from '@angular/router';
 import { authGuard } from '@gofish/shared/guards/auth.guard';
+import { noTotpGuard } from '@gofish/shared/guards/no-totp.guard';
 
 export const routes: Routes = [
   {
@@ -28,7 +29,20 @@ export const routes: Routes = [
       { path: '', redirectTo: 'general', pathMatch: 'full' },
       { path: 'general', loadComponent: () => import('@gofish/features/user/settings/components/general/general.component').then(m => m.GeneralComponent) },
       { path: 'personal-data', loadComponent: () => import('@gofish/features/user/settings/components/personal-data/personal-data.component').then(m => m.PersonalDataComponent) },
-      { path: 'security', loadComponent: () => import('@gofish/features/user/settings/components/security/security.component').then(m => m.SecurityComponent) }
+      {
+        path: 'security',
+        loadComponent: () => import('@gofish/features/user/settings/components/security/security.component').then(m => m.SecurityComponent),
+        children: [
+          {
+            path: 'setup-sms'
+          },
+          {
+            path: 'setup-totp',
+            loadComponent: () => import('@gofish/features/user/settings/components/security/components/setup-totp/setup-totp.component').then(m => m.SetupTotpComponent),
+            canActivate: [ noTotpGuard ]
+          }
+        ]
+      }
     ]
   },
   {

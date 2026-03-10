@@ -1,28 +1,30 @@
+// setup-totp.component.ts
+
 import QRCode from 'qrcode';
 
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { UserSecurityService } from '@gofish/shared/services/user-security.service';
 import { EnableTotpResDTO } from '@gofish/shared/dtos/user-security.dto';
-import { ProblemDetails, ValidationProblemDetails } from '@gofish/shared/core/problem-details';
+import { ValidationProblemDetails } from '@gofish/shared/core/problem-details';
+import { Path } from '@gofish/shared/constants';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 
 @Component({
-  selector: 'app-totp-activation',
+  selector: 'app-setup-totp',
   imports: [ReactiveFormsModule, FormsModule, AsyncButtonComponent],
-  templateUrl: './totp-activation.component.html',
-  styleUrl: './totp-activation.component.css',
+  templateUrl: './setup-totp.component.html',
+  styleUrl: './setup-totp.component.css',
 })
-export class TotpActivationComponent implements OnInit {
+export class SetupTotpComponent implements OnInit {
   private readonly userSecurityService = inject(UserSecurityService);
   private readonly formBuilder         = inject(FormBuilder);
-
-  @Output() cancelled = new EventEmitter<void>();
-  @Output() completed = new EventEmitter<void>();
+  private readonly router              = inject(Router);
 
   readonly loadingState = new LoadingState();
   readonly busyState    = new BusyState();
@@ -85,10 +87,10 @@ export class TotpActivationComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.cancelled.emit();
+    this.router.navigate([Path.SECURITY_SETTINGS]);
   }
 
   onClose(): void {
-    this.completed.emit();
+    this.router.navigate([Path.SECURITY_SETTINGS]);
   }
 }

@@ -2,48 +2,58 @@
 
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { ModalService } from '@gofish/shared/services/modal.service';
 import { TotpValidationModalComponent } from '@gofish/features/user/settings/components/security/components/totp-validation-modal/totp-validation-modal.component';
-import { TotpActivationComponent } from '@gofish/features/user/settings/components/security/components/totp-activation/totp-activation.component';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { TwoFactorMethod } from '@gofish/shared/models/user-security.models';
 import { UserSecurityService } from '@gofish/shared/services/user-security.service';
-import { ChangePasswordReqDTO, ChangePasswordResDTO, SecurityInfoResDTO } from '@gofish/shared/dtos/user-security.dto';
-import { ProblemDetails, ValidationProblemDetails } from '@gofish/shared/core/problem-details';
-import { Api } from '@gofish/shared/constants';
+import { ChangePasswordReqDTO, SecurityInfoResDTO } from '@gofish/shared/dtos/user-security.dto';
+import { getFirstError, isProblemDetails, isValidationProblemDetails, ProblemDetails } from '@gofish/shared/core/problem-details';
+import { Api, Path, PathSegment } from '@gofish/shared/constants';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
-
-type ModalOperation = 'change-password' | 'disable-2fa';
+import { Event, NavigationEnd, NavigationStart, Router, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-security',
-  imports: [TotpValidationModalComponent, TotpActivationComponent, ReactiveFormsModule, AsyncButtonComponent],
+  imports: [
+    ReactiveFormsModule,
+    RouterOutlet,
+    TotpValidationModalComponent,
+    AsyncButtonComponent,
+  ],
   templateUrl: './security.component.html',
   styleUrl: './security.component.css',
 })
 export class SecurityComponent implements OnInit {
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly router = inject(Router);
   private readonly userSecurityService = inject(UserSecurityService);
-  private readonly formBuilder         = inject(FormBuilder);
-  public  readonly modalService        = inject(ModalService);
+
+  readonly modalService = inject(ModalService);
 
   readonly busyState: BusyState = new BusyState;
   readonly loadingState: LoadingState = new LoadingState();
 
+  readonly Path = Path;
   readonly Api = Api;
   readonly TwoFactorMethod = TwoFactorMethod;
 
-  hasTwoFactor: boolean            = false;
+  modalAction: 'change-password' | 'disable-2fa' = 'change-password';
+  modalError: string | null = null;
+
+  hasTwoFactor: boolean = false;
   twoFactorMethod: TwoFactorMethod = TwoFactorMethod.None;
 
-  modalErrorText: string | null = null;
-  passwordChangeSuccess: boolean = false;
-  showTotpActivation: boolean = false;
-  private modalOperation: ModalOperation = 'change-password';
+  newPassSuccess: boolean = false;
+  newPassApiErrors: ProblemDetails | null = null;
+  newPassErrors: ValidationErrors | null = () => this.newPassForm.errors;
 
-  changePasswordFormServerErrors?: ValidationProblemDetails;
-  changePasswordForm: FormGroup = this.formBuilder.group({
+  newPassForm: FormGroup = this.formBuilder.group({
     currentPassword: [ '', [ Validators.required ]],
     newPassword: [ '', [
       Validators.required,
@@ -51,13 +61,27 @@ export class SecurityComponent implements OnInit {
       Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/)
     ]],
     confirmPassword: [ '', [ Validators.required ]],
-    totpCode: [ '', []]
+    totpCode: [ '', []] // TODO: Change to "twofaCode". Needs backend change too
   }, { validators: [
     (control: AbstractControl) => this.passwordsMatch(control),
     (control: AbstractControl) => this.notDuplicatePassword(control)
   ]});
 
+  constructor() {
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      filter((event) => event.urlAfterRedirects.endsWith(`/${PathSegment.SECURITY_SETTINGS}`)),
+      takeUntilDestroyed()
+    ).subscribe(() => {
+      this.doGetSecurityInfo();
+    });
+  }
+
   ngOnInit() {
+    this.doGetSecurityInfo();
+  }
+
+  doGetSecurityInfo() {
     this.loadingState.start();
     this.userSecurityService.getSecurityInfo().subscribe({
       next: (res: SecurityInfoResDTO) => {
@@ -68,6 +92,26 @@ export class SecurityComponent implements OnInit {
       error: (err: HttpErrorResponse) => {
         let res = err.error as ProblemDetails;
         this.loadingState.fail('Something went wrong while trying to load security information.');
+      }
+    });
+  }
+
+  doChangePassword(): void {
+    this.busyState.setBusy(true);
+    this.newPassSuccess = false;
+    this.userSecurityService.changePassword(this.newPassForm.value as ChangePasswordReqDTO).subscribe({
+      next: () => {
+        this.busyState.setBusy(false);
+        this.newPassSuccess = true;
+        this.newPassForm.reset();
+        setTimeout(() => {
+          this.newPassSuccess = false;
+        }, 3000);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.busyState.setBusy(false);
+        if (!isProblemDetails(err.error)) return;
+        this.newPassApiErrors = err.error;
       }
     });
   }
@@ -89,7 +133,7 @@ export class SecurityComponent implements OnInit {
   }
 
   private controlError(name: string): ValidationErrors | null {
-    let control = this.changePasswordForm.get(name);
+    let control = this.newPassForm.get(name);
     if (!control) return null;
     if (!control.invalid || (!control.touched && !control.dirty)) return null;
     return control.errors;
@@ -97,8 +141,8 @@ export class SecurityComponent implements OnInit {
 
   getError(): string | null {
     const e = (field: string) => this.controlError(field);
-    const g = this.changePasswordForm.errors;
-    const s = this.changePasswordFormServerErrors;
+    const g = this.newPassErrors;
+    const s = this.newPassApiErrors;
     // Field-level
     if (e('currentPassword')?.['required']) return 'Current password is required.';
     if (e('newPassword')?.['required']) return 'New password is required.';
@@ -108,83 +152,52 @@ export class SecurityComponent implements OnInit {
     // Group-level
     if (g?.['passwordmismatch']) return 'Passwords don\'t match.';
     if (g?.['duplicatepassword']) return 'New password must differ from current password.';
-    // Server errors
-    if (s?.errors && Object.entries(s.errors).length > 0) {
-      return Object.values(s.errors).flat()[0];
+    // Server-level
+    if (s && isValidationProblemDetails(s)) {
+      return getFirstError(s) ?? null;
     }
     return s?.detail ?? null;
   }
 
   // End form errors/validation
-
-  private submitChangePassword(): void {
-    this.busyState.setBusy(true);
-    this.passwordChangeSuccess = false;
-    this.userSecurityService.changePassword(this.changePasswordForm.value as ChangePasswordReqDTO).subscribe({
-      next: () => {
-        this.busyState.setBusy(false);
-        this.passwordChangeSuccess = true;
-        this.changePasswordForm.reset();
-        setTimeout(() => {
-          this.passwordChangeSuccess = false;
-        }, 3000);
-      },
-      error: (err: HttpErrorResponse) => {
-        this.busyState.setBusy(false);
-        let problem = err.error as ValidationProblemDetails;
-        this.changePasswordFormServerErrors = problem;
-      }
-    });
-  }
-
   // Template events
 
-  onChangePassword(): void {
-    this.changePasswordForm.markAllAsTouched();
-    if (this.changePasswordForm.invalid) return;
-    this.changePasswordFormServerErrors = undefined;
+  onNewPass(): void {
+    this.newPassForm.markAllAsTouched();
+    if (this.newPassForm.invalid) return;
+    this.newPassApiErrors = null;
 
-    if (this.hasTwoFactor) {
-      this.modalErrorText = null;
-      this.modalOperation = 'change-password';
-      this.modalService.open('totp-validation-modal');
+    if (!this.hasTwoFactor) {
+      this.doChangePassword();
       return;
     }
 
-    this.submitChangePassword();
+    this.modalAction = 'change-password';
+    this.modalError  = null;
+    this.modalService.open('totp-validation-modal');
   }
 
-  onTwoFactorDisable(): void {
+  onTwoFactorToNone(): void {
     if (!this.hasTwoFactor) return;
-    this.modalErrorText = null;
-    this.modalOperation = 'disable-2fa';
+    this.modalError = null;
+    this.modalAction = 'disable-2fa';
     this.modalService.open('totp-validation-modal');
   }
 
   onTwoFactorToTotp(): void {
     if (this.hasTwoFactor && this.twoFactorMethod === TwoFactorMethod.Totp) return;
-    this.showTotpActivation = true;
-  }
-
-  onTotpActivationCancelled(): void {
-    this.showTotpActivation = false;
-  }
-
-  onTotpActivationCompleted(): void {
-    this.showTotpActivation = false;
-    this.hasTwoFactor       = true;
-    this.twoFactorMethod    = TwoFactorMethod.Totp;
+    this.router.navigate([Path.TWOFA_SETUP_TOTP]);
   }
 
   // End template events
   // Modal events
 
   onModalConfirm(totp: string): void {
-    switch (this.modalOperation) {
+    switch (this.modalAction) {
     case ('change-password'): {
       this.modalService.close();
-      this.changePasswordForm.controls['totpCode'].setValue(totp);
-      this.submitChangePassword();
+      this.newPassForm.controls['totpCode'].setValue(totp);
+      this.doChangePassword();
       return;
     }
     case ('disable-2fa'): {
@@ -198,8 +211,8 @@ export class SecurityComponent implements OnInit {
         },
         error: (err: HttpErrorResponse) => {
           this.busyState.setBusy(false);
-          let problem = err.error as ProblemDetails;
-          this.modalErrorText = 'Incorrect code';
+          if (!isProblemDetails(err.error)) return;
+          this.modalError = getFirstError(err.error) ?? 'Server error. Try again later.';
         }
       });
       return;

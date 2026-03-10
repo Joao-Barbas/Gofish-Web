@@ -17,14 +17,14 @@
 @case('error') {
   <div class="failed-container gf-flow-vertical align-items-center justify-content-center">
     <span>{{ loadingState.error() }}</span>
-    <button (click)="ngOnInit()">Try Again</button>
+    <button (click)="doGetSecurityInfo()">Try Again</button>
   </div>
 }
 @case('success') {
   <!-- Change password -->
   <div class="change-password-container">
     <h4>Change password</h4>
-    <form id="change-password-form" class="change-password-form vertical-flow gf-gap-8" [formGroup]="changePasswordForm" (ngSubmit)="onChangePassword()">
+    <form id="change-password-form" class="change-password-form vertical-flow gf-gap-8" [formGroup]="newPassForm" (ngSubmit)="onNewPass()">
       <div class="vertical-flow">
         <label>Current Password</label>
         <input type="password" id="current-password" formControlName="currentPassword">
@@ -46,7 +46,7 @@
         type="submit"
         form="change-password-form"
         labels="Change Password"
-        [state]="busyState.isBusy() ? 'busy' : passwordChangeSuccess ? 'success' : 'idle'"/>
+        [state]="busyState.isBusy() ? 'busy' : newPassSuccess ? 'success' : 'idle'"/>
     </div>
   </div>
   <!-- End change password -->
@@ -73,7 +73,7 @@
         </div>
         <input type="radio" name="twoFactorMethod" value="none"
                [checked]="!hasTwoFactor"
-               (click)="$event.preventDefault(); onTwoFactorDisable()">
+               (click)="$event.preventDefault(); onTwoFactorToNone()">
         <svg class="icon-checked" xmlns="http://www.w3.org/2000/svg"
              width="24" height="24" viewBox="0 0 24 24"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -108,13 +108,8 @@
         </svg>
       </label>
     </div>
-    <!-- TOTP activation panel -->
-    @if (showTotpActivation) {
-      <app-totp-activation
-        (cancelled)="onTotpActivationCancelled()"
-        (completed)="onTotpActivationCompleted()">
-      </app-totp-activation>
-    }
+    <!-- Two factor setups -->
+    <router-outlet></router-outlet>
   </div>
   <!-- End Two-step verification methods -->
   <!-- 2fa validation modal -->
@@ -123,7 +118,7 @@
       key="totp-validation-modal"
       animate.enter="on-enter"
       animate.leave="on-leave"
-      [errorText]="modalErrorText"
+      [errorText]="modalError"
       (positive)="onModalConfirm($event)"
       (negative)="onModalCancel()">
     </app-totp-validation-modal>
