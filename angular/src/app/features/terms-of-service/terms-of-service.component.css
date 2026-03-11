@@ -1,0 +1,9 @@
+.first-row {
+  padding-top: 50px;
+}
+
+.tos-title,
+.tos-title > .gf-text-logo {
+  font-size:3rem;
+
+}

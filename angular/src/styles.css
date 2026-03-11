@@ -537,6 +537,8 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 .text-normal {font-weight: normal;}
 .text-medium {font-weight: 500;}
 .text-bold {font-weight: 700;}
+
+/* Deprecated - Use "gf-text-logo" instead */
 .text-gofish {font-weight: 900; font-size: 28px;}
 
   /* ===========/
@@ -853,13 +855,16 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 
 
   /* ====== */
- /* Outros */
+ /* Others */
 /* ====== */
 
-.logo-text { /* TODO: Use ".gf-text-logo" instead */
+.logo-text /* Deprecated - Use "gf-text-logo" instead */
+.gf-text-logo {
   color: var(--dark-text);
   font-family: var(--font-heading);
-  font-size: 2rem;
+  --gf-text-logo-font-size: 2rem;
+
+  font-size: var(--gf-text-logo-font-size);
   font-weight: 900;
   letter-spacing: -0.125rem;
   user-select: none;
