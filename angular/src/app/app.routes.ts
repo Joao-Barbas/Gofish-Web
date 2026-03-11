@@ -33,9 +33,9 @@ export const routes: Routes = [
         path: 'security',
         loadComponent: () => import('@gofish/features/user/settings/components/security/security.component').then(m => m.SecurityComponent),
         children: [
-          {
-            path: 'setup-sms'
-          },
+         /*  {
+            path: 'setup-sms',
+          }, */
           {
             path: 'setup-totp',
             loadComponent: () => import('@gofish/features/user/settings/components/security/components/setup-totp/setup-totp.component').then(m => m.SetupTotpComponent),

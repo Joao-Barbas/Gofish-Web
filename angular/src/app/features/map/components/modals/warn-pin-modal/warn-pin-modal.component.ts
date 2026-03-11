@@ -68,8 +68,10 @@ export class WarnPinModalComponent {
         return;
       }
 
-      const lng = Number(this.values.sLng);
-      const lat = Number(this.values.sLat);
+      const lng = this.values.sLng;
+      const lat = this.values.sLat;
+
+      if(!lng || !lat) return;
 
       if (!this.urlService.isLngLatValid(lng, lat)) {
         this.selectedCoords = null;
@@ -85,6 +87,7 @@ export class WarnPinModalComponent {
   }
 
   onCancel(): void {
+    toast.info('You cancel the creation');
     this.router.navigate(['/map'], {
       queryParams: {
         vLat: this.selectedCoords?.latitude,
@@ -100,7 +103,10 @@ export class WarnPinModalComponent {
       return;
     }
 
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     this.errorMessage = '';
     this.busyState.setBusy(true);
