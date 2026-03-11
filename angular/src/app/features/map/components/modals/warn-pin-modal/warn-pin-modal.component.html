@@ -44,12 +44,12 @@
           <!-- Geolocation -->
           <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
             <h5 class="modal-body-options-text text-slim mb-0">Geolocation</h5>
-            @if (selectedCoords(); as Coords) {
+            @if (selectedCoords) {
             <div class="d-flex align-items-center gap-1">
               <p>Lat: </p>
-              <p class="mb-0 dark-bg-dark modal-info-box">{{ selectedCoords()!.latitude || '—' }}</p>
+              <p class="mb-0 dark-bg-dark modal-info-box">{{ selectedCoords!.latitude || '—' }}</p>
               <p>Lng: </p>
-              <p class="mb-0 dark-bg-dark modal-info-box">{{ selectedCoords()!.longitude || '—' }}</p>
+              <p class="mb-0 dark-bg-dark modal-info-box">{{ selectedCoords!.longitude || '—' }}</p>
             </div>
             } @else {
             <p class="text-danger mt-2 mb-0">

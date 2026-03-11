@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, NG_ASYNC_VALIDATORS, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
@@ -27,7 +27,7 @@ export class WarnPinModalComponent {
   values: UrlQuery | null = null;
   busyState: BusyState = new BusyState();
 
-  selectedCoords = signal<Coords | null>(null);
+  selectedCoords: Coords | null = null;
 
   warnTypeOptions: EnumDTO[] = [];
   visibilityOptions: EnumDTO[] = [];
@@ -64,7 +64,7 @@ export class WarnPinModalComponent {
       this.values = this.urlService.getUrlValues(paramMap);
 
       if (this.values === null) {
-        this.selectedCoords.set(null);
+        this.selectedCoords = null;
         return;
       }
 
@@ -72,14 +72,14 @@ export class WarnPinModalComponent {
       const lat = Number(this.values.sLat);
 
       if (!this.urlService.isLngLatValid(lng, lat)) {
-        this.selectedCoords.set(null);
+        this.selectedCoords = null;
         return;
       }
 
-      this.selectedCoords.set({
+      this.selectedCoords = {
         longitude: lng,
         latitude: lat
-      });
+      };
 
     });
   }
@@ -87,15 +87,15 @@ export class WarnPinModalComponent {
   onCancel(): void {
     this.router.navigate(['/map'], {
       queryParams: {
-        vLat: this.selectedCoords()?.latitude,
-        vLng: this.selectedCoords()?.longitude,
+        vLat: this.selectedCoords?.latitude,
+        vLng: this.selectedCoords?.longitude,
         z: this.values?.z,
       }
     });
   }
 
   onPublish(): void {
-    if (this.selectedCoords() as Coords) {
+    if (!this.selectedCoords) {
       this.errorMessage = 'No valid coords';
       return;
     }
@@ -106,8 +106,8 @@ export class WarnPinModalComponent {
     this.busyState.setBusy(true);
 
     const dto: CreateWarnPinReqDTO = {
-      latitude: this.selectedCoords()!.latitude,
-      longitude: this.selectedCoords()!.longitude,
+      latitude: this.selectedCoords!.latitude,
+      longitude: this.selectedCoords!.longitude,
       visibility: this.form.value.visibility!,
       body: this.form.value.body ?? '',
       warningKind: this.form.value.warningKind!
