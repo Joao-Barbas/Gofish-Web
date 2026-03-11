@@ -1,6 +1,6 @@
 <div class="modal-backdrop-custom d-flex justify-content-center align-items-center">
   <div class="modal-custom gf-card">
-    <form [formGroup]="form" (ngSubmit)="onPublish()">
+    <form id="catch-modal" [formGroup]="form" (ngSubmit)="onPublish()">
 
       <!-- Header -->
       <div class="modal-header text-white align-items-center mb-3">
@@ -11,8 +11,12 @@
           </p>
         </div>
 
-        <button type="button" class="ms-auto generic-icon-button-wrapper" (click)="onCancel()">
-          <div class="icon-close icon-size-pin-modal"></div>
+        <button class="gf-btn-icon" (click)="onCancel()"
+          style="background: none; border: none; color: var(--dark-text-muted); cursor: pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
         </button>
       </div>
 
@@ -28,7 +32,7 @@
 
           @if (form.controls.body.touched && form.controls.body.invalid) {
           <p class="text-danger mt-2 mb-0">
-            A descrição é obrigatória.
+            You must have a description!
           </p>
           }
         </section>
@@ -40,11 +44,17 @@
           <!-- Geolocation -->
           <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
             <h5 class="modal-body-options-text text-slim mb-0">Geolocation</h5>
-            @if (coordsUrl) {
+            @if (selectedCoords(); as Coords) {
             <div class="d-flex align-items-center gap-1">
-              <p class="mb-0 dark-bg-dark modal-info-box">{{ coordsUrl.latitude || '—' }}</p>
-              <p class="mb-0 dark-bg-dark modal-info-box">{{ coordsUrl.longitude || '—' }}</p>
+              <p>Lat: </p>
+              <p class="mb-0 dark-bg-dark modal-info-box">{{ selectedCoords()!.latitude || '—' }}</p>
+              <p>Lng: </p>
+              <p class="mb-0 dark-bg-dark modal-info-box">{{ selectedCoords()!.longitude || '—' }}</p>
             </div>
+            } @else {
+            <p class="text-danger mt-2 mb-0">
+              You must have a valid coords!
+            </p>
             }
           </div>
 
@@ -94,12 +104,10 @@
           Cancel
         </button>
 
-        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
-          @if (isSubmitting) { Publishing... } @else { Publish }
-        </button>
+        <app-async-button type="submit" form="catch-modal" labels="Publish"
+          [state]="busyState.isBusy() ? 'busy' : 'idle'" />
+
       </div>
-
     </form>
-
   </div>
 </div>

@@ -1,18 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
-import { UrlService } from '@gofish/features/map/services/url.service';
+import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { NgxSonnerToaster, toast } from 'ngx-sonner';
+import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
+import { BusyState } from '@gofish/shared/core/busy-state';
 
 @Component({
   selector: 'app-warn-pin-modal',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AsyncButtonComponent],
   templateUrl: './warn-pin-modal.component.html',
   styleUrl: './warn-pin-modal.component.css',
 })
@@ -22,9 +24,10 @@ export class WarnPinModalComponent {
   private readonly fb = inject(FormBuilder);
   private readonly urlService = inject(UrlService);
   private readonly route = inject(ActivatedRoute);
+  values: UrlQuery | null = null;
+  busyState: BusyState = new BusyState();
 
-
-  coordsUrl: Coords | null = null;
+  selectedCoords = signal<Coords | null>(null);
 
   warnTypeOptions: EnumDTO[] = [];
   visibilityOptions: EnumDTO[] = [];
@@ -58,55 +61,53 @@ export class WarnPinModalComponent {
     });
 
     this.route.queryParamMap.subscribe(paramMap => {
-      const values = this.urlService.getUrlValues(paramMap);
+      this.values = this.urlService.getUrlValues(paramMap);
 
-      if (values === null) {
-        this.coordsUrl = null;
+      if (this.values === null) {
+        this.selectedCoords.set(null);
         return;
       }
 
-      const lng = Number(values.sLng);
-      const lat = Number(values.sLat);
-      console.log(lng,lat);
+      const lng = Number(this.values.sLng);
+      const lat = Number(this.values.sLat);
+
       if (!this.urlService.isLngLatValid(lng, lat)) {
-        this.coordsUrl = null;
+        this.selectedCoords.set(null);
         return;
       }
 
-      this.coordsUrl = {
+      this.selectedCoords.set({
         longitude: lng,
         latitude: lat
-      };
-      console.log("aqui"+this.coordsUrl);
+      });
+
     });
   }
 
   onCancel(): void {
     this.router.navigate(['/map'], {
       queryParams: {
-        vLat: this.coordsUrl?.latitude,
-        vLng: this.coordsUrl?.longitude,
-        z: this.route.snapshot.queryParamMap.get('z'),
+        vLat: this.selectedCoords()?.latitude,
+        vLng: this.selectedCoords()?.longitude,
+        z: this.values?.z,
       }
     });
   }
 
   onPublish(): void {
+    if (this.selectedCoords() as Coords) {
+      this.errorMessage = 'No valid coords';
+      return;
+    }
+
+    if (this.form.invalid) return;
+
     this.errorMessage = '';
-
-    if (!this.coordsUrl) {
-      this.errorMessage = 'No coords';
-      return;
-    }
-
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+    this.busyState.setBusy(true);
 
     const dto: CreateWarnPinReqDTO = {
-      latitude: this.coordsUrl.latitude,
-      longitude: this.coordsUrl.longitude,
+      latitude: this.selectedCoords()!.latitude,
+      longitude: this.selectedCoords()!.longitude,
       visibility: this.form.value.visibility!,
       body: this.form.value.body ?? '',
       warningKind: this.form.value.warningKind!
@@ -117,13 +118,13 @@ export class WarnPinModalComponent {
 
     this.pinService.createWarnPin(dto).subscribe({
       next: () => {
-        this.isSubmitting = false;
+        this.busyState.setBusy(false);
         toast.dismiss(toastId);
         toast.success('Warn Pin created successfully.');
         this.router.navigate(['/map']);
       },
       error: () => {
-        this.isSubmitting = false;
+        this.busyState.setBusy(false);
         toast.dismiss(toastId);
         this.errorMessage = 'Failed to create warn pin. Please try again.';
         toast.error(this.errorMessage);
