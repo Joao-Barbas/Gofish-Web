@@ -14,7 +14,7 @@ type NavPath = {
 
 @Component({
   selector: 'app-forum',
-  imports: [ FlatHeaderComponent, FooterComponent, ForumPostComponent, RouterOutlet, RouterLink, RouterLinkActive ],
+  imports: [ FlatHeaderComponent, FooterComponent, ForumPostComponent, RouterOutlet ],
   templateUrl: './forum.component.html',
   styleUrl: "./forum.component.css"
 })
