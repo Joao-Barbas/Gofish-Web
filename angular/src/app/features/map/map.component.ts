@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl';
-import { AfterViewInit, Component, inject, OnDestroy, OnInit, Query, signal } from '@angular/core';
-import { CommonModule, NgStyle, ɵnormalizeQueryParams } from '@angular/common';
+import { AfterViewInit, Component, inject, OnDestroy, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterOutlet, UrlSegment } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
@@ -15,20 +15,12 @@ import { PopupService } from '@gofish/shared/services/popup.service';
 import { ChoosePinPopupComponent } from '@gofish/features/map/components/choose-pin-popup/choose-pin-popup.component';
 import { GeolocationService } from '@gofish/shared/services/geolocation.service';
 import { PinKind } from '@gofish/shared/models/pin.model';
-import { CatchPinModalComponent } from '@gofish/features/map/components/modals/catch-pin-modal/catch-pin-modal.component';
 import { PinHoverPreviewService } from '@gofish/features/map/services/pin-hover-preview.service';
-import { InfoPinModalComponent } from '@gofish/features/map/components/modals/info-pin-modal/info-pin-modal.component';
-import { WarnPinModalComponent } from '@gofish/features/map/components/modals/warn-pin-modal/warn-pin-modal.component';
-import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
-import { ModalKey } from '@gofish/shared/models/modal.model';
 import { PopupKey } from '@gofish/shared/models/popup.model';
 import { NgxSonnerToaster, toast } from 'ngx-sonner';
-import { ignoreElements, last, merge, Subscription } from 'rxjs';
-import { UrlCodec } from '@angular/common/upgrade';
+import { Subscription } from 'rxjs';
 import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
-import { reportUnhandledError } from 'rxjs/internal/util/reportUnhandledError';
-import { IfStmt } from '@angular/compiler';
-import { REACTIVE_NODE } from '@angular/core/primitives/signals';
+
 
 
 
