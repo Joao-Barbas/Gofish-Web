@@ -50,9 +50,10 @@ export const routes: Routes = [
     loadComponent: () => import('@gofish/features/map/map.component').then(m => m.MapComponent),
     canActivate: [ authGuard ],
     children: [
-      { path: 'create-catch-pin', loadComponent: () => import('@gofish/features/map/components/modals/catch-pin-modal/catch-pin-modal.component').then(c => c.CatchPinModalComponent) },
-      { path: 'create-info-pin', loadComponent: () => import('@gofish/features/map/components/modals/info-pin-modal/info-pin-modal.component').then(c => c.InfoPinModalComponent) },
-      { path: 'create-warn-pin', loadComponent: () => import('@gofish/features/map/components/modals/warn-pin-modal/warn-pin-modal.component').then(c => c.WarnPinModalComponent) },
+      { path: 'create-catch-pin', loadComponent: () => import('@gofish/features/map/components/create-pin-modals/catch-pin-modal/catch-pin-modal.component').then(c => c.CatchPinModalComponent) },
+      { path: 'create-info-pin', loadComponent: () => import('@gofish/features/map/components/create-pin-modals/info-pin-modal/info-pin-modal.component').then(c => c.InfoPinModalComponent) },
+      { path: 'create-warn-pin', loadComponent: () => import('@gofish/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component').then(c => c.WarnPinModalComponent) },
+      { path: 'delete-pin/:id', loadComponent: () => import ('@gofish/features/map/components/delete-pin/delete-pin.component').then(c => c.DeletePinComponent) }
     ]
   },
   {

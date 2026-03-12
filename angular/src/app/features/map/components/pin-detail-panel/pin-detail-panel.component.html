@@ -1,54 +1,66 @@
 <aside class="pin-side-panel">
-
   @if (pinData(); as pin) {
-    <article class="gf-card pin-preview-click">
+  <article class="gf-card pin-preview-click">
 
-      <header class="horizontal-flow align-center-center justify-content-between">
-        <div class="horizontal-flow gf-gap-8 align-center-center">
-          <div class="pin-preview-click__avatar" style="background-color: var(--dark-text-muted); border-radius: 50%; width: 32px; height: 32px;"></div>
+    <header class="pin-header">
+      <div class="pin-author-info">
+        <div class="pin-avatar"></div>
 
-          <div class="horizontal-flow gap-4 align-center-center">
-            <span class="dark-text text-medium font-main" style="font-size: 14px;">
-              {{ pin.author?.userName ?? 'Usuário' }}
-            </span>
-            <span class="dark-text-muted" style="font-size: 12px;">•</span>
-            <span class="dark-text-muted font-main" style="font-size: 12px;">{{ pin.createdAt | timeAgo }}</span>
-          </div>
+        <div class="pin-meta">
+          <span class="author-name">
+            {{ pin.author?.userName ?? 'User' }}
+          </span>
+          <span class="separator">•</span>
+          <span class="time-ago">{{ pin.createdAt | timeAgo }}</span>
         </div>
-
-        <button class="gf-btn-icon" (click)="closePanel()" style="background: none; border: none; color: var(--dark-text-muted); cursor: pointer;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
-        </button>
-      </header>
-
-      @if (pin.kind == pinKind.CATCH ) {
-        <div class="pin-preview-click__image-wrapper">
-          <img [src]="pin.post!.imageUrl" class="pin-preview-click__img" alt="Foto do Post">
-        </div>
-      }
-
-      <div class="pin-preview-click__body" style="padding: 12px 0;">
-        <p class="dark-text font-main" style="font-size: 14px; margin: 0;">{{ pin.post?.body }}</p>
       </div>
 
-      @if (pin.details) {
-        <div class="pin-preview-click__details" style="padding: 0 0 12px 0;">
-          <span class="dark-text-muted" style="font-size: 12px;">Isca: {{ pin.details.bait }}</span>
-        </div>
-      }
-      <footer class="horizontal-flow align-center-center" style="justify-content: space-between; width: 100%;">
-        <div class="horizontal-flow gf-gap-8">
-          <div class="pin-preview-click__badge">
-            <span class="dark-text text-medium" style="font-size: 12px;">👍 {{ pin.post?.score ?? 0 }}</span>
-          </div>
-          <div class="pin-preview-click__badge">
-            <span class="dark-text text-medium" style="font-size: 12px;">💬 {{ pin.post?.commentCount ?? 0 }}</span>
-          </div>
-        </div>
-      </footer>
+      <button class="close-button" (click)="deletePin()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 6h18" />
+          <path d="M8 6V4h8v2" />
+          <path d="M19 6l-1 14H6L5 6" />
+          <path d="M10 11v6" />
+          <path d="M14 11v6" />
+        </svg>
+      </button>
 
-    </article>
+      <button class="close-button" (click)="closePanel()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </header>
+
+    @if (pin.kind == pinKind.CATCH) {
+    <div class="pin-image-wrapper">
+      <img [src]="pin.post!.imageUrl" class="pin-img" alt="Post image">
+    </div>
+    }
+
+    <div class="pin-body">
+      <p class="pin-text">{{ pin.post?.body }}</p>
+    </div>
+
+    @if (pin.details) {
+    <div class="pin-details">
+      <span class="bait-info">Hook: {{ pin.details.bait }}</span>
+    </div>
+    }
+
+    <footer class="pin-footer">
+      <div class="badge-container">
+        <div class="pin-badge">
+          <span class="badge-text">👍 {{ pin.post?.score ?? 0 }}</span>
+        </div>
+        <div class="pin-badge">
+          <span class="badge-text">💬 {{ pin.post?.commentCount ?? 0 }}</span>
+        </div>
+      </div>
+    </footer>
+
+  </article>
   }
 </aside>
