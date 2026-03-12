@@ -22,6 +22,10 @@ export const PathSegment = {
   ABOUT_US:               'about-us',
   TERMS:                  'terms-of-service',
   PRIVACY:                'privacy-policy',
+  FORUM:                  'forum',
+  FORUM_DISCOVER:         'discover',
+  FORUM_FROM_FRIENDS:     'from-friends',
+  FORUM_MY_GROUPS:        'my-groups',
 } as const;
 
 export const Path = {
@@ -38,6 +42,10 @@ export const Path = {
   ABOUT_US:               `/${PathSegment.ABOUT_US}`,
   TERMS:                  `/${PathSegment.TERMS}`,
   PRIVACY:                `/${PathSegment.PRIVACY}`,
+  FORUM:                  `/${PathSegment.FORUM}`,
+  FORUM_DISCOVER:         `/${PathSegment.FORUM_DISCOVER}`,
+  FORUM_FROM_FRIENDS:     `/${PathSegment.FORUM_FROM_FRIENDS}`,
+  FORUM_MY_GROUPS:        `/${PathSegment.FORUM_MY_GROUPS}`,
 } as const;
 
 /* Backend endpoints */
