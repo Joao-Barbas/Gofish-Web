@@ -3,12 +3,12 @@ import { FlatHeaderComponent } from '@gofish/features/header/flat-header/flat-he
 import { FooterComponent } from '@gofish/features/footer/footer.component';
 
 @Component({
-  selector: 'app-terms-of-service',
+  selector: 'app-privacy-policy',
   imports: [FlatHeaderComponent, FooterComponent],
-  templateUrl: './terms-of-service.component.html',
-  styleUrl: './terms-of-service.component.css',
+  templateUrl: './privacy-policy.component.html',
+  styleUrl: './privacy-policy.component.css',
 })
-export class TermsOfServiceComponent {
+export class PrivacyPolicyComponent {
     scrollToSection(sectionId: string): void {
     const element = document.getElementById(sectionId);
     if (element) {

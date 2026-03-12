@@ -4,15 +4,15 @@
   padding-top: var(--gf-50);
 }
 
-.dates-wrapper .tos-date:first-of-type {
+.dates-wrapper .pp-date:first-of-type {
   margin-bottom: 0.938rem;
 }
 
-.dates-wrapper .tos-date:last-of-type {
+.dates-wrapper .pp-date:last-of-type {
   margin-bottom: var(--gf-10);
 }
 
-.tos-date {
+.pp-date {
   font-size: var(--gf-24);
 }
 
@@ -23,17 +23,25 @@
   padding-bottom: 0.625rem;
 }
 
-.tos-title,
-.tos-title > .gf-text-logo {
+.pp-title,
+.pp-title > .gf-text-logo {
   font-size: var(--gf-48);
   margin-bottom: var(--gf-30);
 }
 
-.tos-intro {
+.paragraph-generic-wrapper p:not(:last-child) {
+  margin-bottom: 0.938rem;
+}
+
+.paragraph-generic-wrapper {
+  margin-bottom: 1.875rem;
+}
+
+.pp-intro {
   margin-bottom: 30px;
 }
 
-.tos-text {
+.pp-text {
   margin-top: var(--gf-10);
   line-height: 1.188rem;
   font-style: normal;
@@ -73,8 +81,4 @@ html {
 
 .term-description-wrapper p:not(:last-child) {
   margin-bottom: 0.938rem;
-}
-
-.listed-terms .singular-term-wrapper {
-  margin-bottom: var(--gf-40);
 }
