@@ -1,6 +1,6 @@
-﻿namespace GofishApi.Models
+﻿namespace GofishApi.Models;
+
+public class GroupUser
 {
-    public class GroupUser
-    {
-    }
+
 }
