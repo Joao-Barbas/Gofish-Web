@@ -211,3 +211,36 @@ input.modal-info-box:focus {
 .radio-group-container {
   flex-wrap: nowrap;
 }
+
+.action-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.action-btns>button,
+.action-btns>app-async-button {
+  flex: 1;
+  max-width: 120px;
+}
+
+.modal-visibility-btn {
+  padding: var(--gf-6) var(--gf-16);
+  border-radius: var(--gf-8);
+  cursor: pointer;
+  color: var(--gf-dark-text-muted);
+  font-size: var(--gf-text-md);
+  transition: all 0.2s ease;
+}
+
+.modal-visibility-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--gf-dark-text);
+}
+
+.modal-visibility-btn.active {
+  background: var(--gf-dark-bg-light);
+  color: var(--gf-dark-text);
+  font-weight: 500;
+  box-shadow: var(--gf-shadow-lift-sm);
+}

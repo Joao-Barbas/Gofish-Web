@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
-import { FormBuilder, NG_ASYNC_VALIDATORS, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
@@ -33,11 +33,10 @@ export class WarnPinModalComponent {
   visibilityOptions: EnumDTO[] = [];
 
   errorMessage = '';
-  isSubmitting = false;
 
   form = this.fb.group({
+    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
     visibility: [0, Validators.required],
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
     warningKind: [0, Validators.required]
   });
 
@@ -63,7 +62,7 @@ export class WarnPinModalComponent {
     this.route.queryParamMap.subscribe(paramMap => {
       this.values = this.urlService.getUrlValues(paramMap);
 
-      if (this.values === null) {
+      if (!this.values) {
         this.selectedCoords = null;
         return;
       }
@@ -71,7 +70,7 @@ export class WarnPinModalComponent {
       const lng = this.values.sLng;
       const lat = this.values.sLat;
 
-      if(!lng || !lat) return;
+      if (!lng || !lat) return;
 
       if (!this.urlService.isLngLatValid(lng, lat)) {
         this.selectedCoords = null;
@@ -92,12 +91,14 @@ export class WarnPinModalComponent {
       queryParams: {
         vLat: this.selectedCoords?.latitude,
         vLng: this.selectedCoords?.longitude,
-        z: this.values?.z,
+        z: this.values?.z
       }
     });
   }
 
   onPublish(): void {
+    this.errorMessage = '';
+
     if (!this.selectedCoords) {
       this.errorMessage = 'No valid coords';
       return;
@@ -108,7 +109,6 @@ export class WarnPinModalComponent {
       return;
     }
 
-    this.errorMessage = '';
     this.busyState.setBusy(true);
 
     const dto: CreateWarnPinReqDTO = {
@@ -119,7 +119,6 @@ export class WarnPinModalComponent {
       warningKind: this.form.value.warningKind!
     };
 
-    this.isSubmitting = true;
     const toastId = toast.loading('Publishing your pin!');
 
     this.pinService.createWarnPin(dto).subscribe({

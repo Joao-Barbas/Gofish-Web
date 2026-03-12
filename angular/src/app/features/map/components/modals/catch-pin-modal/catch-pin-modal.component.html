@@ -4,7 +4,7 @@
     <form [formGroup]="form" (ngSubmit)="onPublish()">
 
       <!-- Header -->
-      <div class="modal-header text-white align-items-center mb-3">
+      <div class="modal-header text-white align-items-center mb-3 justify-content-between">
         <div>
           <h5 class="mb-0 text-bold modal-header-title">Catch Pin Create</h5>
           <p class="mb-0 dark-text-muted modal-header-subtitle">
@@ -12,8 +12,12 @@
           </p>
         </div>
 
-        <button type="button" class="ms-auto generic-icon-button-wrapper" (click)="onCancel()">
-          <div class="icon-close icon-size-pin-modal"></div>
+        <button class="gf-btn-icon" (click)="onCancel()"
+          style="background: none; border: none; color: var(--dark-text-muted); cursor: pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
         </button>
       </div>
       <!-- Body -->
@@ -71,9 +75,11 @@
           <!-- Geolocation -->
           <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
             <h5 class="modal-body-options-text text-slim mb-0">Geolocation</h5>
-            <div class="d-flex align-items-center gap-1">
-              <p class="mb-0 dark-bg-dark modal-info-box">{{ coords?.latitude ?? '—' }}</p>
-              <p class="mb-0 dark-bg-dark modal-info-box">{{ coords?.longitude ?? '—' }}</p>
+            <div class="d-flex align-items-center gap-1 coords-div">
+              <p>Lat: </p>
+              <p class="mb-0 dark-bg-dark modal-info-box">{{ (selectedCoords?.latitude | number: '1.5') ?? '-' }}</p>
+              <p>Lng: </p>
+              <p class="mb-0 dark-bg-dark modal-info-box">{{ (selectedCoords?.longitude | number: '1.5') ?? '-'}}</p>
             </div>
           </div>
 
@@ -136,14 +142,13 @@
       </div>
 
       <!-- Footer -->
-      <div class="modal-footer mt-2">
-        <button type="button" class="btn btn-secondary" [disabled]="isSubmitting" (click)="onCancel()">
+      <div class="modal-footer mt-2 action-btns">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">
           Cancel
         </button>
 
-        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
-          @if (isSubmitting) { Publishing... } @else { Publish }
-        </button>
+        <app-async-button type="submit" form="catch-modal" labels="Publish"
+          [state]="busyState.isBusy() ? 'busy' : 'idle'" />
       </div>
 
     </form>
