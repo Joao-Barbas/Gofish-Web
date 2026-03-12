@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Reflection.Emit;
 using static System.Net.WebRequestMethods;
 
@@ -18,14 +19,10 @@ namespace GofishApi.Data
         public DbSet<Pin> Pins { get; set; }
         public DbSet<Post> Posts { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            var hasher = new PasswordHasher<AppUser>();
-            var users = new List<AppUser>();
-
-
 
             #region Friendship
 
@@ -83,6 +80,17 @@ namespace GofishApi.Data
 
             #endregion // Post
 
+            SeedUsers(builder);
+            SeedCatchPin(builder);
+            SeedInfoPin(builder);
+            SeedWarnPin(builder);
+        }
+
+        private static void SeedUsers(ModelBuilder builder)
+        {
+            var hasher = new PasswordHasher<AppUser>();
+            var users = new List<AppUser>();
+
             for (int i = 1; i <= 5; i++)
             {
                 var user = new AppUser
@@ -99,22 +107,21 @@ namespace GofishApi.Data
                 };
 
                 user.PasswordHash = hasher.HashPassword(user, "123456@");
-                users.Add(user);
             }
-            var catchPins = new List<CatchPin>();
-            var warnPins = new List<WarnPin>();
-            var infoPins = new List<InfoPin>();
-            var posts = new List<Post>();
-
+            builder.Entity<AppUser>().HasData(users);
+        }
+        private static void SeedCatchPin(ModelBuilder builder) 
+        {
             int pinId = 1;
 
             double baseLat = 38.5130;
             double baseLng = -8.8730;
-
             var createdAt = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
             var expiresAt = new DateTime(2026, 3, 11, 12, 0, 0, DateTimeKind.Utc);
-
             var random = new Random();
+
+            var catchPins = new List<CatchPin>();
+            var posts = new List<Post>();
 
             for (int i = 0; i < 10; i++)
             {
@@ -145,33 +152,22 @@ namespace GofishApi.Data
                 });
             }
 
-            for (int i = 0; i < 10; i++)
-            {
-                var id = pinId++;
-                var userId = $"seed-player-{(i % 5) + 1}";
+            builder.Entity<CatchPin>().HasData(catchPins);
+            builder.Entity<CatchPin>().HasData(posts);
+        }
+        private static void SeedInfoPin(ModelBuilder builder) 
+        {
+            int pinId = 1;
 
-                warnPins.Add(new WarnPin
-                {
-                    Id = id,
-                    Kind = PinKind.Warning,
-                    Visibility = VisibilityLevel.Public,
-                    WarningKind = WarningKind.AlgaePresence,
-                    UserId = userId,
-                    Latitude = baseLat - (i * (random.Next(1, 6) / 1000.0)),
-                    Longitude = baseLng + (i * (random.Next(1, 6) / 1000.0)),
-                    CreatedAt = createdAt,
-                    ExpiresAt = expiresAt
-                });
+            double baseLat = 38.5130;
+            double baseLng = -8.8730;
+            var createdAt = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
+            var expiresAt = new DateTime(2026, 3, 11, 12, 0, 0, DateTimeKind.Utc);
+            var random = new Random();
 
-                posts.Add(new Post
-                {
-                    Id = id,
-                    Body = "Body",
-                    ImageUrl = null,
-                    CreatedAt = createdAt,
-                    UserId = userId
-                });
-            }
+            var infoPins = new List<InfoPin>();
+            var posts = new List<Post>();
+
 
             for (int i = 0; i < 10; i++)
             {
@@ -202,11 +198,53 @@ namespace GofishApi.Data
                 });
             }
 
-            builder.Entity<CatchPin>().HasData(catchPins);
-            builder.Entity<WarnPin>().HasData(warnPins);
             builder.Entity<InfoPin>().HasData(infoPins);
             builder.Entity<Post>().HasData(posts);
-            builder.Entity<AppUser>().HasData(users);
+        }
+        private static void SeedWarnPin(ModelBuilder builder)
+        {
+            int pinId = 1;
+
+            double baseLat = 38.5130;
+            double baseLng = -8.8730;
+            var createdAt = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
+            var expiresAt = new DateTime(2026, 3, 11, 12, 0, 0, DateTimeKind.Utc);
+            var random = new Random();
+
+            var warnPins = new List<WarnPin>();
+            var posts = new List<Post>();
+
+
+            for (int i = 0; i < 10; i++)
+            {
+                var id = pinId++;
+                var userId = $"seed-player-{(i % 5) + 1}";
+
+                warnPins.Add(new WarnPin
+                {
+                    Id = id,
+                    Kind = PinKind.Warning,
+                    Visibility = VisibilityLevel.Public,
+                    WarningKind = WarningKind.AlgaePresence,
+                    UserId = userId,
+                    Latitude = baseLat - (i * (random.Next(1, 6) / 1000.0)),
+                    Longitude = baseLng + (i * (random.Next(1, 6) / 1000.0)),
+                    CreatedAt = createdAt,
+                    ExpiresAt = expiresAt
+                });
+
+                posts.Add(new Post
+                {
+                    Id = id,
+                    Body = "Body",
+                    ImageUrl = null,
+                    CreatedAt = createdAt,
+                    UserId = userId
+                });
+            }
+
+            builder.Entity<WarnPin>().HasData(warnPins);
+            builder.Entity<Post>().HasData(posts);
         }
     }
 }
