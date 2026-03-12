@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import { AfterViewInit, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { PinService } from '@gofish/features/map/services/pin.service';
@@ -63,6 +63,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   private allPins: ViewportPinDTO[] = [];
   private querySubscription?: Subscription;
   private queryValues: UrlQuery | null = null;
+  private queryMap: ParamMap | null = null;
 
 
   public get getGeolocationState() { return this.geoService.state(); }
