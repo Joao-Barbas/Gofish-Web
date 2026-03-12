@@ -3,7 +3,6 @@ import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FlatHeaderComponent } from '@gofish/features/header/flat-header/flat-header.component';
 import { FooterComponent } from '@gofish/features/footer/footer.component';
-
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Path } from '@gofish/shared/constants';
 
@@ -14,7 +13,11 @@ type NavPath = {
 
 @Component({
   selector: 'app-forum',
+<<<<<<< HEAD
   imports: [ RouterLink, FlatHeaderComponent, FooterComponent, RouterOutlet ],
+=======
+  imports: [ FlatHeaderComponent, FooterComponent, ForumPostComponent, RouterOutlet, RouterLink, RouterLinkActive ],
+>>>>>>> 5ea5986 (app.routes.ts now uses constants)
   templateUrl: './forum.component.html',
   styleUrl: "./forum.component.css"
 })
@@ -27,7 +30,10 @@ export class ForumComponent {
     { path: Path.FORUM_FROM_FRIENDS,  label: 'From Friends'  },
     { path: Path.FORUM_MY_GROUPS,     label: 'My Groups'     },
   ];
+<<<<<<< HEAD
 Path: any;
+=======
+>>>>>>> 5ea5986 (app.routes.ts now uses constants)
 
   constructor() {
     this.router.events.pipe(
