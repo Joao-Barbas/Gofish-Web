@@ -84,6 +84,61 @@ namespace GofishApi.Data
                 .OnDelete(DeleteBehavior.NoAction);
 
             #endregion // Post
+            #region PostComment 
+
+            builder.Entity<PostComment>()
+                .HasOne(p => p.AppUser)
+                .WithMany()
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<PostComment>()
+               .HasOne(p => p.Post)
+               .WithMany()
+               .HasForeignKey(p => p.PostId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+            #endregion // PostComment
+            #region UserProfile 
+
+            builder.Entity<UserProfile>()
+                .HasKey(f => f.UserId);
+
+            builder.Entity<UserProfile>()
+                .HasOne(p => p.AppUser)
+                .WithOne()
+                .HasForeignKey<UserProfile>(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            #endregion // UserProfile
+            #region GroupPost
+
+            builder.Entity<GroupPost>()
+                .HasKey(f => new { f.PostId, f.GroupId });
+
+            builder.Entity<Group>()
+                .HasMany(e => e.Posts)
+                .WithMany(e => e.Groups)
+                .UsingEntity<GroupPost>(
+                    r => r.HasOne(e => e.Post).WithMany(e => e.GroupPosts),
+                    l => l.HasOne(e => e.Group).WithMany(e => e.GroupPosts)
+                );
+
+            #endregion // GroupPost
+            #region GroupUser
+
+            builder.Entity<GroupUser>()
+                .HasKey(f => new { f.UserId, f.GroupId });
+
+            builder.Entity<Group>()
+                .HasMany(e => e.AppUsers)
+                .WithMany(e => e.Groups)
+                .UsingEntity<GroupUser>(
+                    r => r.HasOne(e => e.AppUser).WithMany(e => e.GroupUsers),
+                    l => l.HasOne(e => e.Group).WithMany(e => e.GroupUsers)
+                );
+
+            #endregion // GroupPost
 
             SeedUsers(builder);
             SeedCatchPin(builder);
@@ -112,6 +167,7 @@ namespace GofishApi.Data
                 };
 
                 user.PasswordHash = hasher.HashPassword(user, "123456@");
+                users.Add(user);
             }
             builder.Entity<AppUser>().HasData(users);
         }
@@ -158,11 +214,11 @@ namespace GofishApi.Data
             }
 
             builder.Entity<CatchPin>().HasData(catchPins);
-            builder.Entity<CatchPin>().HasData(posts);
+            builder.Entity<Post>().HasData(posts);
         }
         private static void SeedInfoPin(ModelBuilder builder) 
         {
-            int pinId = 1;
+            int pinId = 101;
 
             double baseLat = 38.5130;
             double baseLng = -8.8730;
@@ -208,7 +264,7 @@ namespace GofishApi.Data
         }
         private static void SeedWarnPin(ModelBuilder builder)
         {
-            int pinId = 1;
+            int pinId = 201;
 
             double baseLat = 38.5130;
             double baseLng = -8.8730;

@@ -32,6 +32,9 @@ public class Post
     public Pin Pin { get; set; } = null!;
     // public /* virtual // Maybe? */ ICollection<Comment> Comments { get; set; } = new(); // TODO
 
+    public List<Group> Groups { get; set; } = [];
+    public List<GroupPost> GroupPosts { get; set; } = [];
+
     #endregion
     #region Computed Properties
 

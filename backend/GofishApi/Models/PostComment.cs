@@ -16,11 +16,11 @@ public class PostComment
     [ForeignKey(nameof(Post))]
     public int PostId { get; set; }
 
-    [ForeignKey(nameof(User))]
+    [ForeignKey(nameof(AppUser))]
     public required string UserId { get; set; }
 
     // Navigation
 
     public Post Post { get; set; }
-    public AppUser User { get; set; }
+    public AppUser AppUser { get; set; }
 }

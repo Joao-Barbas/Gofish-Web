@@ -23,4 +23,12 @@ public class Group
     [Required]
     public DateTime CreatedAt { get; set; }
 
+    // Navigation 
+
+    public List<Post> Posts { get; set; } = [];
+    public List<GroupPost> GroupPosts { get; set; } = [];
+
+
+    public List<AppUser> AppUsers { get; set; } = [];
+    public List<GroupUser> GroupUsers { get; set; } = [];
 }

@@ -12,6 +12,6 @@ public class GroupPost
 
     // Navigation
 
-    public Post Post { get; set; }
-    public Group Group { get; set; }
+    public Post Post { get; set; } = default!;
+    public Group Group { get; set; } = default!;
 }

@@ -6,18 +6,19 @@ public class GroupUser
 {
     public DateTime JoinedAt { get; set; }
 
-    [ForeignKey(nameof(User))]
+    [ForeignKey(nameof(AppUser))]
     public required string UserId { get; set; }
 
     [ForeignKey(nameof(Group))]
-    public required string GroupId { get; set; }
+    public required int GroupId { get; set; }
 
     [ForeignKey(nameof(Role))]
     public required string RoleId { get; set; }
 
     // Navigation
 
-    public AppUser User { get; set; }
+    public AppUser AppUser { get; set; }
     public Group Group { get; set; }
     public GroupRole Role { get; set; }
+
 }

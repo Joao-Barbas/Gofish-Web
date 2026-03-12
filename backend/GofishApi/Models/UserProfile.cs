@@ -5,8 +5,8 @@ namespace GofishApi.Models;
 
 public class UserProfile
 {
-    [ForeignKey(nameof(User))]
-    public int UserId { get; set; }
+    [ForeignKey(nameof(AppUser))]
+    public string UserId { get; set; }
 
     public int FishingScore { get; set; }
 
@@ -25,6 +25,6 @@ public class UserProfile
 
     // Navigation
 
-    public AppUser User { get; set; }
+    public AppUser AppUser { get; set; }
 
 }
