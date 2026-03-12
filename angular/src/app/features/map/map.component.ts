@@ -60,7 +60,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   protected selectedPin = signal<PinDataResDTO | null>(null);
 
   private map!: mapboxgl.Map;
-  private allPins: ViewportPinDTO[] = [];
+  allPins= signal<ViewportPinDTO[]>([]);
   private querySubscription?: Subscription;
   private queryValues: UrlQuery | null = null;
   private queryMap: ParamMap | null = null;
@@ -129,7 +129,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   private registerMapEvents(): void {
     this.map.on('moveend', () => {
       this.updateUrl();
-      if (this.map.getZoom() >= 14) this.loadPinsInViewport();
+      if (this.map.getZoom() >= 10) this.loadPinsInViewport();
     });
 
     this.map.on('zoomend', () => {
@@ -142,14 +142,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getInitialView() {
     const q = this.route.snapshot.queryParamMap;
-    const vLat = Number(q.get('vLat'));
-    const vLng = Number(q.get('vLng'));
-    const z = Number(q.get('z'));
-    const hasValid = !Number.isNaN(vLng) && !Number.isNaN(vLat) && !Number.isNaN(z);
+    const vLat = this.urlService.getNumber(q, 'vLat');
+    const vLng = this.urlService.getNumber(q, 'vLng');
+    const z = this.urlService.getNumber(q, 'z');
+
 
     return {
-      center: hasValid ? [vLng, vLat] as [number, number] : [38.5260437, -8.8909328],
-      zoom: hasValid ? z : 5
+      center: vLat !== null && vLng !== null ? [vLng, vLat] as [number, number] : [38.5260437, -8.8909328],
+      zoom: z ?? 5
     };
   }
 
@@ -328,7 +328,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pinService.getInViewport(bounds.getSouth(), bounds.getWest(), bounds.getNorth(), bounds.getEast())
       .subscribe({
         next: (res: ViewportPinsResDTO) => {
-          this.allPins = res?.pins || [];
+          this.allPins.set(res?.pins);
           this.mapLayers.updateLayers(this.map, this.allPins);
         },
         error: (err: HttpErrorResponse) => console.error('Error loading pins in viewport:', err)

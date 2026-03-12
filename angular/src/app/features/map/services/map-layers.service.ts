@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal } from '@angular/core';
 import { ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
 import { PinKind } from '@gofish/shared/models/pin.model';
 
@@ -12,9 +12,9 @@ export const PIN_CONFIG = [
   providedIn: 'root',
 })
 export class MapLayersService {
-  updateLayers(map: mapboxgl.Map, allPins: ViewportPinDTO[]): void {
+  updateLayers(map: mapboxgl.Map, allPins: WritableSignal<ViewportPinDTO[]>): void {
     PIN_CONFIG.forEach(({ kind, color }) => {
-      const pinsOfKind = allPins.filter(pin => pin.kind === kind);
+      const pinsOfKind = allPins().filter(pin => pin.kind === kind);
       const sourceId = `pins-${kind}`;
 
       const geojsonData: GeoJSON.FeatureCollection = {

@@ -78,3 +78,7 @@
   border: 1px solid var(--primary);
   box-shadow: 0 0 0 1px rgba(255,255,255,0.05) inset;
 }
+
+.coords-div {
+  cursor: not-allowed;
+}

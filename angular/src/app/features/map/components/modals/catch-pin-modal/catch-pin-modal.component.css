@@ -244,3 +244,7 @@ input.modal-info-box:focus {
   font-weight: 500;
   box-shadow: var(--gf-shadow-lift-sm);
 }
+
+.coords-div {
+  cursor: not-allowed;
+}

@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, Signal, inject } from '@angular/core';
 import { ViewportPinDTO, GetPinsReqDTO, GetPinsResDTO, PinDataReqDTO, PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { PinHoverPreviewService } from '@gofish/features/map/services/pin-hover-preview.service';
@@ -16,7 +16,7 @@ export class MapInteractionsService {
 
   setup(
     map: mapboxgl.Map,
-    allPins: ViewportPinDTO[],
+    allPins: WritableSignal<ViewportPinDTO[]>,
     selectedPin: WritableSignal<PinDataResDTO | null>,
     isPickingOnMap: () => boolean
   ): void {
@@ -53,7 +53,7 @@ export class MapInteractionsService {
     });
   }
 
-  private registerPinHover(map: mapboxgl.Map, unclusteredId: string, allPins: ViewportPinDTO[]): void {
+  private registerPinHover(map: mapboxgl.Map, unclusteredId: string, allPins: WritableSignal<ViewportPinDTO[]>): void {
     map.on('mouseenter', unclusteredId, (e) => {
       if (!map.getLayer(unclusteredId)) return;
       map.getCanvas().style.cursor = 'pointer';
@@ -61,7 +61,7 @@ export class MapInteractionsService {
       const features = map.queryRenderedFeatures(e.point, { layers: [unclusteredId] });
       if (!features.length) return;
 
-      const pin = allPins.find(p => p.id === features[0].properties?.['id']);
+      const pin = allPins().find(p => p.id === features[0].properties?.['id']);
       if (!pin) return;
       this.pinHoverPreview.showHover(map, pin);
     });
@@ -75,7 +75,7 @@ export class MapInteractionsService {
   private registerPinClick(
     map: mapboxgl.Map,
     unclusteredId: string,
-    allPins: ViewportPinDTO[],
+    allPins: WritableSignal<ViewportPinDTO[]>,
     selectedPin: WritableSignal<PinDataResDTO | null>
   ): void {
     map.on('click', unclusteredId, (e) => {
@@ -83,7 +83,7 @@ export class MapInteractionsService {
       const features = map.queryRenderedFeatures(e.point, { layers: [unclusteredId] });
       if (!features.length) return;
 
-      const pin = allPins.find(p => p.id === features[0].properties?.['id']);
+      const pin = allPins().find(p => p.id === features[0].properties?.['id']);
       if (!pin) return;
 
       const getPin: GetPinsReqDTO = {
