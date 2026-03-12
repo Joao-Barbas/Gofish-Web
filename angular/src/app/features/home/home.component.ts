@@ -6,7 +6,7 @@ import { FooterComponent } from '@gofish/features/footer/footer.component';
   selector: 'app-home',
   imports: [ FlatHeaderComponent, FooterComponent ],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrl: './home.component.css'
 })
 export class HomeComponent {
 

@@ -1,6 +1,7 @@
 // app.routes.ts
 
 import { Routes } from '@angular/router';
+import { PathSegment } from '@gofish/shared/constants';
 import { authGuard } from '@gofish/shared/guards/auth.guard';
 import { noTotpGuard } from '@gofish/shared/guards/no-totp.guard';
 
@@ -10,39 +11,26 @@ export const routes: Routes = [
     loadComponent: () => import('@gofish/features/home/home.component').then(m => m.HomeComponent)
   },
   {
-    path: 'signup',
+    path: PathSegment.SIGN_UP,
     loadComponent: () => import('@gofish/features/user/auth/signup/signup.component').then(m => m.SignupComponent)
   },
   {
-    path: 'signin',
+    path: PathSegment.SIGN_IN,
     loadComponent: () => import('@gofish/features/user/auth/signin/signin.component').then(m => m.SigninComponent)
   },
   {
-    path: 'signin/verify',
+    path: PathSegment.SIGN_IN_VERIFY,
     loadComponent: () => import('@gofish/features/user/auth/signin-verify/signin-verify.component').then(m => m.SigninVerifyComponent)
   },
   {
-    path: 'settings',
+    path: PathSegment.SETTINGS,
     loadComponent: () => import('@gofish/features/user/settings/settings.component').then(m => m.SettingsComponent),
     canActivate: [ authGuard ],
     children: [
-      { path: '', redirectTo: 'general', pathMatch: 'full' },
-      { path: 'general', loadComponent: () => import('@gofish/features/user/settings/components/general/general.component').then(m => m.GeneralComponent) },
-      { path: 'personal-data', loadComponent: () => import('@gofish/features/user/settings/components/personal-data/personal-data.component').then(m => m.PersonalDataComponent) },
-      {
-        path: 'security',
-        loadComponent: () => import('@gofish/features/user/settings/components/security/security.component').then(m => m.SecurityComponent),
-        children: [
-          {
-            path: 'setup-sms'
-          },
-          {
-            path: 'setup-totp',
-            loadComponent: () => import('@gofish/features/user/settings/components/security/components/setup-totp/setup-totp.component').then(m => m.SetupTotpComponent),
-            canActivate: [ noTotpGuard ]
-          }
-        ]
-      }
+      { path: '', redirectTo: PathSegment.GENERAL_SETTINGS, pathMatch: 'full' },
+      { path: PathSegment.GENERAL_SETTINGS, loadComponent: () => import('@gofish/features/user/settings/components/general/general.component').then(m => m.GeneralComponent) },
+      { path: PathSegment.PERSONAL_DATA_SETTINGS, loadComponent: () => import('@gofish/features/user/settings/components/personal-data/personal-data.component').then(m => m.PersonalDataComponent) },
+      { path: PathSegment.SECURITY_SETTINGS, loadComponent: () => import('@gofish/features/user/settings/components/security/security.component').then(m => m.SecurityComponent) }
     ]
   },
   {
@@ -56,15 +44,26 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'about-us',
+    path: PathSegment.ABOUT_US,
     loadComponent: () => import('@gofish/features/about/about.component').then(a => a.AboutComponent),
   },
   {
-    path: 'terms-of-service',
+    path: PathSegment.TERMS,
     loadComponent: () => import('@gofish/features/terms-of-service/terms-of-service.component').then(t => t.TermsOfServiceComponent),
   },
   {
-    path: 'privacy-policy',
+    path: PathSegment.PRIVACY,
     loadComponent: () => import('@gofish/features/privacy-policy/privacy-policy.component').then(p => p.PrivacyPolicyComponent),
+  },
+  {
+    path: 'forum',
+    loadComponent: () => import('@gofish/features/forum/forum.component').then(f => f.ForumComponent),
+    canActivate: [ authGuard ],
+    children: [
+      { path: '', redirectTo: PathSegment.FORUM_DISCOVER, pathMatch: 'full' },
+      { path: PathSegment.FORUM_DISCOVER, loadComponent: () => import('@gofish/features/forum/children/discover/discover.component').then(d => d.DiscoverComponent) },
+      { path: PathSegment.FORUM_FROM_FRIENDS, loadComponent: () => import('@gofish/features/forum/children/from-friends/from-friends.component').then(f => f.FromFriendsComponent) },
+      { path: PathSegment.FORUM_MY_GROUPS, loadComponent: () => import('@gofish/features/forum/children/my-groups/my-groups.component').then(m => m.MyGroupsComponent) },
+    ]
   },
 ];
