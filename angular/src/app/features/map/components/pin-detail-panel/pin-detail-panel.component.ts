@@ -5,6 +5,7 @@ import { PinKind } from '@gofish/shared/models/pin.model';
 import { PopupController } from '@gofish/shared/core/popup-controller';
 import { PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '@gofish/shared/services/auth.service';
 
 @Component({
   selector: 'app-pin-detail-panel',
@@ -15,6 +16,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class PinDetailPanelComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  userName = String(this.authService.userName);
   readonly popupController = new PopupController('pin-preview');
   readonly pinData = input<PinDataResDTO | null>(null);
   public pinKind = PinKind;
