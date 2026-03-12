@@ -18,7 +18,12 @@ namespace GofishApi.Data
         public DbSet<Friendship> Friendships { get; set; }
         public DbSet<Pin> Pins { get; set; }
         public DbSet<Post> Posts { get; set; }
-
+        public DbSet<PostComment> PostComments { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<GroupPost> GroupPosts { get; set; }
+        public DbSet<GroupRole> GroupRole { get; set; }
+        public DbSet<GroupUser> GroupUser { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

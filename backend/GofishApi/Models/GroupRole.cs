@@ -5,13 +5,16 @@ namespace GofishApi.Models;
 public class GroupRole
 {
     [Key]
-    public int Id { get; set; }
+    public string Id { get; set; }
 
-    [Required]
     [MaxLength(100)]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
-    [Required]
     [MaxLength(100)]
-    public string NormalizedName { get; set; }
+    public required string NormalizedName { get; set; }
+
+    public GroupRole()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
 }
