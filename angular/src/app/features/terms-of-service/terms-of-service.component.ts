@@ -9,5 +9,10 @@ import { FooterComponent } from '@gofish/features/footer/footer.component';
   styleUrl: './terms-of-service.component.css',
 })
 export class TermsOfServiceComponent {
-
+    scrollToSection(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
 }
