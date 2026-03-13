@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { resetConsumerBeforeComputation } from '@angular/core/primitives/signals';
 import { ActivatedRoute, Router, RouterLinkActive } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
+import { PopupService } from '@gofish/shared/services/popup.service';
+import { toast } from 'ngx-sonner';
 import { reportUnhandledError } from 'rxjs/internal/util/reportUnhandledError';
 
 @Component({
@@ -14,6 +16,7 @@ export class DeletePinComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly pinService = inject(PinService);
+  private readonly popupService = inject(PopupService);
   private pinId: number | null = null;
 
   ngOnInit() {
@@ -35,12 +38,13 @@ export class DeletePinComponent {
     console.log(this.pinId);
     this.pinService.DeletePin(this.pinId).subscribe({
       next: () => {
-
+        toast.success('deleted pin succesfully');
       }, error: (err) => {
         alert(err);
       }
     });
     this.router.navigate(['map']);
+    this.popupService.close();
   }
 
 }

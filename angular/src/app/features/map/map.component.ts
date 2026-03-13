@@ -25,6 +25,8 @@ import { RouterOutlet } from '@angular/router';
 
 import { MapLayersService } from '@gofish/features/map/services/map-layers.service';
 import { MapInteractionsService } from '@gofish/features/map/services/map-interactions.service';
+import { ClusterDetailsComponent } from '@gofish/features/map/components/cluster-details/cluster-details.component';
+
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
 
@@ -38,8 +40,9 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5
     OverlayHeaderComponent,
     ChoosePinPopupComponent,
     RouterOutlet,
-    NgxSonnerToaster
-  ],
+    NgxSonnerToaster,
+    ClusterDetailsComponent
+],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
 })

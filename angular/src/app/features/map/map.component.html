@@ -12,7 +12,14 @@
       <app-pin-detail-panel [pinData]="selectedPin()" (cancel)="onPopupCancelPinPreview()">
       </app-pin-detail-panel>
     </div>
-    }                
+    }
+
+    @if (this.popupService.isOpen('cluster-preview')) {
+    <div class="cluster-detail-panel fade show gf-do-events">
+      <app-cluster-details [pinsData] ="selectedPins()" (cancel)="onPopupCancelPinPreview()">
+      </app-cluster-details>
+    </div>
+    }
 
     <!-- Actions overlay -->
     <div class="actions-container position-absolute d-flex flex-row gf-do-events gf-gap-12">

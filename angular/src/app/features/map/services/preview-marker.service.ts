@@ -13,6 +13,7 @@ export class PreviewMarkerService {
     this.previewMarker = new mapboxgl.Marker()
       .setLngLat([lng, lat])
       .addTo(map);
+    //map.jumpTo({center:[lng,lat]});
   }
 
   clear(): void {

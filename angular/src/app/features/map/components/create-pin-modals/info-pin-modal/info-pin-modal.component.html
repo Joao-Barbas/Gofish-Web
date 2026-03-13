@@ -1,7 +1,7 @@
 <div class="modal-backdrop-custom d-flex justify-content-center align-items-center">
   <div class="modal-custom gf-card">
 
-    <form [formGroup]="form" (ngSubmit)="onPublish()">
+    <form id = "info-modal" [formGroup]="form" (ngSubmit)="onPublish()">
 
       <!-- Header -->
       <div class="modal-header text-white align-items-center mb-3 justify-content-between">
@@ -134,11 +134,10 @@
           Cancel
         </button>
 
-        <app-async-button type="submit" form="catch-modal" labels="Publish"
+        <app-async-button type="submit" form="info-modal" labels="Publish"
           [state]="busyState.isBusy() ? 'busy' : 'idle'" />
       </div>
 
     </form>
-
   </div>
 </div>

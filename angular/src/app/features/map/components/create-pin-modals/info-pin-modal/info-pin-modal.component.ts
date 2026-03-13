@@ -39,7 +39,7 @@ export class InfoPinModalComponent implements OnInit {
   form = this.fb.group({
     body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
     visibility: [0, [Validators.required]],
-    acccessDifficulty: [0, [Validators.required]],
+    accessDifficulty: [0, [Validators.required]],
     seaBed: [0, [Validators.required]]
   });
 
@@ -125,8 +125,8 @@ export class InfoPinModalComponent implements OnInit {
       latitude: this.selectedCoords.latitude,
       longitude: this.selectedCoords.longitude,
       visibility: this.form.value.visibility!,
-      body: this.form.value.body,
-      accessDifficulty: this.form.value.acccessDifficulty!,
+      body: this.form.value.body ?? '',
+      accessDifficulty: this.form.value.accessDifficulty!,
       seaBedType: this.form.value.seaBed!
     };
 
@@ -134,6 +134,7 @@ export class InfoPinModalComponent implements OnInit {
 
     this.pinService.createInfoPin(dto).subscribe({
       next: () => {
+        console.log('estou aqui');
         this.busyState.setBusy(false);
         toast.dismiss(toastId);
         toast.success('Info Pin created successfully.');

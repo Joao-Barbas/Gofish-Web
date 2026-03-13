@@ -1,5 +1,5 @@
 import { Injectable, Signal, inject } from '@angular/core';
-import { ViewportPinDTO, GetPinsReqDTO, GetPinsResDTO, PinDataReqDTO, PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
+import { ViewportPinDTO, GetPinsReqDTO, GetPinsResDTO, PinDataReqDTO, PinDataResDTO, PinIdDTO } from '@gofish/shared/dtos/pin.dto';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { PinHoverPreviewService } from '@gofish/features/map/services/pin-hover-preview.service';
 import { PopupService } from '@gofish/shared/services/popup.service';
@@ -57,104 +57,126 @@ export class MapInteractionsService {
       source.getClusterLeaves(clusterIdProp, Infinity, 0, (err, leaves) => {
         if (err || !leaves) return;
 
-        const ids = leaves.map(leaf => leaf.properties?.['id']);
-        const pins = allPins().filter(p => ids.includes(p.id));
+        const pinIds: PinIdDTO[] = leaves.map(leaf => {
+          return {
+            pinId: leaf.properties?.['id']
+          };
+        });
 
+        const request: GetPinsReqDTO = {
+          ids: pinIds,
+          dataRequest: {
+            includeGeolocation: true,
+            includeAuthor: true,
+            includePost: true,
+            includeDetails: false,
+            includeGroups: true,
+          }
+        };
 
-        selectedPins.set(pins as unknown as PinDataResDTO[]);
-        this.popupService.open('pin-preview');
+        this.pinService.getPinPreview(request).subscribe({
+          next: (res) => {
+            selectedPins.set(res.pins);
+            this.popupService.open('cluster-preview');
+            console.log(res.pins);
+          },
+          error: (err) => {
+            console.log(err);
+          }
+        });
+
       });
     });
-}
+  }
 
   private registerPinHover(map: mapboxgl.Map, unclusteredId: string, allPins: WritableSignal<ViewportPinDTO[]>): void {
-  map.on('mouseenter', unclusteredId, (e) => {
-    if (!map.getLayer(unclusteredId)) return;
-    map.getCanvas().style.cursor = 'pointer';
+    map.on('mouseenter', unclusteredId, (e) => {
+      if (!map.getLayer(unclusteredId)) return;
+      map.getCanvas().style.cursor = 'pointer';
 
-    const features = map.queryRenderedFeatures(e.point, { layers: [unclusteredId] });
-    if (!features.length) return;
+      const features = map.queryRenderedFeatures(e.point, { layers: [unclusteredId] });
+      if (!features.length) return;
 
-    const pin = allPins().find(p => p.id === features[0].properties?.['id']);
-    if (!pin) return;
-    this.pinHoverPreview.showHover(map, pin);
-  });
+      const pin = allPins().find(p => p.id === features[0].properties?.['id']);
+      if (!pin) return;
+      this.pinHoverPreview.showHover(map, pin);
+    });
 
-  map.on('mouseleave', unclusteredId, () => {
-    map.getCanvas().style.cursor = 'default';
-    this.pinHoverPreview.clear();
-  });
-}
+    map.on('mouseleave', unclusteredId, () => {
+      map.getCanvas().style.cursor = 'default';
+      this.pinHoverPreview.clear();
+    });
+  }
 
   private registerPinClick(
-  map: mapboxgl.Map,
-  unclusteredId: string,
-  allPins: WritableSignal<ViewportPinDTO[]>,
-  selectedPin: WritableSignal<PinDataResDTO | null>
-): void {
-  map.on('click', unclusteredId, (e) => {
-    if (!map.getLayer(unclusteredId)) return;
-    const features = map.queryRenderedFeatures(e.point, { layers: [unclusteredId] });
-    if (!features.length) return;
+    map: mapboxgl.Map,
+    unclusteredId: string,
+    allPins: WritableSignal<ViewportPinDTO[]>,
+    selectedPin: WritableSignal<PinDataResDTO | null>
+  ): void {
+    map.on('click', unclusteredId, (e) => {
+      if (!map.getLayer(unclusteredId)) return;
+      const features = map.queryRenderedFeatures(e.point, { layers: [unclusteredId] });
+      if (!features.length) return;
 
-    const pin = allPins().find(p => p.id === features[0].properties?.['id']);
-    if (!pin) return;
+      const pin = allPins().find(p => p.id === features[0].properties?.['id']);
+      if (!pin) return;
 
-    const getPin: GetPinsReqDTO = {
-      ids: [{ pinId: pin.id }],
-      dataRequest: {
-        includeGeolocation: true,
-        includeAuthor: true,
-        includePost: true,
-        includeDetails: false,
-        includeGroups: true,
-      } as PinDataReqDTO
-    };
+      const getPin: GetPinsReqDTO = {
+        ids: [{ pinId: pin.id }],
+        dataRequest: {
+          includeGeolocation: true,
+          includeAuthor: true,
+          includePost: true,
+          includeDetails: false,
+          includeGroups: true,
+        } as PinDataReqDTO
+      };
 
-    this.pinHoverPreview.clear();
+      this.pinHoverPreview.clear();
 
-    this.pinService.getPinPreview(getPin).subscribe({
-      next: (res: GetPinsResDTO) => {
-        const pin = res.pins[0];
-        if (!pin) return;
-        selectedPin.set(pin);
-        this.popupService.open('pin-preview');
-        if (pin.geolocation == null) return;
-        map.flyTo({ center: [pin.geolocation.longitude, pin.geolocation.latitude], zoom: 13 });
-      },
-      error: (err) => console.error('Erro ao carregar pin:', err)
+      this.pinService.getPinPreview(getPin).subscribe({
+        next: (res: GetPinsResDTO) => {
+          const pin = res.pins[0];
+          if (!pin) return;
+          selectedPin.set(pin);
+          this.popupService.open('pin-preview');
+          if (pin.geolocation == null) return;
+          map.flyTo({ center: [pin.geolocation.longitude, pin.geolocation.latitude], zoom: 13 });
+        },
+        error: (err) => console.error('Erro ao carregar pin:', err)
+      });
     });
-  });
-}
+  }
 
   private registerClusterCursor(map: mapboxgl.Map, clusterId: string): void {
-  map.on('mouseenter', clusterId, () => {
-    if (!map.getLayer(clusterId)) return;
-    map.getCanvas().style.cursor = 'pointer';
-  });
-  map.on('mouseleave', clusterId, () => {
-    map.getCanvas().style.cursor = 'default';
-  });
-}
+    map.on('mouseenter', clusterId, () => {
+      if (!map.getLayer(clusterId)) return;
+      map.getCanvas().style.cursor = 'pointer';
+    });
+    map.on('mouseleave', clusterId, () => {
+      map.getCanvas().style.cursor = 'default';
+    });
+  }
 
   private registerMapClick(
-  map: mapboxgl.Map,
-  selectedPin: WritableSignal<PinDataResDTO | null>,
-  isPickingOnMap: () => boolean
-): void {
-  map.on('click', (e) => {
-    if (isPickingOnMap()) return;
+    map: mapboxgl.Map,
+    selectedPin: WritableSignal<PinDataResDTO | null>,
+    isPickingOnMap: () => boolean
+  ): void {
+    map.on('click', (e) => {
+      if (isPickingOnMap()) return;
 
-    const layers = PIN_CONFIG
-      .flatMap(({ kind }) => [`clusters-${kind}`, `unclustered-${kind}`])
-      .filter(id => map.getLayer(id));
+      const layers = PIN_CONFIG
+        .flatMap(({ kind }) => [`clusters-${kind}`, `unclustered-${kind}`])
+        .filter(id => map.getLayer(id));
 
-    const hits = map.queryRenderedFeatures(e.point, { layers });
+      const hits = map.queryRenderedFeatures(e.point, { layers });
 
-    if (hits.length === 0) {
-      selectedPin.set(null);
-      this.pinHoverPreview.closePopup();
-    }
-  });
-}
+      if (hits.length === 0) {
+        selectedPin.set(null);
+        this.pinHoverPreview.closePopup();
+      }
+    });
+  }
 }
