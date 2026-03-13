@@ -1,0 +1,84 @@
+/* dates */
+
+.first-row-wrapper {
+  padding-top: var(--gf-50);
+}
+
+.dates-wrapper .pp-date:first-of-type {
+  margin-bottom: 0.938rem;
+}
+
+.dates-wrapper .pp-date:last-of-type {
+  margin-bottom: var(--gf-10);
+}
+
+.pp-date {
+  font-size: var(--gf-24);
+}
+
+/* introduction-index */
+
+.introduction-index {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+
+.pp-title,
+.pp-title > .gf-text-logo {
+  font-size: var(--gf-48);
+  margin-bottom: var(--gf-30);
+}
+
+.paragraph-generic-wrapper p:not(:last-child) {
+  margin-bottom: 0.938rem;
+}
+
+.paragraph-generic-wrapper {
+  margin-bottom: 1.875rem;
+}
+
+.pp-intro {
+  margin-bottom: 30px;
+}
+
+.pp-text {
+  margin-top: var(--gf-10);
+  line-height: 1.188rem;
+  font-style: normal;
+}
+
+/*
+<span> tags inside <p> use this whenever GOFISH
+is present in text
+*/
+.logo-in-text {
+  font-family: var(--gf-font-heading);
+  text-transform: uppercase;
+}
+
+.index,
+.index > li > a {
+  text-decoration-line: underline;
+  color: var(--dark-text-muted);
+}
+
+.index > li > a:hover {
+  color: var(--dark-text);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Listed Terms Text */
+
+.term-title {
+  font-size: var(--gf-32);
+  text-transform: uppercase;
+  line-height: var(--gf-40);
+  font-family: 'Inter';
+}
+
+.term-description-wrapper p:not(:last-child) {
+  margin-bottom: 0.938rem;
+}

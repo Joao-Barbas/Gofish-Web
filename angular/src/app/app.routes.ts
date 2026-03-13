@@ -61,10 +61,10 @@ export const routes: Routes = [
   },
   {
     path: 'terms-of-service',
-    loadComponent: () => import('@gofish/features/about/about.component').then(a => a.AboutComponent), /* TODO: Component */
+    loadComponent: () => import('@gofish/features/terms-of-service/terms-of-service.component').then(t => t.TermsOfServiceComponent),
   },
   {
     path: 'privacy-policy',
-    loadComponent: () => import('@gofish/features/about/about.component').then(a => a.AboutComponent), /* TODO: Component */
+    loadComponent: () => import('@gofish/features/privacy-policy/privacy-policy.component').then(p => p.PrivacyPolicyComponent),
   },
 ];

@@ -107,6 +107,7 @@
   --gf-36: 2.25rem;
   --gf-40: 2.5rem;
   --gf-48: 3rem;
+  --gf-50: 3.125rem;
   --gf-56: 3.5rem;
   --gf-64: 4rem;
   --gf-72: 4.5rem;
@@ -537,6 +538,8 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 .text-normal {font-weight: normal;}
 .text-medium {font-weight: 500;}
 .text-bold {font-weight: 700;}
+
+/* Deprecated - Use "gf-text-logo" instead */
 .text-gofish {font-weight: 900; font-size: 28px;}
 
   /* ===========/
@@ -777,7 +780,9 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   cursor: pointer;
 }
 
-.generic-select-wrapper-text > p{
+.generic-select-wrapper-text > p,
+.generic-select-wrapper-text > a
+{
   color: var(--dark-text-muted);
 }
 
@@ -805,13 +810,12 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   border-width: 0px;
 
   --gf-bg-color-default:#333;
-  --gf-bg-color:var(--gf-bg-color-default);
+  --gf-bg-color: var(--gf-bg-color-default);
 
   background: var(--gf-bg-color);
 
   --gofish-card-padding: 24px;
   padding: var(--gofish-card-padding);
-
 
 }
 
@@ -853,12 +857,13 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 
 
   /* ====== */
- /* Outros */
+ /* Others */
 /* ====== */
 
-.logo-text { /* TODO: Use ".gf-text-logo" instead */
+.logo-text /* Deprecated - Use "gf-text-logo" instead */ {
   color: var(--dark-text);
   font-family: var(--font-heading);
+
   font-size: 2rem;
   font-weight: 900;
   letter-spacing: -0.125rem;
