@@ -38,6 +38,7 @@ export class SigninComponent implements OnInit {
   apiProblems: ValidationProblemDetails | null = null;
   formErrors: ValidationErrors | null = this.signInForm.errors;
   signInSuccess: boolean = false;
+  showPwd: boolean = false;
 
   ngOnInit() {
     if (!this.authService.isAuthenticated()) return;
