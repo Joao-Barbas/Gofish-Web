@@ -58,6 +58,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   pickingOnMap = false;
   selectedCoords = signal<Coords | null>(null);
   protected selectedPin = signal<PinDataResDTO | null>(null);
+  protected selectedPins = signal<PinDataResDTO[]>([]);
 
   private map!: mapboxgl.Map;
   allPins= signal<ViewportPinDTO[]>([]);
@@ -120,7 +121,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.map.on('load', () => {
       this.mapLayers.updateLayers(this.map, this.allPins);
-      this.mapInteractions.setup(this.map, this.allPins, this.selectedPin, () => this.pickingOnMap);
+      this.mapInteractions.setup(this.map, this.allPins, this.selectedPin, this.selectedPins,() => this.pickingOnMap);
       this.applyUrlState();
       this.registerMapEvents();
     });

@@ -20,6 +20,7 @@ export class PinDetailPanelComponent {
   userName = String(this.authService.userName);
   readonly popupController = new PopupController('pin-preview');
   readonly pinData = input<PinDataResDTO | null>(null);
+  readonly pinClusterData = input<PinDataResDTO | null>(null);
   public pinKind = PinKind;
   @Output() cancel = new EventEmitter<void>();
 
