@@ -92,6 +92,37 @@
   }
 }
 
+.password-input-wrapper {
+  position: relative;
+
+  input {
+    padding-right: var(--gf-36);
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: var(--gf-8);
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--gf-text-muted, #888);
+    display: flex;
+    align-items: center;
+
+    svg {
+      height: 20px;
+      width: 20px;
+    }
+
+    &:hover {
+      color: var(--gf-text);
+    }
+  }
+}
+
 .signin-invite,
 .signup-invite {
   font-size: var(--gf-text-xs);

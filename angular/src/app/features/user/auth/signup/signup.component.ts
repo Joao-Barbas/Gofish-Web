@@ -63,6 +63,7 @@ export class SignupComponent implements OnInit {
   apiProblems: ValidationProblemDetails | null = null;
   formErrors: ValidationErrors | null = this.signUpForm.errors;
   signUpSuccess: boolean = false;
+  showPwd: boolean = false;
 
   ngOnInit(): void {
     if (!this.authService.isAuthenticated()) return;
