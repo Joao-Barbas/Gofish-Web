@@ -13,15 +13,7 @@ type NavPath = {
 
 @Component({
   selector: 'app-forum',
-<<<<<<< HEAD
-<<<<<<< HEAD
-  imports: [ RouterLink, FlatHeaderComponent, FooterComponent, RouterOutlet ],
-=======
-  imports: [ FlatHeaderComponent, FooterComponent, ForumPostComponent, RouterOutlet, RouterLink, RouterLinkActive ],
->>>>>>> 5ea5986 (app.routes.ts now uses constants)
-=======
-  imports: [ RouterLink, FlatHeaderComponent, FooterComponent, RouterOutlet ],
->>>>>>> f0e86a8 (Esqueleton of forum post feed)
+  imports: [ RouterLink, RouterLinkActive, FlatHeaderComponent, FooterComponent, RouterOutlet ],
   templateUrl: './forum.component.html',
   styleUrl: "./forum.component.css"
 })
@@ -34,14 +26,6 @@ export class ForumComponent {
     { path: Path.FORUM_FROM_FRIENDS,  label: 'From Friends'  },
     { path: Path.FORUM_MY_GROUPS,     label: 'My Groups'     },
   ];
-<<<<<<< HEAD
-<<<<<<< HEAD
-Path: any;
-=======
->>>>>>> 5ea5986 (app.routes.ts now uses constants)
-=======
-Path: any;
->>>>>>> f0e86a8 (Esqueleton of forum post feed)
 
   constructor() {
     this.router.events.pipe(

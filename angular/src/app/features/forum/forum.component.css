@@ -18,12 +18,46 @@
   padding-top: 8rem;
 }
 
+.forum-nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 .forum-nav a {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  color: var(--dark-text);
+  font-family: var(--gf-font-ugc);
+  font-size: var(--gf-22);
+  text-decoration: none;
 }
 
-.forum-feed {
+.navbar-label {
+  background: linear-gradient(currentColor 0 0) bottom center / var(--underline-width, 0%) 2px no-repeat;
+  transition: background-size 0.2s;
+}
+
+.forum-nav a:hover .navbar-label {
+  --underline-width: 100%;
+
+}
+
+.forum-nav a.active {
+  text-decoration: none;
+  color: var(--gf-primary);
+  --underline-width: 100%;
+}
+
+.forum-nav a > svg {
+  color: var(--dark-text);
+}
+
+.forum-nav a.active > svg {
+  color: var(--gf-primary);
 
 }
