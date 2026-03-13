@@ -47,9 +47,9 @@ export const Path = {
   TERMS:                  `/${PathSegment.TERMS}`,
   PRIVACY:                `/${PathSegment.PRIVACY}`,
   FORUM:                  `/${PathSegment.FORUM}`,
-  FORUM_DISCOVER:         `/${PathSegment.FORUM_DISCOVER}`,
-  FORUM_FROM_FRIENDS:     `/${PathSegment.FORUM_FROM_FRIENDS}`,
-  FORUM_MY_GROUPS:        `/${PathSegment.FORUM_MY_GROUPS}`,
+  FORUM_DISCOVER:         `/${PathSegment.FORUM}/${PathSegment.FORUM_DISCOVER}`,
+  FORUM_FROM_FRIENDS:     `/${PathSegment.FORUM}/${PathSegment.FORUM_FROM_FRIENDS}`,
+  FORUM_MY_GROUPS:        `/${PathSegment.FORUM}/${PathSegment.FORUM_MY_GROUPS}`,
 } as const;
 
 /* Backend endpoints */

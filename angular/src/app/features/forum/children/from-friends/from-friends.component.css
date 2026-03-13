@@ -1,0 +1,6 @@
+:host {
+  display: flex;
+  gap: var(--gf-8);
+  flex-direction: column;
+
+}
