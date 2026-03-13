@@ -3,7 +3,7 @@ import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FlatHeaderComponent } from '@gofish/features/header/flat-header/flat-header.component';
 import { FooterComponent } from '@gofish/features/footer/footer.component';
-import { ForumPostComponent } from '@gofish/features/forum/components/forum-post/forum-post.component';
+
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Path } from '@gofish/shared/constants';
 
@@ -14,7 +14,7 @@ type NavPath = {
 
 @Component({
   selector: 'app-forum',
-  imports: [ FlatHeaderComponent, FooterComponent, ForumPostComponent, RouterOutlet ],
+  imports: [ RouterLink, FlatHeaderComponent, FooterComponent, RouterOutlet ],
   templateUrl: './forum.component.html',
   styleUrl: "./forum.component.css"
 })
@@ -27,6 +27,7 @@ export class ForumComponent {
     { path: Path.FORUM_FROM_FRIENDS,  label: 'From Friends'  },
     { path: Path.FORUM_MY_GROUPS,     label: 'My Groups'     },
   ];
+Path: any;
 
   constructor() {
     this.router.events.pipe(
