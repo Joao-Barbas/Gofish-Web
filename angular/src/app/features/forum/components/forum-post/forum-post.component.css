@@ -5,6 +5,34 @@
   box-shadow: none;
 }
 
+.warning-banner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--gf-16);
+
+  background: var(--gf-dark-bg-dark);
+
+  border-radius: var(--gf-16);
+
+  width: 31.75rem;
+  min-width: 24rem;
+
+  gap: var(--gf-12);
+
+}
+
+.warning-image {
+  width: var(--gf-48);
+  height: var(--gf-48);
+
+}
+
+.warning-type-text {
+  font-size: var(--gf-16);
+
+}
+
 .post-author-profile-photo {
   width: var(--gf-42);
   height: var(--gf-42);
