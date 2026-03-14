@@ -51,6 +51,7 @@
 
   /* Semantic colors */
   --gf-primary:      oklch(0.6048 0.2142 262.15);
+  --gf-primary-hover:      oklch(73.135% 0.13857 263.397);
   --gf-secondary:    oklch(0.7096 0.186513 13.1188);
   --gf-tertiary:     oklch(0.4462 0.0246 276.43);
   --gf-danger:       oklch(0.648 0.1874 28.51);
@@ -372,7 +373,51 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   }
 }
 
+/* Navigation Links */
 
+.gf-text-selection,
+[class^="gf-text-selection-"] {
+  color: var(--gf-dark-text-muted);
+  text-decoration: none;
+
+  /* Text not currently selected */
+
+  & span{
+    cursor: pointer;
+
+    background: linear-gradient(currentColor 0 0) bottom center / var(--underline-width, 0%) var(--gf-2) no-repeat;
+    transition: background-size 0.2s;
+    color: var(--gf-dark-text-muted);
+
+  }
+
+
+  &:hover span,
+  &:hover svg {
+    color: var(--gf-dark-text);
+    --underline-width: 100%;
+
+  }
+
+  /* Text currently selected */
+
+  &.active span {
+    color: var(--gf-primary);
+    --underline-width: 100%;
+
+  }
+
+  &.active svg {
+    color: var(--gf-primary);
+
+  }
+
+  &.active:hover span,
+  &.active:hover svg {
+    color: var(--gf-primary-hover);
+  }
+
+}
 
 /* Inputs */
 /* Modals */

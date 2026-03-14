@@ -71,29 +71,8 @@
 }
 
 .listing-tabs {
-  text-decoration: none ;
   font-family: var(--gf-font-main);
   font-size: var(--gf-14);
-  color: var(--gf-dark-text-muted);
   flex:1;
-  cursor: pointer;
   padding: 8px;
 }
-
-.listing-tabs:hover .listing-tab-text {
-  color: var(--gf-dark-text);
-  --underline-width: 100%;
-
-}
-
-.listing-tab-text {
-  background: linear-gradient(currentColor 0 0) bottom center / var(--underline-width, 0%) 2px no-repeat;
-  transition: background-size 0.2s;
-}
-
-.listing-tabs.active > .listing-tab-text {
-  color: var(--gf-primary);
-
-}
-
-
