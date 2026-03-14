@@ -140,8 +140,8 @@
   ** Deprecated below
   */
 
-  --font-main: 'Inter', sans-serif;
-  --font-heading: 'Montserrat', sans-serif;
+  --font-main: 'Inter', sans-serif; /* use --gf-font-main instead*/
+  --font-heading: 'Montserrat', sans-serif; /* use --gf-font-heading instead*/
 
   /* Layout & text colors */
 

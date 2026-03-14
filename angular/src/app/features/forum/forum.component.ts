@@ -25,6 +25,11 @@ export class ForumComponent {
     { path: Path.FORUM_DISCOVER,      label: 'Discover'      },
     { path: Path.FORUM_FROM_FRIENDS,  label: 'From Friends'  },
     { path: Path.FORUM_MY_GROUPS,     label: 'My Groups'     },
+    /*
+     * Testing purposes
+     * TODO: Remove
+     */
+    { path: Path.FORUM_GROUPS,        label: 'Groups'     },
   ];
 
   constructor() {
