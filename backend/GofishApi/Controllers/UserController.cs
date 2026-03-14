@@ -52,5 +52,11 @@ namespace GofishApi.Controllers
         //         LastName = user.LastName
         //     });
         // }
+
+        // RequestFriendship
+        // AcceptFriendship
+        // IgnoreFriendship
+        // RemoveFriendship
+        // GetFriendships (includeFriends, includeRequested, includeReceived)
     }
 }
