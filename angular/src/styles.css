@@ -377,6 +377,52 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 /* Inputs */
 /* Modals */
 /* Badges */
+
+.gf-badge,
+[class^="gf-badge-"]{
+  width: var(--gf-32);
+  height: var(--gf-32);
+  background: var(--dark-bg-light);
+  border: none;
+
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.18), 0px 2px 4px rgba(0, 0, 0, 0.15), inset 0px 1px 2px rgba(255, 255, 255, 0.18);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--dark-text);
+
+  & svg {
+    width: var(--gf-16);
+    height: var(--gf-16);
+    color: var(--dark-text-muted);
+  }
+
+  & svg:hover {
+    color: var(--dark-text);
+  }
+
+}
+
+.gf-badge-text {
+  width: fit-content;
+  padding:  var(--gf-6) var(--gf-16);
+  border-radius: var(--gf-16);
+  color: var(--dark-text);
+
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.18), 0px 2px 4px rgba(0, 0, 0, 0.15), inset 0px 1px 2px rgba(255, 255, 255, 0.18);
+  cursor: default;
+  background: var(--dark-bg-light);
+
+  & > span {
+    cursor: text;
+    font-size: var(--gf-12);
+    font-family: var(--gf-font-date);
+
+  }
+}
+
 /* Avatars */
 /* Tooltips */
 /* Loaders */
