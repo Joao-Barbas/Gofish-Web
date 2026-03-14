@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using GofishApi.Data;
+using GofishApi.Models;
 
 namespace GofishApi.Extensions;
 
@@ -15,9 +17,12 @@ public static class WebApplicationExtensions
     public static async Task SeedDataAsync(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
-        var dbContext   = scope.ServiceProvider.GetRequiredService<AppDbContext>(); // Included it for future extensibility.
+
+        var dbContext   = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        
         await SeedRolesAsync(roleManager);
+        await SeedGroupRolesAsync(dbContext);
     }
 
     /* Helpers */
@@ -30,5 +35,24 @@ public static class WebApplicationExtensions
             if (await roleManager.RoleExistsAsync(role)) continue;
             await roleManager.CreateAsync(new IdentityRole(role));
         }
+    }
+
+    private static async Task SeedGroupRolesAsync(AppDbContext dbContext)
+    {
+        var roles = new GroupRole[]
+        {
+            new() { Name = "Member", NormalizedName = "MEMBER" },
+            new() { Name = "Owner", NormalizedName = "OWNER" },
+            new() { Name = "Moderator", NormalizedName = "MODERATOR" }
+        };
+        foreach (var role in roles)
+        {
+            var exists = await dbContext.GroupRoles.AnyAsync(gr => gr.Name == role.Name);
+            if (!exists)
+            {
+                dbContext.GroupRoles.Add(role);
+            }
+        }
+        await dbContext.SaveChangesAsync();
     }
 }
