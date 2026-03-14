@@ -30,8 +30,8 @@ public class Post
 
     public AppUser AppUser { get; set; } = null!;
     public Pin Pin { get; set; } = null!;
-    // public /* virtual // Maybe? */ ICollection<Comment> Comments { get; set; } = new(); // TODO
-
+    
+    public List<PostComment> Comments { get; set; } = []; // TODO
     public List<Group> Groups { get; set; } = [];
     public List<GroupPost> GroupPosts { get; set; } = [];
 
