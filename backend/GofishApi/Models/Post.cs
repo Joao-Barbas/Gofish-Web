@@ -39,6 +39,7 @@ public class Post
     #region Computed Properties
 
     public int Score => UpVotes - DownVotes;
+    public int CommentCount => Comments.Count;
 
     #endregion
 }
