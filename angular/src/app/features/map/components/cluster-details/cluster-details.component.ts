@@ -1,39 +1,38 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, input, Output } from '@angular/core';
-import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
+import { PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
+import { TimeAgoPipe } from "../../../../shared/pipes/time-ago.pipe";
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { PopupController } from '@gofish/shared/core/popup-controller';
-import { PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
-import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@gofish/shared/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-pin-detail-panel',
-  imports: [CommonModule, TimeAgoPipe],
-  templateUrl: './pin-detail-panel.component.html',
-  styleUrls: ['./pin-detail-panel.component.css']
+  selector: 'app-cluster-details',
+  imports: [TimeAgoPipe],
+  templateUrl: './cluster-details.component.html',
+  styleUrl: './cluster-details.component.css',
 })
-export class PinDetailPanelComponent {
+export class ClusterDetailsComponent {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   userName = this.authService.getUserName();
-  readonly popupController = new PopupController('pin-preview');
-  readonly pinData = input<PinDataResDTO | null>(null);
+  readonly popupController = new PopupController('cluster-preview');
+  pinsData = input<PinDataResDTO[] | null>(null);
   public pinKind = PinKind;
   @Output() cancel = new EventEmitter<void>();
+
+  fortnite() {
+    
+  }
 
   closePanel(): void {
     this.cancel.emit();
     this.popupController.close();
   }
 
-  deletePin(): void {
-    const id = this.pinData()?.id;
+  deletePin(id: number): void {
     if (!id) return;
 
     this.router.navigate(['/map', 'delete-pin', id]);
   }
 }
-
-
-

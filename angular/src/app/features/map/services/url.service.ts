@@ -64,6 +64,15 @@ export class UrlService {
     return true;
   }
 
+  getNumber(paramMap: ParamMap, key: string): number | null {
+    const value = paramMap.get(key);
+
+    if (!value) return null;
+
+    const num = Number(value);
+    return Number.isNaN(num) ? null : num;
+  }
+
   private isValidMode(value: string): value is UrlMode {
     return this.allowedModes.includes(value as UrlMode);
   }

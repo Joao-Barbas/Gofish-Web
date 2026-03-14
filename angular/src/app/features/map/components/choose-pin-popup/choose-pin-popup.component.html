@@ -17,22 +17,22 @@
 
     <!-- Coordenadas selecionadas -->
     @if (coords) {
-    <div class="text-center mt-2 animate-fade-in d-flex flex-column align-items-center gap-2">
+    <div class="text-center mt-2 animate-fade-in d-flex flex-column align-items-center gap-2 coords-div">
 
       <span class="small text-light">Geolocation</span>
 
       <div class="d-flex align-items-center gap-2">
         <div class="d-flex align-items-center gap-1">
-          <span class="small text-light">Lng</span>
+          <span class="small text-light">Lat</span>
           <p class="mb-0 dark-bg-dark modal-info-box">
-            {{ coords.longitude | number:'1.4-4' }}
+            {{ coords.latitude | number:'1.5' }}
           </p>
         </div>
 
         <div class="d-flex align-items-center gap-1">
-          <span class="small text-light">Lat</span>
+          <span class="small text-light">Lng</span>
           <p class="mb-0 dark-bg-dark modal-info-box">
-            {{ coords.latitude | number:'1.4-4' }}
+            {{ coords.longitude | number:'1.5' }}
           </p>
         </div>
       </div>

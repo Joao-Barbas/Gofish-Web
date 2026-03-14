@@ -94,6 +94,9 @@ export class AuthService {
   readonly isAdmin = computed((): boolean => this.hasRole('Admin'));
   readonly isUser = computed((): boolean => this.hasRole('User'));
 
+  getUserName() {
+    return this.userName()!.toString();
+  }
   // End jwt roles getters
 
   /**

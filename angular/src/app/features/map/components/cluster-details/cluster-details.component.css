@@ -120,3 +120,35 @@
   font-weight: 500;
   font-size: 12px;
 }
+
+.sidebar-wrapper {
+  background-color: #000; /* Fundo Preto */
+  width: 350px;           /* Ajusta a largura conforme precisares */
+  height: 100vh;          /* Altura total da janela */
+  display: flex;
+  flex-direction: column;
+}
+
+.scroll-container {
+  flex: 1;
+  overflow-y: auto;       /* Ativa o scroll vertical */
+  padding: 1rem;
+
+  /* Estilização opcional da scrollbar para combinar com o tema escuro */
+  scrollbar-width: thin;
+  scrollbar-color: #444 #000;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: #000;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 10px;
+  border: 2px solid #000;
+}
