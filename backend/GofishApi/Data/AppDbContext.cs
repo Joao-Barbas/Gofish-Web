@@ -21,8 +21,8 @@ namespace GofishApi.Data
         public DbSet<PostComment> PostComments { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupPost> GroupPosts { get; set; }
-        public DbSet<GroupRole> GroupRole { get; set; }
-        public DbSet<GroupUser> GroupUser { get; set; }
+        public DbSet<GroupRole> GroupRoles { get; set; }
+        public DbSet<GroupUser> GroupUsers { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
