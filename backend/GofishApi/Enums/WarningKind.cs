@@ -1,4 +1,4 @@
-﻿namespace GofishApi.Enums;
+﻿ namespace GofishApi.Enums;
 
 public enum WarningKind
 {

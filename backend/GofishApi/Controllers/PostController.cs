@@ -77,6 +77,7 @@ public class PostController : ControllerBase
         }
         var posts = await _db.Posts
             .Where(p => postIds.Contains(p.Id))
+            .Include(p => p.Pin)
             .Include(p => p.AppUser)
             .Include(p => p.Groups)
             .Include(p => p.Comments)

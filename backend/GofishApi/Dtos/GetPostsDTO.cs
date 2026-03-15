@@ -38,6 +38,9 @@ public record GetPostsPostDTO(
     int DownVotes,
     int Score,
     int CommentCount,
+    PinKind Kind,
+    WarningKind? WarningKind,
+
 
     GetPostsAuthorDTO? Author,
     IReadOnlyCollection<GetPostsCommentDTO>? Comments,
@@ -53,6 +56,8 @@ public record GetPostsPostDTO(
         post.DownVotes,
         post.Score,
         post.CommentCount,
+        post.Pin.Kind,
+        post.Pin is WarnPin warnPin ? warnPin.WarningKind : null,
 
         request?.IncludeAuthor ?? false ? GetPostsAuthorDTO.FromUser(post.AppUser) : null,
         request?.IncludeComments ?? false ? post.Comments.Select(GetPostsCommentDTO.FromComment).ToList() : null,
