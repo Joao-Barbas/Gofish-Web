@@ -10,6 +10,8 @@ using GofishApi.Models;
 using GofishApi.Services;
 using GofishApi.Dtos;
 using GofishApi.Extensions;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace GofishApi.Controllers;
 
@@ -39,10 +41,12 @@ public class UserProfileController : ControllerBase
         return Ok(GetUserProfileResDto.FromEntity(userProfile));
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutUserProfile(string id, [FromBody] PutUserProfileReqDto dto)
+    [HttpPut]
+    public async Task<IActionResult> PutUserProfile([FromBody] PutUserProfileReqDto dto)
     {
-        var userProfile = await _context.UserProfiles.FindAsync(id);
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        if (userId is null) return Unauthorized();
+        var userProfile = await _context.UserProfiles.FindAsync(userId);
         if (userProfile is null) return NotFound();
 
         userProfile.Bio = dto.Bio;
@@ -55,7 +59,7 @@ public class UserProfileController : ControllerBase
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!_context.UserProfiles.Any(e => e.UserId == id))
+            if (!_context.UserProfiles.Any(e => e.UserId == userId))
             {
                 return NotFound();
             }
@@ -65,10 +69,12 @@ public class UserProfileController : ControllerBase
         return NoContent();
     }
 
-    [HttpPatch("{id}")]
-    public async Task<IActionResult> PatchUserProfile(string id, [FromBody] PatchUserProfileReqDto dto)
+    [HttpPatch]
+    public async Task<IActionResult> PatchUserProfile([FromBody] PatchUserProfileReqDto dto)
     {
-        var userProfile = await _context.UserProfiles.FindAsync(id);
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        if (userId is null) return Unauthorized();
+        var userProfile = await _context.UserProfiles.FindAsync(userId);
         if (userProfile is null) return NotFound();
 
         userProfile.Bio = dto.Bio ?? userProfile.Bio;
@@ -81,7 +87,7 @@ public class UserProfileController : ControllerBase
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!_context.UserProfiles.Any(e => e.UserId == id))
+            if (!_context.UserProfiles.Any(e => e.UserId == userId))
             {
                 return NotFound();
             }
