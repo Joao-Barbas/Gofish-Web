@@ -1,6 +1,6 @@
 .forum-container {
   display:grid;
-  grid-template-columns: 1fr 48rem 1fr;
+  grid-template-columns: 1fr 37rem 1fr;
   gap: 0;
   /*
   grid-template-rows: 1fr;
