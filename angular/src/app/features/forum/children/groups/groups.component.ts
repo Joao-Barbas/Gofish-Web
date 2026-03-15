@@ -3,6 +3,8 @@ import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Path } from '@gofish/shared/constants';
+import { UserPopupComponent } from "@gofish/features/header/header-actions/components/user-popup/user-popup.component";
+import { GroupMemberSettingsPopoverComponent } from "./components/group-member-settings-popover/group-member-settings-popover.component";
 
 
 type NavPath = {
@@ -12,7 +14,7 @@ type NavPath = {
 
 @Component({
   selector: 'app-groups',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, UserPopupComponent, GroupMemberSettingsPopoverComponent],
   templateUrl: './groups.component.html',
   styleUrl: './groups.component.css',
 })

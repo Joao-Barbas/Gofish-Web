@@ -51,7 +51,6 @@
 
   /* Semantic colors */
   --gf-primary:      oklch(0.6048 0.2142 262.15);
-  --gf-primary-hover:      oklch(73.135% 0.13857 263.397);
   --gf-secondary:    oklch(0.7096 0.186513 13.1188);
   --gf-tertiary:     oklch(0.4462 0.0246 276.43);
   --gf-danger:       oklch(0.648 0.1874 28.51);
@@ -414,7 +413,7 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 
   &.active:hover span,
   &.active:hover svg {
-    color: var(--gf-primary-hover);
+    filter: brightness(1.3);
   }
 
 }
