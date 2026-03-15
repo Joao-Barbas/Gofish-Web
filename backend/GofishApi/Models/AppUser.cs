@@ -22,6 +22,8 @@ public class AppUser : IdentityUser
 
     // Navigation Properties
 
+    public UserProfile UserProfile { get; set; } = default!; // Should always exist
+
     public List<Friendship> RequestedFriendships { get; set; } = [];
     public List<Friendship> ReceivedFriendships { get; set; } = [];
 
@@ -32,7 +34,8 @@ public class AppUser : IdentityUser
     /// Initializes a new instance of <see cref="AppUser"/>.
     /// </summary>
     /// <remarks>
-    /// The Id property is initialized to form a new UUIDv7 string value.
+    /// The Id property is initialized to form a new UUIDv8 string value. <br/>
+    /// See <see cref="Uuid.NewDatabaseFriendly(Database)"/>
     /// </remarks>
     public AppUser()
     {
@@ -45,7 +48,8 @@ public class AppUser : IdentityUser
     /// </summary>
     /// <param name="userName">The user name.</param>
     /// <remarks>
-    /// The Id property is initialized to form a new UUIDv7 string value.
+    /// The Id property is initialized to form a new UUIDv8 string value. <br/>
+    /// See <see cref="Uuid.NewDatabaseFriendly(Database)"/>
     /// </remarks>
     public AppUser(string userName) : this()
     {

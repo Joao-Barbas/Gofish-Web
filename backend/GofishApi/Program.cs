@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using GofishApi.Data;
 using GofishApi.Models;
+using GofishApi.Builders;
 using GofishApi.Extensions;
 using GofishApi.Services;
 using GofishApi.Options;
@@ -13,6 +14,7 @@ builder.Services.Configure<AzureStorageOptions>(builder.Configuration.GetSection
 
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ITwoFactorTokenService, TwoFactorTokenService>();
+builder.Services.AddScoped<IAppUserBuilder, AppUserBuilder>();
 builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
 
 builder.Services.AddDataProtection();
