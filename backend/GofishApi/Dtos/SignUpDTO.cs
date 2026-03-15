@@ -9,6 +9,5 @@ public record SignUpReqDTO(
 );
 
 public record SignUpResDTO(
-    // Unused
-    // TODO: Send token after successful account creation
+    string Token
 );

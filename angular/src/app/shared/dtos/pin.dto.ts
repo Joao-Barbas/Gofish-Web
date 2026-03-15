@@ -77,7 +77,7 @@ export interface ViewportPinDTO {
 }
 
 export interface GetPinsReqDTO {
-  ids: PinIdDTO[],
+  ids: PinIdDTO[] ,
   dataRequest: PinDataReqDTO
 }
 

@@ -1,9 +1,11 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, EventEmitter, input, Output} from '@angular/core';
+import { Component, EventEmitter, inject, input, Output } from '@angular/core';
 import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { PopupController } from '@gofish/shared/core/popup-controller';
-import {PinDataResDTO} from '@gofish/shared/dtos/pin.dto';
+import { PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '@gofish/shared/services/auth.service';
 
 @Component({
   selector: 'app-pin-detail-panel',
@@ -12,6 +14,9 @@ import {PinDataResDTO} from '@gofish/shared/dtos/pin.dto';
   styleUrls: ['./pin-detail-panel.component.css']
 })
 export class PinDetailPanelComponent {
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  userName = this.authService.getUserName();
   readonly popupController = new PopupController('pin-preview');
   readonly pinData = input<PinDataResDTO | null>(null);
   public pinKind = PinKind;
@@ -20,6 +25,13 @@ export class PinDetailPanelComponent {
   closePanel(): void {
     this.cancel.emit();
     this.popupController.close();
+  }
+
+  deletePin(): void {
+    const id = this.pinData()?.id;
+    if (!id) return;
+
+    this.router.navigate(['/map', 'delete-pin', id]);
   }
 }
 

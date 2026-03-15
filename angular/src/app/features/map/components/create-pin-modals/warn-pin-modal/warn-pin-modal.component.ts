@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
@@ -27,17 +27,16 @@ export class WarnPinModalComponent {
   values: UrlQuery | null = null;
   busyState: BusyState = new BusyState();
 
-  selectedCoords = signal<Coords | null>(null);
+  selectedCoords: Coords | null = null;
 
   warnTypeOptions: EnumDTO[] = [];
   visibilityOptions: EnumDTO[] = [];
 
   errorMessage = '';
-  isSubmitting = false;
 
   form = this.fb.group({
+    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
     visibility: [0, Validators.required],
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
     warningKind: [0, Validators.required]
   });
 
@@ -63,57 +62,63 @@ export class WarnPinModalComponent {
     this.route.queryParamMap.subscribe(paramMap => {
       this.values = this.urlService.getUrlValues(paramMap);
 
-      if (this.values === null) {
-        this.selectedCoords.set(null);
+      if (!this.values) {
+        this.selectedCoords = null;
         return;
       }
 
-      const lng = Number(this.values.sLng);
-      const lat = Number(this.values.sLat);
+      const lng = this.values.sLng;
+      const lat = this.values.sLat;
+
+      if (!lng || !lat) return;
 
       if (!this.urlService.isLngLatValid(lng, lat)) {
-        this.selectedCoords.set(null);
+        this.selectedCoords = null;
         return;
       }
 
-      this.selectedCoords.set({
+      this.selectedCoords = {
         longitude: lng,
         latitude: lat
-      });
+      };
 
     });
   }
 
   onCancel(): void {
+    toast.info('You cancel the creation');
     this.router.navigate(['/map'], {
       queryParams: {
-        vLat: this.selectedCoords()?.latitude,
-        vLng: this.selectedCoords()?.longitude,
-        z: this.values?.z,
+        vLat: this.selectedCoords?.latitude,
+        vLng: this.selectedCoords?.longitude,
+        z: this.values?.z
       }
     });
   }
 
   onPublish(): void {
-    if (this.selectedCoords() as Coords) {
+    this.errorMessage = '';
+
+    if (!this.selectedCoords) {
       this.errorMessage = 'No valid coords';
       return;
     }
 
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
-    this.errorMessage = '';
     this.busyState.setBusy(true);
 
     const dto: CreateWarnPinReqDTO = {
-      latitude: this.selectedCoords()!.latitude,
-      longitude: this.selectedCoords()!.longitude,
+      latitude: this.selectedCoords!.latitude,
+      longitude: this.selectedCoords!.longitude,
       visibility: this.form.value.visibility!,
       body: this.form.value.body ?? '',
       warningKind: this.form.value.warningKind!
     };
 
-    this.isSubmitting = true;
     const toastId = toast.loading('Publishing your pin!');
 
     this.pinService.createWarnPin(dto).subscribe({

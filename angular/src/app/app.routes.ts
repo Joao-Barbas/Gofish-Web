@@ -27,10 +27,23 @@ export const routes: Routes = [
     loadComponent: () => import('@gofish/features/user/settings/settings.component').then(m => m.SettingsComponent),
     canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: PathSegment.GENERAL_SETTINGS, pathMatch: 'full' },
-      { path: PathSegment.GENERAL_SETTINGS, loadComponent: () => import('@gofish/features/user/settings/components/general/general.component').then(m => m.GeneralComponent) },
-      { path: PathSegment.PERSONAL_DATA_SETTINGS, loadComponent: () => import('@gofish/features/user/settings/components/personal-data/personal-data.component').then(m => m.PersonalDataComponent) },
-      { path: PathSegment.SECURITY_SETTINGS, loadComponent: () => import('@gofish/features/user/settings/components/security/security.component').then(m => m.SecurityComponent) }
+      { path: '', redirectTo: 'general', pathMatch: 'full' },
+      { path: 'general', loadComponent: () => import('@gofish/features/user/settings/components/general/general.component').then(m => m.GeneralComponent) },
+      { path: 'personal-data', loadComponent: () => import('@gofish/features/user/settings/components/personal-data/personal-data.component').then(m => m.PersonalDataComponent) },
+      {
+        path: 'security',
+        loadComponent: () => import('@gofish/features/user/settings/components/security/security.component').then(m => m.SecurityComponent),
+        children: [
+         /*  {
+            path: 'setup-sms',
+          }, */
+          {
+            path: 'setup-totp',
+            loadComponent: () => import('@gofish/features/user/settings/components/security/components/setup-totp/setup-totp.component').then(m => m.SetupTotpComponent),
+            canActivate: [ noTotpGuard ]
+          }
+        ]
+      }
     ]
   },
   {
@@ -38,9 +51,10 @@ export const routes: Routes = [
     loadComponent: () => import('@gofish/features/map/map.component').then(m => m.MapComponent),
     canActivate: [authGuard],
     children: [
-      { path: 'create-catch-pin', loadComponent: () => import('@gofish/features/map/components/modals/catch-pin-modal/catch-pin-modal.component').then(c => c.CatchPinModalComponent) },
-      { path: 'create-info-pin', loadComponent: () => import('@gofish/features/map/components/modals/info-pin-modal/info-pin-modal.component').then(c => c.InfoPinModalComponent) },
-      { path: 'create-warn-pin', loadComponent: () => import('@gofish/features/map/components/modals/warn-pin-modal/warn-pin-modal.component').then(c => c.WarnPinModalComponent) },
+      { path: 'create-catch-pin', loadComponent: () => import('@gofish/features/map/components/create-pin-modals/catch-pin-modal/catch-pin-modal.component').then(c => c.CatchPinModalComponent) },
+      { path: 'create-info-pin', loadComponent: () => import('@gofish/features/map/components/create-pin-modals/info-pin-modal/info-pin-modal.component').then(c => c.InfoPinModalComponent) },
+      { path: 'create-warn-pin', loadComponent: () => import('@gofish/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component').then(c => c.WarnPinModalComponent) },
+      { path: 'delete-pin/:id', loadComponent: () => import ('@gofish/features/map/components/delete-pin/delete-pin.component').then(c => c.DeletePinComponent) }
     ]
   },
   {

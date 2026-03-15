@@ -3,14 +3,16 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
-import { UrlService } from '@gofish/features/map/services/url.service';
+import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
+import { BusyState } from '@gofish/shared/core/busy-state';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { toast } from 'ngx-sonner';
+import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 
 @Component({
   selector: 'app-catch-pin-modal',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AsyncButtonComponent],
   templateUrl: './catch-pin-modal.component.html',
   styleUrl: './catch-pin-modal.component.css'
 })
@@ -20,25 +22,23 @@ export class CatchPinModalComponent {
   private readonly fb = inject(FormBuilder);
   private readonly urlService = inject(UrlService);
   private readonly route = inject(ActivatedRoute);
+  values: UrlQuery | null = null;
+  busyState: BusyState = new BusyState();
 
-  coords: Coords | null = null;
+  selectedCoords: Coords | null = null;
 
   visibilityOptions: EnumDTO[] = [];
   speciesOptions: EnumDTO[] = [];
   baitOptions: EnumDTO[] = [];
 
-  selectedVisibility!: number;
-  selectedSpecies: number | null = null;
-  selectedBait: number | null = null;
   hookSize: string = '';
   body: string = '';
   image: File | null = null;
 
-  isSubmitting: boolean = false;
-  errorMessage: string | null = null;
+  errorMessage: string = '';
 
   form = this.fb.group({
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
+    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
     visibility: [0],
     species: [0],
     bait: [0],
@@ -50,7 +50,6 @@ export class CatchPinModalComponent {
     this.pinService.enumerateVisibilityType().subscribe({
       next: (res: EnumDTO[]) => {
         this.visibilityOptions = res;
-        this.selectedVisibility = this.visibilityOptions[0]?.value;
       }
     });
 
@@ -63,14 +62,27 @@ export class CatchPinModalComponent {
     });
 
     this.route.queryParamMap.subscribe(queryParamMap => {
-      const values = this.urlService.getUrlValues(queryParamMap);
+      this.values = this.urlService.getUrlValues(queryParamMap);
 
-      if (!values) return;
-
-      this.coords = {
-        longitude: values.sLng!,
-        latitude: values.sLat!
+      if (!this.values) {
+        this.selectedCoords = null;
+        return;
       }
+
+      const lng = this.values.sLng;
+      const lat = this.values.sLat;
+
+      if (!lng || !lat) return;
+
+      if (!this.urlService.isLngLatValid(lng, lat)) {
+        this.selectedCoords = null;
+        return;
+      }
+
+      this.selectedCoords = {
+        longitude: lng,
+        latitude: lat
+      };
     });
   }
 
@@ -92,20 +104,21 @@ export class CatchPinModalComponent {
 
 
   onCancel(): void {
+    toast.info('You cancel the creation');
     this.router.navigate(['/map'], {
       queryParams: {
-        lat: this.coords?.latitude,
-        lng: this.coords?.longitude,
-        z: this.route.snapshot.queryParamMap.get('z')
+        lat: this.selectedCoords?.latitude,
+        lng: this.selectedCoords?.longitude,
+        z: this.values?.z
       }
     });
   }
 
   onPublish(): void {
-    this.errorMessage = null;
+    this.errorMessage = '';
 
-    if (!this.coords) {
-      this.errorMessage = 'No coords';
+    if (!this.selectedCoords) {
+      this.errorMessage = 'No valid coords';
       return;
     }
 
@@ -114,9 +127,11 @@ export class CatchPinModalComponent {
       return;
     }
 
+    this.busyState.setBusy(true);
+
     const formData = new FormData();
-    formData.append('Latitude', this.coords.latitude.toString());
-    formData.append('Longitude', this.coords.longitude.toString());
+    formData.append('Latitude', this.selectedCoords.latitude.toString());
+    formData.append('Longitude', this.selectedCoords.longitude.toString());
     formData.append('Image', this.image);
     formData.append('body', this.form.value.body!);
     formData.append('image', this.image);
@@ -125,19 +140,18 @@ export class CatchPinModalComponent {
     formData.append('bait', String(this.form.value.bait));
     formData.append('hook', this.form.value.hook ?? '');
 
-    this.isSubmitting = true;
     const toastId = toast.loading('Publishing your pin!');
 
     this.pinService.createCatchPin(formData).subscribe({
       next: () => {
+        this.busyState.setBusy(false);
         toast.dismiss(toastId);
-        this.isSubmitting = false;
         toast.success('Catch Pin created successfully.');
         this.router.navigate(['/map']);
       },
       error: () => {
+        this.busyState.setBusy(false);
         toast.dismiss(toastId);
-        this.isSubmitting = false;
         this.errorMessage = 'Failed to create catch pin. Please try again.';
         toast.error(this.errorMessage);
       }
