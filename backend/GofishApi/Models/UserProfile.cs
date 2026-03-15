@@ -6,11 +6,7 @@ namespace GofishApi.Models;
 public class UserProfile
 {
     [ForeignKey(nameof(AppUser))]
-    public string UserId { get; set; }
-
-    public int FishingScore { get; set; }
-
-    public DateTime LastUpdateAt { get; set; }
+    public string UserId { get; set; } = default!;
 
     [MaxLength(500)]
     public string? Bio { get; set; }
@@ -19,12 +15,12 @@ public class UserProfile
     [MaxLength(2000)]
     public string? AvatarUrl { get; set; }
 
+    public int FishingScore { get; set; }
+    public DateTime LastUpdateAt { get; set; }
     public DateTime JoinedAt { get; set; }
-
     public DateTime LastActiveAt { get; set; }
 
     // Navigation
 
-    public AppUser AppUser { get; set; }
-
+    public AppUser AppUser { get; set; } = default!;
 }
