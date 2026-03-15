@@ -47,12 +47,13 @@ public static class WebApplicationExtensions
         };
         foreach (var role in roles)
         {
-            var exists = await dbContext.GroupRoles.AnyAsync(gr => gr.Name == role.Name);
+            /*var exists = await dbContext.GroupRoles.AnyAsync(gr => gr.Name == role.Name);
             if (!exists)
             {
                 dbContext.GroupRoles.Add(role);
-            }
+            }*/
         }
         await dbContext.SaveChangesAsync();
+
     }
 }
