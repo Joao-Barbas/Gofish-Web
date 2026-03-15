@@ -2,10 +2,7 @@
   display:grid;
   grid-template-columns: 1fr 37rem 1fr;
   gap: 0;
-  /*
-  grid-template-rows: 1fr;
-  grid-template-areas: '. . .' ;
-  */
+  padding-bottom: var(--gf-8);
 }
 
 .forum-container > div {

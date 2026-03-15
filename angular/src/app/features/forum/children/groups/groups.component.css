@@ -3,6 +3,11 @@
   gap: var(--gf-8);
   flex-direction: column;
   width: 100%;
+  padding-bottom: var(--gf-8);
+}
+
+.group {
+  gap: 18px;
 }
 
 .group-header-info {
