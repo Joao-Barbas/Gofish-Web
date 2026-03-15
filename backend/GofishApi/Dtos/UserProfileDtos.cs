@@ -8,7 +8,7 @@ public record GetUserProfileReqDTO(
 )
 { }
 
-public record GetUserProfileResDTO(
+public record GetUserProfileResDto(
     string UserId,
     int FishingScore,
     string? Bio,
@@ -17,26 +17,23 @@ public record GetUserProfileResDTO(
     DateTime LastActiveAt
 )
 {
-    public static GetUserProfileResDTO FromEntity(UserProfile e)
-    {
-        return new(
-            e.UserId,
-            e.FishingScore,
-            e.Bio,
-            e.AvatarUrl,
-            e.JoinedAt,
-            e.LastActiveAt
-        );
-    }
+    public static GetUserProfileResDto FromEntity(UserProfile e) => new(
+        e.UserId,
+        e.FishingScore,
+        e.Bio,
+        e.AvatarUrl,
+        e.JoinedAt,
+        e.LastActiveAt
+    );
 }
 
-public record PutUserProfileReqDTO(
+public record PutUserProfileReqDto(
     [Required] string Bio,
     [Required] string AvatarUrl
 )
 { }
 
-public record PatchUserProfileReqDTO(
+public record PatchUserProfileReqDto(
     string? Bio,
     string? AvatarUrl
 )

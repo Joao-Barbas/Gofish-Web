@@ -9,6 +9,7 @@ using GofishApi.Data;
 using GofishApi.Models;
 using GofishApi.Services;
 using GofishApi.Dtos;
+using GofishApi.Extensions;
 
 namespace GofishApi.Controllers;
 
@@ -18,18 +19,15 @@ public class UserProfileController : ControllerBase
 {
     private readonly ILogger<UserProfileController> _logger;
     private readonly IBlobStorageService _blobStorage;
-    private readonly IValidationProblemService _problemService;
     private readonly AppDbContext _context;
 
     public UserProfileController(
         ILogger<UserProfileController> logger,
         IBlobStorageService blobStorage,
-        IValidationProblemService problemService,
         AppDbContext context
     ){
         _logger = logger;
         _blobStorage = blobStorage;
-        _problemService = problemService;
         _context = context;
     }
 
@@ -38,18 +36,14 @@ public class UserProfileController : ControllerBase
     {
         var userProfile = await _context.UserProfiles.FindAsync(id);
         if (userProfile is null) return NotFound();
-        return Ok(GetUserProfileResDTO.FromEntity(userProfile));
+        return Ok(GetUserProfileResDto.FromEntity(userProfile));
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutUserProfile(string id, [FromBody] PutUserProfileReqDTO dto)
+    public async Task<IActionResult> PutUserProfile(string id, [FromBody] PutUserProfileReqDto dto)
     {
         var userProfile = await _context.UserProfiles.FindAsync(id);
-
-        if (userProfile is null)
-        {
-            return NotFound();
-        }
+        if (userProfile is null) return NotFound();
 
         userProfile.Bio = dto.Bio;
         userProfile.AvatarUrl = dto.AvatarUrl;
@@ -72,14 +66,10 @@ public class UserProfileController : ControllerBase
     }
 
     [HttpPatch("{id}")]
-    public async Task<IActionResult> PatchUserProfile(string id, [FromBody] PatchUserProfileReqDTO dto)
+    public async Task<IActionResult> PatchUserProfile(string id, [FromBody] PatchUserProfileReqDto dto)
     {
         var userProfile = await _context.UserProfiles.FindAsync(id);
-
-        if (userProfile == null)
-        {
-            return NotFound();
-        }
+        if (userProfile is null) return NotFound();
 
         userProfile.Bio = dto.Bio ?? userProfile.Bio;
         userProfile.AvatarUrl = dto.AvatarUrl ?? userProfile.AvatarUrl;
