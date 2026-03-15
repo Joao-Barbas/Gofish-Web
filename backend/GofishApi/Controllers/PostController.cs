@@ -93,22 +93,33 @@ public class PostController : ControllerBase
 
     [Authorize]
     [HttpDelete("DeletePost/{id}")]
-    public async Task<IActionResult> DeletePin(int id)
+    public async Task<IActionResult> DeletePost(int id)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        var pin = await _db.Pins.FindAsync(id);
-        if (pin is null)
+        var post = await _db.Posts.FirstOrDefaultAsync(p => p.Id == id);
+
+        if (post is null)
         {
             return NotFound();
         }
         try
         {
-            _db.Pins.Remove(pin);
+            var pin = await _db.Pins.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pin is not null)
+            {
+                _db.Pins.Remove(pin);
+            }
+            else
+            {
+                _db.Posts.Remove(post);
+            }
+
             await _db.SaveChangesAsync();
         }
         catch (Exception)
         {
-            throw new AppException("Service Unavailable", "Failed to delete the provided pin.", StatusCodes.Status503ServiceUnavailable);
+            throw new AppException("Service Unavailable", "Failed to delete the provided post.", StatusCodes.Status503ServiceUnavailable);
         }
         return NoContent();
     }
