@@ -13,7 +13,6 @@ builder.Services.Configure<AzureStorageOptions>(builder.Configuration.GetSection
 
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ITwoFactorTokenService, TwoFactorTokenService>();
-builder.Services.AddSingleton<IValidationProblemService, ValidationProblemService>();
 builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
 
 builder.Services.AddDataProtection();
