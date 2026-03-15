@@ -1,5 +1,6 @@
 ﻿using GofishApi.Data;
 using GofishApi.Dtos;
+using GofishApi.Exceptions;
 using GofishApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -89,4 +90,27 @@ public class PostController : ControllerBase
 
         return Ok(new GetPostsResDTO(data));
     }
+
+    [Authorize]
+    [HttpDelete("DeletePost/{id}")]
+    public async Task<IActionResult> DeletePin(int id)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var pin = await _db.Pins.FindAsync(id);
+        if (pin is null)
+        {
+            return NotFound();
+        }
+        try
+        {
+            _db.Pins.Remove(pin);
+            await _db.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            throw new AppException("Service Unavailable", "Failed to delete the provided pin.", StatusCodes.Status503ServiceUnavailable);
+        }
+        return NoContent();
+    }
+
 }

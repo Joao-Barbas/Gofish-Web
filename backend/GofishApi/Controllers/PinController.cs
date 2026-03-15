@@ -248,13 +248,23 @@ public class PinController : ControllerBase
     public async Task<IActionResult> DeletePin(int id)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        var pin = await _db.Pins.FindAsync(id);
+        var pin = await _db.Pins
+            .Include(p => p.Post)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
         if (pin is null)
         {
             return NotFound();
         }
         try
         {
+            var post = await _db.Posts.FindAsync(pin.Post);
+
+            if (post is not null)
+            {
+                _db.Posts.Remove(post);
+            }
+
             _db.Pins.Remove(pin);
             await _db.SaveChangesAsync();
         }
