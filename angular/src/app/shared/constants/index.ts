@@ -29,6 +29,7 @@ export const PathSegment = {
   FORUM_FROM_FRIENDS:     'from-friends',
   FORUM_MY_GROUPS:        'my-groups',
   FORUM_GROUPS:           'groups',
+  FORUM_POST:             'post',
   PROFILE:                'profile',
 } as const;
 
@@ -54,8 +55,12 @@ export const Path = {
   FORUM_MY_GROUPS:        `/${PathSegment.FORUM}/${PathSegment.FORUM_MY_GROUPS}`,
   FORUM_GROUPS:           `/${PathSegment.FORUM}/${PathSegment.FORUM_GROUPS}`,
 
+  // /forum/groups/:id?tab=posts
   FORUM_GROUPS_test_posts:   '/forum/groups/group-posts-placeholder/posts',
+  // /forum/groups/:id?tab=members
   FORUM_GROUPS_test_members: '/forum/groups/group-posts-placeholder/members',
+
+  FORUM_POST:           (id: string) => `/${PathSegment.FORUM}/${PathSegment.FORUM_POST}/${id}`,
 
   PROFILE:                (id: string) => `/profile/${id}`,
   PROFILE_FRIENDS:        (id: string) => `/profile/${id}/friends`,

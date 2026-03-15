@@ -13,7 +13,7 @@ type NavPath = {
 
 @Component({
   selector: 'app-forum',
-  imports: [ RouterLink, RouterLinkActive, FlatHeaderComponent, FooterComponent, RouterOutlet ],
+  imports: [RouterLink, RouterLinkActive, FlatHeaderComponent, FooterComponent, RouterOutlet],
   templateUrl: './forum.component.html',
   styleUrl: "./forum.component.css"
 })
@@ -22,14 +22,15 @@ export class ForumComponent {
   public currentPath: WritableSignal<string> = signal(this.router.url);
 
   public navPaths: NavPath[] = [
-    { path: Path.FORUM_DISCOVER,      label: 'Discover'      },
-    { path: Path.FORUM_FROM_FRIENDS,  label: 'From Friends'  },
-    { path: Path.FORUM_MY_GROUPS,     label: 'My Groups'     },
-    /*
-     * Testing purposes
-     * TODO: Remove
-     */
-    { path: Path.FORUM_GROUPS,        label: 'Groups'     },
+    { path: Path.FORUM_DISCOVER, label: 'Discover' },
+    { path: Path.FORUM_FROM_FRIENDS, label: 'From Friends' },
+    { path: Path.FORUM_MY_GROUPS, label: 'My Groups' },
+  ];
+
+  // TODO: Remove - testing purposes
+  public testPaths: NavPath[] = [
+    { path: Path.FORUM_GROUPS, label: 'Groups' },
+    { path: Path.FORUM_POST('post_id_test'), label: 'Post' },
   ];
 
   constructor() {
