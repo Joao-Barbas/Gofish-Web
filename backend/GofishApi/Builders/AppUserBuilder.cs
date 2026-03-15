@@ -11,7 +11,7 @@ public class AppUserBuilder : IAppUserBuilder
     private readonly UserManager<AppUser> _userManager;
     private readonly AppDbContext _db;
 
-    private AppUser _user = default!;
+    private AppUser _appUser = default!;
     private UserProfile _userProfile = default!;
     private string _password = default!;
 
@@ -28,7 +28,7 @@ public class AppUserBuilder : IAppUserBuilder
 
     public IAppUserBuilder FromDto(SignUpReqDTO dto)
     {
-        _user = new AppUser
+        _appUser = new AppUser
         {
             Email = dto.Email,
             UserName = dto.UserName,
@@ -39,20 +39,21 @@ public class AppUserBuilder : IAppUserBuilder
         return this;
     }
 
-    public async Task CreateAsync()
+    public async Task<AppUser> CreateAsync()
     {
         await using var transaction = await _db.Database.BeginTransactionAsync();
 
-        var result = await _userManager.CreateAsync(_user, _password);
+        var result = await _userManager.CreateAsync(_appUser, _password);
         if (!result.Succeeded) throw new IdentityException(result);
 
-        result = await _userManager.AddToRoleAsync(_user, "User");
+        result = await _userManager.AddToRoleAsync(_appUser, "User");
         if (!result.Succeeded) throw new IdentityException(result);
 
         AddProfile();
 
         await _db.SaveChangesAsync();
         await transaction.CommitAsync();
+        return _appUser;
     }
 
     #endregion // Builder steps
@@ -62,11 +63,12 @@ public class AppUserBuilder : IAppUserBuilder
         var now = DateTime.UtcNow;
         _userProfile = new UserProfile
         {
-            UserId = _user.Id,
+            UserId = _appUser.Id,
             JoinedAt = now,
             LastActiveAt = now,
             LastUpdateAt = now
         };
+        _appUser.UserProfile = _userProfile;
         _db.UserProfiles.Add(_userProfile);
     }
 }

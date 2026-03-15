@@ -106,7 +106,7 @@ namespace GofishApi.Data
 
             builder.Entity<UserProfile>()
                 .HasOne(p => p.AppUser)
-                .WithOne()
+                .WithOne(u => u.UserProfile)
                 .HasForeignKey<UserProfile>(p => p.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -150,6 +150,8 @@ namespace GofishApi.Data
         {
             var hasher = new PasswordHasher<AppUser>();
             var users = new List<AppUser>();
+            var profiles = new List<UserProfile>();
+            var now = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
             for (int i = 1; i <= 5; i++)
             {
@@ -163,13 +165,21 @@ namespace GofishApi.Data
                     EmailConfirmed = true,
                     SecurityStamp = $"seed-stamp-{i}",
                     ConcurrencyStamp = $"seed-cstamp-{i}",
-                    LockoutEnabled = false
+                    LockoutEnabled = false,
                 };
-
                 user.PasswordHash = hasher.HashPassword(user, "123456@");
                 users.Add(user);
+                profiles.Add(new UserProfile
+                {
+                    UserId = $"seed-player-{i}",
+                    JoinedAt = now,
+                    LastActiveAt = now,
+                    LastUpdateAt = now
+                });
             }
+
             builder.Entity<AppUser>().HasData(users);
+            builder.Entity<UserProfile>().HasData(profiles);
         }
         private static void SeedCatchPin(ModelBuilder builder) 
         {

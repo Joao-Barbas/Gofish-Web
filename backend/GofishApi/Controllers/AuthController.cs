@@ -36,10 +36,11 @@ public class AuthController : ControllerBase
     [HttpPost("SignUp")]
     public async Task<IActionResult> SignUp([FromBody] SignUpReqDTO dto)
     {
-        await _userBuilder
-        .FromDto(dto)
-        .CreateAsync();
-        return StatusCode(StatusCodes.Status201Created);
+        var user = await _userBuilder
+            .FromDto(dto)
+            .CreateAsync();
+        var token = await _jwtService.CreateTokenAsync(user);
+        return StatusCode(StatusCodes.Status201Created, new SignInResDTO(token));
     }
 
     [HttpPost("SignIn")]

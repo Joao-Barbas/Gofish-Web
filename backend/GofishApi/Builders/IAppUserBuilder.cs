@@ -1,9 +1,10 @@
 using GofishApi.Dtos;
+using GofishApi.Models;
 
 namespace GofishApi.Builders;
 
 public interface IAppUserBuilder
 {
     IAppUserBuilder FromDto(SignUpReqDTO dto);
-    Task CreateAsync();
+    Task<AppUser> CreateAsync();
 }
