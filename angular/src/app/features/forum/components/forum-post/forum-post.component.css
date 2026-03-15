@@ -1,6 +1,6 @@
 .gf-card-forum-post {
   padding: var(--gf-16);
-  max-width: 37rem;
+  max-width: 100%;
   overflow: hidden;
   box-shadow: none;
 }

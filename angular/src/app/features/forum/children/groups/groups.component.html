@@ -1,5 +1,7 @@
 <div class="d-flex flex-column">
 
+
+  <!-- Group Header Info -->
   <div class="d-flex flex-column group-header-info">
 
     <!-- Group Header -->
@@ -51,30 +53,30 @@
     <div class="group-description">
 
       <p class="group-description-text">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit voluptate sit ipsum itaque soluta vitae iusto eaque et, sequi earum quasi accusamus? Quam animi rerum corporis nostrum consequatur repellat adipisci.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit voluptate sit ipsum itaque soluta vitae
+        iusto eaque et, sequi earum quasi accusamus? Quam animi rerum corporis nostrum consequatur repellat adipisci.
       </p>
 
     </div>
 
     <!-- Group Listing Tabs -->
     <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
-
-      <!--[routerLink]="n.path"-->
-
-        <a class="d-flex justify-content-center listing-tabs gf-text-selection">
-          <span class="listing-tab-text">Posts (90)</span>
-        </a>
-
-        <a class="d-flex justify-content-center listing-tabs gf-text-selection active">
-          <span class="listing-tab-text">Members (90)</span>
-        </a>
-
-
+      @for (n of navPaths; track n.path) {
+      <a [routerLink]="n.path" routerLinkActive="active"
+        class="d-flex justify-content-center listing-tabs gf-text-selection">
+        <span class="listing-tab-text">{{ n.label }}</span>
+      </a>
+      }
     </div>
 
 
   </div>
+  <!-- / Group Header Info -->
 
 
+  <div class="group-forum-feed">
+    <router-outlet></router-outlet>
+    
+  </div>
 
 </div>

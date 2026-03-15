@@ -70,6 +70,19 @@ export const routes: Routes = [
        * TODO: Remove
        * */
       { path: `${PathSegment.FORUM_GROUPS}`, loadComponent: () => import('@gofish/features/forum/children/groups/groups.component').then(g => g.GroupsComponent) },
+      { path: 'groups/:id', loadComponent: () => import('@gofish/features/forum/children/groups/groups.component').then(g => g.GroupsComponent), children: [
+        { path: '', redirectTo: 'posts', pathMatch: 'full' },
+        { path: 'posts',   loadComponent: () => import('@gofish/features/forum/children/groups/children/group-posts-placeholder/group-posts-placeholder.component').then(c => c.GroupPostsPlaceholderComponent) },
+        { path: 'members', loadComponent: () => import('@gofish/features/forum/children/groups/children/group-members-placeholder/group-members-placeholder.component').then(c => c.GroupMembersPlaceholderComponent) },
+      ]
+      },
+      { path: 'groups/:id', loadComponent: () => import('@gofish/features/forum/children/groups/groups.component').then(g => g.GroupsComponent),
+  children: [
+    { path: '', redirectTo: 'posts', pathMatch: 'full' },
+    { path: 'posts',   loadComponent: () => import('@gofish/features/forum/children/groups/children/group-posts-placeholder/group-posts-placeholder.component').then(c => c.GroupPostsPlaceholderComponent) },
+    { path: 'members', loadComponent: () => import('@gofish/features/forum/children/groups/children/group-members-placeholder/group-members-placeholder.component').then(c => c.GroupMembersPlaceholderComponent) },
+  ]
+},
     ]
   },
 ];
