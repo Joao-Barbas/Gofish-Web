@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using GofishApi.Builders;
 using GofishApi.Exceptions;
 using GofishApi.Dtos;
 using GofishApi.Models;
@@ -15,39 +16,31 @@ public class AuthController : ControllerBase
     private readonly UserManager<AppUser> _userManager;
     private readonly IJwtService _jwtService;
     private readonly ITwoFactorTokenService _twoFactorService;
+    private readonly IAppUserBuilder _userBuilder;
 
     public AuthController(
         ILogger<AuthController> logger,
         UserManager<AppUser> userManager,
         IJwtService jwtService,
-        ITwoFactorTokenService twoFactorService
+        ITwoFactorTokenService twoFactorService,
+        IAppUserBuilder userBuilder
     )
     {
         _logger = logger;
         _userManager = userManager;
         _jwtService = jwtService;
         _twoFactorService = twoFactorService;
+        _userBuilder = userBuilder;
     }
 
     [HttpPost("SignUp")]
     public async Task<IActionResult> SignUp([FromBody] SignUpReqDTO dto)
     {
-        var user = new AppUser
-        {
-            Email = dto.Email,
-            UserName = dto.UserName,
-            FirstName = dto.FirstName,
-            LastName = dto.LastName
-        };
-
-        IdentityResult result;
-
-        result = await _userManager.CreateAsync(user, dto.Password);
-        if (!result.Succeeded) throw new IdentityException(result.Errors);
-        result = await _userManager.AddToRoleAsync(user, "User");
-        if (!result.Succeeded) throw new IdentityException(result.Errors);
-
-        return StatusCode(StatusCodes.Status201Created);
+        var user = await _userBuilder
+            .FromDto(dto)
+            .CreateAsync();
+        var token = await _jwtService.CreateTokenAsync(user);
+        return StatusCode(StatusCodes.Status201Created, new SignInResDTO(token));
     }
 
     [HttpPost("SignIn")]

@@ -6,10 +6,25 @@
 /// </summary>
 public class AppException : Exception
 {
-    public string? Title { get; private set; }
-    public int? Status { get; private set; }
-    public string? Detail { get; private set; }
+    public string? Title { get; protected set; }
+    public int? Status { get; protected set; }
+    public string? Detail { get; protected set; }
 
+    public AppException(
+        string? title = null,
+        int? status = null,
+        string? detail = null,
+        string? message = null
+    ) : base(message ?? detail ?? "An unexpected error on the server has occurred")
+    {
+        Status = status ?? StatusCodes.Status500InternalServerError;
+        Title = title ?? "Internal server error";
+        Detail = detail ?? "An unexpected error on the server has occurred";
+    }
+
+    #region Obsolete
+
+    [Obsolete("Use AppException(string? title, int? status, string? detail, string? message) instead.")]
     public AppException(string? message, string? title, string? detail, int? status)
         : base(message)
     {
@@ -18,13 +33,17 @@ public class AppException : Exception
         Detail = detail;
     }
 
+    [Obsolete("Use AppException(string? title, int? status, string? detail, string? message) instead.")]
     public AppException(string? message, string? detail, int? status)
         : this(message, null, detail, status)
     { }
 
+    [Obsolete("Use AppException(string? title, int? status, string? detail, string? message) instead.")]
     public AppException(string? message, int? status)
         : this(message, null, null, status)
     { }
+
+    #endregion // Obsolete
 
     /// <remarks>
     /// This constructor is required by .NET exception design guidelines
