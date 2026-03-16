@@ -24,7 +24,6 @@ public record PostDataRequestDTO(
     bool? IncludeAuthor = false,
     bool? IncludeGroups = false, 
     bool? IncludeComments = false,
-    bool? IncludeVotes = false
 );
 
 #endregion
@@ -43,8 +42,7 @@ public record GetPostsPostDTO(
 
     GetPostsAuthorDTO? Author,
     IReadOnlyCollection<GetPostsCommentDTO>? Comments,
-    IReadOnlyCollection<GetPostsGroupDTO>? Groups,
-    IReadOnlyCollection<GetPostsVoteDTO>? PostVotes
+    IReadOnlyCollection<GetPostsGroupDTO>? Groups
 )
 {
     public static GetPostsPostDTO FromPost(Post post, PostDataRequestDTO? request) => new(
@@ -59,8 +57,7 @@ public record GetPostsPostDTO(
 
         request?.IncludeAuthor ?? false ? GetPostsAuthorDTO.FromUser(post.AppUser) : null,
         request?.IncludeComments ?? false ? post.Comments.Select(GetPostsCommentDTO.FromComment).ToList() : null,
-        request?.IncludeGroups ?? false ? post.Groups.Select(GetPostsGroupDTO.FromGroup).ToList() : null,
-        request?.IncludeVotes ?? false ? post.PostVotes.Select(GetPostsVoteDTO.FromVote).ToList() : null
+        request?.IncludeGroups ?? false ? post.Groups.Select(GetPostsGroupDTO.FromGroup).ToList() : null
         );
 }
 
@@ -107,6 +104,7 @@ public record GetPostsCommentDTO(
     );
 }
 
+/*
 public record GetPostsVoteDTO(
     int PostId,
     string UserId,
@@ -121,5 +119,6 @@ public record GetPostsVoteDTO(
         vote.Value
     );
 }
+*/
 
 #endregion
