@@ -68,4 +68,8 @@ export const routes: Routes = [
     path: 'privacy-policy',
     loadComponent: () => import('@gofish/features/about/about.component').then(a => a.AboutComponent), /* TODO: Component */
   },
+  {
+    path: 'test-pin-listing',
+    loadComponent: () => import('@gofish/features/test-delete-after/test-delete-after.component').then(a => a.TestDELETEAFTERComponent), /* TODO: remove */
+  },
 ];

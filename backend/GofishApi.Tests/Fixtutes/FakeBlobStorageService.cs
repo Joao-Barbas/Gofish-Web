@@ -17,4 +17,9 @@ public class FakeBlobStorageService : IBlobStorageService
         // Não faz nada (fake)
         return Task.CompletedTask;
     }
+
+    public Task<string> UploadAvatarAsync(IFormFile file)
+    {
+        throw new NotImplementedException();
+    }
 }
