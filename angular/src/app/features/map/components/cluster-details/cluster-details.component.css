@@ -1,3 +1,8 @@
+/* TODO: Cleanup + remove old unused classes
+ * Old classes when removed together, break the Pin Listing
+*/
+
+
 .sidebar-wrapper {
   border-radius: 12px;
   padding: 6px;
@@ -128,7 +133,7 @@
 
 /* Upvote / Downvote and Comment */
 
-.post-interact-section {
+.post-interact-section-wrapper {
   gap: 5px;
 }
 
@@ -200,11 +205,22 @@
 }
 
 /* Go To Post */
+.post-view-section {
+  gap: 5px;
+}
+
+.gf-badge-post-view-button,
 .gf-badge-goto-post {
   height: 100%;
   width: 36px;
   height: 36px;
 }
+
+
+/*
+ * OLD - Do not remove or else it will break
+ * Needs dedicated cleanup
+ */
 
 .pin-preview-click {
   display: flex;

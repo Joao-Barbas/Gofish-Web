@@ -1,3 +1,7 @@
+/* TODO: Cleanup + remove old unused classes
+ * Old classes when removed together, break the Pin Listing
+*/
+
 .sidebar-wrapper {
   border-radius: 12px;
   padding: 6px;
@@ -201,7 +205,13 @@
 }
 
 /* Go To Post */
-.gf-badge-goto-post {
+
+.post-view-section {
+  gap: 5px;
+}
+
+
+.gf-badge-post-view-button {
   height: 100%;
   width: 36px;
   height: 36px;

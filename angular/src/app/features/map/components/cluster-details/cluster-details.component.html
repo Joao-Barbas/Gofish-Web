@@ -56,6 +56,7 @@
                 d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />
             </svg>
           </button>
+
         </div>
 
       </div>
@@ -67,7 +68,8 @@
         @if (pin.kind == pinKind.WARNING) {
         <div class="warning-banner">
           <img src="assets/images/placeholder_profile_pic.png" class="warning-image rounded-circle">
-          <span class="warning-type-text">Strong currents! (Falta o tipo de Warning nos DTOS) {{pin.details?.warningKind}}</span>
+          <span class="warning-type-text">Strong currents! (Falta o tipo de Warning nos DTOS)
+            {{pin.details?.warningKind}}</span>
         </div>
         }
 
@@ -96,7 +98,7 @@
         <!-- Upvote / Downvote / Comment and Go To Post -->
         <div class="d-flex justify-content-between">
 
-          <div class="d-flex post-interact-section">
+          <div class="d-flex post-interact-section-wrapper">
 
             <div class="gf-badge-vote post-interaction-wrapper">
 
@@ -141,18 +143,35 @@
             </button>
           </div>
 
-          <!-- Go To Post button -->
-          <button class="gf-badge-goto-post post-interact-wrapper post-interact-comment-wrapper">
+          <div class="d-flex post-view-section">
 
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="lucide lucide-square-arrow-out-up-right-icon lucide-square-arrow-out-up-right">
-              <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" />
-              <path d="m21 3-9 9" />
-              <path d="M15 3h6v6" />
-            </svg>
+            <!-- Location Button -->
+            <button class="gf-badge-post-view-button">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-locate-icon lucide-locate">
+                <line x1="2" x2="5" y1="12" y2="12" />
+                <line x1="19" x2="22" y1="12" y2="12" />
+                <line x1="12" x2="12" y1="2" y2="5" />
+                <line x1="12" x2="12" y1="19" y2="22" />
+                <circle cx="12" cy="12" r="7" />
+              </svg>
+            </button>
 
-          </button>
+            <!-- Go To Post button -->
+            <button class="gf-badge-post-view-button">
+
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-square-arrow-out-up-right-icon lucide-square-arrow-out-up-right">
+                <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" />
+                <path d="m21 3-9 9" />
+                <path d="M15 3h6v6" />
+              </svg>
+
+            </button>
+          </div>
+
         </div>
 
 
