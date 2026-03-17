@@ -35,8 +35,7 @@ export class DeletePinComponent {
 
   confirmDelete() {
     if (!this.pinId) return;
-    console.log(this.pinId);
-    this.pinService.DeletePin(this.pinId).subscribe({
+    this.pinService.deletePin(this.pinId).subscribe({
       next: () => {
         toast.success('deleted pin succesfully');
       }, error: (err) => {

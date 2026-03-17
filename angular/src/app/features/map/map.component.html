@@ -16,7 +16,7 @@
 
     @if (this.popupService.isOpen('cluster-preview')) {
     <div class="cluster-detail-panel fade show gf-do-events">
-      <app-cluster-details [pinsData] ="selectedPins()" (cancel)="onPopupCancelPinPreview()">
+      <app-cluster-details [pinsData] ="selectedPins()" (cancel)="onPopupCancelPinPreview()" (coords)="goToCoords($event)">
       </app-cluster-details>
     </div>
     }

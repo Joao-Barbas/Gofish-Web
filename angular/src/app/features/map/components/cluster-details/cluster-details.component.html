@@ -2,7 +2,7 @@
 
   <aside class="pin-side-panel scroll-container">
     @for (pin of pinsData(); track pin.id) {
-    <article class="gf-card pin-preview-click">
+    <article class="gf-card pin-preview-click" (click)="onPreviewClick(pin!.geolocation!)">
 
       <header class="pin-header">
         <div class="pin-author-info">
