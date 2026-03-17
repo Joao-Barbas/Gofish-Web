@@ -18,6 +18,7 @@ namespace GofishApi.Data
         public DbSet<Friendship> Friendships { get; set; }
         public DbSet<Pin> Pins { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<PostVote> PostVote { get; set; }
         public DbSet<PostComment> PostComments { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupPost> GroupPosts { get; set; }
@@ -139,6 +140,25 @@ namespace GofishApi.Data
                 );
 
             #endregion // GroupPost
+            #region PostVotes
+
+            builder.Entity<PostVote>()
+                .HasKey(pv => new { pv.PostId, pv.UserId });
+
+            builder.Entity<PostVote>()
+                .HasOne(pv => pv.Post)
+                .WithMany(p => p.PostVotes)
+                .HasForeignKey(pv => pv.PostId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<PostVote>()
+                .HasOne(pv => pv.AppUser)
+                .WithMany(u => u.PostVotes)
+                .HasForeignKey(pv => pv.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            #endregion
 
             SeedUsers(builder);
             SeedCatchPin(builder);
