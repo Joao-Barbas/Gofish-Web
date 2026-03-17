@@ -21,7 +21,7 @@ export class GroupsComponent {
     public currentPath: WritableSignal<string> = signal(this.router.url);
 
     public navPaths: NavPath[] = [
-      { path: Path.FORUM_GROUPS_test_posts,      label: 'Posts'      },
+      { path: 'group-post-redirect-testing',      label: 'Posts'      },
       { path: Path.FORUM_GROUPS_test_members,      label: 'Members'      },
     ];
 

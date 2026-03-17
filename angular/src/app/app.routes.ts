@@ -91,7 +91,14 @@ export const routes: Routes = [
     },
 
     // TODO: Remove - testing purposes
-    { path: PathSegment.FORUM_GROUPS, loadComponent: () => import('@gofish/features/forum/children/groups/groups.component').then(g => g.GroupsComponent) },
+    {
+      path: PathSegment.FORUM_GROUPS, loadComponent: () => import('@gofish/features/forum/children/groups/groups.component').then(g => g.GroupsComponent),
+      children: [
+        { path: '', redirectTo: 'group-post-redirect-testing', pathMatch: 'full' },
+        { path: 'group-post-redirect-testing',   loadComponent: () => import('@gofish/features/forum/children/groups/children/group-posts-placeholder/group-posts-placeholder.component').then(c => c.GroupPostsPlaceholderComponent) },
+      ]
+
+     },
     { path: 'post/:id',               loadComponent: () => import('@gofish/features/forum/children/post-id-placeholder/post-id-placeholder.component').then(p => p.PostIdPlaceholderComponent) },
   ]
 },
