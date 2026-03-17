@@ -60,8 +60,7 @@
         @if (pin.kind == pinKind.WARNING) {
         <div class="warning-banner">
           <img src="assets/images/placeholder_profile_pic.png" class="warning-image rounded-circle">
-          <span class="warning-type-text">Strong currents! (Falta o tipo de Warning nos DTOS)
-            {{pin.details?.warningKind}}</span>
+          <span class="warning-type-text">{{getEnumLabel(warnTypeOptions, pin.details!.warningKind)}}</span>
         </div>
         }
 

@@ -14,7 +14,6 @@
     </div>
 
     @for (pin of pinsData(); track pin.id) {
-
     <div class="gf-card-pin" (click)="onPreviewClick(pin!.geolocation!)">
 
       <!-- Post Header -->
@@ -68,8 +67,7 @@
         @if (pin.kind == pinKind.WARNING) {
         <div class="warning-banner">
           <img src="assets/images/placeholder_profile_pic.png" class="warning-image rounded-circle">
-          <span class="warning-type-text">Strong currents! (Falta o tipo de Warning nos DTOS)
-            {{pin.details?.warningKind}}</span>
+          <span class="warning-type-text">{{getEnumLabel(warnTypeOptions, pin.details!.warningKind)}}</span>
         </div>
         }
 
@@ -90,7 +88,7 @@
         <!-- TODO: Apresentar no mockup do Post, o tipo de isco -->
         @if (pin.details) {
         <div class="pin-details">
-          <span class="bait-info">Hook: {{ pin.details.bait }}</span>
+          <span class="bait-info">Hook: {{ pin.details.bait ? pin.details.bait : "Dont have hook information" }}</span>
         </div>
         }
 
