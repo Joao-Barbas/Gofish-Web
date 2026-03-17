@@ -81,7 +81,7 @@
         <!-- TODO: Apresentar no mockup do Post, o tipo de isco -->
         @if (pin.details) {
         <div class="pin-details">
-          <span class="bait-info">Hook: {{ pin.details.bait }}</span>
+          <span class="bait-info">Hook: {{ pin.details.bait ? pin.details.bait : "Dont have hook information" }}</span>
         </div>
         }
 

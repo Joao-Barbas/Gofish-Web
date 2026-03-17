@@ -177,74 +177,7 @@
 
     </div>
     }
-    <!--
-    <article class="gf-card pin-preview-click">
-
-      <header class="pin-header">
-        <div class="pin-author-info">
-          <div class="pin-avatar"></div>
-
-          <div class="pin-meta">
-            <span class="author-name">
-              {{ pin.author?.userName ?? 'User' }}
-            </span>
-            <span class="separator">•</span>
-            <span class="time-ago">{{ pin.createdAt | timeAgo }}</span>
-          </div>
-        </div>
-
-        @if (pin!.author!.userName == this.userName) {
-        <button class="close-button" (click)="deletePin(pin.id)">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 6h18" />
-            <path d="M8 6V4h8v2" />
-            <path d="M19 6l-1 14H6L5 6" />
-            <path d="M10 11v6" />
-            <path d="M14 11v6" />
-          </svg>
-        </button>
-        }
-
-        <button class="gf-btn-icon" (click)="closePanel()"
-          style="background: none; border: none; color: var(--dark-text-muted); cursor: pointer;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
-        </button>
-      </header>
-
-      @if (pin.kind == pinKind.CATCH) {
-      <div class="pin-image-wrapper">
-        <img [src]="pin.post!.imageUrl" class="pin-img" alt="Post image">
-      </div>
-      }
-
-      <div class="pin-body">
-        <p class="pin-text">{{ pin.post?.body }}</p>
-      </div>
-
-      @if (pin.details) {
-      <div class="pin-details">
-        <span class="bait-info">Hook: {{ pin.details.bait }}</span>
-      </div>
-      }
-
-      <footer class="pin-footer">
-        <div class="badge-container">
-          <div class="pin-badge">
-            <span class="badge-text">👍 {{ pin.post?.score ?? 0 }}</span>
-          </div>
-          <div class="pin-badge">
-            <span class="badge-text">💬 {{ pin.post?.commentCount ?? 0 }}</span>
-          </div>
-        </div>
-      </footer>
-
-    </article>
-
-  -->
+    
 
   </aside>
 

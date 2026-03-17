@@ -2,10 +2,41 @@
  * Old classes when removed together, break the Pin Listing
 */
 
-
 .sidebar-wrapper {
   border-radius: 12px;
   padding: 6px;
+  width: 405px;
+  height: calc(100vh - 5rem);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--gf-dark-bg-dark);
+
+}
+
+.scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  padding: 1rem;
+
+
+  /* Estilização opcional da scrollbar para combinar com o tema escuro */
+  scrollbar-width: thin;
+  scrollbar-color: var(--gf-dark-bg-light) var(--gf-dark-bg-dark);
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: #000;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 10px;
+  border: 2px solid #000;
 }
 
 .pin-side-panel {
@@ -209,13 +240,11 @@
   gap: 5px;
 }
 
-.gf-badge-post-view-button,
-.gf-badge-goto-post {
+.gf-badge-post-view-button {
   height: 100%;
   width: 36px;
   height: 36px;
 }
-
 
 /*
  * OLD - Do not remove or else it will break
@@ -333,36 +362,4 @@
   color: var(--dark-text);
   font-weight: 500;
   font-size: 12px;
-}
-
-.sidebar-wrapper {
-  background-color: var(--gf-dark-bg-dark);
-  width: 405px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.scroll-container {
-  flex: 1;
-  overflow-y: auto; /* Ativa o scroll vertical */
-  padding: 1rem;
-
-  /* Estilização opcional da scrollbar para combinar com o tema escuro */
-  scrollbar-width: thin;
-  scrollbar-color: #444 #000;
-}
-
-.scroll-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.scroll-container::-webkit-scrollbar-track {
-  background: #000;
-}
-
-.scroll-container::-webkit-scrollbar-thumb {
-  background-color: #444;
-  border-radius: 10px;
-  border: 2px solid #000;
 }
