@@ -249,19 +249,12 @@ public class PinController : ControllerBase
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         var pin = await _db.Pins.FindAsync(id);
-        if (pin is null)
-        {
-            return NotFound();
-        }
-        try
-        {
-            _db.Pins.Remove(pin);
-            await _db.SaveChangesAsync();
-        }
-        catch (Exception)
-        {
-            throw new AppException("Service Unavailable", "Failed to delete the provided pin.", StatusCodes.Status503ServiceUnavailable);
-        }
+        if (pin is null) return NotFound();
+        var isOwner = pin.UserId == userId;
+        var isAdmin = User.IsInRole("Admin");
+        if (!isOwner || !isAdmin) return Forbid();
+        _db.Pins.Remove(pin);         
+        await _db.SaveChangesAsync();
         return NoContent();
     }
 }
