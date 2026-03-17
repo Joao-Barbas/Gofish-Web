@@ -21,9 +21,6 @@ export class ClusterDetailsComponent {
   public pinKind = PinKind;
   @Output() cancel = new EventEmitter<void>();
 
-  fortnite() {
-    
-  }
 
   closePanel(): void {
     this.cancel.emit();

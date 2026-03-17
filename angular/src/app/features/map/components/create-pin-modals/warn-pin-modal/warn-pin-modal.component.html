@@ -30,10 +30,20 @@
             placeholder="Add a description..." formControlName="body">
           </textarea>
 
-          @if (form.controls.body.touched && form.controls.body.invalid) {
+          @if (form.controls.body.touched) {
+          @if (form.controls.body.hasError('required')) {
           <p class="text-danger mt-2 mb-0">
             You must have a description!
           </p>
+          } @else if (form.controls.body.hasError('minlength')) {
+          <p class="text-danger mt-2 mb-0">
+            Your description is too short!
+          </p>
+          } @else if (form.controls.body.hasError('maxlength')) {
+          <p class="text-danger mt-2 mb-0">
+            Your description must be lower than 100 characters.
+          </p>
+          }
           }
         </section>
 
