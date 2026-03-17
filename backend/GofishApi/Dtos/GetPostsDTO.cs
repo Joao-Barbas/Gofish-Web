@@ -4,12 +4,16 @@ using GofishApi.Models;
 namespace GofishApi.Dtos;
 
 public record GetPostsReqDTO(
-    IReadOnlyCollection<PostIdDTO> Ids,
-    PostDataRequestDTO? DataRequest
+    IReadOnlyCollection<PostIdDTO>? Ids,
+    PostDataRequestDTO? DataRequest,
+    DateTime LastTimestamp,
+    int MaxResults
 );
 
 public record GetPostsResDTO(
-    IReadOnlyCollection<GetPostsPostDTO> Posts
+    IReadOnlyCollection<GetPostsPostDTO> Posts,
+    bool HasMoreResults,
+    DateTime? LastTimestamp
 );
 
 #region Request
@@ -23,7 +27,7 @@ public record PostIdDTO(
 public record PostDataRequestDTO(
     bool? IncludeAuthor = false,
     bool? IncludeGroups = false, 
-    bool? IncludeComments = false,
+    bool? IncludeComments = false
 );
 
 #endregion
