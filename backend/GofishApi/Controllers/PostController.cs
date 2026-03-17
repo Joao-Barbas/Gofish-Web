@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.NetworkInformation;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 
@@ -188,31 +189,17 @@ public class PostController : ControllerBase
     public async Task<IActionResult> DeletePost(int id)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        var post = await _db.Posts.FirstOrDefaultAsync(p => p.Id == id);
 
-        if (post is null)
-        {
-            return NotFound();
-        }
-        try
-        {
-            var pin = await _db.Pins.FirstOrDefaultAsync(p => p.Id == id);
+        var post = await _db.Posts
+            .Include(p => p.Pin)
+            .FirstOrDefaultAsync(p => p.Id == id); if (post is null) return NotFound();
 
-            if (pin is not null)
-            {
-                _db.Pins.Remove(pin);
-            }
-            else
-            {
-                _db.Posts.Remove(post);
-            }
-
-            await _db.SaveChangesAsync();
-        }
-        catch (Exception)
-        {
-            throw new AppException("Service Unavailable", "Failed to delete the provided post.", StatusCodes.Status503ServiceUnavailable);
-        }
+        var isOwner = post.UserId == userId;
+        var isAdmin = User.IsInRole("Admin");
+        if (!isOwner && !isAdmin) return Forbid();
+        if (post.Pin is not null) _db.Pins.Remove(post.Pin);
+        _db.Posts.Remove(post);
+        await _db.SaveChangesAsync();
         return NoContent();
     }
 

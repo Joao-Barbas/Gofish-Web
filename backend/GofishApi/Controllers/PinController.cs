@@ -252,7 +252,7 @@ public class PinController : ControllerBase
         if (pin is null) return NotFound();
         var isOwner = pin.UserId == userId;
         var isAdmin = User.IsInRole("Admin");
-        if (!isOwner || !isAdmin) return Forbid();
+        if (!isOwner && !isAdmin) return Forbid();
         _db.Pins.Remove(pin);         
         await _db.SaveChangesAsync();
         return NoContent();
