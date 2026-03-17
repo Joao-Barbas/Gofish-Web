@@ -97,6 +97,12 @@
   gap: var(--gf-12);
 }
 
+.group-name-stats{
+  min-height: 0px;
+  max-height: 32px;
+  overflow: hidden;
+}
+
 .group-name {
   font-family: var(--gf-font-ugc);
   font-size: var(--gf-16);
@@ -109,6 +115,7 @@
 .group-description {
   font-family: var(--gf-font-ugc);
   font-size: var(--gf-12);
+
 }
 
 /* Show More */

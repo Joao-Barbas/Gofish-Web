@@ -299,6 +299,18 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   user-select: none;
 }
 
+/*
+ * Retroactively preventing user generated text from
+ * overflowing Post cards or Post comments
+
+*/
+
+[class$="-text"],
+[class$="-name"],
+[class$="-description"] {
+  word-break: break-all;
+}
+
 /* Layouts */
 .gf-flow-vertical {
   display: flex;
@@ -410,6 +422,7 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
     color: var(--gf-primary);
 
   }
+
 
   &.active:hover span,
   &.active:hover svg {
