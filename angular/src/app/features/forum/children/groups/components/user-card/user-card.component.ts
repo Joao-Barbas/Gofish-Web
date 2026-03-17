@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './user-card.component.css',
 })
 export class UserCardComponent {
-
+  // TODO: Rename to group-user-card
 }

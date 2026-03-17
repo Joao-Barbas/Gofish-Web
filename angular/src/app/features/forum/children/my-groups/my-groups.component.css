@@ -1,6 +1,6 @@
 :host {
   display: flex;
-  gap: var(--gf-8);
+  gap: var(--gf-12);
   flex-direction: column;
   width: 100%;
 }
@@ -76,6 +76,10 @@
 
 
 /* Group Listing ==== */
+
+.group-list-wrapper {
+  gap: 8px;
+}
 
 .gf-card-group-listing {
   padding: var(--gf-16);
