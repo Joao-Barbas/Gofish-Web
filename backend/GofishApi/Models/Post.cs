@@ -37,7 +37,6 @@ public class Post
     #endregion
     #region Computed Properties
 
-    public int Score => PostVotes.Sum(v => v.Value);
     public int CommentCount => Comments.Count;
 
     #endregion

@@ -54,7 +54,7 @@ public record GetPostsPostDTO(
         post.CreatedAt,
         post.Body,
         post.ImageUrl,
-        post.Score,
+        post.PostVotes.Sum(v => (int)v.Value),
         post.CommentCount,
         post.Pin.Kind,
         post.Pin is WarnPin warnPin ? warnPin.WarningKind : null,

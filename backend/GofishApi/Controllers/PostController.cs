@@ -77,6 +77,7 @@ public class PostController : ControllerBase
         var posts = await _db.Posts
             .Where(p => postIds.Contains(p.Id))
             .Where(p => p.CreatedAt > dto.LastTimestamp)
+            .Include(p => p.PostVotes)
             .Include(p => p.Pin)
             .Include(p => p.AppUser)
             .Include(p => p.Groups)
@@ -114,6 +115,7 @@ public class PostController : ControllerBase
 
         var posts = await query
             .Where(p => p.CreatedAt <= dto.LastTimestamp)
+            .Include(p => p.PostVotes)
             .Include(p => p.Pin)
             .Include(p => p.AppUser)
             .Include(p => p.Groups)
@@ -207,7 +209,36 @@ public class PostController : ControllerBase
 
     #region Classification
 
+    [Authorize]
+    [HttpPost("PostVote/{postId}")]
+    public async Task<IActionResult> PostVote(int postId, [FromBody] VotePostDTO dto)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
+        if (user is null) return Unauthorized();
+        var postExists = await _db.Posts.AnyAsync(p => p.Id == postId);
+        if (!postExists) return NotFound();
+        if (!Enum.IsDefined(dto.Value))
+            return BadRequest("Invalid vote value.");
+
+        var existingVote = await _db.PostVote
+            .FirstOrDefaultAsync(p => p.PostId == postId && p.UserId == userId);
+
+        if (existingVote is null)
+        {
+            _db.PostVote.Add(new PostVote
+            {
+                PostId = postId,
+                UserId = userId,
+                Value = dto.Value
+            });
+        }
+        else if (existingVote.Value == dto.Value) _db.PostVote.Remove(existingVote);
+        else existingVote.Value = dto.Value;
+        await _db.SaveChangesAsync();
+        return Ok();
+    }
 
 
-    #endregion 
+    #endregion
 }

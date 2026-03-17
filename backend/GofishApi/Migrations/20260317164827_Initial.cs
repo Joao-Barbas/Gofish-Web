@@ -392,6 +392,7 @@ namespace GofishApi.Migrations
                 {
                     PostId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Value = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -414,11 +415,11 @@ namespace GofishApi.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "TwoFactorMethod", "UserName" },
                 values: new object[,]
                 {
-                    { "seed-player-1", 0, "seed-cstamp-1", "player1@gofish.com", true, null, null, false, null, "PLAYER1@GOFISH.COM", "PLAYER1", "AQAAAAIAAYagAAAAEDoNCIPX2mpUsJjwWk4H14PL+y3m13KhDMpjr4wdlxSn04349ziY6Iag/NovZABu7A==", null, false, "seed-stamp-1", false, 0, "player1" },
-                    { "seed-player-2", 0, "seed-cstamp-2", "player2@gofish.com", true, null, null, false, null, "PLAYER2@GOFISH.COM", "PLAYER2", "AQAAAAIAAYagAAAAEG82C1OnUwVQCfmKwUnvEyY87+44rtqBFRddK2FdY2spYse8zgq4UpS9J9ijkBMVTA==", null, false, "seed-stamp-2", false, 0, "player2" },
-                    { "seed-player-3", 0, "seed-cstamp-3", "player3@gofish.com", true, null, null, false, null, "PLAYER3@GOFISH.COM", "PLAYER3", "AQAAAAIAAYagAAAAEPHgh+9B27RsNFVtDBCvyxoxsKvygauD5sYqSwWO7ERezNuawPGvRgGGhSztY73LDQ==", null, false, "seed-stamp-3", false, 0, "player3" },
-                    { "seed-player-4", 0, "seed-cstamp-4", "player4@gofish.com", true, null, null, false, null, "PLAYER4@GOFISH.COM", "PLAYER4", "AQAAAAIAAYagAAAAENLRCkNB8gCFvEq/FCIC0uK92nsk/WgSr8zzQC9XY88lKA2AChG8FF0Mzs+zUCZwJw==", null, false, "seed-stamp-4", false, 0, "player4" },
-                    { "seed-player-5", 0, "seed-cstamp-5", "player5@gofish.com", true, null, null, false, null, "PLAYER5@GOFISH.COM", "PLAYER5", "AQAAAAIAAYagAAAAEAuXRGy1Wz6OsIomg6kWnryCO/VD0Gq3+U/ksWu/n6Ir8Z+guSjEs79V1cZtwIiiHA==", null, false, "seed-stamp-5", false, 0, "player5" }
+                    { "seed-player-1", 0, "seed-cstamp-1", "player1@gofish.com", true, null, null, false, null, "PLAYER1@GOFISH.COM", "PLAYER1", "AQAAAAIAAYagAAAAECORNNkZq0Z14k8WDLn9I1ggdKKEbIHU1OVkAjEv+03ADg+S3YoVl9xWxqDslX1ocQ==", null, false, "seed-stamp-1", false, 0, "player1" },
+                    { "seed-player-2", 0, "seed-cstamp-2", "player2@gofish.com", true, null, null, false, null, "PLAYER2@GOFISH.COM", "PLAYER2", "AQAAAAIAAYagAAAAEJFrFCPuqW1fWgliwD/fU6hNyyzqXNPXB27hROv2LSWYNuGqoMTI7kS/jjdjwdPo8A==", null, false, "seed-stamp-2", false, 0, "player2" },
+                    { "seed-player-3", 0, "seed-cstamp-3", "player3@gofish.com", true, null, null, false, null, "PLAYER3@GOFISH.COM", "PLAYER3", "AQAAAAIAAYagAAAAEL0BZNfSPGsE0SXXtpH73PVQl0JI3IFT51jS+MLb7/ygaluV1xPLdShyGAR6zCGafA==", null, false, "seed-stamp-3", false, 0, "player3" },
+                    { "seed-player-4", 0, "seed-cstamp-4", "player4@gofish.com", true, null, null, false, null, "PLAYER4@GOFISH.COM", "PLAYER4", "AQAAAAIAAYagAAAAEKZxe8E8yrixrxc4qUDwIv3suFXt8uUPVpSqMIFIV/28sEYJtWGZBvPvCLmze01kHQ==", null, false, "seed-stamp-4", false, 0, "player4" },
+                    { "seed-player-5", 0, "seed-cstamp-5", "player5@gofish.com", true, null, null, false, null, "PLAYER5@GOFISH.COM", "PLAYER5", "AQAAAAIAAYagAAAAEDKjc5Z5/UmG2/0UQc+9QB84mRpEQ+nZ7iDCmWDdr5+3XvPMh6nrd5qOg6YDVqblVw==", null, false, "seed-stamp-5", false, 0, "player5" }
                 });
 
             migrationBuilder.InsertData(
@@ -427,15 +428,15 @@ namespace GofishApi.Migrations
                 values: new object[,]
                 {
                     { 1, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.512999999999998, -8.8729999999999993, 1, "seed-player-1", 0 },
-                    { 2, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.513999999999996, -8.8679999999999986, 1, "seed-player-2", 0 },
-                    { 3, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.522999999999996, -8.8689999999999998, 1, "seed-player-3", 0 },
-                    { 4, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.527999999999999, -8.8669999999999991, 1, "seed-player-4", 0 },
-                    { 5, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.524999999999999, -8.8650000000000002, 1, "seed-player-5", 0 },
-                    { 6, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.537999999999997, -8.8629999999999995, 1, "seed-player-1", 0 },
-                    { 7, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.536999999999999, -8.8490000000000002, 1, "seed-player-2", 0 },
-                    { 8, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.533999999999999, -8.8659999999999997, 1, "seed-player-3", 0 },
-                    { 9, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.552999999999997, -8.8409999999999993, 1, "seed-player-4", 0 },
-                    { 10, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.548999999999999, -8.8279999999999994, 1, "seed-player-5", 0 }
+                    { 2, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.515000000000001, -8.8689999999999998, 1, "seed-player-2", 0 },
+                    { 3, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.516999999999996, -8.8650000000000002, 1, "seed-player-3", 0 },
+                    { 4, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.515999999999998, -8.8609999999999989, 1, "seed-player-4", 0 },
+                    { 5, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.528999999999996, -8.8689999999999998, 1, "seed-player-5", 0 },
+                    { 6, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.518000000000001, -8.8579999999999988, 1, "seed-player-1", 0 },
+                    { 7, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.542999999999999, -8.8669999999999991, 1, "seed-player-2", 0 },
+                    { 8, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.533999999999999, -8.8449999999999989, 1, "seed-player-3", 0 },
+                    { 9, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.536999999999999, -8.8650000000000002, 1, "seed-player-4", 0 },
+                    { 10, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.521999999999998, -8.863999999999999, 1, "seed-player-5", 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -444,15 +445,15 @@ namespace GofishApi.Migrations
                 values: new object[,]
                 {
                     { 101, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.512999999999998, -8.8729999999999993, 1, "seed-player-1", 0 },
-                    { 102, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.515000000000001, -8.8769999999999989, 1, "seed-player-2", 0 },
-                    { 103, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.516999999999996, -8.8769999999999989, 1, "seed-player-3", 0 },
-                    { 104, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.527999999999999, -8.8789999999999996, 1, "seed-player-4", 0 },
-                    { 105, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.524999999999999, -8.8889999999999993, 1, "seed-player-5", 0 },
-                    { 106, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.518000000000001, -8.8780000000000001, 1, "seed-player-1", 0 },
-                    { 107, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.542999999999999, -8.8789999999999996, 1, "seed-player-2", 0 },
-                    { 108, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.519999999999996, -8.9079999999999995, 1, "seed-player-3", 0 },
-                    { 109, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.528999999999996, -8.9129999999999985, 1, "seed-player-4", 0 },
-                    { 110, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.530999999999999, -8.8999999999999986, 1, "seed-player-5", 0 }
+                    { 102, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.515000000000001, -8.8780000000000001, 1, "seed-player-2", 0 },
+                    { 103, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.522999999999996, -8.8769999999999989, 1, "seed-player-3", 0 },
+                    { 104, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.527999999999999, -8.8879999999999999, 1, "seed-player-4", 0 },
+                    { 105, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.521000000000001, -8.8889999999999993, 1, "seed-player-5", 0 },
+                    { 106, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.522999999999996, -8.8879999999999999, 1, "seed-player-1", 0 },
+                    { 107, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.518999999999998, -8.8789999999999996, 1, "seed-player-2", 0 },
+                    { 108, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.519999999999996, -8.8869999999999987, 1, "seed-player-3", 0 },
+                    { 109, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.521000000000001, -8.9129999999999985, 1, "seed-player-4", 0 },
+                    { 110, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.530999999999999, -8.9179999999999993, 1, "seed-player-5", 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -461,15 +462,15 @@ namespace GofishApi.Migrations
                 values: new object[,]
                 {
                     { 201, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.512999999999998, -8.8729999999999993, "seed-player-1", 0, 1 },
-                    { 202, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.509, -8.8689999999999998, "seed-player-2", 0, 1 },
-                    { 203, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.504999999999995, -8.8689999999999998, "seed-player-3", 0, 1 },
-                    { 204, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.497999999999998, -8.863999999999999, "seed-player-4", 0, 1 },
-                    { 205, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.497, -8.8689999999999998, "seed-player-5", 0, 1 },
-                    { 206, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.492999999999995, -8.847999999999999, "seed-player-1", 0, 1 },
-                    { 207, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.506999999999998, -8.8490000000000002, "seed-player-2", 0, 1 },
-                    { 208, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.498999999999995, -8.8449999999999989, "seed-player-3", 0, 1 },
-                    { 209, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.504999999999995, -8.8409999999999993, "seed-player-4", 0, 1 },
-                    { 210, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.503999999999998, -8.863999999999999, "seed-player-5", 0, 1 }
+                    { 202, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.510999999999996, -8.8699999999999992, "seed-player-2", 0, 1 },
+                    { 203, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.504999999999995, -8.8650000000000002, "seed-player-3", 0, 1 },
+                    { 204, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.506999999999998, -8.8579999999999988, "seed-player-4", 0, 1 },
+                    { 205, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.500999999999998, -8.8650000000000002, "seed-player-5", 0, 1 },
+                    { 206, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.503, -8.8579999999999988, "seed-player-1", 0, 1 },
+                    { 207, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.488999999999997, -8.8490000000000002, "seed-player-2", 0, 1 },
+                    { 208, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.506, -8.8519999999999985, "seed-player-3", 0, 1 },
+                    { 209, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.504999999999995, -8.8569999999999993, "seed-player-4", 0, 1 },
+                    { 210, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.494999999999997, -8.8549999999999986, "seed-player-5", 0, 1 }
                 });
 
             migrationBuilder.InsertData(

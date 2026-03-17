@@ -1,6 +1,8 @@
-﻿namespace GofishApi.Dtos
-{
-    public class PostVoteDTO
-    {
-    }
-}
+﻿using GofishApi.Enums;
+using System.ComponentModel.DataAnnotations;
+
+namespace GofishApi.Dtos;
+
+public record VotePostDTO(
+    [Required] VoteType Value
+);
