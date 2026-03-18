@@ -1,1 +1,39 @@
-<p>pins works!</p>
+<!-- pins.component.html -->
+
+<app-flat-header></app-flat-header>
+<div class="gf-container-lg gf-w-90 gf-mx-auto gf-pt-64 gf-flow-vertical gf-gap-16" style="background-color:black;">
+  <h5 class="gf-font-bold">{{ 'Username\'s pins' }}</h5>
+  <nav class="gf-flow-horizontal gf-justify-evenly gf-items-center gf-w-100">
+    <a [routerLink]="'.'"
+       [queryParams]="{ tab: 'all' }"
+       [class.active]="activeTab() === 'all'">
+      All ({{ counts().all }})
+    </a>
+    <a [routerLink]="'.'"
+       [queryParams]="{ tab: 'catch' }"
+       [class.active]="activeTab() === 'catch'">
+      Catch ({{ counts().catch }})
+    </a>
+    <a [routerLink]="'.'"
+       [queryParams]="{ tab: 'information' }"
+       [class.active]="activeTab() === 'information'">
+      Information ({{ counts().information }})
+    </a>
+    <a [routerLink]="'.'"
+       [queryParams]="{ tab: 'warning' }"
+       [class.active]="activeTab() === 'warning'">
+      Warning ({{ counts().warning }})
+    </a>
+  </nav>
+  <div class="list">
+    <app-pin-card></app-pin-card>
+    <app-pin-card></app-pin-card>
+    <app-pin-card></app-pin-card>
+    <!-- @for (pin of filteredPins(); track pin.id) {
+      <app-pin-card [pin]="pin"></app-pin-card>
+    } @empty {
+      <p class="gf-text-muted">No pins found.</p>
+    } -->
+  </div>
+</div>
+<app-footer></app-footer>

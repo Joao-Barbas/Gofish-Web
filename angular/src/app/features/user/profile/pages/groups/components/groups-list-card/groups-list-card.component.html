@@ -1,0 +1,19 @@
+<a [routerLink]="['/groups', groupId()]">
+  <img [src]="avatarUrl()">
+  <div>
+    <div class="gf-flow-horizontal gf-items-center gf-justify-between">
+      <p>{{ 'Here\'s some text to feast your eyes opon' }}</p>
+      <div class="gf-flow-horizontal gf-gap-6">
+        <div class="gf-center-axes gf-py-0 gf-px-16 gf-text-xs user-stat">{{ "27 Members" }}</div>
+        <div class="gf-center-axes gf-py-0 gf-px-16 gf-text-xs user-stat">{{ "30 Posts" }}</div>
+      </div>
+    </div>
+    <small class="gf-mt-6">{{ 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut erat dui, sagittis in ex sit amet, tempus porttitor turpis. Etiam scelerisque porttitor egestas. Integer nunc ligula, vehicula at justo vel, pellentesque fermentum est. Quisque et augue maximus, pellentesque quam vel, gravida augue. Etiam placerat ultrices velit, quis vulputate diam. Morbi convallis nunc erat, sed laoreet libero finibus in. Quisque ultrices elit non velit tincidunt gravida vel in nisl. Donec rutrum dui vitae eros convallis, in pellentesque lorem vehicula. Donec faucibus auctor fermentum. Phasellus ultrices urna vel tincidunt facilisis. Sed gravida condimentum condimentum. Morbi id faucibus nunc, sit amet efficitur leo.' }}</small>
+  </div>
+</a>
+@if (showActions()) {
+  <div>
+    <button (click)="accepted.emit(groupId())">Accept</button>
+    <button (click)="declined.emit(groupId())">Decline</button>
+  </div>
+}

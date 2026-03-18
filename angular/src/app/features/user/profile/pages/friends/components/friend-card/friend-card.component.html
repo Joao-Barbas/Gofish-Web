@@ -1,0 +1,15 @@
+<div>
+  <a [routerLink]="['/profile', userId()]">
+    <img [src]="avatarUrl()">
+    <div>
+      <p>{{ userName() }}</p>
+      <small>{{ userName() }}</small>
+    </div>
+  </a>
+</div>
+@if (showActions()) {
+  <div>
+    <button (click)="accepted.emit(userId())">Accept</button>
+    <button (click)="declined.emit(userId())">Decline</button>
+  </div>
+}

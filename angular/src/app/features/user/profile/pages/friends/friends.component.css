@@ -1,0 +1,35 @@
+/* friends.component.css */
+
+nav {
+  height: var(--gf-40);
+  background-color: var(--gf-dark-bg);
+  border-radius: var(--gf-8);
+  box-shadow: var(--gf-shadow-lift-sm);
+
+  a {
+    text-decoration: none;
+    color: var(--gf-dark-text-muted);
+
+    &:hover {
+      color: var(--gf-primary);
+    }
+  }
+}
+
+.list {
+  display: grid;
+  overflow: hidden;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(auto-fill, calc((var(--gf-container-lg) - 2 * var(--gf-8)) / 3));
+  /* grid-auto-rows: 0; */
+  row-gap: var(--gf-8);
+  column-gap: var(--gf-8);
+}
+
+app-async-button {
+  width: 100%;
+  margin-top: var(--gf-8);
+
+  --async-btn-width: 100%;
+  --async-btn-height: var(--gf-40);
+}
