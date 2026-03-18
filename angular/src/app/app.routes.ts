@@ -102,4 +102,8 @@ export const routes: Routes = [
     { path: 'post/:id',               loadComponent: () => import('@gofish/features/forum/children/post-id-placeholder/post-id-placeholder.component').then(p => p.PostIdPlaceholderComponent) },
   ]
 },
+  {
+    path: 'test-pin-listing',
+    loadComponent: () => import('@gofish/features/test-delete-after/test-delete-after.component').then(a => a.TestDELETEAFTERComponent), /* TODO: remove */
+  },
 ];

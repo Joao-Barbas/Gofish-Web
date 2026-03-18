@@ -69,7 +69,7 @@ export class MapInteractionsService {
             includeGeolocation: true,
             includeAuthor: true,
             includePost: true,
-            includeDetails: false,
+            includeDetails: true,
             includeGroups: true,
           }
         };
@@ -128,7 +128,7 @@ export class MapInteractionsService {
           includeGeolocation: true,
           includeAuthor: true,
           includePost: true,
-          includeDetails: false,
+          includeDetails: true,
           includeGroups: true,
         } as PinDataReqDTO
       };

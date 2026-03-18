@@ -4,12 +4,16 @@ using GofishApi.Models;
 namespace GofishApi.Dtos;
 
 public record GetPostsReqDTO(
-    IReadOnlyCollection<PostIdDTO> Ids,
-    PostDataRequestDTO? DataRequest
+    IReadOnlyCollection<PostIdDTO>? Ids,
+    PostDataRequestDTO? DataRequest,
+    DateTime LastTimestamp,
+    int MaxResults
 );
 
 public record GetPostsResDTO(
-    IReadOnlyCollection<GetPostsPostDTO> Pins
+    IReadOnlyCollection<GetPostsPostDTO> Posts,
+    bool HasMoreResults,
+    DateTime? LastTimestamp
 );
 
 #region Request
@@ -34,8 +38,6 @@ public record GetPostsPostDTO(
     DateTime CreatedAt,
     string? Body,
     string? ImageUrl,
-    int UpVotes,
-    int DownVotes,
     int Score,
     int CommentCount,
     PinKind Kind,
@@ -52,8 +54,6 @@ public record GetPostsPostDTO(
         post.CreatedAt,
         post.Body,
         post.ImageUrl,
-        post.UpVotes,
-        post.DownVotes,
         post.Score,
         post.CommentCount,
         post.Pin.Kind,
@@ -62,7 +62,7 @@ public record GetPostsPostDTO(
         request?.IncludeAuthor ?? false ? GetPostsAuthorDTO.FromUser(post.AppUser) : null,
         request?.IncludeComments ?? false ? post.Comments.Select(GetPostsCommentDTO.FromComment).ToList() : null,
         request?.IncludeGroups ?? false ? post.Groups.Select(GetPostsGroupDTO.FromGroup).ToList() : null
-    );
+        );
 }
 
 #endregion
@@ -108,5 +108,21 @@ public record GetPostsCommentDTO(
     );
 }
 
+/*
+public record GetPostsVoteDTO(
+    int PostId,
+    string UserId,
+    string UserName,
+    int Value
+)
+{
+    public static GetPostsVoteDTO FromVote(PostVote vote) => new(
+        vote.PostId,
+        vote.UserId,
+        vote.AppUser.UserName ?? "",
+        vote.Value
+    );
+}
+*/
 
 #endregion

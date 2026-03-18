@@ -27,6 +27,8 @@ public class AppUser : IdentityUser
     public List<Friendship> RequestedFriendships { get; set; } = [];
     public List<Friendship> ReceivedFriendships { get; set; } = [];
 
+    public List<PostVote> PostVotes { get; set; } = [];
+
     public List<Group> Groups { get; set; } = [];
     public List<GroupUser> GroupUsers { get; set; } = [];
 

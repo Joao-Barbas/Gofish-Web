@@ -23,7 +23,7 @@ export class PinService {
     return this.http.post<CreatePinResDTO>(Api.Pin.action('CreateWarnPin'), dto);
   }
 
-  DeletePin(id: number): Observable<void>{
+  deletePin(id: number): Observable<void>{
     return this.http.delete<void>(Api.Pin.action(`DeletePin/${id}`));
   }
 
@@ -44,6 +44,5 @@ export class PinService {
   enumerateSpeciesType = () => this.http.get<EnumDTO[]>(Api.Enums.action('Species'));
   enumerateVisibilityType = () => this.http.get<EnumDTO[]>(Api.Enums.action('VisibilityLevel'));
   enumerateAccessDifficultyType = () => this.http.get<EnumDTO[]>(Api.Enums.action('AccessDifficulty'));
-
 
 }

@@ -1,6 +1,255 @@
-.pin-side-panel {
-  display: block;
+/* TODO: Cleanup + remove old unused classes
+ * Old classes when removed together, break the Pin Listing
+*/
+
+.sidebar-wrapper {
+  border-radius: 12px;
+  padding: 6px;
+  width: 405px;
+  height: calc(100vh - 5rem);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--gf-dark-bg-dark);
+
 }
+
+.scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  padding: 1rem;
+
+
+  /* Estilização opcional da scrollbar para combinar com o tema escuro */
+  scrollbar-width: thin;
+  scrollbar-color: var(--gf-dark-bg-light) var(--gf-dark-bg-dark);
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: #000;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 10px;
+  border: 2px solid #000;
+}
+
+.pin-side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gf-badge-close-sidepanel {
+  height: 100%;
+  width: 36px;
+  height: 36px;
+}
+
+/* Post Header */
+
+.gf-card-pin {
+  padding: var(--gf-12);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.post-author-profile-photo {
+  width: var(--gf-32);
+  height: var(--gf-32);
+}
+
+.post-author-name {
+  font-size: var(--gf-14);
+  word-break: break-all;
+}
+
+.separator,
+.time-ago {
+  color: var(--dark-text-muted);
+  font-size: 12px;
+}
+
+.post-date {
+  font-size: var(--gf-12);
+  font-family: var(--gf-font-date);
+  word-break: break-all;
+}
+
+/*temporary*/
+.gf-badge,
+[class^="gf-badge-"] {
+  width: var(--gf-32);
+  height: var(--gf-32);
+  background: var(--dark-bg-light);
+  border: none;
+
+  box-shadow:
+    0px 1px 2px rgba(0, 0, 0, 0.18),
+    0px 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0px 1px 2px rgba(255, 255, 255, 0.18);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--dark-text);
+
+  & svg {
+    width: var(--gf-16);
+    height: var(--gf-16);
+    color: var(--dark-text-muted);
+  }
+
+  &:hover svg {
+    color: var(--dark-text);
+  }
+}
+/*temporary*/
+
+/* Post Content */
+
+.post-content > :not(:last-child) {
+  margin-bottom: var(--gf-8);
+}
+
+.warning-banner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--gf-16);
+
+  background: var(--gf-dark-bg-dark);
+
+  border-radius: var(--gf-16);
+  width: 100%;
+  gap: var(--gf-12);
+}
+
+.warning-image {
+  width: var(--gf-42);
+  height: var(--gf-42);
+}
+
+.warning-type-text {
+  font-size: var(--gf-16);
+}
+
+.post-description {
+  font-size: var(--gf-12);
+  font-family: var(--gf-font-ugc);
+  word-break: break-all;
+}
+
+.post-image-wrapper {
+  border-radius: var(--gf-12);
+  width: 100%;
+  height: 13.5rem;
+}
+
+.post-image {
+  border-radius: var(--gf-12);
+  width: 100%;
+  max-height: 100%;
+
+  object-fit: cover;
+  cursor: pointer;
+}
+
+/* Upvote / Downvote and Comment */
+
+.post-interact-section-wrapper {
+  gap: 5px;
+}
+
+.post-interaction-wrapper {
+  width: fit-content;
+  height: fit-content;
+
+  padding: var(--gf-6) var(--gf-8);
+  gap: var(--gf-8);
+
+  border-radius: var(--gf-30);
+}
+
+.gf-badge-vote {
+  display: flex;
+  align-items: center;
+  cursor: text;
+  color: var(--dark-text-muted);
+
+  &:hover span {
+    color: var(--dark-text);
+  }
+
+  & svg {
+    width: var(--gf-16);
+    height: var(--gf-16);
+    color: var(--dark-text-muted);
+  }
+
+  & button svg {
+    color: var(--dark-text-muted);
+  }
+
+  & button:hover svg {
+    color: var(--dark-text);
+  }
+
+  padding: var(--gf-6) var(--gf-8);
+}
+
+.post-interact-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.gf-badge-comment {
+  color: var(--dark-text-muted);
+
+  &:hover {
+    color: var(--dark-text);
+  }
+}
+
+.icon-upvote {
+  transform: rotate(90deg);
+}
+.icon-downvote {
+  transform: rotate(-90deg);
+}
+
+/* Comment button */
+
+.post-interaction-comment-wrapper {
+  cursor: pointer;
+  height: 100%;
+}
+
+/* Go To Post */
+.post-view-section {
+  gap: 5px;
+}
+
+.gf-badge-post-view-button {
+  height: 100%;
+  width: 36px;
+  height: 36px;
+}
+
+/*
+ * OLD - Do not remove or else it will break
+ * Needs dedicated cleanup
+ */
 
 .pin-preview-click {
   display: flex;
@@ -39,12 +288,6 @@
   font-weight: 500;
   /* text-medium */
   font-size: 14px;
-}
-
-.separator,
-.time-ago {
-  color: var(--dark-text-muted);
-  font-size: 12px;
 }
 
 .close-button {
@@ -119,36 +362,4 @@
   color: var(--dark-text);
   font-weight: 500;
   font-size: 12px;
-}
-
-.sidebar-wrapper {
-  background-color: #000; /* Fundo Preto */
-  width: 350px;           /* Ajusta a largura conforme precisares */
-  height: 100vh;          /* Altura total da janela */
-  display: flex;
-  flex-direction: column;
-}
-
-.scroll-container {
-  flex: 1;
-  overflow-y: auto;       /* Ativa o scroll vertical */
-  padding: 1rem;
-
-  /* Estilização opcional da scrollbar para combinar com o tema escuro */
-  scrollbar-width: thin;
-  scrollbar-color: #444 #000;
-}
-
-.scroll-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.scroll-container::-webkit-scrollbar-track {
-  background: #000;
-}
-
-.scroll-container::-webkit-scrollbar-thumb {
-  background-color: #444;
-  border-radius: 10px;
-  border: 2px solid #000;
 }

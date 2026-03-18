@@ -11,7 +11,7 @@ import { PreviewMarkerService } from '@gofish/features/map/services/preview-mark
 import { MarkerRegistryService } from '@gofish/features/map/services/marker-registry.service';
 import { PinDetailPanelComponent } from './components/pin-detail-panel/pin-detail-panel.component';
 import { OverlayHeaderComponent } from '@gofish/features/header/overlay-header/overlay-header.component';
-import { ViewportPinsResDTO, ViewportPinDTO, PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
+import { ViewportPinsResDTO, ViewportPinDTO, PinDataResDTO, GeoLocationDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { PopupService } from '@gofish/shared/services/popup.service';
@@ -26,6 +26,7 @@ import { RouterOutlet } from '@angular/router';
 import { MapLayersService } from '@gofish/features/map/services/map-layers.service';
 import { MapInteractionsService } from '@gofish/features/map/services/map-interactions.service';
 import { ClusterDetailsComponent } from '@gofish/features/map/components/cluster-details/cluster-details.component';
+import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
@@ -41,8 +42,9 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5
     ChoosePinPopupComponent,
     RouterOutlet,
     NgxSonnerToaster,
-    ClusterDetailsComponent
-],
+    ClusterDetailsComponent,
+    ClickOutsideDirective
+  ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
 })
@@ -64,11 +66,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   protected selectedPins = signal<PinDataResDTO[]>([]);
 
   private map!: mapboxgl.Map;
-  allPins= signal<ViewportPinDTO[]>([]);
+  allPins = signal<ViewportPinDTO[]>([]);
   private querySubscription?: Subscription;
   private queryValues: UrlQuery | null = null;
-  private queryMap: ParamMap | null = null;
-
 
   public get getGeolocationState() { return this.geoService.state(); }
   public get isGeolocationDenied() { return this.geoService.isBad(); }
@@ -124,7 +124,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.map.on('load', () => {
       this.mapLayers.updateLayers(this.map, this.allPins);
-      this.mapInteractions.setup(this.map, this.allPins, this.selectedPin, this.selectedPins,() => this.pickingOnMap);
+      this.mapInteractions.setup(this.map, this.allPins, this.selectedPin, this.selectedPins, () => this.pickingOnMap);
       this.applyUrlState();
       this.registerMapEvents();
     });
@@ -246,6 +246,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   zoomIn(): void { this.map.zoomIn({ duration: 300 }); }
   zoomOut(): void { this.map.zoomOut({ duration: 300 }); }
+
+  goToCoords(coords : GeoLocationDTO) {
+    this.map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 16});
+  }
 
   // =========================
   // Pick mode
