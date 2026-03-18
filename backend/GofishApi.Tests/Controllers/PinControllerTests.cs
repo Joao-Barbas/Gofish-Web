@@ -1,6 +1,9 @@
 ﻿using FluentAssertions;
+using GofishApi.Data;
 using GofishApi.Dtos;
 using GofishApi.Tests.Fixtures;
+using GofishApi.Tests.Fixtutes;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +17,13 @@ namespace GofishApi.Tests.Controllers;
 public class PinControllerTests : IClassFixture<WebAppFactory>
 {
     private readonly HttpClient _client;
+    private readonly WebAppFactory _factory;
+
 
     public PinControllerTests(WebAppFactory factory)
     {
         _client = factory.CreateClient();
+        _factory = factory;
     }
 
     #region GetInViewport
@@ -31,8 +37,62 @@ public class PinControllerTests : IClassFixture<WebAppFactory>
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
     }
 
+    [Fact]
+    public async Task GetInViewport_WhenNoPins_ReturnsEmptyList()
+    {
+        var url = "/api/Pin/GetInViewport?minLat=-90&minLng=-180&maxLat=90&maxLng=180";
+
+        var res = await _client.GetAsync(url);
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
+        var dto = await res.Content.ReadFromJsonAsync<ViewportPinsResDTO>();
+        dto.Should().NotBeNull();
+        dto!.Pins.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task GetInViewport_ReturnsOnlyPinsInsideViewport()
+    {
+        int insidePinId;
+        int outsidePinId;
+
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+            var insidePin = await PinSeedFixture.CreateInfoPinAsync(
+                db,
+                latitude: 38.7169,
+                longitude: -9.1399,
+                body: "Inside"
+            );
+
+            var outsidePin = await PinSeedFixture.CreateInfoPinAsync(
+                db,
+                latitude: 50.0,
+                longitude: 10.0,
+                body: "Outside"
+            );
+
+            insidePinId = insidePin.Id;
+            outsidePinId = outsidePin.Id;
+        }
+
+        var res = await _client.GetAsync("/api/Pin/GetInViewport?minLat=38&minLng=-10&maxLat=39&maxLng=-9");
+
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var dto = await res.Content.ReadFromJsonAsync<ViewportPinsResDTO>();
+        dto.Should().NotBeNull();
+        dto!.Pins.Should().Contain(p => p.Id == insidePinId);
+        dto.Pins.Should().NotContain(p => p.Id == outsidePinId);
+    }
+
+
+
+
     #endregion GetInViewport
 
+    #region PinCreation
 
     [Fact]
     public async Task CreateInfoPin_ReturnsPinId()
@@ -56,4 +116,7 @@ public class PinControllerTests : IClassFixture<WebAppFactory>
         dto.Should().NotBeNull();
         dto!.Id.Should().BeGreaterThan(0);
     }
+
+    #endregion
+
 }
