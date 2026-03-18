@@ -1,0 +1,36 @@
+.forum-container {
+  display:grid;
+  grid-template-columns: 1fr 37rem 1fr;
+  gap: 0;
+  padding-bottom: var(--gf-8);
+}
+
+.forum-container > div {
+  display: flex;
+  justify-content: center;
+
+}
+
+.forum-nav {
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+
+}
+
+.forum-nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.gf-text-selection-forum-navbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--gf-font-ugc);
+  font-size: var(--gf-22);
+
+}

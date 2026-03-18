@@ -1,0 +1,41 @@
+.gf-card-group-settings {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  width: 102px;
+  gap: 8px;
+
+
+}
+
+.group-settings-option {
+  display: flex;
+  align-items: center;
+
+  width: fit-content;
+  background: none;
+  border: none;
+  color: var(--gf-dark-text-muted);
+  gap:5px;
+
+  & span {
+    font-size: var(--gf-14);
+
+  }
+
+  & svg {
+    color: var(--gf-dark-text-muted);
+    width: var(--gf-20);
+    height: var(--gf-20);
+  }
+
+  &:hover span {
+    color: var(--gf-dark-text);
+
+  }
+
+  &:hover svg {
+    color: var(--gf-dark-text);
+
+  }
+}

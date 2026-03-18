@@ -1,0 +1,12 @@
+.gf-card-user-card {
+  padding: 12px;
+}
+
+.user-photo-username-wrapper {
+  gap: 12px;
+}
+
+.user-photo {
+  width: var(--gf-64);
+  height: var(--gf-64);
+}

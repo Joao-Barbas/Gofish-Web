@@ -1,0 +1,83 @@
+<div class="d-flex flex-column group">
+
+
+  <!-- Group Header Info -->
+  <div class="d-flex flex-column group-header-info">
+
+    <!-- Group Header -->
+    <div class="d-flex align-items-center justify-content-between group-header">
+
+
+      <div class="d-flex align-items-center justify-content-start group-image-name-creator-wrapper">
+
+        <div class="group-image-wrapper">
+          <img src="assets/images/placeholder_profile_pic.png" class="group-image">
+        </div>
+
+        <div class="d-flex flex-column group-name-creator">
+          <span class="group-name-text">Group name</span>
+          <span class="group-creator-text">By @Username</span>
+        </div>
+
+      </div>
+
+      <button class="gf-badge-group-settings">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis">
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </svg>
+
+      </button>
+
+    </div>
+
+    <!-- Group Stats -->
+
+    <div class="group-stats">
+
+      <div class="gf-badge-text">
+        <span>99 Members</span>
+      </div>
+
+      <div class="gf-badge-text">
+        <span>99 Posts</span>
+      </div>
+
+    </div>
+
+    <!-- Group Description -->
+
+    <div class="group-description">
+
+      <p class="group-description-text">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit voluptate sit ipsum itaque soluta vitae
+        iusto eaque et, sequi earum quasi accusamus? Quam animi rerum corporis nostrum consequatur repellat adipisci.
+      </p>
+
+    </div>
+
+    <!-- Group Listing Tabs -->
+    <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
+      @for (n of navPaths; track n.path) {
+      <a [routerLink]="n.path" routerLinkActive="active"
+        class="d-flex justify-content-center listing-tabs gf-text-selection">
+        <span class="listing-tab-text">{{ n.label }}</span>
+      </a>
+      }
+    </div>
+
+
+  </div>
+  <!-- / Group Header Info -->
+
+
+  <div class="group-forum-feed">
+    <router-outlet></router-outlet>
+
+  </div>
+
+
+</div>
