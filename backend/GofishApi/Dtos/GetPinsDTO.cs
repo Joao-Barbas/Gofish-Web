@@ -1,5 +1,6 @@
 ﻿using GofishApi.Enums;
 using GofishApi.Models;
+using Microsoft.Extensions.Hosting;
 
 namespace GofishApi.Dtos;
 
@@ -87,8 +88,8 @@ public record GetPinsPostDTO(
     public static GetPinsPostDTO FromPin(Pin pin) => new(
         pin.Post.Body,
         pin.Post.ImageUrl,
-        pin.Post.Score,
-        pin.Post.Score
+        pin.Post.PostVotes.Sum(v => (int)v.Value),
+        pin.Post.CommentCount
     );
 };
 

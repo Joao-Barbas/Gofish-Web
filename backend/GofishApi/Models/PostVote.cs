@@ -14,8 +14,10 @@ public class PostVote
     [ForeignKey(nameof(AppUser))]
     public string UserId { get; set; } = null!;
 
-    [Range(-1, 1)]
-    public int Value { get; set; }
+    [Required]
+    public DateTime CreatedAt { get; set; }
+
+    public VoteType Value { get; set; }
 
     #endregion
 
