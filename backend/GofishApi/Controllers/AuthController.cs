@@ -39,6 +39,7 @@ public class AuthController : ControllerBase
         var user = await _userBuilder
             .FromDto(dto)
             .CreateAsync();
+
         var token = await _jwtService.CreateTokenAsync(user);
         return StatusCode(StatusCodes.Status201Created, new SignInResDTO(token));
     }

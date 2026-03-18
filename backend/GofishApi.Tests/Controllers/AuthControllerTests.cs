@@ -59,7 +59,7 @@ public class AuthControllerTests : IClassFixture<WebAppFactory>
     {
         var body = new
         {
-            Email = "fixture2@test.com",
+            Email = "fixture@test.com",
             UserName = "existinguser",
             FirstName = "Test",
             LastName = "User",
