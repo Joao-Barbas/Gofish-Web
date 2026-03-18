@@ -1,13 +1,19 @@
-﻿namespace GofishApi.Dtos;
+﻿using GofishApi.Extensions;
+
+namespace GofishApi.Dtos;
 
 public record EnumDTO(
     string Label,
-    int    Value
+    string? Display,
+    int Value
 ){
     public static IEnumerable<EnumDTO> FromEnum<TEnum>() where TEnum : struct, Enum
     {
         return Enum.GetValues<TEnum>()
-                   .Select(e => new EnumDTO(e.ToString(), Convert.ToInt32(e)))
-                   .ToList();
+            .Select(e => new EnumDTO(
+                e.ToString(),
+                e.ToDisplayName(),
+                e.ToValue()))
+            .ToList();
     }
 };
