@@ -17,7 +17,7 @@ export interface PostDataRequestDTO {
 export interface GetPostsReqDTO {
   ids?: PostIdDTO[];
   dataRequest?: PostDataRequestDTO;
-  lastTimestamp: string;   // DateTime → string (ISO 8601)
+  lastTimestamp: string;
   maxResults: number;
 }
 
@@ -36,20 +36,28 @@ export interface GetPostsGroupDTO {
 export interface GetPostsCommentDTO {
   id: number;
   body: string;
-  createdAt: string;       // DateTime → string
+  createdAt: string;
   userId: string;
   userName: string;
 }
 
 export interface GetPostsPostDTO {
   id: number;
-  createdAt: string;       // DateTime → string
+  createdAt: string;
   body?: string;
   imageUrl?: string;
   score: number;
   commentCount: number;
   kind: PinKind;
+  // Warning
   warningKind?: number;
+  // Info
+  accessDifficulty?: string;
+  seabed?: string;
+  // Catch
+  species?: string;
+  HookSize?: string;
+
   author?: GetPostsAuthorDTO;
   comments?: GetPostsCommentDTO[];
   groups?: GetPostsGroupDTO[];

@@ -86,5 +86,5 @@ export const Api = {
   UserAccount:  buildApi('UserAccount'),
   UserSecurity: buildApi('UserSecurity'),
   // Post
-  Post: buildApi('Post'),
+  Post:         buildApi('Post'),
 } as const;
