@@ -41,28 +41,49 @@ public record GetPostsPostDTO(
     int Score,
     int CommentCount,
     PinKind Kind,
+    // Warning
     WarningKind? WarningKind,
-
+    // Info
+    AccessDifficulty? AccessDifficulty,
+    Seabed? Seabed,
+    // Catch
+    Species? Species,
+    Bait? Bait,
+    string? HookSize,
 
     GetPostsAuthorDTO? Author,
     IReadOnlyCollection<GetPostsCommentDTO>? Comments,
     IReadOnlyCollection<GetPostsGroupDTO>? Groups
 )
 {
-    public static GetPostsPostDTO FromPost(Post post, PostDataRequestDTO? request) => new(
-        post.Id,
-        post.CreatedAt,
-        post.Body,
-        post.ImageUrl,
-        post.PostVotes.Sum(v => (int)v.Value),
-        post.CommentCount,
-        post.Pin.Kind,
-        post.Pin is WarnPin warnPin ? warnPin.WarningKind : null,
+    public static GetPostsPostDTO FromPost(Post post, PostDataRequestDTO? request)
+    {
+        var warnPin = post.Pin as WarnPin;
+        var infoPin = post.Pin as InfoPin;
+        var catchPin = post.Pin as CatchPin;
 
-        request?.IncludeAuthor ?? false ? GetPostsAuthorDTO.FromUser(post.AppUser) : null,
-        request?.IncludeComments ?? false ? post.Comments.Select(GetPostsCommentDTO.FromComment).ToList() : null,
-        request?.IncludeGroups ?? false ? post.Groups.Select(GetPostsGroupDTO.FromGroup).ToList() : null
+        return new GetPostsPostDTO(
+            post.Id,
+            post.CreatedAt,
+            post.Body,
+            post.ImageUrl,
+            post.PostVotes.Sum(v => (int)v.Value),
+            post.CommentCount,
+            post.Pin.Kind,
+            // Warning
+            warnPin?.WarningKind,
+            // Info
+            infoPin?.AccessDifficulty,
+            infoPin?.Seabed,
+            // Catch
+            catchPin?.Species,
+            catchPin?.Bait,
+            catchPin?.HookSize,
+            request?.IncludeAuthor ?? false ? GetPostsAuthorDTO.FromUser(post.AppUser) : null,
+            request?.IncludeComments ?? false ? post.Comments.Select(GetPostsCommentDTO.FromComment).ToList() : null,
+            request?.IncludeGroups ?? false ? post.Groups.Select(GetPostsGroupDTO.FromGroup).ToList() : null
         );
+    }
 }
 
 #endregion
