@@ -14,9 +14,10 @@ import { ChangePasswordReqDTO, SecurityInfoResDTO } from '@gofish/shared/dtos/us
 import { getFirstError, isProblemDetails, isValidationProblemDetails, ProblemDetails } from '@gofish/shared/core/problem-details';
 import { Api, Path, PathSegment } from '@gofish/shared/constants';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
-import { Event, NavigationEnd, NavigationStart, Router, RouterOutlet } from '@angular/router';
+import { Event, NavigationEnd, NavigationStart, Router, RouterOutlet, RouterLinkWithHref, RouterLink } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AuthService } from '@gofish/shared/services/auth.service';
 
 @Component({
   selector: 'app-security',
@@ -25,7 +26,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     RouterOutlet,
     TotpValidationModalComponent,
     AsyncButtonComponent,
-  ],
+    RouterLinkWithHref,
+    RouterLink
+],
   templateUrl: './security.component.html',
   styleUrl: './security.component.css',
 })
@@ -34,6 +37,7 @@ export class SecurityComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly userSecurityService = inject(UserSecurityService);
 
+  readonly authService = inject(AuthService);
   readonly modalService = inject(ModalService);
 
   readonly busyState: BusyState = new BusyState;
@@ -82,6 +86,7 @@ export class SecurityComponent implements OnInit {
   }
 
   doGetSecurityInfo() {
+    if (this.authService.isExternalUser()) return;
     this.loadingState.start();
     this.userSecurityService.getSecurityInfo().subscribe({
       next: (res: SecurityInfoResDTO) => {

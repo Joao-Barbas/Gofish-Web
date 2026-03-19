@@ -44,9 +44,11 @@ h4 {
     font-size: var(--gf-text-md);
   }
 
-  & button {
+  & button, a {
     display: block;
     background-color: transparent;
+    text-decoration: none;
+    text-align: center;
     border: none;
     width: 25%;
     padding: calc(1em / 2) var(--gf-8);
