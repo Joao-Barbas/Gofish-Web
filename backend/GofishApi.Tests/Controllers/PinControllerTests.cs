@@ -87,8 +87,78 @@ public class PinControllerTests : IClassFixture<WebAppFactory>
         dto.Pins.Should().NotContain(p => p.Id == outsidePinId);
     }
 
+    [Fact]
+    public async Task GetInViewport_DoesNotReturnExpiredPins()
+    {
+        int expiredPinId;
+        int validPinId;
 
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
+            var expiredPin = await PinSeedFixture.CreateInfoPinAsync(
+                db,
+                latitude: 38.7169,
+                longitude: -9.1399,
+                body: "Expired"
+            );
+
+            expiredPin.ExpiresAt = DateTime.UtcNow.AddMinutes(-1);
+
+            var validPin = await PinSeedFixture.CreateInfoPinAsync(
+                db,
+                latitude: 38.7170,
+                longitude: -9.1400,
+                body: "Valid"
+            );
+
+            await db.SaveChangesAsync();
+
+            expiredPinId = expiredPin.Id;
+            validPinId = validPin.Id;
+        }
+
+        var res = await _client.GetAsync("/api/Pin/GetInViewport?minLat=38&minLng=-10&maxLat=39&maxLng=-9");
+
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var dto = await res.Content.ReadFromJsonAsync<ViewportPinsResDTO>();
+        dto.Should().NotBeNull();
+        dto!.Pins.Should().Contain(p => p.Id == validPinId);
+        dto.Pins.Should().NotContain(p => p.Id == expiredPinId);
+    }
+
+    [Fact]
+    public async Task GetInViewport_WhenAllPinsAreOutside_ReturnsEmptyList()
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+            await PinSeedFixture.CreateInfoPinAsync(
+                db,
+                latitude: 50.0,
+                longitude: 10.0,
+                body: "Outside 1"
+            );
+
+            await PinSeedFixture.CreateInfoPinAsync(
+                db,
+                latitude: 51.0,
+                longitude: 11.0,
+                body: "Outside 2"
+            );
+        }
+
+        var res = await _client.GetAsync("/api/Pin/GetInViewport?minLat=38&minLng=-10&maxLat=39&maxLng=-9");
+
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var dto = await res.Content.ReadFromJsonAsync<ViewportPinsResDTO>();
+        dto.Should().NotBeNull();
+        dto!.Pins.Should().BeEmpty();
+    }
 
     #endregion GetInViewport
 
