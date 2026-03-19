@@ -257,4 +257,11 @@ public class PinController : ControllerBase
         await _db.SaveChangesAsync();
         return NoContent();
     }
+
+    #region DenunciarPin
+
+    [Authorize]
+    [HttpPost("GetPins")]
+
+    #endregion
 }

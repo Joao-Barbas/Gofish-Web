@@ -25,6 +25,7 @@ namespace GofishApi.Data
         public DbSet<GroupRole> GroupRoles { get; set; }
         public DbSet<GroupUser> GroupUsers { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<PinReport> PinReports { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -157,6 +158,28 @@ namespace GofishApi.Data
                 .HasForeignKey(pv => pv.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+
+            #endregion
+            #region PinReport
+
+            builder.Entity<PinReport>()
+                .HasKey(r => new { r.UserId, r.PinId });
+
+            builder.Entity<PinReport>()
+                .HasOne(r => r.AppUser)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<PinReport>()
+                .HasOne(r => r.Pin)
+                .WithMany()
+                .HasForeignKey(r => r.PinId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PinReport>()
+                .Property(r => r.Type)
+                .HasConversion<string>();
 
             #endregion
 
