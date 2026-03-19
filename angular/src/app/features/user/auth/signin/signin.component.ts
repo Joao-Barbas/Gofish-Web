@@ -96,8 +96,7 @@ export class SigninComponent implements OnInit {
     });
   }
 
-  signInWithGoogle() {
-    // Full page redirect — NOT an HTTP call
-    window.location.href = `${environment.apiUrl.replace('/api', '')}/api/Auth/ExternalLogin?provider=Google`;
+  onGoogle() {
+    window.location.href = Api.Auth.action('ExternalLogin?provider=Google');
   }
 }

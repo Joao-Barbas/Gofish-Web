@@ -153,4 +153,8 @@ export class SignupComponent implements OnInit {
       }
     })
   }
+
+  onGoogle() {
+    window.location.href = Api.Auth.action('ExternalLogin?provider=Google');
+  }
 }
