@@ -11,6 +11,11 @@ import { TimeAgoPipe } from "../../../../shared/pipes/time-ago.pipe";
   styleUrl: './forum-post.component.css',
 })
 export class ForumPostComponent {
+  private readonly router = inject(Router);
   postData = input<GetPostsPostDTO | null>(null);
 
+  goToPin() {
+    // Tem que se ver como e que se obtem as coordendas porque o post dto nao tem coordenadas
+    // Podemos colocar la ?
+  }
 }

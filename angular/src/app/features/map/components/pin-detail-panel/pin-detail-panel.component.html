@@ -94,7 +94,10 @@
             <div class="gf-badge-vote post-interaction-wrapper">
 
               <!-- Upvote button -->
-              <button class="post-interact-btn">
+              <button class="post-interact-btn"
+                      [class.active] = "currentVote() === 1"
+                      [disabled]="isVoting()"
+                      (click) = "vote(1)">
 
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -105,10 +108,14 @@
 
               </button>
 
-              <span class="post-stats post-fishing-points">{{ pin.post?.score ?? 0 }}</span>
+              <span class="post-stats post-fishing-points">{{ score() }}</span>
 
               <!-- Downvote button -->
-              <button class="post-interact-btn">
+              <button class="post-interact-btn"
+                      class="post-interact-btn"
+                      [class.active] = "currentVote() === -1"
+                      [disabled]="isVoting()"
+                      (click) = "vote(-1)">
 
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -138,7 +145,7 @@
 
 
             <!-- Location Button -->
-            <button class="gf-badge-post-view-button">
+            <button class="gf-badge-post-view-button" (click)="onPreviewClick(pin.geolocation!)">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="lucide lucide-locate-icon lucide-locate">

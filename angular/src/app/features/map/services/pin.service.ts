@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, CreatePinResDTO, GetPinsReqDTO, PinDataResDTO, GetPinsResDTO } from '@gofish/shared/dtos/pin.dto';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { Api } from '@gofish/shared/constants';
+import { VotePostDTO, VotePostResDTO } from '@gofish/shared/dtos/vote-post.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,10 @@ export class PinService {
 
   getPinPreview(getPin: GetPinsReqDTO): Observable<GetPinsResDTO> {
     return this.http.post<GetPinsResDTO>(Api.Pin.action('GetPins'), getPin);
+  }
+
+  vote(postId: number, value: 1 | -1): Observable<VotePostResDTO> {
+    return this.http.post<VotePostResDTO>(Api.Post.action(`PostVote/${postId}`), {value});
   }
 
   enumeratePinType = () => this.http.get<EnumDTO[]>(Api.Enums.action('PinKind'));

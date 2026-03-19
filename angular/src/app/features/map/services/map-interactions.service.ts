@@ -203,6 +203,8 @@ export class MapInteractionsService {
           center: [pin.geolocation.longitude, pin.geolocation.latitude],
           zoom: 13
         });
+
+        console.log(res);
       },
       error: (err) => console.error(err)
     });

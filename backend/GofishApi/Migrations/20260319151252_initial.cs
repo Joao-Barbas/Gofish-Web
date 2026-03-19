@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GofishApi.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -305,6 +305,34 @@ namespace GofishApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PinReports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Reason = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PinId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PinReports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PinReports_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PinReports_Pins_PinId",
+                        column: x => x.PinId,
+                        principalTable: "Pins",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
@@ -410,16 +438,44 @@ namespace GofishApi.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CommentReports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Reason = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CommentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CommentReports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CommentReports_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CommentReports_PostComments_CommentId",
+                        column: x => x.CommentId,
+                        principalTable: "PostComments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "TwoFactorMethod", "UserName" },
                 values: new object[,]
                 {
-                    { "seed-player-1", 0, "seed-cstamp-1", "player1@gofish.com", true, null, null, false, null, "PLAYER1@GOFISH.COM", "PLAYER1", "AQAAAAIAAYagAAAAEEVZIIBqfcXfZfjtf7s9BMEAtyASHJZn7yVIjzIAgHoXJ0M5BB9IylH1dNWKMFfIyA==", null, false, "seed-stamp-1", false, 0, "player1" },
-                    { "seed-player-2", 0, "seed-cstamp-2", "player2@gofish.com", true, null, null, false, null, "PLAYER2@GOFISH.COM", "PLAYER2", "AQAAAAIAAYagAAAAEExS8gWCM7KO3nI9ph+TV1Id/ll4bey6kHCbecJPQ5umpwy13LJZImpG3f7XlgupmA==", null, false, "seed-stamp-2", false, 0, "player2" },
-                    { "seed-player-3", 0, "seed-cstamp-3", "player3@gofish.com", true, null, null, false, null, "PLAYER3@GOFISH.COM", "PLAYER3", "AQAAAAIAAYagAAAAEAAX2cIl7SBu78FbZGtWR2rJLIVeAuIvg7YDGUBfAhjcUzJE9md44OKNcVTo5iJo/g==", null, false, "seed-stamp-3", false, 0, "player3" },
-                    { "seed-player-4", 0, "seed-cstamp-4", "player4@gofish.com", true, null, null, false, null, "PLAYER4@GOFISH.COM", "PLAYER4", "AQAAAAIAAYagAAAAED7rSlmPjNHKVmml7B3PJiCbIVWAnz/PvP6fXv2Lz2CPviZuOTDbSB9DlP/UZ6hkzg==", null, false, "seed-stamp-4", false, 0, "player4" },
-                    { "seed-player-5", 0, "seed-cstamp-5", "player5@gofish.com", true, null, null, false, null, "PLAYER5@GOFISH.COM", "PLAYER5", "AQAAAAIAAYagAAAAEF/wntdSo65o+8JqRdM88g21QrNpHqx3F3ok0DTy1JSgpbodMkuvRgQthKRggaoTAw==", null, false, "seed-stamp-5", false, 0, "player5" }
+                    { "seed-player-1", 0, "seed-cstamp-1", "player1@gofish.com", true, null, null, false, null, "PLAYER1@GOFISH.COM", "PLAYER1", "AQAAAAIAAYagAAAAEAtXzIyy1RWGX8D2KHvvDaOhEL2LakHdFkfebi/48TChfTmlpNBlB9S2VtK1/JppUA==", null, false, "seed-stamp-1", false, 0, "player1" },
+                    { "seed-player-2", 0, "seed-cstamp-2", "player2@gofish.com", true, null, null, false, null, "PLAYER2@GOFISH.COM", "PLAYER2", "AQAAAAIAAYagAAAAEMAEIC52v4rt3IbRapLPRtUXivaAjq834qW8x3HTnPb+4gKjV2lClNkbzzlokZ4erw==", null, false, "seed-stamp-2", false, 0, "player2" },
+                    { "seed-player-3", 0, "seed-cstamp-3", "player3@gofish.com", true, null, null, false, null, "PLAYER3@GOFISH.COM", "PLAYER3", "AQAAAAIAAYagAAAAEHjSrPI6s4NHhwsgKTRa6FkFgBP1rVwhCp+t6+xOpDV/rkuFrBdJqfxNO5cRfPAKTg==", null, false, "seed-stamp-3", false, 0, "player3" },
+                    { "seed-player-4", 0, "seed-cstamp-4", "player4@gofish.com", true, null, null, false, null, "PLAYER4@GOFISH.COM", "PLAYER4", "AQAAAAIAAYagAAAAEBRBG7CWTdkB9gHDV+OvhPK2lmuQtb7I1Agg3dwK0ZmDJ0G60V0ANiCbE4uNF3xPvw==", null, false, "seed-stamp-4", false, 0, "player4" },
+                    { "seed-player-5", 0, "seed-cstamp-5", "player5@gofish.com", true, null, null, false, null, "PLAYER5@GOFISH.COM", "PLAYER5", "AQAAAAIAAYagAAAAEK05c00WR7TVIlv19t9CTsEqbKblpwupUNreX0lo+794aWbx+o3RcU86Ad3yJ31e4w==", null, false, "seed-stamp-5", false, 0, "player5" }
                 });
 
             migrationBuilder.InsertData(
@@ -428,15 +484,15 @@ namespace GofishApi.Migrations
                 values: new object[,]
                 {
                     { 1, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.512999999999998, -8.8729999999999993, 1, "seed-player-1", 0 },
-                    { 2, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.518000000000001, -8.8709999999999987, 1, "seed-player-2", 0 },
-                    { 3, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.516999999999996, -8.8650000000000002, 1, "seed-player-3", 0 },
-                    { 4, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.527999999999999, -8.8699999999999992, 1, "seed-player-4", 0 },
-                    { 5, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.516999999999996, -8.8609999999999989, 1, "seed-player-5", 0 },
-                    { 6, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.518000000000001, -8.8529999999999998, 1, "seed-player-1", 0 },
-                    { 7, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.524999999999999, -8.8490000000000002, 1, "seed-player-2", 0 },
-                    { 8, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.547999999999995, -8.859, 1, "seed-player-3", 0 },
-                    { 9, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.552999999999997, -8.8569999999999993, 1, "seed-player-4", 0 },
-                    { 10, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.548999999999999, -8.863999999999999, 1, "seed-player-5", 0 }
+                    { 2, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.516999999999996, -8.8679999999999986, 1, "seed-player-2", 0 },
+                    { 3, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.515000000000001, -8.8689999999999998, 1, "seed-player-3", 0 },
+                    { 4, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.524999999999999, -8.8699999999999992, 1, "seed-player-4", 0 },
+                    { 5, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.516999999999996, -8.8529999999999998, 1, "seed-player-5", 0 },
+                    { 6, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.533000000000001, -8.8579999999999988, 1, "seed-player-1", 0 },
+                    { 7, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.542999999999999, -8.8490000000000002, 1, "seed-player-2", 0 },
+                    { 8, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.533999999999999, -8.8519999999999985, 1, "seed-player-3", 0 },
+                    { 9, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.552999999999997, -8.8650000000000002, 1, "seed-player-4", 0 },
+                    { 10, 1, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), null, 0, 38.548999999999999, -8.8460000000000001, 1, "seed-player-5", 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -445,15 +501,15 @@ namespace GofishApi.Migrations
                 values: new object[,]
                 {
                     { 101, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.512999999999998, -8.8729999999999993, 1, "seed-player-1", 0 },
-                    { 102, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.515000000000001, -8.8739999999999988, 1, "seed-player-2", 0 },
-                    { 103, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.515000000000001, -8.875, 1, "seed-player-3", 0 },
-                    { 104, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.524999999999999, -8.8759999999999994, 1, "seed-player-4", 0 },
-                    { 105, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.521000000000001, -8.8889999999999993, 1, "seed-player-5", 0 },
-                    { 106, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.533000000000001, -8.8979999999999997, 1, "seed-player-1", 0 },
-                    { 107, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.536999999999999, -8.9029999999999987, 1, "seed-player-2", 0 },
+                    { 102, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.515000000000001, -8.875, 1, "seed-player-2", 0 },
+                    { 103, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.522999999999996, -8.8829999999999991, 1, "seed-player-3", 0 },
+                    { 104, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.521999999999998, -8.8819999999999997, 1, "seed-player-4", 0 },
+                    { 105, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.516999999999996, -8.8809999999999985, 1, "seed-player-5", 0 },
+                    { 106, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.522999999999996, -8.8929999999999989, 1, "seed-player-1", 0 },
+                    { 107, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.536999999999999, -8.8789999999999996, 1, "seed-player-2", 0 },
                     { 108, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.533999999999999, -8.9009999999999998, 1, "seed-player-3", 0 },
-                    { 109, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.528999999999996, -8.9049999999999994, 1, "seed-player-4", 0 },
-                    { 110, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.521999999999998, -8.8999999999999986, 1, "seed-player-5", 0 }
+                    { 109, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.536999999999999, -8.9129999999999985, 1, "seed-player-4", 0 },
+                    { 110, 0, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, 38.530999999999999, -8.8999999999999986, 1, "seed-player-5", 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -462,15 +518,15 @@ namespace GofishApi.Migrations
                 values: new object[,]
                 {
                     { 201, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.512999999999998, -8.8729999999999993, "seed-player-1", 0, 1 },
-                    { 202, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.507999999999996, -8.8699999999999992, "seed-player-2", 0, 1 },
-                    { 203, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.504999999999995, -8.8689999999999998, "seed-player-3", 0, 1 },
-                    { 204, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.500999999999998, -8.8669999999999991, "seed-player-4", 0, 1 },
-                    { 205, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.497, -8.8650000000000002, "seed-player-5", 0, 1 },
-                    { 206, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.492999999999995, -8.8579999999999988, "seed-player-1", 0, 1 },
-                    { 207, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.488999999999997, -8.843, "seed-player-2", 0, 1 },
-                    { 208, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.491999999999997, -8.8519999999999985, "seed-player-3", 0, 1 },
-                    { 209, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.481000000000002, -8.8490000000000002, "seed-player-4", 0, 1 },
-                    { 210, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.467999999999996, -8.863999999999999, "seed-player-5", 0, 1 }
+                    { 202, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.509, -8.8699999999999992, "seed-player-2", 0, 1 },
+                    { 203, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.506999999999998, -8.8689999999999998, "seed-player-3", 0, 1 },
+                    { 204, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.506999999999998, -8.8699999999999992, "seed-player-4", 0, 1 },
+                    { 205, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.504999999999995, -8.8609999999999989, "seed-player-5", 0, 1 },
+                    { 206, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.497999999999998, -8.8529999999999998, "seed-player-1", 0, 1 },
+                    { 207, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.494999999999997, -8.8490000000000002, "seed-player-2", 0, 1 },
+                    { 208, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.484999999999999, -8.8379999999999992, "seed-player-3", 0, 1 },
+                    { 209, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.472999999999999, -8.8569999999999993, "seed-player-4", 0, 1 },
+                    { 210, new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc), new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc), 2, 38.494999999999997, -8.8369999999999997, "seed-player-5", 0, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -562,6 +618,16 @@ namespace GofishApi.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CommentReports_CommentId",
+                table: "CommentReports",
+                column: "CommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CommentReports_UserId",
+                table: "CommentReports",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Friendships_ReceiverUserId",
                 table: "Friendships",
                 column: "ReceiverUserId");
@@ -580,6 +646,16 @@ namespace GofishApi.Migrations
                 name: "IX_GroupUsers_RoleId",
                 table: "GroupUsers",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PinReports_PinId",
+                table: "PinReports",
+                column: "PinId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PinReports_UserId",
+                table: "PinReports",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pins_ExpiresAt_CreatedAt",
@@ -641,6 +717,9 @@ namespace GofishApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CommentReports");
+
+            migrationBuilder.DropTable(
                 name: "Friendships");
 
             migrationBuilder.DropTable(
@@ -650,7 +729,7 @@ namespace GofishApi.Migrations
                 name: "GroupUsers");
 
             migrationBuilder.DropTable(
-                name: "PostComments");
+                name: "PinReports");
 
             migrationBuilder.DropTable(
                 name: "PostVote");
@@ -660,6 +739,9 @@ namespace GofishApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "PostComments");
 
             migrationBuilder.DropTable(
                 name: "GroupRoles");

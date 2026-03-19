@@ -128,8 +128,9 @@ export interface AuthorDTO {
 }
 
 export interface PostDTO {
+  id?: number | null,
   body?: string | null;
   imageUrl?: string | null;
-  score?: number;
+  score?: number | null;
   commentCount?: number | null;
 }

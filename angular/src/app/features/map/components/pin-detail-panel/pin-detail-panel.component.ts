@@ -1,5 +1,5 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, input, Output } from '@angular/core';
+import { AsyncPipe, CommonModule, NgLocaleLocalization, NumberSymbol } from '@angular/common';
+import { Component, EventEmitter, inject, input, Output, signal } from '@angular/core';
 import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { PopupController } from '@gofish/shared/core/popup-controller';
@@ -9,10 +9,12 @@ import { AuthService } from '@gofish/shared/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
+import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
+import { ReturnStatement } from '@angular/compiler';
 
 @Component({
   selector: 'app-pin-detail-panel',
-  imports: [CommonModule, TimeAgoPipe],
+  imports: [CommonModule, TimeAgoPipe, ClickOutsideDirective],
   templateUrl: './pin-detail-panel.component.html',
   styleUrls: ['./pin-detail-panel.component.css']
 })
@@ -36,8 +38,13 @@ export class PinDetailPanelComponent {
   // CATCH
   speciesOptions: EnumDTO[] = [];
   baitOptions: EnumDTO[] = [];
+  // Vote
+  currentVote = signal<number | null>(null);
+  score = signal<number | null>(null);
+  isVoting = signal<boolean>(false);
 
   ngOnInit() {
+    // Visibility
     this.pinService.enumerateVisibilityType().subscribe({
       next: (res: EnumDTO[]) => {
         this.visibilityOptions = res;
@@ -81,9 +88,31 @@ export class PinDetailPanelComponent {
     this.pinService.enumerateBaitType().subscribe({
       next: (res) => this.baitOptions = res
     });
+
+    // Vote
+    this.score.set(this.pinData()?.post?.score ?? 1000);
+    console.log("valor do score", this.pinData()?.post?.score);
   }
 
+  vote(value: 1 | -1) {
+    if (this.isVoting()) return;
 
+    const postId = this.pinData()?.post?.id;
+    if (!postId) return;
+
+    this.isVoting.set(true);
+    this.pinService.vote(postId, value).subscribe({
+      next: (res) => {
+        this.score.set(res.score);
+        this.currentVote.set(this.currentVote() === value ? null : value);
+        this.isVoting.set(false);
+      },
+      error: (err) => {
+        console.log(err);
+        this.isVoting.set(false);
+      }
+    });
+  }
 
   closePanel(): void {
     this.cancel.emit();
@@ -96,8 +125,6 @@ export class PinDetailPanelComponent {
 
     this.router.navigate(['/map', 'delete-pin', id]);
   }
-
-
 
   onPreviewClick(coords: GeoLocationDTO): void {
     this.coords.emit(coords);

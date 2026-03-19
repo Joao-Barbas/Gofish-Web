@@ -9,7 +9,7 @@
     <app-overlay-header></app-overlay-header>
     @if (this.popupService.isOpen('pin-preview')) {
     <div class="pin-detail-panel fade show gf-do-events">
-      <app-pin-detail-panel [pinData]="selectedPin()" (cancel)="onPopupCancelPinPreview()">
+      <app-pin-detail-panel [pinData]="selectedPin()" (cancel)="onPopupCancelPinPreview()" (coords)="goToCoords($event)">
       </app-pin-detail-panel>
     </div>
     }
