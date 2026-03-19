@@ -137,6 +137,11 @@ export class PinDetailPanelComponent {
     const option = options.find(opt => opt.value === value);
     return option ? option.label : 'error2';
   }
+
+  openGoogleMaps() {
+    const url = `https://www.google.com/maps/search/?api=1&query=${this.pinData()?.geolocation?.latitude},${this.pinData()?.geolocation?.longitude}`;
+    window.open(url, '_blank');
+  }
 }
 
 

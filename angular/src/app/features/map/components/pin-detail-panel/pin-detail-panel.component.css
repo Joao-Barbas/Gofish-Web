@@ -353,3 +353,13 @@
   border-radius: 10px;
   border: 2px solid #000;
 }
+
+.active-down {
+  background-color: rgb(255, 30, 0);
+  border-radius: 999px;
+}
+
+.active-up {
+  background-color: rgb(0, 255, 0);
+  border-radius: 999px;
+}

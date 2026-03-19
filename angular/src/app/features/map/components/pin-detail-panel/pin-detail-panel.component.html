@@ -95,7 +95,7 @@
 
               <!-- Upvote button -->
               <button class="post-interact-btn"
-                      [class.active] = "currentVote() === 1"
+                      [class.active-up] = "currentVote() === 1"
                       [disabled]="isVoting()"
                       (click) = "vote(1)">
 
@@ -113,7 +113,7 @@
               <!-- Downvote button -->
               <button class="post-interact-btn"
                       class="post-interact-btn"
-                      [class.active] = "currentVote() === -1"
+                      [class.active-down] = "currentVote() === -1"
                       [disabled]="isVoting()"
                       (click) = "vote(-1)">
 
@@ -158,7 +158,7 @@
             </button>
 
             <!-- Go To Post button -->
-            <button class="gf-badge-post-view-button">
+            <button class="gf-badge-post-view-button" (click)="openGoogleMaps()">
 
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
