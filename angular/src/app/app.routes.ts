@@ -23,6 +23,10 @@ export const routes: Routes = [
     loadComponent: () => import('@gofish/features/user/auth/signin-verify/signin-verify.component').then(m => m.SigninVerifyComponent)
   },
   {
+    path: 'auth/callback',
+    loadComponent: () => import('@gofish/features/user/auth/auth-callback/auth-callback.component').then(m => m.AuthCallbackComponent)
+  },
+  {
     path: PathSegment.SETTINGS,
     loadComponent: () => import('@gofish/features/user/settings/settings.component').then(m => m.SettingsComponent),
     canActivate: [authGuard],
