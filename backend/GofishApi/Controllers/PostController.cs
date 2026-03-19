@@ -211,7 +211,7 @@ public class PostController : ControllerBase
 
     [Authorize]
     [HttpPost("PostVote/{postId}")]
-    public async Task<IActionResult> PostVote(int postId, [FromBody] VotePostDTO dto)
+    public async Task<IActionResult> PostVote(int postId, [FromBody] VotePostReqDTO dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
@@ -236,9 +236,42 @@ public class PostController : ControllerBase
         else if (existingVote.Value == dto.Value) _db.PostVote.Remove(existingVote);
         else existingVote.Value = dto.Value;
         await _db.SaveChangesAsync();
-        return Ok();
+
+        var score = await _db.PostVote
+            .Where(v => v.PostId == postId)
+            .SumAsync(v => (int)v.Value);
+
+        return Ok(new VotePostResDTO(score));
     }
 
+    #endregion
+
+    #region Comments
+
+    [Authorize]
+    [HttpPost("CreateComment")]
+    public async Task<IActionResult> CreateComment([FromBody] CreatePostCommentReqDTO dto)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
+        if (user is null) return Unauthorized();
+
+        var postExists = await _db.Posts.AnyAsync(p => p.Id == dto.PostId);
+        if (!postExists)
+            return NotFound("Post not found");
+
+        var comment = new PostComment
+        {
+            PostId = dto.PostId,
+            Body = dto.Body,
+            CreatedAt = DateTime.UtcNow,
+            UserId = userId
+        };
+
+        _db.PostComments.Add(comment);
+        await _db.SaveChangesAsync();
+        return Ok(new CreatePostCommentResDTO(comment.Id));
+    }
 
     #endregion
 }

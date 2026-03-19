@@ -120,7 +120,8 @@ public record GetPostsCommentDTO(
     string Body,
     DateTime CreatedAt,
     string UserId,
-    string UserName
+    string UserName,
+    string? AvatarUrl
 )
 {
     public static GetPostsCommentDTO FromComment(PostComment comment) => new(
@@ -128,7 +129,8 @@ public record GetPostsCommentDTO(
         comment.Body,
         comment.CreatedAt,
         comment.AppUser.Id,
-        comment.AppUser.UserName ?? ""
+        comment.AppUser.UserName ?? "",
+        comment.AppUser.UserProfile.AvatarUrl
     );
 }
 
