@@ -1,9 +1,8 @@
-﻿namespace GofishApi.Enums
+﻿namespace GofishApi.Enums;
+
+public enum FeedKind
 {
-    public enum FeedKind
-    {
-        Discovery,
-        Friends,
-        Groups
-    }
+    Discovery = 0,
+    Friends   = 1,
+    Groups    = 2
 }
