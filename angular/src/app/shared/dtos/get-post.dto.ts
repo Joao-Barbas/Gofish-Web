@@ -44,7 +44,7 @@ export interface GetPostsCommentDTO {
 export interface GetPostsPostDTO {
   id: number;
   createdAt: string;
-  body?: string;
+  body?: string;                  // post-description
   imageUrl?: string;
   score: number;
   commentCount: number;

@@ -76,7 +76,7 @@ public class PostController : ControllerBase
         }
         var posts = await _db.Posts
             .Where(p => postIds.Contains(p.Id))
-            .Where(p => p.CreatedAt > dto.LastTimestamp)
+            .Where(p => p.CreatedAt <= dto.LastTimestamp)
             .Include(p => p.PostVotes)
             .Include(p => p.Pin)
             .Include(p => p.AppUser)
