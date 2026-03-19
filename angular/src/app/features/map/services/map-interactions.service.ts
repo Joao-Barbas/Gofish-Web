@@ -116,37 +116,26 @@ export class MapInteractionsService {
   ): void {
     map.on('click', unclusteredId, (e) => {
       if (!map.getLayer(unclusteredId)) return;
+
       const features = map.queryRenderedFeatures(e.point, { layers: [unclusteredId] });
       if (!features.length) return;
 
-      const pin = allPins().find(p => p.id === features[0].properties?.['id']);
-      if (!pin) return;
+      const feature = features[0];
+      const [lng, lat] = (feature.geometry as GeoJSON.Point).coordinates;
 
-      const getPin: GetPinsReqDTO = {
-        ids: [{ pinId: pin.id }],
-        dataRequest: {
-          includeGeolocation: true,
-          includeAuthor: true,
-          includePost: true,
-          includeDetails: true,
-          includeGroups: true,
-        } as PinDataReqDTO
-      };
+      const pinsAtLocation = allPins().find(pin => {
+        this.sameCoordinates(pin?.latitude, pin?.longitude, lat, lng)
+      });
+      if (!pinsAtLocation) return;
 
       this.pinHoverPreview.clear();
 
-      this.pinService.getPinPreview(getPin).subscribe({
-        next: (res: GetPinsResDTO) => {
-          const pin = res.pins[0];
-          if (!pin) return;
-          selectedPin.set(pin);
-          this.popupService.open('pin-preview');
-          if (pin.geolocation == null) return;
-          map.flyTo({ center: [pin.geolocation.longitude, pin.geolocation.latitude], zoom: 13 });
-        },
-        error: (err) => console.error('Erro ao carregar pin:', err)
-      });
     });
+  }
+
+  private sameCoordinates(lat1: number, lng1: number, lat2: number, lng2: number): boolean {
+    const EPSILON = 0.000001; // Helps in precision
+    return Math.abs(lat1 - lat2) < EPSILON && Math.abs(lng1 - lng2) < EPSILON;
   }
 
   private registerClusterCursor(map: mapboxgl.Map, clusterId: string): void {
