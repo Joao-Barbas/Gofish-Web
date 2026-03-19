@@ -97,4 +97,8 @@ public class ReportController : ControllerBase
     }
 
     #endregion
+
+    #region DeleteReports
+
+    #endregion
 }
