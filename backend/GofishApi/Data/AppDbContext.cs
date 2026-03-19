@@ -26,6 +26,8 @@ namespace GofishApi.Data
         public DbSet<GroupUser> GroupUsers { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<PinReport> PinReports { get; set; }
+        public DbSet<CommentReport> CommentReports { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -163,25 +165,35 @@ namespace GofishApi.Data
             #region PinReport
 
             builder.Entity<PinReport>()
-                .HasKey(r => new { r.UserId, r.PinId });
-
-            builder.Entity<PinReport>()
-                .HasOne(r => r.AppUser)
+                .HasOne(f => f.AppUser)
                 .WithMany()
-                .HasForeignKey(r => r.UserId)
+                .HasForeignKey(f => f.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<PinReport>()
-                .HasOne(r => r.Pin)
+                .HasOne(f => f.Pin)
                 .WithMany()
-                .HasForeignKey(r => r.PinId)
+                .HasForeignKey(f => f.PinId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<PinReport>()
-                .Property(r => r.Type)
-                .HasConversion<string>();
+            #endregion // PinReport
+            #region CommentReport
 
-            #endregion
+            builder.Entity<CommentReport>()
+                .HasOne(f => f.AppUser)
+                .WithMany()
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            builder.Entity<CommentReport>()
+                .HasOne(f => f.Comment)
+                .WithMany()
+                .HasForeignKey(f => f.CommentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            #endregion // PinReport
 
             SeedUsers(builder);
             SeedCatchPin(builder);

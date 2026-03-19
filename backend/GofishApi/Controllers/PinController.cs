@@ -258,10 +258,4 @@ public class PinController : ControllerBase
         return NoContent();
     }
 
-    #region DenunciarPin
-
-    [Authorize]
-    [HttpPost("GetPins")]
-
-    #endregion
 }
