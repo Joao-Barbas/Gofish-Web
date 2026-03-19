@@ -11,3 +11,13 @@ public record CreatePinReportReqDTO(
 public record CreatePinReportResDTO(
     int Id
 );
+
+public record CreateCommentReportReqDTO(
+    int CommentId,
+    CommentReportReason Reason,
+    string? Description
+);
+
+public record CreateCommentReportResDTO(
+    int Id
+);
