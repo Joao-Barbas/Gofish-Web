@@ -95,6 +95,7 @@ public class PinController : ControllerBase
         .Where((p) => pinIds.Contains(p.Id))
         .Include((p) => p.AppUser)
         .Include((p) => p.Post)
+        .Include((p) => p.Post.PostVotes)
         .ToListAsync();
 
         var data = pins

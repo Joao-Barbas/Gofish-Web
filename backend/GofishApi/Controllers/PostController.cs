@@ -245,4 +245,33 @@ public class PostController : ControllerBase
     }
 
     #endregion
+
+    #region Comments
+
+    [Authorize]
+    [HttpPost("CreateComment")]
+    public async Task<IActionResult> CreateComment([FromBody] CreatePostCommentReqDTO dto)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
+        if (user is null) return Unauthorized();
+
+        var postExists = await _db.Posts.AnyAsync(p => p.Id == dto.PostId);
+        if (!postExists)
+            return NotFound("Post not found");
+
+        var comment = new PostComment
+        {
+            PostId = dto.PostId,
+            Body = dto.Body,
+            CreatedAt = DateTime.UtcNow,
+            UserId = userId
+        };
+
+        _db.PostComments.Add(comment);
+        await _db.SaveChangesAsync();
+        return Ok(new CreatePostCommentResDTO(comment.Id));
+    }
+
+    #endregion
 }
