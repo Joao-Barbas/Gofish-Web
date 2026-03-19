@@ -211,7 +211,7 @@ public class PostController : ControllerBase
 
     [Authorize]
     [HttpPost("PostVote/{postId}")]
-    public async Task<IActionResult> PostVote(int postId, [FromBody] VotePostDTO dto)
+    public async Task<IActionResult> PostVote(int postId, [FromBody] VotePostReqDTO dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
@@ -236,7 +236,12 @@ public class PostController : ControllerBase
         else if (existingVote.Value == dto.Value) _db.PostVote.Remove(existingVote);
         else existingVote.Value = dto.Value;
         await _db.SaveChangesAsync();
-        return Ok();
+
+        var score = await _db.PostVote
+            .Where(v => v.PostId == postId)
+            .SumAsync(v => (int)v.Value);
+
+        return Ok(new VotePostResDTO(score));
     }
 
     #endregion
