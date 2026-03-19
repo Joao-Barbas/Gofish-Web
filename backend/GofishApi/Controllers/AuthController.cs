@@ -114,38 +114,40 @@ public class AuthController : ControllerBase
     [HttpGet("ExternalLoginCallback")]
     public async Task<IActionResult> ExternalLoginCallback()
     {
-        var angularUrl = _configuration["AppUrl"]!;
+        var url  = _configuration["AppUrl"]!;
         var info = await _signInManager.GetExternalLoginInfoAsync();
 
-        if (info == null)
-            return Redirect($"{angularUrl}/signin?error=external-login-failed");
+        if (info is null)
+        {
+            return Redirect($"{url}/signin?error=external-login-failed");
+        }
 
         var email = info.Principal.FindFirstValue(ClaimTypes.Email)!;
+        var user  = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
 
-        // Check if this Google account is already linked
-        var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
-
-        if (user == null)
+        if (user is null)
         {
-            // Check if an email/password account already exists
-            var existingUser = await _userManager.FindByEmailAsync(email);
-            if (existingUser != null)
-                return Redirect($"{angularUrl}/signin?error=account-exists");
+            if (await _userManager.FindByEmailAsync(email) is not null)
+            {
+                return Redirect($"{url}/signin?error=account-exists");
+            }
 
             var firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName) ?? string.Empty;
-            var lastName = info.Principal.FindFirstValue(ClaimTypes.Surname) ?? string.Empty;
-            var userName = email.Split('@')[0];
+            var lastName  = info.Principal.FindFirstValue(ClaimTypes.Surname) ?? string.Empty;
+            var userName  = email.Split('@')[0];
 
-            if (await _userManager.FindByNameAsync(userName) != null)
+            if (await _userManager.FindByNameAsync(userName) is not null)
+            {
                 userName = $"{userName}_{Guid.NewGuid().ToString()[..4]}";
+            }
 
             var newUser = new AppUser
             {
-                Email = email,
-                UserName = userName,
-                FirstName = firstName,
-                LastName = lastName,
-                EmailConfirmed = true,
+                Email           = email,
+                UserName        = userName,
+                FirstName       = firstName,
+                LastName        = lastName,
+                EmailConfirmed  = true, // We logged with the email right?
                 TwoFactorMethod = TwoFactorMethod.None
             };
 
@@ -155,9 +157,8 @@ public class AuthController : ControllerBase
         var roles = await _userManager.GetRolesAsync(user);
         var token = await _jwtService.CreateTokenAsync(user, roles);
 
-        return Redirect($"{angularUrl}/auth/callback?token={Uri.EscapeDataString(token)}");
+        return Redirect($"{url}/auth/callback?token={Uri.EscapeDataString(token)}");
     }
-
 
     // [Authorize(Roles = "Admin")]
     // private static string AdminOnly()

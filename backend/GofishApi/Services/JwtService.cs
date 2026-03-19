@@ -25,8 +25,10 @@ namespace GofishApi.Services
 
         public async Task<string> CreateTokenAsync(AppUser user, IList<string> roles)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Secret!));
+            var logins   = await _userManager.GetLoginsAsync(user);
+            var provider = logins.FirstOrDefault()?.LoginProvider;
 
+            var key    = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Secret!));
             var claims = new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
@@ -35,12 +37,15 @@ namespace GofishApi.Services
                 new(JwtRegisteredClaimNames.UniqueName, user.UserName ?? ""),
                 new(JwtRegisteredClaimNames.GivenName, user.FirstName ?? ""),
                 new(JwtRegisteredClaimNames.FamilyName, user.LastName ?? ""),
-                new(JwtRegisteredClaimNames.Email, user.Email ?? "")
+                new(JwtRegisteredClaimNames.Email, user.Email ?? ""),
+                new("login_provider", provider ?? "Local")
             };
+            
             foreach (var role in roles)
             {
                 claims.Add(new(ClaimTypes.Role, role));
             }
+
             var descriptor = new SecurityTokenDescriptor
             {
                 Subject            = new ClaimsIdentity(claims),

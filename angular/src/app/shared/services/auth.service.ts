@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { JwtClaim, JwtEncoded, JwtPayload, JwtRole } from '@gofish/shared/models/jwt.model';
+import { JwtClaim, JwtEncoded, JwtLoginProvider, JwtPayload, JwtRole } from '@gofish/shared/models/jwt.model';
 import { Api, LocalStorageKey, Path } from '@gofish/shared/constants';
 import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/signup.dto';
 import { SignInReqDTO, SignInResDTO, TwoFactorSignInReqDTO, TwoFactorSignInResDTO } from '@gofish/shared/dtos/signin.dto';
@@ -82,21 +82,25 @@ export class AuthService {
   // End token storage
   // Jwt claim getters
 
-  readonly userId = computed((): JwtClaim => this.decodedToken()?.sub ?? '');
-  readonly userName = computed((): JwtClaim => this.decodedToken()?.unique_name ?? '');
-  readonly userFirstName = computed((): JwtClaim => this.decodedToken()?.given_name ?? '');
-  readonly userLastName = computed((): JwtClaim => this.decodedToken()?.family_name ?? '');
-  readonly userEmail = computed((): JwtClaim => this.decodedToken()?.email ?? '');
+  readonly userId        = computed<JwtPayload["sub"]>(() => this.decodedToken()?.sub ?? '');
+  readonly userName      = computed<JwtPayload["unique_name"]>(() => this.decodedToken()?.unique_name ?? '');
+  readonly userFirstName = computed<JwtPayload["given_name"]>(() => this.decodedToken()?.given_name ?? '');
+  readonly userLastName  = computed<JwtPayload["family_name"]>(() => this.decodedToken()?.family_name ?? '');
+  readonly userEmail     = computed<JwtPayload["email"]>(() => this.decodedToken()?.email ?? '');
+  readonly loginProvider = computed<JwtPayload["login_provider"]>(() => this.decodedToken()?.login_provider ?? 'Local');
 
   // End jwt claim getters
   // Jwt roles getters
 
-  readonly isAdmin = computed((): boolean => this.hasRole('Admin'));
-  readonly isUser = computed((): boolean => this.hasRole('User'));
+  readonly isAdmin        = computed<boolean>(() => this.hasRole('Admin'));
+  readonly isUser         = computed<boolean>(() => this.hasRole('User'));
+  readonly isExternalUser = computed<boolean>(() => this.loginProvider() !== 'Local');
 
+  /** @deprecated Use userName() instead */
   getUserName() {
     return this.userName()!.toString();
   }
+
   // End jwt roles getters
 
   /**
