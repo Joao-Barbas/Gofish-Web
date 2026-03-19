@@ -12,6 +12,7 @@ import { NgxSonnerToaster, toast } from 'ngx-sonner';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 import { BusyState } from '@gofish/shared/core/busy-state';
 
+
 @Component({
   selector: 'app-warn-pin-modal',
   imports: [CommonModule, ReactiveFormsModule, AsyncButtonComponent],
@@ -128,11 +129,12 @@ export class WarnPinModalComponent {
         toast.success('Warn Pin created successfully.');
         this.router.navigate(['/map']);
       },
-      error: () => {
+      error: (err) => {
         this.busyState.setBusy(false);
         toast.dismiss(toastId);
         this.errorMessage = 'Failed to create warn pin. Please try again.';
         toast.error(this.errorMessage);
+        console.log(err);
       }
     });
   }
