@@ -12,6 +12,8 @@ export type JwtAudience  = string;
 export type JwtRole  = 'User' | 'Admin';
 export type JwtRoles = JwtRole | JwtRole[];
 
+export type JwtLoginProvider = 'Local' | 'Google';
+
 export type JwtEncoded   = string;
 export type JwtDecoded   = string;
 
@@ -31,6 +33,7 @@ export type JwtUserClaims = {
   family_name: string;
   email: string;
   role: JwtRoles;
+  login_provider: JwtLoginProvider;
 }
 
 export type JwtPayload  = JwtStdClaims & JwtUserClaims;

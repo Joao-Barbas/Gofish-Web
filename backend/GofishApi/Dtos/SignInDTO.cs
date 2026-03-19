@@ -21,3 +21,8 @@ public record TwoFactorSignInReqDTO(
 public record TwoFactorSignInResDTO(
     string Token
 );
+
+public record ExternalSignInResDTO(
+    string Token
+)
+{ }

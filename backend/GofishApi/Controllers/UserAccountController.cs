@@ -33,14 +33,13 @@ namespace GofishApi.Controllers
         [HttpDelete("DeleteAccount")]
         public async Task<IActionResult> DeleteAccount([FromBody] DeleteAccountReqDTO dto)
         {
-            // TODO: Also 2FA if enabled
             var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
             var user   = await _userManager.FindByIdAsync(userId);
             if (user is null)
             {
                 return Unauthorized();
             }
-            if (!await _userManager.CheckPasswordAsync(user, dto.Password))
+            if (user.PasswordHash is not null && !await _userManager.CheckPasswordAsync(user, dto.Password))
             {
                 return Unauthorized();
             }

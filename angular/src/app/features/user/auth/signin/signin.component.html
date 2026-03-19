@@ -11,7 +11,7 @@
 
     <!-- Third-party action -->
     <div>
-      <button class="thrid-party-button" title="Sign up with Google">
+      <button type="button" class="thrid-party-button" title="Continue with Google" (click)="onGoogle()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <path d="M501.8 261.8c0-18.2-1.6-35.6-4.7-52.4H256v99.1h137.8c-6.1 31.9-24.2 58.9-51.4 77V450h83.1c48.3-44.6 76.3-110.2 76.3-188.2" style="fill:#4285f4"/>
           <path d="M256 512c69.1 0 127.1-22.8 169.4-61.9l-83.1-64.5c-22.8 15.4-51.9 24.7-86.3 24.7-66.6 0-123.1-44.9-143.4-105.4H27.5V371C69.6 454.5 155.9 512 256 512" style="fill:#34a853"/>
@@ -51,25 +51,28 @@
         <small>E-mail / Username</small>
         <input type="text" class="gf-w-100" formControlName="emailOrUserName">
       </div>
-      <div class="password-input-wrapper">
-        <input id="password" [type]="showPwd ? 'text' : 'password'" class="gf-w-100" formControlName="password" placeholder="Enter a password at least 6 characters long">
-        <button type="button" class="password-toggle" (click)="showPwd = !showPwd" [title]="showPwd ? 'Hide password' : 'Show password'">
-          @if (showPwd) {
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
-              <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
-              <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
-              <path d="m2 2 20 20"/>
-            </svg>
-          } @else {
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
-          }
-        </button>
+      <div class="d-block">
+        <small>Password</small>
+        <div class="password-input-wrapper">
+          <input id="password" [type]="showPwd ? 'text' : 'password'" class="gf-w-100" formControlName="password" placeholder="Enter a password at least 6 characters long">
+          <button type="button" class="password-toggle" (click)="showPwd = !showPwd" [title]="showPwd ? 'Hide password' : 'Show password'">
+            @if (showPwd) {
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+                <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+                <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+                <path d="m2 2 20 20"/>
+              </svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            }
+          </button>
+        </div>
       </div>
     </form>
 
@@ -77,6 +80,9 @@
     <div class="gf-flow-vertical gf-my-12 gf-gap-4">
       @if (getError(); as errorText) {
         <span class="gf-text-error">{{ errorText }}</span>
+      }
+      @if (route.snapshot.queryParamMap.get('error') === 'account-exists') {
+        <p>An account with this email already exists. Please sign in with your password.</p>
       }
       <app-async-button
         type="submit"

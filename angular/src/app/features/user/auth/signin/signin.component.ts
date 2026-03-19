@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Api, Path } from '@gofish/shared/constants';
 import { ValidationProblemDetails } from '@gofish/shared/core/problem-details';
 import { SignInReqDTO, SignInResDTO } from '@gofish/shared/dtos/signin.dto';
@@ -12,6 +12,7 @@ import { AuthService } from '@gofish/shared/services/auth.service';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { LoadingState } from '@gofish/shared/core/loading-state';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-signin',
@@ -22,6 +23,7 @@ import { LoadingState } from '@gofish/shared/core/loading-state';
 export class SigninComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router      = inject(Router);
+  readonly route               = inject(ActivatedRoute);
   readonly formBuilder         = inject(FormBuilder);
 
   readonly loadingState: LoadingState = new LoadingState();
@@ -92,5 +94,9 @@ export class SigninComponent implements OnInit {
         this.apiProblems = problem;
       }
     });
+  }
+
+  onGoogle() {
+    window.location.href = Api.Auth.action('ExternalLogin?provider=Google');
   }
 }

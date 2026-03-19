@@ -58,9 +58,9 @@
   <div class="actions backup-codes">
     <label class="saved-checkbox">
       <span>I have saved my backup codes</span>
-      <input type="checkbox" [(ngModel)]="savedCodesChecked">
+      <input type="checkbox" [(ngModel)]="savedCodesChecked" (change)="closeAttempted" [class.jitter]="closeAttempted">
     </label>
-    <button class="primary" type="button" [disabled]="!savedCodesChecked" (click)="onClose()">
+    <button class="primary" type="button" (click)="onClose()">
       Close
     </button>
   </div>

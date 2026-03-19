@@ -12,10 +12,31 @@
       </div>
       <!-- Nav Items -->
       <nav class="col d-flex align-items-center font-main flat-header-items">
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="text-slim dark-text-muted">HOME</a>
-        <a routerLink="/map" routerLinkActive="active" class="text-slim dark-text-muted">MAP</a>
-        <a routerLink="/forum" routerLinkActive="active" class="text-slim dark-text-muted">FORUM</a>
-        <a routerLink="/about-us" routerLinkActive="active" class="text-slim dark-text-muted">ABOUT US</a>
+        <a
+          [routerLink]="'/'"
+          [routerLinkActiveOptions]="{exact: true}"
+          routerLinkActive="active"
+          class="text-slim dark-text-muted">
+          HOME
+        </a>
+        <a
+          [routerLink]="authService.isAuthenticated() ? '/map' : '/signin'"
+          routerLinkActive="active"
+          class="text-slim dark-text-muted">
+          MAP
+        </a>
+        <a
+          [routerLink]="authService.isAuthenticated() ? '/forum' : '/signin'"
+          routerLinkActive="active"
+          class="text-slim dark-text-muted">
+          FORUM
+        </a>
+        <a
+          [routerLink]="'/about-us'"
+          routerLinkActive="active"
+          class="text-slim dark-text-muted">
+          ABOUT US
+        </a>
       </nav>
   </div>
   <!-- Right: toggle menus actions -->

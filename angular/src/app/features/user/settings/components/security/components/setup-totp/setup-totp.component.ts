@@ -35,6 +35,7 @@ export class SetupTotpComponent implements OnInit {
   qrCodeImageUrl: string = '';
   backupCodes: string[] = [];
   savedCodesChecked: boolean = false;
+  closeAttempted: boolean = false;
 
   verifyForm: FormGroup = this.formBuilder.group({
     totpCode: ['', [ Validators.required, Validators.pattern('^[0-9]*$') ]]
@@ -91,6 +92,11 @@ export class SetupTotpComponent implements OnInit {
   }
 
   onClose(): void {
-    this.router.navigate([Path.SECURITY_SETTINGS]);
+    if (this.savedCodesChecked) {
+      this.router.navigate([Path.SECURITY_SETTINGS]);
+    } else {
+      this.closeAttempted = false;
+      setTimeout(() => this.closeAttempted = true);
+    }
   }
 }
