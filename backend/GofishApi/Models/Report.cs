@@ -11,6 +11,7 @@ public interface IReport
     string ReasonText { get; }
     DateTime CreatedAt { get; }
     string UserId { get; }
+    string? Description { get; }
 }
 
 public sealed class PinReport : IReport
@@ -20,6 +21,9 @@ public sealed class PinReport : IReport
     public PinReportReason Reason { get; set; }
     public string ReasonText => Reason.GetDisplayName();
     public DateTime CreatedAt { get; set; }
+
+    [MaxLength(2000)]
+    public string? Description { get; set; }
 
     [ForeignKey(nameof(AppUser))]
     public string UserId { get; set; } = default!;
@@ -32,6 +36,7 @@ public sealed class PinReport : IReport
     public AppUser AppUser { get; set; } = default!;
     public Pin Pin { get; set; } = default!;
 
+
 }
 
 public sealed class CommentReport : IReport
@@ -41,6 +46,9 @@ public sealed class CommentReport : IReport
     public CommentReportReason Reason { get; set; }
     public string ReasonText => Reason.GetDisplayName();
     public DateTime CreatedAt { get; set; }
+
+    [MaxLength(2000)]
+    public string? Description { get; set; }
 
     [ForeignKey(nameof(AppUser))]
     public string UserId { get; set; } = default!;

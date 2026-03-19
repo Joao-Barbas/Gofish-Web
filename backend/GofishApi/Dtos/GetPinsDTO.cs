@@ -80,12 +80,14 @@ public record GetPinsAuthorDTO(
 };
 
 public record GetPinsPostDTO(
+    int Id,
     string? Body = null,
     string? ImageUrl = null,
     int? Score = null, // TODO: Are these really nullable in the future?
     int? CommentCount = null  // ^^^^
 ){
     public static GetPinsPostDTO FromPin(Pin pin) => new(
+        pin.Post.Id,
         pin.Post.Body,
         pin.Post.ImageUrl,
         pin.Post.PostVotes.Sum(v => (int)v.Value),
