@@ -28,7 +28,7 @@ export class MapInteractionsService {
 
       this.registerClusterClick(map, clusterId, sourceId, selectedPins, allPins);
       this.registerPinHover(map, unclusteredId, allPins);
-      this.registerPinClick(map, unclusteredId, allPins, selectedPin);
+      this.registerPinClick(map, unclusteredId, allPins, selectedPin, selectedPins);
       this.registerClusterCursor(map, clusterId);
     });
 
@@ -112,7 +112,8 @@ export class MapInteractionsService {
     map: mapboxgl.Map,
     unclusteredId: string,
     allPins: WritableSignal<ViewportPinDTO[]>,
-    selectedPin: WritableSignal<PinDataResDTO | null>
+    selectedPin: WritableSignal<PinDataResDTO | null>,
+    selectedPins: WritableSignal<PinDataResDTO[]>
   ): void {
     map.on('click', unclusteredId, (e) => {
       if (!map.getLayer(unclusteredId)) return;
@@ -123,19 +124,88 @@ export class MapInteractionsService {
       const feature = features[0];
       const [lng, lat] = (feature.geometry as GeoJSON.Point).coordinates;
 
-      const pinsAtLocation = allPins().find(pin => {
-        this.sameCoordinates(pin?.latitude, pin?.longitude, lat, lng)
+      const pinsAtLocation = allPins().filter(pin => {
+        this.sameCoordinates(pin!.latitude, pin!.longitude, lat, lng)
       });
+
       if (!pinsAtLocation) return;
 
       this.pinHoverPreview.clear();
 
+      // If have stacked pins
+      if (pinsAtLocation.length > 1) {
+        this.openPinsList(pinsAtLocation, selectedPins);
+        return;
+      }
+
+      const pinId = feature.properties?.['id'];
+      if (!pinId) return;
+
+      this.openSinglePin(pinId, selectedPin, map);
     });
   }
 
   private sameCoordinates(lat1: number, lng1: number, lat2: number, lng2: number): boolean {
     const EPSILON = 0.000001; // Helps in precision
     return Math.abs(lat1 - lat2) < EPSILON && Math.abs(lng1 - lng2) < EPSILON;
+  }
+
+  private openPinsList(pins: ViewportPinDTO[], selectedPins: WritableSignal<PinDataResDTO[]>) {
+    const request: GetPinsReqDTO = {
+      ids: pins.map(pin => ({ pinId: pin.id })),
+      dataRequest: {
+        includeGeolocation: true,
+        includeAuthor: true,
+        includePost: true,
+        includeDetails: true,
+        includeGroups: true,
+      }
+    };
+
+    this.pinService.getPinPreview(request).subscribe({
+      next: (res) => {
+        selectedPins.set(res.pins);
+        this.popupService.open('cluster-preview');
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  private openSinglePin(
+    pinId: number,
+    selectedPin: WritableSignal<PinDataResDTO | null>,
+    map: mapboxgl.Map
+  ): void {
+    const request: GetPinsReqDTO = {
+      ids: [{ pinId }],
+      dataRequest: {
+        includeGeolocation: true,
+        includeAuthor: true,
+        includePost: true,
+        includeDetails: true,
+        includeGroups: true,
+      }
+    };
+
+    this.pinService.getPinPreview(request).subscribe({
+      next: (res) => {
+        const pin = res.pins[0];
+        if (!pin) return;
+
+        selectedPin.set(pin);
+        this.popupService.open('pin-preview');
+
+        if (!pin.geolocation) return;
+
+        map.flyTo({
+          center: [pin.geolocation.longitude, pin.geolocation.latitude],
+          zoom: 13
+        });
+      },
+      error: (err) => console.error(err)
+    });
   }
 
   private registerClusterCursor(map: mapboxgl.Map, clusterId: string): void {

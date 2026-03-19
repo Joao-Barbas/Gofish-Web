@@ -128,11 +128,12 @@ export class WarnPinModalComponent {
         toast.success('Warn Pin created successfully.');
         this.router.navigate(['/map']);
       },
-      error: () => {
+      error: (err) => {
         this.busyState.setBusy(false);
         toast.dismiss(toastId);
         this.errorMessage = 'Failed to create warn pin. Please try again.';
         toast.error(this.errorMessage);
+        console.log(err);
       }
     });
   }
