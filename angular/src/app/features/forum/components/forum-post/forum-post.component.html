@@ -1,3 +1,6 @@
+@if(postData(); as post) {
+
+
 <div class="d-grid gap-3 gf-card-forum-post">
 
   <!-- Post Header -->
@@ -8,8 +11,8 @@
 
       <img src="assets/images/placeholder_profile_pic.png" class="rounded-circle post-author-profile-photo">
 
-      <span class="post-author-name text-bold">Lorem ipsum dolor sit amet</span>
-      <span class="post-date dark-text-muted">Jul 12, 2021</span>
+      <span class="post-author-name text-bold">{{ post.author?.userName }}</span>
+      <span class="post-date dark-text-muted">{{ post.createdAt | timeAgo }}</span>
 
     </div>
 
@@ -38,7 +41,7 @@
       </button>
 
       <!-- Location Post Button -->
-      <button class="gf-badge">
+      <button class="gf-badge"> <!-- TODO: (click)="goToPin()" -->
 
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
@@ -63,14 +66,14 @@
 
     <div class="warning-banner">
       <img src="assets/images/placeholder_profile_pic.png" class="warning-image rounded-circle">
-      <span class="warning-type-text">Strong currents!</span>
+      <span class="warning-type-text">{{ post.warningKind }}</span>
     </div>
 
     <!-- Post Description -->
 
     <div class="post-description">
       <p class="mb-2">
-        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        {{ post.body }}
       </p>
     </div>
 
@@ -95,7 +98,7 @@
 
         </button>
 
-        <span class="post-stats post-fishing-points">999</span>
+        <span class="post-stats post-fishing-points">{{ post.score }}</span>
 
         <!-- Downvote button -->
         <button class="post-interact-btn">
@@ -120,7 +123,7 @@
             d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
         </svg>
 
-        <span class="post-stats post-fishing-points">10</span>
+        <span class="post-stats post-fishing-points">{{ post.commentCount }}</span>
       </button>
 
       <!-- Share button -->
@@ -136,9 +139,7 @@
       </button>
     </div>
 
-
   </div>
 
-
-
 </div>
+}
