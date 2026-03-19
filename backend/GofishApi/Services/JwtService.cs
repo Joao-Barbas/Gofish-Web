@@ -23,10 +23,9 @@ namespace GofishApi.Services
             _userManager = userManager;
         }
 
-        public async Task<string> CreateTokenAsync(AppUser user)
+        public async Task<string> CreateTokenAsync(AppUser user, IList<string> roles)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Secret!));
-            var roles = await _userManager.GetRolesAsync(user);
 
             var claims = new List<Claim>
             {
@@ -50,11 +49,17 @@ namespace GofishApi.Services
                 Issuer             = _jwt.Issuer,
                 Audience           = _jwt.Audience
             };
-            
+
             var handler = new JwtSecurityTokenHandler();
             var token = handler.WriteToken(handler.CreateToken(descriptor));
 
             return await Task.FromResult(token);
+        }
+
+        public async Task<string> CreateTokenAsync(AppUser user)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            return await CreateTokenAsync(user, roles);
         }
 
         // Optional Future Improvement:
