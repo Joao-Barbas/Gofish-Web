@@ -33,18 +33,20 @@
           Are you sure you want to permanently delete your account? This action is permanent and cannot be undone.<br>
           All of your data and history will be erased, and you will immediately lose access.
         </p>
-        <form id="form" class="modal-form vertical-flow gf-gap-8" [formGroup]="form" (ngSubmit)="onPositive()">
-          <div class="vertical-flow">
-            <label>Password</label>
-            <input type="password" id="password" formControlName="password">
-          </div>
-          @if (requireTwoFactorApp) {
+        @if (!authService.isExternalUser()) {
+          <form id="form" class="modal-form vertical-flow gf-gap-8" [formGroup]="form" (ngSubmit)="onPositive()">
             <div class="vertical-flow">
-              <label>Two-Factor Code</label>
-              <input type="text" id="code" formControlName="code" placeholder="Enter 6-digit code" maxlength="6" appNumbersOnly>
+              <label>Password</label>
+              <input type="password" id="password" formControlName="password">
             </div>
-          }
-        </form>
+            @if (requireTwoFactorApp) {
+              <div class="vertical-flow">
+                <label>Two-Factor Code</label>
+                <input type="text" id="code" formControlName="code" placeholder="Enter 6-digit code" maxlength="6" appNumbersOnly>
+              </div>
+            }
+          </form>
+        }
       </div>
 
       <div class="separator"></div>

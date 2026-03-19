@@ -6,6 +6,7 @@ export enum TwoFactorMethod {
 }
 
 export interface SecurityInfo {
+  identityProvider: string,
   twoFactorEnabled: boolean,
   twoFactorMethod: TwoFactorMethod
 }
