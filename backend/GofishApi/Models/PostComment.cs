@@ -17,10 +17,10 @@ public class PostComment
     public int PostId { get; set; }
 
     [ForeignKey(nameof(AppUser))]
-    public required string UserId { get; set; }
+    public string UserId { get; set; } = default!;
 
     // Navigation
 
-    public Post Post { get; set; }
-    public AppUser AppUser { get; set; }
+    public Post Post { get; set; } = default!;
+    public AppUser AppUser { get; set; } = default!;
 }

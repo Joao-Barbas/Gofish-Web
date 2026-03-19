@@ -8,24 +8,20 @@ public class PostVote
 {
     #region Scalar Properties
 
+    public DateTime CreatedAt { get; set; }
+    public VoteKind Value { get; set; }
+
     [ForeignKey(nameof(Post))]
     public int PostId { get; set; }
 
     [ForeignKey(nameof(AppUser))]
-    public string UserId { get; set; } = null!;
-
-    [Required]
-    public DateTime CreatedAt { get; set; }
-
-    public VoteType Value { get; set; }
+    public string UserId { get; set; } = default!;
 
     #endregion
-
     #region Navigation Properties
 
-    public Post Post { get; set; } = null!;
-
-    public AppUser AppUser { get; set; } = null!;
+    public Post Post { get; set; } = default!;
+    public AppUser AppUser { get; set; } = default!;
 
     #endregion
 }

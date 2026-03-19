@@ -4,5 +4,5 @@ using System.ComponentModel.DataAnnotations;
 namespace GofishApi.Dtos;
 
 public record VotePostDTO(
-    [Required] VoteType Value
+    [Required] VoteKind Value
 );

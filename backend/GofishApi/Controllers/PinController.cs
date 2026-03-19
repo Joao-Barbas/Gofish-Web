@@ -257,4 +257,5 @@ public class PinController : ControllerBase
         await _db.SaveChangesAsync();
         return NoContent();
     }
+
 }
