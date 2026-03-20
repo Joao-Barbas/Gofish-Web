@@ -5,7 +5,9 @@
 .sidebar-wrapper {
   border-radius: 12px;
   padding: 6px;
-  width: 405px;
+  width: fit-content;
+  min-width: 405px;
+  max-width: 600px;
   height: calc(100vh - 5rem);
   display: flex;
   flex-direction: column;
@@ -18,7 +20,6 @@
   overflow-y: auto;
   min-height: 0;
   padding: 1rem;
-
 
   /* Estilização opcional da scrollbar para combinar com o tema escuro */
   scrollbar-width: thin;
@@ -111,11 +112,12 @@
     color: var(--dark-text);
   }
 }
+
 /*temporary*/
 
 /* Post Content */
 
-.post-content > :not(:last-child) {
+.post-content> :not(:last-child) {
   margin-bottom: var(--gf-8);
 }
 
@@ -224,6 +226,7 @@
 .icon-upvote {
   transform: rotate(90deg);
 }
+
 .icon-downvote {
   transform: rotate(-90deg);
 }
