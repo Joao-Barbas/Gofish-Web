@@ -1,4 +1,4 @@
-.warning-banner {
+.banner {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -11,9 +11,8 @@
   gap: var(--gf-12);
 }
 
-.warning-image {
+.image {
   width: var(--gf-42);
   height: var(--gf-42);
   filter: brightness(0) invert(1); /** Put color of svg in white*/
 }
-

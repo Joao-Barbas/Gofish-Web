@@ -1,9 +1,9 @@
 @if (pinData()) {
 @switch (pinData()?.kind) {
-@case (pinKind.WARNING) { <div class="warning-banner">
+@case (pinKind.WARNING) { <div class="banner">
   <img [src]="'assets/images/enum-images/warn-images/' + pinData()?.details?.warningKind + '.svg'"
-    class="warning-image rounded-circle">
-  <span class="warning-type-text">{{getEnumDisplayName(warnTypeOptions, pinData()!.details!.warningKind)}}</span>
+    class="image rounded-circle">
+  <span class="type-text">{{getEnumDisplayName(warnTypeOptions, pinData()!.details!.warningKind)}}</span>
 </div> }
 
 @case (pinKind.INFORMATION) { }
@@ -16,14 +16,45 @@
 @switch (postData()?.kind) {
 @case (pinKind.WARNING) {
 
-<div class="warning-banner">
+<div class="banner">
   <img [src]="'assets/images/enum-images/warn-images/' + postData()?.warningKind + '.svg'"
-    class="warning-image rounded-circle">
-  <span class="warning-type-text">{{getEnumDisplayName(warnTypeOptions, postData()!.warningKind!)}}</span>
+    class="image rounded-circle">
+  <span class="type-text">{{getEnumDisplayName(warnTypeOptions, postData()!.warningKind!)}}</span>
 </div> }
+@case (pinKind.INFORMATION) {
+@if(postData()!.accessDifficulty) {
+<div class="banner">
+  <img [src]="'assets/images/enum-images/info-images/accessDifficulty/' + postData()?.accessDifficulty + '.svg'"
+    class="image rounded-circle">
+  <span class="type-text">{{getEnumDisplayName(accessDifficultyOptions, postData()!.accessDifficulty!)}}</span>
+</div>
+}
+@if(postData()!.seabed) {
+<div class="banner">
+  <img [src]="'assets/images/enum-images/info-images/species/' + postData()?.seabed + '.svg'"
+    class="image rounded-circle">
+  <span class="type-text">{{getEnumDisplayName(seaBedOptions, postData()!.seabed!)}}</span>
+</div>
+}
 
-@case (pinKind.INFORMATION) { }
-@case (pinKind.CATCH) { }
+}
+@case (pinKind.CATCH) {
+@if(postData()!.species) {
+<div class="banner">
+  <img [src]="'assets/images/enum-images/catch-images/species/' + postData()?.species + '.svg'"
+    class="image rounded-circle">
+  <span class="type-text">{{getEnumDisplayName(speciesOptions, postData()!.species!)}}</span>
+</div>
+}
+@if(postData()!.bait) {
+<div class="banner">
+  <img [src]="'assets/images/enum-images/catch-images/bait/' + postData()?.bait + '.svg'"
+    class="image rounded-circle">
+  <span class="type-text">{{getEnumDisplayName(baitOptions, postData()!.bait!)}}</span>
+</div>
+}
+
+}
 @default { <span> sadasa</span> }
 }
 }

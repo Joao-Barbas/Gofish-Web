@@ -57,7 +57,8 @@ export interface GetPostsPostDTO {
   seabed?: number;
   // Catch
   species?: number;
-  HookSize?: number;
+  bait?: number;
+  hookSize?: string;
 
   author?: GetPostsAuthorDTO;
   comments?: GetPostsCommentDTO[];
