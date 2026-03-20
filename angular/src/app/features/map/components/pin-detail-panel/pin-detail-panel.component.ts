@@ -86,7 +86,7 @@ export class PinDetailPanelComponent {
   }
 
   goToPost() {
-    this.router.navigate(['/forum/post/post_id_test']);
+    this.router.navigate(['/forum/post', this.pinData()?.post?.id]);
     this.popupController.close();
   }
 }

@@ -27,11 +27,7 @@ export class ForumComponent {
     { path: Path.FORUM_MY_GROUPS, label: 'My Groups' },
   ];
 
-  // TODO: Remove - testing purposes
-  public testPaths: NavPath[] = [
-    { path: Path.FORUM_GROUPS, label: 'Groups' },
-    { path: Path.FORUM_POST('post_id_test'), label: 'Post' },
-  ];
+
 
   constructor() {
     this.router.events.pipe(

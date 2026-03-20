@@ -1,12 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { GroupSettingsPopoverComponent } from "../groups/components/group-settings-popover/group-settings-popover.component";
+import { PostsService } from '@gofish/shared/services/posts.service';
+import { GetPostsPostDTO, GetPostsReqDTO, GetPostsResDTO, PostIdDTO } from '@gofish/shared/dtos/get-post.dto';
+import { ActivatedRoute } from '@angular/router';
+import { ForumPostComponent } from '@gofish/features/forum/components/forum-post/forum-post.component';
 
 @Component({
   selector: 'app-post-id-placeholder',
-  imports: [GroupSettingsPopoverComponent],
+  imports: [GroupSettingsPopoverComponent, ForumPostComponent],
   templateUrl: './post-id-placeholder.component.html',
   styleUrl: './post-id-placeholder.component.css',
 })
 export class PostIdPlaceholderComponent {
+  private readonly postService = inject(PostsService)
+  private readonly route = inject(ActivatedRoute);
+  post: GetPostsPostDTO | null = null;
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      alert("Null id");
+      return;
+    };
 
+
+    const dto: GetPostsReqDTO = {
+      ids: [{postId: Number(id)}],
+      dataRequest: {
+        includeAuthor: true,
+        includeComments: true,
+        includeGroups: true
+      },
+      lastTimestamp: new Date().toISOString(),
+      maxResults: 1,
+    }
+
+    this.postService.getPosts(dto).subscribe({
+      next: (res) => {
+        this.post = res.posts[0];
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+    console.log(this.post);
+  }
 }
