@@ -124,17 +124,17 @@ export class InfoPinModalComponent implements OnInit {
     const dto: CreateInfoPinReqDTO = {
       latitude: this.selectedCoords.latitude,
       longitude: this.selectedCoords.longitude,
-      visibility: this.form.value.visibility!,
+      visibility: Number(this.form.value.visibility!),
       body: this.form.value.body ?? '',
-      accessDifficulty: this.form.value.accessDifficulty!,
-      seaBedType: this.form.value.seaBed!
+      accessDifficulty: Number(this.form.value.accessDifficulty!),
+      seaBedType: Number(this.form.value.seaBed!)
     };
+    console.log(dto);
 
     const toastId = toast.loading('Publishing your pin!');
 
     this.pinService.createInfoPin(dto).subscribe({
       next: () => {
-        console.log('estou aqui');
         this.busyState.setBusy(false);
         toast.dismiss(toastId);
         toast.success('Info Pin created successfully.');
