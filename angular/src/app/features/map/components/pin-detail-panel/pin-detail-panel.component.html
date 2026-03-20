@@ -3,7 +3,6 @@
   <aside class="pin-side-panel">
     @if (pinData(); as pin) {
     <div class="gf-card-pin">
-
       <!-- Post Header -->
       <div class="d-flex align-items-center justify-content-between gap-2">
 
@@ -17,7 +16,7 @@
         </div>
 
         <div class="d-flex gap-1 post-action-buttons-wrapper">
-          @if (pin!.author!.userName == this.userName) {
+          @if (pin!.author!.userName == this.userName || isAdmin) {
 
           <!-- Delete Post Button -->
           <button class="gf-badge" (click)="deletePin()">
@@ -53,17 +52,12 @@
 
       </div>
 
-      <!-- Post Content -->
+      <!-- Post Content Enum values -->
 
       <div class="post-content">
-
         @if (pin.kind == pinKind.WARNING) {
-        <div class="warning-banner">
-          <img src="assets/images/placeholder_profile_pic.png" class="warning-image rounded-circle">
-          <span class="warning-type-text">{{getEnumLabel(warnTypeOptions, pin.details!.warningKind)}}</span>
-        </div>
+        <app-enum [pinData]=pin></app-enum>
         }
-
         <!-- Post Description -->
 
         <div class="post-description">
@@ -75,7 +69,7 @@
         <div class="post-image-wrapper">
           <img [src]="pin.post!.imageUrl" class="post-image">
         </div>
-        }
+
 
 
         <!-- TODO: Apresentar no mockup do Post, o tipo de isco -->
@@ -84,7 +78,7 @@
           <span class="bait-info">Hook: {{ pin.details.bait ? pin.details.bait : "Dont have hook information" }}</span>
         </div>
         }
-
+        }
 
         <!-- Upvote / Downvote / Comment and Go To Post -->
         <div class="d-flex justify-content-between">
@@ -94,7 +88,8 @@
             <div class="gf-badge-vote post-interaction-wrapper">
 
               <!-- Upvote button -->
-              <button class="post-interact-btn">
+              <button class="post-interact-btn" [class.active-up]="currentVote() === 1" [disabled]="isVoting()"
+                (click)="vote(1)">
 
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -105,10 +100,11 @@
 
               </button>
 
-              <span class="post-stats post-fishing-points">{{ pin.post?.score ?? 0 }}</span>
+              <span class="post-stats post-fishing-points">{{ score() }}</span>
 
               <!-- Downvote button -->
-              <button class="post-interact-btn">
+              <button class="post-interact-btn" class="post-interact-btn" [class.active-down]="currentVote() === -1"
+                [disabled]="isVoting()" (click)="vote(-1)">
 
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -138,7 +134,7 @@
 
 
             <!-- Location Button -->
-            <button class="gf-badge-post-view-button">
+            <button class="gf-badge-post-view-button" (click)="onPreviewClick(pin.geolocation!)">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="lucide lucide-locate-icon lucide-locate">
@@ -151,7 +147,7 @@
             </button>
 
             <!-- Go To Post button -->
-            <button class="gf-badge-post-view-button">
+            <button class="gf-badge-post-view-button" (click)="goToPost()">
 
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -161,6 +157,16 @@
                 <path d="M15 3h6v6" />
               </svg>
 
+            </button>
+
+            <button class="gf-badge-post-view-button" (click)="openGoogleMaps()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map">
+                <path d="M14.1 6a2 2 0 0 1 3.8 0" />
+                <path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z" />
+                <path d="M9 3v15" />
+                <path d="M15 6v15" />
+              </svg>
             </button>
           </div>
         </div>

@@ -141,7 +141,7 @@ export class CatchPinModalComponent {
     formData.append('hook', this.form.value.hook ?? '');
 
     const toastId = toast.loading('Publishing your pin!');
-
+    console.log(formData);
     this.pinService.createCatchPin(formData).subscribe({
       next: () => {
         this.busyState.setBusy(false);

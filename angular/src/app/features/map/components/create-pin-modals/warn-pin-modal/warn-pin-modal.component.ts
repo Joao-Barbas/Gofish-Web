@@ -117,9 +117,9 @@ export class WarnPinModalComponent {
       longitude: this.selectedCoords!.longitude,
       visibility: this.form.value.visibility!,
       body: this.form.value.body ?? '',
-      warningKind: this.form.value.warningKind!
+      warningKind: Number(this.form.value.warningKind!)
     };
-
+    console.log('DTO to be sent:', dto);
     const toastId = toast.loading('Publishing your pin!');
 
     this.pinService.createWarnPin(dto).subscribe({

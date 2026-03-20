@@ -1,0 +1,22 @@
+.banner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--gf-16);
+
+  background: var(--gf-dark-bg-dark);
+
+  border-radius: var(--gf-16);
+  width: 100%;
+  gap: var(--gf-12);
+}
+
+.image {
+  width: var(--gf-42);
+  height: var(--gf-42);
+  filter: brightness(0) invert(1); /** Put color of svg in white*/
+}
+
+.type-text {
+  font-size: var(--gf-16);
+}
