@@ -92,6 +92,7 @@ export const Api = {
   Pin:          buildApi('Pin'),
   Group:        buildApi('Group'),
   User:         buildApi('User'),
+  UserProfile:  buildApi('UserProfile'),
   UserAccount:  buildApi('UserAccount'),
   UserSecurity: buildApi('UserSecurity'),
   Post:         buildApi('Post'),

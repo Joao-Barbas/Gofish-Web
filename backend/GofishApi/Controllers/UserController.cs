@@ -77,9 +77,11 @@ public class UserController : ControllerBase
         [FromQuery] DateTime? lastTimestamp = null
     )
     {
+        maxResults = Math.Clamp(maxResults, 1, 100);
+
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         var filters = new List<IQueryable<Friendship>>();
-        
+
         if (includeFriends)
         {
             filters.Add(_db.Friendships.Where(f => (f.RequesterUserId == userId || f.ReceiverUserId == userId)
@@ -99,29 +101,30 @@ public class UserController : ControllerBase
         {
             return Ok(new GetFriendshipsResDto([], false, null));
         }
-        
+
         var query = filters.Aggregate((a, b) => a.Union(b));
-        
+
         if (lastTimestamp is not null)
         {
-            query = query.Where(f => f.CreatedAt > lastTimestamp.Value);
+            query = query.Where(f => f.CreatedAt < lastTimestamp.Value);
         }
-        
+
         var results = await query
-            .OrderBy(f => f.CreatedAt)
+            .OrderByDescending(f => f.CreatedAt)
+            .ThenByDescending(f => f.RequesterUserId) // Possible tiebreaker
             .Take(maxResults + 1)
             .ToListAsync();
-        var hasMore = results.Count > maxResults;
-        var items = results
-            .Take(maxResults)
-            .Select(FriendshipDto.FromEntity);
 
-        var nextTime = hasMore ? results[maxResults - 1].CreatedAt : (DateTime?)null;
-        return Ok(new GetFriendshipsResDto(items, hasMore, nextTime));
+        var hasMore = results.Count > maxResults;
+        var page = results.Take(maxResults).ToList();
+        var items = page.Select(FriendshipDto.FromEntity);
+        var lastTime = hasMore ? page[^1].CreatedAt : (DateTime?)null;
+
+        return Ok(new GetFriendshipsResDto(items, hasMore, lastTime));
     }
 
-    [HttpPost("{receiverId}")]
-    public async Task<IActionResult> RequestFriendship(string receiverId)
+    [HttpPost]
+    public async Task<IActionResult> RequestFriendship([FromQuery] string receiverId)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         if (userId == receiverId)
@@ -158,8 +161,8 @@ public class UserController : ControllerBase
         return Created();
     }
 
-    [HttpPatch("{requesterId}")]
-    public async Task<IActionResult> AcceptFriendship(string requesterId)
+    [HttpPatch]
+    public async Task<IActionResult> AcceptFriendship([FromQuery] string requesterId)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
 
@@ -176,8 +179,8 @@ public class UserController : ControllerBase
         return NoContent();
     }
 
-    [HttpPatch("{requesterId}")]
-    public async Task<IActionResult> IgnoreFriendship(string requesterId)
+    [HttpPatch]
+    public async Task<IActionResult> IgnoreFriendship([FromQuery] string requesterId)
     {
         // We actually just remove the friendship from the
         // database to allow future re-requests from the same user
@@ -195,8 +198,8 @@ public class UserController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{receiverId}")]
-    public async Task<IActionResult> DeleteFriendship(string receiverId)
+    [HttpDelete]
+    public async Task<IActionResult> DeleteFriendship([FromQuery] string receiverId)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
 
