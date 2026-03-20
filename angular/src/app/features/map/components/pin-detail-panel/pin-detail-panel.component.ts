@@ -11,10 +11,11 @@ import { PinService } from '@gofish/features/map/services/pin.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 import { ReturnStatement } from '@angular/compiler';
+import { EnumComponent } from "@gofish/enum/enum.component";
 
 @Component({
   selector: 'app-pin-detail-panel',
-  imports: [CommonModule, TimeAgoPipe, ClickOutsideDirective, RouterLink],
+  imports: [CommonModule, TimeAgoPipe, ClickOutsideDirective, RouterLink, EnumComponent],
   templateUrl: './pin-detail-panel.component.html',
   styleUrls: ['./pin-detail-panel.component.css']
 })
@@ -30,65 +31,12 @@ export class PinDetailPanelComponent {
   @Output() cancel = new EventEmitter<void>();
   @Output() coords = new EventEmitter<GeoLocationDTO>();
 
-  visibilityOptions: EnumDTO[] = [];
-  // WARN
-  warnTypeOptions: EnumDTO[] = [];
-  // INFO
-  accessDifficultyOptions: EnumDTO[] = [];
-  seaBedOptions: EnumDTO[] = [];
-  // CATCH
-  speciesOptions: EnumDTO[] = [];
-  baitOptions: EnumDTO[] = [];
   // Vote
   currentVote = signal<number | null>(null);
   score = signal<number | null>(null);
   isVoting = signal<boolean>(false);
 
   ngOnInit() {
-    // Visibility
-    this.pinService.enumerateVisibilityType().subscribe({
-      next: (res: EnumDTO[]) => {
-        this.visibilityOptions = res;
-      },
-      error: (err: HttpErrorResponse) => {
-        console.error(err);
-      }
-    });
-    // Warn
-    this.pinService.enumerateWarnType().subscribe({
-      next: (res: EnumDTO[]) => {
-        this.warnTypeOptions = res;
-      },
-      error: (err: HttpErrorResponse) => {
-        console.error(err);
-      }
-    });
-
-    // INFO
-    this.pinService.enumerateSeaBedType().subscribe({
-      next: (res: EnumDTO[]) => {
-        this.seaBedOptions = res;
-      },
-      error: (err: HttpErrorResponse) => {
-        console.error(err);
-      }
-    });
-    this.pinService.enumerateAccessDifficultyType().subscribe({
-      next: (res: EnumDTO[]) => {
-        this.accessDifficultyOptions = res;
-      },
-      error: (err: HttpErrorResponse) => {
-        console.error(err);
-      }
-    });
-    // CATCH
-    this.pinService.enumerateSpeciesType().subscribe({
-      next: (res: EnumDTO[]) => this.speciesOptions = res
-    });
-
-    this.pinService.enumerateBaitType().subscribe({
-      next: (res) => this.baitOptions = res
-    });
 
     // Vote
     this.score.set(this.pinData()?.post?.score ?? 1000);
@@ -132,18 +80,15 @@ export class PinDetailPanelComponent {
     this.popupController.close();
   }
 
-  getEnumLabel(options: EnumDTO[], value: number): string {
-    if (value === null) return 'error1';
-
-    const option = options.find(opt => opt.value === value);
-    return option ? option.label : 'error2';
-  }
-
   openGoogleMaps() {
     const url = `https://www.google.com/maps/search/?api=1&query=${this.pinData()?.geolocation?.latitude},${this.pinData()?.geolocation?.longitude}`;
     window.open(url, '_blank');
   }
 
+  goToPost() {
+    this.router.navigate(['/forum/post/post_id_test']);
+    this.popupController.close();
+  }
 }
 
 

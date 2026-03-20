@@ -63,12 +63,7 @@
   <div class="ps-5 post-content">
 
     <!-- Warning Banner (Pin Type Warning) -->
-
-    <div class="warning-banner">
-      <img src="assets/images/placeholder_profile_pic.png" class="warning-image rounded-circle">
-      <span class="warning-type-text">{{ post.warningKind }}</span>
-    </div>
-
+    <app-enum [postData] = post></app-enum>
     <!-- Post Description -->
 
     <div class="post-description">
@@ -76,11 +71,11 @@
         {{ post.body }}
       </p>
     </div>
-
+    @if (post.kind === pinKind.CATCH) {
     <div class="post-image-wrapper">
-      <img src="assets/images/placeholder_profile_pic.png" class="post-image">
+      <img [src]="post.imageUrl" class="post-image">
     </div>
-
+    }
     <!-- Upvote / Downvote / Comment and Share-->
     <div class="d-flex gap-2">
 

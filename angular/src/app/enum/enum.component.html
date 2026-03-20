@@ -1,0 +1,29 @@
+@if (pinData()) {
+@switch (pinData()?.kind) {
+@case (pinKind.WARNING) { <div class="warning-banner">
+  <img [src]="'assets/images/enum-images/warn-images/' + pinData()?.details?.warningKind + '.svg'"
+    class="warning-image rounded-circle">
+  <span class="warning-type-text">{{getEnumDisplayName(warnTypeOptions, pinData()!.details!.warningKind)}}</span>
+</div> }
+
+@case (pinKind.INFORMATION) { }
+@case (pinKind.CATCH) { }
+@default { <span> Unknown</span> }
+}
+}
+
+@if (postData()) {
+@switch (postData()?.kind) {
+@case (pinKind.WARNING) {
+
+<div class="warning-banner">
+  <img [src]="'assets/images/enum-images/warn-images/' + postData()?.warningKind + '.svg'"
+    class="warning-image rounded-circle">
+  <span class="warning-type-text">{{getEnumDisplayName(warnTypeOptions, postData()!.warningKind!)}}</span>
+</div> }
+
+@case (pinKind.INFORMATION) { }
+@case (pinKind.CATCH) { }
+@default { <span> sadasa</span> }
+}
+}

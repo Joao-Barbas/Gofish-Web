@@ -19,8 +19,6 @@ import { PinDetailPanelComponent } from '@gofish/features/map/components/pin-det
   styleUrl: './cluster-details.component.css',
 })
 export class ClusterDetailsComponent {
-  private readonly pinService = inject(PinService);
-  private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   userName = this.authService.getUserName();
   readonly popupController = new PopupController('cluster-preview');

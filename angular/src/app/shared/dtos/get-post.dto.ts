@@ -1,3 +1,4 @@
+import { NgModel } from "@angular/forms";
 import { PinKind } from "@gofish/shared/models/pin.model";
 
 // ---------- Request ----------
@@ -48,15 +49,15 @@ export interface GetPostsPostDTO {
   imageUrl?: string;
   score: number;
   commentCount: number;
-  kind: PinKind;
+  kind: number;
   // Warning
   warningKind?: number;
   // Info
-  accessDifficulty?: string;
-  seabed?: string;
+  accessDifficulty?: number;
+  seabed?: number;
   // Catch
-  species?: string;
-  HookSize?: string;
+  species?: number;
+  HookSize?: number;
 
   author?: GetPostsAuthorDTO;
   comments?: GetPostsCommentDTO[];

@@ -52,17 +52,12 @@
 
       </div>
 
-      <!-- Post Content -->
+      <!-- Post Content Enum values -->
 
       <div class="post-content">
-
         @if (pin.kind == pinKind.WARNING) {
-        <div class="warning-banner">
-          <img src="assets/images/placeholder_profile_pic.png" class="warning-image rounded-circle">
-          <span class="warning-type-text">{{getEnumLabel(warnTypeOptions, pin.details!.warningKind)}}</span>
-        </div>
+        <app-enum [pinData]=pin></app-enum>
         }
-
         <!-- Post Description -->
 
         <div class="post-description">
@@ -74,7 +69,7 @@
         <div class="post-image-wrapper">
           <img [src]="pin.post!.imageUrl" class="post-image">
         </div>
-        }
+
 
 
         <!-- TODO: Apresentar no mockup do Post, o tipo de isco -->
@@ -83,7 +78,7 @@
           <span class="bait-info">Hook: {{ pin.details.bait ? pin.details.bait : "Dont have hook information" }}</span>
         </div>
         }
-
+        }
 
         <!-- Upvote / Downvote / Comment and Go To Post -->
         <div class="d-flex justify-content-between">
@@ -152,7 +147,7 @@
             </button>
 
             <!-- Go To Post button -->
-            <button class="gf-badge-post-view-button" routerLink="/forum/post/post_id_test">
+            <button class="gf-badge-post-view-button" (click)="goToPost()">
 
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
