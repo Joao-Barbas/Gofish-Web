@@ -8,9 +8,9 @@ public record SignInReqDTO(
 );
 
 public record SignInResDTO(
-    string? Token           = null,
+    string? Token = null,
     bool? RequiresTwoFactor = null,
-    string? TwoFactorToken  = null
+    string? TwoFactorToken = null
 );
 
 public record TwoFactorSignInReqDTO(
@@ -22,7 +22,24 @@ public record TwoFactorSignInResDTO(
     string Token
 );
 
+public record ExternalSignInReqDTO(
+// Unused
+)
+{ }
+
 public record ExternalSignInResDTO(
     string Token
 )
 { }
+
+public record SignUpReqDTO(
+    string Email,
+    string Password,
+    string UserName,
+    string FirstName,
+    string LastName
+);
+
+public record SignUpResDTO(
+    string Token
+);
