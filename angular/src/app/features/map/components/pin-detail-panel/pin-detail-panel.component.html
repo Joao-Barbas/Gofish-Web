@@ -3,7 +3,6 @@
   <aside class="pin-side-panel">
     @if (pinData(); as pin) {
     <div class="gf-card-pin">
-
       <!-- Post Header -->
       <div class="d-flex align-items-center justify-content-between gap-2">
 
@@ -17,7 +16,7 @@
         </div>
 
         <div class="d-flex gap-1 post-action-buttons-wrapper">
-          @if (pin!.author!.userName == this.userName) {
+          @if (pin!.author!.userName == this.userName || isAdmin) {
 
           <!-- Delete Post Button -->
           <button class="gf-badge" (click)="deletePin()">
@@ -153,7 +152,7 @@
             </button>
 
             <!-- Go To Post button -->
-            <button class="gf-badge-post-view-button" >
+            <button class="gf-badge-post-view-button" routerLink="/forum/post/post_id_test">
 
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

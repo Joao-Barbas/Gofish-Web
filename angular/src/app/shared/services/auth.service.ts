@@ -97,6 +97,8 @@ export class AuthService {
   getUserName() {
     return this.userName()!.toString();
   }
+
+  
   // End jwt roles getters
 
   /**

@@ -4,7 +4,7 @@ import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { PopupController } from '@gofish/shared/core/popup-controller';
 import { GeoLocationDTO, PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PinService } from '@gofish/features/map/services/pin.service';
@@ -14,7 +14,7 @@ import { ReturnStatement } from '@angular/compiler';
 
 @Component({
   selector: 'app-pin-detail-panel',
-  imports: [CommonModule, TimeAgoPipe, ClickOutsideDirective],
+  imports: [CommonModule, TimeAgoPipe, ClickOutsideDirective, RouterLink],
   templateUrl: './pin-detail-panel.component.html',
   styleUrls: ['./pin-detail-panel.component.css']
 })
@@ -23,6 +23,7 @@ export class PinDetailPanelComponent {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   userName = this.authService.getUserName();
+  isAdmin = this.authService.isAdmin();
   readonly popupController = new PopupController('cluster-preview');
   pinData = input<PinDataResDTO | null>(null);
   public pinKind = PinKind;
@@ -142,6 +143,7 @@ export class PinDetailPanelComponent {
     const url = `https://www.google.com/maps/search/?api=1&query=${this.pinData()?.geolocation?.latitude},${this.pinData()?.geolocation?.longitude}`;
     window.open(url, '_blank');
   }
+
 }
 
 
