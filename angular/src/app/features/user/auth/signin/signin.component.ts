@@ -7,24 +7,32 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validato
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Api, Path } from '@gofish/shared/constants';
 import { ValidationProblemDetails } from '@gofish/shared/core/problem-details';
-import { SignInReqDTO, SignInResDTO } from '@gofish/shared/dtos/signin.dto';
+import { SignInReqDTO, SignInResDTO } from '@gofish/shared/dtos/auth.dto';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { environment } from 'environments/environment';
+import { AuthApi } from '@gofish/shared/api/auth.api';
 
 @Component({
   selector: 'app-signin',
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, AsyncButtonComponent],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterLink,
+    AsyncButtonComponent
+  ],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.css',
 })
 export class SigninComponent implements OnInit {
-  private readonly authService = inject(AuthService);
   private readonly router      = inject(Router);
-  readonly route               = inject(ActivatedRoute);
-  readonly formBuilder         = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly authApi     = inject(AuthApi);
+
+  readonly route       = inject(ActivatedRoute);
+  readonly formBuilder = inject(FormBuilder);
 
   readonly loadingState: LoadingState = new LoadingState();
   readonly busyState: BusyState       = new BusyState();
@@ -72,7 +80,7 @@ export class SigninComponent implements OnInit {
     this.busyState.setBusy(true);
     this.signInSuccess = false;
 
-    this.authService.signInUser(this.signInForm.value as SignInReqDTO).subscribe({
+    this.authApi.signIn(this.signInForm.value as SignInReqDTO).subscribe({
       next: (res: SignInResDTO) => {
         this.busyState.setBusy(false);
         this.signInSuccess = true;

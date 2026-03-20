@@ -1,12 +1,9 @@
 import { jwtDecode } from 'jwt-decode';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { JwtClaim, JwtEncoded, JwtLoginProvider, JwtPayload, JwtRole } from '@gofish/shared/models/jwt.model';
-import { Api, LocalStorageKey, Path } from '@gofish/shared/constants';
-import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/signup.dto';
-import { SignInReqDTO, SignInResDTO, TwoFactorSignInReqDTO, TwoFactorSignInResDTO } from '@gofish/shared/dtos/signin.dto';
+import { JwtEncoded, JwtPayload, JwtRole } from '@gofish/shared/models/jwt.model';
+import { LocalStorageKey, Path } from '@gofish/shared/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -26,21 +23,6 @@ export class AuthService {
     if (encodedToken) this.insertToken(encodedToken);
   }
 
-  // Api endpoints
-
-  signUpUser(dto: SignUpReqDTO): Observable<SignUpResDTO> {
-    return this.http.post<SignUpResDTO>(Api.Auth.action('SignUp'), dto);
-  }
-
-  signInUser(dto: SignInReqDTO): Observable<SignInResDTO> {
-    return this.http.post<SignInResDTO>(Api.Auth.action('SignIn'), dto);
-  }
-
-  signIn2fa(dto: TwoFactorSignInReqDTO): Observable<TwoFactorSignInResDTO> {
-    return this.http.post<TwoFactorSignInResDTO>(Api.Auth.action('TwoFactorSignIn'), dto);
-  }
-
-  // End Api endpoints
   // Load & decode token
 
   private checkToken(dt: JwtPayload | null): boolean {

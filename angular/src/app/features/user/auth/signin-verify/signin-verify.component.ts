@@ -6,12 +6,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validato
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Api, Path } from '@gofish/shared/constants';
 import { ValidationProblemDetails } from '@gofish/shared/core/problem-details';
-import { TwoFactorSignInReqDTO } from '@gofish/shared/dtos/signin.dto';
+import { TwoFactorSignInReqDTO } from '@gofish/shared/dtos/auth.dto';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { NumbersOnlyDirective } from '@gofish/shared/directives/numbers-only.directive';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 import { LoadingState } from '@gofish/shared/core/loading-state';
+import { AuthApi } from '@gofish/shared/api/auth.api';
 
 @Component({
   selector: 'app-signin-verify',
@@ -20,8 +21,9 @@ import { LoadingState } from '@gofish/shared/core/loading-state';
   styleUrl: './signin-verify.component.css',
 })
 export class SigninVerifyComponent implements OnInit {
-  private readonly authService = inject(AuthService);
   private readonly router      = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly authApi     = inject(AuthApi);
   private readonly route       = inject(ActivatedRoute);
   private readonly formBuilder = inject(FormBuilder);
 
@@ -88,7 +90,7 @@ export class SigninVerifyComponent implements OnInit {
       twoFactorCode:  this.verifyForm.value.code,
     };
 
-    this.authService.signIn2fa(dto).subscribe({
+    this.authApi.twoFactorSignIn(dto).subscribe({
       next: (res) => {
         this.busyState.setBusy(false);
         this.verifySuccess = true;
