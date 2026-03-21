@@ -198,6 +198,84 @@ public class GroupController : ControllerBase
         return Ok(new SendGroupInviteResDTO(invite.Id));
     }
 
+    [Authorize]
+    [HttpPost("AcceptInvite/{inviteId}")]
+    public async Task<IActionResult> AcceptInvite([FromRoute] int inviteId)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
+
+        var invite = await _db.GroupInvites
+            .FirstOrDefaultAsync(i => i.Id == inviteId);
+
+        if (invite is null)
+            return NotFound("Invite not found.");
+
+        if (invite.ReceiverUserId != userId)
+            return Forbid();
+
+        if (invite.State != FriendshipState.Pending)
+            return BadRequest("This invite is no longer pending.");
+
+        var alreadyMember = await _db.GroupUsers
+            .AnyAsync(gu => gu.GroupId == invite.GroupId && gu.UserId == userId);
+
+        if (alreadyMember)
+            return BadRequest("You are already a member of this group.");
+
+        var membership = new GroupUser
+        {
+            GroupId = invite.GroupId,
+            UserId = userId,
+            RoleId = "3" // default member role
+        };
+
+        invite.State = FriendshipState.Accepted;
+
+        _db.GroupUsers.Add(membership);
+        await _db.SaveChangesAsync();
+
+        return Ok("Invite accepted successfully.");
+    }
+
+    [Authorize]
+    [HttpDelete("RemoveMember/{groupId}/{userId}")]
+    public async Task<IActionResult> RemoveMember(
+    [FromRoute] int groupId,
+    [FromRoute] string userId)
+    {
+        var requesterUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(requesterUserId))
+            return Unauthorized();
+
+        var groupExists = await _db.Groups.AnyAsync(g => g.Id == groupId);
+        if (!groupExists)
+            return NotFound("Group not found.");
+
+        var requesterMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == requesterUserId);
+
+        if (requesterMembership is null)
+            return Forbid();
+
+        if (requesterMembership.RoleId != "1" && requesterMembership.RoleId != "2")
+            return Forbid();
+
+        var targetMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
+
+        if (targetMembership is null)
+            return NotFound("User is not a member of this group.");
+
+        if (userId == requesterUserId)
+            return BadRequest("You cannot remove yourself from the group using this endpoint.");
+
+        _db.GroupUsers.Remove(targetMembership);
+        await _db.SaveChangesAsync();
+
+        return NoContent();
+    }
 
     #endregion
 }
