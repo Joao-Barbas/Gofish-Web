@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
+using Group = GofishApi.Models.Group;
 
 namespace GofishApi.Controllers;
 
@@ -44,11 +46,7 @@ public class GroupController : ControllerBase
 
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
-
-        if (user is null)
-        {
-            return Unauthorized();
-        }
+        if (user is null) return Unauthorized();
 
         var query = _db.Groups.AsQueryable();
 
@@ -145,18 +143,22 @@ public class GroupController : ControllerBase
 
     #region ManageMembers
 
-    /*
+        /*
     [Authorize]
-    [HttpPost("AddMember")]
-    public async Task<IActionResult> AddMember([FromBody] AddGroupMemberReqDTO dto)
+    [HttpPost("SendInvite/{groupId}")]
+    public async Task<IActionResult> SendInvite(int groupId, [FromBody] SendGroupInviteReqDTO dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
         if (user is null) return Unauthorized();
 
+        var group = await _db.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
+        if (group is null) return NotFound();
 
+        var requesterMembership = await _db.GroupUsers
+       .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == requesterUserId);
+    }
+        */
 
-    }
-    */
-        #endregion
-    }
+    #endregion
+}

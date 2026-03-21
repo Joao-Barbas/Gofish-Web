@@ -224,6 +224,7 @@ namespace GofishApi.Data
             SeedCatchPin(builder);
             SeedInfoPin(builder);
             SeedWarnPin(builder);
+            SeedGroupRoles(builder);
         }
 
         private static void SeedUsers(ModelBuilder builder)
@@ -396,6 +397,32 @@ namespace GofishApi.Data
 
             builder.Entity<WarnPin>().HasData(warnPins);
             builder.Entity<Post>().HasData(posts);
+        }
+        private static void SeedGroupRoles(ModelBuilder builder)
+        {
+            var roles = new List<GroupRole>
+    {
+        new GroupRole
+        {
+            Id = "1",
+            Name = "Owner",
+            NormalizedName = "OWNER"
+        },
+        new GroupRole
+        {
+            Id = "2",
+            Name = "Admin",
+            NormalizedName = "ADMIN"
+        },
+        new GroupRole
+        {
+            Id = "3",
+            Name = "Member",
+            NormalizedName = "MEMBER"
+        }
+    };
+
+            builder.Entity<GroupRole>().HasData(roles);
         }
     }
 }
