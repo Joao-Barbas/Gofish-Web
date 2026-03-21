@@ -5,6 +5,7 @@ import { PostsService } from '@gofish/shared/services/posts.service';
 import { TimeAgoPipe } from "../../../../shared/pipes/time-ago.pipe";
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { EnumComponent } from "@gofish/enum/enum.component";
+import { AuthService } from '@gofish/shared/services/auth.service';
 
 @Component({
   selector: 'app-forum-post',
@@ -14,6 +15,9 @@ import { EnumComponent } from "@gofish/enum/enum.component";
 })
 export class ForumPostComponent {
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  userName = this.authService.getUserName();
+  isAdmin = this.authService.isAdmin();
   postData = input<GetPostsPostDTO | null>(null);
   pinKind = PinKind;
 
@@ -24,9 +28,9 @@ export class ForumPostComponent {
       console.log('coords null');
       return;
     }
-    console.log(lat,lng)
+    console.log(lat, lng)
     this.router.navigate(['map'], {
-      queryParams: { vLat: lat, vLng: lng, z: 14, move: true },
+      queryParams: { vLat: lat, vLng: lng, z: 12 },
     });
   }
 }

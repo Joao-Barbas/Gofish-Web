@@ -15,8 +15,13 @@ export class DiscoverComponent {
   private readonly router = inject(Router);
   private readonly postService = inject(PostsService);
   allFeedPosts = signal<GetFeedResDTO | null>(null);
+  private lastTimestamp: string = new Date().toISOString();
 
   ngOnInit() {
+    this.loadPosts();
+  }
+
+  loadPosts() {
     const request: GetFeedReqDTO = {
       kind: 0,
       dataRequest: {
@@ -25,16 +30,31 @@ export class DiscoverComponent {
         includeComments: true,
         includeCoords: true,
       },
-      lastTimestamp: new Date().toISOString(),
+      lastTimestamp: this.lastTimestamp,
       maxResults: 5
     }
     this.postService.getFeed(request).subscribe({
       next: (res) => {
-        this.allFeedPosts.set(res);
+        this.allFeedPosts.update(current => {
+          if(!current) return res;
+          return {
+            ...res,
+            posts: [...current!.posts, ...res.posts]
+          };
+        });
+
+        if(res.posts.length > 0) {
+          const lastPost = res.posts[res.posts.length - 1];
+          this.lastTimestamp = lastPost.createdAt;
+        }
+        console.log('Foram carregados mais');
       },
       error: (err) => {
         console.log(err);
       }
-    })
+    });
+  }
+  showMore() {
+    this.loadPosts();
   }
 }

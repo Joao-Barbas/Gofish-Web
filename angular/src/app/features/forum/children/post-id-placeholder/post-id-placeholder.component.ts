@@ -4,6 +4,7 @@ import { PostsService } from '@gofish/shared/services/posts.service';
 import { GetPostsPostDTO, GetPostsReqDTO, GetPostsResDTO, PostIdDTO } from '@gofish/shared/dtos/get-post.dto';
 import { ActivatedRoute } from '@angular/router';
 import { ForumPostComponent } from '@gofish/features/forum/components/forum-post/forum-post.component';
+import { AuthService } from '@gofish/shared/services/auth.service';
 
 @Component({
   selector: 'app-post-id-placeholder',
@@ -14,6 +15,9 @@ import { ForumPostComponent } from '@gofish/features/forum/components/forum-post
 export class PostIdPlaceholderComponent {
   private readonly postService = inject(PostsService)
   private readonly route = inject(ActivatedRoute);
+  private readonly authService = inject(AuthService);
+  userName = this.authService.getUserName();
+  isAdmin = this.authService.isAdmin();
   post: GetPostsPostDTO | null = null;
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
