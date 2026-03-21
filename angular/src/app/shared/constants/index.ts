@@ -34,6 +34,7 @@ export const PathSegment = {
   FORUM_GROUPS:           'groups',
   FORUM_POST:             'post',
   PROFILE:                'profile',
+  CREATE_GROUP:           'create-group'
 } as const;
 
 export const Path = {
@@ -57,9 +58,8 @@ export const Path = {
   FORUM_FROM_FRIENDS:     `/${PathSegment.FORUM}/${PathSegment.FORUM_FROM_FRIENDS}`,
   FORUM_MY_GROUPS:        `/${PathSegment.FORUM}/${PathSegment.FORUM_MY_GROUPS}`,
   FORUM_GROUPS:           `/${PathSegment.FORUM}/${PathSegment.FORUM_GROUPS}`,
+  FORUM_CREATE_GROUP:     `/${PathSegment.FORUM}/${PathSegment.FORUM_MY_GROUPS}/${PathSegment.CREATE_GROUP}`,
 
-  // /forum/groups/:id?tab=posts
-  FORUM_GROUPS_test_posts:   '/forum/groups/group-posts-placeholder/posts',
   // /forum/groups/:id?tab=members
   FORUM_GROUPS_test_members: '/forum/groups/group-posts-placeholder/members',
 
@@ -85,6 +85,7 @@ export const Api = {
   Auth:         buildApi('Auth'),
   Enums:        buildApi('Enumerate'),
   Pin:          buildApi('Pin'),
+  Group:        buildApi('Group'),
   User:         buildApi('User'),
   UserAccount:  buildApi('UserAccount'),
   UserSecurity: buildApi('UserSecurity'),
