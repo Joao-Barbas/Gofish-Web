@@ -1,15 +1,17 @@
+<!-- friend-card.component.html -->
+
 <div>
-  <a [routerLink]="['/profile', userId()]">
-    <img [src]="avatarUrl()">
+  <a [routerLink]="['/profile', user().userId]">
+    <img [src]="user().avatarUrl ?? defaultAvatar" alt="Avatar">
     <div>
-      <p>{{ userName() }}</p>
-      <small>{{ userName() }}</small>
+      <p>{{ user().firstName + ' ' + user().lastName }}</p>
+      <small>@{{ user().userName }}</small>
     </div>
   </a>
 </div>
-@if (showActions()) {
+@if (actions()) {
   <div>
-    <button (click)="accepted.emit(userId())">Accept</button>
-    <button (click)="declined.emit(userId())">Decline</button>
+    <button (click)="onAccept()">Accept</button>
+    <button (click)="onDecline()">Decline</button>
   </div>
 }

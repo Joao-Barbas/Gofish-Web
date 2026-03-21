@@ -1,6 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Path, PathSegment } from '@gofish/shared/constants';
+import { FriendshipDTO, FriendshipUserDTO } from '@gofish/shared/dtos/user.dto';
 
 @Component({
   selector: 'app-friend-card',
@@ -9,13 +10,20 @@ import { Path, PathSegment } from '@gofish/shared/constants';
   styleUrl: './friend-card.component.css',
 })
 export class FriendCardComponent {
-  public avatarUrl     = input<string>('assets/vectors/avatar-template-dark.clr.svg');
-  public userId        = input<string>('');
-  public userName      = input<string>('Unknown');
-  public userFirstName = input<string>('Unknown');
-  public userLastName  = input<string>('Unknown');
-  public showActions   = input<boolean>(false);
+  readonly defaultAvatar = 'assets/vectors/avatar-template-dark.clr.svg';
 
-  public accepted = output<string>();
-  public declined = output<string>();
+  friendship = input.required<FriendshipDTO>();
+  user       = input.required<FriendshipUserDTO>();
+  actions    = input.required<boolean>();
+
+  accepted = output<FriendshipDTO>();
+  declined = output<FriendshipDTO>();
+
+  onAccept() {
+    this.accepted.emit(this.friendship());
+  }
+
+  onDecline() {
+    this.declined.emit(this.friendship());
+  }
 }

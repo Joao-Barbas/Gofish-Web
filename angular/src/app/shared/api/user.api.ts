@@ -3,7 +3,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Api } from "@gofish/shared/constants";
-import { GetFriendshipsResDto } from "@gofish/shared/dtos/user.dto";
+import { GetFriendshipsResDTO } from "@gofish/shared/dtos/user.dto";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -18,16 +18,16 @@ export class UserApi {
     includeReceived?: boolean;
     maxResults?: number;
     lastTimestamp?: string;
-  } = {}): Observable<GetFriendshipsResDto> {
+  } = {}): Observable<GetFriendshipsResDTO> {
     let params = new HttpParams();
 
-    if (options.includeFriends) params = params.set('includeFriends', 'true');
-    if (options.includeRequested) params = params.set('includeRequested', 'true');
-    if (options.includeReceived) params = params.set('includeReceived', 'true');
+    if (options.includeFriends) params = params.set('includeFriends', true);
+    if (options.includeRequested) params = params.set('includeRequested', true);
+    if (options.includeReceived) params = params.set('includeReceived', true);
     if (options.maxResults) params = params.set('maxResults', options.maxResults.toString());
     if (options.lastTimestamp) params = params.set('lastTimestamp', options.lastTimestamp);
 
-    return this.http.get<GetFriendshipsResDto>(Api.User.action('GetFriendships'), { params });
+    return this.http.get<GetFriendshipsResDTO>(Api.User.action('GetFriendships'), { params });
   }
 
   public requestFriendship(receiverId: string): Observable<void> {

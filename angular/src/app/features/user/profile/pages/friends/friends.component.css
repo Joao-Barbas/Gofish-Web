@@ -16,6 +16,27 @@ nav {
   }
 }
 
+.loading-container {
+  gap: var(--gf-6);
+  padding: var(--gf-32);
+  color: var(--dark-text-muted);
+  font-size: var(--gf-14);
+
+  & svg {
+    width: 32px;
+    height: 32px;
+    animation: gf-basic-spin 1.5s linear infinite;
+
+    &.spinner-enter {
+      animation: gf-icon-scale-in .2s ease-out;
+    }
+  }
+
+  & span {
+    font-size: var(--gf-text-sm);
+  }
+}
+
 .list {
   display: grid;
   overflow: hidden;
@@ -32,4 +53,10 @@ app-async-button {
 
   --async-btn-width: 100%;
   --async-btn-height: var(--gf-40);
+}
+
+app-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }

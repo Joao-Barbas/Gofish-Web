@@ -22,7 +22,7 @@ import { map } from 'rxjs';
   styleUrl: './friends.component.css',
 })
 export class FriendsComponent {
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   public activeTab = toSignal(
     this.route.queryParams.pipe(map(p => p['tab'] ?? 'friends')),
