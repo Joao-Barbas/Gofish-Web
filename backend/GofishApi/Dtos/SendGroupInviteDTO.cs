@@ -1,7 +1,6 @@
 ﻿namespace GofishApi.Dtos;
 
 public record SendGroupInviteReqDTO(
-    int GroupId,
     string ReceiverUserId
 );
 

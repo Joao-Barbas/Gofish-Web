@@ -143,7 +143,6 @@ public class GroupController : ControllerBase
 
     #region ManageMembers
 
-        /*
     [Authorize]
     [HttpPost("SendInvite/{groupId}")]
     public async Task<IActionResult> SendInvite(int groupId, [FromBody] SendGroupInviteReqDTO dto)
@@ -152,13 +151,53 @@ public class GroupController : ControllerBase
         var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
         if (user is null) return Unauthorized();
 
+        if (dto.ReceiverUserId == userId)
+            return BadRequest("You cannot invite yourself.");
+
         var group = await _db.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
         if (group is null) return NotFound();
 
-        var requesterMembership = await _db.GroupUsers
-       .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == requesterUserId);
+        var isAllowed = await _db.GroupUsers.AnyAsync(gu =>
+            gu.GroupId == groupId &&
+            gu.UserId == userId &&
+            (gu.RoleId == "1" || gu.RoleId == "2"));
+
+        if (!isAllowed)
+            return Forbid();
+
+        var receiverExists = await _userManager.FindByIdAsync(dto.ReceiverUserId);
+        if (receiverExists is null)
+            return BadRequest("Receiver user does not exist.");
+
+        var alreadyMember = await _db.GroupUsers.AnyAsync(gu =>
+            gu.GroupId == groupId &&
+            gu.UserId == dto.ReceiverUserId);
+
+        if (alreadyMember)
+            return BadRequest("This user is already a member of the group.");
+
+        var pendingInviteExists = await _db.GroupInvites.AnyAsync(gi =>
+            gi.GroupId == groupId &&
+            gi.ReceiverUserId == dto.ReceiverUserId &&
+            gi.State == FriendshipState.Pending);
+
+        if (pendingInviteExists)
+            return BadRequest("A pending invite already exists for this user.");
+
+        var invite = new GroupInvite
+        {
+            GroupId = groupId,
+            RequesterUserId = userId,
+            ReceiverUserId = dto.ReceiverUserId,
+            CreatedAt = DateTime.UtcNow,
+            State = FriendshipState.Pending
+        };
+
+        _db.GroupInvites.Add(invite);
+        await _db.SaveChangesAsync();
+        return Ok(new SendGroupInviteResDTO(invite.Id));
     }
-        */
+
 
     #endregion
 }
