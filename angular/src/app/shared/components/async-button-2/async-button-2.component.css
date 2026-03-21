@@ -1,0 +1,95 @@
+/* async-button-2.component.css */
+
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  cursor: pointer;
+
+  width: var(--async-btn-width, auto);
+  max-width: var(--async-btn-max-width, none);
+  height: var(--async-btn-height, auto);
+  max-height: var(--async-btn-max-height, none);
+  padding: var(--async-btn-padding, calc(1em / 2) var(--gf-8));
+  font-size: var(--async-btn-font-size, var(--gf-text-sm));
+  font-weight: var(--async-btn-font-weight, 500);
+  border-radius: var(--async-btn-radius, var(--gf-8));
+  background-color: var(--async-btn-bg, var(--gf-primary));
+  color: var(--async-btn-color, var(--gf-dark-text));
+  box-shadow: var(--async-btn-box-shadow, none);
+  border: var(--async-btn-border, none);
+  transition: var(--async-btn-transition, box-shadow 0.2s ease, background-color 0.2s ease);
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    background-color: var(--async-btn-hover-bg, var(--async-btn-bg, var(--gf-primary)));
+    box-shadow: var(--async-btn-hover-box-shadow, var(--gf-shadow-lift-md));
+  }
+
+  &.idle {
+    background-color: var(--async-btn-idle-bg, var(--async-btn-bg, var(--gf-primary)));
+    color: var(--async-btn-idle-color, var(--async-btn-color, var(--gf-dark-text)));
+  }
+
+  &.busy {
+    background-color: var(--async-btn-busy-bg, var(--gf-tertiary));
+    color: var(--async-btn-busy-color, var(--gf-dark-text));
+  }
+
+  &.success {
+    background-color: var(--async-btn-success-bg, var(--gf-success));
+    color: var(--async-btn-success-color, var(--gf-light-text));
+  }
+}
+
+.icon-slot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: var(--async-btn-icon-size, 18px);
+  width: 0;
+  transition: width 0.2s ease;
+
+  & svg {
+    width: var(--async-btn-icon-size, 18px);
+    height: var(--async-btn-icon-size, 18px);
+
+    &.spinner-icon {
+      position: absolute;
+      animation: gf-basic-spin 1.5s linear infinite;
+    }
+
+    &.check-icon {
+      position: absolute;
+    }
+
+    &.spinner-enter {
+      animation: gf-icon-scale-in .2s ease-out;
+    }
+
+    &.check-enter {
+      animation: gf-icon-scale-in .2s ease-out;
+    }
+  }
+}
+
+button.busy .icon-slot,
+button.success .icon-slot {
+  width: var(--async-btn-icon-size, 18px);
+}
+
+.label-slot {
+  transition: margin 0.2s ease;
+  margin: 0;
+}
+
+button.busy .label-slot,
+button.success .label-slot {
+  margin-left: var(--async-btn-gap, 8px);
+}
