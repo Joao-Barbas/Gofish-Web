@@ -54,7 +54,10 @@ public class GroupController : ControllerBase
 
         if (dto.DataRequest?.IncludeMembers ?? true)
         {
-            query = query.Include(g => g.AppUsers);
+            query = query
+                .Include(g => g.GroupUsers)
+                    .ThenInclude(gu => gu.AppUser)
+                        .ThenInclude(u => u.UserProfile);
         }
 
         if (dto.DataRequest?.IncludePosts ?? true)

@@ -46,9 +46,11 @@ public record GetGroupDTO(
             .OrderByDescending(p => p.CreatedAt)
             .Select(p => GetPostsPostDTO.FromPost(p, null))
             .ToList() : null,
-        request?.IncludeMembers ?? true ? group.AppUsers?
-            .Select(GetGroupMemberDTO.FromUser)
-            .ToList() : null
+        request?.IncludeMembers ?? true
+            ? group.GroupUsers?
+                .Select(gu => GetGroupMemberDTO.FromUser(gu.AppUser))
+                .ToList()
+            : null
     );
 
     #endregion
