@@ -142,4 +142,21 @@ public class GroupController : ControllerBase
 
         return Ok(new CreateGroupResDTO(newGroup.Id));
     }
-}
+
+    #region ManageMembers
+
+    /*
+    [Authorize]
+    [HttpPost("AddMember")]
+    public async Task<IActionResult> AddMember([FromBody] AddGroupMemberReqDTO dto)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
+        if (user is null) return Unauthorized();
+
+
+
+    }
+    */
+        #endregion
+    }

@@ -16,6 +16,7 @@ namespace GofishApi.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Friendship> Friendships { get; set; }
+        public DbSet<GroupInvite> GroupInvites { get; set; }
         public DbSet<Pin> Pins { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostVote> PostVote { get; set; }
@@ -51,6 +52,30 @@ namespace GofishApi.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             #endregion // Friendship
+            #region GroupInvite
+
+            builder.Entity<GroupInvite>()
+                .HasOne(gi => gi.Requester)
+                .WithMany()
+                .HasForeignKey(gi => gi.RequesterUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<GroupInvite>()
+                .HasOne(gi => gi.Receiver)
+                .WithMany()
+                .HasForeignKey(gi => gi.ReceiverUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<GroupInvite>()
+                .HasOne(gi => gi.Group)
+                .WithMany()
+                .HasForeignKey(gi => gi.GroupId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<GroupInvite>()
+                .HasIndex(gi => new { gi.GroupId, gi.ReceiverUserId, gi.State });
+
+            #endregion // GroupInvites
             #region Pin
 
             builder.Entity<Pin>()

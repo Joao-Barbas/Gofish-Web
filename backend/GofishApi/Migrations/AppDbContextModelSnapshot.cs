@@ -108,7 +108,7 @@ namespace GofishApi.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PLAYER1@GOFISH.COM",
                             NormalizedUserName = "PLAYER1",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMkBUAPoXBf/3oGX7CDoUNv316Z3L8JD0r6Iys1IRrwwXygwH/kVq6zEIQ2/IQ9GAA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECT2n2+S71HtzXeT/tDeYAjHXUlXfyyHvmd+Yhn4FVzS6KQ6wT+IGsErqG3cbtfjIw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "seed-stamp-1",
                             TwoFactorEnabled = false,
@@ -125,7 +125,7 @@ namespace GofishApi.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PLAYER2@GOFISH.COM",
                             NormalizedUserName = "PLAYER2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEB5AHunm6dUJzU8Xuo46ZtyAHW2hyIm/jLwA7cZJAV7nTWyzsgv7ZfOR2+hrNoM5aQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELCIPEUxQb4rf8cpKU99OoKYucoxb3i6jGCVN3v5NwoLRcEPmfbabWhV5Ia7PEDYqQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "seed-stamp-2",
                             TwoFactorEnabled = false,
@@ -142,7 +142,7 @@ namespace GofishApi.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PLAYER3@GOFISH.COM",
                             NormalizedUserName = "PLAYER3",
-                            PasswordHash = "AQAAAAIAAYagAAAAED9xsQX86BPuiEkYCSqZQmWcFU7MLx+xYj/HCUsRXKOKkS7XO4ExOWd0pp9hNWopcw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKa/kouCJCUuqBtfreU3X684h7kzaT+A4Z6jLwsliArEbXfvQJeklOyN2/zHo04hOA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "seed-stamp-3",
                             TwoFactorEnabled = false,
@@ -159,7 +159,7 @@ namespace GofishApi.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PLAYER4@GOFISH.COM",
                             NormalizedUserName = "PLAYER4",
-                            PasswordHash = "AQAAAAIAAYagAAAAELxdg/Xj6livcJ9drXFu7wGduZMQavatpxjS59qBtntRsPR1rQj+uhPzCn9tPXo32A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHSZiYdf6ont+b9V/g/GViYnfobsUO8l8Xsx2m/hg1eGL60LLpCdjeMd+Rh/amdavg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "seed-stamp-4",
                             TwoFactorEnabled = false,
@@ -176,7 +176,7 @@ namespace GofishApi.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PLAYER5@GOFISH.COM",
                             NormalizedUserName = "PLAYER5",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJ+Ssc/0GEgHKXH3HWY+MdOzkPXkuguwlXPPrQppFEl4mu5NlMzkLXb5vcqH/rc2Xg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPkIU41eR4RPIiWXxbbc3P1qdYNl4/FUvLr6C//NYkfZ4gjVYOrXa/9t5xml2UNpyA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "seed-stamp-5",
                             TwoFactorEnabled = false,
@@ -277,6 +277,42 @@ namespace GofishApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("GofishApi.Models.GroupInvite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReceiverUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RequesterUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverUserId");
+
+                    b.HasIndex("RequesterUserId");
+
+                    b.HasIndex("GroupId", "ReceiverUserId", "State");
+
+                    b.ToTable("GroupInvites");
                 });
 
             modelBuilder.Entity("GofishApi.Models.GroupPost", b =>
@@ -965,8 +1001,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 0,
-                            Latitude = 38.518000000000001,
-                            Longitude = -8.8709999999999987,
+                            Latitude = 38.516999999999996,
+                            Longitude = -8.8679999999999986,
                             UserId = "seed-player-2",
                             Visibility = 0,
                             Bait = 1,
@@ -978,8 +1014,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 0,
-                            Latitude = 38.518999999999998,
-                            Longitude = -8.8709999999999987,
+                            Latitude = 38.522999999999996,
+                            Longitude = -8.8689999999999998,
                             UserId = "seed-player-3",
                             Visibility = 0,
                             Bait = 1,
@@ -992,7 +1028,7 @@ namespace GofishApi.Migrations
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 0,
                             Latitude = 38.527999999999999,
-                            Longitude = -8.8699999999999992,
+                            Longitude = -8.8579999999999988,
                             UserId = "seed-player-4",
                             Visibility = 0,
                             Bait = 1,
@@ -1004,8 +1040,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 0,
-                            Latitude = 38.524999999999999,
-                            Longitude = -8.8609999999999989,
+                            Latitude = 38.533000000000001,
+                            Longitude = -8.8689999999999998,
                             UserId = "seed-player-5",
                             Visibility = 0,
                             Bait = 1,
@@ -1031,7 +1067,7 @@ namespace GofishApi.Migrations
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 0,
                             Latitude = 38.524999999999999,
-                            Longitude = -8.8490000000000002,
+                            Longitude = -8.8669999999999991,
                             UserId = "seed-player-2",
                             Visibility = 0,
                             Bait = 1,
@@ -1044,7 +1080,7 @@ namespace GofishApi.Migrations
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 0,
                             Latitude = 38.547999999999995,
-                            Longitude = -8.8519999999999985,
+                            Longitude = -8.859,
                             UserId = "seed-player-3",
                             Visibility = 0,
                             Bait = 1,
@@ -1056,8 +1092,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 0,
-                            Latitude = 38.528999999999996,
-                            Longitude = -8.8490000000000002,
+                            Latitude = 38.552999999999997,
+                            Longitude = -8.8569999999999993,
                             UserId = "seed-player-4",
                             Visibility = 0,
                             Bait = 1,
@@ -1069,8 +1105,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 0,
-                            Latitude = 38.521999999999998,
-                            Longitude = -8.8549999999999986,
+                            Latitude = 38.548999999999999,
+                            Longitude = -8.863999999999999,
                             UserId = "seed-player-5",
                             Visibility = 0,
                             Bait = 1,
@@ -1110,8 +1146,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 1,
-                            Latitude = 38.518000000000001,
-                            Longitude = -8.8739999999999988,
+                            Latitude = 38.515000000000001,
+                            Longitude = -8.8780000000000001,
                             UserId = "seed-player-2",
                             Visibility = 0,
                             AccessDifficulty = 0,
@@ -1123,8 +1159,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 1,
-                            Latitude = 38.522999999999996,
-                            Longitude = -8.8789999999999996,
+                            Latitude = 38.515000000000001,
+                            Longitude = -8.8809999999999985,
                             UserId = "seed-player-3",
                             Visibility = 0,
                             AccessDifficulty = 0,
@@ -1149,8 +1185,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 1,
-                            Latitude = 38.521000000000001,
-                            Longitude = -8.8889999999999993,
+                            Latitude = 38.524999999999999,
+                            Longitude = -8.8769999999999989,
                             UserId = "seed-player-5",
                             Visibility = 0,
                             AccessDifficulty = 0,
@@ -1162,8 +1198,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 1,
-                            Latitude = 38.518000000000001,
-                            Longitude = -8.8979999999999997,
+                            Latitude = 38.527999999999999,
+                            Longitude = -8.8829999999999991,
                             UserId = "seed-player-1",
                             Visibility = 0,
                             AccessDifficulty = 0,
@@ -1176,7 +1212,7 @@ namespace GofishApi.Migrations
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 1,
                             Latitude = 38.536999999999999,
-                            Longitude = -8.9029999999999987,
+                            Longitude = -8.891,
                             UserId = "seed-player-2",
                             Visibility = 0,
                             AccessDifficulty = 0,
@@ -1188,8 +1224,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 1,
-                            Latitude = 38.547999999999995,
-                            Longitude = -8.9009999999999998,
+                            Latitude = 38.533999999999999,
+                            Longitude = -8.8940000000000001,
                             UserId = "seed-player-3",
                             Visibility = 0,
                             AccessDifficulty = 0,
@@ -1202,7 +1238,7 @@ namespace GofishApi.Migrations
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 1,
                             Latitude = 38.552999999999997,
-                            Longitude = -8.8889999999999993,
+                            Longitude = -8.8809999999999985,
                             UserId = "seed-player-4",
                             Visibility = 0,
                             AccessDifficulty = 0,
@@ -1214,8 +1250,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 1,
-                            Latitude = 38.539999999999999,
-                            Longitude = -8.8999999999999986,
+                            Latitude = 38.558,
+                            Longitude = -8.9089999999999989,
                             UserId = "seed-player-5",
                             Visibility = 0,
                             AccessDifficulty = 0,
@@ -1251,8 +1287,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 2,
-                            Latitude = 38.509,
-                            Longitude = -8.8689999999999998,
+                            Latitude = 38.507999999999996,
+                            Longitude = -8.8719999999999999,
                             UserId = "seed-player-2",
                             Visibility = 0,
                             WarningKind = 1
@@ -1263,8 +1299,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 2,
-                            Latitude = 38.509,
-                            Longitude = -8.8669999999999991,
+                            Latitude = 38.503,
+                            Longitude = -8.8689999999999998,
                             UserId = "seed-player-3",
                             Visibility = 0,
                             WarningKind = 1
@@ -1275,8 +1311,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 2,
-                            Latitude = 38.509999999999998,
-                            Longitude = -8.8609999999999989,
+                            Latitude = 38.503999999999998,
+                            Longitude = -8.8699999999999992,
                             UserId = "seed-player-4",
                             Visibility = 0,
                             WarningKind = 1
@@ -1287,8 +1323,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 2,
-                            Latitude = 38.500999999999998,
-                            Longitude = -8.8650000000000002,
+                            Latitude = 38.509,
+                            Longitude = -8.8569999999999993,
                             UserId = "seed-player-5",
                             Visibility = 0,
                             WarningKind = 1
@@ -1299,7 +1335,7 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 2,
-                            Latitude = 38.507999999999996,
+                            Latitude = 38.503,
                             Longitude = -8.847999999999999,
                             UserId = "seed-player-1",
                             Visibility = 0,
@@ -1311,8 +1347,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 2,
-                            Latitude = 38.506999999999998,
-                            Longitude = -8.8549999999999986,
+                            Latitude = 38.494999999999997,
+                            Longitude = -8.843,
                             UserId = "seed-player-2",
                             Visibility = 0,
                             WarningKind = 1
@@ -1323,8 +1359,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 2,
-                            Latitude = 38.484999999999999,
-                            Longitude = -8.8519999999999985,
+                            Latitude = 38.498999999999995,
+                            Longitude = -8.8659999999999997,
                             UserId = "seed-player-3",
                             Visibility = 0,
                             WarningKind = 1
@@ -1335,7 +1371,7 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 2,
-                            Latitude = 38.504999999999995,
+                            Latitude = 38.481000000000002,
                             Longitude = -8.8409999999999993,
                             UserId = "seed-player-4",
                             Visibility = 0,
@@ -1347,8 +1383,8 @@ namespace GofishApi.Migrations
                             CreatedAt = new DateTime(2026, 3, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             ExpiresAt = new DateTime(2026, 3, 11, 12, 0, 0, 0, DateTimeKind.Utc),
                             Kind = 2,
-                            Latitude = 38.467999999999996,
-                            Longitude = -8.8279999999999994,
+                            Latitude = 38.503999999999998,
+                            Longitude = -8.8369999999999997,
                             UserId = "seed-player-5",
                             Visibility = 0,
                             WarningKind = 1
@@ -1387,6 +1423,33 @@ namespace GofishApi.Migrations
                         .HasForeignKey("RequesterUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Requester");
+                });
+
+            modelBuilder.Entity("GofishApi.Models.GroupInvite", b =>
+                {
+                    b.HasOne("GofishApi.Models.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GofishApi.Models.AppUser", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GofishApi.Models.AppUser", "Requester")
+                        .WithMany()
+                        .HasForeignKey("RequesterUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Group");
 
                     b.Navigation("Receiver");
 
