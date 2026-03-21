@@ -69,7 +69,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   allPins = signal<ViewportPinDTO[]>([]);
   private querySubscription?: Subscription;
   private queryValues: UrlQuery | null = null;
-
+  move: boolean = false;
   public get getGeolocationState() { return this.geoService.state(); }
   public get isGeolocationDenied() { return this.geoService.isBad(); }
 
@@ -84,6 +84,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.queryValues = this.urlService.getUrlValues(paramMap);
 
+      this.move = paramMap.get('move') === 'true';
       if (this.map && this.queryValues) {
         this.applyUrlState();
       }
@@ -199,6 +200,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         this.disablePickMode();
         this.previewMarkerService.clear();
         this.selectedCoords.set(null);
+        const lat = this.queryValues?.vLat;
+        const lng = this.queryValues?.vLng;
+        if (this.move && lat && lng) {
+          this.map.jumpTo({ center: [lng, lat], zoom: 14 });
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { move: null },
+            queryParamsHandling: 'merge'
+          });
+        }
         break;
     }
   }
@@ -247,8 +258,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   zoomIn(): void { this.map.zoomIn({ duration: 300 }); }
   zoomOut(): void { this.map.zoomOut({ duration: 300 }); }
 
-  goToCoords(coords : GeoLocationDTO) {
-    this.map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 16});
+  goToCoords(coords: GeoLocationDTO) {
+    this.map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 16 });
   }
 
   // =========================

@@ -28,7 +28,8 @@ export class PostIdPlaceholderComponent {
       dataRequest: {
         includeAuthor: true,
         includeComments: true,
-        includeGroups: true
+        includeGroups: true,
+        includeCoords: true
       },
       lastTimestamp: new Date().toISOString(),
       maxResults: 1,

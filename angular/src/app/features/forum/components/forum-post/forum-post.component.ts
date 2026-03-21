@@ -18,7 +18,15 @@ export class ForumPostComponent {
   pinKind = PinKind;
 
   goToPin() {
-    // Tem que se ver como e que se obtem as coordendas porque o post dto nao tem coordenadas
-    // Podemos colocar la ?
+    const lat = this.postData()?.coords?.latitude;
+    const lng = this.postData()?.coords?.longitude;
+    if (!lat || !lng) {
+      console.log('coords null');
+      return;
+    }
+    console.log(lat,lng)
+    this.router.navigate(['map'], {
+      queryParams: { vLat: lat, vLng: lng, z: 14, move: true },
+    });
   }
 }

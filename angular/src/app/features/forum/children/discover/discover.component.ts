@@ -23,6 +23,7 @@ export class DiscoverComponent {
         includeAuthor: true,
         includeGroups: true,
         includeComments: true,
+        includeCoords: true,
       },
       lastTimestamp: new Date().toISOString(),
       maxResults: 5
