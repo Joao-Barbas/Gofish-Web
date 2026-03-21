@@ -175,6 +175,27 @@ public class GroupController : ControllerBase
                 .Where(gp => gp.GroupId == groupId)
                 .ToListAsync();
 
+            var postIds = groupPosts
+                .Select(gp => gp.PostId)
+                .Distinct()
+                .ToList();
+
+            var posts = await _db.Posts
+                .Include(p => p.Pin)
+                .Where(p => postIds.Contains(p.Id))
+                .ToListAsync();
+
+            foreach (var post in posts)
+            {
+                var groupCount = await _db.GroupPosts
+                    .CountAsync(gp => gp.PostId == post.Id);
+
+                if (groupCount == 1)
+                {
+                    post.Pin.Visibility = VisibilityLevel.Private;
+                }
+            }
+
             _db.GroupUsers.RemoveRange(memberships);
             _db.GroupInvites.RemoveRange(invites);
             _db.GroupPosts.RemoveRange(groupPosts);
