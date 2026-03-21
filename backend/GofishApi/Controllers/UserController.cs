@@ -110,8 +110,12 @@ public class UserController : ControllerBase
         }
 
         var results = await query
+            .Include(f => f.Requester)
+                .ThenInclude(u => u.UserProfile)
+            .Include(f => f.Receiver)
+                .ThenInclude(u => u.UserProfile)
             .OrderByDescending(f => f.CreatedAt)
-            .ThenByDescending(f => f.RequesterUserId) // Possible tiebreaker
+            .ThenByDescending(f => f.RequesterUserId)
             .Take(maxResults + 1)
             .ToListAsync();
 

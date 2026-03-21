@@ -3,12 +3,31 @@ using GofishApi.Models;
 
 namespace GofishApi.Dtos;
 
-public record FriendshipDto (
+public record FriendshipUserDto(
+    string UserId,
+    string UserName,
+    string FirstName,
+    string LastName,
+    string? AvatarUrl
+)
+{
+    public static FriendshipUserDto FromEntity(AppUser u) => new(
+        u.Id,
+        u.UserName!,
+        u.FirstName ?? "",
+        u.LastName ?? "",
+        u.UserProfile.AvatarUrl
+    );
+}
+
+public record FriendshipDto(
     string RequesterUserId,
     string ReceiverUserId,
     FriendshipState State,
     DateTime CreatedAt,
-    DateTime? RepliedAt
+    DateTime? RepliedAt,
+    FriendshipUserDto Requester,
+    FriendshipUserDto Receiver
 )
 {
     public static FriendshipDto FromEntity(Friendship e) => new(
@@ -16,7 +35,9 @@ public record FriendshipDto (
         e.ReceiverUserId,
         e.State,
         e.CreatedAt,
-        e.RepliedAt
+        e.RepliedAt,
+        FriendshipUserDto.FromEntity(e.Requester),
+        FriendshipUserDto.FromEntity(e.Receiver)
     );
 }
 
