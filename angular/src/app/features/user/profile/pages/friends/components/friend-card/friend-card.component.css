@@ -37,3 +37,33 @@ p {
 small {
   font-size: var(--gf-text-xs);
 }
+
+button {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  padding: calc(1em / 2) var(--gf-8);
+  box-shadow: 0 0 0 2px var(--gf-light-bg-dark);
+  border-radius: var(--gf-8);
+  color: var(--gf-dark-text);
+  font-size: var(--gf-text-sm);
+  font-weight: 500;
+  transition: box-shadow 0.2s ease;
+
+  &:not(:disabled):hover {
+    box-shadow: 0 0 0 4px var(--gf-light-bg-dark);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+gf-async-button {
+  flex: 1;
+
+  --async-btn-transition: box-shadow 0.2s ease;
+  --async-btn-width: 100%;
+  --async-btn-box-shadow: 0 0 0 2px var(--gf-primary);
+  --async-btn-hover-box-shadow: 0 0 0 4px var(--gf-primary);
+}

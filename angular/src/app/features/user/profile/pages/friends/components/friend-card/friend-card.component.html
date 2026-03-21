@@ -10,8 +10,16 @@
   </a>
 </div>
 @if (actions()) {
-  <div>
-    <button (click)="onAccept()">Accept</button>
-    <button (click)="onDecline()">Decline</button>
+  <div class="gf-flow-horizontal gf-gap-12">
+    <button
+      [disabled]="isAccepted()"
+      (click)="onDecline()">
+      Decline
+    </button>
+    <gf-async-button
+      [labels]="{ idle: 'Accept' }"
+      [states]="{ busy: busyState.busy(), success: isAccepted() }"
+      (click)="onAccept()"
+    ></gf-async-button>
   </div>
 }

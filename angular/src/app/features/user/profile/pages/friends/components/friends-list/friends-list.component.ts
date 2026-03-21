@@ -28,7 +28,7 @@ export class FriendsListComponent {
   readonly hasMore = signal(true);
 
   private lastTimestamp?: string;
-  private pageSize: number = 1;
+  private pageSize: number = 20;
 
   constructor() {
     this.loadInitial();

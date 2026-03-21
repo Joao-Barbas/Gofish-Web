@@ -28,20 +28,24 @@ button {
   &:not(:disabled):hover {
     background-color: var(--async-btn-hover-bg, var(--async-btn-bg, var(--gf-primary)));
     box-shadow: var(--async-btn-hover-box-shadow, var(--gf-shadow-lift-md));
+    color: var(--async-btn-hover-color, var(--async-btn-color, var(--gf-dark-text)));
   }
 
   &.idle {
     background-color: var(--async-btn-idle-bg, var(--async-btn-bg, var(--gf-primary)));
+    box-shadow: var(--async-btn-idle-box-shadow, none);
     color: var(--async-btn-idle-color, var(--async-btn-color, var(--gf-dark-text)));
   }
 
   &.busy {
     background-color: var(--async-btn-busy-bg, var(--gf-tertiary));
+    box-shadow: var(--async-btn-busy-box-shadow, none);
     color: var(--async-btn-busy-color, var(--gf-dark-text));
   }
 
   &.success {
     background-color: var(--async-btn-success-bg, var(--gf-success));
+    box-shadow: var(--async-btn-success-box-shadow, none);
     color: var(--async-btn-success-color, var(--gf-light-text));
   }
 }

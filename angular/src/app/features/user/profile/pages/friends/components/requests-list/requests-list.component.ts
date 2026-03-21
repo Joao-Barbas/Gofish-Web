@@ -21,25 +21,25 @@ export class RequestsListComponent {
   private readonly userApi = inject(UserApi);
   private readonly authService = inject(AuthService);
 
-  public readonly loadingState: LoadingState = new LoadingState();
-  public readonly busyState: BusyState = new BusyState();
+  readonly loadingState: LoadingState = new LoadingState();
+  readonly busyState: BusyState = new BusyState();
 
   readonly requestList = signal<FriendshipDTO[]>([]);
   readonly hasMore = signal(true);
 
   private lastTimestamp?: string;
-  private pageSize: number = 1;
+  private pageSize: number = 20;
 
   constructor() {
     this.loadInitial();
   }
 
-  public loadInitial() {
+  loadInitial() {
     this.loadingState.start();
     this.fetchFriendships(true);
   }
 
-  public loadMore() {
+  loadMore() {
     this.busyState.setBusy(true);
     this.fetchFriendships(false);
   }
@@ -71,13 +71,8 @@ export class RequestsListComponent {
     });
   }
 
-  trackByCompositeKey(item: FriendshipDTO): string {
-    return `${item.requesterUserId}-${item.receiverUserId}`;
-  }
-
-  getOtherUser(friendship: FriendshipDTO): FriendshipUserDTO {
-    return friendship.requesterUserId === this.authService.userId()
-      ? friendship.receiver!
-      : friendship.requester!;
+  onFriendCardDeclined(friendship: FriendshipDTO) {
+    this.requestList.update(list => list.filter(f => f.requesterUserId !== friendship.requesterUserId));
+    this.userApi.ignoreFriendship(friendship.requesterUserId).subscribe();
   }
 }
