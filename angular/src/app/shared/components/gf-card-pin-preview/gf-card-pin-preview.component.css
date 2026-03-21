@@ -1,0 +1,198 @@
+.gf-card-pin-preview {
+  padding: 12px;
+  width: 485px;
+  min-width: fit-content;
+
+  gap: 12px;
+
+  & .top-wrapper {
+    .pin-user-time-wrapper {
+      gap: 8px;
+    }
+
+    .pin-author-profile-photo {
+      width: var(--gf-32);
+      height: var(--gf-32);
+    }
+
+    .pin-author-name {
+      font-size: var(--gf-12);
+      word-break: break-all;
+      max-width: 145px;
+    }
+
+    .separator,
+    .pin-time-ago {
+      font-size: var(--gf-12);
+      font-family: var(--gf-font-date);
+      word-break: break-all;
+    }
+
+    .pin-stats {
+      gap: 4px;
+    }
+
+    .gf-badge-pin-preview {
+      width: fit-content;
+      height: 32px;
+      padding: 8px 8px;
+
+      border-radius: 25px;
+
+      display: flex;
+      gap: 4px;
+
+      font-size: 12px;
+
+      & svg {
+        color: var(--gf-dark-text-muted);
+        width: var(--gf-16);
+        height: var(--gf-16);
+      }
+    }
+
+    .gf-badge-pin-preview-goto-Pin {
+      width: fit-content;
+      height: 32px;
+      padding: 8px;
+
+      border-radius: 25px;
+
+      display: flex;
+      gap: 4px;
+
+      font-size: 12px;
+
+      & svg {
+        width: var(--gf-16);
+        height: var(--gf-16);
+      }
+    }
+  }
+
+  /* #region ADMIN PANEL */
+
+  &.admin-panel {
+    background-color: #1d5ba6;
+    box-shadow: none;
+    border: 2px solid #d9d9d9;
+  }
+
+  &.admin-panel .top-wrapper {
+    .pin-user-time-wrapper {
+    }
+
+    .pin-author-profile-photo {
+    }
+
+    .pin-author-name {
+    }
+
+    .separator,
+    .pin-time-ago {
+    }
+
+    .pin-stats {
+    }
+
+    .gf-badge-pin-preview {
+      background: none;
+      box-shadow: none;
+
+      border: 2px solid var(--gf-dark-text-muted);
+
+      & {
+        color: var(--gf-dark-text-muted);
+        cursor: not-allowed;
+      }
+
+      & svg {
+        color: var(--gf-dark-text-muted);
+      }
+    }
+
+    .gf-badge-pin-preview-goto-Pin {
+      background: none;
+      box-shadow: none;
+
+      border: 2px solid var(--gf-dark-text);
+
+      &:hover {
+        border-color: var(--gf-dark-text-muted);
+      }
+
+      & svg {
+        color: var(--gf-dark-text);
+      }
+
+      &:hover svg {
+        color: var(--gf-dark-text-muted);
+      }
+
+      & span {
+        color: var(--gf-dark-text);
+        font-size: 10px;
+      }
+
+      &:hover span {
+        color: var(--gf-dark-text-muted);
+      }
+    }
+  }
+
+  .reported-pin-number {
+    font-size: 24px;
+  }
+
+  /* #endregion ADMIN PANEL */
+
+  /* #region Universal */
+
+  .bottom-wrapper {
+
+  }
+
+  .pin-type-and-extras-wrapper {
+    gap: 4px;
+  }
+
+  .gf-badge-pin-type-and-extras {
+    gap: 4px;
+
+    padding: 4px 16px;
+
+    width: fit-content;
+    height: fit-content;
+    border-radius: 16px;
+
+    --unknown-pin-type: #ff67b8;
+    background-color: var(--gf-dark-bg-dark);
+
+    &.catch-pin {
+      background-color: var(--gf-dark-bg-catch-pin);
+
+    }
+
+    &.info-pin {
+      background-color: var(--gf-dark-bg-info-pin);
+
+    }
+
+    &.warning-pin {
+      background-color: var(--gf-dark-bg-warning-pin);
+
+    }
+
+    & svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    & span {
+      font-size: 12px;
+    }
+
+  }
+
+  /* #endregion Universal */
+}

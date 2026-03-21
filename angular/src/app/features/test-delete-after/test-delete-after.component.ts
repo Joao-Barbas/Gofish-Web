@@ -26,6 +26,7 @@ import { RouterOutlet } from '@angular/router';
 import { MapLayersService } from '@gofish/features/map/services/map-layers.service';
 import { MapInteractionsService } from '@gofish/features/map/services/map-interactions.service';
 import { ClusterDetailsComponent } from '@gofish/features/map/components/cluster-details/cluster-details.component';
+import { GfCardPinPreviewComponent } from "@gofish/shared/components/gf-card-pin-preview/gf-card-pin-preview.component";
 
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
@@ -34,7 +35,7 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5
   selector: 'app-test-delete-after',
   imports: [CommonModule,
     FormsModule,
-    ClusterDetailsComponent],
+    ClusterDetailsComponent, GfCardPinPreviewComponent],
   templateUrl: './test-delete-after.component.html',
   styleUrl: './test-delete-after.component.css',
 })

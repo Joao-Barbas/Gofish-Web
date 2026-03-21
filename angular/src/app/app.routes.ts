@@ -107,7 +107,7 @@ export const routes: Routes = [
   ]
 },
   {
-    path: 'test-pin-listing',
+    path: 'test-page',
     loadComponent: () => import('@gofish/features/test-delete-after/test-delete-after.component').then(a => a.TestDELETEAFTERComponent), /* TODO: remove */
   },
 ];
