@@ -1,0 +1,80 @@
+.stat-container {
+  background-color: var(--gf-statistics-bg);
+}
+
+.quick-access-wrapper {
+  padding-top: 25px;
+  padding-bottom: 35px;
+  padding-left: 20px;
+  border-left: 2px solid #ffffff;
+  gap: 10px;
+}
+
+.gf-card-stat-quick-view {
+  padding: 12px;
+  width: 485px;
+  min-width: fit-content;
+
+  background: none;
+  box-shadow: none;
+  border: 2px solid #d9d9d9;
+}
+
+.quick-access-top-bottom-wrapper {
+  gap: 10px;
+}
+
+.quick-access-top {
+  gap: 10px;
+}
+
+.quick-access-icon {
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  width: 48px;
+  height: 48px;
+
+  &.average-published-pins {
+    background-color: #477eeb;
+  }
+
+  &.pin-density {
+    background-color: #07b7bd;
+  }
+
+  &.reports {
+    background-color: #eb5547;
+  }
+}
+
+.quick-access-icon > svg {
+  width: 64px;
+  height: 64px;
+}
+
+.quick-access-preview {
+  gap: 10px;
+}
+
+.quick-access-text {
+  font-family: var(--gf-font-heading);
+  font-size: 20px;
+}
+
+.preview-text {
+  font-family: var(--gf-font-heading);
+  font-size: 12px;
+}
+
+.quick-access-goto-button {
+  background: none;
+  border: none;
+  width: 84px;
+  height: 84px;
+}
+
+.quick-access-goto-button > svg {
+  width: 64px;
+  height: 64px;
+}

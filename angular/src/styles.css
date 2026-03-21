@@ -53,6 +53,8 @@
   --gf-dark-bg-info-pin: lch(27.2% 19.32 250.85);
   --gf-dark-bg-warning-pin: lch(30.94% 25.1 72.47);
 
+  --gf-statistics-bg: lch(37.99% 46.9 272.86);
+
   /* Semantic colors */
   --gf-primary: oklch(0.6048 0.2142 262.15);
   --gf-secondary: oklch(0.7096 0.186513 13.1188);

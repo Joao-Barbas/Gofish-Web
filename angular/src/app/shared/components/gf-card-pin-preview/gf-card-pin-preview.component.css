@@ -164,8 +164,7 @@
     width: fit-content;
     height: fit-content;
     border-radius: 16px;
-
-    --unknown-pin-type: #ff67b8;
+    
     background-color: var(--gf-dark-bg-dark);
 
     &.catch-pin {

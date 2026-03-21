@@ -38,13 +38,13 @@ export const routes: Routes = [
         path: 'security',
         loadComponent: () => import('@gofish/features/user/settings/components/security/security.component').then(m => m.SecurityComponent),
         children: [
-         /*  {
-            path: 'setup-sms',
-          }, */
+          /*  {
+             path: 'setup-sms',
+           }, */
           {
             path: 'setup-totp',
             loadComponent: () => import('@gofish/features/user/settings/components/security/components/setup-totp/setup-totp.component').then(m => m.SetupTotpComponent),
-            canActivate: [ noTotpGuard ]
+            canActivate: [noTotpGuard]
           }
         ]
       }
@@ -58,7 +58,7 @@ export const routes: Routes = [
       { path: PathSegment.CREATE_CATCH_PIN, loadComponent: () => import('@gofish/features/map/components/create-pin-modals/catch-pin-modal/catch-pin-modal.component').then(c => c.CatchPinModalComponent) },
       { path: PathSegment.CREATE_INFO_PIN, loadComponent: () => import('@gofish/features/map/components/create-pin-modals/info-pin-modal/info-pin-modal.component').then(c => c.InfoPinModalComponent) },
       { path: PathSegment.CREATE_WARN_PIN, loadComponent: () => import('@gofish/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component').then(c => c.WarnPinModalComponent) },
-      { path: PathSegment.DELETE_PIN, loadComponent: () => import ('@gofish/features/map/components/delete-pin/delete-pin.component').then(c => c.DeletePinComponent) }
+      { path: PathSegment.DELETE_PIN, loadComponent: () => import('@gofish/features/map/components/delete-pin/delete-pin.component').then(c => c.DeletePinComponent) }
     ]
   },
   {
@@ -73,39 +73,47 @@ export const routes: Routes = [
     path: PathSegment.PRIVACY,
     loadComponent: () => import('@gofish/features/privacy-policy/privacy-policy.component').then(p => p.PrivacyPolicyComponent),
   },
-
   {
-  path: 'forum',
-  loadComponent: () => import('@gofish/features/forum/forum.component').then(f => f.ForumComponent),
-  children: [
-    { path: '', redirectTo: PathSegment.FORUM_DISCOVER, pathMatch: 'full' },
-    { path: PathSegment.FORUM_DISCOVER,     loadComponent: () => import('@gofish/features/forum/children/discover/discover.component').then(d => d.DiscoverComponent) },
-    { path: PathSegment.FORUM_FROM_FRIENDS, loadComponent: () => import('@gofish/features/forum/children/from-friends/from-friends.component').then(f => f.FromFriendsComponent) },
-    { path: PathSegment.FORUM_MY_GROUPS,    loadComponent: () => import('@gofish/features/forum/children/my-groups/my-groups.component').then(m => m.MyGroupsComponent) },
+    path: 'forum',
+    loadComponent: () => import('@gofish/features/forum/forum.component').then(f => f.ForumComponent),
+    children: [
+      { path: '', redirectTo: PathSegment.FORUM_DISCOVER, pathMatch: 'full' },
+      { path: PathSegment.FORUM_DISCOVER, loadComponent: () => import('@gofish/features/forum/children/discover/discover.component').then(d => d.DiscoverComponent) },
+      { path: PathSegment.FORUM_FROM_FRIENDS, loadComponent: () => import('@gofish/features/forum/children/from-friends/from-friends.component').then(f => f.FromFriendsComponent) },
+      { path: PathSegment.FORUM_MY_GROUPS, loadComponent: () => import('@gofish/features/forum/children/my-groups/my-groups.component').then(m => m.MyGroupsComponent) },
 
-    // Rota do grupo com filhos (posts e members)
-    {
-      path: `${PathSegment.FORUM_GROUPS}/:id`,
-      loadComponent: () => import('@gofish/features/forum/children/groups/groups.component').then(g => g.GroupsComponent),
-      children: [
-        { path: '', redirectTo: 'posts', pathMatch: 'full' },
-        { path: 'posts',   loadComponent: () => import('@gofish/features/forum/children/groups/children/group-posts-placeholder/group-posts-placeholder.component').then(c => c.GroupPostsPlaceholderComponent) },
-        { path: 'members', loadComponent: () => import('@gofish/features/forum/children/groups/children/group-members-placeholder/group-members-placeholder.component').then(c => c.GroupMembersPlaceholderComponent) },
-      ]
-    },
+      // Rota do grupo com filhos (posts e members)
+      {
+        path: `${PathSegment.FORUM_GROUPS}/:id`,
+        loadComponent: () => import('@gofish/features/forum/children/groups/groups.component').then(g => g.GroupsComponent),
+        children: [
+          { path: '', redirectTo: 'posts', pathMatch: 'full' },
+          { path: 'posts', loadComponent: () => import('@gofish/features/forum/children/groups/children/group-posts-placeholder/group-posts-placeholder.component').then(c => c.GroupPostsPlaceholderComponent) },
+          { path: 'members', loadComponent: () => import('@gofish/features/forum/children/groups/children/group-members-placeholder/group-members-placeholder.component').then(c => c.GroupMembersPlaceholderComponent) },
+        ]
+      },
 
-    // TODO: Remove - testing purposes
-    {
-      path: PathSegment.FORUM_GROUPS, loadComponent: () => import('@gofish/features/forum/children/groups/groups.component').then(g => g.GroupsComponent),
-      children: [
-        { path: '', redirectTo: 'group-post-redirect-testing', pathMatch: 'full' },
-        { path: 'group-post-redirect-testing',   loadComponent: () => import('@gofish/features/forum/children/groups/children/group-posts-placeholder/group-posts-placeholder.component').then(c => c.GroupPostsPlaceholderComponent) },
-      ]
+      // TODO: Remove - testing purposes
+      {
+        path: PathSegment.FORUM_GROUPS, loadComponent: () => import('@gofish/features/forum/children/groups/groups.component').then(g => g.GroupsComponent),
+        children: [
+          { path: '', redirectTo: 'group-post-redirect-testing', pathMatch: 'full' },
+          { path: 'group-post-redirect-testing', loadComponent: () => import('@gofish/features/forum/children/groups/children/group-posts-placeholder/group-posts-placeholder.component').then(c => c.GroupPostsPlaceholderComponent) },
+        ]
 
-     },
-    { path: 'post/:id',               loadComponent: () => import('@gofish/features/forum/children/post-id-placeholder/post-id-placeholder.component').then(p => p.PostIdPlaceholderComponent) },
-  ]
-},
+      },
+      { path: 'post/:id', loadComponent: () => import('@gofish/features/forum/children/post-id-placeholder/post-id-placeholder.component').then(p => p.PostIdPlaceholderComponent) },
+    ]
+  },
+  {
+    path: 'statistics',
+    loadComponent: () => import('@gofish/features/statistics/statistics.component').then(f => f.StatisticsComponent),
+    children: [ // unfinished
+      { path: '', redirectTo: PathSegment.FORUM_DISCOVER, pathMatch: 'full' },
+      { path: PathSegment.FORUM_DISCOVER, loadComponent: () => import('@gofish/features/forum/children/discover/discover.component').then(d => d.DiscoverComponent) },
+
+    ]
+  },
   {
     path: 'test-page',
     loadComponent: () => import('@gofish/features/test-delete-after/test-delete-after.component').then(a => a.TestDELETEAFTERComponent), /* TODO: remove */
