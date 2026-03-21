@@ -141,6 +141,60 @@ public class GroupController : ControllerBase
         return Ok(new CreateGroupResDTO(newGroup.Id));
     }
 
+    [Authorize]
+    [HttpDelete("DeleteGroup/{groupId}")]
+    public async Task<IActionResult> DeleteGroup([FromRoute] int groupId)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
+
+        var group = await _db.Groups
+            .FirstOrDefaultAsync(g => g.Id == groupId);
+
+        if (group is null)
+            return NotFound("Group not found.");
+
+        var membership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
+
+        if (membership is null || membership.RoleId != "1")
+            return Forbid();
+
+        try
+        {
+            var memberships = await _db.GroupUsers
+                .Where(gu => gu.GroupId == groupId)
+                .ToListAsync();
+
+            var invites = await _db.GroupInvites
+                .Where(gi => gi.GroupId == groupId)
+                .ToListAsync();
+
+            var groupPosts = await _db.GroupPosts
+                .Where(gp => gp.GroupId == groupId)
+                .ToListAsync();
+
+            _db.GroupUsers.RemoveRange(memberships);
+            _db.GroupInvites.RemoveRange(invites);
+            _db.GroupPosts.RemoveRange(groupPosts);
+            _db.Groups.Remove(group);
+
+            await _db.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error while deleting group {GroupId}", groupId);
+            throw new AppException(
+                "Service Unavailable",
+                $"Unable to delete this group: {ex.InnerException?.Message ?? ex.Message}",
+                StatusCodes.Status503ServiceUnavailable
+            );
+        }
+
+        return NoContent();
+    }
+
     #region ManageMembers
 
     [Authorize]
