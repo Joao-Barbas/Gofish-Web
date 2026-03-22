@@ -13,6 +13,7 @@ using GofishApi.Exceptions;
 
 namespace GofishApi.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class PinController : ControllerBase
@@ -21,17 +22,24 @@ public class PinController : ControllerBase
     private readonly IBlobStorageService _blobStorage;
     private readonly AppDbContext _db;
     private readonly UserManager<AppUser> _userManager;
+    private readonly IGamificationService _gamification;
+    private readonly IVisibilityService _visibility;
 
     public PinController(
         ILogger<PinController> logger,
         IBlobStorageService blobStorage,
         AppDbContext db,
-        UserManager<AppUser> userManager
-    ){
+        UserManager<AppUser> userManager,
+        IGamificationService gamification,
+        IVisibilityService visibility
+    )
+    {
         _logger = logger;
         _blobStorage = blobStorage;
         _db = db;
         _userManager = userManager;
+        _gamification = gamification;
+        _visibility = visibility;
     }
 
     [Authorize]
@@ -42,11 +50,14 @@ public class PinController : ControllerBase
         [FromQuery] double maxLat,
         [FromQuery] double maxLng
     ){
-        // TODO: Visibility level is not being accounted for yet
-        var pins = await _db.Pins
-        .Where(p =>
-            (p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng) &&
-            (p.ExpiresAt == null || p.ExpiresAt > DateTime.UtcNow))
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        if (userId is null) return Unauthorized();
+
+        var pins = await _visibility.FilterVisiblePins(
+            _db.Pins.Where(p =>
+                (p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng) &&
+                (p.ExpiresAt == null || p.ExpiresAt > DateTime.UtcNow)),
+            userId)
         .Select(p => new ViewportPinDTO(
             p.Id,
             p.Latitude,
@@ -56,6 +67,7 @@ public class PinController : ControllerBase
             p.Kind
         ))
         .ToListAsync();
+
         return Ok(new ViewportPinsResDTO(pins));
     }
 
@@ -63,15 +75,8 @@ public class PinController : ControllerBase
     [HttpPost("GetPins")]
     public async Task<IActionResult> GetPins([FromBody] GetPinsReqDTO dto)
     {
-        // TODO: Visibility level is not being accounted for yet
-
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        var user   = userId is null ? null : await _userManager.FindByIdAsync(userId);
-
-        if (user is null)
-        {
-            return Unauthorized();
-        }
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        if (userId is null) return Unauthorized();
 
         var pinIds = new List<int>();
 
@@ -83,21 +88,40 @@ public class PinController : ControllerBase
             }
             if (id.AuthorId is not null && id.AuthorId != "")
             {
-                pinIds.AddRange(await _db.Pins
-                .Where(p => p.UserId == id.AuthorId)
+                var authorPinIds = await _visibility.FilterVisiblePins(
+                    _db.Pins.Where(p => p.UserId == id.AuthorId),
+                    userId)
                 .Select(p => p.Id)
-                .ToListAsync());
+                .ToListAsync();
+                pinIds.AddRange(authorPinIds);
             }
-            // TODO: Implement group logic when are added
+            if (id.GroupId is not null)
+            {
+                var groupPinIds = await _visibility.FilterVisiblePins(
+                    _db.Pins.Where(p => p.Post.Groups.Any(g => g.Id == id.GroupId.Value)),
+                    userId)
+                .Select(p => p.Id)
+                .ToListAsync();
+                pinIds.AddRange(groupPinIds);
+            }
         }
 
-        var pins = await _db.Pins
-        .Where((p) => pinIds.Contains(p.Id))
-        .Include((p) => p.AppUser)
-        .Include((p) => p.Post)
-        .Include((p) => p.Post.PostVotes)
-        .ToListAsync();
+        var query = _visibility.FilterVisiblePins(
+            _db.Pins.Where(p => pinIds.Distinct().Contains(p.Id)),
+            userId);
 
+        if (dto.DataRequest?.IncludeAuthor ?? false)
+        {
+            query = query.Include(p => p.AppUser);
+        }
+        if (dto.DataRequest?.IncludePost ?? false)
+        {
+            query = query
+            .Include(p => p.Post)
+            .Include(p => p.Post.PostVotes);
+        }
+
+        var pins = await query.ToListAsync();
         var data = pins
         .Select(p => GetPinsPinDTO.FromPin(p, dto.DataRequest, userId))
         .ToList();
@@ -167,6 +191,7 @@ public class PinController : ControllerBase
             throw new AppException("Service Unavailable", "Unable to save this catch pin.", StatusCodes.Status503ServiceUnavailable);
         }
 
+        await _gamification.UpdateStreakAsync(userId);
         return Ok(new CreateCatchPinResDTO(newPin.Id));
     }
 
@@ -203,6 +228,7 @@ public class PinController : ControllerBase
         {
             throw new AppException("Service Unavailable", "Unable to save this information pin.", StatusCodes.Status503ServiceUnavailable);
         }
+        await _gamification.UpdateStreakAsync(userId);
         return Ok(new CreateInfoPinResDTO(newPin.Id));
     }
 
@@ -239,6 +265,7 @@ public class PinController : ControllerBase
         {
             throw new AppException("Service Unavailable", "Unable to save this warning pin.", StatusCodes.Status503ServiceUnavailable);
         }
+        await _gamification.UpdateStreakAsync(userId);
         return Ok(new CreateWarnPinResDTO(newPin.Id));
     }
 
@@ -258,5 +285,4 @@ public class PinController : ControllerBase
         await _db.SaveChangesAsync();
         return NoContent();
     }
-
 }
