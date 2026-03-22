@@ -12,9 +12,11 @@ using GofishApi.Dtos;
 using GofishApi.Extensions;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GofishApi.Controllers;
 
+[Authorize]
 [Route("api/[controller]/[action]")]
 [ApiController]
 public class UserProfileController : ControllerBase
@@ -36,7 +38,9 @@ public class UserProfileController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserProfile(string id)
     {
-        var userProfile = await _context.UserProfiles.FindAsync(id);
+        var userProfile = await _context.UserProfiles
+            .Include(p => p.AppUser)
+            .FirstOrDefaultAsync(p => p.UserId == id);
         if (userProfile is null) return NotFound();
         return Ok(GetUserProfileResDto.FromEntity(userProfile));
     }

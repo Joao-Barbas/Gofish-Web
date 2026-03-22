@@ -10,6 +10,9 @@ public record GetUserProfileReqDTO(
 
 public record GetUserProfileResDto(
     string UserId,
+    string? FirstName,
+    string? LastName,
+    string? UserName,
     int FishingScore,
     string? Bio,
     string? AvatarUrl,
@@ -19,6 +22,9 @@ public record GetUserProfileResDto(
 {
     public static GetUserProfileResDto FromEntity(UserProfile e) => new(
         e.UserId,
+        e.AppUser.FirstName,
+        e.AppUser.LastName,
+        e.AppUser.UserName,
         e.FishingScore,
         e.Bio,
         e.AvatarUrl,

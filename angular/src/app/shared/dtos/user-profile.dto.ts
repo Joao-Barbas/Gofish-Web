@@ -1,11 +1,14 @@
 // user-profile.dto.ts
 
-export interface GetUserProfileReqDto {
+export interface GetUserProfileReqDTO {
   // Unused
 }
 
-export interface GetUserProfileResDto {
+export interface GetUserProfileResDTO {
   userId: string;
+  firstName?: string;
+  lastName?: string;
+  userName?: string;
   fishingScore: number;
   bio?: string;
   avatarUrl?: string;
@@ -13,12 +16,12 @@ export interface GetUserProfileResDto {
   lastActiveAt: string;
 }
 
-export interface PutUserProfileReqDto {
+export interface PutUserProfileReqDTO {
   bio: string;
   avatarUrl: string;
 }
 
-export interface PatchUserProfileReqDto {
+export interface PatchUserProfileReqDTO {
   bio?: string;
   avatarUrl?: string;
 }
