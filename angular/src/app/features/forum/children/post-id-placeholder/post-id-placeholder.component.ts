@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { GroupSettingsPopoverComponent } from "../groups/components/group-settings-popover/group-settings-popover.component";
 import { PostsService } from '@gofish/shared/services/posts.service';
 import { GetPostsPostDTO, GetPostsReqDTO, GetPostsResDTO, PostIdDTO } from '@gofish/shared/dtos/get-post.dto';
@@ -18,7 +18,8 @@ export class PostIdPlaceholderComponent {
   private readonly authService = inject(AuthService);
   userName = this.authService.getUserName();
   isAdmin = this.authService.isAdmin();
-  post: GetPostsPostDTO | null = null;
+  post = signal<GetPostsPostDTO | null>(null);
+
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
@@ -28,7 +29,7 @@ export class PostIdPlaceholderComponent {
 
 
     const dto: GetPostsReqDTO = {
-      ids: [{postId: Number(id)}],
+      ids: [{ postId: Number(id) }],
       dataRequest: {
         includeAuthor: true,
         includeComments: true,
@@ -41,13 +42,14 @@ export class PostIdPlaceholderComponent {
 
     this.postService.getPosts(dto).subscribe({
       next: (res) => {
-        this.post = res.posts[0];
+        this.post.set(res.posts[0]);
       },
       error: (err) => {
         console.log(err);
       }
     });
 
-    console.log(this.post);
+
   }
 }
+

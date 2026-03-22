@@ -2,9 +2,9 @@
 
   <!-- Main Post (Highlight of the page) -->
   <div class="d-grid gf-card-forum-post">
-
+    @if(post(); as post) {
     <app-forum-post [postData]="post"></app-forum-post>
-
+    }
     <!-- Comment Area -->
 
     <div class="gf-card-comment-area d-flex align-items-center">
