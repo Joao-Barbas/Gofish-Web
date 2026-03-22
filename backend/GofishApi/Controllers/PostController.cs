@@ -89,7 +89,7 @@ public class PostController : ControllerBase
 
         var data = posts
             .Take(dto.MaxResults)
-            .Select(p => GetPostsPostDTO.FromPost(p, dto.DataRequest))
+            .Select(p => GetPostsPostDTO.FromPost(p, dto.DataRequest, userId))
             .ToList();
 
         var lastTimestamp = hasMore ? posts[^2].CreatedAt : (DateTime?)null;
@@ -127,7 +127,7 @@ public class PostController : ControllerBase
         var hasMore = posts.Count > dto.MaxResults;
         var data = posts
             .Take(dto.MaxResults)
-            .Select(p => GetPostsPostDTO.FromPost(p, dto.DataRequest))
+            .Select(p => GetPostsPostDTO.FromPost(p, dto.DataRequest, userId))
             .ToList();
 
         var lastTimestamp = hasMore ? posts[dto.MaxResults].CreatedAt : (DateTime?)null;

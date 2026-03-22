@@ -141,6 +141,114 @@ public class GroupController : ControllerBase
         return Ok(new CreateGroupResDTO(newGroup.Id));
     }
 
+    [Authorize]
+    [HttpDelete("DeleteGroup/{groupId}")]
+    public async Task<IActionResult> DeleteGroup([FromRoute] int groupId)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
+
+        var group = await _db.Groups
+            .FirstOrDefaultAsync(g => g.Id == groupId);
+
+        if (group is null)
+            return NotFound("Group not found.");
+
+        var membership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
+
+        if (membership is null || membership.RoleId != "1")
+            return Forbid();
+
+        try
+        {
+            var memberships = await _db.GroupUsers
+                .Where(gu => gu.GroupId == groupId)
+                .ToListAsync();
+
+            var invites = await _db.GroupInvites
+                .Where(gi => gi.GroupId == groupId)
+                .ToListAsync();
+
+            var groupPosts = await _db.GroupPosts
+                .Where(gp => gp.GroupId == groupId)
+                .ToListAsync();
+
+            var postIds = groupPosts
+                .Select(gp => gp.PostId)
+                .Distinct()
+                .ToList();
+
+            var posts = await _db.Posts
+                .Include(p => p.Pin)
+                .Where(p => postIds.Contains(p.Id))
+                .ToListAsync();
+
+            foreach (var post in posts)
+            {
+                var groupCount = await _db.GroupPosts
+                    .CountAsync(gp => gp.PostId == post.Id);
+
+                if (groupCount == 1)
+                {
+                    post.Pin.Visibility = VisibilityLevel.Private;
+                }
+            }
+
+            _db.GroupUsers.RemoveRange(memberships);
+            _db.GroupInvites.RemoveRange(invites);
+            _db.GroupPosts.RemoveRange(groupPosts);
+            _db.Groups.Remove(group);
+
+            await _db.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error while deleting group {GroupId}", groupId);
+            throw new AppException(
+                "Service Unavailable",
+                $"Unable to delete this group: {ex.InnerException?.Message ?? ex.Message}",
+                StatusCodes.Status503ServiceUnavailable
+            );
+        }
+
+        return NoContent();
+    }
+
+    [Authorize]
+    [HttpGet("GetUserGroups")]
+    public async Task<IActionResult> GetUserGroups()
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
+        if (user is null)
+            return Unauthorized();
+
+        var groups = await _db.Groups
+            .Where(g => g.GroupUsers.Any(gu => gu.UserId == userId))
+            .Include(g => g.GroupUsers)
+                .ThenInclude(gu => gu.AppUser)
+                    .ThenInclude(u => u.UserProfile)
+            .Include(g => g.Posts)
+                .ThenInclude(p => p.Pin)
+            .Include(g => g.Posts)
+                .ThenInclude(p => p.PostVotes)
+            .ToListAsync();
+
+        var data = groups
+            .Select(g => GetGroupDTO.FromGroup(
+                g,
+                new GroupDataRequestDTO(
+                    IncludePosts: false,
+                    IncludeMembers: false
+                )
+            ))
+            .ToList();
+
+        return Ok(new GetUserGroupsResDTO(data));
+    }
+
     #region ManageMembers
 
     [Authorize]
