@@ -140,3 +140,12 @@
 .post-interact-comment-wrapper {
   cursor: pointer;
 }
+
+/*Funciona como se fosse && quando esta sem virgula*/
+.active-up .post-icon {
+  fill: currentColor;
+}
+
+.active-down .post-icon {
+  fill: currentColor;
+}

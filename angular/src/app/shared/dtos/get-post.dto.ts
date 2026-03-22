@@ -51,6 +51,7 @@ export interface GetPostsPostDTO {
   score: number;
   commentCount: number;
   kind: number;
+  userVote?: number;
   // Warning
   warningKind?: number;
   // Info
