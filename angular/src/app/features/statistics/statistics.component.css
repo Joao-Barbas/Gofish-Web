@@ -2,18 +2,110 @@
   background-color: var(--gf-statistics-bg);
 }
 
-.quick-access-wrapper {
-  padding-top: 25px;
+.stats-page-wrapper {
+  border-left: 2px solid #ffffff;
+}
+
+.stats-page-title {
+  text-transform: uppercase;
+  font-family: var(--gf-font-heading);
+  font-size: 36px;
+}
+
+.quick-view-wrapper {
+  padding-top: 10px;
   padding-bottom: 35px;
   padding-left: 20px;
-  border-left: 2px solid #ffffff;
   gap: 10px;
+  width: 75%;
+}
+
+.quick-view-items-wrapper {
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.quick-view-item {
+  width: 220px;
+  gap: 10px;
+
+  &.system-requests {
+    --quick-view-color: #f4fc4c;
+  }
+
+  &.user-satisfaction-index {
+    --quick-view-color: #ade63a;
+  }
+
+  &.positive-votes {
+    --quick-view-color: #0af7ff;
+  }
+
+  &.pins-created-today {
+    --quick-view-color: #e8d8e8;
+  }
+
+  &.active-users {
+    --quick-view-color: #ffeac2;
+  }
+}
+
+.quick-view-item-icon {
+  width: 96px;
+  height: 96px;
+  background-color: var(--gf-dark-bg-dark);
+  border: 3px solid var(--quick-view-color);
+  border-radius: 10px;
+
+  padding: 5px;
+}
+
+.quick-view-item-icon > svg {
+  color: var(--quick-view-color);
+}
+
+.metric-big-text {
+  color: var(--quick-view-color);
+  font-size: 32px;
+}
+
+.metric-text {
+  color: var(--quick-view-color);
+  font-size: 14px;
+  text-align: center;
+  word-break: normal;
+}
+
+.quick-access-wrapper {
+  padding-top: 10px;
+  padding-bottom: 35px;
+  padding-left: 20px;
+  gap: 10px;
+  width: 50%;
+}
+
+.quick-access-title {
+  border-bottom: 2px solid #ffffff;
+  width: 100%;
+  gap: 10px;
+  padding-left: 5px;
+}
+
+.quick-access-title-icon,
+.quick-access-title-icon > svg {
+  width: 20px;
+  height: 20px;
+}
+
+.quick-access-title-text {
+  font-family: var(--gf-font-date);
+  font-size: 24px;
 }
 
 .gf-card-stat-quick-view {
   padding: 12px;
-  width: 485px;
-  min-width: fit-content;
+  width: 100%;
+  min-width: unset;
 
   background: none;
   box-shadow: none;
@@ -60,6 +152,11 @@
 .quick-access-text {
   font-family: var(--gf-font-heading);
   font-size: 20px;
+}
+
+.quick-access-name {
+  font-size: 20px;
+  font-family: var(--gf-font-heading);
 }
 
 .preview-text {

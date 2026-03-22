@@ -2,11 +2,192 @@
 
 <div class="stat-container">
 
-  <div class="container">
+  <div class="container stats-page-wrapper">
 
 
+    <div class="d-flex flex-column quick-view-wrapper">
+      <span class="text-bold stats-page-title">Statistics</span>
+
+      <div class="d-flex align-items-center quick-access-title">
+
+        <div class="d-flex align-content-center justify-content-center quick-access-title-icon">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye">
+            <path
+              d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+
+        </div>
+
+        <span class="text-bold quick-access-title-text">
+          Quick View
+        </span>
+
+      </div>
+
+      <div class="d-flex align-items-start quick-view-items-wrapper">
+
+        <!-- * system requests -->
+        <div class="d-flex flex-column align-items-center justify-content-start quick-view-item system-requests">
+          <div class="d-flex quick-view-item-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1,5" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-hard-drive-download-icon lucide-hard-drive-download">
+              <path d="M12 2v8" />
+              <path d="m16 6-4 4-4-4" />
+              <rect width="20" height="8" x="2" y="14" rx="2" />
+              <path d="M6 18h.01" />
+              <path d="M10 18h.01" />
+            </svg>
+          </div>
+
+          <div class="d-flex flex-column  align-items-center metric-text-wrapper">
+
+            <span class="d-flex text-medium metric-big-text">
+              99%
+            </span>
+
+            <span class="d-flex  text-bold metric-text">
+              of system requests were successful
+            </span>
+          </div>
+
+
+        </div>
+
+        <!-- * User Satisfaction Index -->
+        <div
+          class="d-flex flex-column align-items-center justify-content-start quick-view-item user-satisfaction-index">
+          <div class="d-flex quick-view-item-icon user-satisfaction-index">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1,5" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-smile-icon lucide-smile">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+              <line x1="9" x2="9.01" y1="9" y2="9" />
+              <line x1="15" x2="15.01" y1="9" y2="9" />
+            </svg>
+          </div>
+
+          <div class="d-flex flex-column  align-items-center metric-text-wrapper">
+
+            <span class="d-flex text-medium metric-big-text">
+              4.5
+            </span>
+
+            <span class="d-flex  text-bold metric-text">
+              User Satisfaction Index
+            </span>
+          </div>
+
+
+        </div>
+
+        <!-- * +15 Positive Votes -->
+        <div class="d-flex flex-column align-items-center justify-content-start quick-view-item positive-votes">
+          <div class="d-flex quick-view-item-icon user-satisfaction-index">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1,5" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-thumbs-up-icon lucide-thumbs-up">
+              <path
+                d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
+              <path d="M7 10v12" />
+            </svg>
+          </div>
+
+          <div class="d-flex flex-column  align-items-center metric-text-wrapper">
+
+            <span class="d-flex text-medium metric-big-text">
+              105
+            </span>
+
+            <span class="d-flex text-bold metric-text">
+              Pins with 15+ Positive Votes
+            </span>
+          </div>
+
+
+        </div>
+
+        <!-- * Pins created today -->
+        <div class="d-flex flex-column align-items-center justify-content-start quick-view-item pins-created-today">
+          <div class="d-flex quick-view-item-icon user-satisfaction-index">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1,5" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-map-pin-icon lucide-map-pin">
+              <path
+                d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+          </div>
+
+          <div class="d-flex flex-column  align-items-center metric-text-wrapper">
+
+            <span class="d-flex text-medium metric-big-text">
+              11
+            </span>
+
+            <span class="d-flex text-bold metric-text">
+              Pins Created Today
+            </span>
+          </div>
+
+
+        </div>
+
+        <!-- * Active Users -->
+        <div class="d-flex flex-column align-items-center justify-content-start quick-view-item active-users">
+          <div class="d-flex quick-view-item-icon user-satisfaction-index">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1,5" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-user-icon lucide-user">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </div>
+
+          <div class="d-flex flex-column  align-items-center metric-text-wrapper">
+
+            <span class="d-flex text-medium metric-big-text">
+              11
+            </span>
+
+            <span class="d-flex text-bold metric-text">
+              Pins Created Today
+            </span>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
 
     <div class="d-flex flex-column quick-access-wrapper">
+
+      <div class="d-flex align-items-center quick-access-title">
+
+        <div class="d-flex align-content-center justify-content-center quick-access-title-icon">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-icon lucide-list">
+            <path d="M3 5h.01" />
+            <path d="M3 12h.01" />
+            <path d="M3 19h.01" />
+            <path d="M8 5h13" />
+            <path d="M8 12h13" />
+            <path d="M8 19h13" />
+          </svg>
+
+        </div>
+
+        <span class="text-bold quick-access-title-text">
+          Quick Access
+        </span>
+
+      </div>
 
       <!-- Quick View - Average Number of Published Pins -->
       <div class="d-flex justify-content-between align-content-center gf-card-stat-quick-view">
@@ -175,6 +356,7 @@
     </div>
 
   </div>
+
 </div>
 
 
