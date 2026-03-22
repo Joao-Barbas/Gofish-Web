@@ -1,0 +1,5 @@
+/* groups.component.css */
+
+:host {
+  flex: 1;
+}

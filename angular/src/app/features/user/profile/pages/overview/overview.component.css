@@ -1,0 +1,5 @@
+/* overview.component.css */
+
+:host {
+  flex: 1;
+}
