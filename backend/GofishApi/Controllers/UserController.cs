@@ -15,20 +15,6 @@ using System.Diagnostics.Metrics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-/*
- * TODO:
- * Rename this to 'UserController'
- * 
- * Other controllers like:
- * UserStatsController
- * UserAccountController (?)
- * UserAuthController (?)
- * UserInventoryController (?)
- * UserProfileController (?)
- * 
- * (?) - Maybe
- */
-
 namespace GofishApi.Controllers;
 
 [Authorize]
@@ -51,127 +37,117 @@ public class UserController : ControllerBase
         _db = db;
     }
 
-    // [Authorize]
-    // [HttpGet("GetProfile")]
-    // public async Task<IActionResult> GetProfile()
-    // {
-    //     var userId = User.Claims.First(c => c.Type == "UserId").Value;
-    //     var user = await _userManager.FindByIdAsync(userId);
-    //     if (user is null) return NotFound();
-    //     return Ok(new
-    //     {
-    //         Email = user.Email,
-    //         FirstName = user.FirstName,
-    //         LastName = user.LastName
-    //     });
-    // }
+    /*
+     * GET      /api/products        List all (with filtering & pagination)     200 OK
+     * GET      /api/products/{id}   Retrieve one resource                      200 OK / 404
+     * POST     /api/products        Create a new resource                      201 Created + Location header
+     * PUT      /api/products/{id}   Full replace — all fields required         200 OK / 404
+     * PATCH    /api/products/{id}   Partial update — only changed fields       200 OK / 404
+     * DELETE   /api/products/{id}   Remove a resource                          204 No Content / 404
+     *
+     * HEAD     /api/products/{id}   Check existence (headers only, no body)    200 / 404
+     * OPTIONS  /api/products        Discover allowed methods (CORS preflight)  200 + Allow header
+     */
 
     #region Friendship
 
     [HttpGet]
-    public async Task<IActionResult> GetFriendships(
-        [FromQuery] bool includeFriends = false,
-        [FromQuery] bool includeRequested = false,
-        [FromQuery] bool includeReceived = false,
-        [FromQuery] int maxResults = 20,
-        [FromQuery] DateTime? lastTimestamp = null
-    )
+    public async Task<IActionResult> GetFriendships([FromQuery] GetFriendshipsReqDto dto)
     {
-        maxResults = Math.Clamp(maxResults, 1, 100);
+        var maxResults   = Math.Clamp(dto.MaxResults, 1, 100);
+        var authUserId   = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var targetUserId = dto.UserId ?? authUserId;
+        var isAuthUser   = targetUserId == authUserId;
 
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        var filters = new List<IQueryable<Friendship>>();
-
-        if (includeFriends)
+        if (!isAuthUser && dto.State != FriendshipState.Accepted)
         {
-            filters.Add(_db.Friendships.Where(f => (f.RequesterUserId == userId || f.ReceiverUserId == userId)
-                && f.State == FriendshipState.Accepted));
-        }
-        if (includeRequested)
-        {
-            filters.Add(_db.Friendships.Where(f => f.RequesterUserId == userId
-                && f.State == FriendshipState.Pending));
-        }
-        if (includeReceived)
-        {
-            filters.Add(_db.Friendships.Where(f => f.ReceiverUserId == userId
-                && f.State == FriendshipState.Pending));
-        }
-        if (filters.Count == 0)
-        {
-            return Ok(new GetFriendshipsResDto([], false, null));
+            return StatusCode(StatusCodes.Status403Forbidden, ProblemDetailsFactory.CreateValidationProblemDetails(
+                HttpContext, "Forbidden", "You cannot view pending requests of other users."));
         }
 
-        var query = filters.Aggregate((a, b) => a.Union(b));
+        var query = _db.Friendships.Where(f => f.RequesterUserId == targetUserId || f.ReceiverUserId == targetUserId);
 
-        if (lastTimestamp is not null)
-        {
-            query = query.Where(f => f.CreatedAt < lastTimestamp.Value);
-        }
+        if (dto.State is not null)
+            query = query.Where(f => f.State == dto.State);
+        if (dto.LastTimestamp is not null)
+            query = query.Where(f => f.CreatedAt < dto.LastTimestamp.Value);
 
         var results = await query
-            .Include(f => f.Requester)
-                .ThenInclude(u => u.UserProfile)
-            .Include(f => f.Receiver)
-                .ThenInclude(u => u.UserProfile)
-            .OrderByDescending(f => f.CreatedAt)
-            .ThenByDescending(f => f.RequesterUserId)
-            .Take(maxResults + 1)
-            .ToListAsync();
+        .Include(f => f.Requester).ThenInclude(u => u.UserProfile)
+        .Include(f => f.Receiver).ThenInclude(u => u.UserProfile)
+        .OrderByDescending(f => f.CreatedAt)
+        .ThenByDescending(f => f.Id)
+        .Take(maxResults + 1)
+        .ToListAsync();
 
-        var hasMore = results.Count > maxResults;
-        var page = results.Take(maxResults).ToList();
-        var items = page.Select(FriendshipDto.FromEntity);
+        var hasMore  = results.Count > maxResults;
+        var page     = results.Take(maxResults).ToList();
+        var data     = page.Select(FriendshipDto.FromEntity);
         var lastTime = hasMore ? page[^1].CreatedAt : (DateTime?)null;
 
-        return Ok(new GetFriendshipsResDto(items, hasMore, lastTime));
+        return Ok(new GetFriendshipsResDto(data, hasMore, lastTime));
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetFriendship(int id)
+    {
+        var authUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var friendship = await _db.Friendships
+        .Include(f => f.Requester).ThenInclude(u => u.UserProfile)
+        .Include(f => f.Receiver).ThenInclude(u => u.UserProfile)
+        .FirstOrDefaultAsync(f => f.Id == id);
+
+        if (friendship is null) return NotFound();
+
+        // Only participants can view pending/refused friendships
+        // Return 404 instead of 403 to not reveal existence
+        var isParticipant = friendship.RequesterUserId == authUserId || friendship.ReceiverUserId == authUserId;
+        if (!isParticipant && friendship.State != FriendshipState.Accepted) return NotFound();
+
+        return Ok(FriendshipDto.FromEntity(friendship));
     }
 
     [HttpPost]
-    public async Task<IActionResult> RequestFriendship([FromQuery] string receiverId)
+    public async Task<IActionResult> RequestFriendship([FromBody] CreateFriendshipReqDto dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        if (userId == receiverId)
+        if (userId == dto.ReceiverId)
         {
-            return ValidationProblem(ProblemDetailsFactory.CreateValidationProblemDetails(
-                HttpContext, "CantFriendYourself", "You cannot friend yourself."
-            ));
+            return BadRequest(ProblemDetailsFactory.CreateValidationProblemDetails(
+                HttpContext, "InvalidReceiver", "You cannot send a friend request to yourself."));
         }
 
-        var receiverExists = await _db.Users.AnyAsync(u => u.Id == receiverId);
-        if (!receiverExists)
-        {
-            return NotFound();
-        }
+        var receiverExists = await _db.Users.AnyAsync(u => u.Id == dto.ReceiverId);
+        if (!receiverExists) return NotFound();
 
-        var existingFriendship = await _db.Friendships.FindAsync(userId, receiverId)
-                              ?? await _db.Friendships.FindAsync(receiverId, userId);
-
-        if (existingFriendship is not null)
-        {
-            return Conflict("Friendship already exists.");
-        }
+        var friendshipExists = await _db.Friendships.AnyAsync(f =>
+            (f.RequesterUserId == userId && f.ReceiverUserId == dto.ReceiverId) ||
+            (f.RequesterUserId == dto.ReceiverId && f.ReceiverUserId == userId));
+        if (friendshipExists) return Conflict();
 
         var friendship = new Friendship
         {
             RequesterUserId = userId,
-            ReceiverUserId = receiverId,
-            State = FriendshipState.Pending,
-            CreatedAt = DateTime.UtcNow
+            ReceiverUserId  = dto.ReceiverId,
+            State           = FriendshipState.Pending,
+            CreatedAt       = DateTime.UtcNow
         };
 
         _db.Friendships.Add(friendship);
         await _db.SaveChangesAsync();
-        return Created();
+        return CreatedAtAction(nameof(GetFriendship), new { id = friendship.Id }, new { friendship.Id });
     }
 
-    [HttpPatch]
-    public async Task<IActionResult> AcceptFriendship([FromQuery] string requesterId)
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> AcceptFriendship(int id)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var friendship = await _db.Friendships.FindAsync(id);
 
-        var friendship = await _db.Friendships.FindAsync(requesterId, userId);
-        if (friendship is null || friendship.State != FriendshipState.Pending)
+        if (friendship is null
+            || friendship.State != FriendshipState.Pending
+            || friendship.ReceiverUserId != userId
+        )
         {
             return NotFound();
         }
@@ -183,41 +159,26 @@ public class UserController : ControllerBase
         return NoContent();
     }
 
-    [HttpPatch]
-    public async Task<IActionResult> IgnoreFriendship([FromQuery] string requesterId)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteFriendship(int id)
     {
-        // We actually just remove the friendship from the
-        // database to allow future re-requests from the same user
-
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        var friendship = await _db.Friendships.FindAsync(requesterId, userId);
+        var friendship = await _db.Friendships.FindAsync(id);
+        if (friendship is null) return NotFound();
 
-        if (friendship is null || friendship.State != FriendshipState.Pending)
-        {
-            return NotFound();
-        }
+        // Only participants can delete
+        var isParticipant = friendship.RequesterUserId == userId || friendship.ReceiverUserId == userId;
+        if (!isParticipant) return NotFound();
 
         _db.Friendships.Remove(friendship);
         await _db.SaveChangesAsync();
         return NoContent();
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> DeleteFriendship([FromQuery] string receiverId)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> IgnoreFriendship(int id)
     {
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-
-        var friendship = await _db.Friendships.FindAsync(userId, receiverId)
-                      ?? await _db.Friendships.FindAsync(receiverId, userId);
-
-        if (friendship is null)
-        {
-            return NotFound();
-        }
-
-        _db.Friendships.Remove(friendship);
-        await _db.SaveChangesAsync();
-        return NoContent();
+        return await DeleteFriendship(id);
     }
 
     #endregion // Friendship
