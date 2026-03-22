@@ -30,3 +30,7 @@ export interface CreateGroupReqDTO {
 export interface CreateGroupResDTO {
   id: number;
 }
+
+export interface GetUserGroupsResDTO{
+  groups: GetGroupDTO[];
+}

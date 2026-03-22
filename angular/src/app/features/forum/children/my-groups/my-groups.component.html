@@ -4,7 +4,7 @@
 
   <div class="d-flex align-items-center create-group-wrapper">
 
-    <button class="gf-badge-create-group-btn" [routerLink]= "Path.FORUM_CREATE_GROUP">
+    <button class="gf-badge-create-group-btn" [routerLink]="Path.FORUM_CREATE_GROUP">
 
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -36,6 +36,7 @@
   </div>
 
 </div>
+@for(group of groups()?.groups; track group.id) {
 
 <!-- Group Listing -->
 
@@ -46,37 +47,35 @@
 
     <!-- Group-image -->
     <div class="group-image">
-      <img src="assets/images/placeholder_profile_pic.png" class="group-image">
+      <img [src]="group.imageUrl" class="group-image">
     </div>
 
     <!-- Name and stats -->
     <div class="d-flex flex-column group-info-and-stats">
 
       <div class="group-name-stats d-flex align-items-center justify-content-between ">
-        <span class="group-name">Group Name</span>
+        <span class="group-name">{{group.name}}</span>
         <div class="d-flex stats-wrapper">
 
           <div class="gf-badge-text">
-            <span>99 Members</span>
+            <span>{{group.memberCount}} Members</span>
           </div>
 
           <div class="gf-badge-text">
-            <span>99 Posts</span>
+            <span>{{group.postCount}} Posts</span>
           </div>
         </div>
       </div>
 
       <!-- Description -->
-      <p class="group-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia sit quas reiciendis
-        distinctio quaerat a ab maxime, alias ullam, libero dolore commodi ducimus harum eligendi quisquam ut deserunt
-        facere. Aspernatur!</p>
+      <p class="group-description">{{group.description}}</p>
     </div>
 
   </div>
 
 
 </div>
-
+}
 
 <!-- show-more -->
 <div class="show-more">
@@ -85,12 +84,17 @@
 
 <!-- New group -->
 
-<button class="d-flex justify-content-center new-group-btn-wrapper">
-    <div class="new-group-elements d-flex flex-column align-items-center">
+<button class="d-flex justify-content-center new-group-btn-wrapper" [routerLink]="Path.FORUM_CREATE_GROUP">
+  <div class="new-group-elements d-flex flex-column align-items-center">
 
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-plus-icon lucide-circle-plus new-group-create-icon"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round"
+      class="lucide lucide-circle-plus-icon lucide-circle-plus new-group-create-icon">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M8 12h8" />
+      <path d="M12 8v8" />
+    </svg>
 
-      <span class="new-group-create-text" [routerLink]= "Path.FORUM_CREATE_GROUP">Create a new group</span>
-    </div>
+    <span class="new-group-create-text">Create a new group</span>
+  </div>
 </button>
-

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Api } from '@gofish/shared/constants';
-import { CreateGroupReqDTO, CreateGroupResDTO, GetGroupReqDTO, GetGroupResDTO } from '@gofish/shared/dtos/group.dto';
+import { CreateGroupReqDTO, CreateGroupResDTO, GetGroupReqDTO, GetGroupResDTO, GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -16,6 +16,10 @@ export class GroupsService {
 
   createGroup(formData: FormData): Observable<CreateGroupResDTO>{
     return this.http.post<CreateGroupResDTO>(Api.Group.action('CreateGroup'), formData);
+  }
+
+  getUserGroups(): Observable<GetUserGroupsResDTO>{
+    return this.http.get<GetUserGroupsResDTO>(Api.Group.action('GetUserGroups'));
   }
 
 }

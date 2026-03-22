@@ -31,7 +31,8 @@ export class ForumPostComponent {
     if(!post) return;
 
     this.score.set(post.score ?? 1000);
-    this.currentVote.set(/*post.userVote ?? */null);
+    this.currentVote.set(post?.userVote ?? null);
+    console.log(this.postData());
   }
 
   goToPin() {
