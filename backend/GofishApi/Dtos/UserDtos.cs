@@ -44,7 +44,10 @@ public record FriendshipDto(
 }
 
 public record GetFriendshipsReqDto(
-    // Unused
+    string? UserId          = null,
+    FriendshipState? State  = null,
+    int MaxResults          = 20,
+    DateTime? LastTimestamp = null
 )
 { }
 
@@ -52,5 +55,15 @@ public record GetFriendshipsResDto(
     IEnumerable<FriendshipDto> Friendships,
     bool HasMoreResults,
     DateTime? LastTimestamp
+)
+{ }
+
+public record CreateFriendshipReqDto(
+    string ReceiverId
+)
+{ }
+
+public record CreateFriendshipResDto(
+    // Unused
 )
 { }
