@@ -216,6 +216,39 @@ public class GroupController : ControllerBase
         return NoContent();
     }
 
+    [Authorize]
+    [HttpGet("GetUserGroups")]
+    public async Task<IActionResult> GetUserGroups()
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
+        if (user is null)
+            return Unauthorized();
+
+        var groups = await _db.Groups
+            .Where(g => g.GroupUsers.Any(gu => gu.UserId == userId))
+            .Include(g => g.GroupUsers)
+                .ThenInclude(gu => gu.AppUser)
+                    .ThenInclude(u => u.UserProfile)
+            .Include(g => g.Posts)
+                .ThenInclude(p => p.Pin)
+            .Include(g => g.Posts)
+                .ThenInclude(p => p.PostVotes)
+            .ToListAsync();
+
+        var data = groups
+            .Select(g => GetGroupDTO.FromGroup(
+                g,
+                new GroupDataRequestDTO(
+                    IncludePosts: false,
+                    IncludeMembers: false
+                )
+            ))
+            .ToList();
+
+        return Ok(new GetUserGroupsResDTO(data));
+    }
+
     #region ManageMembers
 
     [Authorize]

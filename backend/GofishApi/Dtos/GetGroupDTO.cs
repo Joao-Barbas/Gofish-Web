@@ -4,6 +4,10 @@ using static GofishApi.Dtos.GetGroupDTO;
 
 namespace GofishApi.Dtos;
 
+public record GetUserGroupsResDTO(
+    IReadOnlyCollection<GetGroupDTO> Groups
+);
+
 public record GetGroupReqDTO(
     int GroupId,
     GroupDataRequestDTO? DataRequest
@@ -44,7 +48,7 @@ public record GetGroupDTO(
         group.Posts?.Count ?? 0,
         request?.IncludePosts ?? true ? group.Posts?
             .OrderByDescending(p => p.CreatedAt)
-            .Select(p => GetPostsPostDTO.FromPost(p, null))
+            .Select(p => GetPostsPostDTO.FromPost(p, null, null))
             .ToList() : null,
         request?.IncludeMembers ?? true
             ? group.GroupUsers?
