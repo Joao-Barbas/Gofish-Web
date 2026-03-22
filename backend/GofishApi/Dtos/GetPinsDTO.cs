@@ -52,10 +52,10 @@ public record GetPinsPinDTO(
         pin.CreatedAt,
         pin.Visibility,
         pin.Kind,
-        request?.IncludeDetails ?? false ? GetPinsPinDetailsDTO.FromPin(pin) : null,
-        request?.IncludeGeolocation ?? false ? GetPinsGeolocationDTO.FromPin(pin) : null,
-        request?.IncludeAuthor ?? false && pin.AppUser is not null ? GetPinsAuthorDTO.FromPin(pin) : null,
-        request?.IncludePost ?? false && pin.Post is not null ? GetPinsPostDTO.FromPin(pin, currentUserId) : null
+        (request?.IncludeDetails ?? false) ? GetPinsPinDetailsDTO.FromPin(pin) : null,
+        (request?.IncludeGeolocation ?? false) ? GetPinsGeolocationDTO.FromPin(pin) : null,
+        (request?.IncludeAuthor ?? false) ? GetPinsAuthorDTO.FromPin(pin) : null,
+        (request?.IncludePost ?? false) ? GetPinsPostDTO.FromPin(pin, currentUserId) : null
     );
 };
 
