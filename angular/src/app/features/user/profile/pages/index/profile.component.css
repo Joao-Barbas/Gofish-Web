@@ -1,6 +1,24 @@
 /* profile.component.css */
 
-:host {
+.loading-container {
+  gap: var(--gf-6);
+  padding: var(--gf-32);
+  color: var(--dark-text-muted);
+  font-size: var(--gf-14);
+
+  & svg {
+    width: 32px;
+    height: 32px;
+    animation: gf-basic-spin 1.5s linear infinite;
+
+    &.spinner-enter {
+      animation: gf-icon-scale-in .2s ease-out;
+    }
+  }
+
+  & span {
+    font-size: var(--gf-text-sm);
+  }
 }
 
 .action-btn {
@@ -26,6 +44,10 @@
   &.btn-edit {
     color: var(--gf-dark-text);
     background-color: var(--gf-dark-bg);
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    margin: auto 0;
   }
 
   &:hover {
@@ -34,7 +56,7 @@
   }
 }
 
-app-async-button  {
+gf-async-button  {
   --async-btn-height: var(--gf-40);
   --async-btn-max-height: var(--gf-40);
   --async-btn-radius: var(--gf-12);

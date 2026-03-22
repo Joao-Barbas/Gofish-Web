@@ -9,10 +9,12 @@ import { Path, PathSegment } from '@gofish/shared/constants';
   styleUrl: './friend-card.component.css',
 })
 export class FriendCardComponent {
+  readonly defaultAvatar = 'assets/vectors/avatar-template-dark.clr.svg';
+
   public readonly PathSegment = PathSegment;
   public readonly Path        = Path;
 
-  public avatarUrl = input<string>('assets/vectors/avatar-template-dark.clr.svg');
+  public avatarUrl = input<string | undefined>();
   public userId    = input<string>('');
   public userName  = input<string>('Unknown');
 }

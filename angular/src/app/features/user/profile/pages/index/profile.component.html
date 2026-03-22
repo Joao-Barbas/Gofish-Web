@@ -1,120 +1,165 @@
 <!-- profile.component.html -->
 
 <app-flat-header></app-flat-header>
-<div class="gf-container-lg gf-w-90 gf-mx-auto gf-pt-64 gf-flow-vertical gf-gap-24" style="background-color:black;">
-  <!-- Overview -->
-  <div class="gf-flow-vertical gf-gap-16">
-    <!-- Avatar, name & actions -->
-    <div class="gf-flow-horizontal gf-items-center gf-justify-between">
-      <!-- Avatar & name -->
-      <div class="gf-flow-horizontal gf-items-center gf-gap-16">
-        <div style="background-color: bisque; width: 96px; height: 96px; border-radius: 100%;"></div>
-        <div>
-          <p class="gf-font-bold gf-text-lg gf-lh-1_0">{{ "FirstName LastName" }}</p>
-          <small class="gf-text-sm">{{ "@Username" }}</small>
+@switch (loadingState.status()) {
+@case('loading') {
+  <div class="loading-container gf-flow-vertical gf-center-axes">
+    <svg animate.enter="spinner-enter" xmlns="http://www.w3.org/2000/svg"
+        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/>
+      <path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/>
+      <path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/>
+      <path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/>
+    </svg>
+    <span>Loading...</span>
+  </div>
+}
+@case('error') {
+  <div class="failed-container gf-flow-vertical gf-center-axes">
+    <span>{{ loadingState.error() }}</span>
+    <button (click)="fetchProfile()">Try Again</button>
+  </div>
+}
+@case('success') {
+  <div class="gf-container-lg gf-w-90 gf-mx-auto gf-pt-64 gf-flow-vertical gf-gap-24" style="background-color:black;">
+    <!-- Overview -->
+    <div class="gf-flow-vertical gf-gap-16">
+      <!-- Avatar, name & actions -->
+      <div class="gf-flow-horizontal gf-items-center gf-justify-between">
+        <!-- Avatar & name -->
+        <div class="gf-flow-horizontal gf-items-center gf-gap-16">
+          <img [src]="userProfile()?.avatarUrl ?? defaultAvatar" alt="Avatar" style="width: 96px; height: 96px; border-radius: 100%;">
+          <div>
+            <p class="gf-font-bold gf-text-lg gf-lh-1_0">{{ displayName() }}</p>
+            <small class="gf-text-sm">{{ userProfile()?.userName }}</small>
+          </div>
+        </div>
+        <!-- actions -->
+        <div class="gf-flow-horizontal-rev gf-gap-6">
+          <button class="gf-center-axes action-btn btn-ellipsis">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="1"/>
+              <circle cx="19" cy="12" r="1"/>
+              <circle cx="5" cy="12" r="1"/>
+            </svg>
+          </button>
+          @if (userProfile()?.userId !== authService.userId()) {
+            <gf-async-button
+              [labels]="{ idle: 'Send Friend Request' }"
+              [states]="{ busy: busyState.busy(), success: friendshipSent() }"
+              (click)="onFriendRequest()"
+            ></gf-async-button>
+          } @else {
+            <a class="gf-center-axes gf-px-32 action-btn btn-edit" [routerLink]="'/settings'">
+              Edit profile
+            </a>
+          }
         </div>
       </div>
-      <!-- actions -->
-      <div class="gf-flow-horizontal-rev gf-gap-6">
-        <button class="gf-center-axes action-btn btn-ellipsis">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-               fill="none" stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="1"/>
-            <circle cx="19" cy="12" r="1"/>
-            <circle cx="5" cy="12" r="1"/>
-          </svg>
-        </button>
-        <button class="gf-px-32 action-btn btn-edit">
-          Edit profile
-        </button>
-        <app-async-button
-          type="submit"
-          form="verify-form"
-          labels="Send Friend Request"
-          state="idle">
-        </app-async-button>
+      <!-- Under avatar stats -->
+      <div class="gf-flow-horizontal gf-gap-6">
+        <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">{{ "27 Friends" }}</div>
+        <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">{{ "30 Pins" }}</div>
+        <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">{{ "104 Catch Points" }}</div>
+      </div>
+      <!-- Bio -->
+      <div class="gf-pos-relative bio">
+        <p #bioText [class.collapsed]="bioCollapsed()">{{ userProfile()?.bio ?? 'No bio yet.' }}</p>
+        @if (bioOverflows()) {
+          <button #bioToggle (click)="bioCollapsed.set(!bioCollapsed())">
+            {{ bioCollapsed() ? 'Show more' : 'Show less' }}
+          </button>
+        }
       </div>
     </div>
-    <!-- Under avatar stats -->
-    <div class="gf-flow-horizontal gf-gap-6">
-      <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">{{ "27 Friends" }}</div>
-      <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">{{ "30 Pins" }}</div>
-      <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">{{ "104 Catch Points" }}</div>
-    </div>
-    <!-- Bio -->
-    <div class="gf-pos-relative bio">
-      <p #bioText [class.collapsed]="bioCollapsed()">{{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque aliquet at tortor quis maximus. Nullam libero justo, efficitur in lorem quis, vulputate mattis dolor. Suspendisse ac volutpat dui, in ornare enim. Aliquam quis dolor interdum, lobortis risus eu, maximus lectus. Sed ultrices nulla molestie nulla maximus, nec molestie quam accumsan. Maecenas quis elementum lectus. Proin congue eros vitae pretium scelerisque. Nunc semper posuere odio at efficitur. Morbi elementum egestas augue. Ut efficitur neque in ultrices hendrerit. Etiam eu fringilla eros, consectetur lacinia dolor. Cras ullamcorper ultrices libero, et finibus orci volutpat sit amet. Pellentesque interdum et erat sed maximus. Curabitur sit amet rhoncus nisi. Pellentesque risus diam, faucibus sollicitudin iaculis a, laoreet quis augue. Pellentesque sit amet porta tortor, facilisis pretium ligula. Integer eu interdum mi. Vivamus tristique, diam ultrices efficitur efficitur, nisl lectus faucibus elit, quis auctor velit nisi ac libero. Praesent vel arcu sodales, porttitor nunc et, commodo elit. Cras at turpis id ligula fermentum consequat. Nulla hendrerit ligula non ullamcorper elementum. Duis sit amet viverra felis." }}</p>
-      @if (bioOverflows()) {
-        <button #bioToggle (click)="bioCollapsed.set(!bioCollapsed())">
-          {{ bioCollapsed() ? 'Show more' : 'Show less' }}
-        </button>
-      }
-    </div>
-  </div>
-  <!-- Horizontal friends list -->
-  <div>
-    <div class="gf-flow-horizontal gf-justify-between">
-      <p class="gf-text-md gf-font-semibold">Friends ({{ 27 }})</p>
-      <a routerLink="/" class="gf-d-flex gf-items-center gf-text-sm see-all">
-        See all
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m9 18 6-6-6-6"/>
-        </svg>
-      </a>
-    </div>
-    <!-- Friends carousel -->
-    <div id="friends-carousel" class="carousel-list gf-mt-8">
-      <app-friend-card></app-friend-card>
-      <app-friend-card></app-friend-card>
-      <app-friend-card></app-friend-card>
-      <app-friend-card></app-friend-card>
-      <app-friend-card></app-friend-card>
-      <app-friend-card></app-friend-card>
-      <app-friend-card></app-friend-card>
-      <app-friend-card></app-friend-card>
-    </div>
-  </div>
-  <!-- Horizontal groups list -->
-  <div>
-    <div class="gf-flow-horizontal gf-justify-between">
-      <p class="gf-text-md gf-font-semibold">Groups ({{ 27 }})</p>
-      <a routerLink="/" class="gf-d-flex gf-items-center gf-text-sm see-all">
-        See all
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m9 18 6-6-6-6"/>
-        </svg>
-      </a>
-    </div>
-    <!-- Groups carousel -->
-    <div id="groups-carousel" class="carousel-list gf-mt-8">
-      <app-group-card></app-group-card>
-      <app-group-card></app-group-card>
-      <app-group-card></app-group-card>
-      <app-group-card></app-group-card>
-      <app-group-card></app-group-card>
-      <app-group-card></app-group-card>
-      <app-group-card></app-group-card>
-    </div>
-  </div>
-  <!-- Quick stats -->
-  <div class="gf-flow-horizontal gf-justify-evenly gf-text-center gf-mt-32 gf-mb-96">
+    <!-- Horizontal friends list -->
     <div>
-      <p>Join Date</p>
-      <p>10/10/10</p>
+      <div class="gf-flow-horizontal gf-justify-between">
+        <p class="gf-text-md gf-font-semibold">Friends ({{ 27 }})</p>
+        <a routerLink="/" class="gf-d-flex gf-items-center gf-text-sm see-all">
+          See all
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+        </a>
+      </div>
+      <!-- Friends carousel -->
+      <div #friendsCarousel id="friends-carousel" class="carousel-list gf-mt-8">
+        @switch (friendsListLoadingState.status()) {
+        @case('loading') {
+          <div class="loading-container gf-flow-vertical gf-center-axes">
+            <svg animate.enter="spinner-enter" xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/>
+              <path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/>
+              <path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/>
+              <path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/>
+            </svg>
+            <span>Loading...</span>
+          </div>
+        }
+        @case('error') {
+          <div class="failed-container gf-flow-vertical gf-center-axes">
+            <span>{{ friendsListLoadingState.error() }}</span>
+            <button (click)="fetchFriendships()">Try Again</button>
+          </div>
+        }
+        @case('success') {
+          @for (f of friendsList(); track trackByCompositeKey(f)) {
+            <app-friend-card
+              [avatarUrl]="getOtherUser(f).avatarUrl"
+              [userId]="getOtherUser(f).userId"
+              [userName]="getOtherUser(f).userName"
+            ></app-friend-card>
+          }
+        }}
+      </div>
     </div>
+    <!-- Horizontal groups list -->
     <div>
-      <p>Last Active Date</p>
-      <p >10/10/10</p>
+      <div class="gf-flow-horizontal gf-justify-between">
+        <p class="gf-text-md gf-font-semibold">Groups ({{ 27 }})</p>
+        <a routerLink="/" class="gf-d-flex gf-items-center gf-text-sm see-all">
+          See all
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+        </a>
+      </div>
+      <!-- Groups carousel -->
+      <div #groupsCarousel id="groups-carousel" class="carousel-list gf-mt-8">
+        <app-group-card></app-group-card>
+        <app-group-card></app-group-card>
+        <app-group-card></app-group-card>
+        <app-group-card></app-group-card>
+        <app-group-card></app-group-card>
+        <app-group-card></app-group-card>
+        <app-group-card></app-group-card>
+      </div>
     </div>
-    <div>
-      <p>Weekly Streak</p>
-      <p>2</p>
+    <!-- Quick stats -->
+    <div class="gf-flow-horizontal gf-justify-evenly gf-text-center gf-mt-32 gf-mb-96">
+      <div>
+        <p>Join Date</p>
+        <p>10/10/10</p>
+      </div>
+      <div>
+        <p>Last Active Date</p>
+        <p >10/10/10</p>
+      </div>
+      <div>
+        <p>Weekly Streak</p>
+        <p>2</p>
+      </div>
     </div>
   </div>
-</div>
+}}
 <app-footer></app-footer>
