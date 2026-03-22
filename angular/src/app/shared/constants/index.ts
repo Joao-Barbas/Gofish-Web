@@ -1,5 +1,7 @@
 import { environment } from "environments/environment";
 
+export const DEFAULT_AVATAR = 'assets/vectors/avatar-template-dark.clr.svg';
+
 /* Local storage keys */
 
 export const LocalStorageKey = {
