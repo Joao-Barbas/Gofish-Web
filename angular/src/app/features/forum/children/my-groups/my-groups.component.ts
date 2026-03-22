@@ -17,5 +17,9 @@ import { toast } from 'ngx-sonner';
 })
 export class MyGroupsComponent {
   protected readonly Path = Path;
- 
+  private readonly groupsService = inject(GroupsService);
+
+  ngOninit() {
+    
+  }
 }
