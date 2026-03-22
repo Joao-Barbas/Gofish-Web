@@ -46,8 +46,6 @@
     background-color: var(--gf-dark-bg);
     text-align: center;
     text-decoration: none;
-    vertical-align: middle;
-    margin: auto 0;
   }
 
   &:hover {
