@@ -21,6 +21,7 @@ public record FriendshipUserDto(
 }
 
 public record FriendshipDto(
+    int Id,
     string RequesterUserId,
     string ReceiverUserId,
     FriendshipState State,
@@ -31,6 +32,7 @@ public record FriendshipDto(
 )
 {
     public static FriendshipDto FromEntity(Friendship e) => new(
+        e.Id,
         e.RequesterUserId,
         e.ReceiverUserId,
         e.State,

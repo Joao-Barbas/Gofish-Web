@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using GofishApi.Enums;
 
 namespace GofishApi.Models;
 
 public class Friendship
 {
-    // [Key]
-    // public int Id { get; set; }
-    // Composite key defined in fluent api
+    [Key]
+    public int Id { get; set; }
 
     public FriendshipState State { get; set; }
     public DateTime CreatedAt { get; set; }

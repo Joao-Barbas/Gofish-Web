@@ -37,19 +37,26 @@ namespace GofishApi.Data
             #region Friendship
 
             builder.Entity<Friendship>()
-                .HasKey(f => new { f.RequesterUserId, f.ReceiverUserId });
+            .HasIndex(f => new { f.RequesterUserId, f.ReceiverUserId })
+            .IsUnique();
 
             builder.Entity<Friendship>()
-                .HasOne(f => f.Requester)
-                .WithMany(u => u.RequestedFriendships)
-                .HasForeignKey(f => f.RequesterUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+            .HasOne(f => f.Requester)
+            .WithMany(u => u.RequestedFriendships)
+            .HasForeignKey(f => f.RequesterUserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Friendship>()
-                .HasOne(f => f.Receiver)
-                .WithMany(u => u.ReceivedFriendships)
-                .HasForeignKey(f => f.ReceiverUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+            .HasOne(f => f.Receiver)
+            .WithMany(u => u.ReceivedFriendships)
+            .HasForeignKey(f => f.ReceiverUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Friendship>()
+            .HasIndex(f => new { f.RequesterUserId, f.State, f.CreatedAt });
+
+            builder.Entity<Friendship>()
+            .HasIndex(f => new { f.ReceiverUserId, f.State, f.CreatedAt });
 
             #endregion // Friendship
             #region GroupInvite
