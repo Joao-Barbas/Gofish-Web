@@ -3,6 +3,8 @@ using GofishApi.Data;
 using GofishApi.Dtos;
 using GofishApi.Exceptions;
 using GofishApi.Models;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore;
 
 namespace GofishApi.Builders;
 
@@ -49,8 +51,13 @@ public class AppUserBuilder : IAppUserBuilder
 
     public async Task<AppUser> CreateAsync()
     {
-        await using var transaction = await _db.Database.BeginTransactionAsync();
+        IDbContextTransaction? transaction = null;
         IdentityResult result;
+
+        if (_db.Database.IsRelational())
+        {
+            transaction = await _db.Database.BeginTransactionAsync();
+        }
 
         if (_externalLoginInfo is not null)
         {
@@ -71,7 +78,10 @@ public class AppUserBuilder : IAppUserBuilder
         AddProfile();
 
         await _db.SaveChangesAsync();
-        await transaction.CommitAsync();
+
+        if (transaction is not null)
+            await transaction.CommitAsync();
+
         return _appUser;
     }
 
