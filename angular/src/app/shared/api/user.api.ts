@@ -3,7 +3,8 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Api } from "@gofish/shared/constants";
-import { GetFriendshipsResDTO } from "@gofish/shared/dtos/user.dto";
+import { FriendshipDTO, GetFriendshipsResDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO } from "@gofish/shared/dtos/user.dto";
+import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -13,40 +14,36 @@ export class UserApi {
   private readonly http = inject(HttpClient);
 
   public getFriendships(options: {
-    includeFriends?: boolean;
-    includeRequested?: boolean;
-    includeReceived?: boolean;
+    userId?: string;
+    state?: FriendshipState;
     maxResults?: number;
     lastTimestamp?: string;
   } = {}): Observable<GetFriendshipsResDTO> {
     let params = new HttpParams();
-
-    if (options.includeFriends) params = params.set('includeFriends', true);
-    if (options.includeRequested) params = params.set('includeRequested', true);
-    if (options.includeReceived) params = params.set('includeReceived', true);
-    if (options.maxResults) params = params.set('maxResults', options.maxResults.toString());
+    if (options.userId) params = params.set('userId', options.userId);
+    if (options.state != null) params = params.set('state', options.state);
+    if (options.maxResults) params = params.set('maxResults', options.maxResults);
     if (options.lastTimestamp) params = params.set('lastTimestamp', options.lastTimestamp);
-
     return this.http.get<GetFriendshipsResDTO>(Api.User.action('GetFriendships'), { params });
   }
 
-  public requestFriendship(receiverId: string): Observable<void> {
-    let params = new HttpParams().set('receiverId', receiverId);
-    return this.http.post<void>(Api.User.action('RequestFriendship'), null, { params });
+  public getFriendship(id: number): Observable<FriendshipDTO> {
+    return this.http.get<FriendshipDTO>(Api.User.action(`GetFriendship/${id}`));
   }
 
-  public acceptFriendship(requesterId: string): Observable<void> {
-    let params = new HttpParams().set('requesterId', requesterId);
-    return this.http.patch<void>(Api.User.action('AcceptFriendship'), null, { params });
+  public requestFriendship(dto: RequestFriendshipReqDTO): Observable<RequestFriendshipResDTO> {
+    return this.http.post<RequestFriendshipResDTO>(Api.User.action('RequestFriendship'), dto);
   }
 
-  public ignoreFriendship(requesterId: string): Observable<void> {
-    let params = new HttpParams().set('requesterId', requesterId);
-    return this.http.patch<void>(Api.User.action('IgnoreFriendship'), null, { params });
+  public acceptFriendship(id: number): Observable<void> {
+    return this.http.patch<void>(Api.User.action(`AcceptFriendship/${id}`), null);
   }
 
-  public deleteFriendship(receiverId: string): Observable<void> {
-    let params = new HttpParams().set('receiverId', receiverId);
-    return this.http.delete<void>(Api.User.action('DeleteFriendship'), { params });
+  public deleteFriendship(id: number): Observable<void> {
+    return this.http.delete<void>(Api.User.action(`DeleteFriendship/${id}`));
+  }
+
+  public ignoreFriendship(id: number): Observable<void> {
+    return this.deleteFriendship(id);
   }
 }

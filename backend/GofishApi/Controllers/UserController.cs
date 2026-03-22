@@ -108,7 +108,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> RequestFriendship([FromBody] CreateFriendshipReqDto dto)
+    public async Task<IActionResult> RequestFriendship([FromBody] RequestFriendshipReqDto dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         if (userId == dto.ReceiverId)
@@ -135,7 +135,9 @@ public class UserController : ControllerBase
 
         _db.Friendships.Add(friendship);
         await _db.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetFriendship), new { id = friendship.Id }, new { friendship.Id });
+
+        var res = new RequestFriendshipResDto(friendship.Id);
+        return CreatedAtAction(nameof(GetFriendship), res, res);
     }
 
     [HttpPatch("{id}")]

@@ -58,12 +58,12 @@ public record GetFriendshipsResDto(
 )
 { }
 
-public record CreateFriendshipReqDto(
+public record RequestFriendshipReqDto(
     string ReceiverId
 )
 { }
 
-public record CreateFriendshipResDto(
-    // Unused
+public record RequestFriendshipResDto(
+    int Id
 )
 { }
