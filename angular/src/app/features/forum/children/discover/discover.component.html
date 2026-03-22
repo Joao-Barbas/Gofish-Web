@@ -2,7 +2,7 @@
 <app-forum-post [postData]="post"></app-forum-post>
 }
 
-@if (allFeedPosts()!.hasMoreResults) {
+@if (hasMoreResults()) {
 <div class="show-more" (click)="showMore()">
   <button class="show-more-text">Show more</button>
 </div>

@@ -15,6 +15,7 @@ export class DiscoverComponent {
   private readonly router = inject(Router);
   private readonly postService = inject(PostsService);
   allFeedPosts = signal<GetFeedResDTO | null>(null);
+  hasMoreResults = signal(true);
   private lastTimestamp: string = new Date().toISOString();
 
   ngOnInit() {
@@ -36,16 +37,24 @@ export class DiscoverComponent {
     this.postService.getFeed(request).subscribe({
       next: (res) => {
         this.allFeedPosts.update(current => {
-          if(!current) return res;
+          if (!current) return res;
+          // Verify if backend is not sending same posts
+          const newPosts = res.posts.filter(newPost => !current.posts.some(currentPost => currentPost.id === newPost.id));
+
+          if (newPosts.length === 0) {
+            this.hasMoreResults.set(false);
+          }
           return {
             ...res,
-            posts: [...current!.posts, ...res.posts]
+            posts: [...current!.posts, ...newPosts]
           };
         });
 
-        if(res.posts.length > 0) {
+        if (res.posts.length > 0) {
           const lastPost = res.posts[res.posts.length - 1];
           this.lastTimestamp = lastPost.createdAt;
+        } else {
+          this.hasMoreResults.set(false);
         }
         console.log('Foram carregados mais');
       },
