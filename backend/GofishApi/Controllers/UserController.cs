@@ -49,6 +49,17 @@ public class UserController : ControllerBase
      * OPTIONS  /api/products        Discover allowed methods (CORS preflight)  200 + Allow header
      */
 
+    #region User
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUser(string id)
+    {
+        var user = await _db.Users.FindAsync(id);
+        if (user is null) return NotFound();
+        return Ok(GetUserResDto.FromEntity(user));
+    }
+
+    #endregion // User
     #region Friendship
 
     [HttpGet]

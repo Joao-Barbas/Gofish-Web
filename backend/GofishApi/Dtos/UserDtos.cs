@@ -3,6 +3,29 @@ using GofishApi.Models;
 
 namespace GofishApi.Dtos;
 
+#region User
+
+public record GetUserReqDto(
+    // Unused
+)
+{ }
+
+public record GetUserResDto(
+    string UserName,
+    string FirstName,
+    string LastName
+)
+{
+    public static GetUserResDto FromEntity(AppUser u) => new(
+        u.UserName  ?? "",
+        u.FirstName ?? "",
+        u.LastName  ?? ""
+    );
+}
+
+#endregion // User
+#region Friendship
+
 public record FriendshipUserDto(
     string UserId,
     string UserName,
@@ -67,3 +90,5 @@ public record RequestFriendshipResDto(
     int Id
 )
 { }
+
+#endregion // Friendship
