@@ -63,6 +63,15 @@
 
 /* End error state */
 
+gf-async-button {
+  display: block;
+  width: 100%;
+  margin-top: var(--gf-16);
+
+  --async-btn-width: 100%;
+  --async-btn-height: var(--gf-40);
+}
+
 nav {
   height: var(--gf-40);
   background-color: var(--gf-dark-bg);
