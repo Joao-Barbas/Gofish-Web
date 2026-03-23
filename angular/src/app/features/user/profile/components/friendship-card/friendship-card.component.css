@@ -1,0 +1,71 @@
+/* friendship-card.component.css */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gf-12);
+  padding: var(--gf-12);
+  background-color: var(--gf-dark-bg);
+  border-radius: var(--gf-12);
+  box-shadow: var(--gf-shadow-lift-sm);
+}
+
+a {
+  display: contents;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+
+  div {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 0 0 var(--gf-12)
+  }
+}
+
+img {
+  height: 64px;
+  max-height: 64px;
+  width: 64px;
+  max-width: 64px;
+  border-radius: 100%;
+  display: inline;
+}
+
+p {
+  font-size: var(--gf-text-sm);
+}
+
+small {
+  font-size: var(--gf-text-xs);
+}
+
+button {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  padding: calc(1em / 2) var(--gf-8);
+  box-shadow: 0 0 0 2px var(--gf-light-bg-dark);
+  border-radius: var(--gf-8);
+  color: var(--gf-dark-text);
+  font-size: var(--gf-text-sm);
+  font-weight: 500;
+  transition: box-shadow 0.2s ease;
+
+  &:not(:disabled):hover {
+    box-shadow: 0 0 0 4px var(--gf-light-bg-dark);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+gf-async-button {
+  flex: 1;
+
+  --async-btn-transition: box-shadow 0.2s ease;
+  --async-btn-width: 100%;
+  --async-btn-box-shadow: 0 0 0 2px var(--gf-primary);
+  --async-btn-hover-box-shadow: 0 0 0 4px var(--gf-primary);
+}

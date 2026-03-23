@@ -2,12 +2,22 @@
 
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 
+export interface GetUserReqDTO {
+  // Unused
+}
+
+export interface GetUserResDTO {
+  userName: string;
+  firstName: string;
+  lastName: string;
+}
+
 export interface FriendshipUserDTO {
-  userId: string,
-  userName: string,
-  firstName: string,
-  lastName: string,
-  avatarUrl?: string
+  userId: string;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl?: string;
 }
 
 export interface FriendshipDTO {
@@ -28,7 +38,7 @@ export interface GetFriendshipsReqDTO {
 export interface GetFriendshipsResDTO {
   friendships: FriendshipDTO[];
   hasMoreResults: boolean;
-  lastTimestamp: string | null;
+  lastTimestamp?: string;
 }
 
 export interface RequestFriendshipReqDTO {

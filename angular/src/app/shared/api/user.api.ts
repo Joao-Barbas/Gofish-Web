@@ -3,7 +3,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Api } from "@gofish/shared/constants";
-import { FriendshipDTO, GetFriendshipsResDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO } from "@gofish/shared/dtos/user.dto";
+import { FriendshipDTO, GetFriendshipsResDTO, GetUserResDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO } from "@gofish/shared/dtos/user.dto";
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 import { Observable } from "rxjs";
 
@@ -12,6 +12,10 @@ import { Observable } from "rxjs";
 })
 export class UserApi {
   private readonly http = inject(HttpClient);
+
+  public getUser(id: string): Observable<GetUserResDTO> {
+    return this.http.get<GetUserResDTO>(Api.User.action(`GetUser/${id}`));
+  }
 
   public getFriendships(options: {
     userId?: string;

@@ -1,3 +1,102 @@
 <!-- friends.component.html -->
 
-<p>friends works!</p>
+@if (user.isLoading()) {
+  <div class="loading-container gf-flow-vertical gf-center-axes">
+    <svg animate.enter="spinner-enter" xmlns="http://www.w3.org/2000/svg"
+        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/>
+      <path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/>
+      <path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/>
+      <path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/>
+    </svg>
+    <span>Loading...</span>
+  </div>
+}
+
+@if (user.hasValue()) {
+  <div class="gf-container-lg gf-w-90 gf-mx-auto gf-pt-64 gf-flow-vertical gf-gap-16" style="background-color:black;">
+    <h5 class="gf-font-bold">{{ `${ user.value().userName }'s friends` }}</h5>
+    <nav class="gf-flow-horizontal gf-justify-evenly gf-items-center gf-w-100">
+      <a [routerLink]="'.'"
+         [queryParams]="{ tab: 'friends' }"
+         [class.active]="activeTab() === 'friends'">
+        Friends
+      </a>
+      @if (profileContext.isOwner()) {
+        <a [routerLink]="'.'"
+           [queryParams]="{ tab: 'requests' }"
+           [class.active]="activeTab() === 'requests'">
+          Requests
+        </a>
+      }
+    </nav>
+    @if (activeTab() ?? 'friends' === 'friends') {
+      <div class="list">
+        @for (friend of friendsList(); track friend.id) {
+          <app-friendship-card
+            [friendship]="friend"
+            [small]="false"
+            [actions]="false"
+          ></app-friendship-card>
+        } @empty {
+          @if (!friends.isLoading() && !moreFriendsLoading.isLoading()) {
+            <p>{{ 'No friends yet. :(' }}</p>
+          }
+        }
+      </div>
+      @if (moreFriendsLoading.isLoading()) {
+        <div class="loading-container gf-flow-vertical gf-center-axes">
+          <svg animate.enter="spinner-enter" xmlns="http://www.w3.org/2000/svg"
+              width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/>
+            <path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/>
+            <path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/>
+            <path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/>
+          </svg>
+          <span>Loading...</span>
+        </div>
+      } @else if (friendsHasMore()) {
+        <button (click)="loadMoreFriends()">Load more</button>
+      }
+    }
+    @else if (profileContext.isOwner() && activeTab() === 'requests') {
+      <div class="list">
+        @for (requests of requestsList(); track requests.id) {
+          <app-friendship-card
+            [friendship]="requests"
+            [small]="false"
+            [actions]="true"
+          ></app-friendship-card>
+        } @empty {
+          @if (!requests.isLoading() && !moreRequestsLoading.isLoading()) {
+            <p>{{ 'No friend requests. =(' }}</p>
+          }
+        }
+      </div>
+      @if (moreRequestsLoading.isLoading()) {
+        <div class="loading-container gf-flow-vertical gf-center-axes">
+          <svg animate.enter="spinner-enter" xmlns="http://www.w3.org/2000/svg"
+              width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/>
+            <path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/>
+            <path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/>
+            <path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/>
+          </svg>
+          <span>Loading...</span>
+        </div>
+      } @else if (requestsHasMore()) {
+        <button (click)="loadMoreRequests()">Load more</button>
+      }
+    }
+  </div>
+}
+
+@if (user.error()) {
+  <div class="failed-container gf-flow-vertical gf-center-axes">
+    <span>{{ user.error() }}</span>
+    <button (click)="user.reload()">Try Again</button>
+  </div>
+}

@@ -21,16 +21,16 @@ import { ProfileContext } from "@gofish/features/user/profile/services/profile-c
   styleUrl: './profile-shell.component.css',
 })
 export class ProfileShellComponent {
-  readonly id = input<string>(null!); // Signal-based input given from :id
+  readonly profileId = input<string | undefined>(undefined, { alias: 'id' }); // Signal-based input given from :id
 
-  private readonly auth = inject(AuthService);
-  private readonly ctx  = inject(ProfileContext);
+  private readonly authService    = inject(AuthService);
+  private readonly profileContext = inject(ProfileContext);
 
   constructor() {
     effect(() => {
-      if (!this.id()) throw new Error('Profile requires a route :id param.');
-      this.ctx.profileId.set(this.id());
-      this.ctx.isOwner.set(this.id() === this.auth.userId());
+      if (!this.profileId()) throw new Error('Profile requires a route :id param.');
+      this.profileContext.profileId.set(this.profileId()!);
+      this.profileContext.isOwner.set(this.profileId() === this.authService.userId());
     });
   }
 }
