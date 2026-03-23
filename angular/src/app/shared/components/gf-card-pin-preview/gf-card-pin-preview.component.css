@@ -1,6 +1,6 @@
 .gf-card-pin-preview {
   padding: 12px;
-  width: 485px;
+  width: 100%;
   min-width: fit-content;
 
   gap: 12px;
@@ -18,7 +18,7 @@
     .pin-author-name {
       font-size: var(--gf-12);
       word-break: break-all;
-      max-width: 145px;
+      max-width: 200px;
     }
 
     .separator,
@@ -164,7 +164,7 @@
     width: fit-content;
     height: fit-content;
     border-radius: 16px;
-    
+
     background-color: var(--gf-dark-bg-dark);
 
     &.catch-pin {

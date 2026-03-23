@@ -33,9 +33,7 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5
 
 @Component({
   selector: 'app-test-delete-after',
-  imports: [CommonModule,
-    FormsModule,
-    ClusterDetailsComponent, GfCardPinPreviewComponent],
+  imports: [CommonModule, FormsModule, GfCardPinPreviewComponent],
   templateUrl: './test-delete-after.component.html',
   styleUrl: './test-delete-after.component.css',
 })
@@ -51,55 +49,55 @@ export class TestDELETEAFTERComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   protected selectedPins = signal<PinDataResDTO[]>([
-  {
-    id: 1,
-    createdAt: new Date(Date.now() - 9 * 60 * 60 * 1000).toISOString(),
-    visibility: 1,
-    kind: 1,
-    author: {
-      id: 'user-001',
-      userName: 'ricardoreis',
+    {
+      id: 1,
+      createdAt: new Date(Date.now() - 9 * 60 * 60 * 1000).toISOString(),
+      visibility: 1,
+      kind: 1,
+      author: {
+        id: 'user-001',
+        userName: 'ricardoreis',
+      },
+      post: {
+        body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cuidado cuidado cuidado!',
+        score: 999,
+        commentCount: 999,
+        imageUrl: 'assets/images/placeholder_profile_pic.png',
+      },
+      details: {
+        species: 1,
+        bait: 1,
+        hookSize: 'M',
+        accessDificulty: 1,
+        seabed: 1,
+        warningKind: 0,
+      },
     },
-    post: {
-      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cuidado cuidado cuidado!',
-      score: 999,
-      commentCount: 999,
-      imageUrl: 'assets/images/placeholder_profile_pic.png',
+    {
+      id: 2,
+      createdAt: new Date(Date.now() - 33 * 1000).toISOString(),
+      visibility: 1,
+      kind: 1,
+      author: {
+        id: 'user-001',
+        userName: 'ricardoreis',
+      },
+      post: {
+        body: 'aaaaaaaaa',
+        score: 0,
+        commentCount: 0,
+        imageUrl: 'assets/images/placeholder_profile_pic.png',
+      },
+      details: {
+        species: 2,
+        bait: 2,
+        hookSize: 'S',
+        accessDificulty: 2,
+        seabed: 2,
+        warningKind: 0,
+      },
     },
-    details: {
-      species: 1,
-      bait: 1,
-      hookSize: 'M',
-      accessDificulty: 1,
-      seabed: 1,
-      warningKind: 0,
-    },
-  },
-  {
-    id: 2,
-    createdAt: new Date(Date.now() - 33 * 1000).toISOString(),
-    visibility: 1,
-    kind: 1,
-    author: {
-      id: 'user-001',
-      userName: 'ricardoreis',
-    },
-    post: {
-      body: 'aaaaaaaaa',
-      score: 0,
-      commentCount: 0,
-      imageUrl: 'assets/images/placeholder_profile_pic.png',
-    },
-    details: {
-      species: 2,
-      bait: 2,
-      hookSize: 'S',
-      accessDificulty: 2,
-      seabed: 2,
-      warningKind: 0,
-    },
-  },
-]);
+  ]);
 
   private readonly previewMarkerService = inject(PreviewMarkerService);
 
