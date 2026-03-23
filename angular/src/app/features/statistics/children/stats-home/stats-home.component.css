@@ -1,177 +1,36 @@
-.stat-container {
-  background-color: var(--gf-dark-bg-dark);
+.stats-section-wrapper {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
-.stats-page-wrapper {
-  border-left: 2px solid #ffffff;
-}
-
-.stats-page-title {
-  text-transform: uppercase;
-  font-family: var(--gf-font-heading);
-  font-size: 36px;
-}
-
-.quick-view-wrapper {
-  padding-top: 10px;
-  padding-bottom: 35px;
-  padding-left: 20px;
-  gap: 10px;
-  width: 75%;
-}
-
-.quick-view-items-wrapper {
-  flex-wrap: wrap;
-  gap: 2px;
-}
-
-.quick-view-item {
-  width: 220px;
-  gap: 10px;
-
-  &.system-requests {
-    --quick-view-color: #f4fc4c;
-  }
-
-  &.user-satisfaction-index {
-    --quick-view-color: #ade63a;
-  }
-
-  &.positive-votes {
-    --quick-view-color: #0af7ff;
-  }
-
-  &.pins-created-today {
-    --quick-view-color: #e8d8e8;
-  }
-
-  &.active-users {
-    --quick-view-color: #ffeac2;
-  }
-}
-
-.quick-view-item-icon {
-  width: 96px;
-  height: 96px;
-  background-color: var(--gf-dark-bg-dark);
-  border: 3px solid var(--quick-view-color);
-  border-radius: 10px;
-
-  padding: 5px;
-}
-
-.quick-view-item-icon > svg {
-  color: var(--quick-view-color);
-}
-
-.metric-big-text {
-  color: var(--quick-view-color);
-  font-size: 32px;
-}
-
-.metric-text {
-  color: var(--quick-view-color);
-  font-size: 14px;
-  text-align: center;
-  word-break: normal;
-}
-
-.quick-access-wrapper {
-  padding-top: 10px;
-  padding-bottom: 35px;
-  padding-left: 20px;
-  gap: 10px;
-  width: 50%;
-}
-
-.quick-access-title {
-  border-bottom: 2px solid #ffffff;
-  width: 100%;
+.quick-header-wrapper {
+  border-bottom: 2px solid #fff;
+  max-width: 45%;
   gap: 10px;
   padding-left: 5px;
+
+  & span {
+    font-family: var(--gf-font-date);
+    font-size: 24px;
+  }
+  & svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
-.quick-access-title-icon,
-.quick-access-title-icon > svg {
-  width: 20px;
-  height: 20px;
-}
-
-.quick-access-title-text {
-  font-family: var(--gf-font-date);
-  font-size: 24px;
-}
-
-.gf-card-stat-quick-view {
-  padding: 12px;
+.quick-view-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 320px);
+  gap: 20px 20px;
   width: 100%;
-  min-width: unset;
-
-  background: none;
-  box-shadow: none;
-  border: 2px solid #d9d9d9;
+  justify-items: start;
 }
 
-.quick-access-top-bottom-wrapper {
+.quick-access-list {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-}
-
-.quick-access-top {
-  gap: 10px;
-}
-
-.quick-access-icon {
-  padding: 12px;
-  border-radius: 8px;
-  border: 2px solid #fff;
-  width: 48px;
-  height: 48px;
-
-  &.average-published-pins {
-    background-color: #477eeb;
-  }
-
-  &.pin-density {
-    background-color: #07b7bd;
-  }
-
-  &.reports {
-    background-color: #eb5547;
-  }
-}
-
-.quick-access-icon > svg {
-  width: 64px;
-  height: 64px;
-}
-
-.quick-access-preview {
-  gap: 10px;
-}
-
-.quick-access-text {
-  font-family: var(--gf-font-heading);
-  font-size: 20px;
-}
-
-.quick-access-name {
-  font-size: 20px;
-  font-family: var(--gf-font-heading);
-}
-
-.preview-text {
-  font-family: var(--gf-font-heading);
-  font-size: 12px;
-}
-
-.quick-access-goto-button {
-  background: none;
-  border: none;
-  width: 84px;
-  height: 84px;
-}
-
-.quick-access-goto-button > svg {
-  width: 64px;
-  height: 64px;
 }
