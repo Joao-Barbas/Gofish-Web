@@ -1,5 +1,6 @@
 ﻿using GofishApi.Enums;
 using GofishApi.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace GofishApi.Dtos;
 
@@ -22,6 +23,60 @@ public record GetUserResDto(
         u.LastName  ?? ""
     );
 }
+
+public record GetUserSettingsReqDto(
+    // Unused
+)
+{ }
+
+public record GetUserSettingsResDto(
+    string UserName,
+    string FirstName,
+    string LastName,
+    string? Email,
+    string? PhoneNumber,
+    bool EmailConfirmed,
+    bool PhoneNumberConfirmed
+)
+{
+    public static GetUserSettingsResDto FromEntity(AppUser u) => new(
+        u.UserName ?? "",
+        u.FirstName ?? "",
+        u.LastName ?? "",
+        null,
+        null,
+        u.EmailConfirmed,
+        u.PhoneNumberConfirmed
+    );
+}
+
+public record PutUserReqDto(
+    [Required] string UserName,
+    [Required] string PhoneNumber,
+    [Required] string FirstName,
+    [Required] string LastName,
+    [Required] string Email
+)
+{ }
+
+public record PutUserResDto(
+    // Unused
+)
+{ }
+
+public record PatchUserReqDto(
+    string? UserName,
+    string? PhoneNumber,
+    string? FirstName,
+    string? LastName,
+    string? Email
+)
+{ }
+
+public record PatchUserResDto(
+    // Unused
+)
+{ }
 
 #endregion // User
 #region Friendship

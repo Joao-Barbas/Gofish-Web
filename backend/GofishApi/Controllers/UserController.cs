@@ -59,6 +59,104 @@ public class UserController : ControllerBase
         return Ok(GetUserResDto.FromEntity(user));
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetUserSettings()
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        var data = GetUserSettingsResDto.FromEntity(user) with
+        {
+            Email = MaskEmail(user.Email),
+            PhoneNumber = MaskPhone(user.PhoneNumber)
+        };
+
+        return Ok(data);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> PutUser([FromBody] PutUserReqDto dto)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user is null) return NotFound();
+
+        using var transaction = await _db.Database.BeginTransactionAsync();
+
+        user.UserName = dto.UserName;
+        user.PhoneNumber = dto.PhoneNumber;
+        user.FirstName = dto.FirstName;
+        user.LastName = dto.LastName;
+
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded) throw new IdentityException(result);
+
+        if (dto.Email != user.Email)
+        {
+            var token = await _userManager.GenerateChangeEmailTokenAsync(user, dto.Email);
+            var result2 = await _userManager.ChangeEmailAsync(user, dto.Email, token);
+            if (!result2.Succeeded) throw new IdentityException(result2);
+        }
+
+        await transaction.CommitAsync();
+        return Ok();
+    }
+
+    [HttpPatch]
+    public async Task<IActionResult> PatchUser([FromBody] PatchUserReqDto dto)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user is null) return NotFound();
+
+        using var transaction = await _db.Database.BeginTransactionAsync();
+
+        if (dto.UserName is not null) user.UserName = dto.UserName;
+        if (dto.PhoneNumber is not null) user.PhoneNumber = dto.PhoneNumber;
+        if (dto.FirstName is not null) user.FirstName = dto.FirstName;
+        if (dto.LastName is not null) user.LastName = dto.LastName;
+
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded) throw new IdentityException(result);
+
+        if (dto.Email is not null && dto.Email != user.Email)
+        {
+            var token = await _userManager.GenerateChangeEmailTokenAsync(user, dto.Email);
+            var result2 = await _userManager.ChangeEmailAsync(user, dto.Email, token);
+            if (!result2.Succeeded) throw new IdentityException(result2);
+        }
+
+        // TODO: Email change auto verifies this way
+        // TODO: Implement proper change email flow: change -> send confirm email -> confirm
+
+        return Ok();
+    }
+
+    // Helpers
+
+
+    private static string? MaskEmail(string? email)
+    {
+        if (email is null) return null;
+        var parts = email.Split('@');
+        if (parts.Length != 2) return email;
+        var name = parts[0];
+        var masked = name[0] + new string('*', Math.Max(name.Length - 1, 1));
+        return $"{masked}@{parts[1]}";
+    }
+
+    private static string? MaskPhone(string? phone)
+    {
+        if (phone is null) return null;
+        if (phone.Length <= 4) return new string('*', phone.Length);
+        return phone[..4] + " *** *** " + phone[^3..];
+    }
+
     #endregion // User
     #region Friendship
 
@@ -169,7 +267,7 @@ public class UserController : ControllerBase
         friendship.RepliedAt = DateTime.UtcNow;
 
         await _db.SaveChangesAsync();
-        return NoContent();
+        return Ok();
     }
 
     [HttpDelete("{id}")]

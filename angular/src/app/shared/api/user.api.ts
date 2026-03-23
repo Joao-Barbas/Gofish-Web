@@ -3,7 +3,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Api } from "@gofish/shared/constants";
-import { FriendshipDTO, GetFriendshipsResDTO, GetUserResDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO } from "@gofish/shared/dtos/user.dto";
+import { FriendshipDTO, GetFriendshipsResDTO, GetUserResDTO, GetUserSettingsResDTO, PatchUserReqDTO, PutUserReqDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO } from "@gofish/shared/dtos/user.dto";
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 import { Observable } from "rxjs";
 
@@ -13,9 +13,25 @@ import { Observable } from "rxjs";
 export class UserApi {
   private readonly http = inject(HttpClient);
 
+  // User
+
   public getUser(id: string): Observable<GetUserResDTO> {
     return this.http.get<GetUserResDTO>(Api.User.action(`GetUser/${id}`));
   }
+
+  public getUserSettings(): Observable<GetUserSettingsResDTO> {
+    return this.http.get<GetUserSettingsResDTO>(Api.User.action('GetUserSettings'));
+  }
+
+  public putUser(dto: PutUserReqDTO): Observable<void> {
+    return this.http.put<void>(Api.User.action('PutUser'), dto);
+  }
+
+  public patchUser(dto: PatchUserReqDTO): Observable<void> {
+    return this.http.patch<void>(Api.User.action('PatchUser'), dto);
+  }
+
+  // Friendships
 
   public getFriendships(options: {
     userId?: string;

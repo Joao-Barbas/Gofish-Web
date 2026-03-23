@@ -12,6 +12,44 @@ export interface GetUserResDTO {
   lastName: string;
 }
 
+export interface GetUserSettingsReqDTO {
+  // Unused
+}
+
+export interface GetUserSettingsResDTO {
+  userName: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phoneNumber?: string;
+  emailConfirmed: boolean;
+  phoneNumberConfirmed: boolean;
+}
+
+export interface PutUserReqDTO {
+  userName: string,
+  phoneNumber: string,
+  firstName: string,
+  lastName: string,
+  email: string
+}
+
+export interface PutUserResDTO {
+  // Unused
+}
+
+export interface PatchUserReqDTO {
+  userName?: string,
+  phoneNumber?: string,
+  firstName?: string,
+  lastName?: string,
+  email?: string
+}
+
+export interface PatchUserResDTO {
+  // Unused
+}
+
 export interface FriendshipUserDTO {
   userId: string;
   userName: string;
