@@ -14,6 +14,7 @@ import { firstValueFrom } from 'rxjs';
 import { FriendshipCardComponent } from "../../components/friendship-card/friendship-card.component";
 import { FriendsListComponent } from "./components/friends-list/friends-list.component";
 import { RequestsListComponent } from "./components/requests-list/requests-list.component";
+import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-friends',
@@ -21,6 +22,7 @@ import { RequestsListComponent } from "./components/requests-list/requests-list.
     RouterLink,
     RequestsListComponent,
     FriendsListComponent,
+    LoadingSpinnerComponent
 ],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.css',

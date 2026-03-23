@@ -1,36 +1,26 @@
 <!-- friends.component.html -->
 
 @if (user.isLoading()) {
-  <div class="loading-container gf-flow-vertical gf-center-axes">
-    <svg animate.enter="spinner-enter" xmlns="http://www.w3.org/2000/svg"
-        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/>
-      <path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/>
-      <path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/>
-      <path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/>
-    </svg>
-    <span>Loading...</span>
-  </div>
+  <gf-loading-spinner></gf-loading-spinner>
 }
 @if (user.hasValue()) {
   <div class="gf-container-lg gf-w-90 gf-mx-auto gf-pt-64 gf-flow-vertical gf-gap-16" style="background-color:black;">
     <h5 class="gf-font-bold">{{ `${ user.value().userName }'s friends` }}</h5>
+    @let activeTabOrDefault = activeTab() ?? 'friends';
     @if (profileContext.isOwner()) {
       <nav class="gf-flow-horizontal gf-justify-evenly gf-items-center gf-w-100">
       <a [routerLink]="'.'"
          [queryParams]="{ tab: 'friends' }"
-         [class.active]="activeTab() === 'friends'">
+         [class.active]="activeTabOrDefault === 'friends'">
         Friends
       </a>
-        <a [routerLink]="'.'"
-           [queryParams]="{ tab: 'requests' }"
-           [class.active]="activeTab() === 'requests'">
-          Requests
-        </a>
+      <a [routerLink]="'.'"
+         [queryParams]="{ tab: 'requests' }"
+         [class.active]="activeTabOrDefault === 'requests'">
+        Requests
+      </a>
       </nav>
     }
-    @let activeTabOrDefault = activeTab() ?? 'friends';
     @if (activeTabOrDefault === 'friends') {
       <app-friends-list></app-friends-list>
     } @else if (activeTabOrDefault === 'requests' && profileContext.isOwner()) {

@@ -83,6 +83,10 @@ nav {
     color: var(--gf-dark-text-muted);
 
     &:hover {
+      color: var(--gf-dark-text);
+    }
+
+    &.active {
       color: var(--gf-primary);
     }
   }

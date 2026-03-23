@@ -11,26 +11,18 @@ import { LoadingState } from '@gofish/shared/core/loading-state';
 import { FriendshipDTO, GetFriendshipsResDTO } from '@gofish/shared/dtos/user.dto';
 import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
 import { firstValueFrom } from 'rxjs';
+import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-requests-list',
   imports: [
     FriendshipCardComponent,
-    AsyncButtonComponent
-  ],
+    AsyncButtonComponent,
+    LoadingSpinnerComponent
+],
   template: `
     @if (requests.isLoading()) {
-      <div class="loading-container gf-flow-vertical gf-center-axes">
-        <svg animate.enter="spinner-enter" xmlns="http://www.w3.org/2000/svg"
-            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/>
-          <path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/>
-          <path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/>
-          <path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/>
-        </svg>
-        <span>Loading...</span>
-      </div>
+      <gf-loading-spinner></gf-loading-spinner>
     }
     @if (requests.hasValue()) {
       <div class="list">
@@ -46,19 +38,7 @@ import { firstValueFrom } from 'rxjs';
           }
         }
       </div>
-      @if (loadingState.isLoading()) {
-        <div class="loading-container gf-flow-vertical gf-center-axes">
-          <svg animate.enter="spinner-enter" xmlns="http://www.w3.org/2000/svg"
-              width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/>
-            <path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/>
-            <path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/>
-            <path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/>
-          </svg>
-          <span>Loading...</span>
-        </div>
-      } @else if (requestsHasMore()) {
+      @if (requestsHasMore()) {
         <gf-async-button
           [labels]="{ idle: 'Load more', busy: 'Loading...' }"
           [states]="{ busy: busyState.isBusy() }"
@@ -103,6 +83,7 @@ export class RequestsListComponent {
   loadMoreFriends() {
     let profileId = this.profileContext.profileId();
     this.loadingState.start();
+    this.busyState.setBusy(true);
     this.userApi.getFriendships({
       userId: profileId,
       state: FriendshipState.Pending,
@@ -114,9 +95,11 @@ export class RequestsListComponent {
         this.requestsHasMore.set(res.hasMoreResults);
         this.requestsCursor.set(res.lastTimestamp);
         this.loadingState.success();
+        this.busyState.setBusy(false);
       },
       error: (err: HttpErrorResponse) => {
         this.loadingState.fail('Something went wrong while trying to load friends.');
+        this.busyState.setBusy(false);
       }
     })
   }
