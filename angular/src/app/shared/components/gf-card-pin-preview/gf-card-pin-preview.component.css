@@ -2,196 +2,133 @@
   padding: 12px;
   width: 100%;
   min-width: fit-content;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: 12px;
+}
 
-  & .top-wrapper {
-    .pin-user-time-wrapper {
-      gap: 8px;
-    }
+.top-wrapper {
+  display: flex;
+  justify-items: center;
+  justify-content: space-between;
+}
 
-    .pin-author-profile-photo {
-      width: var(--gf-32);
-      height: var(--gf-32);
-    }
+.pin-user-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-    .pin-author-name {
-      font-size: var(--gf-12);
-      word-break: break-all;
-      max-width: 200px;
-    }
+.pin-author-profile-photo {
+  width: var(--gf-32);
+  height: var(--gf-32);
+}
 
-    .separator,
-    .pin-time-ago {
-      font-size: var(--gf-12);
-      font-family: var(--gf-font-date);
-      word-break: break-all;
-    }
+.user-name-text {
+  font-size: 14px;
+  max-width: 100px;
+}
 
-    .pin-stats {
-      gap: 4px;
-    }
+.separator,
+.pin-time-ago {
+  font-size: var(--gf-12);
+  font-family: var(--gf-font-date);
+  word-break: break-all;
+}
 
-    .gf-badge-pin-preview {
-      width: fit-content;
-      height: 32px;
-      padding: 8px 8px;
+.badge-wrapper {
+  display: flex;
+  gap: 4px;
+  justify-items: end;
+}
 
-      border-radius: 25px;
+.gf-badge-pin-preview {
+  width: fit-content;
+  height: 32px;
+  padding: 8px 16px;
 
-      display: flex;
-      gap: 4px;
+  border-radius: 25px;
 
-      font-size: 12px;
+  display: flex;
+  gap: 4px;
 
-      & svg {
-        color: var(--gf-dark-text-muted);
-        width: var(--gf-16);
-        height: var(--gf-16);
-      }
-    }
+  font-size: 12px;
 
-    .gf-badge-pin-preview-goto-Pin {
-      width: fit-content;
-      height: 32px;
-      padding: 8px;
+  & svg {
+    color: var(--gf-dark-text-muted);
+    width: var(--gf-16);
+    height: var(--gf-16);
+  }
+}
 
-      border-radius: 25px;
+.gf-badge-pin-preview:last-child {
+  width: fit-content;
+  height: 32px;
+  padding: 8px;
 
-      display: flex;
-      gap: 4px;
+  border-radius: 25px;
 
-      font-size: 12px;
+  display: flex;
+  gap: 4px;
 
-      & svg {
-        width: var(--gf-16);
-        height: var(--gf-16);
-      }
-    }
+  font-size: 12px;
+
+  & svg {
+    width: var(--gf-16);
+    height: var(--gf-16);
+    color: var(--dark-text-muted);
   }
 
-  /* #region ADMIN PANEL */
+  &:hover svg {
+    color: var(--dark-text);
+  }
+}
 
-  &.admin-panel {
-    background-color: #1d5ba6;
-    box-shadow: none;
-    border: 2px solid #d9d9d9;
+.bottom-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pin-type-extras-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.gf-badge-pin-type-and-extras {
+  gap: 4px;
+
+  padding: 4px 16px;
+
+  width: fit-content;
+  height: 100%;
+  border-radius: 16px;
+
+  background-color: var(--gf-dark-bg-dark);
+
+  &.catch-pin {
+    background-color: var(--gf-dark-bg-catch-pin);
   }
 
-  &.admin-panel .top-wrapper {
-    .pin-user-time-wrapper {
-    }
-
-    .pin-author-profile-photo {
-    }
-
-    .pin-author-name {
-    }
-
-    .separator,
-    .pin-time-ago {
-    }
-
-    .pin-stats {
-    }
-
-    .gf-badge-pin-preview {
-      background: none;
-      box-shadow: none;
-
-      border: 2px solid var(--gf-dark-text-muted);
-
-      & {
-        color: var(--gf-dark-text-muted);
-        cursor: not-allowed;
-      }
-
-      & svg {
-        color: var(--gf-dark-text-muted);
-      }
-    }
-
-    .gf-badge-pin-preview-goto-Pin {
-      background: none;
-      box-shadow: none;
-
-      border: 2px solid var(--gf-dark-text);
-
-      &:hover {
-        border-color: var(--gf-dark-text-muted);
-      }
-
-      & svg {
-        color: var(--gf-dark-text);
-      }
-
-      &:hover svg {
-        color: var(--gf-dark-text-muted);
-      }
-
-      & span {
-        color: var(--gf-dark-text);
-        font-size: 10px;
-      }
-
-      &:hover span {
-        color: var(--gf-dark-text-muted);
-      }
-    }
+  &.info-pin {
+    background-color: var(--gf-dark-bg-info-pin);
   }
 
-  .reported-pin-number {
-    font-size: 24px;
+  &.warning-pin {
+    background-color: var(--gf-dark-bg-warning-pin);
   }
 
-  /* #endregion ADMIN PANEL */
-
-  /* #region Universal */
-
-  .bottom-wrapper {
-
+  & svg {
+    width: 20px;
+    height: 20px;
   }
 
-  .pin-type-and-extras-wrapper {
-    gap: 4px;
+  & span {
+    font-size: 12px;
   }
+}
 
-  .gf-badge-pin-type-and-extras {
-    gap: 4px;
-
-    padding: 4px 16px;
-
-    width: fit-content;
-    height: fit-content;
-    border-radius: 16px;
-
-    background-color: var(--gf-dark-bg-dark);
-
-    &.catch-pin {
-      background-color: var(--gf-dark-bg-catch-pin);
-
-    }
-
-    &.info-pin {
-      background-color: var(--gf-dark-bg-info-pin);
-
-    }
-
-    &.warning-pin {
-      background-color: var(--gf-dark-bg-warning-pin);
-
-    }
-
-    & svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    & span {
-      font-size: 12px;
-    }
-
-  }
-
-  /* #endregion Universal */
+.report-number {
+  font-size: 24px;
 }

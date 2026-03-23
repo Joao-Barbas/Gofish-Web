@@ -1,22 +1,23 @@
-<div class="d-flex flex-column gf-card-pin-preview admin-panel">
+<div class="gf-card-pin-preview">
 
-  <!-- #region Top wrapper -->
-  <div class="d-flex align-items-center justify-content-between top-wrapper">
-
-    <div class="d-flex align-items-center pin-user-time-wrapper">
+  <!-- #region top -->
+  <div class="top-wrapper">
+    <div class="pin-user-wrapper">
 
       <img src="assets/images/placeholder_profile_pic.png" class="rounded-circle pin-author-profile-photo">
 
-      <span class="pin-author-name">Author post.author?.userName--></span>
+      <span class="user-name-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae, vel impedit aperiam
+        cum ipsam ad fugit repudiandae reiciendis vero totam ducimus quia incidunt ab harum quos ex distinctio rerum
+        explicabo.</span>
+
       <span class="separator">•</span>
-      <span class="pin-time-ago">9 hours<!-- post.createdAt | timeAgo--> </span>
+      <span class="pin-time-ago">9 hours</span>
+
     </div>
 
+    <div class="badge-wrapper">
 
 
-    <div class="d-flex align-items-center pin-stats">
-
-      <!-- Likes -->
       <div class="gf-badge-pin-preview">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-thumbs-up-icon lucide-thumbs-up">
@@ -28,66 +29,87 @@
         <span>33</span>
       </div>
 
-      <!-- Reports -->
       <div class="gf-badge-pin-preview">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-flag-icon lucide-flag">
-          <path
-            d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />
-        </svg>
 
+        <!-- #region If is not "reported Pin" (on by default) -->
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-message-circle-icon lucide-message-circle">
+          <path
+            d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
+        </svg>
         <span>33</span>
+
+        <!-- #endregion -->
+
+        <!-- #region If is "reported Pin"
+            it is the number of reports this pin has received
+        -->
+        <!--
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="lucide lucide-flag-icon lucide-flag">
+        <path
+        d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />
+      </svg>
+      <span>33</span>
+        -->
+        <!-- #endregion -->
+
       </div>
 
-      <!-- Go to Reports -->
-      <button class="gf-badge-pin-preview-goto-Pin">
-        <!-- * If "is profile pin" -->
+      <button class="gf-badge-pin-preview">
 
-        <!--
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-ellipsis-icon lucide-ellipsis">
+        <!-- #region If is not "reported Pin" (on by default) -->
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis">
           <circle cx="12" cy="12" r="1" />
           <circle cx="19" cy="12" r="1" />
           <circle cx="5" cy="12" r="1" />
         </svg>
-        -->
 
-        <!-- If "is reported Pin" -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        <!-- #endregion -->
+
+
+
+        <!-- #region If is "reported Pin" -->
+
+        <!--
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round"
           class="lucide lucide-circle-arrow-out-up-right-icon lucide-circle-arrow-out-up-right goto-Pin">
           <path d="M22 12A10 10 0 1 1 12 2" />
           <path d="M22 2 12 12" />
           <path d="M16 2h6v6" />
         </svg>
-
-        <!-- If "is reported Pin" -->
         <span>Reports</span>
+
+        -->
+        <!-- #endregion If "is reported Pin" -->
+
       </button>
 
+
+
     </div>
-
   </div>
-  <!-- #endregion Top wrapper -->
 
-  <!-- Bottom wrapper -->
-  <div class="d-flex align-items-center justify-content-between bottom-wrapper">
+  <!-- #endregion -->
 
-    <div class="d-flex pin-type-and-extras-wrapper">
+
+  <div class="bottom-wrapper">
+    <div class="pin-type-extras-wrapper">
+
 
       <!--
-        *  gf-badge-pin-type changes color depending on the type of pin, by changing the CSS class
-        * next to "gf-badge-pin-type-and-extras" to:
-
-        * catch-pin
-        * info-pin
-        * warning-pin
-
-        * Note: SVG needs to be changed separately.
-       -->
+        if it is from a Catch Pin -> add "catch-pin" css class
+        if it is from a Info Pin -> add "info-pin" css class
+        if it is from a Warning Pin -> add "warn-pin" css class
+      -->
       <div class="d-flex align-items-center gf-badge-pin-type-and-extras catch-pin">
+
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-fishing-hook-icon lucide-fishing-hook">
           <path d="m17.586 11.414-5.93 5.93a1 1 0 0 1-8-8l3.137-3.137a.707.707 0 0 1 1.207.5V10" />
@@ -98,28 +120,32 @@
 
       </div>
 
-      <!-- Extras
-         * For type of fish that was catched or other details of Pins
-        -->
+      <!--
+        Extras are attributes of each type of Pin
+        Extras don't have "*-pin" class, but they have their own svg
+
+        * Catch Pin has:
+          - Species
+          - Bait
+          - HookSize
+        * Info Pin has:
+          - Access Difficulty
+          - Seabed
+        * Warning Pin has:
+          - WarningKind
+      -->
 
       <div class="d-flex align-items-center gf-badge-pin-type-and-extras">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-fish-symbol-icon lucide-fish-symbol">
-          <path d="M2 16s9-15 20-4C11 23 2 8 2 8" />
-        </svg>
-        <span>Salmon</span>
+
+        <!-- svg to be added in the future -->
+        <span>Species</span>
 
       </div>
-
     </div>
 
-    <!-- If it is "Reported Pin" -->
-    <span class="text-bold reported-pin-number">
-      #1
-    </span>
+    <!-- if is "report pin"
+         - number 1 changes, by default, if it isn't a report Pin, the "report-number" span doesn't appear
+    -->
+    <span class="text-bold report-number"># 1</span>
 
   </div>
-
-</div>
-
-

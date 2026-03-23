@@ -394,6 +394,13 @@ h6 {
   user-select: none;
 }
 
+.user-output-no-overflow {
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /*
  * Retroactively preventing user generated text from
  * overflowing Post cards or Post comments
@@ -405,8 +412,11 @@ h6 {
 [class$="-description"] {
   word-break: normal;
   text-overflow: ellipsis;
+  white-space: nowrap;
   overflow: hidden;
+  max-width: 200px;
   /*white-space: nowrap;*/
+
 }
 
 /* Layouts */

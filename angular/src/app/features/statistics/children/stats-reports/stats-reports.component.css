@@ -2,10 +2,6 @@
   background-color: var(--gf-dark-bg-dark);
 }
 
-.stats-page-wrapper {
-  border-left: 2px solid #ffffff;
-}
-
 .stats-page-title {
   text-transform: uppercase;
   font-family: var(--gf-font-heading);
