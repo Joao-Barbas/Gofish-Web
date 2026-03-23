@@ -112,7 +112,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', loadComponent: () => import('@gofish/features/statistics/children/stats-home/stats-home.component').then(d => d.StatsHomeComponent) },
       { path: 'reports', loadComponent: () => import('@gofish/features/statistics/children/stats-reports/stats-reports.component').then(d => d.StatsReportsComponent) },
-
+      
     ]
   },
   {
