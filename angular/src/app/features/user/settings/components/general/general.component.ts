@@ -18,7 +18,9 @@ import { LoadingState } from '@gofish/shared/core/loading-state';
 import { HttpErrorResponse } from '@angular/common/http';
 import { toast } from 'ngx-sonner';
 import { ModalService } from '@gofish/shared/services/modal.service';
-import { UsernameChangeModalComponent } from "./components/username-change-modal.component";
+import { ChangeUsernameModalComponent } from "./components/change-username-modal.component";
+import { ChangeFirstnameModalComponent } from "./components/change-firstname-modal.component";
+import { ChangeLastnameModalComponent } from "./components/change-lastname-modal.component";
 
 @Component({
   selector: 'app-general',
@@ -30,7 +32,9 @@ import { UsernameChangeModalComponent } from "./components/username-change-modal
     CdkTextareaAutosize,
     FormsModule,
     AsyncButtonComponent,
-    UsernameChangeModalComponent
+    ChangeUsernameModalComponent,
+    ChangeLastnameModalComponent,
+    ChangeFirstnameModalComponent
 ],
   templateUrl: './general.component.html',
   styleUrl: './general.component.css',
@@ -133,13 +137,12 @@ export class GeneralComponent {
         let reader = new FileReader();
         reader.onload = () => this.avatarPreview.set(reader.result as string | null);
         reader.readAsDataURL(file);
+        this.busyState.setBusy(false);
       },
       error: () => {
         this.toast.error('Something went wrong uploading avatar');
-      },
-      complete: () => {
         this.busyState.setBusy(false);
-      }
+      },
     });
   }
 
@@ -149,6 +152,16 @@ export class GeneralComponent {
   onUsernameChange(username: string) {
     if (!this.userSettings.hasValue()) return;
     this.userSettings.value().userName = username;
+  }
+
+  onFirstnameChange(firstname: string) {
+    if (!this.userSettings.hasValue()) return;
+    this.userSettings.value().firstName = firstname;
+  }
+
+  onLastnameChange(lastname: string) {
+    if (!this.userSettings.hasValue()) return;
+    this.userSettings.value().lastName = lastname;
   }
 
   // End modals events

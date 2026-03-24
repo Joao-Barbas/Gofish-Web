@@ -10,7 +10,7 @@ import { ValidationProblemDetails } from '@gofish/shared/core/problem-details';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  selector: 'app-username-change-modal',
+  selector: 'app-change-username-modal',
   imports: [
     AsyncButtonComponent,
     ReactiveFormsModule
@@ -93,11 +93,11 @@ import { HttpErrorResponse } from '@angular/common/http';
     }
   `,
 })
-export class UsernameChangeModalComponent implements SimpleModal {
-  private readonly userApi = inject(UserApi);
+export class ChangeUsernameModalComponent implements SimpleModal {
+  private readonly userApi     = inject(UserApi);
   private readonly formBuilder = inject(FormBuilder);
 
-  readonly modalController = new ModalController('app-username-change-modal');
+  readonly modalController = new ModalController('app-change-username-modal');
   readonly busyState       = new BusyState();
   readonly loadingState    = new LoadingState();
 
