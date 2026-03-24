@@ -6,6 +6,8 @@ import { Path } from '@gofish/shared/constants';
 import { GetGroupDTO, GetGroupReqDTO, GetGroupResDTO, GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
 import { GroupsService } from '@gofish/shared/services/groups.service';
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
+import { PopupService } from '@gofish/shared/services/popup.service';
+import { GroupSettingsPopoverComponent } from '@gofish/features/forum/children/groups/components/group-settings-popover/group-settings-popover.component';
 
 
 type NavPath = {
@@ -15,14 +17,15 @@ type NavPath = {
 
 @Component({
   selector: 'app-groups',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, LoadingSpinnerComponent],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, LoadingSpinnerComponent, GroupSettingsPopoverComponent],
   templateUrl: './groups.component.html',
   styleUrl: './groups.component.css',
 })
 export class GroupsComponent {
   private readonly route= inject(ActivatedRoute);
   private readonly groupsService = inject(GroupsService);
-  private readonly router: Router = inject(Router);
+  private readonly router = inject(Router);
+  private readonly popupService = inject(PopupService);
   public currentPath: WritableSignal<string> = signal(this.router.url);
   groupData = signal<GetGroupResDTO | null>(null);
 
@@ -62,5 +65,9 @@ export class GroupsComponent {
   public onNavSelectChange(event: Event) {
     var select = event.target as HTMLSelectElement;
     this.router.navigate([select.value]);
+  }
+
+  openOptions() {
+    this.popupService.open('group-options');
   }
 }

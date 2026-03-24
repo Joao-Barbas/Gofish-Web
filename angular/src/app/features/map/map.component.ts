@@ -43,7 +43,6 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5
     RouterOutlet,
     NgxSonnerToaster,
     ClusterDetailsComponent,
-    ClickOutsideDirective
   ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',

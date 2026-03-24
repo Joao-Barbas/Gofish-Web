@@ -85,3 +85,7 @@
 .group-forum-feed {
   width: 100%;
 }
+
+.group-settings-wrapper {
+  position: relative;
+}
