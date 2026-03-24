@@ -99,7 +99,7 @@ public class PinController : ControllerBase
         .ToListAsync();
 
         var data = pins
-        .Select(p => GetPinsPinDTO.FromPin(p, dto.DataRequest))
+        .Select(p => GetPinsPinDTO.FromPin(p, dto.DataRequest, userId))
         .ToList();
 
         return Ok(new GetPinsResDTO(data));

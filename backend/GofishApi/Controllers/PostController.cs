@@ -89,7 +89,7 @@ public class PostController : ControllerBase
 
         var data = posts
             .Take(dto.MaxResults)
-            .Select(p => GetPostsPostDTO.FromPost(p, dto.DataRequest))
+            .Select(p => GetPostsPostDTO.FromPost(p, dto.DataRequest, userId))
             .ToList();
 
         var lastTimestamp = hasMore ? posts[^2].CreatedAt : (DateTime?)null;
@@ -127,7 +127,7 @@ public class PostController : ControllerBase
         var hasMore = posts.Count > dto.MaxResults;
         var data = posts
             .Take(dto.MaxResults)
-            .Select(p => GetPostsPostDTO.FromPost(p, dto.DataRequest))
+            .Select(p => GetPostsPostDTO.FromPost(p, dto.DataRequest, userId))
             .ToList();
 
         var lastTimestamp = hasMore ? posts[dto.MaxResults].CreatedAt : (DateTime?)null;
@@ -273,5 +273,21 @@ public class PostController : ControllerBase
         return Ok(new CreatePostCommentResDTO(comment.Id));
     }
 
+    [Authorize]
+    [HttpDelete("DeleteComment/{id}")]
+    public async Task<IActionResult> DeleteComment(int id)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+
+        var comment = await _db.PostComments
+            .FirstOrDefaultAsync(p => p.Id == id); if (comment is null) return NotFound();
+
+        var isOwner = comment.UserId == userId;
+        var isAdmin = User.IsInRole("Admin");
+        if (!isOwner && !isAdmin) return Forbid();
+        _db.PostComments.Remove(comment);
+        await _db.SaveChangesAsync();
+        return NoContent();
+    }
     #endregion
 }

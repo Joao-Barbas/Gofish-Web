@@ -80,11 +80,12 @@
     color: var(--dark-text);
   }
 }
+
 /*temporary*/
 
 /* Post Content */
 
-.post-content > :not(:last-child) {
+.post-content> :not(:last-child) {
   margin-bottom: var(--gf-8);
 }
 
@@ -193,6 +194,7 @@
 .icon-upvote {
   transform: rotate(90deg);
 }
+
 .icon-downvote {
   transform: rotate(-90deg);
 }
@@ -332,7 +334,8 @@
 
 .scroll-container {
   flex: 1;
-  overflow-y: auto; /* Ativa o scroll vertical */
+  overflow-y: auto;
+  /* Ativa o scroll vertical */
   padding: 1rem;
 
   /* Estilização opcional da scrollbar para combinar com o tema escuro */
@@ -354,12 +357,12 @@
   border: 2px solid #000;
 }
 
-.active-down {
-  background-color: rgb(255, 30, 0);
-  border-radius: 999px;
+
+/*Funciona como se fosse && quando esta sem virgula*/
+.active-up .post-icon {
+  fill: currentColor;
 }
 
-.active-up {
-  background-color: rgb(0, 255, 0);
-  border-radius: 999px;
+.active-down .post-icon {
+  fill: currentColor;
 }

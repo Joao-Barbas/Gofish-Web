@@ -13,6 +13,7 @@ export interface PostDataRequestDTO {
   includeAuthor?: boolean;
   includeGroups?: boolean;
   includeComments?: boolean;
+  includeCoords?: boolean;
 }
 
 export interface GetPostsReqDTO {
@@ -50,6 +51,7 @@ export interface GetPostsPostDTO {
   score: number;
   commentCount: number;
   kind: number;
+  userVote?: number;
   // Warning
   warningKind?: number;
   // Info
@@ -63,10 +65,16 @@ export interface GetPostsPostDTO {
   author?: GetPostsAuthorDTO;
   comments?: GetPostsCommentDTO[];
   groups?: GetPostsGroupDTO[];
+  coords?: GetPostsCoordsDTO;
 }
 
 export interface GetPostsResDTO {
   posts: GetPostsPostDTO[];
   hasMoreResults: boolean;
   lastTimestamp?: string;  // DateTime? → string | undefined
+}
+
+export interface GetPostsCoordsDTO {
+  latitude: number,
+  longitude: number
 }

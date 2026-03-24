@@ -21,6 +21,8 @@ public class AppExceptionHandler : IExceptionHandler
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
+        Console.WriteLine(exception);
+
         object problem = exception switch
         {
             AppValidationException ex => _factory.CreateValidationProblemDetails(

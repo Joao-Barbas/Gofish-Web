@@ -16,6 +16,7 @@ namespace GofishApi.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Friendship> Friendships { get; set; }
+        public DbSet<GroupInvite> GroupInvites { get; set; }
         public DbSet<Pin> Pins { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostVote> PostVote { get; set; }
@@ -51,6 +52,30 @@ namespace GofishApi.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             #endregion // Friendship
+            #region GroupInvite
+
+            builder.Entity<GroupInvite>()
+                .HasOne(gi => gi.Requester)
+                .WithMany()
+                .HasForeignKey(gi => gi.RequesterUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<GroupInvite>()
+                .HasOne(gi => gi.Receiver)
+                .WithMany()
+                .HasForeignKey(gi => gi.ReceiverUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<GroupInvite>()
+                .HasOne(gi => gi.Group)
+                .WithMany()
+                .HasForeignKey(gi => gi.GroupId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<GroupInvite>()
+                .HasIndex(gi => new { gi.GroupId, gi.ReceiverUserId, gi.State });
+
+            #endregion // GroupInvites
             #region Pin
 
             builder.Entity<Pin>()
@@ -199,6 +224,7 @@ namespace GofishApi.Data
             SeedCatchPin(builder);
             SeedInfoPin(builder);
             SeedWarnPin(builder);
+            SeedGroupRoles(builder);
         }
 
         private static void SeedUsers(ModelBuilder builder)
@@ -371,6 +397,32 @@ namespace GofishApi.Data
 
             builder.Entity<WarnPin>().HasData(warnPins);
             builder.Entity<Post>().HasData(posts);
+        }
+        private static void SeedGroupRoles(ModelBuilder builder)
+        {
+            var roles = new List<GroupRole>
+    {
+        new GroupRole
+        {
+            Id = "1",
+            Name = "Owner",
+            NormalizedName = "OWNER"
+        },
+        new GroupRole
+        {
+            Id = "2",
+            Name = "Admin",
+            NormalizedName = "ADMIN"
+        },
+        new GroupRole
+        {
+            Id = "3",
+            Name = "Member",
+            NormalizedName = "MEMBER"
+        }
+    };
+
+            builder.Entity<GroupRole>().HasData(roles);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using GofishApi.Enums;
 using GofishApi.Models;
+using System.Net.NetworkInformation;
 
 namespace GofishApi.Dtos;
 
@@ -41,6 +42,7 @@ public record GetPostsPostDTO(
     string? ImageUrl,
     int Score,
     int CommentCount,
+    int? UserVote,
     PinKind Kind,
     // Warning
     WarningKind? WarningKind,
@@ -51,14 +53,13 @@ public record GetPostsPostDTO(
     Species? Species,
     Bait? Bait,
     string? HookSize,
-
     GetPostsAuthorDTO? Author,
     IReadOnlyCollection<GetPostsCommentDTO>? Comments,
     IReadOnlyCollection<GetPostsGroupDTO>? Groups,
     GetPostsCoordsDTO? Coords
 )
 {
-    public static GetPostsPostDTO FromPost(Post post, PostDataRequestDTO? request)
+    public static GetPostsPostDTO FromPost(Post post, PostDataRequestDTO? request, string? currentUserId)
     {
         var warnPin = post.Pin as WarnPin;
         var infoPin = post.Pin as InfoPin;
@@ -71,6 +72,10 @@ public record GetPostsPostDTO(
             post.ImageUrl,
             post.PostVotes.Sum(v => (int)v.Value),
             post.CommentCount,
+            post.PostVotes
+                .Where(v => v.UserId == currentUserId)
+                .Select(v => (int?)v.Value)
+                .FirstOrDefault(),
             post.Pin.Kind,
             // Warning
             warnPin?.WarningKind,

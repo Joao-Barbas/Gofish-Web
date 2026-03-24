@@ -47,7 +47,7 @@ public record GetPinsPinDTO(
     GetPinsPostDTO? Post
     // TODO: GroupDTO? List of group this pin could be part of if group visibility
 ){
-    public static GetPinsPinDTO FromPin(Pin pin, PinDataRequestDTO? request) => new(
+    public static GetPinsPinDTO FromPin(Pin pin, PinDataRequestDTO? request, string? currentUserId) => new(
         pin.Id,
         pin.CreatedAt,
         pin.Visibility,
@@ -55,7 +55,7 @@ public record GetPinsPinDTO(
         request?.IncludeDetails ?? false ? GetPinsPinDetailsDTO.FromPin(pin) : null,
         request?.IncludeGeolocation ?? false ? GetPinsGeolocationDTO.FromPin(pin) : null,
         request?.IncludeAuthor ?? false && pin.AppUser is not null ? GetPinsAuthorDTO.FromPin(pin) : null,
-        request?.IncludePost ?? false && pin.Post is not null ? GetPinsPostDTO.FromPin(pin) : null
+        request?.IncludePost ?? false && pin.Post is not null ? GetPinsPostDTO.FromPin(pin, currentUserId) : null
     );
 };
 
@@ -84,14 +84,20 @@ public record GetPinsPostDTO(
     string? Body = null,
     string? ImageUrl = null,
     int? Score = null, // TODO: Are these really nullable in the future?
-    int? CommentCount = null  // ^^^^
-){
-    public static GetPinsPostDTO FromPin(Pin pin) => new(
+    int? CommentCount = null,
+    int? UserVote = null
+)
+{
+    public static GetPinsPostDTO FromPin(Pin pin, string? currentUserId) => new(
         pin.Post.Id,
         pin.Post.Body,
         pin.Post.ImageUrl,
         pin.Post.PostVotes.Sum(v => (int)v.Value),
-        pin.Post.CommentCount
+        pin.Post.CommentCount,
+        pin.Post.PostVotes
+        .Where(v => v.UserId == currentUserId)
+        .Select(v => (int?)v.Value)
+        .FirstOrDefault()
     );
 };
 

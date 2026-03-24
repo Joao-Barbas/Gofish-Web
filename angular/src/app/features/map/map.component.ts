@@ -69,7 +69,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   allPins = signal<ViewportPinDTO[]>([]);
   private querySubscription?: Subscription;
   private queryValues: UrlQuery | null = null;
-
+  move: boolean = false;
   public get getGeolocationState() { return this.geoService.state(); }
   public get isGeolocationDenied() { return this.geoService.isBad(); }
 
@@ -104,12 +104,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private initMap(): void {
     const view = this.getInitialView();
+    console.log('Initial view:', view);
     mapboxgl.accessToken = MAPBOX_TOKEN;
 
     this.map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/goncalopro2/cmm4ybep5002p01s2eexw84v1',
-      center: [-8.8909328, 38.5260437],
+      center: [view.center[0], view.center[1]], //[-8.8909328, 38.5260437]
       zoom: view.zoom,
       maxZoom: 16,
       minZoom: 4.5,
@@ -247,8 +248,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   zoomIn(): void { this.map.zoomIn({ duration: 300 }); }
   zoomOut(): void { this.map.zoomOut({ duration: 300 }); }
 
-  goToCoords(coords : GeoLocationDTO) {
-    this.map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 16});
+  goToCoords(coords: GeoLocationDTO) {
+    this.map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 16 });
   }
 
   // =========================

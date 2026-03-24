@@ -37,10 +37,11 @@ export class PinDetailPanelComponent {
   isVoting = signal<boolean>(false);
 
   ngOnInit() {
+    const post = this.pinData()?.post;
+    if(!post) return;
 
-    // Vote
-    this.score.set(this.pinData()?.post?.score ?? 1000);
-    console.log("valor do score", this.pinData()?.post?.score);
+    this.score.set(post.score ?? 1000);
+    this.currentVote.set(post.userVote ?? null);
   }
 
   vote(value: 1 | -1) {
