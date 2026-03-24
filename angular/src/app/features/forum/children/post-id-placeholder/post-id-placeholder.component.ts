@@ -75,8 +75,9 @@ export class PostIdPlaceholderComponent {
     if (!body) return;
 
     this.isSubmitting = true;
+
     const dto: CreatePostCommentReqDTO = {
-      id: Number(this.id),
+      postId: Number(this.id),
       body: body
     };
     this.postService.createComment(dto).subscribe({

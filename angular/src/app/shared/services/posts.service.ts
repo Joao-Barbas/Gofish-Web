@@ -29,7 +29,7 @@ export class PostsService {
   }
 
   createComment(dto: CreatePostCommentReqDTO): Observable<CreatePostCommentResDTO> {
-    return this.http.post<CreatePostCommentResDTO>(Api.Post.action('CreateComment'), dto);
+    return this.http.post<CreatePostCommentResDTO>(Api.Post.action("CreateComment"), dto);
   }
 
 }

@@ -81,7 +81,7 @@ export interface GetPostsCoordsDTO {
 
 
 export interface CreatePostCommentReqDTO {
-  id: number;
+  postId: number;
   body: string;
 }
 
