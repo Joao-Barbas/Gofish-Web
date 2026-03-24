@@ -14,6 +14,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using GofishApi.Exceptions;
 
 namespace GofishApi.Controllers;
 
@@ -60,15 +61,30 @@ public class UserProfileController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> PutUserProfile([FromBody] PutUserProfileReqDto dto)
+    [RequestSizeLimit(5_000_000)]
+    public async Task<IActionResult> PutUserProfile([FromForm] PutUserProfileReqDto dto)
     {
+        var allowedTypes = new[] { "image/jpeg", "image/png" };
+
+        if (!allowedTypes.Contains(dto.Avatar.ContentType))
+        {
+            throw new AppValidationException("InvalidFileType", "Allowed file type only include JPEG and PNG.");
+        }
+
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        if (userId is null) return Unauthorized();
         var userProfile = await _context.UserProfiles.FindAsync(userId);
-        if (userProfile is null) return NotFound();
+
+        if (userProfile is null)
+        {
+            return NotFound();
+        }
+        if (userProfile.AvatarUrl is not null)
+        {
+            await _blobStorage.DeleteImageAsync(userProfile.AvatarUrl);
+        }
 
         userProfile.Bio = dto.Bio;
-        userProfile.AvatarUrl = dto.AvatarUrl;
+        userProfile.AvatarUrl = await _blobStorage.UploadUserAvatarAsync(dto.Avatar);
         userProfile.LastUpdateAt = DateTime.UtcNow;
 
         try
@@ -88,15 +104,37 @@ public class UserProfileController : ControllerBase
     }
 
     [HttpPatch]
-    public async Task<IActionResult> PatchUserProfile([FromBody] PatchUserProfileReqDto dto)
+    [RequestSizeLimit(5_000_000)]
+    public async Task<IActionResult> PatchUserProfile([FromForm] PatchUserProfileReqDto dto)
     {
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        if (userId is null) return Unauthorized();
-        var userProfile = await _context.UserProfiles.FindAsync(userId);
-        if (userProfile is null) return NotFound();
+        var allowedTypes = new[] { "image/jpeg", "image/png" };
 
-        userProfile.Bio = dto.Bio ?? userProfile.Bio;
-        userProfile.AvatarUrl = dto.AvatarUrl ?? userProfile.AvatarUrl;
+        if (dto.Avatar is not null && !allowedTypes.Contains(dto.Avatar.ContentType))
+        {
+            throw new AppValidationException("InvalidFileType", "Allowed file type only include JPEG and PNG.");
+        }
+
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var userProfile = await _context.UserProfiles.FindAsync(userId);
+
+        if (userProfile is null)
+        {
+            return NotFound();
+        }
+
+        if (dto.Bio is not null)
+        {
+            userProfile.Bio = dto.Bio;
+        }
+        if (dto.Avatar is not null)
+        {
+            if (userProfile.AvatarUrl is not null)
+            {
+                await _blobStorage.DeleteImageAsync(userProfile.AvatarUrl);
+            }
+            userProfile.AvatarUrl = await _blobStorage.UploadUserAvatarAsync(dto.Avatar);
+        }
+
         userProfile.LastUpdateAt = DateTime.UtcNow;
 
         try

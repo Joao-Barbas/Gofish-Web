@@ -53,12 +53,12 @@ public record GetUserProfileSettingsResDto(
 
 public record PutUserProfileReqDto(
     [Required] string Bio,
-    [Required] string AvatarUrl
+    [Required] IFormFile Avatar
 )
 { }
 
 public record PatchUserProfileReqDto(
     string? Bio,
-    string? AvatarUrl
+    IFormFile? Avatar
 )
 { }
