@@ -16,6 +16,15 @@ export interface GetUserProfileResDTO {
   lastActiveAt: string;
 }
 
+export interface GetUserProfileSettingsReqDTO {
+  // Unused
+}
+
+export interface GetUserProfileSettingsResDTO {
+  bio?: string,
+  avatarUrl?: string
+}
+
 export interface PutUserProfileReqDTO {
   bio: string;
   avatarUrl: string;

@@ -35,6 +35,22 @@ public record GetUserProfileResDto(
     );
 }
 
+public record GetUserProfileSettingsReqDto(
+// Unused
+)
+{ }
+
+public record GetUserProfileSettingsResDto(
+    string? Bio,
+    string? AvatarUrl
+)
+{
+    public static GetUserProfileSettingsResDto FromEntity(UserProfile e) => new(
+        e.Bio,
+        e.AvatarUrl
+    );
+}
+
 public record PutUserProfileReqDto(
     [Required] string Bio,
     [Required] string AvatarUrl

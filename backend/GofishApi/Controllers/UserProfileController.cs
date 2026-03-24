@@ -13,6 +13,7 @@ using GofishApi.Extensions;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace GofishApi.Controllers;
 
@@ -24,15 +25,19 @@ public class UserProfileController : ControllerBase
     private readonly ILogger<UserProfileController> _logger;
     private readonly IBlobStorageService _blobStorage;
     private readonly AppDbContext _context;
+    private readonly UserManager<AppUser> _userManager;
 
     public UserProfileController(
         ILogger<UserProfileController> logger,
         IBlobStorageService blobStorage,
-        AppDbContext context
-    ){
+        AppDbContext context,
+        UserManager<AppUser> userManager
+    )
+    {
         _logger = logger;
         _blobStorage = blobStorage;
         _context = context;
+        _userManager = userManager;
     }
 
     [HttpGet("{id}")]
@@ -43,6 +48,15 @@ public class UserProfileController : ControllerBase
             .FirstOrDefaultAsync(p => p.UserId == id);
         if (userProfile is null) return NotFound();
         return Ok(GetUserProfileResDto.FromEntity(userProfile));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetUserProfileSettings()
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.UserId == userId);
+        if (userProfile is null) return NotFound();
+        return Ok(GetUserProfileSettingsResDto.FromEntity(userProfile));
     }
 
     [HttpPut]
