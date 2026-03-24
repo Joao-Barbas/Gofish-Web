@@ -4,7 +4,7 @@ import { GetPostsPostDTO, GetPostsReqDTO, GetPostsResDTO } from '@gofish/shared/
 import { PostsService } from '@gofish/shared/services/posts.service';
 import { TimeAgoPipe } from "../../../../shared/pipes/time-ago.pipe";
 import { PinKind } from '@gofish/shared/models/pin.model';
-import { EnumComponent } from "@gofish/enum/enum.component";
+import { EnumComponent } from "@gofish/shared/components/enum/enum.component";
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { PinService } from '@gofish/features/map/services/pin.service';
 
@@ -68,4 +68,7 @@ export class ForumPostComponent {
     });
   }
 
+  goToPost() {
+    this.router.navigate(['/forum/post', this.postData()?.id]);
+  }
 }

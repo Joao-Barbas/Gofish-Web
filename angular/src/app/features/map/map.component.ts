@@ -43,7 +43,6 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5
     RouterOutlet,
     NgxSonnerToaster,
     ClusterDetailsComponent,
-    ClickOutsideDirective
   ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
@@ -153,7 +152,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     return {
-      center: vLat !== null && vLng !== null ? [vLng, vLat] as [number, number] : [38.5260437, -8.8909328],
+      center: vLat !== null && vLng !== null ? [vLng, vLat] as [number, number] : [-8.8909328, 38.5260437],
       zoom: z ?? 5
     };
   }
@@ -248,8 +247,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   zoomIn(): void { this.map.zoomIn({ duration: 300 }); }
   zoomOut(): void { this.map.zoomOut({ duration: 300 }); }
 
-  goToCoords(coords: GeoLocationDTO) {
+  goToCoords(coords: Coords) {
     this.map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 16 });
+    console.log("aqui");
   }
 
   // =========================

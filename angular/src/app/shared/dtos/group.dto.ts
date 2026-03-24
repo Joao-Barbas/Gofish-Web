@@ -1,3 +1,6 @@
+import { GetPostsPostDTO } from "@gofish/shared/dtos/get-post.dto";
+import { GetGroupMemberDTO } from "@gofish/shared/dtos/members.dto";
+
 export interface GetGroupReqDTO {
   groupId: number;
   dataRequest?: GroupDataRequestDTO;
@@ -19,6 +22,8 @@ export interface GetGroupDTO {
   description?: string;
   memberCount: number;
   postCount: number;
+  posts?: GetPostsPostDTO[]
+  members?: GetGroupMemberDTO[]
 }
 
 export interface CreateGroupReqDTO {

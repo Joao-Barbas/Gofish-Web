@@ -72,7 +72,7 @@ public static class WebApplicationBuilderExtensions
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero,
                 NameClaimType = JwtRegisteredClaimNames.UniqueName,
-                RoleClaimType = ClaimTypes.Role
+                RoleClaimType = "role"//ClaimTypes.Role
             };
         })
         .AddCookie(IdentityConstants.ExternalScheme) // Needed for OAuth callback state

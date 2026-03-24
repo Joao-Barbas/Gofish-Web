@@ -11,10 +11,11 @@ import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { JsonPipe } from '@angular/common';
 import { PinDetailPanelComponent } from '@gofish/features/map/components/pin-detail-panel/pin-detail-panel.component';
+import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 
 @Component({
   selector: 'app-cluster-details',
-  imports: [TimeAgoPipe, JsonPipe, PinDetailPanelComponent],
+  imports: [TimeAgoPipe, JsonPipe, PinDetailPanelComponent, ClickOutsideDirective],
   templateUrl: './cluster-details.component.html',
   styleUrl: './cluster-details.component.css',
 })

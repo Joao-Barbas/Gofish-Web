@@ -71,7 +71,7 @@
 
 .gf-card-listing-tabs {
   box-shadow: none;
-  border-radius: var(--gf-16);
+  border-radius: var(--gf-16) var(--gf-16) 0 0;
   padding: 0;
 }
 
@@ -84,4 +84,14 @@
 
 .group-forum-feed {
   width: 100%;
+}
+
+.group-settings-wrapper {
+  position: relative;
+}
+
+.active-tab {
+  border-bottom: 2px solid #007bff;
+  color: #007bff !important;
+  font-weight: bold;
 }

@@ -1,7 +1,8 @@
 :host {
   display: flex;
-  gap: var(--gf-8);
   flex-direction: column;
+  gap: var(--gf-8);
+  width: 100%;
 
 }
 

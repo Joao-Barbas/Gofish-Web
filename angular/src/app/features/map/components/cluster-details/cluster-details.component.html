@@ -1,6 +1,6 @@
 <div class="sidebar-wrapper">
 
-  <aside class="pin-side-panel scroll-container">
+  <aside class="pin-side-panel scroll-container" (clickOutside)="closePanel()">
 
     <div class="d-flex align-items-center justify-content-between pin-side-panel-header">
       <span> Pins aggregated here:</span>
@@ -14,7 +14,7 @@
     </div>
 
     @for (pin of pinsData(); track pin.id) {
-    <app-pin-detail-panel [pinData]= pin>
+    <app-pin-detail-panel [pinData]= pin (coords)="onPreviewClick($event)">
     </app-pin-detail-panel>
     }
 

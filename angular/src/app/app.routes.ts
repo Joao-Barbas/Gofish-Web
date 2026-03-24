@@ -80,19 +80,19 @@ export const routes: Routes = [
       { path: '', redirectTo: PathSegment.FORUM_DISCOVER, pathMatch: 'full' },
       { path: PathSegment.FORUM_DISCOVER, loadComponent: () => import('@gofish/features/forum/children/discover/discover.component').then(d => d.DiscoverComponent) },
       { path: PathSegment.FORUM_FROM_FRIENDS, loadComponent: () => import('@gofish/features/forum/children/from-friends/from-friends.component').then(f => f.FromFriendsComponent) },
-      { path: `${PathSegment.FORUM_MY_GROUPS}/${PathSegment.CREATE_GROUP}`, loadComponent: () => import('@gofish/features/forum/children/my-groups/group-create/group-create.component').then(m => m.GroupCreateComponent)},
-      { path: PathSegment.FORUM_MY_GROUPS, loadComponent: () => import('@gofish/features/forum/children/my-groups/my-groups.component').then(m => m.MyGroupsComponent)},
+      { path: `${PathSegment.FORUM_MY_GROUPS}/${PathSegment.CREATE_GROUP}`, loadComponent: () => import('@gofish/features/forum/children/my-groups/group-create/group-create.component').then(m => m.GroupCreateComponent) },
+      { path: PathSegment.FORUM_MY_GROUPS, loadComponent: () => import('@gofish/features/forum/children/my-groups/my-groups.component').then(m => m.MyGroupsComponent) },
 
 
       // Rota do grupo com filhos (posts e members)
       {
-        path: `${PathSegment.FORUM_GROUPS}/:id`,
+        path: `${PathSegment.FORUM_MY_GROUPS}/:id`,
         loadComponent: () => import('@gofish/features/forum/children/groups/groups.component').then(g => g.GroupsComponent),
-        children: [
+        /* children: [
           { path: '', redirectTo: 'posts', pathMatch: 'full' },
           { path: 'posts', loadComponent: () => import('@gofish/features/forum/children/groups/children/group-posts-placeholder/group-posts-placeholder.component').then(c => c.GroupPostsPlaceholderComponent) },
           { path: 'members', loadComponent: () => import('@gofish/features/forum/children/groups/children/group-members-placeholder/group-members-placeholder.component').then(c => c.GroupMembersPlaceholderComponent) },
-        ]
+        ] */
       },
 
       // TODO: Remove - testing purposes

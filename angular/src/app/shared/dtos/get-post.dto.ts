@@ -78,3 +78,13 @@ export interface GetPostsCoordsDTO {
   latitude: number,
   longitude: number
 }
+
+
+export interface CreatePostCommentReqDTO {
+  postId: number;
+  body: string;
+}
+
+export interface CreatePostCommentResDTO {
+  id: number;
+}

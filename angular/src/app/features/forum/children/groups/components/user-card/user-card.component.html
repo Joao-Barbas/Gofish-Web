@@ -1,12 +1,16 @@
+@if (member(); as member) {
 <div class="d-flex align-items-center justify-content-between gf-card-user-card">
 
   <div class="d-flex align-items-center user-photo-username-wrapper">
 
-    <img src="assets/images/placeholder_profile_pic.png" class="rounded-circle user-photo">
-
+    @if (member.avatarUrl) {
+    <img [src]="member.avatarUrl" class="rounded-circle user-photo">
+    } @else {
+      <img src="assets/images/placeholder_profile_pic.png" class="rounded-circle user-photo">
+    }
     <div class="d-flex flex-column user-name-handle-name-wrapper">
-      <span class="user-name">John Doe</span>
-      <span class="user-handle-name">@JohnDoe</span>
+      <span class="user-name">{{member.userName}}</span>
+      <span class="user-handle-name">@{{member.userName}}</span>
     </div>
   </div>
 
@@ -22,3 +26,4 @@
   </button>
 
 </div>
+}

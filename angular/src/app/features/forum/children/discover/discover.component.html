@@ -1,3 +1,5 @@
+@if(allFeedPosts()) {
+
 @for (post of allFeedPosts()?.posts; track post.id) {
 <app-forum-post [postData]="post"></app-forum-post>
 }
@@ -6,4 +8,8 @@
 <div class="show-more" (click)="showMore()">
   <button class="show-more-text">Show more</button>
 </div>
+}
+
+} @else {
+<gf-loading-spinner></gf-loading-spinner>
 }
