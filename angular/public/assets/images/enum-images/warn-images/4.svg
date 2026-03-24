@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <title>Shallow water</title>
+  <rect width="128" height="128" rx="20" fill="#EFF6FF"/>
+  <path d="M16 86c10 6 18 6 28 0s18-6 28 0 18 6 28 0 18-6 28 0" fill="none" stroke="#60A5FA" stroke-width="8" stroke-linecap="round"/>
+  <path d="M64 24v42" stroke="#1E3A8A" stroke-width="8" stroke-linecap="round"/>
+  <path d="M48 50l16 16 16-16" fill="none" stroke="#1E3A8A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="24" y1="100" x2="104" y2="100" stroke="#92400E" stroke-width="8" stroke-linecap="round"/>
+</svg>

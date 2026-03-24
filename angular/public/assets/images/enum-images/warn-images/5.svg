@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <title>High waves</title>
+  <rect width="128" height="128" rx="20" fill="#EFF6FF"/>
+  <path d="M8 76c10-20 22-30 36-30 18 0 18 22 30 22 8 0 14-6 20-18 10 6 18 18 26 36" fill="none" stroke="#2563EB" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M20 94c10 8 18 8 28 0s18-8 28 0 18 8 28 0 18-8 28 0" fill="none" stroke="#60A5FA" stroke-width="8" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <title>Artificial</title>
+  <rect width="128" height="128" rx="20" fill="#F8FAFC"/>
+  <rect x="34" y="40" width="60" height="48" fill="#9CA3AF"/><line x1="34" y1="40" x2="94" y2="88" stroke="#4B5563" stroke-width="4"/>
+</svg>

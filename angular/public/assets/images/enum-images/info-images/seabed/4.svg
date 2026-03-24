@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <title>Rock</title>
+  <rect width="128" height="128" rx="20" fill="#F8FAFC"/>
+  <polygon points="30,90 50,40 90,50 100,90" fill="#6B7280"/>
+</svg>

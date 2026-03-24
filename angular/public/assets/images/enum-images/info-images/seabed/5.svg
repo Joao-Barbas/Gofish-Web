@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <title>Gravel</title>
+  <rect width="128" height="128" rx="20" fill="#F8FAFC"/>
+  <circle cx="20" cy="80" r="4" fill="#9CA3AF"/><circle cx="30" cy="70" r="4" fill="#9CA3AF"/><circle cx="40" cy="80" r="4" fill="#9CA3AF"/><circle cx="50" cy="70" r="4" fill="#9CA3AF"/><circle cx="60" cy="80" r="4" fill="#9CA3AF"/><circle cx="70" cy="70" r="4" fill="#9CA3AF"/><circle cx="80" cy="80" r="4" fill="#9CA3AF"/><circle cx="90" cy="70" r="4" fill="#9CA3AF"/>
+</svg>

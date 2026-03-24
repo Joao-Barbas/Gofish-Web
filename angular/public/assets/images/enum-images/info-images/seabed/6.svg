@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <title>Coral</title>
+  <rect width="128" height="128" rx="20" fill="#F8FAFC"/>
+  <path d="M64 90V40M64 60l-20-10M64 60l20-10M64 75l-15 10M64 75l15 10" stroke="#FB7185" stroke-width="6" fill="none"/>
+</svg>
