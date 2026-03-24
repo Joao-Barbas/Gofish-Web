@@ -20,63 +20,66 @@
 
       </div>
       <div class="group-settings-wrapper">
-      <button class="gf-badge-group-settings" (click)="openOptions()">
+        <button class="gf-badge-group-settings" (click)="openOptions()">
 
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis">
-          <circle cx="12" cy="12" r="1" />
-          <circle cx="19" cy="12" r="1" />
-          <circle cx="5" cy="12" r="1" />
-        </svg>
-      </button>
-      <app-group-settings-popover></app-group-settings-popover>
-    </div>
-  </div>
-
-  <!-- Group Stats -->
-
-  <div class="group-stats">
-
-    <div class="gf-badge-text">
-      <span>{{group.memberCount}} Members</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis">
+            <circle cx="12" cy="12" r="1" />
+            <circle cx="19" cy="12" r="1" />
+            <circle cx="5" cy="12" r="1" />
+          </svg>
+        </button>
+        <app-group-settings-popover></app-group-settings-popover>
+      </div>
     </div>
 
-    <div class="gf-badge-text">
-      <span>{{group.postCount}} Posts</span>
+    <!-- Group Stats -->
+
+    <div class="group-stats">
+
+      <div class="gf-badge-text">
+        <span>{{group.memberCount}} Members</span>
+      </div>
+
+      <div class="gf-badge-text">
+        <span>{{group.postCount}} Posts</span>
+      </div>
+
     </div>
 
+    <!-- Group Description -->
+
+    <div class="group-description">
+
+      <p class="group-description-text">
+        {{group.description}}
+      </p>
+
+    </div>
+
+    <!-- Group Listing Tabs -->
+    <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
+
+      <a routerLinkActive="active" class="d-flex justify-content-center listing-tabs gf-text-selection">
+        <span class="listing-tab-text">Posts</span>
+      </a>
+
+      <a routerLinkActive="active" class="d-flex justify-content-center listing-tabs gf-text-selection">
+        <span class="listing-tab-text">Members</span>
+      </a>
+    </div>
+
+    <app-group-members-placeholder [members] = "group.members!"></app-group-members-placeholder>
+
   </div>
+  <!-- / Group Header Info -->
 
-  <!-- Group Description -->
 
-  <div class="group-description">
-
-    <p class="group-description-text">
-      {{group.description}}
-    </p>
+  <div class="group-forum-feed">
+    <router-outlet></router-outlet>
 
   </div>
-
-  <!-- Group Listing Tabs -->
-  <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
-    @for (n of navPaths; track n.path) {
-    <a [routerLink]="n.path" routerLinkActive="active"
-      class="d-flex justify-content-center listing-tabs gf-text-selection">
-      <span class="listing-tab-text">{{ n.label }}</span>
-    </a>
-    }
-  </div>
-
-
-</div>
-<!-- / Group Header Info -->
-
-
-<div class="group-forum-feed">
-  <router-outlet></router-outlet>
-
-</div>
-} @else {
-<gf-loading-spinner></gf-loading-spinner>
-}
+  } @else {
+  <gf-loading-spinner></gf-loading-spinner>
+  }
 </div>

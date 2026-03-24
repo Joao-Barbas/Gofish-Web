@@ -8,6 +8,7 @@ import { GroupsService } from '@gofish/shared/services/groups.service';
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { GroupSettingsPopoverComponent } from '@gofish/features/forum/children/groups/components/group-settings-popover/group-settings-popover.component';
+import { GroupMembersPlaceholderComponent } from "./components/group-members-placeholder/group-members-placeholder.component";
 
 
 type NavPath = {
@@ -17,22 +18,16 @@ type NavPath = {
 
 @Component({
   selector: 'app-groups',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, LoadingSpinnerComponent, GroupSettingsPopoverComponent],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, LoadingSpinnerComponent, GroupSettingsPopoverComponent, GroupMembersPlaceholderComponent],
   templateUrl: './groups.component.html',
   styleUrl: './groups.component.css',
 })
 export class GroupsComponent {
   private readonly route= inject(ActivatedRoute);
   private readonly groupsService = inject(GroupsService);
-  private readonly router = inject(Router);
   private readonly popupService = inject(PopupService);
-  public currentPath: WritableSignal<string> = signal(this.router.url);
-  groupData = signal<GetGroupResDTO | null>(null);
+  protected groupData = signal<GetGroupResDTO | null>(null);
 
-  public navPaths: NavPath[] = [
-    { path: 'group-post-redirect-testing', label: 'Posts' },
-    { path: Path.FORUM_GROUPS_test_members, label: 'Members' },
-  ];
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -54,20 +49,14 @@ export class GroupsComponent {
         console.log(err);
       }
     });
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      takeUntilDestroyed()
-    ).subscribe((event: NavigationEnd) => {
-      this.currentPath.set(event.urlAfterRedirects);
-    });
+
   }
 
-  public onNavSelectChange(event: Event) {
-    var select = event.target as HTMLSelectElement;
-    this.router.navigate([select.value]);
-  }
+
 
   openOptions() {
     this.popupService.open('group-options');
   }
+
+
 }
