@@ -58,3 +58,9 @@
   max-width: 250px;
   word-wrap: break-word;
 }
+
+.background {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10%;
+}
