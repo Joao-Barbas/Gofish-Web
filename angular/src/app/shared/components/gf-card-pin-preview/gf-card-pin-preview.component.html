@@ -6,7 +6,7 @@
       <img [src]="authorProfilePhoto" class="rounded-circle pin-author-profile-photo">
       <span class="user-name-text">{{ authorName }}</span>
       <span class="separator">•</span>
-      <span class="pin-time-ago">{{ timeAgo }}</span>
+      <span class="pin-time-ago">{{ timeAgo | timeAgo }}</span>
     </div>
 
     <div class="badge-wrapper">

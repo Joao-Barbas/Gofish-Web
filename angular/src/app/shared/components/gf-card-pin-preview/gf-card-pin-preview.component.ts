@@ -10,12 +10,13 @@ import { Bait } from '../../enums/bait.enums';
 import { AccessDifficulty } from '../../enums/access-difficulty.enums';
 import { Seabed } from '../../enums/seabed.enum';
 import { WarningKind } from '../../enums/warning-kind.enum';
+import { TimeAgoPipe } from "../../pipes/time-ago.pipe";
 
 export type PinType = 'catch' | 'info' | 'warning';
 
 @Component({
   selector: 'app-gf-card-pin-preview',
-  imports: [NgClass],
+  imports: [NgClass, TimeAgoPipe],
   templateUrl: './gf-card-pin-preview.component.html',
   styleUrl: './gf-card-pin-preview.component.css',
 })
@@ -75,6 +76,7 @@ export class GfCardPinPreviewComponent implements OnInit {
   }
 
   getEnumDisplayName(options: EnumDTO[], value: number): string {
+    console.log('options:', options, 'value:', value);
     if (value === null) return '';
     const option = options.find(opt => opt.value === value);
     return option ? option.display : '';
