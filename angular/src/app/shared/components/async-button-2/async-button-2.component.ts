@@ -2,8 +2,8 @@
 
 import { Component, computed, input } from '@angular/core';
 
-export type AsyncButtonState = 'idle' | 'busy' | 'success';
-export type AsyncButtonConfig<T> = { idle?: T; busy?: T; success?: T; }
+export type AsyncButtonState = 'idle' | 'busy' | 'success' | 'disabled';
+export type AsyncButtonConfig<T> = { idle?: T; busy?: T; success?: T; disabled?: T; }
 
 /**
  * A button that reflects asynchronous operation state (idle → busy → success).
@@ -38,12 +38,14 @@ export class AsyncButtonComponent {
   type = input<string | null>(null);
   form = input<string | null>(null);
 
-  readonly idle    = computed<boolean>(() => this.state() === 'idle');
-  readonly busy    = computed<boolean>(() => this.state() === 'busy');
-  readonly success = computed<boolean>(() => this.state() === 'success');
+  readonly idle     = computed<boolean>(() => this.state() === 'idle');
+  readonly busy     = computed<boolean>(() => this.state() === 'busy');
+  readonly success  = computed<boolean>(() => this.state() === 'success');
+  readonly disabled = computed<boolean>(() => this.state() === 'disabled');
 
   readonly state = computed<AsyncButtonState>(() => {
     let s = this.states();
+    if (s.disabled) return 'disabled';
     if (s.success) return 'success';
     if (s.busy) return 'busy';
     if (s.idle) return 'idle';
@@ -51,6 +53,8 @@ export class AsyncButtonComponent {
   });
 
   readonly label = computed<string>(() => {
-    return this.labels()[this.state()] ?? 'Submit';
+    return this.labels()[this.state()]
+      ?? this.labels()['idle']
+      ?? 'Submit';
   });
 }

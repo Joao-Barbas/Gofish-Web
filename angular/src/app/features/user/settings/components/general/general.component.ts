@@ -17,6 +17,8 @@ import { BusyState } from '@gofish/shared/core/busy-state';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { HttpErrorResponse } from '@angular/common/http';
 import { toast } from 'ngx-sonner';
+import { ModalService } from '@gofish/shared/services/modal.service';
+import { UsernameChangeModalComponent } from "./components/username-change-modal.component";
 
 @Component({
   selector: 'app-general',
@@ -28,6 +30,7 @@ import { toast } from 'ngx-sonner';
     CdkTextareaAutosize,
     FormsModule,
     AsyncButtonComponent,
+    UsernameChangeModalComponent
 ],
   templateUrl: './general.component.html',
   styleUrl: './general.component.css',
@@ -38,6 +41,7 @@ export class GeneralComponent {
   readonly formBuilder    = inject(FormBuilder);
   readonly userProfileApi = inject(UserProfileApi);
   readonly userApi        = inject(UserApi);
+  readonly modalService   = inject(ModalService);
 
   readonly loadingState = new LoadingState();
   readonly busyState    = new BusyState();
@@ -140,4 +144,12 @@ export class GeneralComponent {
   }
 
   // End avatar
+  // Modal events
+
+  onUsernameChange(username: string) {
+    if (!this.userSettings.hasValue()) return;
+    this.userSettings.value().userName = username;
+  }
+
+  // End modals events
 }

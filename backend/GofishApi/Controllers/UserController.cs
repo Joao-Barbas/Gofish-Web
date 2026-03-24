@@ -134,6 +134,7 @@ public class UserController : ControllerBase
         // TODO: Email change auto verifies this way
         // TODO: Implement proper change email flow: change -> send confirm email -> confirm
 
+        await transaction.CommitAsync();
         return Ok();
     }
 

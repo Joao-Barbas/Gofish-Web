@@ -562,6 +562,77 @@ h6 {
 
 /* Inputs */
 /* Modals */
+
+.gf-modal-backdrop {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  z-index: var(--gf-z-backdrop);
+}
+
+.gf-modal-shell {
+  background-color: var(--dark-bg);
+  box-shadow: var(--gf-shadow-lift-sm);
+  width: 90%;
+  padding: var(--gf-16);
+}
+
+.gf-modal-close-button {
+  background: var(--dark-bg-light);
+  box-shadow: var(--gf-shadow-lift-sm);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  color: var(--dark-text-muted);
+  width: 36px;
+  height: 36px;
+  transition: box-shadow .2s ease, color .2s ease;
+
+  &:hover {
+    color: var(--dark-text);
+    box-shadow: var(--gf-shadow-lift-md);
+  }
+
+  & > svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.gf-modal-inputs-form {
+  & label {
+    display: block;
+    margin-bottom: var(--gf-4);
+    color: var(--dark-text-muted);
+    font-size: var(--gf-12);
+  }
+
+  & input {
+    width: 100%;
+    height: var(--gf-32);
+    background-color: var(--dark-bg-dark);
+    box-shadow: none;
+    font-size: var(--gf-text-sm);
+    color: var(--dark-text);
+    border: none;
+    outline: none;
+    border-radius: var(--gf-8);
+    padding: var(--gf-8);
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 0 0 2px var(--gf-primary);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px var(--gf-primary);
+    }
+  }
+}
+
 /* Badges */
 
 .gf-badge,
@@ -618,6 +689,12 @@ h6 {
 /* Loaders */
 /* Alerts / Toasts */
 /* Separators */
+
+.gf-modal-separator {
+  border-top: calc(1rem / 16) solid var(--dark-bg-light);
+  margin: 0 16px;
+}
+
 /* Icons / Svgs */
 
 /* Backgrounds */
