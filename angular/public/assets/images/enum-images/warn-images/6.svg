@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <title>Dangerous animals</title>
-  <rect width="128" height="128" rx="20" fill="#FEF2F2"/>
-  <circle cx="64" cy="64" r="42" fill="#FCA5A5" stroke="#B91C1C" stroke-width="8"/>
-  <path d="M64 38l8 16 18 2-13 12 4 18-17-9-17 9 4-18-13-12 18-2 8-16Z" fill="#7F1D1D"/>
-  <path d="M22 106 106 22" stroke="#DC2626" stroke-width="8" stroke-linecap="round"/>
-</svg>

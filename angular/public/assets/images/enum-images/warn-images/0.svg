@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <title>Strong currents</title>
-  <rect width="128" height="128" rx="20" fill="#EAF6FF"/>
-  <path d="M12 44c12 8 20 8 32 0s20-8 32 0 20 8 32 0 20-8 32 0" fill="none" stroke="#1D4ED8" stroke-width="8" stroke-linecap="round"/>
-  <path d="M12 64c12 8 20 8 32 0s20-8 32 0 20 8 32 0 20-8 32 0" fill="none" stroke="#2563EB" stroke-width="8" stroke-linecap="round"/>
-  <path d="M12 84c12 8 20 8 32 0s20-8 32 0 20 8 32 0 20-8 32 0" fill="none" stroke="#60A5FA" stroke-width="8" stroke-linecap="round"/>
-  <path d="M96 26l20 10-20 10" fill="none" stroke="#DC2626" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>

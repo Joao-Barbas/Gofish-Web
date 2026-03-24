@@ -14,7 +14,7 @@
 .image {
   width: var(--gf-42);
   height: var(--gf-42);
-  filter: brightness(0) invert(1); /** Put color of svg in white*/
+  /** filter: brightness(0) invert(1);  Put color of svg in white*/
 }
 
 .type-text {
