@@ -52,7 +52,7 @@ public record GetGroupDTO(
             .ToList() : null,
         request?.IncludeMembers ?? true
             ? group.GroupUsers?
-                .Select(gu => GetGroupMemberDTO.FromUser(gu.AppUser))
+                .Select(gu => GetGroupMemberDTO.FromGroupUser(gu))
                 .ToList()
             : null
     );
@@ -64,13 +64,15 @@ public record GetGroupDTO(
     public record GetGroupMemberDTO(
         string Id,
         string UserName,
+        string UserRole,
         string? AvatarUrl
     )
     {
-        public static GetGroupMemberDTO FromUser(AppUser user) => new(
-            user.Id,
-            user.UserName ?? "",
-            user.UserProfile.AvatarUrl
+        public static GetGroupMemberDTO FromGroupUser(GroupUser gu) => new(
+            gu.UserId,
+            gu.AppUser.UserName ?? "",
+            gu.Role.Name,
+            gu.AppUser.UserProfile.AvatarUrl
         );
     }
 
