@@ -96,7 +96,7 @@ export class AuthService {
   readonly isUser         = computed<boolean>(() => this.hasRole('User'));
   readonly isExternalUser = computed<boolean>(() => this.loginProvider() !== 'Local');
 
-  
+
   getUserName() {
     return this.userName()!.toString();
   }
