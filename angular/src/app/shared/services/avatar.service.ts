@@ -5,5 +5,5 @@ import { DEFAULT_AVATAR } from '@gofish/shared/constants';
   providedIn: 'root',
 })
 export class AvatarService {
-  resolve(url?: string): string { return url ?? DEFAULT_AVATAR; }
+  resolve(url: string | undefined | null): string { return url ?? DEFAULT_AVATAR; }
 }

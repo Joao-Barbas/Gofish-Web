@@ -21,10 +21,16 @@ export class UserProfileApi {
   }
 
   public putUserProfile(dto: PutUserProfileReqDTO): Observable<void> {
-    return this.http.put<void>(Api.UserProfile.action('PutUserProfile'), dto);
+    const formData = new FormData();
+    formData.append('bio', dto.bio);
+    formData.append('avatar', dto.avatar);
+    return this.http.put<void>(Api.UserProfile.action('PutUserProfile'), formData);
   }
 
   public patchUserProfile(dto: PatchUserProfileReqDTO): Observable<void> {
-    return this.http.patch<void>(Api.UserProfile.action('PatchUserProfile'), dto);
+    const formData = new FormData();
+    if (dto.bio != null) formData.append('bio', dto.bio);
+    if (dto.avatar) formData.append('avatar', dto.avatar);
+    return this.http.patch<void>(Api.UserProfile.action('PatchUserProfile'), formData);
   }
 }

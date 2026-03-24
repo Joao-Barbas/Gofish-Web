@@ -27,10 +27,10 @@ export interface GetUserProfileSettingsResDTO {
 
 export interface PutUserProfileReqDTO {
   bio: string;
-  avatarUrl: string;
+  avatar: File;
 }
 
 export interface PatchUserProfileReqDTO {
   bio?: string;
-  avatarUrl?: string;
+  avatar?: File;
 }
