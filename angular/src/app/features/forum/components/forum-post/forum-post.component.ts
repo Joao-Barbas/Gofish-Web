@@ -68,4 +68,7 @@ export class ForumPostComponent {
     });
   }
 
+  goToPost() {
+    this.router.navigate(['/forum/post', this.postData()?.id]);
+  }
 }

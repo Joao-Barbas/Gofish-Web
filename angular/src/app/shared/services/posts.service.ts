@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Api } from '@gofish/shared/constants';
 import { GetFeedReqDTO, GetFeedResDTO } from '@gofish/shared/dtos/get-feed.dto';
-import { GetPostsReqDTO, GetPostsResDTO } from '@gofish/shared/dtos/get-post.dto';
+import { CreatePostCommentReqDTO, CreatePostCommentResDTO, GetPostsReqDTO, GetPostsResDTO } from '@gofish/shared/dtos/get-post.dto';
 import { VotePostDTO } from '@gofish/shared/dtos/vote-post.dto';
 import { Observable } from 'rxjs';
 
@@ -26,6 +26,10 @@ export class PostsService {
 
   postVote(postId: number, dto: VotePostDTO): Observable<void> {
     return this.http.post<void>(Api.Post.action(`PostVote/${postId}`), dto);
+  }
+
+  createComment(dto: CreatePostCommentReqDTO): Observable<CreatePostCommentResDTO> {
+    return this.http.post<CreatePostCommentResDTO>(Api.Post.action('CreateComment'), dto);
   }
 
 }
