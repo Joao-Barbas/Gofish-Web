@@ -19,9 +19,14 @@
   <div class="quick-view-grid">
 
     <!-- Quick View - Average Number of Published Pins-->
-    <app-gf-card-pin-preview></app-gf-card-pin-preview>
-    <app-gf-card-pin-preview></app-gf-card-pin-preview>
-    <app-gf-card-pin-preview></app-gf-card-pin-preview>
+    <app-gf-card-pin-preview pinType="catch" authorName="João Silva" timeAgo="9 hours" [votes]="33" [comments]="12"
+      [species]="Species.Tuna" [bait]="Bait.Worm" hookSize="4/0" />
+
+    <app-gf-card-pin-preview pinType="info" authorName="João Silva" timeAgo="2 hours" [votes]="10" [comments]="5"
+      [accessDifficulty]="AccessDifficulty.High" [seabed]="Seabed.Rock" />
+
+    <app-gf-card-pin-preview pinType="warning" authorName="João Silva" timeAgo="1 hour" [votes]="7" [comments]="3"
+      [warningKind]="WarningKind.StrongCurrents" />
 
   </div>
 

@@ -1,151 +1,194 @@
 <div class="gf-card-pin-preview">
 
-  <!-- #region top -->
+  <!-- TOP -->
   <div class="top-wrapper">
     <div class="pin-user-wrapper">
-
-      <img src="assets/images/placeholder_profile_pic.png" class="rounded-circle pin-author-profile-photo">
-
-      <span class="user-name-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae, vel impedit aperiam
-        cum ipsam ad fugit repudiandae reiciendis vero totam ducimus quia incidunt ab harum quos ex distinctio rerum
-        explicabo.</span>
-
+      <img [src]="authorProfilePhoto" class="rounded-circle pin-author-profile-photo">
+      <span class="user-name-text">{{ authorName }}</span>
       <span class="separator">•</span>
-      <span class="pin-time-ago">9 hours</span>
-
+      <span class="pin-time-ago">{{ timeAgo }}</span>
     </div>
 
     <div class="badge-wrapper">
 
-
+      <!-- Votos -->
       <div class="gf-badge-pin-preview">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-thumbs-up-icon lucide-thumbs-up">
+          stroke-linecap="round" stroke-linejoin="round">
           <path
             d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
           <path d="M7 10v12" />
         </svg>
-
-        <span>33</span>
+        <span>{{ votes }}</span>
       </div>
 
+      <!-- Comentários (pin normal) | Reports (reported pin) -->
       <div class="gf-badge-pin-preview">
-
-        <!-- #region If is not "reported Pin" (on by default) -->
-
+        @if (!isReportedPin) {
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-message-circle-icon lucide-message-circle">
+          stroke-linecap="round" stroke-linejoin="round">
           <path
             d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
         </svg>
-        <span>33</span>
-
-        <!-- #endregion -->
-
-        <!-- #region If is "reported Pin"
-            it is the number of reports this pin has received
-        -->
-        <!--
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="lucide lucide-flag-icon lucide-flag">
-        <path
-        d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />
-      </svg>
-      <span>33</span>
-        -->
-        <!-- #endregion -->
-
+        <span>{{ comments }}</span>
+        } @else {
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path
+            d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />
+        </svg>
+        <span>{{ reportNumber }}</span>
+        }
       </div>
 
+      <!-- Botão de ações -->
       <button class="gf-badge-pin-preview">
-
-        <!-- #region If is not "reported Pin" (on by default) -->
-
+        @if (!isReportedPin) {
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis">
+          stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="1" />
           <circle cx="19" cy="12" r="1" />
           <circle cx="5" cy="12" r="1" />
         </svg>
-
-        <!-- #endregion -->
-
-
-
-        <!-- #region If is "reported Pin" -->
-
-        <!--
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-circle-arrow-out-up-right-icon lucide-circle-arrow-out-up-right goto-Pin">
+        } @else {
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
           <path d="M22 12A10 10 0 1 1 12 2" />
           <path d="M22 2 12 12" />
           <path d="M16 2h6v6" />
         </svg>
         <span>Reports</span>
-
-        -->
-        <!-- #endregion If "is reported Pin" -->
-
+        }
       </button>
-
-
 
     </div>
   </div>
 
-  <!-- #endregion -->
-
-
+  <!-- BOTTOM -->
   <div class="bottom-wrapper">
     <div class="pin-type-extras-wrapper">
 
-
-      <!--
-        if it is from a Catch Pin -> add "catch-pin" css class
-        if it is from a Info Pin -> add "info-pin" css class
-        if it is from a Warning Pin -> add "warn-pin" css class
-      -->
-      <div class="d-flex align-items-center gf-badge-pin-type-and-extras catch-pin">
-
+      <!-- Badge tipo de pin -->
+      <div class="d-flex align-items-center gf-badge-pin-type-and-extras" [ngClass]="pinType + '-pin'">
+        @switch (pinType) {
+        @case ('catch') {
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-fishing-hook-icon lucide-fishing-hook">
+          stroke-linecap="round" stroke-linejoin="round">
           <path d="m17.586 11.414-5.93 5.93a1 1 0 0 1-8-8l3.137-3.137a.707.707 0 0 1 1.207.5V10" />
           <path d="M20.414 8.586 22 7" />
           <circle cx="19" cy="10" r="2" />
         </svg>
         <span>Catch</span>
-
+        }
+        @case ('info') {
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 16v-4" />
+          <path d="M12 8h.01" />
+        </svg>
+        <span>Info</span>
+        }
+        @case ('warning') {
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 22h16a2 2 0 0 0 1.73-4Z" />
+          <path d="M12 9v4" />
+          <path d="M12 17h.01" />
+        </svg>
+        <span>Warning</span>
+        }
+        }
       </div>
 
-      <!--
-        Extras are attributes of each type of Pin
-        Extras don't have "*-pin" class, but they have their own svg
-
-        * Catch Pin has:
-          - Species
-          - Bait
-          - HookSize
-        * Info Pin has:
-          - Access Difficulty
-          - Seabed
-        * Warning Pin has:
-          - WarningKind
-      -->
-
+      <!-- Extras Catch -->
+      @if (pinType === 'catch') {
+      @if (species !== undefined) {
       <div class="d-flex align-items-center gf-badge-pin-type-and-extras">
-
-        <!-- svg to be added in the future -->
-        <span>Species</span>
-
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z" />
+          <path d="M18 12v.5" />
+          <path d="M16 17.93a9.77 9.77 0 0 1 0-11.86" />
+          <path d="M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 3.5-.5 6.5 2.27 8.5" />
+          <path d="m10.46 7.26-1.46 2" />
+          <circle cx="10" cy="12" r="2" />
+        </svg>
+        <span>{{ getEnumDisplayName(speciesOptions, species!) }}</span>
       </div>
+      }
+      @if (bait !== undefined) {
+      <div class="d-flex align-items-center gf-badge-pin-type-and-extras">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="m17.586 11.414-5.93 5.93a1 1 0 0 1-8-8l3.137-3.137a.707.707 0 0 1 1.207.5V10" />
+          <path d="M20.414 8.586 22 7" />
+          <circle cx="19" cy="10" r="2" />
+        </svg>
+        <span>{{ getEnumDisplayName(baitOptions, bait!) }}</span>
+      </div>
+      }
+      @if (hookSize !== undefined) {
+      <div class="d-flex align-items-center gf-badge-pin-type-and-extras">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 11.5C20 16.75 13 22 12 22S4 16.75 4 11.5a8 8 0 0 1 16 0Z" />
+          <path d="M12 2v4" />
+        </svg>
+        <span>{{ hookSize }}</span>
+      </div>
+      }
+      }
+
+      <!-- Extras Info -->
+      @if (pinType === 'info') {
+      @if (accessDifficulty !== undefined) {
+      <div class="d-flex align-items-center gf-badge-pin-type-and-extras">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 17 2 2 4-4" />
+          <path d="m3 7 2 2 4-4" />
+          <path d="M13 6h8" />
+          <path d="M13 12h8" />
+          <path d="M13 18h8" />
+        </svg>
+        <span>{{ getEnumDisplayName(accessDifficultyOptions, accessDifficulty!) }}</span>
+      </div>
+      }
+      @if (seabed !== undefined) {
+      <div class="d-flex align-items-center gf-badge-pin-type-and-extras">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 12h20" />
+          <path d="M2 18h20" />
+          <path d="M6 6c0-1.1.9-2 2-2h8a2 2 0 0 1 0 4H8a2 2 0 0 1-2-2Z" />
+        </svg>
+        <span>{{ getEnumDisplayName(seabedOptions, seabed!) }}</span>
+      </div>
+      }
+      }
+
+      <!-- Extras Warning -->
+      @if (pinType === 'warning') {
+      @if (warningKind !== undefined) {
+      <div class="d-flex align-items-center gf-badge-pin-type-and-extras">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 22h16a2 2 0 0 0 1.73-4Z" />
+          <path d="M12 9v4" />
+          <path d="M12 17h.01" />
+        </svg>
+        <span>{{ getEnumDisplayName(warningKindOptions, warningKind!) }}</span>
+      </div>
+      }
+      }
+
     </div>
 
-    <!-- if is "report pin"
-         - number 1 changes, by default, if it isn't a report Pin, the "report-number" span doesn't appear
-    -->
-    <span class="text-bold report-number"># 1</span>
-
+    <!-- Número do report (só aparece se isReportedPin) -->
+    @if (isReportedPin && reportNumber !== undefined) {
+    <span class="text-bold report-number"># {{ reportNumber }}</span>
+    }
   </div>
+
+</div>
