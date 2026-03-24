@@ -187,6 +187,134 @@ public class PinControllerTests : IClassFixture<WebAppFactory>
         dto!.Id.Should().BeGreaterThan(0);
     }
 
+    [Fact]
+    public async Task CreateWarnPin_ReturnsId()
+    {
+        var body = new
+        {
+            Latitude = 38.7,
+            Longitude = -9.1,
+            Visibility = 0,
+            Body = "Warning test",
+            WarningKind = 0
+        };
+
+        var res = await _client.PostAsJsonAsync("/api/Pin/CreateWarnPin", body);
+
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var dto = await res.Content.ReadFromJsonAsync<CreateWarnPinResDTO>();
+        dto!.Id.Should().BeGreaterThan(0);
+    }
+
     #endregion
 
+    #region GetPins
+
+    [Fact]
+    public async Task GetPins_ByPinId_ReturnsCorrectPin()
+    {
+        int pinId;
+
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var pin = await PinSeedFixture.CreateInfoPinAsync(db);
+            pinId = pin.Id;
+        }
+
+        var body = new
+        {
+            Ids = new[]
+            {
+            new { PinId = pinId }
+        },
+            DataRequest = 0
+        };
+
+        var res = await _client.PostAsJsonAsync("/api/Pin/GetPins", body);
+
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var dto = await res.Content.ReadFromJsonAsync<GetPinsResDTO>();
+        dto!.Pins.Should().Contain(p => p.Id == pinId);
+    }
+
+    [Fact]
+    public async Task GetPins_ByAuthorId_ReturnsPins()
+    {
+        string userId;
+
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var pin = await PinSeedFixture.CreateInfoPinAsync(db, userId: "user-123");
+            userId = pin.UserId!;
+        }
+
+        var body = new
+        {
+            Ids = new[]
+            {
+            new { AuthorId = userId }
+        },
+            DataRequest = 0
+        };
+
+        var res = await _client.PostAsJsonAsync("/api/Pin/GetPins", body);
+
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var dto = await res.Content.ReadFromJsonAsync<GetPinsResDTO>();
+        dto!.Pins.Should().NotBeEmpty();
+    }
+
+    #endregion
+
+    #region DeletePins
+
+    [Fact]
+    public async Task DeletePin_AsOwner_RemovesFromDatabase()
+    {
+        int pinId;
+
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var pin = await PinSeedFixture.CreateInfoPinAsync(db);
+            pinId = pin.Id;
+        }
+
+        var res = await _client.DeleteAsync($"/api/Pin/DeletePin/{pinId}");
+
+        res.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var deleted = await db.Pins.FindAsync(pinId);
+            deleted.Should().BeNull();
+        }
+    }
+
+    [Fact]
+    public async Task DeletePin_WhenNotOwner_ReturnsForbid()
+    {
+        int pinId;
+
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+            var pin = await PinSeedFixture.CreateInfoPinAsync(db, userId: "owner-id");
+            pinId = pin.Id;
+        }
+
+        // Fake auth provavelmente usa "test-user-id"
+        var res = await _client.DeleteAsync($"/api/Pin/DeletePin/{pinId}");
+
+        res.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+    }
+
+    #endregion
 }
