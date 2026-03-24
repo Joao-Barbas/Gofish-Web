@@ -37,7 +37,9 @@ export class ClusterDetailsComponent {
   }
 
   onPreviewClick(coords: GeoLocationDTO): void {
+    console.log("coords",coords)
     this.coords.emit(coords);
     this.popupController.close();
+    console.log("aaaaaaaaaaaaaaaaaa")
   }
 }

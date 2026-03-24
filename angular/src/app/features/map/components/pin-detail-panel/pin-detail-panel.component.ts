@@ -15,7 +15,7 @@ import { EnumComponent } from "@gofish/shared/components/enum/enum.component";
 
 @Component({
   selector: 'app-pin-detail-panel',
-  imports: [CommonModule, TimeAgoPipe, ClickOutsideDirective, RouterLink, EnumComponent],
+  imports: [CommonModule, TimeAgoPipe, EnumComponent],
   templateUrl: './pin-detail-panel.component.html',
   styleUrls: ['./pin-detail-panel.component.css']
 })
@@ -79,6 +79,7 @@ export class PinDetailPanelComponent {
   onPreviewClick(coords: GeoLocationDTO): void {
     this.coords.emit(coords);
     this.popupController.close();
+    console.log("SIIIIIIIIIIIIIIIIIIIIIII");
   }
 
   openGoogleMaps() {

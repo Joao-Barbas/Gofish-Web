@@ -14,7 +14,7 @@
     </div>
 
     @for (pin of pinsData(); track pin.id) {
-    <app-pin-detail-panel [pinData]= pin>
+    <app-pin-detail-panel [pinData]= pin (coords)="onPreviewClick($event)">
     </app-pin-detail-panel>
     }
 

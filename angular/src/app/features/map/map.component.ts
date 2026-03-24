@@ -247,8 +247,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   zoomIn(): void { this.map.zoomIn({ duration: 300 }); }
   zoomOut(): void { this.map.zoomOut({ duration: 300 }); }
 
-  goToCoords(coords: GeoLocationDTO) {
+  goToCoords(coords: Coords) {
     this.map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 16 });
+    console.log("aqui");
   }
 
   // =========================
