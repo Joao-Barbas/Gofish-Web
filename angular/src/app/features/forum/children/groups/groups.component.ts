@@ -5,6 +5,7 @@ import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, Ro
 import { Path } from '@gofish/shared/constants';
 import { GetGroupDTO, GetGroupReqDTO, GetGroupResDTO, GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
 import { GroupsService } from '@gofish/shared/services/groups.service';
+import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 
 
 type NavPath = {
@@ -14,7 +15,7 @@ type NavPath = {
 
 @Component({
   selector: 'app-groups',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, LoadingSpinnerComponent],
   templateUrl: './groups.component.html',
   styleUrl: './groups.component.css',
 })
@@ -23,7 +24,7 @@ export class GroupsComponent {
   private readonly groupsService = inject(GroupsService);
   private readonly router: Router = inject(Router);
   public currentPath: WritableSignal<string> = signal(this.router.url);
-  group = signal<GetGroupResDTO | null>(null);
+  groupData = signal<GetGroupResDTO | null>(null);
 
   public navPaths: NavPath[] = [
     { path: 'group-post-redirect-testing', label: 'Posts' },
@@ -31,7 +32,7 @@ export class GroupsComponent {
   ];
 
   constructor() {
-    const id = this.route.snapshot.queryParamMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id');
     if(!id) return;
 
     const dto: GetGroupReqDTO = {
@@ -43,7 +44,8 @@ export class GroupsComponent {
     }
     this.groupsService.getGroup(dto).subscribe({
       next: (res) => {
-        this.group.set(res);
+        this.groupData.set(res);
+        console.log(res);
       },
       error: (err) => {
         console.log(err);
