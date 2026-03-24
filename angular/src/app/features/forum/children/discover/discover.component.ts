@@ -4,10 +4,11 @@ import { Router } from '@angular/router';
 import { GetPostsResDTO, GetPostsReqDTO } from '@gofish/shared/dtos/get-post.dto';
 import { PostsService } from '@gofish/shared/services/posts.service';
 import { GetFeedReqDTO, GetFeedResDTO } from '@gofish/shared/dtos/get-feed.dto';
+import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-discover',
-  imports: [ForumPostComponent],
+  imports: [ForumPostComponent, LoadingSpinnerComponent],
   templateUrl: './discover.component.html',
   styleUrl: './discover.component.css',
 })

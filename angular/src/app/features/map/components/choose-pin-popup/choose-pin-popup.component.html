@@ -15,6 +15,9 @@
       </div>
     </div>
 
+    @if (isGettingLocation) {
+    <gf-loading-spinner></gf-loading-spinner>
+    }
     <!-- Coordenadas selecionadas -->
     @if (coords) {
     <div class="text-center mt-2 animate-fade-in d-flex flex-column align-items-center gap-2 coords-div">
