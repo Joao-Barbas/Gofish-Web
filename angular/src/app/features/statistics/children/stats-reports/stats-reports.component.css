@@ -1,0 +1,42 @@
+:host {
+  display: flex;
+  width: 100%;
+}
+
+.stats-section-wrapper {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.quick-header-wrapper {
+  border-bottom: 2px solid #fff;
+  max-width: 45%;
+  gap: 10px;
+  padding-left: 5px;
+
+  & span {
+    font-family: var(--gf-font-date);
+    font-size: 24px;
+  }
+  & svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+
+.quick-view-grid {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 10px 100px;
+  width: 100%;
+  justify-items: center;
+}
+
+.quick-access-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

@@ -1,0 +1,72 @@
+<div class="container stats-section-wrapper">
+
+  <!-- #region Quick View -->
+  <div class="d-flex align-items-center quick-header-wrapper">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye">
+      <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+
+    <span class="text-bold">Quick View</span>
+  </div>
+  <!-- #endregion -->
+
+  <!-- #region Quick View GRID -->
+  <div class="quick-view-grid">
+
+    <!-- Quick View Item - 1 -->
+    <app-gf-card-quick-view type="system-requests" bigText="99%"
+      littleText="of system requests were successful"></app-gf-card-quick-view>
+
+    <!-- Quick View Item - 2 -->
+    <app-gf-card-quick-view type="satisfaction-index" bigText="4.6"
+      littleText="User Satisfaction Index"></app-gf-card-quick-view>
+
+    <!-- Quick View Item - 3 -->
+    <app-gf-card-quick-view type="positive-votes" bigText="105"
+      littleText="Pins with 15+ Positive Votes"></app-gf-card-quick-view>
+
+    <!-- Quick View Item - 4 -->
+    <app-gf-card-quick-view type="pins-today" bigText="11" littleText="Pins created today"></app-gf-card-quick-view>
+
+    <!-- Quick View Item - 5 -->
+    <app-gf-card-quick-view type="active-users" bigText="11" littleText="Active users"></app-gf-card-quick-view>
+
+  </div>
+  <!-- #endregion -->
+
+
+</div>
+
+<div class="container stats-section-wrapper">
+
+  <!-- #region Quick View -->
+  <div class="d-flex align-items-center quick-header-wrapper">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-icon lucide-list">
+      <path d="M3 5h.01" />
+      <path d="M3 12h.01" />
+      <path d="M3 19h.01" />
+      <path d="M8 5h13" />
+      <path d="M8 12h13" />
+      <path d="M8 19h13" />
+    </svg>
+
+    <span class="text-bold">Quick Access</span>
+  </div>
+  <!-- #endregion -->
+
+  <div class="quick-access-list">
+
+
+    <app-gf-card-quick-access type="average-published-pins" title="Average Number of Published Pins"
+      [extraTexts]="['Published in the last week: 12', 'Published in the last month: 105']" />
+
+    <app-gf-card-quick-access type="pin-density" title="Pin Density by Location" />
+    <app-gf-card-quick-access type="reports" title="Reports" [extraTexts]="['Reports awaiting review: 6']" />
+
+  </div>
+  

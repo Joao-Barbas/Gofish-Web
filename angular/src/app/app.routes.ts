@@ -73,7 +73,6 @@ export const routes: Routes = [
     path: PathSegment.PRIVACY,
     loadComponent: () => import('@gofish/features/privacy-policy/privacy-policy.component').then(p => p.PrivacyPolicyComponent),
   },
-
   {
     path: 'forum',
     loadComponent: () => import('@gofish/features/forum/forum.component').then(f => f.ForumComponent),
@@ -109,7 +108,17 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'test-pin-listing',
+    path: 'statistics',
+    loadComponent: () => import('@gofish/features/statistics/statistics.component').then(f => f.StatisticsComponent),
+    children: [ // unfinished
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', loadComponent: () => import('@gofish/features/statistics/children/stats-home/stats-home.component').then(d => d.StatsHomeComponent) },
+      { path: 'reports', loadComponent: () => import('@gofish/features/statistics/children/stats-reports/stats-reports.component').then(d => d.StatsReportsComponent) },
+
+    ]
+  },
+  {
+    path: 'test-page',
     loadComponent: () => import('@gofish/features/test-delete-after/test-delete-after.component').then(a => a.TestDELETEAFTERComponent), /* TODO: remove */
   },
 ];

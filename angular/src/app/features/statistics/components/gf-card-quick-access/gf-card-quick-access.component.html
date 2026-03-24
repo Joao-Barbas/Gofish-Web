@@ -1,0 +1,55 @@
+<div class="gf-card-quick-access">
+  <div class="quick-access-icon-text-extra-wrapper">
+    <div class="quick-access-icon-text-wrapper">
+
+      <!-- Icon -->
+      <div class="quick-access-icon" [ngClass]="type">
+        @switch (type) {
+        @case ('average-published-pins') {
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+          <path d="M18 17V9" />
+          <path d="M13 17V5" />
+          <path d="M8 17v-3" />
+        </svg>
+        }
+        @case ('pin-density') {
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0" />
+          <circle cx="12" cy="8" r="2" />
+          <path
+            d="M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712" />
+        </svg>
+        }
+        @case ('reports') {
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path
+            d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
+          <path d="M12 8v4" />
+          <path d="M12 16h.01" />
+        </svg>
+        }
+        }
+      </div>
+
+      <span class="text-medium quick-access-title">{{ title }}</span>
+    </div>
+
+    @for (extra of extraTexts; track extra) {
+    <span class="quick-access-extra-text">{{ extra }}</span>
+    }
+  </div>
+
+  <!-- Goto Button -->
+  <button class="quick-access-goto-button" [routerLink]="['/statistics/', type]">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="m10 16 4-4-4-4" />
+      <path d="M3 12h11" />
+      <path d="M3 8V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3" />
+    </svg>
+  </button>
+</div>

@@ -1,0 +1,139 @@
+:host {
+  display: flex;
+  width: 100%;
+}
+
+.gf-card-pin-preview {
+  padding: 12px;
+  width: 100%;
+  min-width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+.top-wrapper {
+  display: flex;
+  justify-items: center;
+  justify-content: space-between;
+}
+
+.pin-user-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pin-author-profile-photo {
+  width: var(--gf-32);
+  height: var(--gf-32);
+}
+
+.user-name-text {
+  font-size: 14px;
+  max-width: 100px;
+}
+
+.separator,
+.pin-time-ago {
+  font-size: var(--gf-12);
+  font-family: var(--gf-font-date);
+  word-break: break-all;
+}
+
+.badge-wrapper {
+  display: flex;
+  gap: 4px;
+  justify-items: end;
+}
+
+.gf-badge-pin-preview {
+  width: fit-content;
+  height: 32px;
+  padding: 8px 16px;
+
+  border-radius: 25px;
+
+  display: flex;
+  gap: 4px;
+
+  font-size: 12px;
+
+  & svg {
+    color: var(--gf-dark-text-muted);
+    width: var(--gf-16);
+    height: var(--gf-16);
+  }
+}
+
+.gf-badge-pin-preview:last-child {
+  width: fit-content;
+  height: 32px;
+  padding: 8px;
+
+  border-radius: 25px;
+
+  display: flex;
+  gap: 4px;
+
+  font-size: 12px;
+
+  & svg {
+    width: var(--gf-16);
+    height: var(--gf-16);
+    color: var(--dark-text-muted);
+  }
+
+  &:hover svg {
+    color: var(--dark-text);
+  }
+}
+
+.bottom-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pin-type-extras-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.gf-badge-pin-type-and-extras {
+  gap: 4px;
+
+  padding: 4px 16px;
+
+  width: fit-content;
+  height: 100%;
+  border-radius: 16px;
+
+  background-color: var(--gf-dark-bg-dark);
+
+  &.catch-pin {
+    background-color: var(--gf-dark-bg-catch-pin);
+  }
+
+  &.info-pin {
+    background-color: var(--gf-dark-bg-info-pin);
+  }
+
+  &.warning-pin {
+    background-color: var(--gf-dark-bg-warning-pin);
+  }
+
+  & svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  & span {
+    font-size: 12px;
+  }
+}
+
+.report-number {
+  font-size: 24px;
+}
