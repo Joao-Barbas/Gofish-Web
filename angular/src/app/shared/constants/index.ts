@@ -34,6 +34,8 @@ export const PathSegment = {
   FORUM_GROUPS:           'groups',
   FORUM_POST:             'post',
   PROFILE:                'profile',
+  STATISTICS:             'statistics',
+  STATISTICS_REPORTS:     'reports',
   CREATE_GROUP:           'create-group'
 } as const;
 
@@ -70,6 +72,9 @@ export const Path = {
   PROFILE_PINS:           (id: string) => `/profile/${id}/pins`,
   PROFILE_GROUPS:         (id: string) => `/profile/${id}/groups`,
   FORUM_GROUP:            (id: string) => `/forum/groups/${id}`,
+
+  STATISTICS:             `/${PathSegment.STATISTICS}`,
+  STATISTICS_REPORTS:     `/${PathSegment.STATISTICS}/${PathSegment.STATISTICS_REPORTS}`,
 } as const;
 
 /* Backend endpoints */

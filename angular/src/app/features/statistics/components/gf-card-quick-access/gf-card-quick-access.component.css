@@ -1,0 +1,89 @@
+:host {
+  display: flex;
+  width: 100%;
+}
+
+.gf-card-quick-access {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  width: 550px;
+}
+
+.quick-access-icon-text-extra-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-items: center;
+  gap: 8px;
+}
+
+.quick-access-icon-text-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quick-access-icon {
+  padding: 12px;
+  width: 48px;
+  height: 48px;
+  border: 2px solid #fff;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+
+  & svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.average-published-pins {
+    background-color: #477eeb;
+  }
+
+  &.pin-density {
+    background-color: #07b7bd;
+  }
+
+  &.reports {
+    background-color: #eb5547;
+  }
+}
+
+.quick-access-title {
+  font-family: var(--gf-font-heading);
+  font-size: 20px;
+}
+
+.quick-access-extra-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-items: center;
+  gap: 8px;
+}
+
+.quick-access-extra-text {
+  font-family: var(--gf-font-heading);
+  font-size: 12px;
+}
+
+.quick-access-goto-button {
+  flex-shrink: 0;
+  width: fit-content;
+  border: none;
+  background: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+
+  & svg {
+    width: 80px;
+  }
+}

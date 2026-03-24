@@ -1,0 +1,39 @@
+:host {
+  display: flex;
+  width: 100%;
+}
+
+.gf-card-quick-view {
+  padding: 12px;
+  gap: 12px;
+  width: 100%;
+}
+
+.quick-view-icon {
+  width: 100px;
+  height:fit-content;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+
+  & svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.quick-view-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.metric-big-text {
+  font-size: 32px;
+}
+
+.metric-little-text {
+  font-family: var(--gf-font-heading);
+  font-size: 14px;
+}
