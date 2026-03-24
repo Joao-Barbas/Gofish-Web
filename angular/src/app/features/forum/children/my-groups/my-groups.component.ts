@@ -23,7 +23,6 @@ export class MyGroupsComponent {
   private readonly groupsService = inject(GroupsService);
   groups = signal<GetUserGroupsResDTO | null>(null);
 
-
   ngOnInit() {
     this.groupsService.getUserGroups().subscribe({
       next: (res) => {
@@ -35,4 +34,5 @@ export class MyGroupsComponent {
       }
     });
   }
+
 }

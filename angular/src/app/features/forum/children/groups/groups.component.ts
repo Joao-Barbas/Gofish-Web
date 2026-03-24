@@ -27,6 +27,7 @@ export class GroupsComponent {
   private readonly groupsService = inject(GroupsService);
   private readonly popupService = inject(PopupService);
   protected groupData = signal<GetGroupResDTO | null>(null);
+  protected postActive: boolean = true;
 
 
   constructor() {
@@ -52,11 +53,12 @@ export class GroupsComponent {
 
   }
 
-
-
   openOptions() {
     this.popupService.open('group-options');
   }
 
+  toggleTab(bool: boolean) {
+    this.postActive = bool;
+  }
 
 }
