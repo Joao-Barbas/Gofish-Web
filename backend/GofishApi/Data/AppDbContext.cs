@@ -130,7 +130,7 @@ namespace GofishApi.Data
                .HasOne(p => p.Post)
                .WithMany()
                .HasForeignKey(p => p.PostId)
-               .OnDelete(DeleteBehavior.NoAction);
+               .OnDelete(DeleteBehavior.Cascade);
 
             #endregion // PostComment
             #region UserProfile 
@@ -182,7 +182,7 @@ namespace GofishApi.Data
                 .HasOne(pv => pv.Post)
                 .WithMany(p => p.PostVotes)
                 .HasForeignKey(pv => pv.PostId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<PostVote>()
                 .HasOne(pv => pv.AppUser)
