@@ -27,6 +27,29 @@ export const routes: Routes = [
     loadComponent: () => import('@gofish/features/user/auth/auth-callback/auth-callback.component').then(m => m.AuthCallbackComponent)
   },
   {
+    path: 'profile/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('@gofish/features/user/profile/profile-shell.component').then(m => m.ProfileShellComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('@gofish/features/user/profile/pages/overview/overview.component').then(m => m.OverviewComponent)
+      },
+      {
+        path: 'friends',
+        loadComponent: () => import('@gofish/features/user/profile/pages/friends/friends.component').then(m => m.FriendsComponent)
+      },
+      {
+        path: 'groups',
+        loadComponent: () => import('@gofish/features/user/profile/pages/groups/groups.component').then(m => m.GroupsComponent)
+      },
+      {
+        path: 'pins',
+        loadComponent: () => import('@gofish/features/user/profile/pages/pins/pins.component').then(m => m.PinsComponent)
+      },
+    ]
+  },
+  {
     path: PathSegment.SETTINGS,
     loadComponent: () => import('@gofish/features/user/settings/settings.component').then(m => m.SettingsComponent),
     canActivate: [authGuard],
