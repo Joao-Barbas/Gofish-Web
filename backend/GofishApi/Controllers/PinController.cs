@@ -55,8 +55,8 @@ public class PinController : ControllerBase
 
         var pins = await _visibility.FilterVisiblePins(
             _db.Pins.Where(p =>
-                (p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng) &&
-                (p.ExpiresAt == null || p.ExpiresAt > DateTime.UtcNow)),
+                (p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLng && p.Longitude <= maxLng) /*&&
+                (p.ExpiresAt == null || p.ExpiresAt > DateTime.UtcNow) */),
             userId)
         .Select(p => new ViewportPinDTO(
             p.Id,
