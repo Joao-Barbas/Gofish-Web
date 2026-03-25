@@ -3,7 +3,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Api } from "@gofish/shared/constants";
-import { FriendshipDTO, GetFriendshipBetweenReqDTO, GetFriendshipsResDTO, GetUserResDTO, GetUserSettingsResDTO, PatchUserReqDTO, PutUserReqDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO } from "@gofish/shared/dtos/user.dto";
+import { FriendshipDTO, GetFriendshipBetweenReqDTO, GetFriendshipsResDTO, GetUserGroupReqDTO, GetUserGroupResDTO, GetUserResDTO, GetUserSettingsResDTO, PatchUserReqDTO, PutUserReqDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO } from "@gofish/shared/dtos/user.dto";
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 import { map, Observable } from "rxjs";
 
@@ -77,5 +77,15 @@ export class UserApi {
 
   public ignoreFriendship(id: number): Observable<void> {
     return this.deleteFriendship(id);
+  }
+
+  // Groups
+
+  public getUserGroups(dto: GetUserGroupReqDTO): Observable<GetUserGroupResDTO> {
+    let p = new HttpParams();
+    if (dto.userId)        p = p.set('userId', dto.userId);
+    if (dto.maxResults)    p = p.set('maxResults', dto.maxResults);
+    if (dto.lastTimestamp) p = p.set('lastTimestamp', dto.lastTimestamp);
+    return this.http.get<GetUserGroupResDTO>(Api.User.action('GetUserGroups'), { params: p });
   }
 }

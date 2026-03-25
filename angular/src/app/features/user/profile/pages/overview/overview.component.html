@@ -137,6 +137,21 @@
 
       <!-- Groups carousel -->
       <div #groupsCarousel id="groups-carousel" class="carousel-list gf-mt-8">
+        @if (userGroups.isLoading()) {
+          <gf-loading-spinner></gf-loading-spinner>
+        } @else if (userGroups.error()) {
+          <div class="failed-container gf-flow-vertical gf-center-axes">
+            <span>{{ userGroups.error() }}</span>
+            <button (click)="userGroups.reload()">Try Again</button>
+          </div>
+        } @else if (userGroups.hasValue()) {
+          @let groups = userGroups.value().groups;
+          @for (g of groups; track g.id) {
+            <gf-small-group-carousel-card
+              [group]="g"
+            ></gf-small-group-carousel-card>
+          }
+        }
         <!-- <app-group-card></app-group-card>
         <app-group-card></app-group-card>
         <app-group-card></app-group-card>

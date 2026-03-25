@@ -18,6 +18,7 @@ import { SmallFriendshipCarouselCardComponent } from "./components/small-friends
 import { CommonModule } from '@angular/common';
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { ProfileActionsPopoverComponent } from "./components/profile-actions-popover/profile-actions-popover.component";
+import { SmallGroupCarouselCardComponent } from "./components/small-group-carousel-card/small-group-carousel-card.component";
 
 @Component({
   selector: 'app-overview',
@@ -27,7 +28,8 @@ import { ProfileActionsPopoverComponent } from "./components/profile-actions-pop
     RouterLink,
     SmallFriendshipCarouselCardComponent,
     CommonModule,
-    ProfileActionsPopoverComponent
+    ProfileActionsPopoverComponent,
+    SmallGroupCarouselCardComponent
 ],
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.css',
@@ -55,6 +57,11 @@ export class OverviewComponent {
   userFriends = resource({
     params: () => this.profileContext.profileId(),
     loader: ({ params: id }) => firstValueFrom(this.userApi.getFriendships({ userId: id, state: FriendshipState.Accepted, maxResults: 8 }))
+  })
+
+  userGroups = resource({
+    params: () => this.profileContext.profileId(),
+    loader: ({ params: id }) => firstValueFrom(this.userApi.getUserGroups({ userId: id, maxResults: 8 }))
   })
 
   bioTextRef         = viewChild<ElementRef>('bioText');
