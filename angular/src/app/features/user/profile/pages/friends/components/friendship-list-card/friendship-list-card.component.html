@@ -1,9 +1,12 @@
-<!-- friendship-card.component.html -->
+<!-- friendship-list-card.component.html -->
 
 @let otherUser = friendship().requesterUserId === profileContext.profileId() ? friendship().receiver : friendship().requester;
 
 @if (small()) {
-
+  <a [routerLink]="['/profile', otherUser.userId]">
+    <img [src]="avatarService.resolve(otherUser.avatarUrl)" alt="Avatar">
+    <p>{{ otherUser.userName }}</p>
+  </a>
 } @else {
   <div>
     <a [routerLink]="['/profile', otherUser.userId]">

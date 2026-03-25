@@ -1,4 +1,4 @@
-export type PopupKey = 'example-key-popup' // Update this when creating new popup components
+export type PopupKey = string | 'example-key-popup' // Update this when creating new popup components
   | 'header-user-popup'
   | 'header-admin-popup'
   | 'choose-pin-popup'

@@ -3,9 +3,9 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Api } from "@gofish/shared/constants";
-import { FriendshipDTO, GetFriendshipsResDTO, GetUserResDTO, GetUserSettingsResDTO, PatchUserReqDTO, PutUserReqDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO } from "@gofish/shared/dtos/user.dto";
+import { FriendshipDTO, GetFriendshipBetweenReqDTO, GetFriendshipsResDTO, GetUserResDTO, GetUserSettingsResDTO, PatchUserReqDTO, PutUserReqDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO } from "@gofish/shared/dtos/user.dto";
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +49,18 @@ export class UserApi {
 
   public getFriendship(id: number): Observable<FriendshipDTO> {
     return this.http.get<FriendshipDTO>(Api.User.action(`GetFriendship/${id}`));
+  }
+
+  public getFriendshipBetween(dto: GetFriendshipBetweenReqDTO): Observable<FriendshipDTO | null> {
+    let p = new HttpParams();
+    p = p.set('userId1', dto.userId1);
+    p = p.set('userId2', dto.userId2);
+    return this.http.get<FriendshipDTO>(Api.User.action(`GetFriendshipBetween`), {
+      params: p,
+      observe: 'response'
+    }).pipe(
+      map(response => response.status === 204 ? null : response.body)
+    );
   }
 
   public requestFriendship(dto: RequestFriendshipReqDTO): Observable<RequestFriendshipResDTO> {

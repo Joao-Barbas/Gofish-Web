@@ -1,0 +1,8 @@
+<!-- small-friendship-carousel-card.component.html -->
+
+@let otherUser = friendship().requesterUserId === profileContext.profileId() ? friendship().receiver : friendship().requester;
+
+<a [routerLink]="['/profile', otherUser.userId]">
+  <img [src]="avatarService.resolve(otherUser.avatarUrl)" alt="Avatar">
+  <p>{{ otherUser.userName }}</p>
+</a>

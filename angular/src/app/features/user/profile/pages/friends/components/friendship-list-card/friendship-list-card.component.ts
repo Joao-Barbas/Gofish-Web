@@ -1,4 +1,4 @@
-// friendship-card.component.ts
+// friendship-list-card.component.ts
 
 import { Component, inject, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -12,15 +12,15 @@ import { AuthService } from '@gofish/shared/services/auth.service';
 import { AvatarService } from '@gofish/shared/services/avatar.service';
 
 @Component({
-  selector: 'app-friendship-card',
+  selector: 'gf-friendship-list-card',
   imports: [
     RouterLink,
     AsyncButtonComponent
   ],
-  templateUrl: './friendship-card.component.html',
-  styleUrl: './friendship-card.component.css',
+  templateUrl: './friendship-list-card.component.html',
+  styleUrl: './friendship-list-card.component.css',
 })
-export class FriendshipCardComponent {
+export class FriendshipListCardComponent {
   readonly authService    = inject(AuthService);
   readonly profileContext = inject(ProfileContext);
   readonly avatarService  = inject(AvatarService);

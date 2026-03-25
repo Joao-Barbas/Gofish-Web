@@ -2,7 +2,6 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, effect, inject, resource, signal } from '@angular/core';
-import { FriendshipCardComponent } from '@gofish/features/user/profile/components/friendship-card/friendship-card.component';
 import { ProfileContext } from '@gofish/features/user/profile/services/profile-context.service';
 import { UserApi } from '@gofish/shared/api/user.api';
 import { AsyncButtonComponent } from '@gofish/shared/components/async-button-2/async-button-2.component';
@@ -12,11 +11,12 @@ import { FriendshipDTO, GetFriendshipsResDTO } from '@gofish/shared/dtos/user.dt
 import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
 import { firstValueFrom } from 'rxjs';
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
+import { FriendshipListCardComponent } from '@gofish/features/user/profile/pages/friends/components/friendship-list-card/friendship-list-card.component';
 
 @Component({
   selector: 'app-requests-list',
   imports: [
-    FriendshipCardComponent,
+    FriendshipListCardComponent,
     AsyncButtonComponent,
     LoadingSpinnerComponent
 ],
@@ -27,11 +27,11 @@ import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinn
     @if (requests.hasValue()) {
       <div class="list">
         @for (requests of requestsList(); track requests.id) {
-          <app-friendship-card
+          <gf-friendship-list-card
             [friendship]="requests"
             [small]="false"
             [actions]="true"
-          ></app-friendship-card>
+          ></gf-friendship-list-card>
         } @empty {
           @if (!requests.isLoading() && !loadingState.isLoading()) {
             <p>{{ 'No requests yet. :(' }}</p>

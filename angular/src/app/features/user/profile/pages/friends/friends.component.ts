@@ -11,7 +11,6 @@ import { FriendshipDTO, GetFriendshipsReqDTO, GetFriendshipsResDTO } from '@gofi
 import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { firstValueFrom } from 'rxjs';
-import { FriendshipCardComponent } from "../../components/friendship-card/friendship-card.component";
 import { FriendsListComponent } from "./components/friends-list/friends-list.component";
 import { RequestsListComponent } from "./components/requests-list/requests-list.component";
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";

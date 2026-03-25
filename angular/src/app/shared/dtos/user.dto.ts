@@ -10,6 +10,7 @@ export interface GetUserResDTO {
   userName: string;
   firstName: string;
   lastName: string;
+  friendshipState?: FriendshipState;
 }
 
 export interface GetUserSettingsReqDTO {
@@ -77,6 +78,11 @@ export interface GetFriendshipsResDTO {
   friendships: FriendshipDTO[];
   hasMoreResults: boolean;
   lastTimestamp?: string;
+}
+
+export interface GetFriendshipBetweenReqDTO {
+  userId1: string;
+  userId2: string;
 }
 
 export interface RequestFriendshipReqDTO {

@@ -1,3 +1,166 @@
 <!-- overview.component.html -->
 
-<p>overview works!</p>
+@if (userProfile.isLoading()) {
+  <gf-loading-spinner></gf-loading-spinner>
+} @else if (userProfile.error()) {
+  <!-- TODO: Make this a component -->
+  <div class="failed-container gf-flow-vertical gf-center-axes">
+    <span>{{ userProfile.error() }}</span>
+    <button (click)="userProfile.reload()">Try Again</button>
+  </div>
+} @else if (userProfile.hasValue()) {
+  @let profile = userProfile.value();
+
+  <div class="gf-container-lg gf-w-90 gf-mx-auto gf-pt-64 gf-flow-vertical gf-gap-24" style="background-color:black;">
+
+    <!-- Overview -->
+    <div class="gf-flow-vertical gf-gap-16">
+
+      <!-- Avatar, name & actions -->
+      <div class="gf-flow-horizontal gf-items-center gf-justify-between">
+
+        <!-- Avatar & name -->
+        <div class="gf-flow-horizontal gf-items-center gf-gap-16">
+          <img [src]="avatarService.resolve(profile.avatarUrl)" alt="Avatar" style="width: 96px; height: 96px; border-radius: 100%; object-fit: cover;">
+          <div>
+            @if (profile.firstName !== '' && profile.lastName !== '') {
+              <p class="gf-font-bold gf-text-lg gf-lh-1_0">{{ `${profile.firstName} ${profile.lastName}` }}</p>
+            }
+            <small class="gf-text-sm">{{ profile.userName }}</small>
+          </div>
+        </div>
+
+        <!-- actions -->
+        <div class="gf-flow-horizontal-rev gf-gap-6">
+          <div style="position: relative;">
+            <button class="gf-center-axes action-btn btn-ellipsis" (click)="onProfilePopoverClick($event)">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="1"/>
+                <circle cx="19" cy="12" r="1"/>
+                <circle cx="5" cy="12" r="1"/>
+              </svg>
+            </button>
+            @if (popupService.activePopup() === 'gf-profile-actions-popover') {
+              <gf-profile-actions-popover></gf-profile-actions-popover>
+            }
+          </div>
+
+          @if (profile.userId !== authService.userId()) {
+            @if (!profileContext.isFriend()) {
+              <gf-async-button
+                [labels]="{ idle: 'Send Friend Request' }"
+                [states]="{ busy: busyState.isBusy(), success: isFriendshipSent() }"
+                (click)="onSendFriendshipRequest()"
+              ></gf-async-button>
+            }
+          } @else {
+            <a class="gf-center-axes gf-px-32 action-btn btn-edit" [routerLink]="'/settings'">
+              Edit profile
+            </a>
+          }
+        </div>
+
+      </div>
+
+      <!-- Under avatar stats -->
+      <div class="gf-flow-horizontal gf-gap-6">
+        <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">{{ `${profile.pinsCount} Pins` }}</div>
+        <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">{{ `${profile.fishingScore} Catch Points` }}</div>
+      </div>
+
+      <!-- Bio -->
+      <div class="gf-pos-relative bio">
+        <p #bioText [class.collapsed]="bioCollapsed()">{{ profile?.bio ?? 'No bio yet.' }}</p>
+        @if (bioOverflows()) {
+          <button #bioToggle (click)="bioCollapsed.set(!bioCollapsed())">
+            {{ bioCollapsed() ? 'Show more' : 'Show less' }}
+          </button>
+        }
+      </div>
+
+    </div>
+
+    <!-- Horizontal friends list -->
+    <div>
+
+      <div class="gf-flow-horizontal gf-justify-between">
+        <p class="gf-text-md gf-font-semibold">Friends ({{ profile.friendsCount }})</p>
+        <a [routerLink]="'friends'" class="gf-d-flex gf-items-center gf-text-sm see-all">
+          See all
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Friends carousel -->
+      <div #friendsCarousel id="friends-carousel" class="carousel-list gf-mt-8">
+        @if (userFriends.isLoading()) {
+          <gf-loading-spinner></gf-loading-spinner>
+        } @else if (userFriends.error()) {
+          <div class="failed-container gf-flow-vertical gf-center-axes">
+            <span>{{ userFriends.error() }}</span>
+            <button (click)="userFriends.reload()">Try Again</button>
+          </div>
+        } @else if (userFriends.hasValue()) {
+          @let friends = userFriends.value().friendships;
+          @for (f of friends; track f.id) {
+            <gf-small-friendship-carousel-card
+              [friendship]="f"
+            ></gf-small-friendship-carousel-card>
+          }
+        }
+      </div>
+
+    </div>
+
+    <!-- Horizontal groups list -->
+    <div>
+
+      <div class="gf-flow-horizontal gf-justify-between">
+        <p class="gf-text-md gf-font-semibold">Groups ({{ profile.groupsCount }})</p>
+        <a routerLink="/" class="gf-d-flex gf-items-center gf-text-sm see-all">
+          See all
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Groups carousel -->
+      <div #groupsCarousel id="groups-carousel" class="carousel-list gf-mt-8">
+        <!-- <app-group-card></app-group-card>
+        <app-group-card></app-group-card>
+        <app-group-card></app-group-card>
+        <app-group-card></app-group-card>
+        <app-group-card></app-group-card>
+        <app-group-card></app-group-card>
+        <app-group-card></app-group-card> -->
+      </div>
+
+    </div>
+
+    <!-- Quick stats -->
+    <div class="gf-flow-horizontal gf-justify-evenly gf-text-center gf-mt-32 gf-mb-96">
+      <div>
+        <p>Join Date</p>
+        <p>{{ profile.joinedAt | date:'dd/MM/yyyy' }}</p>
+      </div>
+      <div>
+        <p>Last Active Date</p>
+        <p>{{ profile.lastActiveAt| date:'dd/MM/yyyy' }}</p>
+      </div>
+      <div>
+        <p>Weekly Streak</p>
+        <p>{{ `${profile.weeklyStreak} / ${profile.maxWeeklySteak}` }}</p>
+      </div>
+    </div>
+
+  </div>
+}

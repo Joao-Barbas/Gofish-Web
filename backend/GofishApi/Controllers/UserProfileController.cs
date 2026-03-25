@@ -15,6 +15,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using GofishApi.Exceptions;
+using GofishApi.Enums;
 
 namespace GofishApi.Controllers;
 
@@ -27,28 +28,56 @@ public class UserProfileController : ControllerBase
     private readonly IBlobStorageService _blobStorage;
     private readonly AppDbContext _context;
     private readonly UserManager<AppUser> _userManager;
+    private readonly IVisibilityService _visibility;
 
     public UserProfileController(
         ILogger<UserProfileController> logger,
         IBlobStorageService blobStorage,
         AppDbContext context,
-        UserManager<AppUser> userManager
+        UserManager<AppUser> userManager,
+        IVisibilityService visibility
     )
     {
         _logger = logger;
         _blobStorage = blobStorage;
         _context = context;
         _userManager = userManager;
+        _visibility = visibility;
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserProfile(string id)
     {
-        var userProfile = await _context.UserProfiles
-            .Include(p => p.AppUser)
-            .FirstOrDefaultAsync(p => p.UserId == id);
-        if (userProfile is null) return NotFound();
-        return Ok(GetUserProfileResDto.FromEntity(userProfile));
+        var authUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var thisUserProfile = await _context.UserProfiles
+        .Include(p => p.AppUser)
+        .FirstOrDefaultAsync(p => p.UserId == id);
+
+        if (thisUserProfile is null)
+        {
+            return NotFound();
+        }
+
+        var pinsCount = await _visibility
+        .FilterVisiblePins(_context.Pins.Where(p => p.UserId == id), authUserId)
+        .CountAsync();
+
+        var friendsCount = await _context.Friendships
+        .CountAsync(f => (f.RequesterUserId == id || f.ReceiverUserId == id) && f.State == FriendshipState.Accepted);
+
+        var groupsCount = await _context.GroupUsers
+        .CountAsync(gu => gu.UserId == id);
+
+        var friendship = await _context.Friendships.FirstOrDefaultAsync(f =>
+            (f.RequesterUserId == authUserId && f.ReceiverUserId == id) ||
+            (f.RequesterUserId == id && f.ReceiverUserId == authUserId));
+
+        return Ok(GetUserProfileResDto.FromEntity(thisUserProfile, friendship?.State) with
+        {
+            PinsCount = pinsCount,
+            FriendsCount = friendsCount,
+            GroupsCount = groupsCount
+        });
     }
 
     [HttpGet]

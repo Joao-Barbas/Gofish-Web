@@ -1,4 +1,4 @@
-/* friendship-card.component.css */
+/* friendship-list-card.component.css */
 
 :host {
   display: flex;
@@ -30,6 +30,7 @@ img {
   max-width: 64px;
   border-radius: 100%;
   display: inline;
+  object-fit: cover;
 }
 
 p {

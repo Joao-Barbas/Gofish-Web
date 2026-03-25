@@ -1,5 +1,7 @@
 // user-profile.dto.ts
 
+import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
+
 export interface GetUserProfileReqDTO {
   // Unused
 }
@@ -14,6 +16,12 @@ export interface GetUserProfileResDTO {
   avatarUrl?: string;
   joinedAt: string;
   lastActiveAt: string;
+  friendshipState?: FriendshipState,
+  weeklyStreak: number;
+  maxWeeklySteak: number;
+  pinsCount: number;
+  friendsCount: number;
+  groupsCount: number;
 }
 
 export interface GetUserProfileSettingsReqDTO {

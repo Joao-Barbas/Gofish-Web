@@ -33,6 +33,10 @@ public class GamificationService : IGamificationService
         {
             profile.WeeklyStreak = 1;
         }
+        if (profile.WeeklyStreak > profile.MaxWeeklyStreak)
+        {
+            profile.MaxWeeklyStreak = profile.WeeklyStreak;
+        }
 
         profile.LastPinWeekStart = currentWeekStart;
         await _db.SaveChangesAsync();

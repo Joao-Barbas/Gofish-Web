@@ -14,13 +14,15 @@ public record GetUserReqDto(
 public record GetUserResDto(
     string UserName,
     string FirstName,
-    string LastName
+    string LastName,
+    FriendshipState? FriendshipState
 )
 {
-    public static GetUserResDto FromEntity(AppUser u) => new(
+    public static GetUserResDto FromEntity(AppUser u, FriendshipState? friendshipState) => new(
         u.UserName  ?? "",
         u.FirstName ?? "",
-        u.LastName  ?? ""
+        u.LastName  ?? "",
+        friendshipState
     );
 }
 
@@ -133,6 +135,12 @@ public record GetFriendshipsResDto(
     IEnumerable<FriendshipDto> Friendships,
     bool HasMoreResults,
     DateTime? LastTimestamp
+)
+{ }
+
+public record GetFriendshipBetweenReqDto(
+    string UserId1,
+    string UserId2
 )
 { }
 

@@ -54,9 +54,19 @@ public class UserController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUser(string id)
     {
-        var user = await _db.Users.FindAsync(id);
-        if (user is null) return NotFound();
-        return Ok(GetUserResDto.FromEntity(user));
+        var authUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var thisUser = await _db.Users.FindAsync(id);
+
+        if (thisUser is null)
+        {
+            return NotFound();
+        }
+
+        var friendship = await _db.Friendships.FirstOrDefaultAsync(f =>
+            (f.RequesterUserId == authUserId && f.ReceiverUserId == id) ||
+            (f.RequesterUserId == id && f.ReceiverUserId == authUserId));
+
+        return Ok(GetUserResDto.FromEntity(thisUser, friendship?.State));
     }
 
     [HttpGet]
@@ -207,12 +217,26 @@ public class UserController : ControllerBase
         .Include(f => f.Receiver).ThenInclude(u => u.UserProfile)
         .FirstOrDefaultAsync(f => f.Id == id);
 
-        if (friendship is null) return NotFound();
+        if (friendship is null) return NoContent();
+        if (!IsParticipant(authUserId, friendship)) return NotFound();
 
-        // Only participants can view pending/refused friendships
-        // Return 404 instead of 403 to not reveal existence
-        var isParticipant = friendship.RequesterUserId == authUserId || friendship.ReceiverUserId == authUserId;
-        if (!isParticipant && friendship.State != FriendshipState.Accepted) return NotFound();
+        return Ok(FriendshipDto.FromEntity(friendship));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetFriendshipBetween([FromQuery] GetFriendshipBetweenReqDto dto)
+    {
+        var authUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var friendship = await _db.Friendships
+        .Include(f => f.Requester).ThenInclude(u => u.UserProfile)
+        .Include(f => f.Receiver).ThenInclude(u => u.UserProfile)
+        .FirstOrDefaultAsync(f =>
+            (f.RequesterUserId == dto.UserId1 && f.ReceiverUserId == dto.UserId2) ||
+            (f.RequesterUserId == dto.UserId2 && f.ReceiverUserId == dto.UserId1)
+        );
+
+        if (friendship is null) return NoContent();
+        if (!IsParticipant(authUserId, friendship)) return NotFound();
 
         return Ok(FriendshipDto.FromEntity(friendship));
     }
@@ -291,6 +315,17 @@ public class UserController : ControllerBase
     public async Task<IActionResult> IgnoreFriendship(int id)
     {
         return await DeleteFriendship(id);
+    }
+
+    // Helpers
+
+    private bool IsParticipant(string authUserId, Friendship friendship)
+    {
+        // Only participants can view pending/refused friendships
+        // Return 404 instead of 403 to not reveal existence to unwanted users
+        var isParticipant = friendship.RequesterUserId == authUserId || friendship.ReceiverUserId == authUserId;
+        if (!isParticipant && friendship.State != FriendshipState.Accepted) return false;
+        return true;
     }
 
     #endregion // Friendship

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using GofishApi.Enums;
 using GofishApi.Models;
 
 namespace GofishApi.Dtos;
@@ -18,10 +19,15 @@ public record GetUserProfileResDto(
     string? AvatarUrl,
     DateTime JoinedAt,
     DateTime LastActiveAt,
-    int WeeklyStreak
+    FriendshipState? FriendshipState,
+    int WeeklyStreak,
+    int MaxWeeklySteak,
+    int PinsCount,
+    int FriendsCount,
+    int GroupsCount
 )
 {
-    public static GetUserProfileResDto FromEntity(UserProfile e) => new(
+    public static GetUserProfileResDto FromEntity(UserProfile e, FriendshipState? friendshipState) => new(
         e.UserId,
         e.AppUser.FirstName ?? "",
         e.AppUser.LastName ?? "",
@@ -31,7 +37,12 @@ public record GetUserProfileResDto(
         e.AvatarUrl,
         e.JoinedAt,
         e.LastActiveAt,
-        e.WeeklyStreak
+        friendshipState,
+        e.WeeklyStreak,
+        e.MaxWeeklyStreak,
+        0,
+        0,
+        0
     );
 }
 

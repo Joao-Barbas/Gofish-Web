@@ -6,6 +6,9 @@ import { FooterComponent } from "@gofish/features/footer/footer.component";
 import { ActivatedRoute, RouterOutlet } from "@angular/router";
 import { AuthService } from "@gofish/shared/services/auth.service";
 import { ProfileContext } from "@gofish/features/user/profile/services/profile-context.service";
+import { catchError, firstValueFrom, map, of } from "rxjs";
+import { UserApi } from "@gofish/shared/api/user.api";
+import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 
 @Component({
   selector: 'app-profile',
@@ -25,12 +28,31 @@ export class ProfileShellComponent {
 
   private readonly authService    = inject(AuthService);
   private readonly profileContext = inject(ProfileContext);
+  private readonly userApi        = inject(UserApi);
+
+  friendship = resource({
+    params: () => this.profileId(),
+    loader: ({ params: id }) => firstValueFrom(
+      this.userApi.getFriendshipBetween({
+        userId1: id!,
+        userId2: this.authService.userId()!
+      }).pipe(
+        map(res => res ?? null),
+        catchError(() => of(null))
+      )
+    )
+  });
 
   constructor() {
     effect(() => {
       if (!this.profileId()) throw new Error('Profile requires a route :id param.');
       this.profileContext.profileId.set(this.profileId()!);
       this.profileContext.isOwner.set(this.profileId() === this.authService.userId());
+    });
+    effect(() => {
+      const friendship = this.friendship.value();
+      this.profileContext.friendship.set(friendship);
+      this.profileContext.isFriend.set(friendship?.state === FriendshipState.Accepted);
     });
   }
 }
