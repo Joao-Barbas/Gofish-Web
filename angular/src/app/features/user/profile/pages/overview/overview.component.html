@@ -68,8 +68,12 @@
 
       <!-- Under avatar stats -->
       <div class="gf-flow-horizontal gf-gap-6">
-        <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">{{ `${profile.pinsCount} Pins` }}</div>
-        <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">{{ `${profile.fishingScore} Catch Points` }}</div>
+        <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">
+          <a [routerLink]="'pins'" style="text-decoration: none; color: var(--gf-dark-text)">{{ `${profile.pinsCount} Pins` }}</a>
+        </div>
+        <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">
+          <span>{{ `${profile.fishingScore} Catch Points` }}</span>
+        </div>
       </div>
 
       <!-- Bio -->
@@ -122,10 +126,9 @@
 
     <!-- Horizontal groups list -->
     <div>
-
       <div class="gf-flow-horizontal gf-justify-between">
         <p class="gf-text-md gf-font-semibold">Groups ({{ profile.groupsCount }})</p>
-        <a routerLink="/" class="gf-d-flex gf-items-center gf-text-sm see-all">
+        <a [routerLink]="'groups'" class="gf-d-flex gf-items-center gf-text-sm see-all">
           See all
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                fill="none" stroke="currentColor"
@@ -152,15 +155,7 @@
             ></gf-small-group-carousel-card>
           }
         }
-        <!-- <app-group-card></app-group-card>
-        <app-group-card></app-group-card>
-        <app-group-card></app-group-card>
-        <app-group-card></app-group-card>
-        <app-group-card></app-group-card>
-        <app-group-card></app-group-card>
-        <app-group-card></app-group-card> -->
       </div>
-
     </div>
 
     <!-- Quick stats -->

@@ -56,8 +56,8 @@ public class GroupController : ControllerBase
                 .Include(g => g.GroupUsers)
                     .ThenInclude(gu => gu.AppUser)
                         .ThenInclude(u => u.UserProfile)
-                .Include(g => g.GroupUsers)
-                    .ThenInclude(gu => gu.Role);
+                .Include(g => g.GroupUsers);
+                    // .ThenInclude(gu => gu.Role);
         }
 
         if (dto.DataRequest?.IncludePosts ?? true)

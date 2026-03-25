@@ -6,11 +6,15 @@ namespace GofishApi.Dtos;
 
 public record GetPinsReqDTO(
     IReadOnlyCollection<PinIdDTO> Ids,
-    PinDataRequestDTO? DataRequest
+    PinDataRequestDTO? DataRequest,
+    int MaxResults = 20,
+    DateTime? LastTimestamp = null
 );
 
 public record GetPinsResDTO(
-    IReadOnlyCollection<GetPinsPinDTO> Pins
+    IReadOnlyCollection<GetPinsPinDTO> Pins,
+    bool HasMoreResults,
+    DateTime? LastTimestamp
 );
 
 #region Request

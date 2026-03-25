@@ -1,3 +1,75 @@
 <!-- pins.component.html -->
 
-<p>pins works!</p>
+@if (user.isLoading()) {
+  <gf-loading-spinner></gf-loading-spinner>
+} @else if (user.hasValue()) {
+<div class="gf-container-lg gf-w-90 gf-mx-auto gf-pt-64 gf-flow-vertical gf-gap-16" style="background-color:black;">
+  <h5 class="gf-font-bold">{{ 'Username\'s pins' }}</h5>
+  <nav class="gf-flow-horizontal gf-justify-evenly gf-items-center gf-w-100">
+    <a [routerLink]="'.'"
+       [queryParams]="{ tab: 'all' }"
+       [class.active]="activeTab() === 'all'">
+      All ({{ counts().all }})
+    </a>
+    <a [routerLink]="'.'"
+       [queryParams]="{ tab: 'catch' }"
+       [class.active]="activeTab() === 'catch'">
+      Catch ({{ counts().catch }})
+    </a>
+    <a [routerLink]="'.'"
+       [queryParams]="{ tab: 'information' }"
+       [class.active]="activeTab() === 'information'">
+      Information ({{ counts().information }})
+    </a>
+    <a [routerLink]="'.'"
+       [queryParams]="{ tab: 'warning' }"
+       [class.active]="activeTab() === 'warning'">
+      Warning ({{ counts().warning }})
+    </a>
+  </nav>
+  @if (pins.isLoading()) {
+    <gf-loading-spinner></gf-loading-spinner>
+  }
+  @if (pins.hasValue()) {
+    <div class="list">
+      @for (p of pinsList(); track p.id) {
+        <app-gf-card-pin-preview
+          [pinType]="p.kind === PinKind.CATCH ? 'catch' : p.kind === PinKind.INFORMATION ? 'info' : 'warning'"
+          [authorName]="p.author?.userName!"
+          [timeAgo]="p.createdAt | timeAgo"
+          [votes]="p.post?.score!"
+          [comments]="p.post?.commentCount!"
+          [species]="p.details?.species"
+          [bait]="p.details?.bait"
+          [hookSize]="p.details?.hookSize"
+          [accessDifficulty]="p.details?.accessDificulty"
+          [seabed]="p.details?.seabed"
+          [warningKind]="p.details?.warningKind"
+        ></app-gf-card-pin-preview>
+      } @empty {
+        @if (!pins.isLoading() && !loadingState.isLoading()) {
+          <p>{{ 'No friends yet. :(' }}</p>
+        }
+      }
+    </div>
+    @if (pinsHasMore()) {
+      <gf-async-button
+        [labels]="{ idle: 'Load more', busy: 'Loading...' }"
+        [states]="{ busy: busyState.isBusy() }"
+        (click)="loadMorePins()"
+      ></gf-async-button>
+    }
+  }
+  @if (pins.error()) {
+    <div class="failed-container gf-flow-vertical gf-center-axes">
+      <span>{{ pins.error() }}</span>
+      <button (click)="pins.reload()">Try Again</button>
+    </div>
+  }
+</div>
+} @else if (user.error()) {
+  <div class="failed-container gf-flow-vertical gf-center-axes">
+    <span>{{ user.error() }}</span>
+    <button (click)="user.reload()">Try Again</button>
+  </div>
+}

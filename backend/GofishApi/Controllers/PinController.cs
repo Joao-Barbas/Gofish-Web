@@ -75,8 +75,13 @@ public class PinController : ControllerBase
     [HttpPost("GetPins")]
     public async Task<IActionResult> GetPins([FromBody] GetPinsReqDTO dto)
     {
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        if (userId is null) return Unauthorized();
+
+        if (userId is null)
+        {
+            return Unauthorized();
+        }
 
         var pinIds = new List<int>();
 
@@ -88,21 +93,17 @@ public class PinController : ControllerBase
             }
             if (id.AuthorId is not null && id.AuthorId != "")
             {
-                var authorPinIds = await _visibility.FilterVisiblePins(
-                    _db.Pins.Where(p => p.UserId == id.AuthorId),
-                    userId)
+                pinIds.AddRange(await _visibility.FilterVisiblePins(_db.Pins
+                .Where(p => p.UserId == id.AuthorId), userId)
                 .Select(p => p.Id)
-                .ToListAsync();
-                pinIds.AddRange(authorPinIds);
+                .ToListAsync());
             }
             if (id.GroupId is not null)
             {
-                var groupPinIds = await _visibility.FilterVisiblePins(
-                    _db.Pins.Where(p => p.Post.Groups.Any(g => g.Id == id.GroupId.Value)),
-                    userId)
+                pinIds.AddRange(await _visibility.FilterVisiblePins(_db.Pins
+                .Where(p => p.Post.Groups.Any(g => g.Id == id.GroupId.Value)), userId)
                 .Select(p => p.Id)
-                .ToListAsync();
-                pinIds.AddRange(groupPinIds);
+                .ToListAsync());
             }
         }
 
@@ -110,6 +111,11 @@ public class PinController : ControllerBase
             _db.Pins.Where(p => pinIds.Distinct().Contains(p.Id)),
             userId);
 
+
+        if (dto.LastTimestamp is not null)
+        {
+            query = query.Where(p => p.CreatedAt < dto.LastTimestamp.Value);
+        }
         if (dto.DataRequest?.IncludeAuthor ?? false)
         {
             query = query.Include(p => p.AppUser);
@@ -121,12 +127,18 @@ public class PinController : ControllerBase
             .Include(p => p.Post.PostVotes);
         }
 
-        var pins = await query.ToListAsync();
-        var data = pins
-        .Select(p => GetPinsPinDTO.FromPin(p, dto.DataRequest, userId))
-        .ToList();
+        var results = await query
+        .OrderByDescending(p => p.CreatedAt)
+        .ThenByDescending(p => p.Id)
+        .Take(maxResults + 1)
+        .ToListAsync();
 
-        return Ok(new GetPinsResDTO(data));
+        var hasMore = results.Count > maxResults;
+        var page = results.Take(maxResults).ToList();
+        var data = page.Select(p => GetPinsPinDTO.FromPin(p, dto.DataRequest, userId)).ToList();
+        var lastTime = hasMore ? page[^1].CreatedAt : (DateTime?)null;
+
+        return Ok(new GetPinsResDTO(data, hasMore, lastTime));
     }
 
     #region CreatePins
