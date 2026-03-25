@@ -33,4 +33,8 @@ export class UserProfileApi {
     if (dto.avatar) formData.append('avatar', dto.avatar);
     return this.http.patch<void>(Api.UserProfile.action('PatchUserProfile'), formData);
   }
+
+  public getUserAvatar(id: string): Observable<string> {
+    return this.http.get<string>(Api.UserProfile.action(`GetUserAvatar/${id}`));
+  }
 }

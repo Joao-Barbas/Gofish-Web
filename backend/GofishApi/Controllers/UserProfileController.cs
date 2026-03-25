@@ -181,4 +181,12 @@ public class UserProfileController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUserAvatar([FromRoute] string id)
+    {
+        var profile = await _context.UserProfiles.FindAsync(id);
+        if (profile is null) return NotFound();
+        return Ok(profile.AvatarUrl);
+    }
 }
