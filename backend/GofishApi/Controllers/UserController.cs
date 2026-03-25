@@ -150,7 +150,6 @@ public class UserController : ControllerBase
 
     // Helpers
 
-
     private static string? MaskEmail(string? email)
     {
         if (email is null) return null;
@@ -174,11 +173,14 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetFriendships([FromQuery] GetFriendshipsReqDto dto)
     {
-        var maxResults   = Math.Clamp(dto.MaxResults, 1, 100);
-        var authUserId   = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+        var authUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         var targetUserId = dto.UserId ?? authUserId;
-        var isAuthUser   = targetUserId == authUserId;
 
+        var userExists = await _db.Users.AnyAsync(u => u.Id == targetUserId);
+        if (!userExists) return NotFound();
+
+        var isAuthUser = targetUserId == authUserId;
         if (!isAuthUser && dto.State != FriendshipState.Accepted)
         {
             return StatusCode(StatusCodes.Status403Forbidden, ProblemDetailsFactory.CreateValidationProblemDetails(
@@ -200,9 +202,9 @@ public class UserController : ControllerBase
         .Take(maxResults + 1)
         .ToListAsync();
 
-        var hasMore  = results.Count > maxResults;
-        var page     = results.Take(maxResults).ToList();
-        var data     = page.Select(FriendshipDto.FromEntity);
+        var hasMore = results.Count > maxResults;
+        var page = results.Take(maxResults).ToList();
+        var data = page.Select(FriendshipDto.FromEntity);
         var lastTime = hasMore ? page[^1].CreatedAt : (DateTime?)null;
 
         return Ok(new GetFriendshipsResDto(data, hasMore, lastTime));
@@ -329,4 +331,40 @@ public class UserController : ControllerBase
     }
 
     #endregion // Friendship
+    #region Groups
+
+    [HttpGet]
+    public async Task<IActionResult> GetUserGroups([FromQuery] GetUserGroupReqDto dto)
+    {
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+        var authUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var targetUserId = dto.UserId ?? authUserId;
+
+        var userExists = await _db.Users.AnyAsync(u => u.Id == targetUserId);
+        if (!userExists) return NotFound();
+
+        var query = _db.Groups.Where(g => g.GroupUsers.Any(gu => gu.UserId == targetUserId));
+
+        if (dto.LastTimestamp is not null)
+            query = query.Where(g => g.CreatedAt < dto.LastTimestamp.Value);
+
+        var results = await query
+        .OrderByDescending(g => g.CreatedAt)
+        .Take(maxResults + 1)
+        .Select(g => UserGroupDto
+            .FromEntity(g)
+            .SetRole(g.GroupUsers.First(gu => gu.UserId == targetUserId).Role)
+            .SetMemberQty(g.GroupUsers.Count)
+            .SetPostQty(g.Posts.Count))
+        .ToListAsync();
+
+        var hasMore = results.Count > maxResults;
+        var page = results.Take(maxResults).ToList();
+        var lastTime = hasMore ? page[^1].CreatedAt : (DateTime?)null;
+
+        return Ok(new GetUserGroupResDto(page, hasMore, lastTime));
+    }
+
+    #endregion // Groups
+
 }

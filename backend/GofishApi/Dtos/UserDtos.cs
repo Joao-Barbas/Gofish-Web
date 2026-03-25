@@ -155,3 +155,45 @@ public record RequestFriendshipResDto(
 { }
 
 #endregion // Friendship
+#region Groups
+
+public record UserGroupDto(
+    int Id,
+    string Name,
+    string? Description,
+    string? AvatarUrl,
+    DateTime CreatedAt
+)
+{
+    public GroupRole Role { get; init; }
+    public int MemberQty { get; init; }
+    public int PostQty { get; init; }
+
+    public static UserGroupDto FromEntity(Group g) => new(
+        g.Id,
+        g.Name,
+        g.Description,
+        g.AvatarUrl,
+        g.CreatedAt
+    );
+
+    public UserGroupDto SetRole(GroupRole role) => new(this) { Role = role };
+    public UserGroupDto SetMemberQty(int memberQty) => new(this) { MemberQty = memberQty };
+    public UserGroupDto SetPostQty(int postQty) => new(this) { PostQty = postQty };
+}
+     
+public record GetUserGroupReqDto(
+    string? UserId = null,
+    int MaxResults = 20,
+    DateTime? LastTimestamp = null
+)
+{ }
+
+public record GetUserGroupResDto(
+    IEnumerable<UserGroupDto> Groups,
+    bool HasMoreResults,
+    DateTime? LastTimestamp
+)
+{ }
+
+#endregion // Groups

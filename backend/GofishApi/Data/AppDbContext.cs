@@ -23,12 +23,10 @@ namespace GofishApi.Data
         public DbSet<PostComment> PostComments { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupPost> GroupPosts { get; set; }
-        public DbSet<GroupRole> GroupRoles { get; set; }
         public DbSet<GroupUser> GroupUsers { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<PinReport> PinReports { get; set; }
         public DbSet<CommentReport> CommentReports { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -231,7 +229,6 @@ namespace GofishApi.Data
             SeedCatchPin(builder);
             SeedInfoPin(builder);
             SeedWarnPin(builder);
-            SeedGroupRoles(builder);
         }
 
         private static void SeedUsers(ModelBuilder builder)
@@ -404,32 +401,6 @@ namespace GofishApi.Data
 
             builder.Entity<WarnPin>().HasData(warnPins);
             builder.Entity<Post>().HasData(posts);
-        }
-        private static void SeedGroupRoles(ModelBuilder builder)
-        {
-            var roles = new List<GroupRole>
-    {
-        new GroupRole
-        {
-            Id = "1",
-            Name = "Owner",
-            NormalizedName = "OWNER"
-        },
-        new GroupRole
-        {
-            Id = "2",
-            Name = "Admin",
-            NormalizedName = "ADMIN"
-        },
-        new GroupRole
-        {
-            Id = "3",
-            Name = "Member",
-            NormalizedName = "MEMBER"
-        }
-    };
-
-            builder.Entity<GroupRole>().HasData(roles);
         }
     }
 }
