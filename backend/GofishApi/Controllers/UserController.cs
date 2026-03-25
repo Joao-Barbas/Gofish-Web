@@ -202,6 +202,8 @@ public class UserController : ControllerBase
         .Take(maxResults + 1)
         .ToListAsync();
 
+        // Plama noobalhao
+
         var hasMore = results.Count > maxResults;
         var page = results.Take(maxResults).ToList();
         var data = page.Select(FriendshipDto.FromEntity);
