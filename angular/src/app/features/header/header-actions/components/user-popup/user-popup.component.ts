@@ -1,11 +1,14 @@
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { Component, resource } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
-import { Path } from "@gofish/shared/constants";
+import { UserProfileApi } from "@gofish/shared/api/user-profile.api";
+import { Path, PathSegment } from "@gofish/shared/constants";
 import { PopupController } from "@gofish/shared/core/popup-controller";
 import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 import { SimplePopup } from "@gofish/shared/models/popup.model";
 import { AuthService } from "@gofish/shared/services/auth.service";
+import { AvatarService } from "@gofish/shared/services/avatar.service";
+import { firstValueFrom } from "rxjs";
 
 @Component({
   selector: 'app-user-popup',
@@ -17,9 +20,17 @@ export class UserPopupComponent implements SimplePopup {
   readonly popupController = new PopupController('header-user-popup');
 
   readonly Path = Path;
+  readonly PathSegment = PathSegment;
+
+  avatarUrl = resource({
+    params: () => this.authService.userId()!,
+    loader: ({ params: id }) => firstValueFrom(this.userProfileApi.getUserAvatar(id))
+  })
 
   constructor(
     readonly authService: AuthService,
+    readonly userProfileApi: UserProfileApi,
+    readonly avatarService: AvatarService,
     readonly router: Router
   ){}
 

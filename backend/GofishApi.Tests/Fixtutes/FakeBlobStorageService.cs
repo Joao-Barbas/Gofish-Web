@@ -11,7 +11,12 @@ public class FakeBlobStorageService : IBlobStorageService
         return Task.FromResult("https://fake.blobstorage.local/test-image.png");
     }
 
-    public Task<string> UploadAvatarAsync(IFormFile file) 
+    public Task<string> UploadUserAvatarAsync(IFormFile file) 
+    {
+        return Task.FromResult("https://fake.blobstorage.local/test-image.png");
+    }
+
+    public Task<string> UploadGroupAvatarAsync(IFormFile file)
     {
         return Task.FromResult("https://fake.blobstorage.local/test-image.png");
     }

@@ -15,6 +15,8 @@ builder.Services.Configure<AzureStorageOptions>(builder.Configuration.GetSection
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ITwoFactorTokenService, TwoFactorTokenService>();
 builder.Services.AddScoped<IAppUserBuilder, AppUserBuilder>();
+builder.Services.AddScoped<IGamificationService, GamificationService>();
+builder.Services.AddScoped<IVisibilityService, VisibilityService>();
 builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
 
 builder.Services.AddDataProtection();

@@ -19,6 +19,9 @@ public class UserProfile
     public DateTime LastUpdateAt { get; set; }
     public DateTime JoinedAt { get; set; }
     public DateTime LastActiveAt { get; set; }
+    public int WeeklyStreak { get; set; }
+    public int MaxWeeklyStreak { get; set; }
+    public DateTime? LastPinWeekStart { get; set; }
 
     // Navigation
 

@@ -12,9 +12,14 @@ using GofishApi.Dtos;
 using GofishApi.Extensions;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using GofishApi.Exceptions;
+using GofishApi.Enums;
 
 namespace GofishApi.Controllers;
 
+[Authorize]
 [Route("api/[controller]/[action]")]
 [ApiController]
 public class UserProfileController : ControllerBase
@@ -22,35 +27,93 @@ public class UserProfileController : ControllerBase
     private readonly ILogger<UserProfileController> _logger;
     private readonly IBlobStorageService _blobStorage;
     private readonly AppDbContext _context;
+    private readonly UserManager<AppUser> _userManager;
+    private readonly IVisibilityService _visibility;
 
     public UserProfileController(
         ILogger<UserProfileController> logger,
         IBlobStorageService blobStorage,
-        AppDbContext context
-    ){
+        AppDbContext context,
+        UserManager<AppUser> userManager,
+        IVisibilityService visibility
+    )
+    {
         _logger = logger;
         _blobStorage = blobStorage;
         _context = context;
+        _userManager = userManager;
+        _visibility = visibility;
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserProfile(string id)
     {
-        var userProfile = await _context.UserProfiles.FindAsync(id);
+        var authUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var thisUserProfile = await _context.UserProfiles
+        .Include(p => p.AppUser)
+        .FirstOrDefaultAsync(p => p.UserId == id);
+
+        if (thisUserProfile is null)
+        {
+            return NotFound();
+        }
+
+        var pinsCount = await _visibility
+        .FilterVisiblePins(_context.Pins.Where(p => p.UserId == id), authUserId)
+        .CountAsync();
+
+        var friendsCount = await _context.Friendships
+        .CountAsync(f => (f.RequesterUserId == id || f.ReceiverUserId == id) && f.State == FriendshipState.Accepted);
+
+        var groupsCount = await _context.GroupUsers
+        .CountAsync(gu => gu.UserId == id);
+
+        var friendship = await _context.Friendships.FirstOrDefaultAsync(f =>
+            (f.RequesterUserId == authUserId && f.ReceiverUserId == id) ||
+            (f.RequesterUserId == id && f.ReceiverUserId == authUserId));
+
+        return Ok(GetUserProfileResDto.FromEntity(thisUserProfile, friendship?.State) with
+        {
+            PinsCount = pinsCount,
+            FriendsCount = friendsCount,
+            GroupsCount = groupsCount
+        });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetUserProfileSettings()
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.UserId == userId);
         if (userProfile is null) return NotFound();
-        return Ok(GetUserProfileResDto.FromEntity(userProfile));
+        return Ok(GetUserProfileSettingsResDto.FromEntity(userProfile));
     }
 
     [HttpPut]
-    public async Task<IActionResult> PutUserProfile([FromBody] PutUserProfileReqDto dto)
+    [RequestSizeLimit(5_000_000)]
+    public async Task<IActionResult> PutUserProfile([FromForm] PutUserProfileReqDto dto)
     {
+        var allowedTypes = new[] { "image/jpeg", "image/png" };
+
+        if (!allowedTypes.Contains(dto.Avatar.ContentType))
+        {
+            throw new AppValidationException("InvalidFileType", "Allowed file type only include JPEG and PNG.");
+        }
+
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        if (userId is null) return Unauthorized();
         var userProfile = await _context.UserProfiles.FindAsync(userId);
-        if (userProfile is null) return NotFound();
+
+        if (userProfile is null)
+        {
+            return NotFound();
+        }
+        if (userProfile.AvatarUrl is not null)
+        {
+            await _blobStorage.DeleteImageAsync(userProfile.AvatarUrl);
+        }
 
         userProfile.Bio = dto.Bio;
-        userProfile.AvatarUrl = dto.AvatarUrl;
+        userProfile.AvatarUrl = await _blobStorage.UploadUserAvatarAsync(dto.Avatar);
         userProfile.LastUpdateAt = DateTime.UtcNow;
 
         try
@@ -70,15 +133,37 @@ public class UserProfileController : ControllerBase
     }
 
     [HttpPatch]
-    public async Task<IActionResult> PatchUserProfile([FromBody] PatchUserProfileReqDto dto)
+    [RequestSizeLimit(5_000_000)]
+    public async Task<IActionResult> PatchUserProfile([FromForm] PatchUserProfileReqDto dto)
     {
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        if (userId is null) return Unauthorized();
-        var userProfile = await _context.UserProfiles.FindAsync(userId);
-        if (userProfile is null) return NotFound();
+        var allowedTypes = new[] { "image/jpeg", "image/png" };
 
-        userProfile.Bio = dto.Bio ?? userProfile.Bio;
-        userProfile.AvatarUrl = dto.AvatarUrl ?? userProfile.AvatarUrl;
+        if (dto.Avatar is not null && !allowedTypes.Contains(dto.Avatar.ContentType))
+        {
+            throw new AppValidationException("InvalidFileType", "Allowed file type only include JPEG and PNG.");
+        }
+
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var userProfile = await _context.UserProfiles.FindAsync(userId);
+
+        if (userProfile is null)
+        {
+            return NotFound();
+        }
+
+        if (dto.Bio is not null)
+        {
+            userProfile.Bio = dto.Bio;
+        }
+        if (dto.Avatar is not null)
+        {
+            if (userProfile.AvatarUrl is not null)
+            {
+                await _blobStorage.DeleteImageAsync(userProfile.AvatarUrl);
+            }
+            userProfile.AvatarUrl = await _blobStorage.UploadUserAvatarAsync(dto.Avatar);
+        }
+
         userProfile.LastUpdateAt = DateTime.UtcNow;
 
         try
@@ -95,5 +180,13 @@ public class UserProfileController : ControllerBase
         }
 
         return NoContent();
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUserAvatar([FromRoute] string id)
+    {
+        var profile = await _context.UserProfiles.FindAsync(id);
+        if (profile is null) return NotFound();
+        return Ok(profile.AvatarUrl);
     }
 }

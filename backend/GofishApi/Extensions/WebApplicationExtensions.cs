@@ -39,21 +39,20 @@ public static class WebApplicationExtensions
 
     private static async Task SeedGroupRolesAsync(AppDbContext dbContext)
     {
-        var roles = new GroupRole[]
-        {
-            new() { Name = "Member", NormalizedName = "MEMBER" },
-            new() { Name = "Owner", NormalizedName = "OWNER" },
-            new() { Name = "Moderator", NormalizedName = "MODERATOR" }
-        };
-        foreach (var role in roles)
-        {
-            /*var exists = await dbContext.GroupRoles.AnyAsync(gr => gr.Name == role.Name);
-            if (!exists)
-            {
-                dbContext.GroupRoles.Add(role);
-            }*/
-        }
-        await dbContext.SaveChangesAsync();
-
+        // var roles = new GroupRole[]
+        // {
+        //     new() { Name = "Member", NormalizedName = "MEMBER" },
+        //     new() { Name = "Owner", NormalizedName = "OWNER" },
+        //     new() { Name = "Moderator", NormalizedName = "MODERATOR" }
+        // };
+        // foreach (var role in roles)
+        // {
+        //     /*var exists = await dbContext.GroupRoles.AnyAsync(gr => gr.Name == role.Name);
+        //     if (!exists)
+        //     {
+        //         dbContext.GroupRoles.Add(role);
+        //     }*/
+        // }
+        // await dbContext.SaveChangesAsync();
     }
 }

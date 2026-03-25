@@ -6,11 +6,15 @@ namespace GofishApi.Dtos;
 
 public record GetPinsReqDTO(
     IReadOnlyCollection<PinIdDTO> Ids,
-    PinDataRequestDTO? DataRequest
+    PinDataRequestDTO? DataRequest,
+    int MaxResults = 20,
+    DateTime? LastTimestamp = null
 );
 
 public record GetPinsResDTO(
-    IReadOnlyCollection<GetPinsPinDTO> Pins
+    IReadOnlyCollection<GetPinsPinDTO> Pins,
+    bool HasMoreResults,
+    DateTime? LastTimestamp
 );
 
 #region Request
@@ -52,10 +56,10 @@ public record GetPinsPinDTO(
         pin.CreatedAt,
         pin.Visibility,
         pin.Kind,
-        request?.IncludeDetails ?? false ? GetPinsPinDetailsDTO.FromPin(pin) : null,
-        request?.IncludeGeolocation ?? false ? GetPinsGeolocationDTO.FromPin(pin) : null,
-        request?.IncludeAuthor ?? false && pin.AppUser is not null ? GetPinsAuthorDTO.FromPin(pin) : null,
-        request?.IncludePost ?? false && pin.Post is not null ? GetPinsPostDTO.FromPin(pin, currentUserId) : null
+        (request?.IncludeDetails ?? false) ? GetPinsPinDetailsDTO.FromPin(pin) : null,
+        (request?.IncludeGeolocation ?? false) ? GetPinsGeolocationDTO.FromPin(pin) : null,
+        (request?.IncludeAuthor ?? false) ? GetPinsAuthorDTO.FromPin(pin) : null,
+        (request?.IncludePost ?? false) ? GetPinsPostDTO.FromPin(pin, currentUserId) : null
     );
 };
 

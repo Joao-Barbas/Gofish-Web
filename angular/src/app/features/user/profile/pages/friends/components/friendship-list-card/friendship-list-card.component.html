@@ -1,0 +1,34 @@
+<!-- friendship-list-card.component.html -->
+
+@let otherUser = friendship().requesterUserId === profileContext.profileId() ? friendship().receiver : friendship().requester;
+
+@if (small()) {
+  <a [routerLink]="['/profile', otherUser.userId]">
+    <img [src]="avatarService.resolve(otherUser.avatarUrl)" alt="Avatar">
+    <p>{{ otherUser.userName }}</p>
+  </a>
+} @else {
+  <div>
+    <a [routerLink]="['/profile', otherUser.userId]">
+      <img [src]="avatarService.resolve(otherUser.avatarUrl)" alt="Avatar">
+      <div>
+        <p>{{ otherUser.firstName + ' ' + otherUser.lastName }}</p>
+        <small>@{{ otherUser.userName }}</small>
+      </div>
+    </a>
+  </div>
+  @if (actions()) {
+    <div class="gf-flow-horizontal gf-gap-12">
+      <button
+        [disabled]="isAccepted()"
+        (click)="onDecline()">
+        Decline
+      </button>
+      <gf-async-button
+        [labels]="{ idle: 'Accept' }"
+        [states]="{ busy: busyState.busy(), success: isAccepted() }"
+        (click)="onAccept()"
+      ></gf-async-button>
+    </div>
+  }
+}

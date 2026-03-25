@@ -1,4 +1,5 @@
 ﻿using GofishApi.Models;
+using Microsoft.OpenApi.Extensions;
 using System.Threading;
 using static GofishApi.Dtos.GetGroupDTO;
 
@@ -71,7 +72,7 @@ public record GetGroupDTO(
         public static GetGroupMemberDTO FromGroupUser(GroupUser gu) => new(
             gu.UserId,
             gu.AppUser.UserName ?? "",
-            gu.Role.Name,
+            gu.Role.GetDisplayName(),
             gu.AppUser.UserProfile.AvatarUrl
         );
     }

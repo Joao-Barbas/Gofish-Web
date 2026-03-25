@@ -56,8 +56,8 @@ public class GroupController : ControllerBase
                 .Include(g => g.GroupUsers)
                     .ThenInclude(gu => gu.AppUser)
                         .ThenInclude(u => u.UserProfile)
-                .Include(g => g.GroupUsers)
-                    .ThenInclude(gu => gu.Role);
+                .Include(g => g.GroupUsers);
+                    // .ThenInclude(gu => gu.Role);
         }
 
         if (dto.DataRequest?.IncludePosts ?? true)
@@ -124,7 +124,7 @@ public class GroupController : ControllerBase
             {
                 GroupId = newGroup.Id,
                 UserId = user.Id,
-                RoleId = "1"
+                Role = GroupRole.Owner
             };
 
             _db.GroupUsers.Add(groupUser);
@@ -160,7 +160,7 @@ public class GroupController : ControllerBase
         var membership = await _db.GroupUsers
             .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
 
-        if (membership is null || membership.RoleId != "1")
+        if (membership is null || membership.Role != GroupRole.Owner)
             return Forbid();
 
         try
@@ -270,7 +270,7 @@ public class GroupController : ControllerBase
         var isAllowed = await _db.GroupUsers.AnyAsync(gu =>
             gu.GroupId == groupId &&
             gu.UserId == userId &&
-            (gu.RoleId == "1" || gu.RoleId == "2"));
+            (gu.Role == GroupRole.Owner || gu.Role == GroupRole.Moderator));
 
         if (!isAllowed)
             return Forbid();
@@ -338,7 +338,7 @@ public class GroupController : ControllerBase
         {
             GroupId = invite.GroupId,
             UserId = userId,
-            RoleId = "3" // default member role
+            Role = GroupRole.Member // default member role
         };
 
         invite.State = FriendshipState.Accepted;
@@ -369,7 +369,7 @@ public class GroupController : ControllerBase
         if (requesterMembership is null)
             return Forbid();
 
-        if (requesterMembership.RoleId != "1" && requesterMembership.RoleId != "2")
+        if (requesterMembership.Role != GroupRole.Owner && requesterMembership.Role != GroupRole.Moderator)
             return Forbid();
 
         var targetMembership = await _db.GroupUsers

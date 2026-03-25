@@ -36,9 +36,14 @@ public class BlobStorageService : IBlobStorageService
         return await UploadBlobAsync(file, _options.ContainerPostImages!);
     }
 
-    public async Task<string> UploadAvatarAsync(IFormFile file)
+    public async Task<string> UploadUserAvatarAsync(IFormFile file)
     {
         return await UploadBlobAsync(file, _options.ContainerUserAvatars!);
+    }
+
+    public async Task<string> UploadGroupAvatarAsync(IFormFile file)
+    {
+        return await UploadBlobAsync(file, _options.ContainerGroupAvatars!);
     }
 
     public async Task DeleteImageAsync(string imageUrl)

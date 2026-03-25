@@ -50,12 +50,16 @@ export interface ViewportPinDTO {
 }
 
 export interface GetPinsReqDTO {
-  ids: PinIdDTO[] ,
-  dataRequest: PinDataReqDTO
+  ids: PinIdDTO[];
+  dataRequest: PinDataReqDTO;
+  maxResults?: number;
+  lastTimestamp?: string;
 }
 
 export interface GetPinsResDTO{
-  pins: PinDataResDTO[]
+  pins: PinDataResDTO[];
+  hasMoreResults: boolean;
+  lastTimestamp?: string;
 }
 
 export interface PinDataReqDTO {
@@ -76,6 +80,7 @@ export interface PinDataResDTO {
   author?: AuthorDTO;
   post?: PostDTO;
 }
+
 export interface PinIdDTO {
   pinId?: number,
   authorId?: string,
