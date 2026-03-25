@@ -67,7 +67,7 @@ export class GroupCreateComponent {
 
     const formData = new FormData();
     formData.append('Image', this.image);
-    formData.append('image', this.image);
+    //formData.append('image', this.image);
     formData.append('Name', this.form.value.groupName!);
     formData.append('Description', this.form.value.body!);
 
