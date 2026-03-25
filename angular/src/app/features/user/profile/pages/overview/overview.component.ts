@@ -1,6 +1,6 @@
 // overview.component.ts
 
-import { Component, effect, ElementRef, inject, resource, signal, viewChild } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, resource, signal, viewChild } from '@angular/core';
 import { ProfileContext } from '@gofish/features/user/profile/services/profile-context.service';
 import { UserProfileApi } from '@gofish/shared/api/user-profile.api';
 import { UserApi } from '@gofish/shared/api/user.api';
@@ -41,6 +41,11 @@ export class OverviewComponent {
   readonly popupService   = inject(PopupService);
 
   readonly busyState = new BusyState();
+
+  readonly hasProfileActions = computed(() =>
+    // Add more conditions here with || as new actions are introduced
+    this.profileContext.isFriend()
+  );
 
   userProfile = resource({
     params: () => this.profileContext.profileId(),
