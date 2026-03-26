@@ -123,6 +123,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.map.getCanvas().style.cursor = 'default';
 
     this.map.on('load', () => {
+      this.mapLayers.loadPinIcons(this.map);
       this.mapLayers.updateLayers(this.map, this.allPins);
       this.mapInteractions.setup(this.map, this.allPins, this.selectedPin, this.selectedPins, () => this.pickingOnMap);
       this.applyUrlState();
