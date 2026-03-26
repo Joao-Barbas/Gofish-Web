@@ -349,6 +349,7 @@ h6 {
 */
 
 /* Typography */
+
 .gf-text-error {
   margin: 0;
   font-size: 0.75rem;
@@ -377,6 +378,12 @@ h6 {
  * overflowing Post cards or Post comments
  */
 
+/* Assim? */
+
+/* gf-ugc-text, <---------- */
+/* gf-ugc-name, <---------- */
+/* gf-ucg-description { <---------- */
+
 [class$="-text"],
 [class$="-name"],
 [class$="-description"] {
@@ -388,6 +395,7 @@ h6 {
 }
 
 /* Layouts */
+
 .gf-flow-vertical {
   display: flex;
   flex-direction: column;
@@ -415,6 +423,7 @@ h6 {
 }
 
 /* Cards */
+
 .gf-card,
 [class*="gf-card-"] {
   font: var(--gf-font-main);
@@ -427,15 +436,15 @@ h6 {
   border-width: 0px;
 }
 
-
-
 /* Popovers */
+
 .gf-popover,
 [class*="gf-popover-"] {
   /* TODO: styles for .gf-card.gf-popover */
 }
 
 /* Spinners */
+
 .gf-basic-spinner {
   display: block;
   width: 20px;
@@ -646,13 +655,22 @@ h6 {
 /* Alerts / Toasts */
 /* Separators */
 
+.gf-separator {
+  border-top: calc(1rem / 16) solid var(--dark-bg-light);
+  margin: 0 16px;
+}
+
+.gf-popover-separator {
+  border-top: calc(1rem / 16) solid var(--dark-bg-light);
+  margin: 0 16px;
+}
+
 .gf-modal-separator {
   border-top: calc(1rem / 16) solid var(--dark-bg-light);
   margin: 0 16px;
 }
 
 /* Icons / Svgs */
-
 /* Backgrounds */
 
 .gf-background-map-fixed {
