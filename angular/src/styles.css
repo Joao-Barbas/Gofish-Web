@@ -971,14 +971,6 @@ h6 {
     --gf-dark-bg-warning-pin: var(--gf-light-bg-warning-pin);
     --gf-dark-text: var(--gf-light-text);
     --gf-dark-text-muted: var(--gf-light-text-muted);
-
-    /* Deprecated below */
-
-    --gf-dark-bg-dark: var(--gf-light-bg-light);
-    --gf-dark-bg: var(--gf-light-bg);
-    --gf-dark-bg-light: var(--gf-light-bg-dark);
-    --gf-dark-text: var(--gf-light-text);
-    --gf-dark-text-muted: var(--gf-light-text-muted);
   }
 }
 
