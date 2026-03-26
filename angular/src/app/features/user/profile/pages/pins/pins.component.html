@@ -3,7 +3,7 @@
 @if (user.isLoading()) {
   <gf-loading-spinner></gf-loading-spinner>
 } @else if (user.hasValue()) {
-<div class="gf-container-lg gf-w-90 gf-mx-auto gf-pt-64 gf-flow-vertical gf-gap-16" style="background-color:black;">
+<div class="gf-container-lg gf-w-90 gf-mx-auto gf-pt-64 gf-flow-vertical gf-gap-16">
   <h5 class="gf-font-bold">{{ 'Username\'s pins' }}</h5>
   <nav class="gf-flow-horizontal gf-justify-evenly gf-items-center gf-w-100">
     <a [routerLink]="'.'"

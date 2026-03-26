@@ -4,7 +4,7 @@
   <gf-loading-spinner></gf-loading-spinner>
 }
 @if (user.hasValue()) {
-  <div class="gf-container-lg gf-w-90 gf-mx-auto gf-pt-64 gf-flow-vertical gf-gap-16" style="background-color:black;">
+  <div class="gf-container-lg gf-w-90 gf-mx-auto gf-pt-64 gf-flow-vertical gf-gap-16">
     <h5 class="gf-font-bold">{{ `${ user.value().userName }'s groups` }}</h5>
     @let activeTabOrDefault = activeTab() ?? 'groups';
     @if (profileContext.isOwner()) {
