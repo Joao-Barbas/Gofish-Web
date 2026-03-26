@@ -172,9 +172,6 @@
   ** Deprecated below
   */
 
-  --font-main: "Inter", sans-serif; /* use --gf-font-main instead*/
-  --font-heading: "Montserrat", sans-serif; /* use --gf-font-heading instead*/
-
   /* Layout & text colors */
 
   --dark-bg-dark: oklch(0.1509 0.0092 276.35);
@@ -249,6 +246,7 @@
     transform: scale(1);
   }
 }
+
 @keyframes gf-popover-fade-in {
   from {
     opacity: 0;
@@ -266,6 +264,7 @@
     transform: scale(1);
   }
 }
+
 @keyframes gf-modal-fade-in {
   from {
     opacity: 0;
@@ -325,7 +324,7 @@ body {
 }
 
 body {
-  font-family: var(--font-main);
+  font-family: var(--gf-font-main);
   background-color: var(--dark-bg-dark);
   color: var(--dark-text);
 }
@@ -359,7 +358,7 @@ h6 {
 
 .gf-text-logo {
   color: var(--dark-text);
-  font-family: var(--font-heading);
+  font-family: var(--gf-font-heading);
   font-size: var(--gf-32);
   font-weight: 900;
   letter-spacing: -0.125rem;
@@ -1023,13 +1022,13 @@ h6 {
 
 .font-main li > a,
 .font-main {
-  font-family: var(--font-main);
+  font-family: var(--gf-font-main);
 }
 
 .font-heading span,
 .font-heading li > a,
 .font-heading {
-  font-family: var(--font-heading);
+  font-family: var(--gf-font-heading);
 }
 
 /*
@@ -1397,7 +1396,7 @@ h6 {
 [class*="gofish-card-"],
 /* .gf-card, */
 .gofish-card {
-  font: var(--font-main);
+  font: var(--gf-font-main);
   color: white; /* Cor do texto em branco*/
   box-shadow: var(--dark-lift-shadow-m);
 
@@ -1461,7 +1460,7 @@ h6 {
 
 .logo-text /* Deprecated - Use "gf-text-logo" instead */ {
   color: var(--dark-text);
-  font-family: var(--font-heading);
+  font-family: var(--gf-font-heading);
 
   font-size: 2rem;
   font-weight: 900;
@@ -1521,7 +1520,7 @@ h6 {
 
 .pin-hover-tip {
   padding: 0.75rem 1rem;
-  font-family: var(--font-main);
+  font-family: var(--gf-font-main);
   font-weight: 700;
   font-size: 0.875rem;
   text-align: center;
@@ -1561,7 +1560,7 @@ h6 {
 }
 
 .pin-card__title {
-  font-family: var(--font-heading);
+  font-family: var(--gf-font-heading);
   font-weight: 900;
   font-size: 1.1rem;
   margin: 0;
@@ -1569,13 +1568,13 @@ h6 {
 }
 
 .pin-card__coords {
-  font-family: var(--font-main);
+  font-family: var(--gf-font-main);
   color: var(--dark-text-muted);
   font-size: 0.75rem;
   letter-spacing: 0.025em;
 }
 .pin-card__description {
-  font-family: var(--font-main); /* Fonte principal Inter */
+  font-family: var(--gf-font-main); /* Fonte principal Inter */
   color: var(--dark-text); /* Cor clara para leitura */
   font-size: 0.875rem; /* Tamanho equilibrado (14px) */
   font-weight: 400; /* Peso normal para contraste com o h3 bold */
