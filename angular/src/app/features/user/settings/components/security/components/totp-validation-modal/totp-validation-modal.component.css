@@ -201,8 +201,8 @@
   }
 
   & > .btn-secondary {
-    background-color: var(--light-bg-dark);
-    color: var(--light-text);
+    background-color: var(--gf-light-bg-dark);
+    color: var(--gf-light-text);
   }
 
   & > .btn-primary {
