@@ -21,7 +21,7 @@ button {
   --async-btn-hover-shadow: var(--gf-shadow-lift-md);
 
   /* State colors */
-  --async-btn-busy-bg: var(--gf-tertiary);
+  --async-btn-busy-bg: var(--gf-primary-disabled);
   --async-btn-busy-color: var(--gf-dark-text);
   --async-btn-success-bg: var(--gf-success);
   --async-btn-success-color: var(--gf-light-text);

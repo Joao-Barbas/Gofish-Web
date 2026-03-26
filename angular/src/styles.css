@@ -1,11 +1,11 @@
 /* styles.css */
 
 /*
- * All custom properties must be prefixed with --gf- to avoid conflicts
+ * All custom properties must be prefixed with --gf-/.gf-/[class="-gf-"] to avoid conflicts
  * with bootstrap and other third-party libraries.
  *
  * Example: --gf-primary, --gf-shadow-lift-sm, --gf-text-muted.
-**/
+ */
 
 /* TODO: Update project wide .css's files to use new variables and updated namings */
 
@@ -47,33 +47,37 @@
    *  The --gf-light-* variables exist for elements that need inverted
    *  colors within the current theme (e.g., cancel buttons, badges).
    */
-  --gf-dark-bg-dark: oklch(0.1509 0.0092 276.35);
-  --gf-dark-bg: oklch(0.2604 0.012 276.58);
-  --gf-dark-bg-light: oklch(0.3037 0.0233 276.07);
-  --gf-dark-text: oklch(0.9619 0 0);
-  --gf-dark-text-muted: oklch(0.7652 0 0);
+  --gf-dark-bg-dark: oklch(0.1504 0.0088 274.27);
+  --gf-dark-bg: oklch(0.2581 0.0132 279.01);
+  --gf-dark-bg-light: oklch(0.3038 0.0239 274.74);
+  --gf-dark-bg-catch-pin: oklch(0.4227 0.1067 143.4);
+  --gf-dark-bg-info-pin: oklch(0.3755 0.0561 240.12);
+  --gf-dark-bg-warning-pin: oklch(0.4072 0.0586 75.58);
 
-  --gf-light-bg-dark: oklch(0.8266 0.024 276.84);
-  --gf-light-bg: oklch(0.9188 0.0058 277.17);
-  --gf-light-bg-light: oklch(0.3037 0.0233 276.07);
-  --gf-light-text: oklch(0.1579 0 0);
-  --gf-light-text-muted: oklch(0.4184 0 0);
+  --gf-light-bg-dark: oklch(0.8263 0.0239 277.88);
+  --gf-light-bg: oklch(0.9192 0.0055 274.96);
+  --gf-light-bg-light: oklch(0.9582 0.0041 271.37);
+  --gf-light-bg-catch-pin: oklch(0.8405 0.0979 144.64);
+  --gf-light-bg-info-pin: oklch(0.8041 0.0492 239.81);
+  --gf-light-bg-warning-pin: oklch(0.8321 0.0519 75.7);
 
-  --gf-dark-bg-catch-pin: lch(34.29% 39.32 137.83);
-  --gf-dark-bg-info-pin: lch(27.2% 19.32 250.85);
-  --gf-dark-bg-warning-pin: lch(30.94% 25.1 72.47);
-
-  --gf-statistics-bg: lch(37.99% 46.9 272.86);
+  --gf-dark-text: oklch(0.9612 0 0);
+  --gf-dark-text-muted: oklch(0.7668 0 0);
+  --gf-light-text: oklch(0.1591 0 0);
+  --gf-light-text-muted: oklch(0.4202 0 0);
 
   /* Semantic colors */
-  --gf-primary: oklch(0.6048 0.2142 262.15);
-  --gf-secondary: oklch(0.7096 0.186513 13.1188);
-  --gf-tertiary: oklch(0.4462 0.0246 276.43);
-  --gf-danger: oklch(0.648 0.1874 28.51);
-  --gf-warning: oklch(0.8829 0.1633 104.07);
-  --gf-success: oklch(0.8359 0.1769 156.76);
-  --gf-info: oklch(0.6114 0.1743 262.46);
-  --gf-selected: oklch(0.6803 0.1178 218.59);
+  --gf-primary: oklch(0.5998 0.1786 257.69);
+  --gf-primary-disabled: oklch(0.5604 0.1526 257.4);
+  --gf-primary-muted: oklch(0.7933 0.0299 254.71);
+  --gf-accent: oklch(0.7511 0.1465 70.53);
+  --gf-danger: oklch(0.6486 0.1879 28.63);
+  --gf-warning: oklch(0.8832 0.1636 103.92);
+  --gf-success: oklch(0.8255 0.2433 142.97);
+  --gf-info: oklch(0.6119 0.1748 262.34);
+  --gf-catch-pin: oklch(0.7704 0.2598 142.53);
+  --gf-info-pin: oklch(0.6751 0.1627 246.45);
+  --gf-warning-pin: oklch(0.7664 0.1585 68.01);
 
   /* Shadows */
   --gf-shadow-lift-sm:
@@ -416,8 +420,7 @@ h6 {
 /*
  * Retroactively preventing user generated text from
  * overflowing Post cards or Post comments
-
-*/
+ */
 
 [class$="-text"],
 [class$="-name"],
@@ -426,9 +429,7 @@ h6 {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 250px;
-  /*white-space: nowrap;*/
-
+  /* white-space: nowrap; */
 }
 
 /* Layouts */
@@ -715,36 +716,16 @@ h6 {
 */
 
 /* Texts */
-.gf-text-3xs {
-  font-size: var(--gf-text-3xs);
-}
-.gf-text-2xs {
-  font-size: var(--gf-text-2xs);
-}
-.gf-text-xs {
-  font-size: var(--gf-text-xs);
-}
-.gf-text-sm {
-  font-size: var(--gf-text-sm);
-}
-.gf-text-md {
-  font-size: var(--gf-text-md);
-}
-.gf-text-lg {
-  font-size: var(--gf-text-lg);
-}
-.gf-text-xl {
-  font-size: var(--gf-text-xl);
-}
-.gf-text-2xl {
-  font-size: var(--gf-text-2xl);
-}
-.gf-text-3xl {
-  font-size: var(--gf-text-3xl);
-}
-.gf-text-4xl {
-  font-size: var(--gf-text-4xl);
-}
+.gf-text-3xs { font-size: var(--gf-text-3xs); }
+.gf-text-2xs { font-size: var(--gf-text-2xs); }
+.gf-text-xs  { font-size: var(--gf-text-xs); }
+.gf-text-sm  { font-size: var(--gf-text-sm); }
+.gf-text-md  { font-size: var(--gf-text-md); }
+.gf-text-lg  { font-size: var(--gf-text-lg); }
+.gf-text-xl  { font-size: var(--gf-text-xl); }
+.gf-text-2xl { font-size: var(--gf-text-2xl); }
+.gf-text-3xl { font-size: var(--gf-text-3xl); }
+.gf-text-4xl { font-size: var(--gf-text-4xl); }
 
 .gf-font-thin       { font-weight: var(--gf-font-thin); }
 .gf-font-extralight { font-weight: var(--gf-font-extralight); }
@@ -780,35 +761,17 @@ h6 {
 .gf-pos-sticky   { position: sticky; }
 
 /* Container max-widths */
-.gf-container-xs {
-  max-width: var(--gf-container-xs);
-}
-.gf-container-sm {
-  max-width: var(--gf-container-sm);
-}
-.gf-container-md {
-  max-width: var(--gf-container-md);
-}
-.gf-container-lg {
-  max-width: var(--gf-container-lg);
-}
-.gf-container-xl {
-  max-width: var(--gf-container-xl);
-}
+.gf-container-xs { max-width: var(--gf-container-xs); }
+.gf-container-sm { max-width: var(--gf-container-sm); }
+.gf-container-md { max-width: var(--gf-container-md); }
+.gf-container-lg { max-width: var(--gf-container-lg); }
+.gf-container-xl { max-width: var(--gf-container-xl); }
 
 /* width percentages */
-.gf-w-50 {
-  width: 50%;
-}
-.gf-w-80 {
-  width: 80%;
-}
-.gf-w-90 {
-  width: 90%;
-}
-.gf-w-100 {
-  width: 100%;
-}
+.gf-w-50  { width: 50%; }
+.gf-w-80  { width: 80%; }
+.gf-w-90  { width: 90%; }
+.gf-w-100 { width: 100%; }
 
 /* Gaps */
 .gf-gap-0  { gap: 0; }
@@ -1020,12 +983,8 @@ h6 {
 .gf-pb-32 { padding-bottom: var(--gf-32); }
 
 /* Pointer events */
-.gf-no-events {
-  pointer-events: none !important;
-}
-.gf-do-events {
-  pointer-events: auto;
-}
+.gf-no-events { pointer-events: none !important; }
+.gf-do-events { pointer-events: auto; }
 
 /*
 

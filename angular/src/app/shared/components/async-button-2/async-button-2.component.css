@@ -38,7 +38,7 @@ button {
   }
 
   &.busy {
-    background-color: var(--async-btn-busy-bg, var(--gf-tertiary));
+    background-color: var(--async-btn-busy-bg, var(--gf-primary-disabled));
     box-shadow: var(--async-btn-busy-box-shadow, none);
     color: var(--async-btn-busy-color, var(--gf-dark-text));
   }
