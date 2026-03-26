@@ -32,7 +32,7 @@
     }
 
     &.active {
-      color: var(--primary);
+      color: var(--gf-primary);
       --underline-width: 100%;
     }
   }

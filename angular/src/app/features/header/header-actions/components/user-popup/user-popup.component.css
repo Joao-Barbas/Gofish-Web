@@ -67,7 +67,7 @@
 
 .gf-hollow-btn { /* TODO: standardize style in styles.css */
   color: var(--gf-dark-text-muted);
-  border: 0.125rem solid var(--danger);
+  border: 0.125rem solid var(--gf-danger);
   background-color: transparent;
   line-height: 1;
   padding: 0 1rem 0 0.5rem;
@@ -82,7 +82,7 @@
   }
 
   &:hover {
-    background-color: var(--danger);
+    background-color: var(--gf-danger);
     color: var(--gf-dark-text)
   }
 }

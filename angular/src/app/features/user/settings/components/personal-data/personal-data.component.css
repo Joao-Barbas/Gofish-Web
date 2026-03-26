@@ -38,12 +38,12 @@ button {
   border-radius: var(--gf-10);
 
   &.good {
-    background-color: var(--primary);
+    background-color: var(--gf-primary);
     color: var(--gf-dark-text);
   }
 
   &.bad {
-    background-color: var(--danger);
+    background-color: var(--gf-danger);
     color: var(--gf-dark-text);
   }
 }

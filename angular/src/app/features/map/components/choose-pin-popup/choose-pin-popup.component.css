@@ -74,7 +74,7 @@
 .location-toggle-btn.active {
   background-color: var(--gf-dark-bg-dark);
   color: var(--gf-dark-text);
-  border: 1px solid var(--primary);
+  border: 1px solid var(--gf-primary);
   box-shadow: 0 0 0 1px rgba(255,255,255,0.05) inset;
 }
 

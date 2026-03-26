@@ -172,18 +172,6 @@
   ** Deprecated below
   */
 
-  /* Components colors */
-
-  --primary: oklch(0.6048 0.2142 262.15);
-  --primary-text: oklch(0.6114 0.1743 262.46); /* Use --gf-primary */
-  --secondary: oklch(0.7096 0.186513 13.1188);
-  --tertiary: oklch(0.4462 0.0246 276.43);
-  --danger: oklch(0.648 0.1874 28.51);
-  --warning: oklch(0.8829 0.1633 104.07);
-  --success: oklch(0.8359 0.1769 156.76);
-  --info: oklch(0.6114 0.1743 262.46);
-  --selected: oklch(0.6803 0.1178 218.59);
-
   /* Shadows */
 
   --dark-lift-shadow-s:
@@ -338,7 +326,7 @@ h6 {
 .gf-text-error {
   margin: 0;
   font-size: 0.75rem;
-  color: var(--danger);
+  color: var(--gf-danger);
   display: inline-block;
 }
 
@@ -435,7 +423,7 @@ h6 {
   width: 20px;
   height: 20px;
   border: 2px solid var(--gf-dark-bg-dark);
-  border-top-color: var(--primary);
+  border-top-color: var(--gf-primary);
   border-radius: 50%;
   animation: gf-basic-spin 1s linear infinite;
 }
@@ -1566,16 +1554,16 @@ h6 {
   overflow: hidden;
 }
 .pin-card--catching .pin-card__title {
-  color: var(--success);
+  color: var(--gf-success);
 }
 .pin-card--warning .pin-card__title {
-  color: var(--warning);
+  color: var(--gf-warning);
 }
 .pin-card--info .pin-card__title {
-  color: var(--info);
+  color: var(--gf-info);
 }
 .pin-card--information .pin-card__title {
-  color: var(--info);
+  color: var(--gf-info);
 }
 
 /* Container principal ajustado para Mapbox */
