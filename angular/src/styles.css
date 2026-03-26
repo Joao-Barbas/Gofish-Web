@@ -306,51 +306,6 @@
   }
 }
 
-@keyframes overlay-popup-scale {
-  /* TODO: Change to "gf-popover-scale-in" project wide */
-  from {
-    transform: scale(0.8);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-@keyframes overlay-popup-fade {
-  /* TODO: Change to "gf-popover-fade-in" project wide */
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes modal-scale {
-  /* TODO: Change to "gf-modal-scale-in" project wide */
-  from {
-    transform: scale(0.8);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-@keyframes modal-fade {
-  /* TODO: Change to "gf-modal-fade-in" project wide */
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes spin {
-  /* TODO: Change to "gf-basic-spin" project wide */
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /*
 
   Base html elements

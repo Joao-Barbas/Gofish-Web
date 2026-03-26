@@ -37,8 +37,8 @@ import { ClickOutsideDirective } from '@gofish/shared/directives/click-outside.d
       background-color: var(--gf-dark-bg);
     }
     :host(.on-enter) {
-      animation: overlay-popup-scale 150ms cubic-bezier(0.34, 1.8, 0.64, 1),
-                 overlay-popup-fade 150ms linear;
+      animation: gf-popover-scale-in 150ms cubic-bezier(0.34, 1.8, 0.64, 1),
+                 gf-popover-fade-in 150ms linear;
     }
     :host(.on-leave) {
       opacity: 0;

@@ -63,10 +63,10 @@ import { HttpErrorResponse } from '@angular/common/http';
   `,
   styles: `
     :host(.on-enter) {
-      animation: modal-fade .2s ease-in-out;
+      animation: gf-modal-fade-in .2s ease-in-out;
     }
     :host(.on-enter) .gf-modal-shell {
-      animation: modal-scale .2s cubic-bezier(0.34, 1.8, 0.64, 1);
+      animation: gf-modal-scale-in .2s cubic-bezier(0.34, 1.8, 0.64, 1);
     }
     :host(.on-leave) {
       opacity: 0;

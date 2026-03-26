@@ -25,7 +25,7 @@ import { Component } from '@angular/core';
     svg {
       width: 32px;
       height: 32px;
-      animation: gf-basic-spin 1.5s linear infinite;
+      animation: gf-basic-gf-basic-spin 1.5s linear infinite;
 
       &.spinner-enter {
         animation: gf-icon-scale-in .2s ease-out;
