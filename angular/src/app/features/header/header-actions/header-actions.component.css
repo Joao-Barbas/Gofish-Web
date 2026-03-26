@@ -14,7 +14,7 @@
   border: none;
   cursor: pointer;
   background-color: var(--gf-dark-bg);
-  box-shadow: var(--dark-lift-shadow-s);
+  box-shadow: var(--gf-shadow-lift-sm);
   transition: box-shadow 0.15s ease;
   z-index: var(--z-opens-overlay);
   color: var(--gf-dark-text-muted);
@@ -26,7 +26,7 @@
 
   &:hover {
     color: var(--gf-dark-text);
-    box-shadow: var(--dark-lift-shadow-m);
+    box-shadow: var(--gf-shadow-lift-md);
   }
 }
 

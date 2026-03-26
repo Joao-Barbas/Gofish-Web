@@ -1,6 +1,6 @@
 .choose-pin-popup-container {
   background-color: var(--gf-dark-bg);
-  box-shadow: var(--dark-lift-shadow-s);
+  box-shadow: var(--gf-shadow-lift-sm);
   z-index: var(--z-overlay);
   border-radius: 0.75rem;
   padding: 0.75rem;

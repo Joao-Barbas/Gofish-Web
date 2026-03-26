@@ -61,7 +61,7 @@ app-cluster-details{
   background-color: var(--gf-dark-bg);
   border: none;
   border-radius: 12px;
-  box-shadow: var(--dark-lift-shadow-s);
+  box-shadow: var(--gf-shadow-lift-sm);
 
   & > .map-action {
     border: none;

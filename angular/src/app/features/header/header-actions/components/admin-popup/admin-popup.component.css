@@ -2,7 +2,7 @@
   min-width: 16rem;
   background-color: var(--gf-dark-bg);
   border-radius: 0.75rem;
-  box-shadow: var(--dark-lift-shadow-s);
+  box-shadow: var(--gf-shadow-lift-sm);
   padding: 0.75rem;
   flex-direction: column;
   gap: 0.75rem;

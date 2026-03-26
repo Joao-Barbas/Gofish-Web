@@ -12,7 +12,7 @@
   max-width: 640px;
   background: #22232A;
   border-radius: 16px;
-  box-shadow: var(--dark-lift-shadow-l);
+  box-shadow: var(--gf-shadow-lift-lg);
   --gofish-card-padding:16px;
 }
 

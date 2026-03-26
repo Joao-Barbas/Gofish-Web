@@ -14,7 +14,7 @@
     pointer-events: auto;
     background-color: var(--gf-dark-bg);
     border-radius: 1.5rem;
-    box-shadow: var(--dark-lift-shadow-s);
+    box-shadow: var(--gf-shadow-lift-sm);
     padding: 0 1.75rem;
     gap: 1.75rem;
   }
