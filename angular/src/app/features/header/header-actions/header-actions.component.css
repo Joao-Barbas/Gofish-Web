@@ -13,7 +13,7 @@
   justify-content: center;
   border: none;
   cursor: pointer;
-  background-color: var(--dark-bg);
+  background-color: var(--gf-dark-bg);
   box-shadow: var(--dark-lift-shadow-s);
   transition: box-shadow 0.15s ease;
   z-index: var(--z-opens-overlay);

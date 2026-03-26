@@ -12,7 +12,7 @@
 
   & .left {
     pointer-events: auto;
-    background-color: var(--dark-bg);
+    background-color: var(--gf-dark-bg);
     border-radius: 1.5rem;
     box-shadow: var(--dark-lift-shadow-s);
     padding: 0 1.75rem;

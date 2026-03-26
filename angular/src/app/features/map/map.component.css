@@ -58,7 +58,7 @@ app-cluster-details{
 }
 
 .actions-bundle-container {
-  background-color: var(--dark-bg);
+  background-color: var(--gf-dark-bg);
   border: none;
   border-radius: 12px;
   box-shadow: var(--dark-lift-shadow-s);

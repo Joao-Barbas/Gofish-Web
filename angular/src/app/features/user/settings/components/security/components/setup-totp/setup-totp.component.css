@@ -2,7 +2,7 @@
 
 :host {
   background-color: transparent;
-  border: 2px solid var(--dark-bg);
+  border: 2px solid var(--gf-dark-bg);
   border-radius: var(--gf-12);
   padding: var(--gf-24);
   display: flex;
@@ -117,7 +117,7 @@
     letter-spacing: 0.05em;
     line-height: 1em;
     color: var(--dark-text);
-    background-color: var(--dark-bg);
+    background-color: var(--gf-dark-bg);
     margin: var(--gf-8) 0 0 0;
     padding: var(--gf-12) var(--gf-48);
     color: var(--dark-text);
@@ -131,7 +131,7 @@ form input {
   border: none;
   outline: none;
   color: var(--dark-text);
-  background-color: var(--dark-bg);
+  background-color: var(--gf-dark-bg);
   border-radius: var(--gf-8);
   font-size: var(--gf-text-sm);
   padding: calc(1em / 2) var(--gf-8);
@@ -246,7 +246,7 @@ form input {
   text-align: center;
   grid-template-columns: 1fr 1fr;
   gap: var(--gf-8) var(--gf-16);
-  background-color: var(--dark-bg);
+  background-color: var(--gf-dark-bg);
   border-radius: var(--gf-8);
   padding: var(--gf-16);
   margin: var(--gf-16) 0;

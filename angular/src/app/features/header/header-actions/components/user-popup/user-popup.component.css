@@ -1,6 +1,6 @@
 .header-overlay-container {
   min-width: 16rem;
-  background-color: var(--dark-bg);
+  background-color: var(--gf-dark-bg);
   border-radius: 0.75rem;
   box-shadow: var(--dark-lift-shadow-s);
   padding: 0.75rem;
@@ -96,7 +96,7 @@
 }
 
 .separator {
-  border-top: 1px solid var(--dark-bg-light);
+  border-top: 1px solid var(--gf-dark-bg-light);
   margin: 0 1rem;
 }
 
@@ -114,7 +114,7 @@
   transition: background-color 0.15s ease;
 
   &:hover {
-    background-color: var(--dark-bg-light);
+    background-color: var(--gf-dark-bg-light);
   }
 
   & > svg {

@@ -74,7 +74,7 @@
     border: none;
     outline: none;
     color: var(--dark-text);
-    background-color: var(--dark-bg-dark);
+    background-color: var(--gf-dark-bg-dark);
     border-radius: var(--gf-8);
     font-size: var(--gf-text-sm);
     padding: calc(1em / 2) var(--gf-8);

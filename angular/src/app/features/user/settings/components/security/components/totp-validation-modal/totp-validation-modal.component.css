@@ -25,7 +25,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--gf-16);
-  background-color: var(--dark-bg);
+  background-color: var(--gf-dark-bg);
   border-radius: var(--gf-12);
   box-shadow: var(--gf-shadow-lift-sm);
   max-width: calc(416rem / 16);
@@ -33,7 +33,7 @@
   padding: var(--gf-16);
 
   & .separator {
-    border-top: calc(1rem / 16) solid var(--dark-bg-light);
+    border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
     margin: 0 16px;
   }
 }
@@ -51,7 +51,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--dark-bg-light);
+    background: var(--gf-dark-bg-light);
     box-shadow: var(--gf-shadow-lift-sm);
     border-radius: 50%;
     border: none;
@@ -110,7 +110,7 @@
 .spinner {
   width: 24px;
   height: 24px;
-  border: 2px solid var(--dark-bg-light);
+  border: 2px solid var(--gf-dark-bg-light);
   border-top-color: var(--primary);
   border-radius: 50%;
   animation: gf-basic-spin 0.8s linear infinite;
@@ -133,7 +133,7 @@
 
   & button {
     padding: var(--gf-10) var(--gf-24);
-    background-color: var(--dark-bg-light);
+    background-color: var(--gf-dark-bg-light);
     color: var(--dark-text);
     border: none;
     border-radius: var(--gf-8);
@@ -159,7 +159,7 @@
   & input {
     width: 100%;
     height: 3rem;
-    background-color: var(--dark-bg-dark);
+    background-color: var(--gf-dark-bg-dark);
     box-shadow: none;
     color: var(--dark-text);
     border: none;

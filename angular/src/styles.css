@@ -174,9 +174,7 @@
 
   /* Layout & text colors */
 
-  --dark-bg-dark: oklch(0.1509 0.0092 276.35);
-  --dark-bg: oklch(0.2604 0.012 276.58);
-  --dark-bg-light: oklch(0.3037 0.0233 276.07);
+  --gf-dark-bg-light: oklch(0.3037 0.0233 276.07);
   --dark-text: oklch(0.9619 0 0);
   --dark-text-muted: oklch(0.7652 0 0);
 
@@ -325,7 +323,7 @@ body {
 
 body {
   font-family: var(--gf-font-main);
-  background-color: var(--dark-bg-dark);
+  background-color: var(--gf-dark-bg-dark);
   color: var(--dark-text);
 }
 
@@ -448,7 +446,7 @@ h6 {
   display: block;
   width: 20px;
   height: 20px;
-  border: 2px solid var(--dark-bg-dark);
+  border: 2px solid var(--gf-dark-bg-dark);
   border-top-color: var(--primary);
   border-radius: 50%;
   animation: gf-basic-spin 1s linear infinite;
@@ -466,7 +464,7 @@ h6 {
   justify-content: center;
   border: none;
   cursor: pointer;
-  background-color: var(--dark-bg);
+  background-color: var(--gf-dark-bg);
   box-shadow: var(--dark-lift-shadow-s);
   transition: box-shadow 0.15s ease;
   z-index: var(--z-opens-overlay);
@@ -538,14 +536,14 @@ h6 {
 }
 
 .gf-modal-shell {
-  background-color: var(--dark-bg);
+  background-color: var(--gf-dark-bg);
   box-shadow: var(--gf-shadow-lift-sm);
   width: 90%;
   padding: var(--gf-16);
 }
 
 .gf-modal-close-button {
-  background: var(--dark-bg-light);
+  background: var(--gf-dark-bg-light);
   box-shadow: var(--gf-shadow-lift-sm);
   border-radius: 50%;
   border: none;
@@ -577,7 +575,7 @@ h6 {
   & input {
     width: 100%;
     height: var(--gf-32);
-    background-color: var(--dark-bg-dark);
+    background-color: var(--gf-dark-bg-dark);
     box-shadow: none;
     font-size: var(--gf-text-sm);
     color: var(--dark-text);
@@ -603,7 +601,7 @@ h6 {
 [class^="gf-badge-"] {
   width: var(--gf-32);
   height: var(--gf-32);
-  background: var(--dark-bg-light);
+  background: var(--gf-dark-bg-light);
   border: none;
 
   box-shadow:
@@ -639,7 +637,7 @@ h6 {
     0px 2px 4px rgba(0, 0, 0, 0.15),
     inset 0px 1px 2px rgba(255, 255, 255, 0.18);
   cursor: default;
-  background: var(--dark-bg-light);
+  background: var(--gf-dark-bg-light);
 
   & > span {
     cursor: text;
@@ -655,17 +653,17 @@ h6 {
 /* Separators */
 
 .gf-separator {
-  border-top: calc(1rem / 16) solid var(--dark-bg-light);
+  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
   margin: 0 16px;
 }
 
 .gf-popover-separator {
-  border-top: calc(1rem / 16) solid var(--dark-bg-light);
+  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
   margin: 0 16px;
 }
 
 .gf-modal-separator {
-  border-top: calc(1rem / 16) solid var(--dark-bg-light);
+  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
   margin: 0 16px;
 }
 
@@ -988,9 +986,9 @@ h6 {
 
     /* Deprecated below */
 
-    --dark-bg-dark: var(--light-bg-light);
-    --dark-bg: var(--light-bg);
-    --dark-bg-light: var(--light-bg-dark);
+    --gf-dark-bg-dark: var(--light-bg-light);
+    --gf-dark-bg: var(--light-bg);
+    --gf-dark-bg-light: var(--light-bg-dark);
     --dark-text: var(--light-text);
     --dark-text-muted: var(--light-text-muted);
   }
@@ -1036,13 +1034,13 @@ h6 {
 */
 
 .dark-bg-dark {
-  background-color: var(--dark-bg-dark);
+  background-color: var(--gf-dark-bg-dark);
 }
 .dark-bg {
-  background-color: var(--dark-bg);
+  background-color: var(--gf-dark-bg);
 }
 .dark-bg-light {
-  background-color: var(--dark-bg-light);
+  background-color: var(--gf-dark-bg-light);
 }
 
 /*
@@ -1488,7 +1486,7 @@ h6 {
 
 /* TESTE POP UPS PINS */
 .mapboxgl-popup-content {
-  background-color: var(--dark-bg) !important;
+  background-color: var(--gf-dark-bg) !important;
   color: var(--dark-text);
   border-radius: 1.25rem !important;
   padding: 0 !important; /* Importante: o card preenche tudo */
@@ -1498,8 +1496,8 @@ h6 {
 }
 
 .mapboxgl-popup-tip {
-  border-top-color: var(--dark-bg) !important;
-  border-bottom-color: var(--dark-bg) !important;
+  border-top-color: var(--gf-dark-bg) !important;
+  border-bottom-color: var(--gf-dark-bg) !important;
 }
 
 .mapboxgl-popup-close-button {
@@ -1540,7 +1538,7 @@ h6 {
 .pin-card__image-wrapper {
   width: 100%;
   height: 120px;
-  background-color: var(--dark-bg-dark);
+  background-color: var(--gf-dark-bg-dark);
   box-shadow: var(--dark-sunk-shadow-s); /* Efeito de profundidade */
   overflow: hidden;
 }
@@ -1603,7 +1601,7 @@ h6 {
 /* Container principal ajustado para Mapbox */
 .popup-is-card .mapboxgl-popup-content {
   width: 408px !important; /* Largura exata do Figma */
-  background-color: var(--dark-bg) !important;
+  background-color: var(--gf-dark-bg) !important;
   border-radius: 12px !important;
   padding: 0 !important;
   overflow: hidden;
@@ -1639,7 +1637,7 @@ h6 {
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
-  background-color: var(--dark-bg-dark);
+  background-color: var(--gf-dark-bg-dark);
   box-shadow: var(--dark-sunk-shadow-s);
   border-radius: 8px;
   overflow: hidden;
@@ -1658,7 +1656,7 @@ h6 {
 }
 
 .pin-preview-click__badge {
-  background-color: var(--dark-bg-light);
+  background-color: var(--gf-dark-bg-light);
   box-shadow: var(--dark-lift-shadow-s);
   padding: 4px 12px;
   border-radius: 20px;

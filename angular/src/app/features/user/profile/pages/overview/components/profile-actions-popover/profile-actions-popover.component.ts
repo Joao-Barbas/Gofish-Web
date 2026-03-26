@@ -57,7 +57,7 @@ import { ClickOutsideDirective } from '@gofish/shared/directives/click-outside.d
       transition: background-color 0.15s ease;
 
       &:hover {
-        background-color: var(--dark-bg-light);
+        background-color: var(--gf-dark-bg-light);
       }
     }
   `,

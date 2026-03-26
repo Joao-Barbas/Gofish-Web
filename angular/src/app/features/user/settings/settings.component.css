@@ -8,7 +8,7 @@
   display: block;
   text-align: center;
   min-width: 100%;
-  background-color: var(--dark-bg);
+  background-color: var(--gf-dark-bg);
   padding: var(--gf-12) 0;
 
   & a {
@@ -39,7 +39,7 @@
   height: 3rem;
   padding-left: var(--gf-24);
   border-radius: var(--gf-10);
-  background-color: var(--dark-bg);
+  background-color: var(--gf-dark-bg);
   color: var(--dark-text);
 
   background-image: url("/assets/vectors/chevrons-down-up-white.svg");

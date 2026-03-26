@@ -19,7 +19,7 @@
 }
 
 .modal-body {
-  border-top: 2px solid var(--dark-bg-light);
+  border-top: 2px solid var(--gf-dark-bg-light);
 }
 
 .modal-body-section-title {
@@ -58,7 +58,7 @@
 }
 
 .custom-dropdown {
-  background-color: var(--dark-bg-dark);
+  background-color: var(--gf-dark-bg-dark);
   color: #fff;
   border: none;
   border-radius: 8px;

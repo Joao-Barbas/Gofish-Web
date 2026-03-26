@@ -43,7 +43,7 @@
 }
 
 .search-bar {
-  background-color: var(--dark-bg-dark);
+  background-color: var(--gf-dark-bg-dark);
   border-radius: 100px;
   padding: 0rem 0.938rem 0rem var(--gf-10);
   gap: var(--gf-10);
@@ -141,7 +141,7 @@
 /* New group */
 
 .new-group-btn-wrapper {
-  border: 2px dashed var(--dark-bg-light);
+  border: 2px dashed var(--gf-dark-bg-light);
   border-radius: var(--gf-16);
   padding: 1.563rem 1.563rem;
   background: none;

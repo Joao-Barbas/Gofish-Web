@@ -33,9 +33,9 @@
   position: relative;
   background: linear-gradient(
     0deg,
-    var(--dark-bg) 0%,
-    var(--dark-bg-light) 60%,
-    var(--dark-bg-light) 100%
+    var(--gf-dark-bg) 0%,
+    var(--gf-dark-bg-light) 60%,
+    var(--gf-dark-bg-light) 100%
   );
 }
 
@@ -49,7 +49,7 @@
   background: linear-gradient(
     to top,
     rgba(0,0,0,0),
-    var(--dark-bg-light)
+    var(--gf-dark-bg-light)
   );
   pointer-events: none;
 }
