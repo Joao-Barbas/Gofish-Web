@@ -50,7 +50,7 @@ public class AuthControllerTests : IClassFixture<WebAppFactory>
             Password = "Password123!"
           };
 
-       var response = await _client.PostAsJsonAsync("/api/auth/signup", body);
+       var response = await _client.PostAsJsonAsync("/api/Auth/SignUp", body);
        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
@@ -59,13 +59,14 @@ public class AuthControllerTests : IClassFixture<WebAppFactory>
     {
         var body = new
         {
-            Email = "fixture2@test.com",
+            Email = "fixture@test.com",
             UserName = "existinguser",
             FirstName = "Test",
             LastName = "User",
             Password = "Password123!"
         };
-        var response = await _client.PostAsJsonAsync("/api/auth/signup", body);
+        var response = await _client.PostAsJsonAsync("/api/Auth/SignUp", body);
+        Console.WriteLine(response);
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 

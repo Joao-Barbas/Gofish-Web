@@ -1,0 +1,79 @@
+/* pins.component.css */
+
+:host {
+  flex: 1;
+}
+
+gf-async-button {
+  display: block;
+  width: 100%;
+  margin-top: var(--gf-16);
+
+  --async-btn-width: 100%;
+  --async-btn-height: var(--gf-40);
+}
+
+nav {
+  height: var(--gf-40);
+  background-color: var(--gf-dark-bg);
+  border-radius: var(--gf-8);
+  box-shadow: var(--gf-shadow-lift-sm);
+
+  a {
+    text-decoration: none;
+    color: var(--gf-dark-text-muted);
+
+    &:hover {
+      color: var(--gf-dark-text);
+    }
+
+    &.active {
+      color: var(--gf-primary);
+    }
+  }
+}
+
+.list {
+  display: grid;
+  overflow: hidden;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(auto-fill, calc((var(--gf-container-lg) - 1 * var(--gf-8)) / 2));
+  /* grid-auto-rows: 0; */
+  row-gap: var(--gf-8);
+  column-gap: var(--gf-8);
+}
+
+/* Error state */
+
+.failed-container {
+  padding: var(--gf-32);
+
+  & span {
+    font-size: var(--gf-text-md);
+  }
+
+  & button, a {
+    display: block;
+    background-color: transparent;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    width: 25%;
+    padding: calc(1em / 2) var(--gf-8);
+    margin: var(--gf-12) 0;
+    box-shadow: 0 0 0 2px var(--gf-primary);
+    color: var(--gf-dark-text);
+    border-radius: var(--gf-8);
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 0 0 4px var(--gf-primary);
+    }
+
+    & span {
+      font-size: var(--gf-text-md);
+    }
+  }
+}
+
+/* End error state */

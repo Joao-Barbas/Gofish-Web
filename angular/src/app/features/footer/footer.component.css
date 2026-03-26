@@ -1,27 +1,20 @@
+.footer-links,
+.footer-links li{
+  width: fit-content;
+}
+
 .footer-links li:not(:last-child) {
-  margin-bottom: 10px;
-}
-
-.footer-links li > a{
-  cursor: pointer;
-
-  /* Reutilizado do header.component */
-  text-decoration: none;
-  background: linear-gradient(currentColor 0 0)
-  bottom center/ var(--underline-width, 0%) 2px no-repeat;
-  transition: background-size 0.2s;
-
-  color: var(--dark-text);
-  font-size: 16px;
-}
-
-
-.footer-links li > a:hover {
-  --underline-width: 100%;
+  padding-bottom: 10px;
 }
 
 .icon-size-socials > [class^="icon-"] {
   --size: 24px;
+}
+
+.gf-text-selection > span{
+  font-size: 16px;
+  text-decoration: none;
+  color: var(--gf-dark-text);
 }
 
 @media (max-width: 576px) {

@@ -1,0 +1,92 @@
+<div class="d-flex flex-column group">
+  @if (groupData()?.group; as group) {
+  <!-- Group Header Info -->
+  <div class="d-flex flex-column group-header-info">
+
+    <!-- Group Header -->
+    <div class="d-flex align-items-center justify-content-between group-header">
+
+
+      <div class="d-flex align-items-center justify-content-start group-image-name-creator-wrapper">
+
+        <div class="group-image-wrapper">
+          <img [src]="group.imageUrl" class="group-image">
+        </div>
+
+        <div class="d-flex flex-column group-name-creator">
+          <span class="group-name-text">{{group.name}}</span>
+          <span class="group-creator-text">By @Username</span>
+        </div>
+
+      </div>
+      <div class="group-settings-wrapper">
+        <button class="gf-badge-group-settings" (click)="openOptions()">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis">
+            <circle cx="12" cy="12" r="1" />
+            <circle cx="19" cy="12" r="1" />
+            <circle cx="5" cy="12" r="1" />
+          </svg>
+        </button>
+        <app-group-settings-popover></app-group-settings-popover>
+      </div>
+    </div>
+
+    <!-- Group Stats -->
+
+    <div class="group-stats">
+
+      <div class="gf-badge-text">
+        <span>{{group.memberCount}} Members</span>
+      </div>
+
+      <div class="gf-badge-text">
+        <span>{{group.postCount}} Posts</span>
+      </div>
+
+    </div>
+
+    <!-- Group Description -->
+
+    <div class="group-description">
+
+      <p class="group-description-text">
+        {{group.description}}
+      </p>
+
+    </div>
+
+    <!-- Group Listing Tabs -->
+    <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
+
+      <a (click)="toggleTab(true)" [class.active-tab]="postActive"
+        class="d-flex justify-content-center listing-tabs gf-text-selection">
+        <span class="listing-tab-text">Posts</span>
+      </a>
+
+      <a (click)="toggleTab(false)" [class.active-tab]="!postActive" routerLink="active"
+        class="d-flex justify-content-center listing-tabs gf-text-selection">
+        <span class="listing-tab-text">Members</span>
+      </a>
+    </div>
+    @if (postActive) {
+
+    }
+    @else {
+    <app-group-members-placeholder [members]="group.members!"></app-group-members-placeholder>
+    }
+
+
+  </div>
+  <!-- / Group Header Info -->
+
+
+  <div class="group-forum-feed">
+    <router-outlet></router-outlet>
+
+  </div>
+  } @else {
+  <gf-loading-spinner></gf-loading-spinner>
+  }
+</div>

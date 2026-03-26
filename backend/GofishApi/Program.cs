@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using GofishApi.Data;
 using GofishApi.Models;
+using GofishApi.Builders;
 using GofishApi.Extensions;
 using GofishApi.Services;
 using GofishApi.Options;
@@ -12,11 +13,13 @@ builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 builder.Services.Configure<AzureStorageOptions>(builder.Configuration.GetSection("AzureStorage"));
 
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<ITwoFactorTokenService, TwoFactorTokenService>();
+builder.Services.AddScoped<IAppUserBuilder, AppUserBuilder>();
+builder.Services.AddScoped<IGamificationService, GamificationService>();
+builder.Services.AddScoped<IVisibilityService, VisibilityService>();
 builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
 
 builder.Services.AddDataProtection();
-builder.Services.AddScoped<ITwoFactorTokenService, TwoFactorTokenService>();
-
 builder.Services.AddDbContext<AppDbContext>((options) => options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings")["Default"]!));
 builder.Services.AddIdentityHandlersAndStores();
 builder.Services.ConfigureIdentityOptions();

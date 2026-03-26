@@ -1,3 +1,5 @@
+import { NumbersOnlyDirective } from "@gofish/shared/directives/numbers-only.directive";
+
 // Create CatchPin
 export interface CreateCatchPinReqDTO {
   latitude: number;
@@ -15,7 +17,7 @@ export interface CreateInfoPinReqDTO {
   latitude: number;
   longitude: number;
   visibility: number;
-  body?: string | null;
+  body?: string;
   accessDifficulty: number;
   seaBedType: number;
 }
@@ -33,35 +35,6 @@ export interface CreateWarnPinReqDTO {
  export interface CreatePinResDTO {
     id: number;
 }
-/*
-export type PinPreviewResDTO = {
-  // Pin
-  id: number;
-  latitude: number;
-  longitude: number;
-  createdAt: string;
-  pinType: number;
-
-  // User
-  authorId: number;
-  authorUserName: string;
-
-  // Post
-  postBody?: string;
-  postImageUrl?: string;
-
-  // Catch Pin
-  speciesType?: number;
-  baitType?: number;
-  hookSize?: number;
-
-  // Info Pin
-  accessDifficulty?: number;
-  seaBedType?: number;
-
-  // Warn Pin
-  warningType?: number;
-} */
 
 export interface ViewportPinsResDTO {
   pins: ViewportPinDTO[];
@@ -77,20 +50,24 @@ export interface ViewportPinDTO {
 }
 
 export interface GetPinsReqDTO {
-  ids: PinIdDTO[],
-  dataRequest: PinDataReqDTO
+  ids: PinIdDTO[];
+  dataRequest: PinDataReqDTO;
+  maxResults?: number;
+  lastTimestamp?: string;
 }
 
 export interface GetPinsResDTO{
-  pins: PinDataResDTO[]
+  pins: PinDataResDTO[];
+  hasMoreResults: boolean;
+  lastTimestamp?: string;
 }
 
 export interface PinDataReqDTO {
-  includeGeolocation?: boolean | null;
-  includeAuthor?: boolean | null;
-  includePost?: boolean | null;
-  includeDetails?: boolean | null;
-  includeGroups?: boolean | null;
+  includeGeolocation?: boolean;
+  includeAuthor?: boolean;
+  includePost?: boolean;
+  includeDetails?: boolean;
+  includeGroups?: boolean;
 }
 
 export interface PinDataResDTO {
@@ -98,11 +75,12 @@ export interface PinDataResDTO {
   createdAt: string;
   visibility: number;
   kind: number;
-  details?: PinDetailsDTO | null;
-  geolocation?: GeoLocationDTO | null;
-  author?: AuthorDTO | null;
-  post?: PostDTO | null;
+  details?: PinDetailsDTO;
+  geolocation?: GeoLocationDTO;
+  author?: AuthorDTO;
+  post?: PostDTO;
 }
+
 export interface PinIdDTO {
   pinId?: number,
   authorId?: string,
@@ -128,8 +106,10 @@ export interface AuthorDTO {
 }
 
 export interface PostDTO {
-  body?: string | null;
-  imageUrl?: string | null;
+  id?: number,
+  body?: string;
+  imageUrl?: string;
   score?: number;
-  commentCount?: number | null;
+  commentCount?: number;
+  userVote?: number;
 }

@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FirstKeyPipe } from '@gofish/shared/pipes/first-key.pipe';
 import { AuthService } from '@gofish/shared/services/auth.service';
-import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/signup.dto';
 import { Api, Path } from '@gofish/shared/constants';
 import { ValidationProblemDetails } from '@gofish/shared/core/problem-details';
 import { RegexMatchesPipe } from '@gofish/shared/pipes/regex-matches.pipe';
@@ -15,6 +14,8 @@ import { LoadingState } from '@gofish/shared/core/loading-state';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 import { LettersOnlyDirective } from '@gofish/shared/directives/letters-only.directive';
+import { AuthApi } from '@gofish/shared/api/auth.api';
+import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/auth.dto';
 
 @Component({
   selector: 'app-signup',
@@ -30,10 +31,12 @@ import { LettersOnlyDirective } from '@gofish/shared/directives/letters-only.dir
   styleUrl: './signup.component.css',
 })
 export class SignupComponent implements OnInit {
+  private readonly router      = inject(Router);
   private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
+  private readonly authApi     = inject(AuthApi);
+
   readonly formBuilder = inject(FormBuilder);
-  readonly firstKey = inject(FirstKeyPipe);
+  readonly firstKey    = inject(FirstKeyPipe);
 
   readonly loadingState: LoadingState = new LoadingState();
   readonly busyState: BusyState       = new BusyState();
@@ -63,6 +66,7 @@ export class SignupComponent implements OnInit {
   apiProblems: ValidationProblemDetails | null = null;
   formErrors: ValidationErrors | null = this.signUpForm.errors;
   signUpSuccess: boolean = false;
+  showPwd: boolean = false;
 
   ngOnInit(): void {
     if (!this.authService.isAuthenticated()) return;
@@ -134,7 +138,7 @@ export class SignupComponent implements OnInit {
     this.busyState.setBusy(true);
     this.signUpSuccess = false;
 
-    this.authService.signUpUser(this.signUpForm.value as SignUpReqDTO).subscribe({
+    this.authApi.signUp(this.signUpForm.value as SignUpReqDTO).subscribe({
       next: (res: SignUpResDTO) => {
         this.busyState.setBusy(false);
         this.signUpSuccess = true;
@@ -151,5 +155,9 @@ export class SignupComponent implements OnInit {
         this.apiProblems = problem;
       }
     })
+  }
+
+  onGoogle() {
+    window.location.href = Api.Auth.action('ExternalLogin?provider=Google');
   }
 }

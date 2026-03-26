@@ -37,6 +37,15 @@ app-pin-detail-panel {
   z-index: 999;
 }
 
+app-cluster-details{
+  position: absolute;
+  top: 70px;
+  left: 20px;
+  width: 350px;
+  max-height: calc(100vh - 100px);
+  z-index: 999;
+}
+
 
 
 /* Begin actions overlay */

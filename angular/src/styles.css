@@ -10,19 +10,32 @@
 /* TODO: Update project wide .css's files to use new variables and updated namings */
 
 :root {
-  --gf-font-main: 'Inter', sans-serif;
-  --gf-font-heading: 'Montserrat', sans-serif;
+  --gf-font-main: "Inter", sans-serif;
+  --gf-font-heading: "Montserrat", sans-serif;
 
-  --gf-text-3xs: 0.5rem;   /* 8px */
+  --gf-font-ugc: "Merriweather Sans", sans-serif;
+  --gf-font-date: "Poppins", sans-serif;
+
+  --gf-text-3xs: 0.5rem; /* 8px */
   --gf-text-2xs: 0.625rem; /* 10px */
-  --gf-text-xs:  0.75rem;  /* 12px */
-  --gf-text-sm:  0.875rem; /* 14px */
-  --gf-text-md:  1rem;     /* 16px */
-  --gf-text-lg:  1.25rem;  /* 20px */
-  --gf-text-xl:  1.5rem;   /* 24px */
-  --gf-text-2xl: 2rem;     /* 32px */
-  --gf-text-3xl: 2.5rem;   /* 40px */
-  --gf-text-4xl: 3rem;     /* 48px */
+  --gf-text-xs: 0.75rem; /* 12px */
+  --gf-text-sm: 0.875rem; /* 14px */
+  --gf-text-md: 1rem; /* 16px */
+  --gf-text-lg: 1.25rem; /* 20px */
+  --gf-text-xl: 1.5rem; /* 24px */
+  --gf-text-2xl: 2rem; /* 32px */
+  --gf-text-3xl: 2.5rem; /* 40px */
+  --gf-text-4xl: 3rem; /* 48px */
+
+  --gf-font-thin:       100;
+  --gf-font-extralight: 200;
+  --gf-font-light:      300;
+  --gf-font-normal:     400;
+  --gf-font-medium:     500;
+  --gf-font-semibold:   600;
+  --gf-font-bold:       700;
+  --gf-font-extrabold:  800;
+  --gf-font-black:      900;
 
   /*
    *  Theme Colors
@@ -34,36 +47,54 @@
    *  The --gf-light-* variables exist for elements that need inverted
    *  colors within the current theme (e.g., cancel buttons, badges).
    */
-  --gf-dark-bg-dark:    oklch(0.1509 0.0092 276.35);
-  --gf-dark-bg:         oklch(0.2604 0.012 276.58);
-  --gf-dark-bg-light:   oklch(0.3037 0.0233 276.07);
-  --gf-dark-text:       oklch(0.9619 0 0);
+  --gf-dark-bg-dark: oklch(0.1509 0.0092 276.35);
+  --gf-dark-bg: oklch(0.2604 0.012 276.58);
+  --gf-dark-bg-light: oklch(0.3037 0.0233 276.07);
+  --gf-dark-text: oklch(0.9619 0 0);
   --gf-dark-text-muted: oklch(0.7652 0 0);
 
-  --gf-light-bg-dark:    oklch(0.8266 0.024 276.84);
-  --gf-light-bg:         oklch(0.9188 0.0058 277.17);
-  --gf-light-bg-light:   oklch(0.3037 0.0233 276.07);
-  --gf-light-text:       oklch(0.1579 0 0);
+  --gf-light-bg-dark: oklch(0.8266 0.024 276.84);
+  --gf-light-bg: oklch(0.9188 0.0058 277.17);
+  --gf-light-bg-light: oklch(0.3037 0.0233 276.07);
+  --gf-light-text: oklch(0.1579 0 0);
   --gf-light-text-muted: oklch(0.4184 0 0);
 
+  --gf-dark-bg-catch-pin: lch(34.29% 39.32 137.83);
+  --gf-dark-bg-info-pin: lch(27.2% 19.32 250.85);
+  --gf-dark-bg-warning-pin: lch(30.94% 25.1 72.47);
+
+  --gf-statistics-bg: lch(37.99% 46.9 272.86);
+
   /* Semantic colors */
-  --gf-primary:      oklch(0.6048 0.2142 262.15);
-  --gf-secondary:    oklch(0.7096 0.186513 13.1188);
-  --gf-tertiary:     oklch(0.4462 0.0246 276.43);
-  --gf-danger:       oklch(0.648 0.1874 28.51);
-  --gf-warning:      oklch(0.8829 0.1633 104.07);
-  --gf-success:      oklch(0.8359 0.1769 156.76);
-  --gf-info:         oklch(0.6114 0.1743 262.46);
-  --gf-selected:     oklch(0.6803 0.1178 218.59);
+  --gf-primary: oklch(0.6048 0.2142 262.15);
+  --gf-secondary: oklch(0.7096 0.186513 13.1188);
+  --gf-tertiary: oklch(0.4462 0.0246 276.43);
+  --gf-danger: oklch(0.648 0.1874 28.51);
+  --gf-warning: oklch(0.8829 0.1633 104.07);
+  --gf-success: oklch(0.8359 0.1769 156.76);
+  --gf-info: oklch(0.6114 0.1743 262.46);
+  --gf-selected: oklch(0.6803 0.1178 218.59);
 
   /* Shadows */
-  --gf-shadow-lift-sm: 0 2px 4px -2px #ffffff50 inset, 0 1px 2px 1px #00000050, 0 2px 4px  1px #00000055;
-  --gf-shadow-lift-md: 0 2px 4px -2px #ffffff70 inset, 0 2px 4px 1px #00000050, 0 4px 8px  1px #00000055;
-  --gf-shadow-lift-lg: 0 2px 4px -2px #ffffff90 inset, 0 4px 6px 2px #00000050, 0 6px 10px 2px #00000055;
+  --gf-shadow-lift-sm:
+    0 2px 4px -2px #ffffff50 inset, 0 1px 2px 1px #00000050,
+    0 2px 4px 1px #00000055;
+  --gf-shadow-lift-md:
+    0 2px 4px -2px #ffffff70 inset, 0 2px 4px 1px #00000050,
+    0 4px 8px 1px #00000055;
+  --gf-shadow-lift-lg:
+    0 2px 4px -2px #ffffff90 inset, 0 4px 6px 2px #00000050,
+    0 6px 10px 2px #00000055;
 
-  --gf-shadow-sink-sm: 0 -2px 3px -1px #ffffff30 inset, 0 1px 2px 1px #00000080 inset, 0 2px 4px  1px #00000050 inset;
-  --gf-shadow-sink-md: 0 -2px 3px -1px #ffffff50 inset, 0 2px 4px 1px #00000080 inset, 0 4px 8px  1px #00000050 inset;
-  --gf-shadow-sink-lg: 0 -2px 3px -1px #ffffff50 inset, 0 4px 6px 2px #00000080 inset, 0 6px 12px 2px #00000050 inset;
+  --gf-shadow-sink-sm:
+    0 -2px 3px -1px #ffffff30 inset, 0 1px 2px 1px #00000080 inset,
+    0 2px 4px 1px #00000050 inset;
+  --gf-shadow-sink-md:
+    0 -2px 3px -1px #ffffff50 inset, 0 2px 4px 1px #00000080 inset,
+    0 4px 8px 1px #00000050 inset;
+  --gf-shadow-sink-lg:
+    0 -2px 3px -1px #ffffff50 inset, 0 4px 6px 2px #00000080 inset,
+    0 6px 12px 2px #00000050 inset;
 
   /*
    * Z-Index scale
@@ -71,12 +102,12 @@
    * See: https://getbootstrap.com/docs/5.0/layout/z-index/
    */
   --gf-z-dropdown: 1000;
-  --gf-z-sticky:   1020;
-  --gf-z-fixed:    1030;
+  --gf-z-sticky: 1020;
+  --gf-z-fixed: 1030;
   --gf-z-backdrop: 1040;
-  --gf-z-modal:    1060;
-  --gf-z-popover:  1070; /* TODO: Change "popup" naming to "popover" project wide */
-  --gf-z-tooltip:  1080;
+  --gf-z-modal: 1060;
+  --gf-z-popover: 1070; /* TODO: Change "popup" naming to "popover" project wide */
+  --gf-z-tooltip: 1080;
 
   /*
    * Rem-based spacing helpers
@@ -86,12 +117,12 @@
    *
    * If you need a value that is not in this scale, convert
    * pixels to rem locally using calc():
-   * Example: calc(102rem / 16)  -> equivalent to 102px
+   * Example: calc(102px / 16)  -> equivalent to 6.375
    */
-  --gf-2:  0.125rem;
-  --gf-4:  0.25rem;
-  --gf-6:  0.375rem;
-  --gf-8:  0.5rem;
+  --gf-2: 0.125rem;
+  --gf-4: 0.25rem;
+  --gf-6: 0.375rem;
+  --gf-8: 0.5rem;
   --gf-10: 0.625rem;
   --gf-12: 0.75rem;
   --gf-14: 0.875rem;
@@ -106,7 +137,9 @@
   --gf-32: 2rem;
   --gf-36: 2.25rem;
   --gf-40: 2.5rem;
+  --gf-42: 2.625rem;
   --gf-48: 3rem;
+  --gf-50: 3.125rem;
   --gf-56: 3.5rem;
   --gf-64: 4rem;
   --gf-72: 4.5rem;
@@ -121,10 +154,10 @@
   --gf-space-xl: var(--gf-32);
 
   /* Container sizes */
-  --gf-container-xs: 20rem; /* 320px */
-  --gf-container-sm: 28rem; /* 448px */
+  --gf-container-xs: 28rem; /* 448px */
+  --gf-container-sm: 37rem; /* 592px */
   --gf-container-md: 48rem; /* 768px */
-  --gf-container-lg: 64rem; /* 1024px */
+  --gf-container-lg: 61rem; /* 976px */
   --gf-container-xl: 75rem; /* 1200px */
 
   /*
@@ -135,8 +168,8 @@
   ** Deprecated below
   */
 
-  --font-main: 'Inter', sans-serif;
-  --font-heading: 'Montserrat', sans-serif;
+  --font-main: "Inter", sans-serif; /* use --gf-font-main instead*/
+  --font-heading: "Montserrat", sans-serif; /* use --gf-font-heading instead*/
 
   /* Layout & text colors */
 
@@ -166,15 +199,29 @@
 
   /* Shadows */
 
-  --dark-lift-shadow-s: inset 0 1px  2px #ffffff30, inset 0 1px 2px #00000020, inset 0 2px 4px #00000015; /* Deprecated */
-  --dark-lift-shadow-m: inset 0 1px  2px #ffffff50, inset 0 2px 4px #00000020, inset 0 4px 8px #00000010; /* Deprecated */
-  --dark-lift-shadow-l: inset 0 1px  2px #ffffff70, inset 0 4px 6px #00000020, inset 0 6px 10px #00000010; /* Deprecated */
-  --dark-sunk-shadow-s: inset 0 -1px 2px #ffffff20, inset 0 1px 2px #00000030, inset 0 2px 4px #00000025; /* Deprecated */
-  --dark-sunk-shadow-m: inset 0 -1px 2px #ffffff30, inset 0 2px 4px #00000030, inset 0 4px 8px #00000015; /* Deprecated */
-  --dark-sunk-shadow-l: inset 0 -1px 2px #ffffff40, inset 0 4px 6px #00000030, inset 0 6px 10px #00000015; /* Deprecated */
+  --dark-lift-shadow-s:
+    inset 0 1px 2px #ffffff30, inset 0 1px 2px #00000020,
+    inset 0 2px 4px #00000015; /* Deprecated */
+  --dark-lift-shadow-m:
+    inset 0 1px 2px #ffffff50, inset 0 2px 4px #00000020,
+    inset 0 4px 8px #00000010; /* Deprecated */
+  --dark-lift-shadow-l:
+    inset 0 1px 2px #ffffff70, inset 0 4px 6px #00000020,
+    inset 0 6px 10px #00000010; /* Deprecated */
+  --dark-sunk-shadow-s:
+    inset 0 -1px 2px #ffffff20, inset 0 1px 2px #00000030,
+    inset 0 2px 4px #00000025; /* Deprecated */
+  --dark-sunk-shadow-m:
+    inset 0 -1px 2px #ffffff30, inset 0 2px 4px #00000030,
+    inset 0 4px 8px #00000015; /* Deprecated */
+  --dark-sunk-shadow-l:
+    inset 0 -1px 2px #ffffff40, inset 0 4px 6px #00000030,
+    inset 0 6px 10px #00000015; /* Deprecated */
 
-  --filter-white: invert(100%) sepia(100%) saturate(1%) hue-rotate(266deg) brightness(103%) contrast(101%); /* TODO: Remove */
-  --filter-white-muted: invert(76%) sepia(1%) saturate(0%) hue-rotate(138deg) brightness(93%) contrast(98%); /* TODO: Remove */
+  --filter-white: invert(100%) sepia(100%) saturate(1%) hue-rotate(266deg)
+    brightness(103%) contrast(101%); /* TODO: Remove */
+  --filter-white-muted: invert(76%) sepia(1%) saturate(0%) hue-rotate(138deg)
+    brightness(93%) contrast(98%); /* TODO: Remove */
 
   /* Z indexes */
   /* Needs to be 1000+ because of bootstrap. See https://getbootstrap.com/docs/5.0/layout/z-index/ */
@@ -191,58 +238,113 @@
 */
 
 @keyframes gf-popover-scale-in {
-  from { transform: scale(0.8); }
-  to { transform: scale(1); }
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 @keyframes gf-popover-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes gf-modal-scale-in {
-  from { transform: scale(0.8); }
-  to { transform: scale(1); }
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 @keyframes gf-modal-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes gf-basic-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes gf-icon-scale-in {
-  from { opacity: 0; transform: scale(0); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes gf-icon-scale-out {
-  from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(0); }
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0);
+  }
 }
 
-@keyframes overlay-popup-scale { /* TODO: Change to "gf-popover-scale-in" project wide */
-  from { transform: scale(0.8); }
-  to { transform: scale(1); }
+@keyframes overlay-popup-scale {
+  /* TODO: Change to "gf-popover-scale-in" project wide */
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
 }
-@keyframes overlay-popup-fade { /* TODO: Change to "gf-popover-fade-in" project wide */
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes overlay-popup-fade {
+  /* TODO: Change to "gf-popover-fade-in" project wide */
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-@keyframes modal-scale { /* TODO: Change to "gf-modal-scale-in" project wide */
-  from { transform: scale(0.8); }
-  to { transform: scale(1); }
+@keyframes modal-scale {
+  /* TODO: Change to "gf-modal-scale-in" project wide */
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
 }
-@keyframes modal-fade { /* TODO: Change to "gf-modal-fade-in" project wide */
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes modal-fade {
+  /* TODO: Change to "gf-modal-fade-in" project wide */
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-@keyframes spin { /* TODO: Change to "gf-basic-spin" project wide */
-  to { transform: rotate(360deg); }
+@keyframes spin {
+  /* TODO: Change to "gf-basic-spin" project wide */
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /*
@@ -253,11 +355,13 @@
 
 * {
   box-sizing: border-box;
+  line-height: normal;
   margin: 0;
   padding: 0;
 }
 
-html, body {
+html,
+body {
   min-height: 100vh;
 }
 
@@ -267,7 +371,15 @@ body {
   color: var(--dark-text);
 }
 
-p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
+p,
+small,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  /* Override bootstrap reboot */
   margin: 0;
 }
 
@@ -294,10 +406,40 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   user-select: none;
 }
 
+.user-output-no-overflow {
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*
+ * Retroactively preventing user generated text from
+ * overflowing Post cards or Post comments
+
+*/
+
+[class$="-text"],
+[class$="-name"],
+[class$="-description"] {
+  word-break: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 250px;
+  /*white-space: nowrap;*/
+
+}
+
 /* Layouts */
 .gf-flow-vertical {
   display: flex;
   flex-direction: column;
+}
+
+.gf-flow-vertical-rev {
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .gf-flow-horizontal {
@@ -305,13 +447,20 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   flex-direction: row;
 }
 
+.gf-flow-horizontal-rev {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 .gf-center-axes {
-  justify-content: center; /* horizontal */
-  align-items: center;     /* vertical */
+  display: flex;
+  justify-content: center; /* Main axis */
+  align-items: center;     /* Cross axis */
 }
 
 /* Cards */
-.gf-card, [class*="gf-card-"] {
+.gf-card,
+[class*="gf-card-"] {
   font: var(--gf-font-main);
   color: var(--gf-dark-text);
   box-shadow: var(--gf-shadow-lift-sm);
@@ -322,8 +471,11 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   border-width: 0px;
 }
 
+
+
 /* Popovers */
-.gf-popover, [class*="gf-popover-"] {
+.gf-popover,
+[class*="gf-popover-"] {
   /* TODO: styles for .gf-card.gf-popover */
 }
 
@@ -339,21 +491,217 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 }
 
 /* Buttons */
+
+.gf-toggle-circle {
+  border-radius: 50%;
+  padding: 0px;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  background-color: var(--dark-bg);
+  box-shadow: var(--dark-lift-shadow-s);
+  transition: box-shadow 0.15s ease;
+  z-index: var(--z-opens-overlay);
+  color: var(--dark-text-muted);
+
+  & > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:hover {
+    color: var(--dark-text);
+    box-shadow: var(--dark-lift-shadow-m);
+  }
+}
+
+/* Navigation Links */
+
+.gf-text-selection,
+[class^="gf-text-selection-"] {
+  color: var(--gf-dark-text-muted);
+  text-decoration: none;
+
+  /* Text not currently selected */
+
+  & span {
+    cursor: pointer;
+
+    background: linear-gradient(currentColor 0 0) bottom center /
+      var(--underline-width, 0%) var(--gf-2) no-repeat;
+    transition: background-size 0.2s;
+    color: var(--gf-dark-text-muted);
+  }
+
+  &:hover span,
+  &:hover svg {
+    color: var(--gf-dark-text);
+    --underline-width: 100%;
+  }
+
+  /* Text currently selected */
+
+  &.active span {
+    color: var(--gf-primary);
+    --underline-width: 100%;
+  }
+
+  &.active svg {
+    color: var(--gf-primary);
+  }
+
+  &.active:hover span,
+  &.active:hover svg {
+    filter: brightness(1.3);
+  }
+}
+
 /* Inputs */
 /* Modals */
+
+.gf-modal-backdrop {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  z-index: var(--gf-z-backdrop);
+}
+
+.gf-modal-shell {
+  background-color: var(--dark-bg);
+  box-shadow: var(--gf-shadow-lift-sm);
+  width: 90%;
+  padding: var(--gf-16);
+}
+
+.gf-modal-close-button {
+  background: var(--dark-bg-light);
+  box-shadow: var(--gf-shadow-lift-sm);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  color: var(--dark-text-muted);
+  width: 36px;
+  height: 36px;
+  transition: box-shadow .2s ease, color .2s ease;
+
+  &:hover {
+    color: var(--dark-text);
+    box-shadow: var(--gf-shadow-lift-md);
+  }
+
+  & > svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.gf-modal-inputs-form {
+  & label {
+    display: block;
+    margin-bottom: var(--gf-4);
+    color: var(--dark-text-muted);
+    font-size: var(--gf-12);
+  }
+
+  & input {
+    width: 100%;
+    height: var(--gf-32);
+    background-color: var(--dark-bg-dark);
+    box-shadow: none;
+    font-size: var(--gf-text-sm);
+    color: var(--dark-text);
+    border: none;
+    outline: none;
+    border-radius: var(--gf-8);
+    padding: var(--gf-8);
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 0 0 2px var(--gf-primary);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px var(--gf-primary);
+    }
+  }
+}
+
 /* Badges */
+
+.gf-badge,
+[class^="gf-badge-"] {
+  width: var(--gf-32);
+  height: var(--gf-32);
+  background: var(--dark-bg-light);
+  border: none;
+
+  box-shadow:
+    0px 1px 2px rgba(0, 0, 0, 0.18),
+    0px 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0px 1px 2px rgba(255, 255, 255, 0.18);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--dark-text);
+
+  & svg {
+    width: var(--gf-16);
+    height: var(--gf-16);
+    color: var(--dark-text-muted);
+  }
+
+  &:hover svg {
+    color: var(--dark-text);
+  }
+}
+
+.gf-badge-text {
+  width: fit-content;
+  padding: var(--gf-6) var(--gf-16);
+  border-radius: var(--gf-16);
+  color: var(--dark-text);
+
+  box-shadow:
+    0px 1px 2px rgba(0, 0, 0, 0.18),
+    0px 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0px 1px 2px rgba(255, 255, 255, 0.18);
+  cursor: default;
+  background: var(--dark-bg-light);
+
+  & > span {
+    cursor: text;
+    font-size: var(--gf-12);
+    font-family: var(--gf-font-date);
+  }
+}
+
 /* Avatars */
 /* Tooltips */
 /* Loaders */
 /* Alerts / Toasts */
 /* Separators */
+
+.gf-modal-separator {
+  border-top: calc(1rem / 16) solid var(--dark-bg-light);
+  margin: 0 16px;
+}
+
 /* Icons / Svgs */
 
 /* Backgrounds */
 
 .gf-background-map-fixed {
   min-height: 100vh;
-  background-image: url('/assets/images/backgroung-map.png');
+  background-image: url("/assets/images/backgroung-map.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -367,32 +715,100 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 */
 
 /* Texts */
-.gf-text-3xs { font-size: var(--gf-text-3xs); }
-.gf-text-2xs { font-size: var(--gf-text-2xs); }
-.gf-text-xs  { font-size: var(--gf-text-xs); }
-.gf-text-sm  { font-size: var(--gf-text-sm); }
-.gf-text-md  { font-size: var(--gf-text-md); }
-.gf-text-lg  { font-size: var(--gf-text-lg); }
-.gf-text-xl  { font-size: var(--gf-text-xl); }
-.gf-text-2xl { font-size: var(--gf-text-2xl); }
-.gf-text-3xl { font-size: var(--gf-text-3xl); }
-.gf-text-4xl { font-size: var(--gf-text-4xl); }
+.gf-text-3xs {
+  font-size: var(--gf-text-3xs);
+}
+.gf-text-2xs {
+  font-size: var(--gf-text-2xs);
+}
+.gf-text-xs {
+  font-size: var(--gf-text-xs);
+}
+.gf-text-sm {
+  font-size: var(--gf-text-sm);
+}
+.gf-text-md {
+  font-size: var(--gf-text-md);
+}
+.gf-text-lg {
+  font-size: var(--gf-text-lg);
+}
+.gf-text-xl {
+  font-size: var(--gf-text-xl);
+}
+.gf-text-2xl {
+  font-size: var(--gf-text-2xl);
+}
+.gf-text-3xl {
+  font-size: var(--gf-text-3xl);
+}
+.gf-text-4xl {
+  font-size: var(--gf-text-4xl);
+}
+
+.gf-font-thin       { font-weight: var(--gf-font-thin); }
+.gf-font-extralight { font-weight: var(--gf-font-extralight); }
+.gf-font-light      { font-weight: var(--gf-font-light); }
+.gf-font-normal     { font-weight: var(--gf-font-normal); }
+.gf-font-medium     { font-weight: var(--gf-font-medium); }
+.gf-font-semibold   { font-weight: var(--gf-font-semibold); }
+.gf-font-bold       { font-weight: var(--gf-font-bold); }
+.gf-font-extrabold  { font-weight: var(--gf-font-extrabold); }
+.gf-font-black      { font-weight: var(--gf-font-black); }
+
+.gf-lh-0_5 { line-height: 0.5em; }
+.gf-lh-1_0 { line-height: 1.0em; }
+.gf-lh-1_5 { line-height: 1.5em; }
 
 /* Displays */
-.gf-display-block { display: block; }
+.gf-d-block        { display: block; }
+.gf-d-inline       { display: inline; }
+.gf-d-inline-block { display: inline-block; }
+.gf-d-flex         { display: flex; }
+.gf-d-grid         { display: grid; }
+.gf-d-contents     { display: contents; }
+.gf-d-table        { display: table; }
+.gf-d-table-row    { display: table-row; }
+.gf-d-table-cell   { display: table-cell; }
+.gf-d-none         { display: none; }
+
+/* Position */
+.gf-pos-static   { position: static; }
+.gf-pos-relative { position: relative; }
+.gf-pos-absolute { position: absolute; }
+.gf-pos-fixed    { position: fixed; }
+.gf-pos-sticky   { position: sticky; }
 
 /* Container max-widths */
-.gf-container-xs { max-width: var(--gf-container-xs); }
-.gf-container-sm { max-width: var(--gf-container-sm); }
-.gf-container-md { max-width: var(--gf-container-md); }
-.gf-container-lg { max-width: var(--gf-container-lg); }
-.gf-container-xl { max-width: var(--gf-container-xl); }
+.gf-container-xs {
+  max-width: var(--gf-container-xs);
+}
+.gf-container-sm {
+  max-width: var(--gf-container-sm);
+}
+.gf-container-md {
+  max-width: var(--gf-container-md);
+}
+.gf-container-lg {
+  max-width: var(--gf-container-lg);
+}
+.gf-container-xl {
+  max-width: var(--gf-container-xl);
+}
 
 /* width percentages */
-.gf-w-50  { width: 50%; }
-.gf-w-80  { width: 80%; }
-.gf-w-90  { width: 90%; }
-.gf-w-100 { width: 100%; }
+.gf-w-50 {
+  width: 50%;
+}
+.gf-w-80 {
+  width: 80%;
+}
+.gf-w-90 {
+  width: 90%;
+}
+.gf-w-100 {
+  width: 100%;
+}
 
 /* Gaps */
 .gf-gap-0  { gap: 0; }
@@ -406,21 +822,67 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 .gf-gap-24 { gap: var(--gf-24); }
 .gf-gap-32 { gap: var(--gf-32); }
 
-/* Margins */
-.gf-m-0  { margin: 0; }
-.gf-m-4  { margin: var(--gf-4); }
-.gf-m-8  { margin: var(--gf-8); }
-.gf-m-10 { margin: var(--gf-10); }
-.gf-m-12 { margin: var(--gf-12); }
-.gf-m-16 { margin: var(--gf-16); }
-.gf-m-20 { margin: var(--gf-20); }
-.gf-m-24 { margin: var(--gf-24); }
-.gf-m-32 { margin: var(--gf-32); }
+/* Main axis */
+.gf-justify-start   { justify-content: flex-start; }
+.gf-justify-end     { justify-content: flex-end; }
+.gf-justify-center  { justify-content: center; }
+.gf-justify-between { justify-content: space-between; }
+.gf-justify-around  { justify-content: space-around; }
+.gf-justify-evenly  { justify-content: space-evenly; }
 
-.gf-my-0    { margin-top: 0;  margin-bottom: 0; }
-.gf-my-4    { margin-top: var(--gf-4);  margin-bottom: var(--gf-4); }
-.gf-my-6    { margin-top: var(--gf-6);  margin-bottom: var(--gf-6); }
-.gf-my-8    { margin-top: var(--gf-8);  margin-bottom: var(--gf-8); }
+/* Cross axis */
+.gf-items-start    { align-items: flex-start; }
+.gf-items-end      { align-items: flex-end; }
+.gf-items-center   { align-items: center; }
+.gf-items-stretch  { align-items: stretch; }
+.gf-items-baseline { align-items: baseline; }
+
+/* Multi-line row spacing */
+.gf-content-start   { align-content: flex-start; }
+.gf-content-end     { align-content: flex-end; }
+.gf-content-center  { align-content: center; }
+.gf-content-between { align-content: space-between; }
+.gf-content-around  { align-content: space-around; }
+.gf-content-evenly  { align-content: space-evenly; }
+.gf-content-stretch { align-content: stretch; }
+
+/* Text align */
+.gf-text-left    { text-align: left; }
+.gf-text-center  { text-align: center; }
+.gf-text-right   { text-align: right; }
+.gf-text-justify { text-align: justify; }
+.gf-text-start   { text-align: start; }
+.gf-text-end     { text-align: end; }
+
+/* Margins */
+.gf-m-0    { margin: 0; }
+.gf-m-4    { margin: var(--gf-4); }
+.gf-m-6    { margin: var(--gf-6); }
+.gf-m-8    { margin: var(--gf-8); }
+.gf-m-10   { margin: var(--gf-10); }
+.gf-m-12   { margin: var(--gf-12); }
+.gf-m-16   { margin: var(--gf-16); }
+.gf-m-20   { margin: var(--gf-20); }
+.gf-m-24   { margin: var(--gf-24); }
+.gf-m-32   { margin: var(--gf-32); }
+.gf-m-auto { margin: auto; }
+
+.gf-mx-0    { margin-left: 0; margin-right: 0; }
+.gf-mx-4    { margin-left: var(--gf-4); margin-right: var(--gf-4); }
+.gf-mx-6    { margin-left: var(--gf-6); margin-right: var(--gf-6); }
+.gf-mx-8    { margin-left: var(--gf-8); margin-right: var(--gf-8); }
+.gf-mx-10   { margin-left: var(--gf-10); margin-right: var(--gf-10); }
+.gf-mx-12   { margin-left: var(--gf-12); margin-right: var(--gf-12); }
+.gf-mx-16   { margin-left: var(--gf-16); margin-right: var(--gf-16); }
+.gf-mx-20   { margin-left: var(--gf-20); margin-right: var(--gf-20); }
+.gf-mx-24   { margin-left: var(--gf-24); margin-right: var(--gf-24); }
+.gf-mx-32   { margin-left: var(--gf-32); margin-right: var(--gf-32); }
+.gf-mx-auto { margin-left: auto; margin-right: auto; }
+
+.gf-my-0    { margin-top: 0; margin-bottom: 0; }
+.gf-my-4    { margin-top: var(--gf-4); margin-bottom: var(--gf-4); }
+.gf-my-6    { margin-top: var(--gf-6); margin-bottom: var(--gf-6); }
+.gf-my-8    { margin-top: var(--gf-8); margin-bottom: var(--gf-8); }
 .gf-my-10   { margin-top: var(--gf-10); margin-bottom: var(--gf-10); }
 .gf-my-12   { margin-top: var(--gf-12); margin-bottom: var(--gf-12); }
 .gf-my-16   { margin-top: var(--gf-16); margin-bottom: var(--gf-16); }
@@ -429,17 +891,56 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 .gf-my-32   { margin-top: var(--gf-32); margin-bottom: var(--gf-32); }
 .gf-my-auto { margin-top: auto; margin-bottom: auto; }
 
-.gf-mx-0    { margin-left: 0;  margin-right: 0; }
-.gf-mx-4    { margin-left: var(--gf-4);  margin-right: var(--gf-4); }
-.gf-mx-6    { margin-left: var(--gf-6);  margin-right: var(--gf-6); }
-.gf-mx-8    { margin-left: var(--gf-8);  margin-right: var(--gf-8); }
-.gf-mx-10   { margin-left: var(--gf-10); margin-right: var(--gf-10); }
-.gf-mx-12   { margin-left: var(--gf-12); margin-right: var(--gf-12); }
-.gf-mx-16   { margin-left: var(--gf-16); margin-right: var(--gf-16); }
-.gf-mx-20   { margin-left: var(--gf-20); margin-right: var(--gf-20); }
-.gf-mx-24   { margin-left: var(--gf-24); margin-right: var(--gf-24); }
-.gf-mx-auto { margin-left: auto; margin-right: auto; }
+.gf-ml-0    { margin-left: 0; }
+.gf-ml-4    { margin-left: var(--gf-4); }
+.gf-ml-6    { margin-left: var(--gf-6); }
+.gf-ml-8    { margin-left: var(--gf-8); }
+.gf-ml-10   { margin-left: var(--gf-10); }
+.gf-ml-12   { margin-left: var(--gf-12); }
+.gf-ml-16   { margin-left: var(--gf-16); }
+.gf-ml-20   { margin-left: var(--gf-20); }
+.gf-ml-24   { margin-left: var(--gf-24); }
+.gf-ml-32   { margin-left: var(--gf-32); }
+.gf-ml-auto { margin-left: auto; }
 
+.gf-mr-0    { margin-right: 0; }
+.gf-mr-4    { margin-right: var(--gf-4); }
+.gf-mr-6    { margin-right: var(--gf-6); }
+.gf-mr-8    { margin-right: var(--gf-8); }
+.gf-mr-10   { margin-right: var(--gf-10); }
+.gf-mr-12   { margin-right: var(--gf-12); }
+.gf-mr-16   { margin-right: var(--gf-16); }
+.gf-mr-20   { margin-right: var(--gf-20); }
+.gf-mr-24   { margin-right: var(--gf-24); }
+.gf-mr-32   { margin-right: var(--gf-32); }
+.gf-mr-auto { margin-right: auto; }
+
+.gf-mt-0    { margin-top: 0; }
+.gf-mt-4    { margin-top: var(--gf-4); }
+.gf-mt-6    { margin-top: var(--gf-6); }
+.gf-mt-8    { margin-top: var(--gf-8); }
+.gf-mt-10   { margin-top: var(--gf-10); }
+.gf-mt-12   { margin-top: var(--gf-12); }
+.gf-mt-16   { margin-top: var(--gf-16); }
+.gf-mt-20   { margin-top: var(--gf-20); }
+.gf-mt-24   { margin-top: var(--gf-24); }
+.gf-mt-32   { margin-top: var(--gf-32); }
+.gf-mt-auto { margin-top: auto; }
+
+.gf-mb-0    { margin-bottom: 0; }
+.gf-mb-4    { margin-bottom: var(--gf-4); }
+.gf-mb-6    { margin-bottom: var(--gf-6); }
+.gf-mb-8    { margin-bottom: var(--gf-8); }
+.gf-mb-10   { margin-bottom: var(--gf-10); }
+.gf-mb-12   { margin-bottom: var(--gf-12); }
+.gf-mb-16   { margin-bottom: var(--gf-16); }
+.gf-mb-20   { margin-bottom: var(--gf-20); }
+.gf-mb-24   { margin-bottom: var(--gf-24); }
+.gf-mb-32   { margin-bottom: var(--gf-32); }
+.gf-mb-96   { margin-bottom: var(--gf-96); }
+.gf-mb-auto { margin-bottom: auto; }
+
+/* Paddings */
 .gf-p-0  { padding: 0; }
 .gf-p-4  { padding: var(--gf-4); }
 .gf-p-6  { padding: var(--gf-6); }
@@ -451,9 +952,80 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 .gf-p-24 { padding: var(--gf-24); }
 .gf-p-32 { padding: var(--gf-32); }
 
+.gf-px-0  { padding-left: 0; padding-right: 0; }
+.gf-px-4  { padding-left: var(--gf-4); padding-right: var(--gf-4); }
+.gf-px-6  { padding-left: var(--gf-6); padding-right: var(--gf-6); }
+.gf-px-8  { padding-left: var(--gf-8); padding-right: var(--gf-8); }
+.gf-px-10 { padding-left: var(--gf-10); padding-right: var(--gf-10); }
+.gf-px-12 { padding-left: var(--gf-12); padding-right: var(--gf-12); }
+.gf-px-16 { padding-left: var(--gf-16); padding-right: var(--gf-16); }
+.gf-px-20 { padding-left: var(--gf-20); padding-right: var(--gf-20); }
+.gf-px-24 { padding-left: var(--gf-24); padding-right: var(--gf-24); }
+.gf-px-32 { padding-left: var(--gf-32); padding-right: var(--gf-32); }
+
+.gf-py-0  { padding-top: 0; padding-bottom: 0; }
+.gf-py-4  { padding-top: var(--gf-4); padding-bottom: var(--gf-4); }
+.gf-py-6  { padding-top: var(--gf-6); padding-bottom: var(--gf-6); }
+.gf-py-8  { padding-top: var(--gf-8); padding-bottom: var(--gf-8); }
+.gf-py-10 { padding-top: var(--gf-10); padding-bottom: var(--gf-10); }
+.gf-py-12 { padding-top: var(--gf-12); padding-bottom: var(--gf-12); }
+.gf-py-16 { padding-top: var(--gf-16); padding-bottom: var(--gf-16); }
+.gf-py-20 { padding-top: var(--gf-20); padding-bottom: var(--gf-20); }
+.gf-py-24 { padding-top: var(--gf-24); padding-bottom: var(--gf-24); }
+.gf-py-32 { padding-top: var(--gf-32); padding-bottom: var(--gf-32); }
+
+.gf-pl-0  { padding-left: 0; }
+.gf-pl-4  { padding-left: var(--gf-4); }
+.gf-pl-6  { padding-left: var(--gf-6); }
+.gf-pl-8  { padding-left: var(--gf-8); }
+.gf-pl-10 { padding-left: var(--gf-10); }
+.gf-pl-12 { padding-left: var(--gf-12); }
+.gf-pl-16 { padding-left: var(--gf-16); }
+.gf-pl-20 { padding-left: var(--gf-20); }
+.gf-pl-24 { padding-left: var(--gf-24); }
+.gf-pl-32 { padding-left: var(--gf-32); }
+
+.gf-pr-0  { padding-right: 0; }
+.gf-pr-4  { padding-right: var(--gf-4); }
+.gf-pr-6  { padding-right: var(--gf-6); }
+.gf-pr-8  { padding-right: var(--gf-8); }
+.gf-pr-10 { padding-right: var(--gf-10); }
+.gf-pr-12 { padding-right: var(--gf-12); }
+.gf-pr-16 { padding-right: var(--gf-16); }
+.gf-pr-20 { padding-right: var(--gf-20); }
+.gf-pr-24 { padding-right: var(--gf-24); }
+.gf-pr-32 { padding-right: var(--gf-32); }
+
+.gf-pt-0  { padding-top: 0; }
+.gf-pt-4  { padding-top: var(--gf-4); }
+.gf-pt-6  { padding-top: var(--gf-6); }
+.gf-pt-8  { padding-top: var(--gf-8); }
+.gf-pt-10 { padding-top: var(--gf-10); }
+.gf-pt-12 { padding-top: var(--gf-12); }
+.gf-pt-16 { padding-top: var(--gf-16); }
+.gf-pt-20 { padding-top: var(--gf-20); }
+.gf-pt-24 { padding-top: var(--gf-24); }
+.gf-pt-32 { padding-top: var(--gf-32); }
+.gf-pt-64 { padding-top: var(--gf-64); }
+
+.gf-pb-0  { padding-bottom: 0; }
+.gf-pb-4  { padding-bottom: var(--gf-4); }
+.gf-pb-6  { padding-bottom: var(--gf-6); }
+.gf-pb-8  { padding-bottom: var(--gf-8); }
+.gf-pb-10 { padding-bottom: var(--gf-10); }
+.gf-pb-12 { padding-bottom: var(--gf-12); }
+.gf-pb-16 { padding-bottom: var(--gf-16); }
+.gf-pb-20 { padding-bottom: var(--gf-20); }
+.gf-pb-24 { padding-bottom: var(--gf-24); }
+.gf-pb-32 { padding-bottom: var(--gf-32); }
+
 /* Pointer events */
-.gf-no-events { pointer-events: none !important; }
-.gf-do-events { pointer-events: auto; }
+.gf-no-events {
+  pointer-events: none !important;
+}
+.gf-do-events {
+  pointer-events: auto;
+}
 
 /*
 
@@ -490,8 +1062,8 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
  * Deprecated below
  */
 
-  /* ========== */
- /* 1. Headers */
+/* ========== */
+/* 1. Headers */
 /* ========== */
 
 .main-text-heading {
@@ -502,47 +1074,72 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   font-size: 24px;
 }
 
-
-  /* ===================== */
- /* 2. Classes para texto */
+/* ===================== */
+/* 2. Classes para texto */
 /* ===================== */
 
 .font-main li > a,
-.font-main {font-family: var(--font-main);}
+.font-main {
+  font-family: var(--font-main);
+}
 
 .font-heading span,
 .font-heading li > a,
-.font-heading {font-family: var(--font-heading);}
+.font-heading {
+  font-family: var(--font-heading);
+}
 
 /*
  * 2.1. Cores de fundo
 */
 
-.dark-bg-dark {background-color: var(--dark-bg-dark);}
-.dark-bg {background-color: var(--dark-bg);}
-.dark-bg-light {background-color: var(--dark-bg-light);}
+.dark-bg-dark {
+  background-color: var(--dark-bg-dark);
+}
+.dark-bg {
+  background-color: var(--dark-bg);
+}
+.dark-bg-light {
+  background-color: var(--dark-bg-light);
+}
 
 /*
  * 2.2. Cores de texto
 */
 
-.dark-text {color: var(--dark-text);}
-.dark-text-muted {color: var(--dark-text-muted);}
+.dark-text {
+  color: var(--dark-text);
+}
+.dark-text-muted {
+  color: var(--dark-text-muted);
+}
 
 /*
  * 2.3. Intensidade do texto (negrito)
 */
 
-.text-slim {font-weight: 350;}
-.text-normal {font-weight: normal;}
-.text-medium {font-weight: 500;}
-.text-bold {font-weight: 700;}
-.text-gofish {font-weight: 900; font-size: 28px;}
+.text-slim {
+  font-weight: 350;
+}
+.text-normal {
+  font-weight: normal;
+}
+.text-medium {
+  font-weight: 500;
+}
+.text-bold {
+  font-weight: 700;
+}
 
-  /* ===========/
+/* Deprecated - Use "gf-text-logo" instead */
+.text-gofish {
+  font-weight: 900;
+  font-size: 28px;
+}
+
+/* ===========/
  /* 3. Ícones */
 /* ========= */
-
 
 /*
  * 3.1. Ícone Base
@@ -564,7 +1161,7 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   *
   * Definido no <.icon-size-*>
   */
-  --size:48px;
+  --size: 48px;
   width: var(--size);
   height: var(--size);
 
@@ -582,35 +1179,90 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
  * 3.2. Imagens de ícones
 */
 
-.icon-guitar        { --icon-url: url('/assets/vectors/guitar.svg'); }
-.icon-map           { --icon-url: url('/assets/vectors/map.svg'); }
-.icon-hook          { --icon-url: url('/assets/vectors/hook.svg'); }
-.icon-clear         { --icon-url: url('/assets/vectors/clear.svg'); }
-.icon-fish          { --icon-url: url('/assets/vectors/fish.svg'); }
-.icon-star          { --icon-url: url('/assets/vectors/star.svg'); }
-.icon-halfstar      { --icon-url: url('/assets/vectors/star-half.svg'); }
-.icon-check         { --icon-url: url('/assets/vectors/check.svg'); }
-.icon-cross         { --icon-url: url('/assets/vectors/x.svg'); }
-.icon-close         { --icon-url: url('/assets/vectors/close.svg'); }
-.icon-gofish        { --icon-url: url('/assets/images/logo-white-256.png'); }
-.icon-search        { --icon-url: url('/assets/vectors/search.svg'); }
-.icon-user          { --icon-url: url('/assets/vectors/user.svg'); }
-.icon-shielduser    { --icon-url: url('/assets/vectors/shield-user.svg'); }
-.icon-atsign        { --icon-url: url('/assets/vectors/at-sign.svg'); }
-.icon-facebook      { --icon-url: url('/assets/vectors/facebook.svg'); }
-.icon-instagram     { --icon-url: url('/assets/vectors/instagram.svg'); }
-.icon-youtube       { --icon-url: url('/assets/vectors/youtube.svg'); }
-.icon-twitter       { --icon-url: url('/assets/vectors/twitter.svg'); }
-.icon-info          { --icon-url: url('/assets/vectors/info.svg'); }
-.icon-warn          { --icon-url: url('/assets/vectors/warn.svg'); }
-.icon-locate        { --icon-url: url('/assets/vectors/locate.svg'); }
-.icon-locate-fixed  { --icon-url: url('/assets/vectors/locate-fixed.svg'); }
-.icon-locate-off    { --icon-url: url('/assets/vectors/locate-off.svg'); }
-.icon-map-pin-plus  { --icon-url: url('/assets/vectors/map-pin-plus.svg'); }
-.icon-plus          { --icon-url: url('/assets/vectors/plus.svg'); }
-.icon-minus         { --icon-url: url('/assets/vectors/minus.svg'); }
-.icon-log-out       { --icon-url: url('/assets/vectors/log-out.svg'); }
-
+.icon-guitar {
+  --icon-url: url("/assets/vectors/guitar.svg");
+}
+.icon-map {
+  --icon-url: url("/assets/vectors/map.svg");
+}
+.icon-hook {
+  --icon-url: url("/assets/vectors/hook.svg");
+}
+.icon-clear {
+  --icon-url: url("/assets/vectors/clear.svg");
+}
+.icon-fish {
+  --icon-url: url("/assets/vectors/fish.svg");
+}
+.icon-star {
+  --icon-url: url("/assets/vectors/star.svg");
+}
+.icon-halfstar {
+  --icon-url: url("/assets/vectors/star-half.svg");
+}
+.icon-check {
+  --icon-url: url("/assets/vectors/check.svg");
+}
+.icon-cross {
+  --icon-url: url("/assets/vectors/x.svg");
+}
+.icon-close {
+  --icon-url: url("/assets/vectors/close.svg");
+}
+.icon-gofish {
+  --icon-url: url("/assets/images/logo-white-256.png");
+}
+.icon-search {
+  --icon-url: url("/assets/vectors/search.svg");
+}
+.icon-user {
+  --icon-url: url("/assets/vectors/user.svg");
+}
+.icon-shielduser {
+  --icon-url: url("/assets/vectors/shield-user.svg");
+}
+.icon-atsign {
+  --icon-url: url("/assets/vectors/at-sign.svg");
+}
+.icon-facebook {
+  --icon-url: url("/assets/vectors/facebook.svg");
+}
+.icon-instagram {
+  --icon-url: url("/assets/vectors/instagram.svg");
+}
+.icon-youtube {
+  --icon-url: url("/assets/vectors/youtube.svg");
+}
+.icon-twitter {
+  --icon-url: url("/assets/vectors/twitter.svg");
+}
+.icon-info {
+  --icon-url: url("/assets/vectors/info.svg");
+}
+.icon-warn {
+  --icon-url: url("/assets/vectors/warn.svg");
+}
+.icon-locate {
+  --icon-url: url("/assets/vectors/locate.svg");
+}
+.icon-locate-fixed {
+  --icon-url: url("/assets/vectors/locate-fixed.svg");
+}
+.icon-locate-off {
+  --icon-url: url("/assets/vectors/locate-off.svg");
+}
+.icon-map-pin-plus {
+  --icon-url: url("/assets/vectors/map-pin-plus.svg");
+}
+.icon-plus {
+  --icon-url: url("/assets/vectors/plus.svg");
+}
+.icon-minus {
+  --icon-url: url("/assets/vectors/minus.svg");
+}
+.icon-log-out {
+  --icon-url: url("/assets/vectors/log-out.svg");
+}
 
 /*
  * 3.3. Definição de tamanhos dos ícones
@@ -628,7 +1280,6 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 
 */
 
-
 /*
  * Se for acompanhado com outro elemento de texto para o nome
  da aplicação, utilizar a seguinte classe nesse texto:
@@ -641,7 +1292,6 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   --size: 28px;
 }
 
-
 /*
  * 3.4. Cores dos ícones
 */
@@ -651,7 +1301,6 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 .icon-white [class^="icon-"],
 .icon.icon-white {
   --filter: var(--filter-white);
-
 }
 
 .icon-white-muted div.icon,
@@ -665,20 +1314,21 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
  * 3.5. Botões
 */
 
-[class^="gf-btn"], [class^="gofish-btn-"],
-.gf-btn, .gofish-btn {
+[class^="gf-btn"],
+[class^="gofish-btn-"],
+.gf-btn,
+.gofish-btn {
   color: var(--dark-text);
   font-size: 14px;
   border-width: 0px;
 
-   /*
+  /*
    * O padding pode ser definido ao modificar o --gf-btn-padding
   */
 
   --gf-btn-padding-default: 10px 20px;
   --gf-btn-padding: var(--gf-btn-padding-default);
   padding: var(--gf-btn-padding);
-
 
   --gf-btn-bg-default: #333;
   --gf-btn-bg: var(--gf-btn-bg-default);
@@ -702,32 +1352,34 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   --gf-btn-border-radius: var(--gf-btn-border-radius-default);
 
   border-radius: var(--gf-btn-border-radius);
-
 }
 
-[class^="gf-btn"]:active, [class^="gofish-btn"]:active,
+[class^="gf-btn"]:active,
+[class^="gofish-btn"]:active,
 .gf-btn:active,
 .gofish-btn:active {
   box-shadow: var(--dark-sunk-shadow-l);
   transform: translateY(1px);
 }
 
-
-  /*
+/*
    * 3.5.1 Animação antiga dos botões
    */
 
-.gofish-btn-legacy { transition: transform 0.1s, box-shadow 0.1s;}
+.gofish-btn-legacy {
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+}
 
 .gofish-btn-legacy:active {
   box-shadow: 0px 0px 5px #515151;
   transform: translateY(1px);
 }
 
-  /*
+/*
    * 3.5.2 Interação com botões
    */
-
 
 .generic-button-wrapper-s {
   cursor: pointer;
@@ -739,7 +1391,6 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   --filter: var(--filter-white);
 }
 
-
 /*
  * Para quando:
  <button class="generic-icon-button-wrapper">
@@ -750,16 +1401,21 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   --filter: var(--filter-white-muted);
 }
 
-.generic-button-wrapper-all > button {cursor: pointer;}
+.generic-button-wrapper-all > button {
+  cursor: pointer;
+}
 
 .generic-button-wrapper-all:hover > .icon {
   --filter: var(--filter-white);
 }
 
-.button-wrapper-clickable {cursor: pointer;}
+.button-wrapper-clickable {
+  cursor: pointer;
+}
 
-.button-wrapper-clickable:active {box-shadow: var(--dark-sunk-shadow-l);}
-
+.button-wrapper-clickable:active {
+  box-shadow: var(--dark-sunk-shadow-l);
+}
 
 /*
  * Used for selectable area with text inside
@@ -777,15 +1433,16 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   cursor: pointer;
 }
 
-.generic-select-wrapper-text > p{
+.generic-select-wrapper-text > p,
+.generic-select-wrapper-text > a {
   color: var(--dark-text-muted);
 }
 
-.generic-select-wrapper-text:hover > p{
+.generic-select-wrapper-text:hover > p {
   color: var(--dark-text);
 }
 
-  /* ================/
+/* ================/
  /* 4. Gofish Card */
 /* ============== */
 
@@ -804,15 +1461,13 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   border-radius: 12px;
   border-width: 0px;
 
-  --gf-bg-color-default:#333;
-  --gf-bg-color:var(--gf-bg-color-default);
+  --gf-bg-color-default: #333;
+  --gf-bg-color: var(--gf-bg-color-default);
 
   background: var(--gf-bg-color);
 
   --gofish-card-padding: 24px;
   padding: var(--gofish-card-padding);
-
-
 }
 
 /*
@@ -828,12 +1483,14 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
  * 4.4. Estilos dos elementos OPCIONAIS do gofish-card
 */
 
-  /*
+/*
    * 4.4.1. Cartão informativo
   */
 
 .gf-card > .title-gofish-card,
-.gofish-card > .title-gofish-card {font-size: 22px;}
+.gofish-card > .title-gofish-card {
+  font-size: 22px;
+}
 
 .gf-card > .p-gofish-card,
 .gofish-card > .p-gofish-card {
@@ -841,43 +1498,50 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   line-height: normal;
 }
 
-    /*
+/*
      * 4.4.2. Cartão de avaliações
     */
 
 .gofish-card-little .review-author,
-.gf-card-little .review-author {font-size: 18px;}
+.gf-card-little .review-author {
+  font-size: 18px;
+}
 
 .gofish-card-little .review-text,
-.gf-card-little .review-text {font-size: 19px;}
+.gf-card-little .review-text {
+  font-size: 19px;
+}
 
-
-  /* ====== */
- /* Outros */
+/* ====== */
+/* Others */
 /* ====== */
 
-.logo-text { /* TODO: Use ".gf-text-logo" instead */
+.logo-text /* Deprecated - Use "gf-text-logo" instead */ {
   color: var(--dark-text);
   font-family: var(--font-heading);
+
   font-size: 2rem;
   font-weight: 900;
   letter-spacing: -0.125rem;
   user-select: none;
 }
 
-.vertical-flow { /* TODO: Use ".gf-flow-vertical" instead */
+.vertical-flow {
+  /* TODO: Use ".gf-flow-vertical" instead */
   display: flex;
   flex-direction: column;
 }
 
-.horizontal-flow { /* TODO: Use ".gf-flow-horizontal" instead */
+.horizontal-flow {
+  /* TODO: Use ".gf-flow-horizontal" instead */
   display: flex;
   flex-direction: row;
 }
 
-.align-center-center { /* TODO: Use ".gf-center-axes" instead */
+.align-center-center {
+  /* TODO: Use ".gf-center-axes" instead */
   justify-content: center; /* horizontal */
-  align-items: center;     /* vertical */
+  align-items: center; /* vertical */
 }
 
 /* TESTE POP UPS PINS */
@@ -907,7 +1571,6 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   color: var(--dark-text);
 }
 
-
 .popup-is-tip .mapboxgl-popup-content {
   width: auto !important;
   min-width: 120px;
@@ -925,7 +1588,6 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 .popup-is-card .mapboxgl-popup-content {
   width: 240px !important;
 }
-
 
 .pin-card {
   display: flex;
@@ -971,11 +1633,11 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
 }
 .pin-card__description {
   font-family: var(--font-main); /* Fonte principal Inter */
-  color: var(--dark-text);      /* Cor clara para leitura */
-  font-size: 0.875rem;          /* Tamanho equilibrado (14px) */
-  font-weight: 400;             /* Peso normal para contraste com o h3 bold */
-  margin: 0;                    /* Reset de margens padrão do h2 */
-  line-height: 1.4;             /* Melhor legibilidade para textos descritivos */
+  color: var(--dark-text); /* Cor clara para leitura */
+  font-size: 0.875rem; /* Tamanho equilibrado (14px) */
+  font-weight: 400; /* Peso normal para contraste com o h3 bold */
+  margin: 0; /* Reset de margens padrão do h2 */
+  line-height: 1.4; /* Melhor legibilidade para textos descritivos */
 
   /* Opcional: Limitar a descrição a 2 ou 3 linhas caso o texto seja longo demais */
   display: -webkit-box;
@@ -983,10 +1645,18 @@ p, h1, h2, h3, h4, h5, h6 { /* Override bootstrap reboot */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.pin-card--catching .pin-card__title    { color: var(--success); }
-.pin-card--warning .pin-card__title     { color: var(--warning); }
-.pin-card--info .pin-card__title        { color: var(--info); }
-.pin-card--information .pin-card__title { color: var(--info); }
+.pin-card--catching .pin-card__title {
+  color: var(--success);
+}
+.pin-card--warning .pin-card__title {
+  color: var(--warning);
+}
+.pin-card--info .pin-card__title {
+  color: var(--info);
+}
+.pin-card--information .pin-card__title {
+  color: var(--info);
+}
 
 /* Container principal ajustado para Mapbox */
 .popup-is-card .mapboxgl-popup-content {

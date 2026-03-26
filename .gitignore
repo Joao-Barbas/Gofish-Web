@@ -7,6 +7,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/Dotnet.gitignore
 
+# .NET Migrations (REMOVE FOR FINAL PROD)
+**/Migrations/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -515,3 +518,7 @@ FodyWeavers.xsd
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Migrations
+
+/backend/GofishApi/Migrations/

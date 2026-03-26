@@ -12,10 +12,11 @@ import { SimplePopup } from '@gofish/shared/models/popup.model';
 import { GeolocationService } from '@gofish/shared/services/geolocation.service';
 import { LngLat } from 'mapbox-gl';
 import { isArrayLike } from 'rxjs/internal/util/isArrayLike';
+import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-choose-pin-popup',
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingSpinnerComponent],
   templateUrl: './choose-pin-popup.component.html',
   styleUrl: './choose-pin-popup.component.css',
 })
@@ -25,6 +26,7 @@ export class ChoosePinPopupComponent implements SimplePopup {
   private readonly route = inject(ActivatedRoute);
   public readonly geoService = inject(GeolocationService);
   public readonly urlService = inject(UrlService);
+  protected isGettingLocation = false;
 
   selectedLocationMode = '';
   query = this.route.snapshot.queryParamMap;
@@ -49,11 +51,13 @@ export class ChoosePinPopupComponent implements SimplePopup {
   onCreateByGeolocation() {
     this.selectedLocationMode = 'geo';
     this.errorMessage = '';
+
     if (!navigator.geolocation) {
       this.errorMessage = 'Geolocation not supported.';
       return;
     }
 
+    this.isGettingLocation = true;
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const lat = position.coords.latitude;
@@ -75,9 +79,11 @@ export class ChoosePinPopupComponent implements SimplePopup {
           longitude: lng,
           latitude: lat
         });
+        this.isGettingLocation = false;
       },
       () => {
         this.errorMessage = 'Not possible to get location.';
+        this.isGettingLocation = false;
       },
       { enableHighAccuracy: true, timeout: 10000 }
     );

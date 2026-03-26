@@ -19,8 +19,6 @@ public class Post
     public string? ImageUrl { get; set; }
 
     public required DateTime CreatedAt { get; set; }
-    public int UpVotes { get; set; } = 0;
-    public int DownVotes { get; set; } = 0;
 
     [ForeignKey(nameof(AppUser))]
     public required string UserId { get; set; }
@@ -30,12 +28,16 @@ public class Post
 
     public AppUser AppUser { get; set; } = null!;
     public Pin Pin { get; set; } = null!;
-    // public /* virtual // Maybe? */ ICollection<Comment> Comments { get; set; } = new(); // TODO
+
+    public List<PostVote> PostVotes { get; set; } = [];
+    public List<PostComment> Comments { get; set; } = []; // TODO
+    public List<Group> Groups { get; set; } = [];
+    public List<GroupPost> GroupPosts { get; set; } = [];
 
     #endregion
     #region Computed Properties
 
-    public int Score => UpVotes - DownVotes;
+    public int CommentCount => Comments.Count;
 
     #endregion
 }

@@ -1,0 +1,57 @@
+@if (pinData()) {
+@switch (pinData()?.kind) {
+@case (pinKind.WARNING) { <div class="banner">
+  <img [src]="'assets/images/enum-images/warn-images/' + pinData()?.details?.warningKind + '.png'"
+    class="image rounded-circle">
+  <span class="type-text">WarningKind: {{getEnumDisplayName(warnTypeOptions, pinData()!.details!.warningKind)}}</span>
+</div> }
+
+@case (pinKind.INFORMATION) { }
+@case (pinKind.CATCH) { }
+@default { <span> Unknown</span> }
+}
+}
+
+@if (postData()) {
+@switch (postData()?.kind) {
+@case (pinKind.WARNING) {
+<div class="banner">
+  <img [src]="'assets/images/enum-images/warn-images/' + postData()?.warningKind + '.png'" class="image rounded-circle">
+  <span class="type-text">WarningKind: {{getEnumDisplayName(warnTypeOptions, postData()!.warningKind!)}}</span>
+</div> }
+@case (pinKind.INFORMATION) {
+@if(postData()?.accessDifficulty !== null) {
+<div class="banner">
+  <img [src]="'assets/images/enum-images/info-images/accessDifficulty/' + postData()?.accessDifficulty + '.png'"
+    class="image rounded-circle">
+  <span class="type-text">Access Dificulty: {{getEnumDisplayName(accessDifficultyOptions, postData()!.accessDifficulty!)}}</span>
+</div>
+}
+@if(postData()?.seabed) {
+<div class="banner">
+  <img [src]="'assets/images/enum-images/info-images/species/' + postData()?.seabed + '.png'"
+    class="image rounded-circle">
+  <span class="type-text">Seabed: {{getEnumDisplayName(seaBedOptions, postData()!.seabed!)}}</span>
+</div>
+
+}
+}
+@case (pinKind.CATCH) {
+@if(postData()?.species) {
+<div class="banner">
+  <img [src]="'assets/images/enum-images/catch-images/species/' + postData()?.species + '.png'"
+    class="image rounded-circle">
+  <span class="type-text">Specie: {{getEnumDisplayName(speciesOptions, postData()!.species!)}}</span>
+</div>
+}
+@if(postData()?.bait) {
+<div class="banner">
+  <img [src]="'assets/images/enum-images/catch-images/bait/' + postData()?.bait + '.png'" class="image rounded-circle">
+  <span class="type-text">Bait: {{getEnumDisplayName(baitOptions, postData()!.bait!)}}</span>
+</div>
+}
+
+}
+@default { <span> Not loaded</span> }
+}
+}

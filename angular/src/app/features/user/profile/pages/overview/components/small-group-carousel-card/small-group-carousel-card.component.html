@@ -1,0 +1,9 @@
+<!-- small-group-carousel-card.component.html -->
+
+<a [routerLink]="['/forum/my-groups', group().id]">
+  <img [src]="avatarService.resolve(group().avatarUrl)" alt="Avatar">
+  <div>
+    <p>{{ group().name }}</p>
+    <small>{{ `${group().memberQty} member` }}</small>
+  </div>
+</a>

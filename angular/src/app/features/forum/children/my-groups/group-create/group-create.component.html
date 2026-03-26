@@ -1,0 +1,102 @@
+<div class="modal-backdrop-custom d-flex justify-content-center align-items-center">
+  <div class="modal-custom gf-card">
+
+    <form id="group-modal" [formGroup]="form" (ngSubmit)="onPublish()">
+
+      <!-- Header -->
+      <div class="modal-header text-white align-items-center mb-3 justify-content-between">
+        <div>
+          <h5 class="mb-0 text-bold modal-header-title">Group Create</h5>
+          <p class="mb-0 dark-text-muted modal-header-subtitle">
+            Add details about your group!
+          </p>
+        </div>
+
+        <button class="gf-btn-icon" (click)="onCancel()"
+          style="background: none; border: none; color: var(--dark-text-muted); cursor: pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+        <!-- Content -->
+        <h5 class="text-slim modal-body-section-title mt-3">Content</h5>
+        <section class="d-flex flex-column">
+
+          <!-- Upload -->
+          <div
+            class="modal-body-drag-n-drop d-flex flex-column justify-content-center align-items-center generic-select-wrapper-text"
+            (click)="fileInput.click()">
+            @if (image) {
+            <p class="drag-text mb-0">{{ image.name }}</p>
+            } @else {
+            <div class="drag-icon mb-3 mt-1"></div>
+            <p class="drag-text mb-0">Drag And Drop</p>
+            }
+          </div>
+
+          <input #fileInput type="file" accept="image/png,image/jpeg" hidden (change)="onImageSelected($event)" />
+
+          @if (form.controls.imageUrl.touched && form.controls.imageUrl.invalid) {
+          <p class="text-danger mt-2 mb-0">
+            Image is required.
+          </p>
+          }
+          <div class="options-line d-flex align-items-center justify-content-between">
+            <h5 class="modal-body-options-text text-slim mb-0">Group Name</h5>
+            <input type="text" minlength="3" maxlength="25" class="dark-bg-dark dark-text modal-info-box"
+              placeholder="Enter group name..." formControlName="groupName" />
+          </div>
+          <!-- Description -->
+          <textarea id="Description" class="modal-body-description dark-bg-dark dark-text"
+            placeholder="Add a description..." formControlName="body">
+          </textarea>
+
+          @if (form.controls.body.touched && form.controls.body.invalid) {
+          <p class="text-danger mt-2 mb-0">
+            @if (form.controls.body.errors?.['required']) {
+            Description is required.
+            }
+            @if (form.controls.body.errors?.['minlength']) {
+            Description must have at least 10 characters.
+            }
+            @if (form.controls.body.errors?.['maxlength']) {
+            Description cannot exceed 500 characters.
+            }
+          </p>
+          }
+
+        </section>
+
+
+
+
+
+
+
+        <!-- Error -->
+        @if (errorMessage) {
+        <p class="text-danger mt-2 mb-0">{{ errorMessage }}</p>
+        }
+
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer mt-2 action-btns">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">
+          Cancel
+        </button>
+
+        <app-async-button type="submit" form="group-modal" labels="Publish"
+          [state]="busyState.isBusy() ? 'busy' : 'idle'" />
+      </div>
+
+    </form>
+
+  </div>
+</div>

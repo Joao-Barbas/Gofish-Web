@@ -7,6 +7,7 @@ public record SecurityInfoReqDTO(
 );
 
 public record SecurityInfoResDTO(
+    string IdentityProvider,
     bool TwoFactorEnabled,
     TwoFactorMethod TwoFactorMethod
-);    
+);

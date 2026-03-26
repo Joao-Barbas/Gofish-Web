@@ -64,7 +64,7 @@ export class PersonalDataComponent {
 
   onModalPositive(data: { password?: string; code?: string; }): void {
     this.busyState.setBusy(true);
-    this.userAccountService.deleteAccount({ password: data.password! }).subscribe({
+    this.userAccountService.deleteAccount({ password: data.password }).subscribe({
       next: (res: void) => {
         this.busyState.setBusy(false);
         this.authService.signOut();

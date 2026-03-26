@@ -1,0 +1,36 @@
+<!-- groups.component.html -->
+
+@if (user.isLoading()) {
+  <gf-loading-spinner></gf-loading-spinner>
+}
+@if (user.hasValue()) {
+  <div class="gf-container-lg gf-w-90 gf-mx-auto gf-pt-64 gf-flow-vertical gf-gap-16" style="background-color:black;">
+    <h5 class="gf-font-bold">{{ `${ user.value().userName }'s groups` }}</h5>
+    @let activeTabOrDefault = activeTab() ?? 'groups';
+    @if (profileContext.isOwner()) {
+      <nav class="gf-flow-horizontal gf-justify-evenly gf-items-center gf-w-100">
+      <a [routerLink]="'.'"
+         [queryParams]="{ tab: 'groups' }"
+         [class.active]="activeTabOrDefault === 'groups'">
+        Groups
+      </a>
+      <a [routerLink]="'.'"
+         [queryParams]="{ tab: 'invites' }"
+         [class.active]="activeTabOrDefault === 'invites'">
+        Invites
+      </a>
+      </nav>
+    }
+    @if (activeTabOrDefault === 'groups') {
+      <gf-groups-list></gf-groups-list>
+    } @else if (activeTabOrDefault === 'invites' && profileContext.isOwner()) {
+      <gf-group-invites-list></gf-group-invites-list>
+    }
+  </div>
+}
+@if (user.error()) {
+  <div class="failed-container gf-flow-vertical gf-center-axes">
+    <span>{{ user.error() }}</span>
+    <button (click)="user.reload()">Try Again</button>
+  </div>
+}

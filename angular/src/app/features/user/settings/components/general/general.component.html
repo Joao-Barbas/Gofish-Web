@@ -1,3 +1,192 @@
 <!-- general.component.html -->
 
-<p>general works!</p>
+@if (userSettings.isLoading() || userProfileSettings.isLoading()) {
+  <gf-loading-spinner></gf-loading-spinner>
+}
+@else if (userSettings.hasValue() && userProfileSettings.hasValue()) {
+  <!-- Account information -->
+  <div class="account-container">
+    <h4>Account information</h4>
+    <div class="setting-section-shell gf-flow-vertical gf-gap-6">
+
+      <!-- Username -->
+      <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
+        <div class="gf-d-inline">
+          <label>{{ 'Username:' }}</label>
+          <span class="gf-ml-8">{{ userSettings.value().userName }}</span>
+        </div>
+        <button type="button" class="gf-d-inline" (click)="this.modalService.open('app-change-username-modal')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+        </button>
+      </div>
+
+      <!-- Phone number -->
+      <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
+        <div class="gf-d-inline">
+          <label>{{ 'Phone number:' }}</label>
+          <span class="gf-ml-8">{{ userSettings.value().phoneNumber | fallback }}</span>
+        </div>
+        <button type="button" class="gf-d-inline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+        </button>
+      </div>
+
+      <!-- Email -->
+      <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
+        <div class="gf-d-inline">
+          <label>{{ 'E-mail:' }}</label>
+          <span class="gf-ml-8">{{ userSettings.value().email | fallback }}</span>
+        </div>
+        <button type="button" class="gf-d-inline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+        </button>
+      </div>
+
+      <!-- Password -->
+      <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
+        <div class="gf-d-inline">
+          <label>{{ 'Password:' }}</label>
+          <span class="gf-ml-8">{{ '*********' }}</span>
+        </div>
+        <a class="gf-d-inline" [routerLink]="Path.SECURITY_SETTINGS">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Personal information -->
+  <div class="personal-container">
+    <h4>Personal information</h4>
+    <div class="setting-section-shell gf-flow-vertical gf-gap-6">
+
+      <!-- First name -->
+      <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
+        <div class="gf-d-inline">
+          <label>{{ 'First name:' }}</label>
+          <span class="gf-ml-8">{{ userSettings.value().firstName | fallback }}</span>
+        </div>
+        <button type="button" class="gf-d-inline" (click)="this.modalService.open('app-change-firstname-modal')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+        </button>
+      </div>
+
+      <!-- Last number -->
+      <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
+        <div class="gf-d-inline">
+          <label>{{ 'Last name:' }}</label>
+          <span class="gf-ml-8">{{ userSettings.value().lastName | fallback }}</span>
+        </div>
+        <button type="button" class="gf-d-inline" (click)="this.modalService.open('app-change-lastname-modal')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+        </button>
+      </div>
+
+      <!-- Birth date -->
+      <!-- <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
+        <div class="gf-d-inline">
+          <label>{{ 'Birth date:' }}</label>
+          <input class="gf-ml-8" [readOnly]="true" [value]="userSettings.value()." [defaultValue]="'-'"/>
+        </div>
+        <button class="gf-d-inline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+        </button>
+      </div> -->
+
+      <!-- Gender -->
+      <!-- <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
+        <div class="gf-d-inline">
+          <label>{{ 'Gender (Optional):' }}</label>
+          <input class="gf-ml-8" [readOnly]="true" [value]="userSettings.value()." [defaultValue]="'-'"/>
+        </div>
+        <button class="gf-d-inline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+        </button>
+      </div> -->
+
+    </div>
+  </div>
+
+  <!-- Profile personalization -->
+  <div class="profile-container">
+    <h4>Personal personalization</h4>
+    <div class="setting-section-shell gf-flow-vertical gf-gap-24">
+
+      <!-- Bio -->
+      <div class="bio-field-shell">
+        <h6>Biography</h6>
+        <textarea
+          placeholder="A little about yourself..."
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="3"
+          cdkAutosizeMaxRows="10"
+          [(ngModel)]="currentBio"
+        ></textarea>
+        @if (currentBio !== savedBio) {
+          <gf-async-button
+            type="button"
+            [labels]="{ idle: 'Save' }"
+            [states]="{ busy: busyState.busy(), success: saveSuccess }"
+            (click)="onBioSave()"
+          ></gf-async-button>
+        }
+      </div>
+
+      <!-- Avatar -->
+      <div class="avatar-field-shell">
+        <div>
+          <h6>Avatar</h6>
+          <small>Allowed formats: JPEG, PNG. Max size: 3mb. Recommended dimensions: 96x96</small>
+        </div>
+        <div class="avatar-container">
+          <div
+            class="drop-zone"
+            (click)="fileInput.click()"
+            (dragover)="$event.preventDefault();"
+            (dragleave)="$event.preventDefault();"
+            (drop)="onDrop($event)">
+            <div class="drop-zone-mini">
+              <span>Drop an image here or click to upload</span>
+              <input #fileInput hidden type="file" accept="image/jpeg,image/png" (change)="onFileSelected($event)"/>
+            </div>
+          </div>
+          <div class="avatar-preview">
+            <img [src]="avatarService.resolve(avatarPreview())" alt="Avatar">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modals -->
+  @switch (this.modalService.activeModal()) {
+  @case ('app-change-username-modal') {
+    <app-change-username-modal
+      animate.enter="on-enter"
+      animate.leave="on-leave"
+      (positive)="onUsernameChange($event)"
+    ></app-change-username-modal>
+  }
+  @case ('app-change-firstname-modal') {
+    <app-change-firstname-modal
+      animate.enter="on-enter"
+      animate.leave="on-leave"
+      (positive)="onFirstnameChange($event)"
+    ></app-change-firstname-modal>
+  }
+  @case ('app-change-lastname-modal') {
+    <app-change-lastname-modal
+      animate.enter="on-enter"
+      animate.leave="on-leave"
+      (positive)="onLastnameChange($event)"
+    ></app-change-lastname-modal>
+  }}
+}
+@else if (userSettings.error() || userProfileSettings.error()) {
+  <div class="failed-container gf-flow-vertical gf-center-axes">
+    <span>{{ userSettings.error() ?? userProfileSettings.isLoading() }}</span>
+    <button (click)="userSettings.reload(); userProfileSettings.reload()">Try Again</button>
+  </div>
+}

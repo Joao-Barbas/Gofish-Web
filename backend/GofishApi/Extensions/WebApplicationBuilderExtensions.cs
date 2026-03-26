@@ -15,9 +15,11 @@ public static class WebApplicationBuilderExtensions
     public static void AddIdentityHandlersAndStores(this IServiceCollection services)
     {
         services
-        .AddIdentityApiEndpoints<AppUser>()
+        .AddIdentityCore<AppUser>()
         .AddRoles<IdentityRole>()
-        .AddEntityFrameworkStores<AppDbContext>();
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddDefaultTokenProviders()
+        .AddSignInManager();
     }
 
     public static void ConfigureIdentityOptions(this IServiceCollection services)
@@ -51,8 +53,13 @@ public static class WebApplicationBuilderExtensions
         // JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
 
         services
-        .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer((options) => 
+        .AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultSignInScheme       = IdentityConstants.ExternalScheme;
+        })
+        .AddJwtBearer((options) =>
         {
             options.MapInboundClaims = false;
             options.SaveToken = false;
@@ -65,8 +72,16 @@ public static class WebApplicationBuilderExtensions
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero,
                 NameClaimType = JwtRegisteredClaimNames.UniqueName,
-                RoleClaimType = ClaimTypes.Role
+                RoleClaimType = "role"//ClaimTypes.Role
             };
+        })
+        .AddCookie(IdentityConstants.ExternalScheme) // Needed for OAuth callback state
+        .AddGoogle(options =>
+        {
+            options.ClientId = configuration["Authentication:Google:ClientId"]!;
+            options.ClientSecret = configuration["Authentication:Google:ClientSecret"]!;
+            options.CorrelationCookie.SameSite = SameSiteMode.None;  // Required for redirect flow
+            options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
         });
 
         // services

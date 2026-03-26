@@ -9,10 +9,18 @@
     <app-overlay-header></app-overlay-header>
     @if (this.popupService.isOpen('pin-preview')) {
     <div class="pin-detail-panel fade show gf-do-events">
-      <app-pin-detail-panel [pinData]="selectedPin()" (cancel)="onPopupCancelPinPreview()">
+      <app-pin-detail-panel [pinData]="selectedPin()" (cancel)="onPopupCancelPinPreview()" (coords)="goToCoords($event)">
       </app-pin-detail-panel>
     </div>
     }
+
+    @if (this.popupService.isOpen('cluster-preview')) {
+    <div class="cluster-detail-panel fade show gf-do-events">
+      <app-cluster-details [pinsData] ="selectedPins()" (cancel)="onPopupCancelPinPreview()" (coords)="goToCoords($event)">
+      </app-cluster-details>
+    </div>
+    }
+
     <!-- Actions overlay -->
     <div class="actions-container position-absolute d-flex flex-row gf-do-events gf-gap-12">
       <!-- Create pin & ask location -->
@@ -87,7 +95,7 @@
       <!-- Choose pin type -->
       @if (this.popupService.isOpen('choose-pin-popup')) {
       <app-choose-pin-popup class="position-action-overlay" animate.enter="on-enter" animate.leave="on-leave"
-        [coords]="selected()"
+        [coords]="selectedCoords()"
         (requestPickOnMap)="onRequestPickOnMap()" (requestGeoOnMap)="onGeo($event)" (cancel)="(onPopupCancelPinOverlay())">
       </app-choose-pin-popup>
       }

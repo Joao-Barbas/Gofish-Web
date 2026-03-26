@@ -8,13 +8,15 @@
       "schematics": {
         "@schematics/angular:component": {
           "inlineStyle": false,
-          "skipTests": true
+          "skipTests": true,
+          "prefix": "gf"
         },
         "@schematics/angular:class": {
           "skipTests": true
         },
         "@schematics/angular:directive": {
-          "skipTests": true
+          "skipTests": true,
+          "prefix": "gf"
         },
         "@schematics/angular:guard": {
           "skipTests": true
@@ -130,7 +132,8 @@
   "cli": {
     "cache": {
       "enabled": true
-    }
+    },
+    "analytics": false
   },
   "schematics": {
     "@schematics/angular:component": {

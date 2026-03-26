@@ -31,8 +31,16 @@ public class UserSecurityController : ControllerBase
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         var user   = userId is null ? null : await _userManager.FindByIdAsync(userId);
-        if (user is null) return Unauthorized();
-        return Ok(new SecurityInfoResDTO(user.TwoFactorEnabled, user.TwoFactorMethod));
+
+        if (user is null)
+        {
+            return Unauthorized();
+        }
+
+        var logins           = await _userManager.GetLoginsAsync(user);
+        var identityProvider = logins.FirstOrDefault()?.LoginProvider ?? "Local";
+
+        return Ok(new SecurityInfoResDTO(identityProvider, user.TwoFactorEnabled, user.TwoFactorMethod));
     }
 
     [HttpPost("ChangePassword")]

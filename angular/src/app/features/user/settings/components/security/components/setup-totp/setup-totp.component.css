@@ -200,33 +200,45 @@ form input {
       vertical-align: middle;
       font-size: var(--gf-14);
       color: var(--dark-text);
-      margin-right: var(--gf-4);
+      margin-right: var(--gf-8);
     }
 
     input {
       vertical-align: middle;
       text-align: center;
 
-      &[type="checkbox"] {
-        appearance: none;
-        cursor: pointer;
-        width: 20px;
-        height: 20px;
-        border: 2px solid var(--gf-dark-text-muted);
-        border-radius: var(--gf-4);
-        background-color: transparent;
-        background-position: center;
-        background-repeat: no-repeat;
+      appearance: none;
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--gf-dark-text-muted);
+      border-radius: var(--gf-4);
+      background-color: transparent;
+      background-position: center;
+      background-repeat: no-repeat;
 
-        &:checked {
-          background-color: var(--gf-primary);
-          border-color: var(--gf-primary);
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
-          background-size: 18px;
-        }
+      &:checked {
+        background-color: var(--gf-primary);
+        border-color: var(--gf-primary);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+        background-size: 18px;
+      }
+
+      &:not(:checked).jitter {
+        animation: jitter .4s ease;
+        border-color: var(--gf-danger) !important;
       }
     }
   }
+}
+
+@keyframes jitter {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-4px); }
+  40%  { transform: translateX(2px); }
+  60%  { transform: translateX(-2px); }
+  80%  { transform: translateX(4px); }
+  100% { transform: translateX(0); }
 }
 
 .backup-codes-grid {
