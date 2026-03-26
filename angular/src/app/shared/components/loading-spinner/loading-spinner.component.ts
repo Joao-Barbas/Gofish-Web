@@ -18,7 +18,7 @@ import { Component } from '@angular/core';
     :host {
       gap: var(--gf-6);
       padding: var(--gf-32);
-      color: var(--dark-text-muted);
+      color: var(--gf-dark-text-muted);
       font-size: var(--gf-14);
     }
 

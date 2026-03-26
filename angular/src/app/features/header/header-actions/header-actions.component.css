@@ -17,7 +17,7 @@
   box-shadow: var(--dark-lift-shadow-s);
   transition: box-shadow 0.15s ease;
   z-index: var(--z-opens-overlay);
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
 
   & > svg {
     width: 1.25rem;
@@ -25,7 +25,7 @@
   }
 
   &:hover {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
     box-shadow: var(--dark-lift-shadow-m);
   }
 }

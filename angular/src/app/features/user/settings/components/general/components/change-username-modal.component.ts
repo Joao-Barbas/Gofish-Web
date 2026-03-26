@@ -89,7 +89,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     }
 
     h5 {
-        color: var(--dark-text);
+        color: var(--gf-dark-text);
     }
   `,
 })

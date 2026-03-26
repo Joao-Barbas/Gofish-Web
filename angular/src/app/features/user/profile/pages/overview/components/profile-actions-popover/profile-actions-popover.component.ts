@@ -50,7 +50,7 @@ import { ClickOutsideDirective } from '@gofish/shared/directives/click-outside.d
       padding: 0 var(--gf-16);
       background-color: transparent;
       border: none;
-      color: var(--dark-text);
+      color: var(--gf-dark-text);
       border-radius: var(--gf-8);
       height: var(--gf-32);
       text-decoration: none;

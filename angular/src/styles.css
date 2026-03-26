@@ -174,10 +174,6 @@
 
   /* Layout & text colors */
 
-  --gf-dark-bg-light: oklch(0.3037 0.0233 276.07);
-  --dark-text: oklch(0.9619 0 0);
-  --dark-text-muted: oklch(0.7652 0 0);
-
   --light-bg-dark: oklch(0.8266 0.024 276.84);
   --light-bg: oklch(0.9188 0.0058 277.17);
   --light-bg-light: oklch(0.3037 0.0233 276.07);
@@ -324,7 +320,7 @@ body {
 body {
   font-family: var(--gf-font-main);
   background-color: var(--gf-dark-bg-dark);
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 }
 
 p,
@@ -355,7 +351,7 @@ h6 {
 }
 
 .gf-text-logo {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
   font-family: var(--gf-font-heading);
   font-size: var(--gf-32);
   font-weight: 900;
@@ -468,7 +464,7 @@ h6 {
   box-shadow: var(--dark-lift-shadow-s);
   transition: box-shadow 0.15s ease;
   z-index: var(--z-opens-overlay);
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
 
   & > svg {
     width: 1.25rem;
@@ -476,7 +472,7 @@ h6 {
   }
 
   &:hover {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
     box-shadow: var(--dark-lift-shadow-m);
   }
 }
@@ -548,13 +544,13 @@ h6 {
   border-radius: 50%;
   border: none;
   cursor: pointer;
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   width: 36px;
   height: 36px;
   transition: box-shadow .2s ease, color .2s ease;
 
   &:hover {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
     box-shadow: var(--gf-shadow-lift-md);
   }
 
@@ -568,7 +564,7 @@ h6 {
   & label {
     display: block;
     margin-bottom: var(--gf-4);
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
     font-size: var(--gf-12);
   }
 
@@ -578,7 +574,7 @@ h6 {
     background-color: var(--gf-dark-bg-dark);
     box-shadow: none;
     font-size: var(--gf-text-sm);
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
     border: none;
     outline: none;
     border-radius: var(--gf-8);
@@ -613,16 +609,16 @@ h6 {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 
   & svg {
     width: var(--gf-16);
     height: var(--gf-16);
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
   }
 
   &:hover svg {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 }
 
@@ -630,7 +626,7 @@ h6 {
   width: fit-content;
   padding: var(--gf-6) var(--gf-16);
   border-radius: var(--gf-16);
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 
   box-shadow:
     0px 1px 2px rgba(0, 0, 0, 0.18),
@@ -989,8 +985,8 @@ h6 {
     --gf-dark-bg-dark: var(--light-bg-light);
     --gf-dark-bg: var(--light-bg);
     --gf-dark-bg-light: var(--light-bg-dark);
-    --dark-text: var(--light-text);
-    --dark-text-muted: var(--light-text-muted);
+    --gf-dark-text: var(--light-text);
+    --gf-dark-text-muted: var(--light-text-muted);
   }
 }
 
@@ -1048,10 +1044,10 @@ h6 {
 */
 
 .dark-text {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 }
 .dark-text-muted {
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
 }
 
 /*
@@ -1258,7 +1254,7 @@ h6 {
 [class^="gofish-btn-"],
 .gf-btn,
 .gofish-btn {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
   font-size: 14px;
   border-width: 0px;
 
@@ -1375,11 +1371,11 @@ h6 {
 
 .generic-select-wrapper-text > p,
 .generic-select-wrapper-text > a {
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
 }
 
 .generic-select-wrapper-text:hover > p {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 }
 
 /* ================/
@@ -1457,7 +1453,7 @@ h6 {
 /* ====== */
 
 .logo-text /* Deprecated - Use "gf-text-logo" instead */ {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
   font-family: var(--gf-font-heading);
 
   font-size: 2rem;
@@ -1487,7 +1483,7 @@ h6 {
 /* TESTE POP UPS PINS */
 .mapboxgl-popup-content {
   background-color: var(--gf-dark-bg) !important;
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
   border-radius: 1.25rem !important;
   padding: 0 !important; /* Importante: o card preenche tudo */
   overflow: hidden;
@@ -1501,14 +1497,14 @@ h6 {
 }
 
 .mapboxgl-popup-close-button {
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   font-size: 1.2rem;
   padding: 5px 10px;
   outline: none;
 }
 .mapboxgl-popup-close-button:hover {
   background-color: transparent;
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 }
 
 .popup-is-tip .mapboxgl-popup-content {
@@ -1567,13 +1563,13 @@ h6 {
 
 .pin-card__coords {
   font-family: var(--gf-font-main);
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   font-size: 0.75rem;
   letter-spacing: 0.025em;
 }
 .pin-card__description {
   font-family: var(--gf-font-main); /* Fonte principal Inter */
-  color: var(--dark-text); /* Cor clara para leitura */
+  color: var(--gf-dark-text); /* Cor clara para leitura */
   font-size: 0.875rem; /* Tamanho equilibrado (14px) */
   font-weight: 400; /* Peso normal para contraste com o h3 bold */
   margin: 0; /* Reset de margens padrão do h2 */
@@ -1628,7 +1624,7 @@ h6 {
 .pin-preview-click__avatar {
   width: 32px;
   height: 32px;
-  background-color: var(--dark-text-muted);
+  background-color: var(--gf-dark-text-muted);
   border-radius: 50%;
 }
 
@@ -1668,7 +1664,7 @@ h6 {
 .pin-preview-click__share-btn {
   background: transparent;
   border: none;
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1678,7 +1674,7 @@ h6 {
 
 .pin-preview-click__close-btn:hover,
 .pin-preview-click__share-btn:hover {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 }
 
 /* Esconder o botão X nativo do Mapbox para usar o do design */

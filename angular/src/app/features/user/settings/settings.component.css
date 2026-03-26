@@ -14,11 +14,11 @@
   & a {
     display: inline;
     text-decoration: none;
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
     margin: 0 var(--gf-16);
 
     &:hover {
-      color: var(--dark-text);
+      color: var(--gf-dark-text);
     }
 
     &.active {
@@ -40,7 +40,7 @@
   padding-left: var(--gf-24);
   border-radius: var(--gf-10);
   background-color: var(--gf-dark-bg);
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 
   background-image: url("/assets/vectors/chevrons-down-up-white.svg");
   background-repeat: no-repeat;

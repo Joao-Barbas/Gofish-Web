@@ -82,11 +82,11 @@
   & svg {
     width: var(--gf-16);
     height: var(--gf-16);
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
   }
 
   &:hover svg {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 }
 

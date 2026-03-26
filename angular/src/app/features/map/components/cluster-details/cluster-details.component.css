@@ -73,7 +73,7 @@
 
 .separator,
 .time-ago {
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   font-size: 12px;
 }
 
@@ -100,16 +100,16 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 
   & svg {
     width: var(--gf-16);
     height: var(--gf-16);
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
   }
 
   &:hover svg {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 }
 
@@ -184,24 +184,24 @@
   display: flex;
   align-items: center;
   cursor: text;
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
 
   &:hover span {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 
   & svg {
     width: var(--gf-16);
     height: var(--gf-16);
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
   }
 
   & button svg {
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
   }
 
   & button:hover svg {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 
   padding: var(--gf-6) var(--gf-8);
@@ -216,10 +216,10 @@
 }
 
 .gf-badge-comment {
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
 
   &:hover {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 }
 
@@ -274,7 +274,7 @@
 }
 
 .pin-avatar {
-  background-color: var(--dark-text-muted);
+  background-color: var(--gf-dark-text-muted);
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -287,7 +287,7 @@
 }
 
 .author-name {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
   font-weight: 500;
   /* text-medium */
   font-size: 14px;
@@ -296,7 +296,7 @@
 .close-button {
   background: none;
   border: none;
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   cursor: pointer;
   padding: 4px;
   display: flex;
@@ -329,7 +329,7 @@
 }
 
 .pin-text {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
   font-size: 14px;
   margin: 0;
 }
@@ -339,7 +339,7 @@
 }
 
 .bait-info {
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   font-size: 12px;
 }
 
@@ -362,7 +362,7 @@
 }
 
 .badge-text {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
   font-weight: 500;
   font-size: 12px;
 }

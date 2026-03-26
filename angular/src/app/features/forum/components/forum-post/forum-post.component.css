@@ -91,24 +91,24 @@
   display: flex;
   align-items: center;
   cursor: text;
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
 
   &:hover span {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 
   & svg {
     width: var(--gf-16);
     height: var(--gf-16);
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
   }
 
   & button svg {
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
   }
 
   & button:hover svg {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 }
 
@@ -121,10 +121,10 @@
 }
 
 .gf-badge-comment {
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
 
   &:hover {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 }
 

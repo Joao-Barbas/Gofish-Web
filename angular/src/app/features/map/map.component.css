@@ -71,7 +71,7 @@ app-cluster-details{
     width: 36px;
     min-height: 36px;
     min-width: 36px;
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
 
     display: flex;
     align-items: center;
@@ -84,7 +84,7 @@ app-cluster-details{
     }
 
     &:hover:not(:disabled) {
-      color: var(--dark-text);
+      color: var(--gf-dark-text);
     }
 
     &:disabled {
