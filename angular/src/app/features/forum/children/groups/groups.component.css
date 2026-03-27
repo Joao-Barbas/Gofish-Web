@@ -90,7 +90,7 @@
   position: relative;
 }
 
-.active-tab {
+.active {
   border-bottom: 2px solid #007bff;
   color: #007bff !important;
   font-weight: bold;

@@ -59,27 +59,20 @@
 
     <!-- Group Listing Tabs -->
     <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
-
-      <a (click)="toggleTab(true)" [class.active-tab]="postActive"
+      <a [routerLink]="['posts']"  routerLinkActive="active"
         class="d-flex justify-content-center listing-tabs gf-text-selection">
         <span class="listing-tab-text">Posts</span>
       </a>
 
-      <a (click)="toggleTab(false)" [class.active-tab]="!postActive" routerLink="active"
+      <a [routerLink]=""
         class="d-flex justify-content-center listing-tabs gf-text-selection">
         <span class="listing-tab-text">Members</span>
       </a>
     </div>
-    @if (postActive) {
 
-    }
-    @else {
-    <app-group-members-placeholder [members]="group.members!"></app-group-members-placeholder>
-    }
 
 
   </div>
-  <!-- / Group Header Info -->
 
 
   <div class="group-forum-feed">

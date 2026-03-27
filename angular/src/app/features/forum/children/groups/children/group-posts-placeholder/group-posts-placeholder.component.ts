@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ForumPostComponent } from "@gofish/features/forum/components/forum-post/forum-post.component";
+import { PostsService } from '@gofish/shared/services/posts.service';
 
 @Component({
   selector: 'app-group-posts-placeholder',
@@ -8,5 +9,7 @@ import { ForumPostComponent } from "@gofish/features/forum/components/forum-post
   styleUrl: './group-posts-placeholder.component.css',
 })
 export class GroupPostsPlaceholderComponent {
+  private readonly postsService = inject(PostsService);
+
 
 }
