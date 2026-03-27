@@ -28,7 +28,7 @@
 
 /* Post Content */
 
-.post-content > :not(:last-child) {
+.post-content> :not(:last-child) {
   margin-bottom: var(--gf-20);
 }
 
@@ -55,9 +55,31 @@
 }
 
 .post-description {
-  font-size: var(--gf-12);
+  font-size: var(--gf-16);
   font-family: var(--gf-font-ugc);
-  word-break: break-all;
+}
+
+.description {
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.description.expanded {
+  display: block;
+  overflow: visible;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .post-image-wrapper {
@@ -131,6 +153,7 @@
 .icon-upvote {
   transform: rotate(90deg);
 }
+
 .icon-downvote {
   transform: rotate(-90deg);
 }

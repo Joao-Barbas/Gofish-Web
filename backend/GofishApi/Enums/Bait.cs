@@ -5,7 +5,7 @@ namespace GofishApi.Enums;
 public enum Bait
 {
     [Display(Name="Unknown")]   Unknown  = 0,
-    [Display(Name="Wor")]       Worm     = 1,
+    [Display(Name="Worm")]      Worm     = 1,
     [Display(Name="Shrimp")]    Shrimp   = 2,
     [Display(Name="Sardine")]   Sardine  = 3,
     [Display(Name="Squid")]     Squid    = 4,

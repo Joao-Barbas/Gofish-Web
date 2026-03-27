@@ -8,10 +8,11 @@ import { EnumComponent } from "@gofish/shared/components/enum/enum.component";
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { Path } from '@gofish/shared/constants';
+import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-forum-post',
-  imports: [TimeAgoPipe, EnumComponent, RouterLink],
+  imports: [TimeAgoPipe, EnumComponent, RouterLink, SlicePipe],
   templateUrl: './forum-post.component.html',
   styleUrl: './forum-post.component.css',
 })
@@ -27,6 +28,7 @@ export class ForumPostComponent {
   currentVote = signal<number | null>(null);
   score = signal<number | null>(null);
   isVoting = signal<boolean>(false);
+  isExpanded = false;
 
   ngOnInit() {
     const post = this.postData();
@@ -72,5 +74,9 @@ export class ForumPostComponent {
 
   goToPost() {
     this.router.navigate(['/forum/post', this.postData()?.id]);
+  }
+
+  toggleExpand() {
+    this.isExpanded = !this.isExpanded
   }
 }
