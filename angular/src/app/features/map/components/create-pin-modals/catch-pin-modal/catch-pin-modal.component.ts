@@ -168,13 +168,13 @@ export class CatchPinModalComponent {
     formData.append('Latitude', this.selectedCoords.latitude.toString());
     formData.append('Longitude', this.selectedCoords.longitude.toString());
     formData.append('Image', this.image);
-    formData.append('body', this.form.value.body!);
-    formData.append('visibility', String(this.form.value.visibility));
-    formData.append('species', String(this.form.value.species));
-    formData.append('bait', String(this.form.value.bait));
-    formData.append('hook', this.form.value.hook ?? '');
+    formData.append('Body', this.form.value.body!);
+    formData.append('Visibility', String(this.form.value.visibility));
+    formData.append('Species', String(this.form.value.species));
+    formData.append('Bait', String(this.form.value.bait));
+    formData.append('HookSize', this.form.value.hook ?? '');
     groupIds.forEach(id => {
-      formData.append('groupIds', id.toString());
+      formData.append('GroupIds', id.toString());
     });
 
     const toastId = toast.loading('Publishing your pin!');
