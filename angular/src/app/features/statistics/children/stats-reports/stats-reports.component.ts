@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { GfCardPinPreviewComponent } from "@gofish/shared/components/gf-card-pin-preview/gf-card-pin-preview.component";
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
@@ -12,7 +13,7 @@ import { WarningKind } from '../../../../shared/enums/warning-kind.enum';
 
 @Component({
   selector: 'app-stats-reports',
-  imports: [GfCardPinPreviewComponent],
+  imports: [GfCardPinPreviewComponent, RouterLink],
   templateUrl: './stats-reports.component.html',
   styleUrl: './stats-reports.component.css',
 })
