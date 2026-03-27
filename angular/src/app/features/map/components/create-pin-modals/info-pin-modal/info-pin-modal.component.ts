@@ -46,7 +46,7 @@ export class InfoPinModalComponent implements OnInit {
     visibility: [0, [Validators.required]],
     accessDifficulty: [0, [Validators.required]],
     seaBed: [0, [Validators.required]],
-    groupsIds: this.fb.control<number[]>([])
+    groupIds: this.fb.control<number[]>([])
   });
 
 
@@ -107,6 +107,14 @@ export class InfoPinModalComponent implements OnInit {
         console.log(err);
       }
     });
+
+    this.form.controls.visibility.valueChanges.subscribe(value => {
+      if (Number(value) !== 2) {
+        this.selectedGroupIds.set([]);
+        this.form.controls.groupIds.setValue([]);
+      }
+    });
+
   }
 
   toggleGroup(groupId: number) {
@@ -115,7 +123,7 @@ export class InfoPinModalComponent implements OnInit {
     const updated = current.includes(groupId) ? current.filter(id => id !== groupId) : [...current, groupId]
 
     this.selectedGroupIds.set(updated);
-    this.form.controls.groupsIds.setValue(updated);
+    this.form.controls.groupIds.setValue(updated);
   }
 
   onCancel(): void {
@@ -141,7 +149,12 @@ export class InfoPinModalComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
-
+    const visibility = Number(this.form.value.visibility);
+    const groupIds = this.form.value.groupIds ?? [];
+    if (visibility === 2 && groupIds.length === 0) {
+      this.errorMessage = 'Select at least one group.';
+      return;
+    }
     this.busyState.setBusy(true);
 
     const dto: CreateInfoPinReqDTO = {
