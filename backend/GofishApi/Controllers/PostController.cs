@@ -243,9 +243,9 @@ public class PostController : ControllerBase
         query = query.Include(p => p.PostVotes);
 
         if (request?.IncludeAuthor ?? false)
-            query = query.Include(p => p.AppUser);
+            query = query.Include(p => p.AppUser).ThenInclude(u => u.UserProfile);
         if (request?.IncludeComments ?? false)
-            query = query.Include(p => p.Comments).ThenInclude(c => c.AppUser).ThenInclude(u => u.UserProfile);
+            query = query.Include(p => p.Comments).ThenInclude(c => c.AppUser);
         if (request?.IncludeGroups ?? false)
             query = query.Include(p => p.Groups);
 

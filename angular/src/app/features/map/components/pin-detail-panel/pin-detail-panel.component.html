@@ -4,11 +4,12 @@
     @if (pinData(); as pin) {
     <div class="gf-card-pin">
       <!-- Post Header -->
-      <div class="d-flex align-items-center justify-content-between gap-2" >
+      <div class="d-flex align-items-center justify-content-between gap-2">
 
         <div class="d-flex align-items-center gap-2 clickable" [routerLink]="Path.PROFILE(pin.author!.id)">
 
-          <img [src]="this.avatarService.resolve(pin.author?.avatarUrl)" class="rounded-circle post-author-profile-photo">
+          <img [src]="this.avatarService.resolve(pin.author?.avatarUrl)"
+            class="rounded-circle post-author-profile-photo">
 
           <span class="post-author-name">{{ pin.author?.userName ?? 'User' }}</span>
           <span class="separator">•</span>
@@ -55,31 +56,29 @@
       <!-- Post Content Enum values -->
 
       <div class="post-content">
-        @if (pin.kind == pinKind.WARNING) {
-        <app-enum [pinData]=pin></app-enum>
-        }
-        <!-- Post Description -->
+        <div class="ps-5 post-content">
+          <!-- Post Description -->
 
-        <div class="post-description">
-          <p>
-            {{ pin.post?.body }}
-          </p>
+          <div class="post-description ">
+            <p class="mb-2 description-small">
+              {{(pin.post!.body | slice:0:120) + (pin.post!.body!.length > 120 ? '...' : '')}}
+            </p>
+
+            @if (pin.post!.body!.length > 120) {
+            <button type="button" class="see-more" (click)="goToPost()">
+              See more
+            </button>
+            }
+          </div>
+          @if (pin.kind === pinKind.CATCH) {
+          <div class="post-image-wrapper">
+            <img [src]="pin.post!.imageUrl" class="post-image">
+          </div>
+          }
+          <!--  Banner (Pin Type ) -->
+          <app-enum [pinData]=pin></app-enum>
+
         </div>
-        @if (pin.kind == pinKind.CATCH) {
-        <div class="post-image-wrapper">
-          <img [src]="pin.post!.imageUrl" class="post-image">
-        </div>
-
-
-
-        <!-- TODO: Apresentar no mockup do Post, o tipo de isco -->
-        @if (pin.details) {
-        <div class="pin-details">
-          <span class="bait-info">Hook: {{ pin.details.bait ? pin.details.bait : "Dont have hook information" }}</span>
-        </div>
-        }
-        }
-
         <!-- Upvote / Downvote / Comment and Go To Post -->
         <div class="d-flex justify-content-between">
 
@@ -117,7 +116,8 @@
             </div>
 
             <!-- Comment button -->
-            <button class="gf-badge-comment post-interaction-wrapper post-interaction-comment-wrapper" (click)="goToPost()">
+            <button class="gf-badge-comment post-interaction-wrapper post-interaction-comment-wrapper"
+              (click)="goToPost()">
 
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

@@ -26,23 +26,15 @@
 
   padding: 4px 16px;
 
- 
-  height: 100%;
+  width: fit-content;
+  height: fit-content;
   border-radius: 16px;
 
   background-color: var(--gf-dark-bg-dark);
 
-  &.catch-pin {
-    background-color: var(--gf-dark-bg-catch-pin);
-  }
-
-  &.info-pin {
-    background-color: var(--gf-dark-bg-info-pin);
-  }
-
-  &.warning-pin {
-    background-color: var(--gf-dark-bg-warning-pin);
-  }
+  &.catch-pin   { background-color: var(--gf-dark-bg-catch-pin); }
+  &.info-pin    { background-color: var(--gf-dark-bg-info-pin); }
+  &.warning-pin { background-color: var(--gf-dark-bg-warning-pin); }
 
   & svg {
     width: 20px;

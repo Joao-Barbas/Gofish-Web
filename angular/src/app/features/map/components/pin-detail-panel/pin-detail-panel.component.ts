@@ -17,7 +17,7 @@ import { AvatarService } from '@gofish/shared/services/avatar.service';
 
 @Component({
   selector: 'app-pin-detail-panel',
-  imports: [CommonModule, TimeAgoPipe, EnumComponent, RouterLink],
+  imports: [CommonModule, TimeAgoPipe, EnumComponent, RouterLink, ClickOutsideDirective],
   templateUrl: './pin-detail-panel.component.html',
   styleUrls: ['./pin-detail-panel.component.css']
 })
