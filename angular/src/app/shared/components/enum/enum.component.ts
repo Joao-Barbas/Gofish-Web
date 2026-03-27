@@ -1,4 +1,4 @@
-import { JsonPipe } from '@angular/common';
+import { JsonPipe, NgClass } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, input } from '@angular/core';
 import { PinService } from '@gofish/features/map/services/pin.service';
@@ -9,7 +9,7 @@ import { PinKind } from '@gofish/shared/models/pin.model';
 
 @Component({
   selector: 'app-enum',
-  imports: [JsonPipe],
+  imports: [JsonPipe, NgClass],
   templateUrl: './enum.component.html',
   styleUrl: './enum.component.css',
 })
