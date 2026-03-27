@@ -34,17 +34,7 @@
     <div class="list">
       @for (p of pinsList(); track p.id) {
         <app-gf-card-pin-preview
-          [pinType]="p.kind === PinKind.CATCH ? 'catch' : p.kind === PinKind.INFORMATION ? 'info' : 'warning'"
-          [authorName]="p.author?.userName!"
-          [timeAgo]="p.createdAt | timeAgo"
-          [votes]="p.post?.score!"
-          [comments]="p.post?.commentCount!"
-          [species]="p.details?.species"
-          [bait]="p.details?.bait"
-          [hookSize]="p.details?.hookSize"
-          [accessDifficulty]="p.details?.accessDificulty"
-          [seabed]="p.details?.seabed"
-          [warningKind]="p.details?.warningKind"
+          [pinData]="p" [isReportedPin]="true" [reportNumber]="5" [reportIndex]="1"
         ></app-gf-card-pin-preview>
       } @empty {
         @if (!pins.isLoading() && !loadingState.isLoading()) {

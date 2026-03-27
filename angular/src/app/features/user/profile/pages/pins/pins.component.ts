@@ -15,7 +15,6 @@ import { AsyncButtonComponent } from "@gofish/shared/components/async-button-2/a
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { GfCardPinPreviewComponent } from "@gofish/shared/components/gf-card-pin-preview/gf-card-pin-preview.component";
 import { Path, PathSegment } from '@gofish/shared/constants';
-import { TimeAgoPipe } from "@gofish/shared/pipes/time-ago.pipe";
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -25,7 +24,6 @@ import { HttpErrorResponse } from '@angular/common/http';
     RouterLink,
     AsyncButtonComponent,
     GfCardPinPreviewComponent,
-    TimeAgoPipe
 ],
   templateUrl: './pins.component.html',
   styleUrl: './pins.component.css',
