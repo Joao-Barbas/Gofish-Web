@@ -68,7 +68,7 @@ export interface GroupPostPinDTO {
 }
 
 export interface GroupPostDTO {
-    Id: number,
+    id: number,
     body?: string,
     imageUrl?: string,
     createdAt: string,
@@ -77,6 +77,7 @@ export interface GroupPostDTO {
     userVote: VoteKind,
     author: GroupMemberDTO,
     pin: GroupPostPinDTO
+    kind?: PinKind;
 }
 
 // Requests

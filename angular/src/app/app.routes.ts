@@ -114,7 +114,7 @@ export const routes: Routes = [
         children: [
           { path: '', redirectTo: 'posts', pathMatch: 'full' },
           { path: 'posts', loadComponent: () => import('@gofish/features/forum/children/groups/children/group-posts-placeholder/group-posts-placeholder.component').then(c => c.GroupPostsPlaceholderComponent) },
-          /*{ path: 'members', loadComponent: () => import('@gofish/features/forum/children/groups/children/group-members-placeholder/group-members-placeholder.component').then(c => c.GroupMembersPlaceholderComponent) },*/
+          { path: 'members', loadComponent: () => import('@gofish/features/forum/children/groups/children/members-group/members-group.component').then(c => c.MembersGroupComponent) },
         ]
       },
 

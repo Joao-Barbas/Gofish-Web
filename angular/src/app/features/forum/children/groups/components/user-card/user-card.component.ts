@@ -1,4 +1,5 @@
 import { Component, input } from '@angular/core';
+import { GroupMemberDTO } from '@gofish/shared/dtos/group.dto';
 import { GetGroupMemberDTO } from '@gofish/shared/dtos/members.dto';
 
 @Component({
@@ -8,6 +9,5 @@ import { GetGroupMemberDTO } from '@gofish/shared/dtos/members.dto';
   styleUrl: './user-card.component.css',
 })
 export class UserCardComponent {
-  // TODO: Rename to group-user-card
-  member = input<GetGroupMemberDTO | null>(null);
+  member = input<GroupMemberDTO | null>(null);
 }
