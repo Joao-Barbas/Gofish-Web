@@ -13,6 +13,7 @@ import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.d
 import { ReturnStatement } from '@angular/compiler';
 import { EnumComponent } from "@gofish/shared/components/enum/enum.component";
 import { Path } from '@gofish/shared/constants';
+import { AvatarService } from '@gofish/shared/services/avatar.service';
 
 @Component({
   selector: 'app-pin-detail-panel',
@@ -24,6 +25,7 @@ export class PinDetailPanelComponent {
   private readonly pinService = inject(PinService);
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  readonly avatarService = inject(AvatarService);
   userName = this.authService.getUserName();
   isAdmin = this.authService.isAdmin();
   readonly popupController = new PopupController('cluster-preview');

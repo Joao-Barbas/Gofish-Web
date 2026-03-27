@@ -9,6 +9,7 @@ import { AuthService } from '@gofish/shared/services/auth.service';
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { Path } from '@gofish/shared/constants';
 import { SlicePipe } from '@angular/common';
+import { AvatarService } from '@gofish/shared/services/avatar.service';
 
 @Component({
   selector: 'app-forum-post',
@@ -20,6 +21,7 @@ export class ForumPostComponent {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   private readonly pinService = inject(PinService);
+  readonly avatarService = inject(AvatarService);
   readonly Path = Path;
   userName = this.authService.getUserName();
   isAdmin = this.authService.isAdmin();

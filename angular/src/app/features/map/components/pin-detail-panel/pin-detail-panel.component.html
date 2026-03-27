@@ -8,7 +8,7 @@
 
         <div class="d-flex align-items-center gap-2 clickable" [routerLink]="Path.PROFILE(pin.author!.id)">
 
-          <img src="assets/images/placeholder_profile_pic.png" class="rounded-circle post-author-profile-photo">
+          <img [src]="this.avatarService.resolve(pin.author?.avatarUrl)" class="rounded-circle post-author-profile-photo">
 
           <span class="post-author-name">{{ pin.author?.userName ?? 'User' }}</span>
           <span class="separator">•</span>
