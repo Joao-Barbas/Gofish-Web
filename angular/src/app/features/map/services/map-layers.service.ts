@@ -3,9 +3,9 @@ import { ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
 import { PinKind } from '@gofish/shared/models/pin.model';
 
 export const PIN_CONFIG = [
-  { kind: PinKind.CATCH, color: '#f30000' },
-  { kind: PinKind.INFORMATION, color: '#3b82f6' },
-  { kind: PinKind.WARNING, color: '#ff6a00' }
+  { kind: PinKind.CATCH, color: '#16A34A', iconUrl: 'assets/images/pins-icons/Kind=Catch.png', icon: 'pin-catch' },
+  { kind: PinKind.INFORMATION, color: '#3B82F6', iconUrl: 'assets/images/pins-icons/Kind=Information.png', icon: 'pin-Information' },
+  { kind: PinKind.WARNING, color: '#F97316', iconUrl: 'assets/images/pins-icons/Kind=Warning.png', icon: 'pin-Warning' }
 ];
 
 @Injectable({
@@ -13,7 +13,8 @@ export const PIN_CONFIG = [
 })
 export class MapLayersService {
   updateLayers(map: mapboxgl.Map, allPins: WritableSignal<ViewportPinDTO[]>): void {
-    PIN_CONFIG.forEach(({ kind, color }) => {
+    this.loadPinIcons(map);
+    PIN_CONFIG.forEach(({ kind, color, icon }) => {
       const pinsOfKind = allPins().filter(pin => pin.kind === kind);
       const sourceId = `pins-${kind}`;
 
@@ -38,12 +39,12 @@ export class MapLayersService {
           clusterMaxZoom: 10,
           clusterRadius: 50
         });
-        this.addClusterLayers(map, kind, color);
+        this.addClusterLayers(map, kind, color, icon);
       }
     });
   }
 
-  private addClusterLayers(map: mapboxgl.Map, kind: PinKind, color: string): void {
+  private addClusterLayers(map: mapboxgl.Map, kind: PinKind, color: string, icon: string): void {
     map.addLayer({
       id: `clusters-${kind}`,
       type: 'circle',
@@ -73,16 +74,35 @@ export class MapLayersService {
 
     map.addLayer({
       id: `unclustered-${kind}`,
-      type: 'circle',
+      type: 'symbol',
       source: `pins-${kind}`,
       filter: ['!', ['has', 'point_count']],
-      paint: {
-        'circle-color': color,
-        'circle-radius': 8,
-        'circle-stroke-width': 2,
-        'circle-stroke-color': '#fff',
-        'circle-emissive-strength': 1,
+      layout: {
+        'icon-image': icon,
+        'icon-size': 0.05,
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true
       }
     });
   }
+
+  public loadPinIcons(map: mapboxgl.Map) {
+    PIN_CONFIG.forEach(({ icon, iconUrl }) => {
+      if (map.hasImage(icon)) return;
+
+      map.loadImage(iconUrl, (error, image) => {
+        if (error) {
+          console.error(`Error loading icon ${iconUrl}`, error);
+          return;
+        }
+
+        if (!image) return;
+
+        if (!map.hasImage(icon)) {
+          map.addImage(icon, image);
+        }
+      });
+    });
+  }
+
 }
