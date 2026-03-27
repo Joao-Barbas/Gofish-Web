@@ -5,6 +5,7 @@ namespace GofishApi.Dtos;
 public record CreateInfoPinReqDTO(
     double Latitude,
     double Longitude,
+    IEnumerable<int>? GroupIds,
     string? Body,
     VisibilityLevel Visibility,
     AccessDifficulty AccessDifficulty,

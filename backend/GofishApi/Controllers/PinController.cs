@@ -150,44 +150,65 @@ public class PinController : ControllerBase
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         var allowedTypes = new[] { "image/jpeg", "image/png" };
-        string imageUrl;
 
         if (!allowedTypes.Contains(dto.Image.ContentType))
         {
-            throw new AppException("Bad Request", "Invalid file type.", StatusCodes.Status400BadRequest);
+            throw new AppValidationException("Image", "Invalid file type. Only JPEG and PNG are allowed.");
         }
+
+        if (dto.GroupIds?.Any() is true)
+        {
+            var memberGroupIds = await _visibility
+                .GetGroupIds(userId)
+                .Where(gId => dto.GroupIds.Contains(gId))
+                .ToListAsync();
+
+            var invalidGroups = dto.GroupIds
+                .Except(memberGroupIds)
+                .ToList();
+
+            if (invalidGroups.Any())
+            {
+                throw new AppValidationException(
+                    "GroupIds",
+                    "You are not a member of all specified groups.");
+            }
+        }
+
+        string imageUrl;
+
         try
         {
             imageUrl = await _blobStorage.UploadImageAsync(dto.Image);
+            _logger.LogDebug("Pin image upload to blob storage successful");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unexpected error during image upload to blob storage");
-            throw new AppException("Service Unavailable", "Image upload failed.", StatusCodes.Status503ServiceUnavailable);
+            throw new AppException(title: "Service Unavailable", status: StatusCodes.Status503ServiceUnavailable, detail: "Image upload failed.");
         }
 
-        // Aqui podias criar um metodo ToCatchPin no CreateCatchPinReqDTO
-        // Se se repetisse mais que esta vez
         var newPin = new CatchPin
         {
-            Latitude   = dto.Latitude,
-            Longitude  = dto.Longitude,
-            CreatedAt  = DateTime.UtcNow,
-            ExpiresAt  = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
+            Latitude = dto.Latitude,
+            Longitude = dto.Longitude,
+            CreatedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddDays(CatchPin.ExpiresInDays),
             Visibility = dto.Visibility,
-            Kind       = PinKind.Catch,
-            UserId     = userId,
-
-            Species  = dto.Species,
-            Bait     = dto.Bait,
+            Kind = PinKind.Catch,
+            UserId = userId,
+            Species = dto.Species,
+            Bait = dto.Bait,
             HookSize = dto.HookSize,
-
             Post = new Post
             {
-                Body      = dto.Body,
-                ImageUrl  = imageUrl,
+                Body = dto.Body,
+                ImageUrl = imageUrl,
                 CreatedAt = DateTime.UtcNow,
-                UserId    = userId
+                UserId = userId,
+                GroupPosts = dto.GroupIds?
+                    .Select(gId => new GroupPost { GroupId = gId })
+                    .ToList() ?? []
             }
         };
 
@@ -200,7 +221,10 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new AppException("Service Unavailable", "Unable to save this catch pin.", StatusCodes.Status503ServiceUnavailable);
+            throw new AppException(
+                title: "Service Unavailable",
+                status: StatusCodes.Status503ServiceUnavailable,
+                detail: "Unable to save this catch pin.");
         }
 
         await _gamification.UpdateStreakAsync(userId);
@@ -209,28 +233,34 @@ public class PinController : ControllerBase
 
     [Authorize]
     [HttpPost("CreateInfoPin")]
-    public async Task<IActionResult> CreateInfoPin(CreateInfoPinReqDTO dto)
+    public async Task<IActionResult> CreateInfoPin([FromBody] CreateInfoPinReqDTO dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+
+        if (dto.GroupIds?.Any() == true && !await _visibility.IsMemberOfAllGroups(userId, dto.GroupIds))
+            throw new AppValidationException("GroupIds", "You are not a member of all specified groups.");
+
         var newPin = new InfoPin
         {
-            Latitude   = dto.Latitude,
-            Longitude  = dto.Longitude,
-            CreatedAt  = DateTime.UtcNow,
+            Latitude = dto.Latitude,
+            Longitude = dto.Longitude,
+            CreatedAt = DateTime.UtcNow,
             Visibility = dto.Visibility,
-            Kind       = PinKind.Information,
-            UserId     = userId,
-
+            Kind = PinKind.Information,
+            UserId = userId,
             AccessDifficulty = dto.AccessDifficulty,
-            Seabed           = dto.Seabed,
-
+            Seabed = dto.Seabed,
             Post = new Post
             {
-                Body      = dto.Body,
+                Body = dto.Body,
                 CreatedAt = DateTime.UtcNow,
-                UserId    = userId
+                UserId = userId,
+                GroupPosts = dto.GroupIds?
+                    .Select(gId => new GroupPost { GroupId = gId })
+                    .ToList() ?? []
             }
         };
+
         try
         {
             _db.Pins.Add(newPin);
@@ -238,36 +268,43 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new AppException("Service Unavailable", "Unable to save this information pin.", StatusCodes.Status503ServiceUnavailable);
+            throw new AppException(title: "Service Unavailable", status: StatusCodes.Status503ServiceUnavailable, detail: "Unable to save this information pin.");
         }
+
         await _gamification.UpdateStreakAsync(userId);
         return Ok(new CreateInfoPinResDTO(newPin.Id));
     }
 
     [Authorize]
     [HttpPost("CreateWarnPin")]
-    public async Task<IActionResult> CreateWarnPin(CreateWarnPinReqDTO dto)
+    public async Task<IActionResult> CreateWarnPin([FromBody] CreateWarnPinReqDTO dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+
+        if (dto.GroupIds?.Any() == true && !await _visibility.IsMemberOfAllGroups(userId, dto.GroupIds))
+            throw new AppValidationException("GroupIds", "You are not a member of all specified groups.");
+
         var newPin = new WarnPin
         {
-            Latitude   = dto.Latitude,
-            Longitude  = dto.Longitude,
-            CreatedAt  = DateTime.UtcNow,
-            ExpiresAt  = DateTime.UtcNow.AddDays(WarnPin.ExpiresInDays),
+            Latitude = dto.Latitude,
+            Longitude = dto.Longitude,
+            CreatedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddDays(WarnPin.ExpiresInDays),
             Visibility = dto.Visibility,
-            Kind       = PinKind.Warning,
-            UserId     = userId,
-
+            Kind = PinKind.Warning,
+            UserId = userId,
             WarningKind = dto.WarningKind,
-            
             Post = new Post
             {
-                Body      = dto.Body,
+                Body = dto.Body,
                 CreatedAt = DateTime.UtcNow,
-                UserId    = userId
+                UserId = userId,
+                GroupPosts = dto.GroupIds?
+                    .Select(gId => new GroupPost { GroupId = gId })
+                    .ToList() ?? []
             }
         };
+
         try
         {
             _db.Pins.Add(newPin);
@@ -275,8 +312,9 @@ public class PinController : ControllerBase
         }
         catch (Exception)
         {
-            throw new AppException("Service Unavailable", "Unable to save this warning pin.", StatusCodes.Status503ServiceUnavailable);
+            throw new AppException(title: "Service Unavailable", status: StatusCodes.Status503ServiceUnavailable, detail: "Unable to save this warning pin.");
         }
+
         await _gamification.UpdateStreakAsync(userId);
         return Ok(new CreateWarnPinResDTO(newPin.Id));
     }

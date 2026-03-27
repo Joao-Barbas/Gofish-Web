@@ -1,6 +1,7 @@
 ﻿using GofishApi.Data;
 using GofishApi.Enums;
 using GofishApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GofishApi.Services;
 
@@ -51,5 +52,27 @@ public class VisibilityService : IVisibilityService
             || (p.Pin.Visibility == VisibilityLevel.Friends && friendIds.Contains(p.UserId))
             || (p.Pin.Visibility == VisibilityLevel.Group && p.Groups.Any(g => groupIds.Contains(g.Id)))
         );
+    }
+
+    public async Task<bool> IsMemberOfGroup(string userId, int groupId)
+    {
+        return await _db.GroupUsers.AnyAsync(gu => gu.UserId == userId && gu.GroupId == groupId);
+    }
+
+    public async Task<bool> IsMemberOfAllGroups(string userId, IEnumerable<int> groupIds)
+    {
+        var memberCount = await GetGroupIds(userId)
+            .Where(gId => groupIds.Contains(gId))
+            .CountAsync();
+        return memberCount == groupIds.Count();
+    }
+
+    public async Task<bool> IsFriendOf(string userId, string otherUserId)
+    {
+        return await _db.Friendships.AnyAsync(f => (f.RequesterUserId == userId
+            && f.ReceiverUserId == otherUserId
+            || f.RequesterUserId == otherUserId
+            && f.ReceiverUserId == userId)
+            && f.State == FriendshipState.Accepted);
     }
 }
