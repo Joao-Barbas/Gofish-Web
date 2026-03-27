@@ -75,11 +75,17 @@ public record GetPinsGeolocationDTO(
 
 public record GetPinsAuthorDTO(
     string Id,
-    string UserName
+    string UserName,
+    string FirstName,
+    string LastName,
+    string? AvatarUrl
 ){
     public static GetPinsAuthorDTO FromPin(Pin pin) => new(
         pin.AppUser.Id,
-        pin.AppUser.UserName ?? ""
+        pin.AppUser.UserName ?? "",
+        pin.AppUser.FirstName ?? "",
+        pin.AppUser.LastName ?? "",
+        pin.AppUser.UserProfile.AvatarUrl
     );
 };
 

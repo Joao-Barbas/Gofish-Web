@@ -28,6 +28,9 @@ export interface GetPostsReqDTO {
 export interface GetPostsAuthorDTO {
   id: string;
   userName: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl?: string;
 }
 
 export interface GetPostsGroupDTO {

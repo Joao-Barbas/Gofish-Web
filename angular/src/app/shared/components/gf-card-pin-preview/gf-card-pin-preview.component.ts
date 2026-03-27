@@ -1,56 +1,49 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, computed, inject, input, Input, OnInit } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
+
 import { PinService } from '@gofish/features/map/services/pin.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
+import { PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
+import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
+import { AvatarService } from '@gofish/shared/services/avatar.service';
+import { PinKind } from '@gofish/shared/models/pin.model';
 
-import { Species } from '../../enums/species.enum';
-import { Bait } from '../../enums/bait.enums';
-import { AccessDifficulty } from '../../enums/access-difficulty.enums';
-import { Seabed } from '../../enums/seabed.enum';
-import { WarningKind } from '../../enums/warning-kind.enum';
-import { TimeAgoPipe } from "../../pipes/time-ago.pipe";
 
 export type PinType = 'catch' | 'info' | 'warning';
 
 @Component({
   selector: 'app-gf-card-pin-preview',
-  imports: [NgClass, TimeAgoPipe],
+  imports: [NgClass, TimeAgoPipe, RouterLink],
   templateUrl: './gf-card-pin-preview.component.html',
   styleUrl: './gf-card-pin-preview.component.css',
 })
 export class GfCardPinPreviewComponent implements OnInit {
   private readonly pinService = inject(PinService);
+  readonly avatarService = inject(AvatarService);
 
-  @Input() pinType: PinType = 'catch';
-  @Input() isReportedPin: boolean = false;
+  pinData = input.required<PinDataResDTO>();
+  isReportedPin = input<boolean>(false);
+  reportNumber = input<number>();
+  reportIndex = input<number>();
 
-  @Input() authorProfilePhoto: string = 'assets/images/placeholder_profile_pic.png';
-  @Input() authorName: string = '';
-  @Input() timeAgo: string = '';
-  @Input() votes: number = 0;
-  @Input() comments: number = 0;
-  @Input() reportNumber?: number;
+  pinKind = PinKind;
 
-  // Catch
-  @Input() species?: Species;
-  @Input() bait?: Bait;
-  @Input() hookSize?: string;
+  pinLink = computed(
+    () => this.isReportedPin() ? `reports/pin/${this.pinData().id}` : `reports/pin/${this.pinData().id}`
+  )
 
-  // Info
-  @Input() accessDifficulty?: AccessDifficulty;
-  @Input() seabed?: Seabed;
 
-  // Warning
-  @Input() warningKind?: WarningKind;
 
-  // Enum options (vindas do backend)
+  // Enum options
   speciesOptions: EnumDTO[] = [];
   baitOptions: EnumDTO[] = [];
   accessDifficultyOptions: EnumDTO[] = [];
   seabedOptions: EnumDTO[] = [];
   warningKindOptions: EnumDTO[] = [];
+
 
   ngOnInit() {
     this.pinService.enumerateSpeciesType().subscribe({

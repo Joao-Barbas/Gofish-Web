@@ -9,7 +9,7 @@
 
     <div class="d-flex align-items-center gap-2 clickable" [routerLink]="Path.PROFILE(post!.author!.id)">
 
-      <img src="assets/images/placeholder_profile_pic.png" class="rounded-circle post-author-profile-photo">
+      <img [src]="post.author!.avatarUrl" class="rounded-circle post-author-profile-photo">
 
       <span class="user-output-no-overflow post-author-name text-bold">{{ post.author?.userName }}</span>
       <span class="post-date dark-text-muted">{{ post.createdAt | timeAgo }}</span>
@@ -63,20 +63,27 @@
 
   <div class="ps-5 post-content">
 
-    <!--  Banner (Pin Type ) -->
-    <app-enum class="d-flex gap-3 flex-column" [postData]=post></app-enum>
+
     <!-- Post Description -->
 
     <div class="post-description">
-      <p class="mb-2">
-        {{ post.body }}
+      <p class="mb-2 description" [class.expanded]="isExpanded">
+        {{ isExpanded ? post.body : (post.body | slice:0:120) + (post.body!.length > 120 ? '...' : '')}}
       </p>
+
+      @if (post.body!.length > 120) {
+      <button type="button" class="see-more" (click)="toggleExpand()">
+        {{ isExpanded ? 'See less' : 'See more' }}
+      </button>
+      }
     </div>
     @if (post.kind === pinKind.CATCH) {
     <div class="post-image-wrapper">
       <img [src]="post.imageUrl" class="post-image">
     </div>
     }
+    <!--  Banner (Pin Type ) -->
+    <app-enum class="d-flex gap-2" [postData]=post></app-enum>
     <!-- Upvote / Downvote / Comment and Share-->
     <div class="d-flex gap-2">
 

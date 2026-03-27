@@ -137,11 +137,9 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', loadComponent: () => import('@gofish/features/statistics/children/stats-home/stats-home.component').then(d => d.StatsHomeComponent) },
       { path: 'reports', loadComponent: () => import('@gofish/features/statistics/children/stats-reports/stats-reports.component').then(d => d.StatsReportsComponent) },
+      { path: 'reports/pin', loadComponent: () => import('@gofish/features/statistics/children/reported-pin-page/reported-pin-page.component').then(d => d.ReportedPinPageComponent) },
 
     ]
   },
-  {
-    path: 'test-page',
-    loadComponent: () => import('@gofish/features/test-delete-after/test-delete-after.component').then(a => a.TestDELETEAFTERComponent), /* TODO: remove */
-  },
+
 ];

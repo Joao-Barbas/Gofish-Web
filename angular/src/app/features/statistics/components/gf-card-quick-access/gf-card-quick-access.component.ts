@@ -14,7 +14,7 @@ export type QuickAccessType =
   styleUrl: './gf-card-quick-access.component.css',
 })
 export class GfCardQuickAccessComponent {
-  @Input() type: QuickAccessType = 'average-published-pins';
+  @Input() type: QuickAccessType = 'reports';
   @Input() title: string = '';
   @Input() extraTexts: string[] = [];
 
