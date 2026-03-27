@@ -6,7 +6,7 @@
   <div class="top-wrapper">
     <div class="pin-user-wrapper">
       <img [src]="avatarService.resolve(pin.author?.avatarUrl)" class="rounded-circle pin-author-profile-photo">
-      <span class="user-name-text">{{ pin.author }}</span>
+      <span class="user-name-text">{{ pin.author?.userName }}</span>
       <span class="separator">•</span>
       <span class="pin-time-ago">{{ pin.createdAt | timeAgo }}</span>
     </div>
@@ -43,6 +43,7 @@
         }
       </div>
 
+      
       <!-- Botão de ações -->
       <button class="gf-badge-pin-preview" [routerLink]="pinLink()">
         @if (!isReportedPin()) {
