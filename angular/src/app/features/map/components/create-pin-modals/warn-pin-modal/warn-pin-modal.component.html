@@ -84,7 +84,7 @@
           @if (form.controls.visibility.value === 2) {
           <div class="options-line groups-line d-flex align-items-start justify-content-between dark-text-muted">
             <h5 class="modal-body-options-text text-slim mb-0 pt-2">Groups</h5>
-            <div class="groups-selector">
+            <div class="groups-selector flex-column">
               @for (group of userGroups(); track group.id) {
               <label class="group-chip" [class.selected]="selectedGroupIds().includes(group.id)">
                 <input type="checkbox" class="d-none" [checked]="selectedGroupIds().includes(group.id)"
