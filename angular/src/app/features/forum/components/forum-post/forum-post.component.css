@@ -176,3 +176,17 @@
 .clickable {
   cursor: pointer;
 }
+
+.see-more {
+  font-family: var(--gf-font-main);
+  font-size: var(--gf-16);
+  color: var(--gf-primary);
+
+  color: var(--gf-primary);
+  --underline-width: 100%;
+
+  background:none;
+  border: none;
+
+  text-decoration: underline;
+}

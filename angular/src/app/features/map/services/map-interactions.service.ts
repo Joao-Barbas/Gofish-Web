@@ -50,7 +50,7 @@ export class MapInteractionsService {
         if (err) return;
         map.easeTo({
           center: (features[0].geometry as GeoJSON.Point).coordinates as [number, number],
-          zoom: zoom as number
+          //zoom: zoom as number
         });
       });
 

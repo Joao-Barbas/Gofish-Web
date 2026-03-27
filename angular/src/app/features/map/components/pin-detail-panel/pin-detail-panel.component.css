@@ -112,7 +112,7 @@
 }
 
 .post-description {
-  font-size: var(--gf-12);
+  font-size: var(--gf-16);
   font-family: var(--gf-font-ugc);
   word-break: break-all;
 }
