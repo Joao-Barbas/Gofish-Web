@@ -5,7 +5,6 @@
     class="image rounded-circle">
   <span class="type-text">WarningKind: {{getEnumDisplayName(warnTypeOptions, pinData()!.details!.warningKind)}}</span>
 </div> }
-
 @case (pinKind.INFORMATION) { }
 @case (pinKind.CATCH) { }
 @default { <span> Unknown</span> }
@@ -15,43 +14,107 @@
 @if (postData()) {
 @switch (postData()?.kind) {
 @case (pinKind.WARNING) {
-<div class="banner">
+<!-- <div class="banner">
   <img [src]="'assets/images/enum-images/warn-images/' + postData()?.warningKind + '.png'" class="image rounded-circle">
   <span class="type-text">WarningKind: {{getEnumDisplayName(warnTypeOptions, postData()!.warningKind!)}}</span>
-</div> }
+</div> -->
+<div class="d-flex align-items-center gf-badge-pin-type-and-extras">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 22h16a2 2 0 0 0 1.73-4Z" />
+    <path d="M12 9v4" />
+    <path d="M12 17h.01" />
+  </svg>
+  <span>{{ getEnumDisplayName(warnTypeOptions, postData()!.warningKind!) }}</span>
+</div>
+}
 @case (pinKind.INFORMATION) {
 @if(postData()?.accessDifficulty !== null) {
-<div class="banner">
+<!-- <div class="banner">
   <img [src]="'assets/images/enum-images/info-images/accessDifficulty/' + postData()?.accessDifficulty + '.png'"
     class="image rounded-circle">
-  <span class="type-text">Access Dificulty: {{getEnumDisplayName(accessDifficultyOptions, postData()!.accessDifficulty!)}}</span>
+  <span class="type-text">Access Dificulty: {{getEnumDisplayName(accessDifficultyOptions,
+    postData()!.accessDifficulty!)}}</span>
+</div> -->
+<div class="d-flex align-items-center gf-badge-pin-type-and-extras">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path d="m3 17 2 2 4-4" />
+    <path d="m3 7 2 2 4-4" />
+    <path d="M13 6h8" />
+    <path d="M13 12h8" />
+    <path d="M13 18h8" />
+  </svg>
+  <span>{{ getEnumDisplayName(accessDifficultyOptions, postData()!.accessDifficulty!) }}</span>
 </div>
 }
 @if(postData()?.seabed) {
-<div class="banner">
+<!-- <div class="banner">
   <img [src]="'assets/images/enum-images/info-images/species/' + postData()?.seabed + '.png'"
     class="image rounded-circle">
   <span class="type-text">Seabed: {{getEnumDisplayName(seaBedOptions, postData()!.seabed!)}}</span>
+</div> -->
+<div class="d-flex align-items-center gf-badge-pin-type-and-extras">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 12h20" />
+    <path d="M2 18h20" />
+    <path d="M6 6c0-1.1.9-2 2-2h8a2 2 0 0 1 0 4H8a2 2 0 0 1-2-2Z" />
+  </svg>
+  <span>{{ getEnumDisplayName(seaBedOptions, postData()!.seabed!) }}</span>
 </div>
 
 }
 }
 @case (pinKind.CATCH) {
 @if(postData()?.species) {
-<div class="banner">
+<!-- <div class="banner">
   <img [src]="'assets/images/enum-images/catch-images/species/' + postData()?.species + '.png'"
     class="image rounded-circle">
   <span class="type-text">Specie: {{getEnumDisplayName(speciesOptions, postData()!.species!)}}</span>
+</div> -->
+
+<div class="d-flex align-items-center gf-badge-pin-type-and-extras">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z" />
+    <path d="M18 12v.5" />
+    <path d="M16 17.93a9.77 9.77 0 0 1 0-11.86" />
+    <path d="M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 3.5-.5 6.5 2.27 8.5" />
+    <path d="m10.46 7.26-1.46 2" />
+    <circle cx="10" cy="12" r="2" />
+  </svg>
+  <span>{{ getEnumDisplayName(speciesOptions,postData()!.species!) }}</span>
 </div>
 }
 @if(postData()?.bait) {
-<div class="banner">
+<!-- <div class="banner">
   <img [src]="'assets/images/enum-images/catch-images/bait/' + postData()?.bait + '.png'" class="image rounded-circle">
   <span class="type-text">Bait: {{getEnumDisplayName(baitOptions, postData()!.bait!)}}</span>
+</div> -->
+<div class="d-flex align-items-center gf-badge-pin-type-and-extras">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path d="m17.586 11.414-5.93 5.93a1 1 0 0 1-8-8l3.137-3.137a.707.707 0 0 1 1.207.5V10" />
+    <path d="M20.414 8.586 22 7" />
+    <circle cx="19" cy="10" r="2" />
+  </svg>
+  <span>{{ getEnumDisplayName(baitOptions, postData()!.bait!) }}</span>
+</div>
+}
+@if(postData()?.hookSize) {
+<div class="d-flex align-items-center gf-badge-pin-type-and-extras">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 11.5C20 16.75 13 22 12 22S4 16.75 4 11.5a8 8 0 0 1 16 0Z" />
+    <path d="M12 2v4" />
+  </svg>
+  <span>{{ postData()!.hookSize }}</span>
 </div>
 }
 
 }
+
 @default { <span> Not loaded</span> }
 }
 }

@@ -20,3 +20,40 @@
 .type-text {
   font-size: var(--gf-16);
 }
+
+.gf-badge-pin-type-and-extras {
+  gap: 4px;
+
+  padding: 4px 16px;
+
+  width: fit-content;
+  height: 100%;
+  border-radius: 16px;
+
+  background-color: var(--gf-dark-bg-dark);
+
+  &.catch-pin {
+    background-color: var(--gf-dark-bg-catch-pin);
+  }
+
+  &.info-pin {
+    background-color: var(--gf-dark-bg-info-pin);
+  }
+
+  &.warning-pin {
+    background-color: var(--gf-dark-bg-warning-pin);
+  }
+
+  & svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  & span {
+    font-size: 12px;
+  }
+}
+
+.report-number {
+  font-size: 24px;
+}
