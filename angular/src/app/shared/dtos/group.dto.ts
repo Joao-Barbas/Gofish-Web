@@ -1,6 +1,10 @@
 import { GetPostsPostDTO } from "@gofish/shared/dtos/get-post.dto";
 import { GetGroupMemberDTO } from "@gofish/shared/dtos/members.dto";
+import { GeoLocationDTO, PinDetailsDTO } from "@gofish/shared/dtos/pin.dto";
 import { GroupRole } from "@gofish/shared/enums/group-role.enum";
+import { VisibilityLevel } from "@gofish/shared/enums/visibility-level.enum";
+import { VoteKind } from "@gofish/shared/enums/vote-kind.enum";
+import { PinKind } from "@gofish/shared/models/pin.model";
 
 export interface GetGroupReqDTO {
   groupId: number;
@@ -43,6 +47,8 @@ export interface GetUserGroupsResDTO{
 
 // group.dto.ts
 
+// View models
+
 export interface GroupMemberDTO {
   userId: string;
   userName: string;
@@ -53,15 +59,52 @@ export interface GroupMemberDTO {
   joinedAt: string;
 }
 
+export interface GroupPostPinDTO {
+    kind: PinKind;
+    visibility: VisibilityLevel;
+    ExpiresAt?: string;
+    Details: PinDetailsDTO;
+    Geolocation: GeoLocationDTO;
+}
+
+export interface GroupPostDTO {
+    Id: number,
+    body?: string,
+    imageUrl?: string,
+    createdAt: string,
+    score: number,
+    commentCount: number,
+    userVote: VoteKind,
+    author: GroupMemberDTO,
+    pin: GroupPostPinDTO
+}
+
+// Requests
+
 export interface GetGroupMembersReqDTO {
   groupId: number;
   role?: GroupRole;
-  maxResults: number;
-  lastTimestamp: string;
+  maxResults?: number;
+  lastTimestamp?: string;
 }
+
+export interface GetGroupPostsReqDTO {
+  groupId: number;
+  kind: PinKind;
+  maxResults?: number;
+  lastTimestamp?: string;
+}
+
+// Responses
 
 export interface GetGroupMembersResDTO {
   members: GroupMemberDTO[];
+  hasMoreResults: boolean;
+  lastTimestamp?: string;
+}
+
+export interface GetGroupPostsResDTO {
+  posts: GroupPostDTO[];
   hasMoreResults: boolean;
   lastTimestamp?: string;
 }
