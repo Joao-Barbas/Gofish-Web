@@ -1,4 +1,4 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
 import { FlatHeaderComponent } from "../header/flat-header/flat-header.component";
 import { FooterComponent } from "../footer/footer.component";
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
@@ -11,6 +11,7 @@ type NavPath = {
   label: string;
 }
 
+
 @Component({
   selector: 'app-statistics',
   imports: [RouterLink, RouterLinkActive, FlatHeaderComponent, FooterComponent, RouterOutlet],
@@ -21,8 +22,29 @@ export class StatisticsComponent {
   private readonly router: Router = inject(Router);
   public currentPath: WritableSignal<string> = signal(this.router.url);
 
+  public showBackButton = computed(() => {
+    const url = this.currentPath();
+    const isHome = url.endsWith('/statistics/home') || url.endsWith('/statistics');
+    return !isHome && url.includes('/statistics/');
+  });
+
+  public goBack() {
+    const url = this.currentPath();
+
+    const segments = url.split('/');
+    if (segments.length > 1) {
+      segments.pop(); // Remove a última "pasta"
+      const parentPath = segments.join('/');
+      this.router.navigateByUrl(parentPath);
+    }
+  }
+
+
+
   public navPaths: NavPath[] = [
-    { path: Path.FORUM_DISCOVER, label: 'home' },
+    { path: Path.STATISTICS, label: 'home' },
+    { path: Path.STATISTICS_REPORTS, label: 'reports' },
+    { path: Path.FORUM_FROM_FRIENDS, label: 'reports' },
     { path: Path.FORUM_FROM_FRIENDS, label: 'reports' },
   ];
 

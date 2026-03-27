@@ -118,7 +118,7 @@ public class PinController : ControllerBase
         }
         if (dto.DataRequest?.IncludeAuthor ?? false)
         {
-            query = query.Include(p => p.AppUser);
+            query = query.Include(p => p.AppUser).ThenInclude(p => p.UserProfile);
         }
         if (dto.DataRequest?.IncludePost ?? false)
         {
