@@ -100,12 +100,18 @@ public record GetPostsPostDTO(
 
 public record GetPostsAuthorDTO(
     string Id,
-    string UserName
+    string UserName,
+    string FirstName,
+    string LastName,
+    string? AvatarUrl
 )
 {
     public static GetPostsAuthorDTO FromUser(AppUser user) => new(
         user.Id,
-        user.UserName ?? ""
+        user.UserName ?? "",
+        user.FirstName ?? "",
+        user.LastName ?? "",
+        user.UserProfile.AvatarUrl
     );
 }
 
