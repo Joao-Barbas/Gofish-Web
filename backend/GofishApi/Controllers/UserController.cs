@@ -367,6 +367,8 @@ public class UserController : ControllerBase
         return Ok(new GetUserGroupResDto(page, hasMore, lastTime));
     }
 
+    // TODO: Get group invites
+
     #endregion // Groups
 
 }
