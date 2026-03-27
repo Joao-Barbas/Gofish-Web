@@ -340,10 +340,6 @@ h6 {
 [class$="-name"],
 [class$="-description"] {
   word-break: normal;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  /* white-space: nowrap; */
 }
 
 /* Layouts */
