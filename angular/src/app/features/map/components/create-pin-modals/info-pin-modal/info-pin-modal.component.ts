@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
@@ -10,8 +10,10 @@ import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateInfoPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { toast } from 'ngx-sonner';
-import { Subscription } from 'rxjs';
+import { groupBy, Subscription } from 'rxjs';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
+import { GroupsService } from '@gofish/shared/services/groups.service';
+import { GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
 
 @Component({
   selector: 'app-info-pin-modal',
@@ -25,6 +27,7 @@ export class InfoPinModalComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly urlService = inject(UrlService);
   private readonly fb = inject(FormBuilder);
+  private readonly groupsService = inject(GroupsService);
   values: UrlQuery | null = null;
   busyState: BusyState = new BusyState();
 
@@ -35,12 +38,15 @@ export class InfoPinModalComponent implements OnInit {
   seaBedOptions: EnumDTO[] = [];
 
   errorMessage: string = '';
+  userGroups = signal<GetUserGroupsResDTO['groups']>([]);
+  selectedGroupIds = signal<number[]>([]);
 
   form = this.fb.group({
     body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
     visibility: [0, [Validators.required]],
     accessDifficulty: [0, [Validators.required]],
-    seaBed: [0, [Validators.required]]
+    seaBed: [0, [Validators.required]],
+    groupsIds: this.fb.control<number[]>([])
   });
 
 
@@ -93,6 +99,23 @@ export class InfoPinModalComponent implements OnInit {
       }
     });
 
+    this.groupsService.getUserGroups().subscribe({
+      next: (res) => {
+        this.userGroups.set(res.groups);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  toggleGroup(groupId: number) {
+    const current = this.selectedGroupIds();
+
+    const updated = current.includes(groupId) ? current.filter(id => id !== groupId) : [...current, groupId]
+
+    this.selectedGroupIds.set(updated);
+    this.form.controls.groupsIds.setValue(updated);
   }
 
   onCancel(): void {
@@ -127,7 +150,8 @@ export class InfoPinModalComponent implements OnInit {
       visibility: Number(this.form.value.visibility!),
       body: this.form.value.body ?? '',
       accessDifficulty: Number(this.form.value.accessDifficulty!),
-      seaBedType: Number(this.form.value.seaBed!)
+      seaBedType: Number(this.form.value.seaBed!),
+      /**groupIds: groupIds */
     };
     console.log(dto);
 

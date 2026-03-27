@@ -134,7 +134,6 @@ export class CatchPinModalComponent {
     formData.append('Longitude', this.selectedCoords.longitude.toString());
     formData.append('Image', this.image);
     formData.append('body', this.form.value.body!);
-    formData.append('image', this.image);
     formData.append('visibility', String(this.form.value.visibility));
     formData.append('species', String(this.form.value.species));
     formData.append('bait', String(this.form.value.bait));
