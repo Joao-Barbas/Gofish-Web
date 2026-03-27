@@ -1,0 +1,24 @@
+﻿
+GET      /api/products        List all (with filtering & pagination)     200 OK
+GET      /api/products/{id}   Retrieve one resource                      200 OK / 404
+POST     /api/products        Create a new resource                      201 Created + Location header
+PUT      /api/products/{id}   Full replace — all fields required         200 OK / 404
+PATCH    /api/products/{id}   Partial update — only changed fields       200 OK / 404
+DELETE   /api/products/{id}   Remove a resource                          204 No Content / 404
+
+HEAD     /api/products/{id}   Check existence (headers only, no body)    200 / 404
+OPTIONS  /api/products        Discover allowed methods (CORS preflight)  200 + Allow header
+
+[Authorize]
+[Route("api/[controller]/[action]")]
+[ApiController]
+
+[HttpGet]            --> "api/ControllerName/MethodName"
+[HttpGet("{id}")]
+[HttpPost]
+[HttpPut]
+[HttpPut("{id}")]
+[HttpPatch]
+[HttpPatch("{id}")]
+[HttpDelete]
+[HttpDelete("{id}")]

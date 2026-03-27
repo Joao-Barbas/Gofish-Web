@@ -16,6 +16,7 @@ using Group = GofishApi.Models.Group;
 
 namespace GofishApi.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class GroupController : ControllerBase
@@ -388,4 +389,49 @@ public class GroupController : ControllerBase
     }
 
     #endregion
+    #region Members
+
+    [HttpGet("GetGroupMembers")]
+    public async Task<IActionResult> GetGroupMembers([FromQuery] GetGroupMembersReqDto dto)
+    {
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+        var groupExists = await _db.Groups.AnyAsync(g => g.Id == dto.GroupId);
+
+        if (!groupExists)
+        {
+            return NotFound();
+        }
+
+        var query = _db.GroupUsers.Where(gu => gu.GroupId == dto.GroupId);
+
+        if (dto.Role is not null)
+        {
+            query = query.Where(gu => gu.Role == dto.Role);
+        }
+        if (dto.LastTimestamp is not null)
+        {
+            query = query.Where(gu => gu.JoinedAt < dto.LastTimestamp.Value);
+        }
+
+        var results = await query
+        .Include(gu => gu.AppUser).ThenInclude(u => u.UserProfile)
+        .OrderByDescending(gu => gu.JoinedAt)
+        .ThenByDescending(gu => gu.UserId)
+        .Take(maxResults + 1)
+        .ToListAsync();
+
+        var hasMore = results.Count > maxResults;
+        var page = results.Take(maxResults).ToList();
+        var data = page.Select(GroupMemberDto.FromEntity);
+        var lastTime = hasMore ? page[^1].JoinedAt : (DateTime?)null;
+
+        return Ok(new GetGroupMembersResDto(data, hasMore, lastTime));
+    }
+
+    #endregion // Members
+    #region Posts
+
+
+
+    #endregion // Posts
 }

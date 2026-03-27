@@ -1,5 +1,6 @@
 import { GetPostsPostDTO } from "@gofish/shared/dtos/get-post.dto";
 import { GetGroupMemberDTO } from "@gofish/shared/dtos/members.dto";
+import { GroupRole } from "@gofish/shared/enums/group-role.enum";
 
 export interface GetGroupReqDTO {
   groupId: number;
@@ -38,4 +39,29 @@ export interface CreateGroupResDTO {
 
 export interface GetUserGroupsResDTO{
   groups: GetGroupDTO[];
+}
+
+// group.dto.ts
+
+export interface GroupMemberDTO {
+  userId: string;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl?: string;
+  role: GroupRole;
+  joinedAt: string;
+}
+
+export interface GetGroupMembersReqDTO {
+  groupId: number;
+  role?: GroupRole;
+  maxResults: number;
+  lastTimestamp: string;
+}
+
+export interface GetGroupMembersResDTO {
+  members: GroupMemberDTO[];
+  hasMoreResults: boolean;
+  lastTimestamp?: string;
 }
