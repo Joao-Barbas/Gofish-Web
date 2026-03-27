@@ -42,7 +42,7 @@
       </div>
 
       <!-- Botão de ações -->
-      <button class="gf-badge-pin-preview" [routerLink]="pinLink">
+      <!-- <button class="gf-badge-pin-preview" [routerLink]="pinLink">
         @if (!isReportedPin) {
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
@@ -59,7 +59,7 @@
         </svg>
         <span>Reports</span>
         }
-      </button>
+      </button> -->
 
     </div>
   </div>
@@ -186,9 +186,9 @@
     </div>
 
     <!-- Número do report (só aparece se isReportedPin) -->
-    @if (isReportedPin && reportIndex !== undefined) {
+    <!-- @if (isReportedPin && reportIndex !== undefined) {
     <span class="text-bold report-number"># {{ reportIndex }}</span>
-    }
+    } -->
   </div>
 
 </div>

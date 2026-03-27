@@ -103,6 +103,9 @@ export interface GeoLocationDTO {
 export interface AuthorDTO {
   id: string;
   userName: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl?: string;
 }
 
 export interface PostDTO {
