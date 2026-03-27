@@ -81,6 +81,21 @@
             </div>
           </div>
 
+          @if (form.controls.visibility.value === 2) {
+          <div class="options-line groups-line d-flex align-items-start justify-content-between dark-text-muted">
+            <h5 class="modal-body-options-text text-slim mb-0 pt-2">Groups</h5>
+            <div class="groups-selector">
+              @for (group of userGroups(); track group.id) {
+              <label class="group-chip" [class.selected]="selectedGroupIds().includes(group.id)">
+                <input type="checkbox" class="d-none" [checked]="selectedGroupIds().includes(group.id)"
+                  (change)="toggleGroup(group.id)" class="group-chip-image">
+                <img [src]="group.imageUrl" class="group-chip-image">
+                <span>{{ group.name }}</span>
+              </label>
+              }
+            </div>
+          </div>
+          }
           <!-- Warning Type -->
           <div class="options-line d-flex align-items-center justify-content-between dark-text-muted mb-3">
             <h5 class="modal-body-options-text text-slim mb-0">Warning Type</h5>

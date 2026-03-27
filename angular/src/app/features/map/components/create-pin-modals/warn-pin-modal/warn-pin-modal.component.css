@@ -106,3 +106,26 @@
   font-weight: 500;
   box-shadow: var(--gf-shadow-lift-sm);
 }
+
+.groups-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.group-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.group-chip-image {
+  width: 16px;
+  height: 16px;
+  object-fit: cover;
+  border-radius: 50%;
+  flex-shrink: 0;
+}

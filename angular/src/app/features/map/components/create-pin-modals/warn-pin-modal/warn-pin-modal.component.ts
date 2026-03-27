@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PinService } from '@gofish/features/map/services/pin.service';
@@ -11,6 +11,8 @@ import { Coords } from '@gofish/shared/models/coords.model';
 import { NgxSonnerToaster, toast } from 'ngx-sonner';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 import { BusyState } from '@gofish/shared/core/busy-state';
+import { GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
+import { GroupsService } from '@gofish/shared/services/groups.service';
 
 
 @Component({
@@ -25,6 +27,7 @@ export class WarnPinModalComponent {
   private readonly fb = inject(FormBuilder);
   private readonly urlService = inject(UrlService);
   private readonly route = inject(ActivatedRoute);
+  private readonly groupsService = inject(GroupsService);
   values: UrlQuery | null = null;
   busyState: BusyState = new BusyState();
 
@@ -34,11 +37,14 @@ export class WarnPinModalComponent {
   visibilityOptions: EnumDTO[] = [];
 
   errorMessage = '';
+  userGroups = signal<GetUserGroupsResDTO['groups']>([]);
+  selectedGroupIds = signal<number[]>([]);
 
   form = this.fb.group({
     body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
     visibility: [0, Validators.required],
-    warningKind: [0, Validators.required]
+    warningKind: [0, Validators.required],
+    groupIds: this.fb.control<number[]>([])
   });
 
   ngOnInit(): void {
@@ -84,6 +90,30 @@ export class WarnPinModalComponent {
       };
 
     });
+    this.groupsService.getUserGroups().subscribe({
+      next: (res) => {
+        this.userGroups.set(res.groups);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+    this.form.controls.visibility.valueChanges.subscribe(value => {
+      if (Number(value) !== 2) {
+        this.selectedGroupIds.set([]);
+        this.form.controls.groupIds.setValue([]);
+      }
+    });
+  }
+
+  toggleGroup(groupId: number) {
+    const current = this.selectedGroupIds();
+
+    const updated = current.includes(groupId) ? current.filter(id => id !== groupId) : [...current, groupId]
+
+    this.selectedGroupIds.set(updated);
+    this.form.controls.groupIds.setValue(updated);
   }
 
   onCancel(): void {
@@ -109,7 +139,12 @@ export class WarnPinModalComponent {
       this.form.markAllAsTouched();
       return;
     }
-
+    const visibility = Number(this.form.value.visibility);
+    const groupIds = this.form.value.groupIds ?? [];
+    if (visibility === 2 && groupIds.length === 0) {
+      this.errorMessage = 'Select at least one group.';
+      return;
+    }
     this.busyState.setBusy(true);
 
     const dto: CreateWarnPinReqDTO = {
@@ -117,7 +152,8 @@ export class WarnPinModalComponent {
       longitude: this.selectedCoords!.longitude,
       visibility: this.form.value.visibility!,
       body: this.form.value.body ?? '',
-      warningKind: Number(this.form.value.warningKind!)
+      warningKind: Number(this.form.value.warningKind!),
+      /**groupIds: groupIds */
     };
     console.log('DTO to be sent:', dto);
     const toastId = toast.loading('Publishing your pin!');
