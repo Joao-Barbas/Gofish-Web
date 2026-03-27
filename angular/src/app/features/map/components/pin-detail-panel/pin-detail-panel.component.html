@@ -4,9 +4,9 @@
     @if (pinData(); as pin) {
     <div class="gf-card-pin">
       <!-- Post Header -->
-      <div class="d-flex align-items-center justify-content-between gap-2">
+      <div class="d-flex align-items-center justify-content-between gap-2" >
 
-        <div class="d-flex align-items-center gap-2">
+        <div class="d-flex align-items-center gap-2 clickable" [routerLink]="Path.PROFILE(pin.author!.id)">
 
           <img src="assets/images/placeholder_profile_pic.png" class="rounded-circle post-author-profile-photo">
 

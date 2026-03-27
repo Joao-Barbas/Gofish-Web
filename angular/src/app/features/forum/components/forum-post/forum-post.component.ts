@@ -1,5 +1,5 @@
 import { Component, inject, input, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { GetPostsPostDTO, GetPostsReqDTO, GetPostsResDTO } from '@gofish/shared/dtos/get-post.dto';
 import { PostsService } from '@gofish/shared/services/posts.service';
 import { TimeAgoPipe } from "../../../../shared/pipes/time-ago.pipe";
@@ -7,10 +7,11 @@ import { PinKind } from '@gofish/shared/models/pin.model';
 import { EnumComponent } from "@gofish/shared/components/enum/enum.component";
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { PinService } from '@gofish/features/map/services/pin.service';
+import { Path } from '@gofish/shared/constants';
 
 @Component({
   selector: 'app-forum-post',
-  imports: [TimeAgoPipe, EnumComponent],
+  imports: [TimeAgoPipe, EnumComponent, RouterLink],
   templateUrl: './forum-post.component.html',
   styleUrl: './forum-post.component.css',
 })
@@ -18,6 +19,7 @@ export class ForumPostComponent {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   private readonly pinService = inject(PinService);
+  readonly Path = Path;
   userName = this.authService.getUserName();
   isAdmin = this.authService.isAdmin();
   postData = input<GetPostsPostDTO | null>(null);

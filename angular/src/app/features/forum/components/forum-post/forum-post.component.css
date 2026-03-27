@@ -149,3 +149,7 @@
 .active-down .post-icon {
   fill: currentColor;
 }
+
+.clickable {
+  cursor: pointer;
+}

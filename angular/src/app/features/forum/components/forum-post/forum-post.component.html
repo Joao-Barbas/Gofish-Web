@@ -7,7 +7,7 @@
 
   <div class="top-of-post d-flex justify-content-between align-items-center">
 
-    <div class="d-flex align-items-center gap-2">
+    <div class="d-flex align-items-center gap-2 clickable" [routerLink]="Path.PROFILE(post!.author!.id)">
 
       <img src="assets/images/placeholder_profile_pic.png" class="rounded-circle post-author-profile-photo">
 

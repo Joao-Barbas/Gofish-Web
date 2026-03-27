@@ -12,10 +12,11 @@ import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 import { ReturnStatement } from '@angular/compiler';
 import { EnumComponent } from "@gofish/shared/components/enum/enum.component";
+import { Path } from '@gofish/shared/constants';
 
 @Component({
   selector: 'app-pin-detail-panel',
-  imports: [CommonModule, TimeAgoPipe, EnumComponent],
+  imports: [CommonModule, TimeAgoPipe, EnumComponent, RouterLink],
   templateUrl: './pin-detail-panel.component.html',
   styleUrls: ['./pin-detail-panel.component.css']
 })
@@ -28,6 +29,7 @@ export class PinDetailPanelComponent {
   readonly popupController = new PopupController('cluster-preview');
   pinData = input<PinDataResDTO | null>(null);
   public pinKind = PinKind;
+  readonly Path = Path;
   @Output() cancel = new EventEmitter<void>();
   @Output() coords = new EventEmitter<GeoLocationDTO>();
 
