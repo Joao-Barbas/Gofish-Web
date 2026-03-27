@@ -164,7 +164,7 @@ export class InfoPinModalComponent implements OnInit {
       body: this.form.value.body ?? '',
       accessDifficulty: Number(this.form.value.accessDifficulty!),
       seaBedType: Number(this.form.value.seaBed!),
-      /**groupIds: groupIds */
+      groupIds: groupIds
     };
     console.log(dto);
 

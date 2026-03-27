@@ -153,7 +153,7 @@ export class WarnPinModalComponent {
       visibility: this.form.value.visibility!,
       body: this.form.value.body ?? '',
       warningKind: Number(this.form.value.warningKind!),
-      /**groupIds: groupIds */
+      groupIds: groupIds
     };
     console.log('DTO to be sent:', dto);
     const toastId = toast.loading('Publishing your pin!');

@@ -10,6 +10,7 @@ export interface CreateCatchPinReqDTO {
   speciesType?: number;
   hookSize?: string;
   baitType?: number;
+  groupIds?: number[];
 }
 
 // Create InfoPin
@@ -20,6 +21,7 @@ export interface CreateInfoPinReqDTO {
   body?: string;
   accessDifficulty: number;
   seaBedType: number;
+  groupIds?: number[];
 }
 
 // Create WarnPin
@@ -29,6 +31,7 @@ export interface CreateWarnPinReqDTO {
   visibility: number;
   body?: string;
   warningKind: number;
+  groupIds?: number[];
 }
 
 // Basta 1 reponse para todos os pins
