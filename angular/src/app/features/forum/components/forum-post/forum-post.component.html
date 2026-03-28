@@ -7,9 +7,9 @@
 
   <div class="top-of-post d-flex justify-content-between align-items-center">
 
-    <div class="d-flex align-items-center gap-2 clickable" [routerLink]="Path.PROFILE(post!.author!.id)">
+    <div class="d-flex align-items-center gap-2 gf-generic-clickable-wrapper" [routerLink]="Path.PROFILE(post!.author!.id)">
 
-      <img [src]="post.author!.avatarUrl" class="rounded-circle post-author-profile-photo">
+      <img [src]="post.author!.avatarUrl" class="rounded-circle gf-big-avatar">
 
       <span class="user-output-no-overflow post-author-name text-bold">{{ post.author?.userName }}</span>
       <span class="post-date dark-text-muted">{{ post.createdAt | timeAgo }}</span>
