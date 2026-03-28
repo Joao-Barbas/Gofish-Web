@@ -99,11 +99,11 @@ public record PinDto(
     PinKind Kind
 )
 {
-    public PinGeolocationDto? Geolocation;
-    public PinAuthorDto? Author;
-    public PinDetailsDto? Details;
-    public PinStatsDto? Stats;
-    public PinUgcDto? Ugc;
+    public PinGeolocationDto? Geolocation { get; init; }
+    public PinAuthorDto? Author { get; init; }
+    public PinDetailsDto? Details { get; init; }
+    public PinStatsDto? Stats { get; init; }
+    public PinUgcDto? Ugc { get; init; }
 
     public static PinDto FromEntity(Pin p) => new(
         p.Id,
@@ -117,6 +117,34 @@ public record PinDto(
     public PinDto SetDetails(Pin p) => this with { Details = PinDetailsDto.FromEntity(p) };
     public PinDto SetStats(PinStatsDto dto) => this with { Stats = dto };
     public PinDto SetUgc(Pin p) => this with { Ugc = PinUgcDto.FromEntity(p) };
+}
+
+public record CommentAuthorDto(
+    string Id,
+    string UserName,
+    string? AvatarUrl
+)
+{
+    public static CommentAuthorDto FromEntity(AppUser u) => new(
+        u.Id,
+        u.UserName ?? "",
+        u.UserProfile?.AvatarUrl
+    );
+}
+
+public record CommentDto(
+    int Id,
+    string Body,
+    DateTime CreatedAt,
+    CommentAuthorDto Author
+)
+{
+    public static CommentDto FromEntity(Comment c) => new(
+        c.Id,
+        c.Body,
+        c.CreatedAt,
+        CommentAuthorDto.FromEntity(c.AppUser)
+    );
 }
 
 #endregion // View Models
@@ -153,8 +181,8 @@ public record GetInViewportReqDto(
 
 public record GetFeedReqDto(
     FeedKind Kind,
-    DateTime LastTimestamp,
-    int MaxResults
+    int MaxResults = 20,
+    DateTime? LastTimestamp = null
 )
 { }
 
@@ -214,6 +242,12 @@ public record CreateWarnPinReqDto(
 )
 { }
 
+public record GetCommentsReqDto(
+    int PinId,
+    int MaxResults = 20,
+    DateTime? LastTimestamp = null
+);
+
 #endregion // Requests
 #region Responses
 
@@ -252,13 +286,10 @@ public record CreatePinResDto(
 )
 { }
 
+public record GetCommentsResDto(
+    IEnumerable<CommentDto> Comments,
+    bool HasMoreResults,
+    DateTime? LastTimestamp
+);
+
 #endregion // Responses
-
-/*
-
-LANDING
-
-
-
-
-*/

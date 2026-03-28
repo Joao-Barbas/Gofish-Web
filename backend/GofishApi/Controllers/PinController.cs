@@ -80,6 +80,11 @@ public class PinController : ControllerBase
             _ => throw new AppValidationException("UnknownFeedKind", "Feed kind must be Discovery, Friends, or Groups")
         };
 
+        if (dto.LastTimestamp is not null)
+        {
+            query = query.Where(p => p.CreatedAt < dto.LastTimestamp.Value);
+        }
+
         query = query.Include(p => p.Votes);
         query = query.Include(p => p.AppUser)
             .ThenInclude(u => u.UserProfile);
@@ -89,7 +94,6 @@ public class PinController : ControllerBase
         query = query.Include(p => p.Groups);
 
         query = query
-            .Where(p => p.CreatedAt < dto.LastTimestamp)
             .OrderByDescending(p => p.CreatedAt)
             .ThenByDescending(p => p.Id)
             .Take(maxResults + 1);
@@ -295,6 +299,39 @@ public class PinController : ControllerBase
 
     #endregion // Votes
     #region Comments
+
+    [HttpGet]
+    public async Task<IActionResult> GetComments([FromQuery] GetCommentsReqDto dto)
+    {
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+        var pinExists = await _db.Pins.AnyAsync(p => p.Id == dto.PinId);
+
+        if (!pinExists)
+        {
+            return NotFound();
+        }
+
+        var query = _db.Comments.Where(c => c.PinId == dto.PinId);
+
+        if (dto.LastTimestamp is not null)
+        {
+            query = query.Where(c => c.CreatedAt < dto.LastTimestamp.Value);
+        }
+
+        var results = await query
+            .Include(c => c.AppUser).ThenInclude(u => u.UserProfile)
+            .OrderByDescending(c => c.CreatedAt)
+            .ThenByDescending(c => c.Id)
+            .Take(maxResults + 1)
+            .ToListAsync();
+
+        var hasMore = results.Count > maxResults;
+        var page = results.Take(maxResults).ToList();
+        var data = page.Select(CommentDto.FromEntity);
+        var lastTime = hasMore ? page[^1].CreatedAt : (DateTime?)null;
+
+        return Ok(new GetCommentsResDto(data, hasMore, lastTime));
+    }
 
     [HttpPost]
     public async Task<IActionResult> CreateComment([FromBody] CreateCommentReqDto dto)
