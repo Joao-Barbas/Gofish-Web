@@ -9,33 +9,28 @@ import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinn
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { GroupSettingsPopoverComponent } from '@gofish/features/forum/children/groups/components/group-settings-popover/group-settings-popover.component';
 import { GroupMembersPlaceholderComponent } from "./components/group-members-placeholder/group-members-placeholder.component";
-
-
-type NavPath = {
-  path: string;
-  label: string;
-}
+import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-groups',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, LoadingSpinnerComponent, GroupSettingsPopoverComponent],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, LoadingSpinnerComponent, GroupSettingsPopoverComponent, SlicePipe],
   templateUrl: './groups.component.html',
   styleUrl: './groups.component.css',
 })
 export class GroupsComponent {
-  private readonly route= inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
   private readonly groupsService = inject(GroupsService);
   protected groupData = signal<GetGroupResDTO | null>(null);
   protected postActive: boolean = true;
-
+  protected isExpanded = false;
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');
-    if(!id) return;
+    if (!id) return;
 
     const dto: GetGroupReqDTO = {
       groupId: Number(id),
-      dataRequest : {
+      dataRequest: {
         includeMembers: true,
         includePosts: true
       }
@@ -52,6 +47,9 @@ export class GroupsComponent {
 
   }
 
+  toggleExpand() {
+    this.isExpanded = !this.isExpanded
+  }
 
 
 }
