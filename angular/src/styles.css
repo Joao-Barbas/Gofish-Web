@@ -326,8 +326,17 @@ h6 {
  * Testing required
  */
 
+.gf-ugc-username {
+  /* Define max-width according to your needs */
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .gf-ugc-text {
-  word-break: break-all;
+  word-break: break-word;
+  overflow: hidden;
 }
 
 .user-output-no-overflow {

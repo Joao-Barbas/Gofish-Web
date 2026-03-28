@@ -1,9 +1,6 @@
-import { filter } from 'rxjs';
 import { Component, inject, signal, WritableSignal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { Path } from '@gofish/shared/constants';
-import { GetGroupDTO, GetGroupReqDTO, GetGroupResDTO, GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
+import { GetGroupReqDTO, GetGroupResDTO } from '@gofish/shared/dtos/group.dto';
 import { GroupsService } from '@gofish/shared/services/groups.service';
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 import { PopupService } from '@gofish/shared/services/popup.service';
@@ -18,7 +15,7 @@ type NavPath = {
 
 @Component({
   selector: 'app-groups',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, LoadingSpinnerComponent, GroupSettingsPopoverComponent, GroupMembersPlaceholderComponent],
+  imports: [RouterLink, RouterOutlet, LoadingSpinnerComponent, GroupSettingsPopoverComponent, GroupMembersPlaceholderComponent],
   templateUrl: './groups.component.html',
   styleUrl: './groups.component.css',
 })

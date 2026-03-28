@@ -1,0 +1,173 @@
+:host {
+  display: flex;
+  width: 100%;
+}
+
+:host {
+  display: flex;
+  width: 100%;
+}
+
+.stats-section-wrapper {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.quick-header-wrapper {
+  max-width: 45%;
+  gap: 10px;
+  padding-left: 5px;
+
+  & span {
+    font-family: var(--gf-font-date);
+    font-size: 24px;
+  }
+  & svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.gf-card-plain {
+  box-shadow: none;
+  border-radius: var(--gf-16);
+  padding: var(--gf-16);
+}
+
+.pin-report-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.pin-author-date-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.report-panel-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-author-name {
+  font-size: var(--gf-14);
+}
+
+.top-button-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.pin-report-panel-top-button {
+  width: fit-content;
+  border: none;
+  background: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+
+  & svg {
+    width: 20px;
+    color: var(--gf-dark-text);
+  }
+}
+
+.pin-report-panel-body {
+  display: flex;
+  gap: 10px;
+}
+
+.pin-report-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reported-pin-post {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px;
+}
+
+.warning-banner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--gf-16);
+
+  background: var(--gf-dark-bg-dark);
+
+  border-radius: var(--gf-16);
+  width: 100%;
+  gap: var(--gf-12);
+
+  & img {
+    width: var(--gf-48);
+    height: var(--gf-48);
+  }
+}
+
+.description {
+  font-size: var(--gf-12);
+  font-family: var(--gf-font-ugc);
+
+  width: 100%;
+  min-width: 0;
+
+  white-space: normal;
+  word-break: break-word;
+
+  overflow: hidden;
+}
+
+.reported-pin-post-image {
+  height: 17.875rem;
+  border-radius: var(--gf-12);
+  width: 100%;
+  max-height: 100%;
+
+  object-fit: cover;
+}
+
+.badge-wrapper {
+  display: flex;
+  gap: 4px;
+}
+
+.gf-badge-pin-preview {
+  width: fit-content;
+  height: 32px;
+  padding: 8px 16px;
+
+  border-radius: 25px;
+
+  display: flex;
+  gap: 4px;
+
+  font-size: 12px;
+
+  & svg {
+    color: var(--gf-dark-text-muted);
+    width: var(--gf-16);
+    height: var(--gf-16);
+  }
+}
+
+
+
+.pin-report-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+

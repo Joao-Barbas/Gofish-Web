@@ -45,7 +45,6 @@
 .badge-wrapper {
   display: flex;
   gap: 4px;
-  justify-items: end;
 }
 
 .gf-badge-pin-preview {
