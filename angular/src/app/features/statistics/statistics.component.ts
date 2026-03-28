@@ -14,7 +14,7 @@ type NavPath = {
 
 @Component({
   selector: 'app-statistics',
-  imports: [RouterLink, RouterLinkActive, FlatHeaderComponent, FooterComponent, RouterOutlet],
+  imports: [FlatHeaderComponent, FooterComponent, RouterOutlet],
   templateUrl: './statistics.component.html',
   styleUrl: './statistics.component.css',
 })

@@ -14,7 +14,7 @@ import { PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
 
 @Component({
   selector: 'app-stats-reports',
-  imports: [GfCardPinPreviewComponent, RouterLink],
+  imports: [GfCardPinPreviewComponent],
   templateUrl: './stats-reports.component.html',
   styleUrl: './stats-reports.component.css',
 })

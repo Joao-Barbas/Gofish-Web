@@ -12,7 +12,6 @@ import { AvatarService } from '@gofish/shared/services/avatar.service';
 @Component({
   selector: 'gf-group-list-card',
   imports: [
-    AsyncButtonComponent,
     RouterLink,
   ],
   templateUrl: './group-list-card.component.html',

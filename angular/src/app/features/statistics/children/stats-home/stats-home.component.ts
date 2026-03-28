@@ -5,7 +5,7 @@ import { GfCardQuickAccessComponent } from "../../components/gf-card-quick-acces
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, GfCardQuickViewComponent, GfCardQuickAccessComponent],
+  imports: [ GfCardQuickViewComponent, GfCardQuickAccessComponent],
   templateUrl: './stats-home.component.html',
   styleUrl: './stats-home.component.css',
 })

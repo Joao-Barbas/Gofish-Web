@@ -95,3 +95,13 @@
   color: #007bff !important;
   font-weight: bold;
 }
+
+.create-group-wrapper {
+  gap: var(--gf-10);
+}
+.gf-badge-create-group-btn {
+  & svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}

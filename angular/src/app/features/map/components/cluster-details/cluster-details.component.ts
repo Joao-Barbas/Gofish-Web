@@ -15,7 +15,7 @@ import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.d
 
 @Component({
   selector: 'app-cluster-details',
-  imports: [TimeAgoPipe, JsonPipe, PinDetailPanelComponent, ClickOutsideDirective],
+  imports: [PinDetailPanelComponent, ClickOutsideDirective],
   templateUrl: './cluster-details.component.html',
   styleUrl: './cluster-details.component.css',
 })

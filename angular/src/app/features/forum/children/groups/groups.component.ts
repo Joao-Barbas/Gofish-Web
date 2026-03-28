@@ -18,14 +18,13 @@ type NavPath = {
 
 @Component({
   selector: 'app-groups',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, LoadingSpinnerComponent, GroupSettingsPopoverComponent, GroupMembersPlaceholderComponent],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, LoadingSpinnerComponent, GroupSettingsPopoverComponent],
   templateUrl: './groups.component.html',
   styleUrl: './groups.component.css',
 })
 export class GroupsComponent {
   private readonly route= inject(ActivatedRoute);
   private readonly groupsService = inject(GroupsService);
-  private readonly popupService = inject(PopupService);
   protected groupData = signal<GetGroupResDTO | null>(null);
   protected postActive: boolean = true;
 
@@ -53,12 +52,6 @@ export class GroupsComponent {
 
   }
 
-  openOptions() {
-    this.popupService.open('group-options');
-  }
 
-  toggleTab(bool: boolean) {
-    this.postActive = bool;
-  }
 
 }

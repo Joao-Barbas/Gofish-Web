@@ -13,7 +13,7 @@ import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.d
 
 @Component({
   selector: 'app-my-groups',
-  imports: [RouterLink, RouterOutlet, ClickOutsideDirective],
+  imports: [RouterLink],
   templateUrl: './my-groups.component.html',
   styleUrl: './my-groups.component.css',
 })

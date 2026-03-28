@@ -8,7 +8,7 @@ import { PostsService } from '@gofish/shared/services/posts.service';
 
 @Component({
   selector: 'app-group-posts-placeholder',
-  imports: [ForumPostComponent],
+  imports: [],
   templateUrl: './group-posts-placeholder.component.html',
   styleUrl: './group-posts-placeholder.component.css',
 })
