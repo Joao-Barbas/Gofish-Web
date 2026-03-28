@@ -24,7 +24,7 @@ export class ForumComponent {
   public navPaths: NavPath[] = [
     { path: Path.FORUM_DISCOVER, label: 'Discover' },
     { path: Path.FORUM_FROM_FRIENDS, label: 'From Friends' },
-    { path: Path.FORUM_MY_GROUPS, label: 'My Groups' },
+    { path: Path.FORUM_MY_GROUPS, label: 'My Crews' },
   ];
 
 
