@@ -2,7 +2,7 @@
 
   <!-- Seção de seleção de localização -->
   <div class="d-flex flex-column align-items-center gf-gap-12">
-
+    <p>1. First select your coordinates</p>
     <!-- Botões de escolha de localização -->
     <div class="d-flex flex-row gf-gap-16 pin-types-showcase justify-content-center">
       <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="onCreateByGeolocation()">
@@ -49,9 +49,12 @@
 
   </div>
 
+  @if (coords) {
   <hr>
   <!-- Seção de tipos de pin -->
+   <p class="d-flex flex-column align-items-center">2. Then choose your pin kind</p>
   <div class="d-flex flex-row gf-gap-8 pin-types-showcase justify-content-center">
+
     <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="createWarnPin()">
       <button class="pin-img-btn warn"></button>
       <label class="pin-name">Warning</label>
@@ -67,4 +70,5 @@
       <label class="pin-name">Catch</label>
     </div>
   </div>
+  }
 </div>
