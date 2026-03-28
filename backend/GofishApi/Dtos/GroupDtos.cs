@@ -26,51 +26,6 @@ public record GroupMemberDto(
     );
 }
 
-public record GroupPostPinDto(
-    PinKind Kind,
-    VisibilityLevel Visibility,
-    DateTime? ExpiresAt,
-    GetPinsPinDetailsDTO Details,
-    GetPinsGeolocationDTO Geolocation
-)
-{
-    public static GroupPostPinDto FromEntity(Pin pin) => new(
-        pin.Kind,
-        pin.Visibility,
-        pin.ExpiresAt,
-        GetPinsPinDetailsDTO.FromPin(pin),
-        GetPinsGeolocationDTO.FromPin(pin)
-    );
-}
-
-public record GroupPostDto(
-    int Id,
-    string? Body,
-    string? ImageUrl,
-    DateTime CreatedAt,
-    int Score,
-    int CommentCount,
-    VoteKind? UserVote,
-    GroupMemberDto Author,
-    GroupPostPinDto Pin
-)
-{
-    public static GroupPostDto FromEntity(Post post, GroupUser groupUser, string userId) => new(
-        post.Id,
-        post.Body,
-        post.ImageUrl,
-        post.CreatedAt,
-        post.PostVotes.Sum(v => (int)v.Value),
-        post.CommentCount,
-        post.PostVotes
-            .Where(v => v.UserId == userId)
-            .Select(v => (VoteKind?)v.Value)
-            .FirstOrDefault(),
-        GroupMemberDto.FromEntity(groupUser),
-        GroupPostPinDto.FromEntity(post.Pin)
-    );
-}
-
 #endregion // View Models
 #region GetGroupMembers
 
@@ -92,7 +47,7 @@ public record GetGroupMembersResDto(
 #endregion // GetGroupMembers
 #region GetGroupPosts
 
-public record GetGroupPostsReqDto(
+public record GetGroupPinsReqDto(
     int GroupId,
     PinKind? Kind = null,
     int MaxResults = 20,
@@ -100,11 +55,56 @@ public record GetGroupPostsReqDto(
 )
 { }
 
-public record GetGroupPostsResDto(
-    IEnumerable<GroupPostDto> Posts,
+public record GetGroupPinsResDto(
+    IEnumerable<PinDto> Pins,
     bool HasMoreResults,
     DateTime? LastTimestamp
 )
 { }
 
 #endregion // GetGroupPosts
+
+// public record GroupPostPinDto(
+//     PinKind Kind,
+//     VisibilityLevel Visibility,
+//     DateTime? ExpiresAt,
+//     GetPinsPinDetailsDTO Details,
+//     GetPinsGeolocationDTO Geolocation
+// )
+// {
+//     public static GroupPostPinDto FromEntity(Pin pin) => new(
+//         pin.Kind,
+//         pin.Visibility,
+//         pin.ExpiresAt,
+//         GetPinsPinDetailsDTO.FromPin(pin),
+//         GetPinsGeolocationDTO.FromPin(pin)
+//     );
+// }
+
+// public record GroupPinDto(
+//     int Id,
+//     string? Body,
+//     string? ImageUrl,
+//     DateTime CreatedAt,
+//     int Score,
+//     int CommentCount,
+//     VoteKind? UserVote,
+//     GroupMemberDto Author,
+//     GroupPostPinDto Pin
+// )
+// {
+//     public static GroupPinDto FromEntity(Pin pin, GroupUser groupUser, string userId) => new(
+//         pin.Id,
+//         pin.Body,
+//         pin.ImageUrl,
+//         pin.CreatedAt,
+//         pin.Votes.Sum(v => (int)v.Value),
+//         pin.CommentCount,
+//         pin.Votes
+//             .Where(v => v.UserId == userId)
+//             .Select(v => (VoteKind?)v.Value)
+//             .FirstOrDefault(),
+//         GroupMemberDto.FromEntity(groupUser),
+//         GroupPostPinDto.FromEntity(pin)
+//     );
+// }

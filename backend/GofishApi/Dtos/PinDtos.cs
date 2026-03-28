@@ -1,36 +1,14 @@
 ﻿using Azure.Core;
 using GofishApi.Enums;
 using GofishApi.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net.NetworkInformation;
+using System.Text.Json.Serialization;
 
 namespace GofishApi.Dtos;
 
 #region View Models
-
-/*
-    [Key]
-    public required int Id { get; set; }
-
-    [ForeignKey(nameof(Pin))]
-    public required int PinId { get; set; }
-
-    [ForeignKey(nameof(AppUser))]
-    public required string UserId { get; set; }
-
-    public required VoteKind Value { get; set; }
-
-    public required DateTime CreatedAt { get; set; }
- */
-
-public record VoteDto() { }
-
-
-
-
-
-
-
 
 public record PinGeolocationDto (
     double Latitude,
@@ -73,9 +51,12 @@ public record PinAuthorDto (
     string UserName,
     string FirstName,
     string LastName,
-    string? AvatarUrl
-    // rank
-    // catch points (???)
+    string? AvatarUrl,
+    // Rank (??)
+    // Catch points (???)
+
+    // Group context
+    GroupRole? GroupRole = null
 )
 {
     public static PinAuthorDto FromEntity(AppUser u, UserProfile up) => new(
@@ -84,6 +65,14 @@ public record PinAuthorDto (
         u.FirstName ?? "",
         u.LastName ?? "",
         up.AvatarUrl);
+
+    public static PinAuthorDto FromEntity(AppUser u, UserProfile up, GroupUser gu) => new(
+        u.Id,
+        u.UserName ?? "",
+        u.FirstName ?? "",
+        u.LastName ?? "",
+        up?.AvatarUrl,
+        gu.Role);
 }
 
 public record PinStatsDto(
@@ -124,6 +113,7 @@ public record PinDto(
 
     public PinDto SetGeolocation(Pin p) => this with { Geolocation = PinGeolocationDto.FromEntity(p) };
     public PinDto SetAuthor(AppUser u, UserProfile up) => this with { Author = PinAuthorDto.FromEntity(u, up) };
+    public PinDto SetAuthor(AppUser u, UserProfile up, GroupUser gu) => this with { Author = PinAuthorDto.FromEntity(u, up, gu) };
     public PinDto SetDetails(Pin p) => this with { Details = PinDetailsDto.FromEntity(p) };
     public PinDto SetStats(PinStatsDto dto) => this with { Stats = dto };
     public PinDto SetUgc(Pin p) => this with { Ugc = PinUgcDto.FromEntity(p) };

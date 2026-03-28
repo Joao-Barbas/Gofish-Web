@@ -15,15 +15,15 @@ public class UserProfile
     [MaxLength(2000)]
     public string? AvatarUrl { get; set; }
 
-    public required int FishingScore { get; set; } = 0;
+    public int CatchPoints { get; set; } = 0;
 
-    public required DateTime JoinedAt { get; set; } = DateTime.Now;
+    public DateTime JoinedAt { get; set; } = DateTime.Now;
     
-    public required DateTime LastActiveAt { get; set; } = DateTime.Now;
+    public DateTime LastActiveAt { get; set; } = DateTime.Now;
 
-    public required int WeeklyStreak { get; set; } = 0;
+    public int WeeklyStreak { get; set; } = 0;
     
-    public required int MaxWeeklyStreak { get; set; } = 0;
+    public int MaxWeeklyStreak { get; set; } = 0;
     
     public DateTime? LastUpdateAt { get; set; }
 
