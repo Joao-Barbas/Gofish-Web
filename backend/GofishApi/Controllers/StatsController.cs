@@ -1,5 +1,6 @@
 ﻿using GofishApi.Data;
 using GofishApi.Dtos;
+using GofishApi.Enums;
 using GofishApi.Models;
 using GofishApi.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -30,7 +31,7 @@ public class StatsController : ControllerBase
         _userManager = userManager;
     }
 
-    [HttpGet()]
+    [HttpGet]
     public async Task<IActionResult> GetPinsCreatedToday()
     {
         var today = DateTime.UtcNow.Date;
@@ -42,7 +43,7 @@ public class StatsController : ControllerBase
         return Ok(new GetPinsCreatedTodayResDTO(value));
     }
 
-    [HttpGet()]
+    [HttpGet]
     public async Task<IActionResult> GetReportsWaitingReview()
     {
         var pinReports = await _db.PinReports.CountAsync();
@@ -53,7 +54,7 @@ public class StatsController : ControllerBase
         return Ok(new GetReportsWaitingReviewResDTO(total));
     }
 
-    [HttpGet()]
+    [HttpGet]
     public async Task<IActionResult> GetAverageVotesPerPin(
     [FromQuery] int month,
     [FromQuery] int year)
@@ -75,7 +76,7 @@ public class StatsController : ControllerBase
         return Ok(new GetAveragePublishedPinsResDTO(average));
     }
 
-    [HttpGet()]
+    [HttpGet]
     public async Task<IActionResult> GetAveragePublishedPins(
         [FromQuery] int month,
         [FromQuery] int year)
@@ -96,7 +97,7 @@ public class StatsController : ControllerBase
         return Ok(new GetAveragePublishedPinsResDTO(value));
     }
 
-    [HttpGet()]
+    [HttpGet]
     public async Task<IActionResult> GetActiveUsers()
     {
         var lastMonth = DateTime.UtcNow.AddDays(-30);
@@ -110,7 +111,13 @@ public class StatsController : ControllerBase
         return Ok(new GetActiveUsersResDTO(value));
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetPinsWith15PositiveVotes()
+    {
+        var value = await _db.Pins
+            .CountAsync(p => p.Votes.Count(v => v.Value == VoteKind.Upvote) >= 15);
 
-
+        return Ok(new GetPinsWith15PositiveVotesResDTO(value));
+    }
 }
 
