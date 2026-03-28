@@ -92,8 +92,8 @@
 }
 
 .group-image {
-  width: 6rem;
-  width: 6rem;
+  height: 3rem;
+  width: 3rem;
   border-radius: var(--gf-8);
 }
 
@@ -165,3 +165,7 @@
   color: var(--gf-dark-text);
 
 }
+
+.clickable {
+  cursor: pointer;
+  }
