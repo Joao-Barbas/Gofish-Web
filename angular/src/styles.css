@@ -318,28 +318,23 @@ h6 {
   user-select: none;
 }
 
+
+/*
+ * Prevents user generated text from
+ * overflowing Post cards or Post comments if they are too big
+ *
+ * Testing required
+ */
+
+.gf-ugc-text {
+  word-break: break-all;
+}
+
 .user-output-no-overflow {
   max-width: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/*
- * Retroactively preventing user generated text from
- * overflowing Post cards or Post comments
- */
-
-/* Assim? */
-
-/* gf-ugc-text, <---------- */
-/* gf-ugc-name, <---------- */
-/* gf-ucg-description { <---------- */
-
-[class$="-text"],
-[class$="-name"],
-[class$="-description"] {
-  word-break: normal;
 }
 
 /* Layouts */
@@ -598,6 +593,17 @@ h6 {
 }
 
 /* Avatars */
+.gf-big-avatar {
+  width: var(--gf-42);
+  height: var(--gf-42);
+}
+
+.gf-small-avatar {
+  width: var(--gf-32);
+  height: var(--gf-32);
+}
+
+
 /* Tooltips */
 /* Loaders */
 /* Alerts / Toasts */
@@ -906,6 +912,12 @@ h6 {
 /* Pointer events */
 .gf-no-events { pointer-events: none !important; }
 .gf-do-events { pointer-events: auto; }
+
+/* Cursor */
+
+.gf-generic-clickable-wrapper {
+  cursor: pointer;
+}
 
 /*
 
