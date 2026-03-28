@@ -7,7 +7,7 @@ namespace GofishApi.Models;
 public class Vote
 {
     [Key]
-    public required int Id { get; set; }
+    public int Id { get; set; }
 
     [ForeignKey(nameof(Pin))]
     public required int PinId { get; set; }

@@ -370,5 +370,4 @@ public class UserController : ControllerBase
     // TODO: Get group invites
 
     #endregion // Groups
-
 }

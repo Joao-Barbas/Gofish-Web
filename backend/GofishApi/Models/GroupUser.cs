@@ -5,14 +5,15 @@ namespace GofishApi.Models;
 
 public class GroupUser
 {
-    public DateTime JoinedAt { get; set; }
-    public GroupRole Role { get; set; }
-
     [ForeignKey(nameof(AppUser))]
     public required string UserId { get; set; }
 
     [ForeignKey(nameof(Group))]
     public required int GroupId { get; set; }
+
+    public DateTime JoinedAt { get; set; }
+
+    public GroupRole Role { get; set; }
 
     // Navigation
 

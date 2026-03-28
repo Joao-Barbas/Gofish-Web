@@ -16,7 +16,7 @@ public abstract class Pin
     #region Scalar Properties
 
     [Key]
-    public required int Id { get; set; }
+    public int Id { get; set; }
 
     [ForeignKey(nameof(AppUser))]
     public required string UserId { get; set; }

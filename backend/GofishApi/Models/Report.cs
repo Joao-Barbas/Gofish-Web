@@ -17,7 +17,7 @@ public interface IReport
 public sealed class PinReport : IReport
 {
     [Key]
-    public required int Id { get; set; }
+    public int Id { get; set; }
 
     [ForeignKey(nameof(AppUser))]
     public required string UserId { get; set; }
@@ -45,7 +45,7 @@ public sealed class PinReport : IReport
 public sealed class CommentReport : IReport
 {
     [Key]
-    public required int Id { get; set; }
+    public int Id { get; set; }
 
     [ForeignKey(nameof(AppUser))]
     public required string UserId { get; set; }

@@ -18,7 +18,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<Friendship> Friendships { get; set; }
     public DbSet<GroupInvite> GroupInvites { get; set; }
     public DbSet<Pin> Pins { get; set; }
-    public DbSet<Vote> Vote { get; set; }
+    public DbSet<Vote> Votes { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Group> Groups { get; set; }
     public DbSet<GroupPin> GroupPins { get; set; }
