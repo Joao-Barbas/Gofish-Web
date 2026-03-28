@@ -140,7 +140,7 @@
 
 .post-interaction-wrapper {
   width: fit-content;
-  height: fit-content;
+  height: 36px;
 
   padding: var(--gf-6) var(--gf-8);
   gap: var(--gf-8);
@@ -203,7 +203,7 @@
 
 .post-interaction-comment-wrapper {
   cursor: pointer;
-  height: 100%;
+
 }
 
 /* Go To Post */
@@ -399,3 +399,5 @@
 
   text-decoration: underline;
 }
+
+
