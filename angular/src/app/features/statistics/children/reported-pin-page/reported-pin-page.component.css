@@ -39,6 +39,8 @@
 .pin-report-panel {
   display: flex;
   flex-direction: column;
+
+  gap: 10px;
 }
 
 .pin-author-date-wrapper {
@@ -272,29 +274,29 @@
   gap: 10px;
 }
 
-.report-type-tag {
-  border-radius: 16px;
-  background-color: var(--gf-dark-bg-dark);
-  width: fit-content;
-
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  gap: 4px;
-
-  padding: 6px 16px;
-
-  & svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  & span {
-    font-size: 12px;
-  }
-}
-
 .report-body-text {
   font-size: 10px;
   font-family: var(--gf-font-date);
+}
+
+/* Bottom */
+
+.report-panel-bottom {
+}
+
+.report-action-buttons-wrapper {
+  display: flex;
+  gap: 10px;
+  padding: 4px;
+}
+
+.gf-tag-report-actions {
+  border: none;
+
+  &.success {
+    background-color: var(--gf-success-bg);
+  }
+  &.reject {
+    background-color: var(--gf-danger-bg);
+  }
 }
