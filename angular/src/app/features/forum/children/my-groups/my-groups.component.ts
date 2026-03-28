@@ -10,10 +10,11 @@ import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { toast } from 'ngx-sonner';
 import { GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
 import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
+import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-my-groups',
-  imports: [RouterLink],
+  imports: [RouterLink, SlicePipe],
   templateUrl: './my-groups.component.html',
   styleUrl: './my-groups.component.css',
 })

@@ -39,7 +39,6 @@
 @for(group of groups()?.groups; track group.id) {
 
 <!-- Group Listing -->
-
 <div class="d-flex flex-column group-list-wrapper clickable" [routerLink]="[Path.FORUM_MY_GROUPS, group.id]">
 
   <!-- #Comp my-group-listing-card -->
@@ -68,12 +67,19 @@
       </div>
 
       <!-- Description -->
-      <p class="group-description">{{group.description}}</p>
+      <div class="group-description">
+        <p class="mb-2 description">
+          {{(group.description| slice:0:120) + (group.description!.length > 120 ? '...' : '')}}
+        </p>
+
+        @if (group.description!.length > 120) {
+        <button type="button" class="see-more"> See more </button>
+        }
+      </div>
+
     </div>
 
   </div>
-
-
 </div>
 }
 
