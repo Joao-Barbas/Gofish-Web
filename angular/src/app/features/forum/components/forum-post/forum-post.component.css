@@ -190,3 +190,24 @@
 
   text-decoration: underline;
 }
+
+.post-description-box.expanded {
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+}
+
+.post-description-box {
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+}

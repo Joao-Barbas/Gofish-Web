@@ -67,11 +67,11 @@
     <!-- Post Description -->
 
     <div class="post-description">
-      <p class="mb-2 description" [class.expanded]="isExpanded">
-        {{ isExpanded ? post.body : (post.body | slice:0:120) + (post.body!.length > 120 ? '...' : '')}}
+      <p class="mb-2 post-description-box" [class.expanded]="isExpanded">
+        {{ post.body}}
       </p>
 
-      @if (post.body!.length > 120) {
+      @if (post.body!.length > 200) {
       <button type="button" class="see-more" (click)="toggleExpand()">
         {{ isExpanded ? 'See less' : 'See more' }}
       </button>
