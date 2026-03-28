@@ -7,7 +7,7 @@
 }
 
 .enable-location-select {
-  & > label {
+  &>label {
     color: var(--gf-dark-text);
     font-size: 10pt;
   }
@@ -28,7 +28,7 @@
 .pin-types-showcase .pin-type-item {
   font-size: 10pt;
 
-  & > .pin-img-btn {
+  &>.pin-img-btn {
     border-style: none;
     min-height: 48px;
     min-width: 72px;
@@ -38,6 +38,11 @@
 
     border: 2px solid transparent;
     box-sizing: border-box;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: transparent;
+
 
     &:hover {
       border-color: white;
@@ -50,8 +55,15 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .modal-info-box {
@@ -75,19 +87,15 @@
   background-color: var(--gf-dark-bg-dark);
   color: var(--gf-dark-text);
   border: 1px solid var(--gf-primary);
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.05) inset;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
 }
 
 .coords-div {
   cursor: not-allowed;
 }
 
-.warn {
-  background-color: #F97316;
+.pin-img-btn:hover {
+  transform: scale(1.1);
 }
-.info {
-  background-color: #3B82F6;
-}
-.catch {
-  background-color: #16A34A;
-}
+
+

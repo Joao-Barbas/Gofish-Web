@@ -1,3 +1,4 @@
+import { PinKind } from "@gofish/shared/models/pin.model";
 import { environment } from "environments/environment";
 
 export const DEFAULT_AVATAR = 'assets/vectors/avatar-template-dark.clr.svg';
@@ -99,3 +100,9 @@ export const Api = {
   UserSecurity: buildApi('UserSecurity'),
   Post:         buildApi('Post'),
 } as const;
+
+export const PIN_CONFIG = [
+  { kind: PinKind.CATCH, color: '#16A34A', iconUrl: 'assets/images/pins-icons/Kind=Catch.png', icon: 'pin-catch', kindString: 'Catch' },
+  { kind: PinKind.INFORMATION, color: '#3B82F6', iconUrl: 'assets/images/pins-icons/Kind=Information.png', icon: 'pin-Information', kindString: 'Information' },
+  { kind: PinKind.WARNING, color: '#F97316', iconUrl: 'assets/images/pins-icons/Kind=Warning.png', icon: 'pin-Warning',  kindString: 'Warning'}
+] as const;

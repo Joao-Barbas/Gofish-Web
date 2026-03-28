@@ -52,23 +52,20 @@
   @if (coords) {
   <hr>
   <!-- Seção de tipos de pin -->
-   <p class="d-flex flex-column align-items-center">2. Then choose your pin kind</p>
+  <p class="d-flex flex-column align-items-center">2. Then choose your pin kind</p>
   <div class="d-flex flex-row gf-gap-8 pin-types-showcase justify-content-center">
 
-    <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="createWarnPin()">
-      <button class="pin-img-btn warn"></button>
-      <label class="pin-name">Warning</label>
-    </div>
+    @for (config of pinConfigs; track config.kind) {
+    <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="createPin(config.kindString.toLowerCase())">
 
-    <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="createInfoPin()">
-      <button class="pin-img-btn info"></button>
-      <label class="pin-name">Information</label>
-    </div>
+      <button class="pin-img-btn" [style.background-image]="'url(' + config.iconUrl + ')'"
+        [style.border-color]="config.color">
+      </button>
 
-    <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="createCatchPin()">
-      <button class="pin-img-btn catch"></button>
-      <label class="pin-name">Catch</label>
+      <label class="pin-name">{{ config.kindString }}</label>
     </div>
+    }
+
   </div>
   }
 </div>
