@@ -207,7 +207,7 @@ public class PinController : ControllerBase
                 CreatedAt = DateTime.UtcNow,
                 UserId = userId,
                 GroupPosts = dto.GroupIds?
-                    .Select(gId => new GroupPost { GroupId = gId })
+                    .Select(gId => new GroupPin { GroupId = gId })
                     .ToList() ?? []
             }
         };
@@ -256,7 +256,7 @@ public class PinController : ControllerBase
                 CreatedAt = DateTime.UtcNow,
                 UserId = userId,
                 GroupPosts = dto.GroupIds?
-                    .Select(gId => new GroupPost { GroupId = gId })
+                    .Select(gId => new GroupPin { GroupId = gId })
                     .ToList() ?? []
             }
         };
@@ -300,7 +300,7 @@ public class PinController : ControllerBase
                 CreatedAt = DateTime.UtcNow,
                 UserId = userId,
                 GroupPosts = dto.GroupIds?
-                    .Select(gId => new GroupPost { GroupId = gId })
+                    .Select(gId => new GroupPin { GroupId = gId })
                     .ToList() ?? []
             }
         };

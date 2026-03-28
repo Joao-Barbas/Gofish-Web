@@ -16,50 +16,58 @@ public interface IReport
 
 public sealed class PinReport : IReport
 {
-    public int Id { get; set; }
+    [Key]
+    public required int Id { get; set; }
 
-    public PinReportReason Reason { get; set; }
-    public string ReasonText => Reason.GetDisplayName();
-    public DateTime CreatedAt { get; set; }
+    [ForeignKey(nameof(AppUser))]
+    public required string UserId { get; set; }
+
+    [ForeignKey(nameof(Pin))]
+    public required int PinId { get; set; }
+
+    public required PinReportReason Reason { get; set; }
+
+    public required DateTime CreatedAt { get; set; }
 
     [MaxLength(2000)]
     public string? Description { get; set; }
-
-    [ForeignKey(nameof(AppUser))]
-    public string UserId { get; set; } = default!;
-
-    [ForeignKey(nameof(Pin))]
-    public int PinId { get; set; }
 
     // Navigation 
 
     public AppUser AppUser { get; set; } = default!;
     public Pin Pin { get; set; } = default!;
 
+    // Computed
 
+    public string ReasonText => Reason.GetDisplayName();
 }
 
 public sealed class CommentReport : IReport
 {
-    public int Id { get; set; }
+    [Key]
+    public required int Id { get; set; }
 
-    public CommentReportReason Reason { get; set; }
-    public string ReasonText => Reason.GetDisplayName();
-    public DateTime CreatedAt { get; set; }
+    [ForeignKey(nameof(AppUser))]
+    public required string UserId { get; set; }
+
+    [ForeignKey(nameof(Comment))]
+    public required int CommentId { get; set; }
+
+    public required CommentReportReason Reason { get; set; }
+    
+    public required DateTime CreatedAt { get; set; }
 
     [MaxLength(2000)]
     public string? Description { get; set; }
 
-    [ForeignKey(nameof(AppUser))]
-    public string UserId { get; set; } = default!;
-
-    [ForeignKey(nameof(Comment))]
-    public int CommentId { get; set; }
-
     // Navigation 
 
     public AppUser AppUser { get; set; } = default!;
-    public PostComment Comment { get; set; } = default!;
+    public Comment Comment { get; set; } = default!;
+
+    // Computed
+
+    public string ReasonText => Reason.GetDisplayName();
 }
 
 
