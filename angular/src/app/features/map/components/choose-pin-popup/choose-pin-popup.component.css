@@ -27,27 +27,6 @@
 
 .pin-types-showcase .pin-type-item {
   font-size: 10pt;
-
-  &>.pin-img-btn {
-    border-style: none;
-    min-height: 48px;
-    min-width: 72px;
-    max-height: 48px;
-    max-width: 72px;
-    border-radius: 8px;
-
-    border: 2px solid transparent;
-    box-sizing: border-box;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-color: transparent;
-
-
-    &:hover {
-      border-color: white;
-    }
-  }
 }
 
 .animate-fade-in {
@@ -99,3 +78,25 @@
 }
 
 
+.pin-img-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  border: 2px solid;
+  cursor: pointer;
+
+  background-image:
+    var(--pin-icon),
+    url('/assets/images/backgroung-map.png');
+
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+
+  background-size: 60%, cover;
+
+  transition: transform 0.2s ease;
+}
+
+.pin-img-btn:hover {
+  transform: scale(1.05);
+}

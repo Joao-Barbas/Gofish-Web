@@ -56,9 +56,10 @@
   <div class="d-flex flex-row gf-gap-8 pin-types-showcase justify-content-center">
 
     @for (config of pinConfigs; track config.kind) {
-    <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="createPin(config.kindString.toLowerCase())">
+    <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item"
+      (click)="createPin(config.kindString.toLowerCase())">
 
-      <button class="pin-img-btn" [style.background-image]="'url(' + config.iconUrl + ')'"
+      <button class="pin-img-btn" [style.--pin-icon]="'url(' + config.iconUrl + ')'"
         [style.border-color]="config.color">
       </button>
 
