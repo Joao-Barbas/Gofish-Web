@@ -357,7 +357,7 @@ public class UserController : ControllerBase
             .FromEntity(g)
             .SetRole(g.GroupUsers.First(gu => gu.UserId == targetUserId).Role)
             .SetMemberQty(g.GroupUsers.Count)
-            .SetPostQty(g.Posts.Count))
+            .SetPinQty(g.Pins.Count))
         .ToListAsync();
 
         var hasMore = results.Count > maxResults;

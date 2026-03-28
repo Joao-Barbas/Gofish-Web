@@ -35,9 +35,7 @@ public record GetGroupDTO(
     string? ImageUrl,
     string? Description,
     int MemberCount,
-    int PostCount,
-    IReadOnlyCollection<GetPostsPostDTO>? Posts,
-    IReadOnlyCollection<GetGroupMemberDTO>? Members
+    int PostCount
 )
 {
     public static GetGroupDTO FromGroup(Group group, GroupDataRequestDTO? request) => new(
@@ -46,16 +44,7 @@ public record GetGroupDTO(
         group.AvatarUrl,
         group.Description,
         group.AppUsers?.Count ?? 0,
-        group.Posts?.Count ?? 0,
-        request?.IncludePosts ?? true ? group.Posts?
-            .OrderByDescending(p => p.CreatedAt)
-            .Select(p => GetPostsPostDTO.FromPost(p, null, null))
-            .ToList() : null,
-        request?.IncludeMembers ?? true
-            ? group.GroupUsers?
-                .Select(gu => GetGroupMemberDTO.FromGroupUser(gu))
-                .ToList()
-            : null
+        group.Pins?.Count ?? 0
     );
 
     #endregion

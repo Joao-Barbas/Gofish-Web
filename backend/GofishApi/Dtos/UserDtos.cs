@@ -179,7 +179,7 @@ public record UserGroupDto(
 
     public UserGroupDto SetRole(GroupRole role) => new(this) { Role = role };
     public UserGroupDto SetMemberQty(int memberQty) => new(this) { MemberQty = memberQty };
-    public UserGroupDto SetPostQty(int postQty) => new(this) { PostQty = postQty };
+    public UserGroupDto SetPinQty(int postQty) => new(this) { PostQty = postQty };
 }
      
 public record GetUserGroupReqDto(

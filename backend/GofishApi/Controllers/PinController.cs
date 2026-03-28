@@ -81,7 +81,8 @@ public class PinController : ControllerBase
         };
 
         query = query.Include(p => p.Votes);
-        query = query.Include(p => p.AppUser);
+        query = query.Include(p => p.AppUser)
+            .ThenInclude(u => u.UserProfile);
         query = query.Include(p => p.Comments)
             .ThenInclude(c => c.AppUser)      // TODO: Are these necessary?
             .ThenInclude(u => u.UserProfile); // TODO: Are these necessary?
