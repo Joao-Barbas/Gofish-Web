@@ -108,12 +108,12 @@
    * Values start at 1000+ to stay above bootstrap's z-index scale
    * See: https://getbootstrap.com/docs/5.0/layout/z-index/
    */
+  --gf-z-overlay: 990;
   --gf-z-dropdown: 1000;
   --gf-z-sticky: 1020;
   --gf-z-fixed: 1030;
   --gf-z-backdrop: 1040;
   --gf-z-modal: 1060;
-  --gf-z-overlay: 1067;
   --gf-z-popover: 1070; /* TODO: Change "popup" naming to "popover" project wide */
   --gf-z-tooltip: 1080;
 

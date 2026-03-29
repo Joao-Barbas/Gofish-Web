@@ -15,9 +15,9 @@
   font-weight: 900;
 }
 
-:host ::ng-deep app-flat-header .flat-header {
+/* :host ::ng-deep app-flat-header .flat-header {
   background: transparent;
-}
+} */
 
 .about-hero-bg {
   position: relative;
