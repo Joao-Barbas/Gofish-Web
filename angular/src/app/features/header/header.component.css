@@ -150,7 +150,7 @@
   }
 }
 
-@media (max-width: 36rem) {
+@media (max-width: 48rem) {
   :host(.flat),
   :host(.overlay) {
     .logo-holder .logo span {
