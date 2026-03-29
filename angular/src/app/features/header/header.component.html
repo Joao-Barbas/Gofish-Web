@@ -1,0 +1,49 @@
+<!-- header.component.html -->
+
+@switch (kind()) {
+@case ('flat') {
+  <header>
+    <div class="left">
+      <!-- Logo -->
+      <div class="logo-holder">
+        <a routerLink="/" class="logo">
+          <img src="/assets/images/logo-white-256.png">
+          <span class="gf-text-logo">GOFISH</span>
+        </a>
+      </div>
+      <!-- Nav -->
+      <nav class="nav-container">
+        <a
+          [routerLink]="'/'"
+          [routerLinkActiveOptions]="{exact: true}"
+          routerLinkActive="active"
+          class="text-slim dark-text-muted">
+          HOME
+        </a>
+        <a
+          [routerLink]="authService.isAuthenticated() ? '/map' : '/signin'"
+          routerLinkActive="active"
+          class="text-slim dark-text-muted">
+          MAP
+        </a>
+        <a
+          [routerLink]="authService.isAuthenticated() ? '/forum' : '/signin'"
+          routerLinkActive="active"
+          class="text-slim dark-text-muted">
+          FORUM
+        </a>
+        <a
+          [routerLink]="'/about-us'"
+          routerLinkActive="active"
+          class="text-slim dark-text-muted">
+          ABOUT US
+        </a>
+      </nav>
+    </div>
+    <div class="right">
+      <gf-header-actions></gf-header-actions>
+    </div>
+  </header>
+}
+@case ('overlay') {}
+}

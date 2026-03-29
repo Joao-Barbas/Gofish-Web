@@ -161,11 +161,12 @@
   --gf-space-xl: var(--gf-32);
 
   /* Container sizes */
-  --gf-container-xs: 28rem; /* 448px */
-  --gf-container-sm: 37rem; /* 592px */
-  --gf-container-md: 48rem; /* 768px */
-  --gf-container-lg: 61rem; /* 976px */
-  --gf-container-xl: 75rem; /* 1200px */
+  --gf-container-xs:  28rem; /* 448px */
+  --gf-container-sm:  37rem; /* 592px */
+  --gf-container-md:  48rem; /* 768px */
+  --gf-container-lg:  61rem; /* 976px */
+  --gf-container-xl:  75rem; /* 1200px */
+  --gf-container-xxl: 88rem; /* 1408px */
 
   /*
   ** Deprecated below
