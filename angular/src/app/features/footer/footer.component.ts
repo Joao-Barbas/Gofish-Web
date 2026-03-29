@@ -1,10 +1,12 @@
+// footer.component.ts
+
 import { Component, input } from '@angular/core';
 import { RouterLink } from "@angular/router";
 
 export type FooterVariant = 'big' | 'small' | 'none';
 
 @Component({
-  selector: 'app-footer', /* gf-footer */
+  selector: 'gf-footer',
   host: {
     '[class.big]': "variant() === 'big'",
     '[class.small]': "variant() === 'small'",

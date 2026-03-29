@@ -1,15 +1,15 @@
 import { filter, map } from 'rxjs';
 import { NgxSonnerToaster } from 'ngx-sonner';
-import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { HeaderComponent, HeaderVariant } from "@gofish/features/header/header.component";
-import { FooterVariant } from '@gofish/features/footer/footer.component';
+import { FooterVariant, FooterComponent } from '@gofish/features/footer/footer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgxSonnerToaster, HeaderComponent],
+  imports: [RouterOutlet, NgxSonnerToaster, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
