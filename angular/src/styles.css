@@ -108,6 +108,7 @@
    * Values start at 1000+ to stay above bootstrap's z-index scale
    * See: https://getbootstrap.com/docs/5.0/layout/z-index/
    */
+  --gf-z-overlay: 990;
   --gf-z-dropdown: 1000;
   --gf-z-sticky: 1020;
   --gf-z-fixed: 1030;
@@ -161,11 +162,12 @@
   --gf-space-xl: var(--gf-32);
 
   /* Container sizes */
-  --gf-container-xs: 28rem; /* 448px */
-  --gf-container-sm: 37rem; /* 592px */
-  --gf-container-md: 48rem; /* 768px */
-  --gf-container-lg: 61rem; /* 976px */
-  --gf-container-xl: 75rem; /* 1200px */
+  --gf-container-xs:  28rem; /* 448px */
+  --gf-container-sm:  37rem; /* 592px */
+  --gf-container-md:  48rem; /* 768px */
+  --gf-container-lg:  61rem; /* 976px */
+  --gf-container-xl:  75rem; /* 1200px */
+  --gf-container-xxl: 88rem; /* 1408px */
 
   /*
   ** Deprecated below
@@ -450,8 +452,9 @@ h6 {
   background-color: var(--gf-dark-bg);
   box-shadow: var(--gf-shadow-lift-sm);
   transition: box-shadow 0.15s ease;
-  z-index: var(--z-opens-overlay);
+  z-index: var(--gf-z-overlay);
   color: var(--gf-dark-text-muted);
+  transition: box-shadow .2s ease, color .2s ease;
 
   & > svg {
     width: 1.25rem;
@@ -816,6 +819,7 @@ h6 {
 .gf-my-20   { margin-top: var(--gf-20); margin-bottom: var(--gf-20); }
 .gf-my-24   { margin-top: var(--gf-24); margin-bottom: var(--gf-24); }
 .gf-my-32   { margin-top: var(--gf-32); margin-bottom: var(--gf-32); }
+.gf-my-64   { margin-top: var(--gf-64); margin-bottom: var(--gf-64); }
 .gf-my-auto { margin-top: auto; margin-bottom: auto; }
 
 .gf-ml-0    { margin-left: 0; }
