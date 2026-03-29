@@ -206,13 +206,16 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
         #endregion // CommentReport
 
-        // SeedUsers(builder);
-        // SeedCatchPin(builder);
-        // SeedInfoPin(builder);
-        // SeedWarnPin(builder);
+        SeedUsers(builder);
+        SeedCatchPin(builder);
+        SeedInfoPin(builder);
+        SeedWarnPin(builder);
+        SeedGroups(builder);
+        SeedPinReports(builder);
+        SeedVotes(builder);
+        SeedFriendships(builder);
     }
 
-    /*
     private static void SeedUsers(ModelBuilder builder)
     {
         var hasher = new PasswordHasher<AppUser>();
@@ -234,11 +237,13 @@ public class AppDbContext : IdentityDbContext<AppUser>
                 ConcurrencyStamp = $"seed-cstamp-{i}",
                 LockoutEnabled = false,
             };
+
             user.PasswordHash = hasher.HashPassword(user, "123456@");
             users.Add(user);
+
             profiles.Add(new UserProfile
             {
-                UserId = $"seed-player-{i}",
+                UserId = user.Id,
                 JoinedAt = now,
                 LastActiveAt = now,
                 LastUpdateAt = now
@@ -248,7 +253,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
         builder.Entity<AppUser>().HasData(users);
         builder.Entity<UserProfile>().HasData(profiles);
     }
-    private static void SeedCatchPin(ModelBuilder builder) 
+
+    private static void SeedCatchPin(ModelBuilder builder)
     {
         int pinId = 1;
 
@@ -256,19 +262,17 @@ public class AppDbContext : IdentityDbContext<AppUser>
         double baseLng = -8.8730;
         var createdAt = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
         var expiresAt = new DateTime(2026, 3, 11, 12, 0, 0, DateTimeKind.Utc);
-        var random = new Random();
+        var random = new Random(1);
 
         var catchPins = new List<CatchPin>();
-        var posts = new List<Post>();
 
         for (int i = 0; i < 10; i++)
         {
-            var id = pinId++;
             var userId = $"seed-player-{(i % 5) + 1}";
 
             catchPins.Add(new CatchPin
             {
-                Id = id,
+                Id = pinId++,
                 Kind = PinKind.Catch,
                 Visibility = VisibilityLevel.Public,
                 UserId = userId,
@@ -276,24 +280,17 @@ public class AppDbContext : IdentityDbContext<AppUser>
                 Longitude = baseLng + (i * (random.Next(1, 6) / 1000.0)),
                 CreatedAt = createdAt,
                 ExpiresAt = expiresAt,
-                Species = Species.Achiga,
-                Bait = Bait.Worm
-            });
-
-            posts.Add(new Post
-            {
-                Id = id,
                 Body = "body",
                 ImageUrl = "https://gofishstorage.blob.core.windows.net/post-images/0091b5cc-a77a-4b77-bb6d-c01d23b23ab5.png",
-                CreatedAt = createdAt,
-                UserId = userId
+                Species = Species.Achiga,
+                Bait = Bait.Worm
             });
         }
 
         builder.Entity<CatchPin>().HasData(catchPins);
-        builder.Entity<Post>().HasData(posts);
     }
-    private static void SeedInfoPin(ModelBuilder builder) 
+
+    private static void SeedInfoPin(ModelBuilder builder)
     {
         int pinId = 101;
 
@@ -301,44 +298,34 @@ public class AppDbContext : IdentityDbContext<AppUser>
         double baseLng = -8.8730;
         var createdAt = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
         var expiresAt = new DateTime(2026, 3, 11, 12, 0, 0, DateTimeKind.Utc);
-        var random = new Random();
+        var random = new Random(2);
 
         var infoPins = new List<InfoPin>();
-        var posts = new List<Post>();
-
 
         for (int i = 0; i < 10; i++)
         {
-            var id = pinId++;
             var userId = $"seed-player-{(i % 5) + 1}";
 
             infoPins.Add(new InfoPin
             {
-                Id = id,
+                Id = pinId++,
                 Kind = PinKind.Information,
                 Visibility = VisibilityLevel.Public,
-                AccessDifficulty = 0,
-                Seabed = Seabed.Sand,
                 UserId = userId,
                 Latitude = baseLat + (i * (random.Next(1, 6) / 1000.0)),
                 Longitude = baseLng - (i * (random.Next(1, 6) / 1000.0)),
                 CreatedAt = createdAt,
-                ExpiresAt = expiresAt
-            });
-
-            posts.Add(new Post
-            {
-                Id = id,
+                ExpiresAt = expiresAt,
                 Body = "body",
                 ImageUrl = null,
-                CreatedAt = createdAt,
-                UserId = userId
+                AccessDifficulty = 0,
+                Seabed = Seabed.Sand
             });
         }
 
         builder.Entity<InfoPin>().HasData(infoPins);
-        builder.Entity<Post>().HasData(posts);
     }
+
     private static void SeedWarnPin(ModelBuilder builder)
     {
         int pinId = 201;
@@ -347,42 +334,197 @@ public class AppDbContext : IdentityDbContext<AppUser>
         double baseLng = -8.8730;
         var createdAt = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
         var expiresAt = new DateTime(2026, 3, 11, 12, 0, 0, DateTimeKind.Utc);
-        var random = new Random();
+        var random = new Random(3);
 
         var warnPins = new List<WarnPin>();
-        var posts = new List<Post>();
-
 
         for (int i = 0; i < 10; i++)
         {
-            var id = pinId++;
             var userId = $"seed-player-{(i % 5) + 1}";
 
             warnPins.Add(new WarnPin
             {
-                Id = id,
+                Id = pinId++,
                 Kind = PinKind.Warning,
                 Visibility = VisibilityLevel.Public,
-                WarningKind = WarningKind.AlgaePresence,
                 UserId = userId,
                 Latitude = baseLat - (i * (random.Next(1, 6) / 1000.0)),
                 Longitude = baseLng + (i * (random.Next(1, 6) / 1000.0)),
                 CreatedAt = createdAt,
-                ExpiresAt = expiresAt
-            });
-
-            posts.Add(new Post
-            {
-                Id = id,
+                ExpiresAt = expiresAt,
                 Body = "Body",
                 ImageUrl = null,
-                CreatedAt = createdAt,
-                UserId = userId
+                WarningKind = WarningKind.AlgaePresence
             });
         }
 
         builder.Entity<WarnPin>().HasData(warnPins);
-        builder.Entity<Post>().HasData(posts);
     }
-    */
+
+    private static void SeedGroups(ModelBuilder builder)
+    {
+        var groups = new List<Group>();
+        var groupUsers = new List<GroupUser>();
+        var now = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
+
+        for (int i = 1; i <= 10; i++)
+        {
+            var name = $"Group {i}";
+            var ownerId = $"seed-player-{((i - 1) % 5) + 1}";
+
+            groups.Add(new Group
+            {
+                Id = i,
+                Name = name,
+                NormalizedName = name.ToUpper(),
+                Description = $"This is group {i} for fishing enthusiasts.",
+                AvatarUrl = $"https://picsum.photos/seed/group{i}/200/200",
+                CreatedAt = now
+            });
+
+            groupUsers.Add(new GroupUser
+            {
+                GroupId = i,
+                UserId = ownerId,
+                Role = GroupRole.Owner
+            });
+        }
+
+        builder.Entity<Group>().HasData(groups);
+        builder.Entity<GroupUser>().HasData(groupUsers);
+    }
+
+    private static void SeedPinReports(ModelBuilder builder)
+    {
+        var now = new DateTime(2026, 3, 5, 12, 0, 0, DateTimeKind.Utc);
+
+        var reports = new List<PinReport>
+    {
+        new PinReport
+        {
+            Id = 1,
+            UserId = "seed-player-1",
+            PinId = 1,
+            Reason = PinReportReason.Spam,
+            CreatedAt = now,
+            Description = "This pin looks like spam."
+        },
+        new PinReport
+        {
+            Id = 2,
+            UserId = "seed-player-2",
+            PinId = 101,
+            Reason = PinReportReason.Spam,
+            CreatedAt = now,
+            Description = "The information in this pin seems incorrect."
+        },
+        new PinReport
+        {
+            Id = 3,
+            UserId = "seed-player-3",
+            PinId = 201,
+            Reason = PinReportReason.DuplicatePin,
+            CreatedAt = now,
+            Description = "This pin contains inappropriate content."
+        }
+    };
+
+        builder.Entity<PinReport>().HasData(reports);
+    }
+
+    private static void SeedVotes(ModelBuilder builder)
+    {
+        var votes = new List<Vote>();
+        var now = new DateTime(2026, 3, 6, 12, 0, 0, DateTimeKind.Utc);
+
+        int id = 1;
+
+        // Vamos votar em alguns pins de cada tipo
+        var pinIds = new List<int>
+    {
+        1, 2, 3,       // CatchPins
+        101, 102, 103, // InfoPins
+        201, 202, 203  // WarnPins
+    };
+
+        var random = new Random(10);
+
+        foreach (var pinId in pinIds)
+        {
+            for (int u = 1; u <= 5; u++)
+            {
+                // opcional: nem todos os users votam em todos os pins
+                if (random.Next(0, 2) == 0) continue;
+
+                votes.Add(new Vote
+                {
+                    Id = id++,
+                    PinId = pinId,
+                    UserId = $"seed-player-{u}",
+                    Value = random.Next(0, 2) == 0 ? VoteKind.Upvote : VoteKind.Downvote,
+                    CreatedAt = now
+                });
+            }
+        }
+
+        builder.Entity<Vote>().HasData(votes);
+    }
+
+    private static void SeedFriendships(ModelBuilder builder)
+    {
+        var now = new DateTime(2026, 3, 7, 12, 0, 0, DateTimeKind.Utc);
+
+        var friendships = new List<Friendship>
+    {
+        new Friendship
+        {
+            Id = 1,
+            RequesterUserId = "seed-player-1",
+            ReceiverUserId = "seed-player-2",
+            State = FriendshipState.Accepted,
+            CreatedAt = now,
+            RepliedAt = now.AddHours(1)
+        },
+        new Friendship
+        {
+            Id = 2,
+            RequesterUserId = "seed-player-1",
+            ReceiverUserId = "seed-player-3",
+            State = FriendshipState.Accepted,
+            CreatedAt = now,
+            RepliedAt = now.AddHours(2)
+        },
+
+        new Friendship
+        {
+            Id = 3,
+            RequesterUserId = "seed-player-2",
+            ReceiverUserId = "seed-player-4",
+            State = FriendshipState.Pending,
+            CreatedAt = now,
+            RepliedAt = null
+        },
+        new Friendship
+        {
+            Id = 4,
+            RequesterUserId = "seed-player-5",
+            ReceiverUserId = "seed-player-1",
+            State = FriendshipState.Pending,
+            CreatedAt = now,
+            RepliedAt = null
+        },
+
+        new Friendship
+        {
+            Id = 5,
+            RequesterUserId = "seed-player-3",
+            ReceiverUserId = "seed-player-5",
+            State = FriendshipState.Refused,
+            CreatedAt = now,
+            RepliedAt = now.AddHours(3)
+        }
+    };
+
+        builder.Entity<Friendship>().HasData(friendships);
+    }
 }
