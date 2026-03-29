@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   min-width: calc(256rem / 16);
-  top: calc(100% + var(--gf-4));
+  top: calc(100% + var(--gf-8));
   right: 0;
   padding: var(--gf-8);
   border-radius: var(--gf-12);
