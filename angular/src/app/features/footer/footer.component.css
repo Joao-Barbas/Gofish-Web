@@ -122,6 +122,7 @@ BIG VARIANT
   font-size: 0.875rem;
   color: #c0c0c0;
   transition: color 150ms ease;
+  width: fit-content;
 }
 
 .footer-links nav a:hover {
@@ -240,7 +241,11 @@ SMALL VARIANT
 
   .footer-links {
     text-align: center;
-    margin: auto;
+
+    nav a {
+      margin: auto;
+      width: auto;
+    }
   }
 
   .footer-contact {
