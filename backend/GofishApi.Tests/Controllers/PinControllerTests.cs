@@ -88,6 +88,8 @@ public class PinControllerTests : IClassFixture<WebAppFactory>
         dto.Pins.Should().NotContain(p => p.Id == outsidePinId);
     }
 
+
+    //For now It inst working the line is commented
     [Fact]
     public async Task GetInViewport_DoesNotReturnExpiredPins()
     {
@@ -278,7 +280,7 @@ public class PinControllerTests : IClassFixture<WebAppFactory>
     public async Task GetFeed_ReturnsOk()
     {
         var body = new GetFeedReqDto(
-            Kind: FeedKind.Friends,
+            Kind: FeedKind.Discovery,
             MaxResults: 10,
             LastTimestamp: DateTime.UtcNow
         );
@@ -288,7 +290,7 @@ public class PinControllerTests : IClassFixture<WebAppFactory>
         var content = await res.Content.ReadAsStringAsync();
         Console.WriteLine(content);
 
-        res.StatusCode.Should().Be(HttpStatusCode.OK);
+        res.StatusCode.Should().Be(HttpStatusCode.OK, await res.Content.ReadAsStringAsync());
     }
 
     #endregion
@@ -356,14 +358,15 @@ public class PinControllerTests : IClassFixture<WebAppFactory>
 
         var body = new VoteReqDto(Value: VoteKind.Upvote);
 
-        var res = await _client.PostAsJsonAsync($"/api/Pin/Vote/{pinId}", body);
+        var res = await _client.PutAsJsonAsync($"/api/Pin/PutVote/{pinId}", body);
 
-        res.StatusCode.Should().Be(HttpStatusCode.OK);
+        var content = await res.Content.ReadAsStringAsync();
+        res.StatusCode.Should().Be(HttpStatusCode.OK, content);
 
         var dto = await res.Content.ReadFromJsonAsync<VoteResDto>();
         dto.Should().NotBeNull();
         dto!.NewScore.Should().Be(1);
-        dto.UserVote.Should().Be(VoteKind.Downvote);
+        dto.UserVote.Should().Be(VoteKind.Upvote);
     }
 
     [Fact]
