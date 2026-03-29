@@ -136,7 +136,7 @@
     <path d="M12 9v4" />
     <path d="M12 17h.01" />
   </svg>
-  <span>{{ getEnumDisplayName(warnTypeOptions, postData()!.warningKind!) }}</span>
+  <span>{{ getEnumDisplayName(warnTypeOptions, postData()!.details?.warningKind!) }}</span>
 </div>
 }
 @case (pinKind.INFORMATION) {
@@ -149,7 +149,7 @@
   </svg>
   <span>Info</span>
 </div>
-@if(postData()?.accessDifficulty !== null) {
+@if(postData()?.details?.accessDifficulty !== null) {
 <!-- <div class="banner">
   <img [src]="'assets/images/enum-images/info-images/accessDifficulty/' + postData()?.accessDifficulty + '.png'"
     class="image rounded-circle">
@@ -165,10 +165,10 @@
     <path d="M13 12h8" />
     <path d="M13 18h8" />
   </svg>
-  <span>{{ getEnumDisplayName(accessDifficultyOptions, postData()!.accessDifficulty!) }}</span>
+  <span>{{ getEnumDisplayName(accessDifficultyOptions, postData()!.details?.accessDifficulty!) }}</span>
 </div>
 }
-@if(postData()?.seabed) {
+@if(postData()?.details?.seabed) {
 <!-- <div class="banner">
   <img [src]="'assets/images/enum-images/info-images/species/' + postData()?.seabed + '.png'"
     class="image rounded-circle">
@@ -181,7 +181,7 @@
     <path d="M2 18h20" />
     <path d="M6 6c0-1.1.9-2 2-2h8a2 2 0 0 1 0 4H8a2 2 0 0 1-2-2Z" />
   </svg>
-  <span>{{ getEnumDisplayName(seaBedOptions, postData()!.seabed!) }}</span>
+  <span>{{ getEnumDisplayName(seaBedOptions, postData()!.details?.seabed!) }}</span>
 </div>
 
 }
@@ -196,7 +196,7 @@
   </svg>
   <span>Catch</span>
 </div>
-@if(postData()?.species) {
+@if(postData()?.details?.species) {
 <!-- <div class="banner">
   <img [src]="'assets/images/enum-images/catch-images/species/' + postData()?.species + '.png'"
     class="image rounded-circle">
@@ -213,10 +213,10 @@
     <path d="m10.46 7.26-1.46 2" />
     <circle cx="10" cy="12" r="2" />
   </svg>
-  <span>{{ getEnumDisplayName(speciesOptions,postData()!.species!) }}</span>
+  <span>{{ getEnumDisplayName(speciesOptions,postData()!.details?.species!) }}</span>
 </div>
 }
-@if(postData()?.bait) {
+@if(postData()?.details?.bait) {
 <!-- <div class="banner">
   <img [src]="'assets/images/enum-images/catch-images/bait/' + postData()?.bait + '.png'" class="image rounded-circle">
   <span class="type-text">Bait: {{getEnumDisplayName(baitOptions, postData()!.bait!)}}</span>
@@ -228,17 +228,17 @@
     <path d="M20.414 8.586 22 7" />
     <circle cx="19" cy="10" r="2" />
   </svg>
-  <span>{{ getEnumDisplayName(baitOptions, postData()!.bait!) }}</span>
+  <span>{{ getEnumDisplayName(baitOptions, postData()!.details?.bait!) }}</span>
 </div>
 }
-@if(postData()?.hookSize) {
+@if(postData()?.details?.hookSize) {
 <div class="d-flex align-items-center gf-badge-pin-type-and-extras">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
     stroke-linecap="round" stroke-linejoin="round">
     <path d="M20 11.5C20 16.75 13 22 12 22S4 16.75 4 11.5a8 8 0 0 1 16 0Z" />
     <path d="M12 2v4" />
   </svg>
-  <span>{{ postData()!.hookSize }}</span>
+  <span>{{ postData()!.details?.hookSize! }}</span>
 </div>
 }
 

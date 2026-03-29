@@ -1,11 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { ForumPostComponent } from "../../components/forum-post/forum-post.component";
 import { Router } from '@angular/router';
-import { GetPostsResDTO, GetPostsReqDTO } from '@gofish/shared/dtos/get-post.dto';
-import { PostsService } from '@gofish/shared/services/posts.service';
 import { GetFeedReqDTO, GetFeedResDTO } from '@gofish/shared/dtos/get-feed.dto';
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 import { PinService } from '@gofish/shared/services/pin.service';
+import { GetFeedReqDto, GetFeedResDto } from '@gofish/shared/dtos/pin.dto';
+import { FeedKind } from '@gofish/shared/enums/feed-kind.enum';
 
 @Component({
   selector: 'app-discover',
@@ -16,7 +16,7 @@ import { PinService } from '@gofish/shared/services/pin.service';
 export class DiscoverComponent {
   private readonly router = inject(Router);
   private readonly pinService = inject(PinService);
-  allFeedPosts = signal<GetFeedResDTO | null>(null);
+  allFeedPosts = signal<GetFeedResDto | null>(null);
   hasMoreResults = signal(true);
   private lastTimestamp: string = new Date().toISOString();
 
@@ -25,20 +25,14 @@ export class DiscoverComponent {
   }
 
   loadPosts() {
-    const request: GetFeedReqDTO = {
-      kind: 0,
-      dataRequest: {
-        includeAuthor: true,
-        includeGroups: true,
-        includeComments: true,
-        includeCoords: true,
-      },
-      lastTimestamp: this.lastTimestamp,
-      maxResults: 5
+    const request: GetFeedReqDto = {
+      kind: FeedKind.Discovery,
+      maxResults: 5,
+      lastTimestamp: this.lastTimestamp
     }
-    this.postService.getFeed(request).subscribe({
+    this.pinService.getFeed(request).subscribe({
       next: (res) => {
-        this.allFeedPosts.update(current => {
+        /* this.allFeedPosts.update(current => {
           if (!current) return res;
           // Verify if backend is not sending same posts
           const newPosts = res.posts.filter(newPost => !current.posts.some(currentPost => currentPost.id === newPost.id));
@@ -50,15 +44,23 @@ export class DiscoverComponent {
             ...res,
             posts: [...current!.posts, ...newPosts]
           };
+        }); */
+        this.allFeedPosts.update(current => {
+
+          this.hasMoreResults.set(res.hasMoreResults);
+
+          return {
+            ...res,
+            posts: [...current!.pins, ...res.pins]
+          };
         });
 
-        if (res.posts.length > 0) {
-          const lastPost = res.posts[res.posts.length - 1];
+        if (res.pins.length > 0) {
+          const lastPost = res.pins[res.pins.length - 1];
           this.lastTimestamp = lastPost.createdAt;
         } else {
           this.hasMoreResults.set(false);
         }
-        console.log('Foram carregados mais');
       },
       error: (err) => {
         console.log(err);

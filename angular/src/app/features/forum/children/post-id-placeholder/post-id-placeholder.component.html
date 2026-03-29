@@ -14,11 +14,11 @@
         Comment
       </button>
     </form>
-    @if (post?.commentCount) {
+    @if (comments()) {
     <gf-loading-spinner></gf-loading-spinner>
-    } @else if (post.commentCount == 0) {
+    } @else if (comments()?.comments?.length == 0) {
     }@else {
-    <app-post-comments [comments]="comments()"></app-post-comments>
+    <app-post-comments [comments]="comments()?.comments!"></app-post-comments>
     }
 
     }

@@ -181,6 +181,7 @@ export interface PinDto {
   details?: PinDetailsDto;
   stats?: PinStatsDto;
   ugc?: PinUgcDto;
+  comments?: CommentDto[];
 }
 
 export interface CommentAuthorDto {
@@ -210,6 +211,7 @@ export interface GetPinsDataRequestDto {
   includeStats?: boolean;
   includeUgc?: boolean;
   includeGroups?: boolean;
+  includeComments?: boolean;
 }
 
 

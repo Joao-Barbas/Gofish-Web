@@ -68,10 +68,10 @@
 
     <div class="post-description">
       <p class="mb-2 description" [class.expanded]="isExpanded">
-        {{ isExpanded ? post.body : (post.body | slice:0:120) + (post.body!.length > 120 ? '...' : '')}}
+        {{ isExpanded ? post.ugc : (post.ugc?.body| slice:0:120) + (post.ugc?.body!.length > 120 ? '...' : '')}}
       </p>
 
-      @if (post.body!.length > 120) {
+      @if (post.ugc?.body!.length > 120) {
       <button type="button" class="see-more" (click)="toggleExpand()">
         {{ isExpanded ? 'See less' : 'See more' }}
       </button>
@@ -79,7 +79,7 @@
     </div>
     @if (post.kind === pinKind.CATCH) {
     <div class="post-image-wrapper">
-      <img [src]="post.imageUrl" class="post-image">
+      <img [src]="post.ugc?.imageUrl" class="post-image">
     </div>
     }
     <!--  Banner (Pin Type ) -->
@@ -128,7 +128,7 @@
             d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
         </svg>
 
-        <span class="post-stats post-fishing-points">{{ post.commentCount }}</span>
+        <span class="post-stats post-fishing-points">{{ post.stats?.commentCount }}</span>
       </button>
 
       <!-- Share button -->

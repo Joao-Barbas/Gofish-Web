@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, CreatePinResDTO, GetPinsReqDTO, PinDataResDTO, GetPinsResDTO, GetPinsReqDto, GetPinsResDto, GetFeedReqDto, GetFeedResDto, VoteReqDto, VoteResDto, CreateCommentReqDto, CreateCommentResDto } from '@gofish/shared/dtos/pin.dto';
+import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, CreatePinResDTO, GetPinsReqDTO, PinDataResDTO, GetPinsResDTO, GetPinsReqDto, GetPinsResDto, GetFeedReqDto, GetFeedResDto, VoteReqDto, VoteResDto, CreateCommentReqDto, CreateCommentResDto, GetCommentsReqDto, GetCommentsResDto, GetInViewportResDto } from '@gofish/shared/dtos/pin.dto';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { Api } from '@gofish/shared/constants';
 import { VotePostDTO, VotePostResDTO } from '@gofish/shared/dtos/vote-post.dto';
@@ -29,8 +29,8 @@ export class PinService {
     return this.http.delete<void>(Api.Pin.action(`DeletePin/${id}`));
   }
 
-  getInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number): Observable<ViewportPinsResDTO> {
-    return this.http.get<ViewportPinsResDTO>(Api.Pin.action('GetInViewport'), {
+  getInViewport(minLat: number, minLng: number, maxLat: number, maxLng: number): Observable<GetInViewportResDto> {
+    return this.http.get<GetInViewportResDto>(Api.Pin.action('GetInViewport'), {
       params: { minLat, minLng, maxLat, maxLng }
     });
   }
@@ -61,6 +61,10 @@ export class PinService {
 
   createComment(dto: CreateCommentReqDto): Observable<CreateCommentResDto> {
     return this.http.post<CreateCommentResDto>(Api.Pin.action("CreateComment"), dto);
+  }
+
+  getComments(dto: GetCommentsReqDto): Observable<GetCommentsResDto> {
+    return this.http.post<GetCommentsResDto>(Api.Pin.action("GetComments"), dto);
   }
 
   enumeratePinType = () => this.http.get<EnumDTO[]>(Api.Enums.action('PinKind'));

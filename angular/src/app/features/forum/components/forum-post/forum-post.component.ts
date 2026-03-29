@@ -9,6 +9,7 @@ import { PinService } from '@gofish/shared/services/pin.service';
 import { Path } from '@gofish/shared/constants';
 import { SlicePipe } from '@angular/common';
 import { AvatarService } from '@gofish/shared/services/avatar.service';
+import { PinDto } from '@gofish/shared/dtos/pin.dto';
 
 @Component({
   selector: 'app-forum-post',
@@ -24,7 +25,7 @@ export class ForumPostComponent {
   readonly Path = Path;
   userName = this.authService.getUserName();
   isAdmin = this.authService.isAdmin();
-  postData = input<GetPostsPostDTO | null>(null);
+  postData = input<PinDto | null>(null);
   pinKind = PinKind;
   currentVote = signal<number | null>(null);
   score = signal<number | null>(null);
@@ -35,14 +36,14 @@ export class ForumPostComponent {
     const post = this.postData();
     if(!post) return;
 
-    this.score.set(post.score ?? 1000);
-    this.currentVote.set(post?.userVote ?? null);
+    this.score.set(post.stats?.score ?? 1000);
+    this.currentVote.set(post.stats?.currentUserVote ?? null);
     console.log(this.postData());
   }
 
   goToPin() {
-    const lat = this.postData()?.coords?.latitude;
-    const lng = this.postData()?.coords?.longitude;
+    const lat = this.postData()?.geolocation?.latitude;
+    const lng = this.postData()?.geolocation?.longitude;
     if (!lat || !lng) {
       console.log('coords null');
       return;

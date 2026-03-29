@@ -4,7 +4,7 @@ import { ForumPostComponent } from "@gofish/features/forum/components/forum-post
 import { GetGroupPostsReqDTO, GetGroupPostsResDTO } from '@gofish/shared/dtos/group.dto';
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { GroupsService } from '@gofish/shared/services/groups.service';
-import { PostsService } from '@gofish/shared/services/posts.service';
+
 
 @Component({
   selector: 'app-group-posts-placeholder',

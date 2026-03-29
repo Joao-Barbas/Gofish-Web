@@ -9,7 +9,7 @@ import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinn
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { toast } from 'ngx-sonner';
 import { PinService } from '@gofish/shared/services/pin.service';
-import { CreateCommentReqDto, GetPinsReqDto, PinDto } from '@gofish/shared/dtos/pin.dto';
+import { CommentDto, CreateCommentReqDto, GetCommentsReqDto, GetCommentsResDto, GetPinsReqDto, PinDto } from '@gofish/shared/dtos/pin.dto';
 
 @Component({
   selector: 'app-post-id-placeholder',
@@ -27,7 +27,7 @@ export class PostIdPlaceholderComponent {
   id: string | null = null;
   post = signal<PinDto | null>(null);
   isSubmitting = false;
-  comments = signal<GetPostsCommentDTO[]>([]);
+  comments = signal<GetCommentsResDto | null>(null);
 
   commentForm = this.fb.group({
     body: ['', [Validators.required, Validators.maxLength(100)]]
@@ -56,15 +56,27 @@ export class PostIdPlaceholderComponent {
     this.pinService.getPins(dto).subscribe({
       next: (res) => {
         this.post.set(res.pins[0]);
-        this.comments.set(res.pins[0].comments!);
       },
       error: (err) => {
         console.log(err);
       }
     });
 
-
+    const req: GetCommentsReqDto = {
+      pinId: Number(this.id),
+      maxResults: 5,
+    }
+    this.pinService.getComments(req).subscribe({
+      next: (res) => {
+        this.comments.set(res);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
+
+  // LOAD MORE
 
   submitComment() {
     if (this.commentForm.invalid || this.isSubmitting) {

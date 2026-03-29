@@ -11,7 +11,7 @@ import { PreviewMarkerService } from '@gofish/features/map/services/preview-mark
 import { MarkerRegistryService } from '@gofish/features/map/services/marker-registry.service';
 import { PinDetailPanelComponent } from './components/pin-detail-panel/pin-detail-panel.component';
 import { OverlayHeaderComponent } from '@gofish/features/header/overlay-header/overlay-header.component';
-import { ViewportPinsResDTO, ViewportPinDTO, PinDataResDTO, GeoLocationDTO } from '@gofish/shared/dtos/pin.dto';
+import { ViewportPinsResDTO, ViewportPinDTO, PinDataResDTO, GeoLocationDTO, PinDto } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { PopupService } from '@gofish/shared/services/popup.service';
@@ -29,7 +29,7 @@ import { ClusterDetailsComponent } from '@gofish/features/map/components/cluster
 import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 
 
-const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21uY2NtZjdrMHpsYjJwcXlsNWdpM2pzaSJ9.M0UieuxBdBlA67zriIvU4w';
 
 @Component({
   selector: 'app-map',
@@ -65,7 +65,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   protected selectedPins = signal<PinDataResDTO[]>([]);
 
   private map!: mapboxgl.Map;
-  allPins = signal<ViewportPinDTO[]>([]);
+  allPins = signal<PinDto[]>([]);
   private querySubscription?: Subscription;
   private queryValues: UrlQuery | null = null;
   move: boolean = false;
@@ -337,8 +337,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.pinService.getInViewport(bounds.getSouth(), bounds.getWest(), bounds.getNorth(), bounds.getEast())
       .subscribe({
-        next: (res: ViewportPinsResDTO) => {
-          this.allPins.set(res?.pins);
+        next: (res) => {
+          this.allPins.set(res.pins);
           this.mapLayers.updateLayers(this.map, this.allPins);
         },
         error: (err: HttpErrorResponse) => console.error('Error loading pins in viewport:', err)

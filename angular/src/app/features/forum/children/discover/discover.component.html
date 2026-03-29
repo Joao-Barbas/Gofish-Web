@@ -1,6 +1,6 @@
 @if(allFeedPosts()) {
 
-@for (post of allFeedPosts()?.posts; track post.id) {
+@for (post of allFeedPosts()?.pins; track post.id) {
 <app-forum-post [postData]="post"></app-forum-post>
 }
 

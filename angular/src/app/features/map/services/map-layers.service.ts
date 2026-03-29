@@ -1,6 +1,6 @@
 import { Injectable, WritableSignal } from '@angular/core';
 import { PIN_CONFIG } from '@gofish/shared/constants';
-import { ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
+import { GetInViewportResDto, PinDto, ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
 import { PinKind } from '@gofish/shared/models/pin.model';
 
 
@@ -10,7 +10,7 @@ import { PinKind } from '@gofish/shared/models/pin.model';
 })
 export class MapLayersService {
   protected readonly pinConfigs = PIN_CONFIG;
-  updateLayers(map: mapboxgl.Map, allPins: WritableSignal<ViewportPinDTO[]>): void {
+  updateLayers(map: mapboxgl.Map, allPins: WritableSignal<PinDto[]>): void {
     this.loadPinIcons(map);
     this.pinConfigs.forEach(({ kind, color, icon }) => {
       const pinsOfKind = allPins().filter(pin => pin.kind === kind);
@@ -20,7 +20,7 @@ export class MapLayersService {
         type: 'FeatureCollection',
         features: pinsOfKind.map(pin => ({
           type: 'Feature',
-          geometry: { type: 'Point', coordinates: [pin.longitude, pin.latitude] },
+          geometry: { type: 'Point', coordinates: [pin.geolocation!.longitude, pin.geolocation!.latitude] },
           properties: { id: pin.id, kind: pin.kind }
         }))
       };
