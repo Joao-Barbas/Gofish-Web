@@ -11,7 +11,7 @@ export interface GetUserProfileResDTO {
   firstName?: string;
   lastName?: string;
   userName?: string;
-  fishingScore: number;
+  catchPoints: number;
   bio?: string;
   avatarUrl?: string;
   joinedAt: string;

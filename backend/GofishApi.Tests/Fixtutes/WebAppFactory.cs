@@ -56,6 +56,7 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
         using var scope = Services.CreateScope();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         var existingUser = new AppUser
         {
@@ -67,7 +68,20 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
             EmailConfirmed = true
         };
 
-        await userManager.CreateAsync(existingUser, "Password123!");
+        var result = await userManager.CreateAsync(existingUser, "Password123!");
+
+        if (result.Succeeded)
+        {
+            db.UserProfiles.Add(new UserProfile
+            {
+                UserId = existingUser.Id,
+                JoinedAt = DateTime.UtcNow,
+                LastActiveAt = DateTime.UtcNow,
+                LastUpdateAt = DateTime.UtcNow
+            });
+
+            await db.SaveChangesAsync();
+        }
     }
 
     public Task DisposeAsync() => Task.CompletedTask;

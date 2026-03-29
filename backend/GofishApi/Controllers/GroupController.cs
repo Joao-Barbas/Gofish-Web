@@ -21,13 +21,13 @@ namespace GofishApi.Controllers;
 [ApiController]
 public class GroupController : ControllerBase
 {
-    private readonly ILogger<PostController> _logger;
+    private readonly ILogger<GroupController> _logger;
     private readonly AppDbContext _db;
     private readonly UserManager<AppUser> _userManager;
     private readonly IBlobStorageService _blobStorage;
 
     public GroupController(
-        ILogger<PostController> logger,
+        ILogger<GroupController> logger,
         AppDbContext db,
         UserManager<AppUser> userManager,
         IBlobStorageService blobStorage
@@ -43,8 +43,6 @@ public class GroupController : ControllerBase
     [HttpPost("GetGroup")]
     public async Task<IActionResult> GetGroup([FromBody] GetGroupReqDTO dto)
     {
-        // TODO: Visibility level is not being accounted for yet
-
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
         if (user is null) return Unauthorized();
@@ -55,26 +53,20 @@ public class GroupController : ControllerBase
         {
             query = query
                 .Include(g => g.GroupUsers)
-                    .ThenInclude(gu => gu.AppUser)
-                        .ThenInclude(u => u.UserProfile)
+                .ThenInclude(gu => gu.AppUser)
+                .ThenInclude(u => u.UserProfile)
                 .Include(g => g.GroupUsers);
-                    // .ThenInclude(gu => gu.Role);
+                // .ThenInclude(gu => gu.Role);
         }
-
         if (dto.DataRequest?.IncludePosts ?? true)
         {
             query = query
-                .Include(g => g.Posts)
-                    .ThenInclude(p => p.Pin)
-                .Include(g => g.Posts)
-                    .ThenInclude(p => p.PostVotes);
+                .Include(g => g.Pins)
+                .ThenInclude(p => p.Votes);
         }
-        var group = await query.FirstOrDefaultAsync(g => g.Id == dto.GroupId);
 
-        if (group is null)
-        {
-            return NotFound();
-        }
+        var group = await query.FirstOrDefaultAsync(g => g.Id == dto.GroupId);
+        if (group is null) return NotFound();
 
         var data = GetGroupDTO.FromGroup(group, dto.DataRequest);
         return Ok(new GetGroupResDTO(data));
@@ -174,34 +166,31 @@ public class GroupController : ControllerBase
                 .Where(gi => gi.GroupId == groupId)
                 .ToListAsync();
 
-            var groupPosts = await _db.GroupPosts
+            var groupPins = await _db.GroupPins
                 .Where(gp => gp.GroupId == groupId)
                 .ToListAsync();
 
-            var postIds = groupPosts
-                .Select(gp => gp.PostId)
+            var pinIds = groupPins
+                .Select(gp => gp.PinId)
                 .Distinct()
                 .ToList();
 
-            var posts = await _db.Posts
-                .Include(p => p.Pin)
-                .Where(p => postIds.Contains(p.Id))
+            var pins = await _db.Pins
+                .Where(p => pinIds.Contains(p.Id))
                 .ToListAsync();
 
-            foreach (var post in posts)
+            foreach (var pin in pins)
             {
-                var groupCount = await _db.GroupPosts
-                    .CountAsync(gp => gp.PostId == post.Id);
-
+                var groupCount = await _db.GroupPins.CountAsync(gp => gp.PinId == pin.Id);
                 if (groupCount == 1)
                 {
-                    post.Pin.Visibility = VisibilityLevel.Private;
+                    pin.Visibility = VisibilityLevel.Private;
                 }
             }
 
             _db.GroupUsers.RemoveRange(memberships);
             _db.GroupInvites.RemoveRange(invites);
-            _db.GroupPosts.RemoveRange(groupPosts);
+            _db.GroupPins.RemoveRange(groupPins);
             _db.Groups.Remove(group);
 
             await _db.SaveChangesAsync();
@@ -231,12 +220,10 @@ public class GroupController : ControllerBase
         var groups = await _db.Groups
             .Where(g => g.GroupUsers.Any(gu => gu.UserId == userId))
             .Include(g => g.GroupUsers)
-                .ThenInclude(gu => gu.AppUser)
-                    .ThenInclude(u => u.UserProfile)
-            .Include(g => g.Posts)
-                .ThenInclude(p => p.Pin)
-            .Include(g => g.Posts)
-                .ThenInclude(p => p.PostVotes)
+            .ThenInclude(gu => gu.AppUser)
+            .ThenInclude(u => u.UserProfile)
+            .Include(g => g.Pins)
+            .ThenInclude(p => p.Votes)
             .ToListAsync();
 
         var data = groups
@@ -429,10 +416,10 @@ public class GroupController : ControllerBase
     }
 
     #endregion // Members
-    #region Posts
+    #region Pins
 
-    [HttpGet("GetGroupPosts")]
-    public async Task<IActionResult> GetGroupPosts([FromQuery] GetGroupPostsReqDto dto)
+    [HttpGet("GetGroupPins")]
+    public async Task<IActionResult> GetGroupPins([FromQuery] GetGroupPinsReqDto dto)
     {
         var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
@@ -443,38 +430,46 @@ public class GroupController : ControllerBase
             return NotFound();
         }
 
-        var query = _db.Posts.Where(p => p.Groups.Any(g => g.Id == dto.GroupId));
+        var query = _db.Pins.Where(p => p.Groups.Any(g => g.Id == dto.GroupId));
 
         if (dto.Kind is not null)
         {
-            query = query.Where(p => p.Pin.Kind == dto.Kind);
+            query = query.Where(p => p.Kind == dto.Kind);
         }
         if (dto.LastTimestamp is not null)
         {
             query = query.Where(p => p.CreatedAt < dto.LastTimestamp.Value);
         }
 
-        var results = await query
-        .Include(p => p.Pin)
-        .Include(p => p.PostVotes)
-        .Include(p => p.AppUser).ThenInclude(u => u.UserProfile)
-        .Include(p => p.AppUser).ThenInclude(u => u.GroupUsers)
-        .Include(p => p.Comments)
-        .OrderByDescending(p => p.CreatedAt)
-        .ThenByDescending(p => p.Id)
-        .Take(maxResults + 1)
-        .ToListAsync();
+        query = query.Include(p => p.Votes);
+        query = query.Include(p => p.AppUser)
+            .ThenInclude(u => u.UserProfile);
+        query = query.Include(p => p.Comments)
+            .ThenInclude(c => c.AppUser)      // TODO: Are these necessary?
+            .ThenInclude(u => u.UserProfile); // TODO: Are these necessary?
+        query = query.Include(p => p.Groups);
 
-        var hasMore = results.Count > maxResults;
-        var page = results.Take(maxResults).ToList();
-        var data = page.Select(p =>
-        {
-            var authorGroupUser = p.AppUser.GroupUsers.First(gu => gu.GroupId == dto.GroupId);
-            return GroupPostDto.FromEntity(p, authorGroupUser, userId);
-        });
-        var lastTime = hasMore ? page[^1].CreatedAt : (DateTime?)null;
+        query = query
+            .OrderByDescending(p => p.CreatedAt)
+            .ThenByDescending(p => p.Id)
+            .Take(maxResults + 1);
 
-        return Ok(new GetGroupPostsResDto(data, hasMore, lastTime));
+        var pins = await query.Select(p => PinDto.FromEntity(p)
+            .SetGeolocation(p)
+            .SetAuthor(p.AppUser, p.AppUser.UserProfile)
+            .SetDetails(p)
+            .SetUgc(p)
+            .SetStats(new(
+                p.Votes.Where(v => v.UserId == userId).Select(v => (VoteKind?)v.Value).FirstOrDefault(),
+                p.Votes.Sum(v => (int)v.Value),
+                p.Comments.Count)))
+            .ToListAsync();
+
+        var hasMore = pins.Count > maxResults;
+        var paginatedPins = pins.Take(maxResults).ToList();
+        var lastTimestamp = hasMore ? paginatedPins[^1].CreatedAt : (DateTime?)null;
+
+        return Ok(new GetGroupPinsResDto(paginatedPins, hasMore, lastTimestamp));
     }
 
     #endregion // Posts

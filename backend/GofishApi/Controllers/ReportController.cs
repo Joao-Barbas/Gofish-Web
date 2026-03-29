@@ -72,7 +72,7 @@ public class ReportController : ControllerBase
         var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
         if (user is null) return Unauthorized();
 
-        var commentExists = await _db.PostComments.AnyAsync(p => p.Id == dto.CommentId);
+        var commentExists = await _db.Comments.AnyAsync(p => p.Id == dto.CommentId);
         if (!commentExists)
             return NotFound("Pin not found");
 
