@@ -141,5 +141,17 @@ public class StatsController : ControllerBase
 
         return Ok(new GetSuccessRateOfRequestsDTO(successRate));
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetNewUsersToday()
+    {
+        var today = DateTime.UtcNow.Date;
+        var tomorrow = today.AddDays(1);
+
+        var value = await _userManager.Users
+            .CountAsync(u => u.CreatedAt >= today && u.CreatedAt < tomorrow);
+
+        return Ok(new GetNewUsersTodayResDTO(value));
+    }
 }
 

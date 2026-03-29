@@ -22,6 +22,9 @@ public class AppUser : IdentityUser
     [DefaultValue(TwoFactorMethod.None)]
     public TwoFactorMethod TwoFactorMethod { get; set; } = TwoFactorMethod.None;
 
+    [PersonalData]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
     #endregion // Scalar
     #region Navigation
 

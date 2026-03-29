@@ -32,6 +32,6 @@ public record GetDailyUserSatisfactionAverageDTO(
     int UserSatisfactionAverage
 );
 
-public record GetPinDensityByLocation(
-    int PinDensityByLocation
+public record GetNewUsersTodayResDTO(
+    int UsersRegisteredToday
 );
