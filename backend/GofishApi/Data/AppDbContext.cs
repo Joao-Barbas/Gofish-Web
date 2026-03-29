@@ -27,6 +27,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<PinReport> PinReports { get; set; }
     public DbSet<CommentReport> CommentReports { get; set; }
     public DbSet<RequestLogs> RequestLogs { get; set; }
+    public DbSet<Ratings> Ratings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -206,6 +207,18 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .OnDelete(DeleteBehavior.Cascade);
 
         #endregion // CommentReport
+        #region Ratings
+
+        builder.Entity<Ratings>()
+            .HasKey(r => r.UserId);
+
+        builder.Entity<Ratings>()
+            .HasOne(r => r.AppUser)
+            .WithOne(u => u.Rating)
+            .HasForeignKey<Ratings>(r => r.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        #endregion
 
         SeedUsers(builder);
         SeedCatchPin(builder);
