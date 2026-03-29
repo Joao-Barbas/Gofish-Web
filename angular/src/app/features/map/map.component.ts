@@ -61,8 +61,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   pickingOnMap = false;
   selectedCoords = signal<Coords | null>(null);
-  protected selectedPin = signal<PinDataResDTO | null>(null);
-  protected selectedPins = signal<PinDataResDTO[]>([]);
+  protected selectedPin = signal<PinDto | null>(null);
+  protected selectedPins = signal<PinDto[]>([]);
 
   private map!: mapboxgl.Map;
   allPins = signal<PinDto[]>([]);
