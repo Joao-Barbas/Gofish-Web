@@ -239,6 +239,39 @@ public class GroupController : ControllerBase
         return Ok(new GetUserGroupsResDTO(data));
     }
 
+    [HttpGet("SearchGroups")]
+    public async Task<IActionResult> SearchGroups([FromQuery] SearchGroupsReqDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(dto.Query) || dto.Query.Length < 2)
+        {
+            return Ok(new SearchGroupsResDto([], false, null));
+        }
+
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 50);
+        var normalizedQuery = dto.Query.ToUpper();
+
+        var query = _db.Groups.Where(g => g.NormalizedName.Contains(normalizedQuery));
+
+        if (dto.LastGroupName is not null)
+        {
+            query = query.Where(g => g.NormalizedName.CompareTo(dto.LastGroupName.ToUpper()) > 0);
+        }
+
+        var results = await query
+            .Include(g => g.GroupUsers)
+            .Include(g => g.GroupPins)
+            .OrderBy(g => g.NormalizedName)
+            .Take(maxResults + 1)
+            .ToListAsync();
+
+        var hasMore = results.Count > maxResults;
+        var page = results.Take(maxResults).ToList();
+        var data = page.Select(SearchGroupDto.FromEntity);
+        var lastGroupName = hasMore ? page[^1].NormalizedName : null;
+
+        return Ok(new SearchGroupsResDto(data, hasMore, lastGroupName));
+    }
+
     #region ManageMembers
 
     [Authorize]

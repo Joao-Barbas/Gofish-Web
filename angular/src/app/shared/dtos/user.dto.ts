@@ -3,6 +3,26 @@
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 import { GroupRole } from "@gofish/shared/enums/group-role.enum";
 
+export interface SearchUserDTO {
+  id: string;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string | null;
+}
+
+export interface SearchUsersReqDTO {
+  query: string;
+  maxResults?: number;
+  lastUsername?: string;
+}
+
+export interface SearchUsersResDTO {
+  users: SearchUserDTO[];
+  hasMoreResults: boolean;
+  lastUsername: string | null;
+}
+
 export interface GetUserReqDTO {
   // Unused
 }

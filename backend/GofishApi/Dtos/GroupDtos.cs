@@ -26,7 +26,45 @@ public record GroupMemberDto(
     );
 }
 
+public record SearchGroupDto(
+    int Id,
+    string Name,
+    string? Description,
+    string? AvatarUrl,
+    int PostCount,
+    int MemberCount
+)
+{
+    public static SearchGroupDto FromEntity(Group g) => new(
+        g.Id,
+        g.Name,
+        g.Description,
+        g.AvatarUrl,
+        g.GroupPins.Count,
+        g.GroupUsers.Count
+    );
+}
+
 #endregion // View Models
+#region Requests
+
+public record SearchGroupsReqDto(
+    string Query,
+    int MaxResults = 20,
+    string? LastGroupName = null
+);
+
+#endregion // Requests
+#region Responses
+
+public record SearchGroupsResDto(
+    IEnumerable<SearchGroupDto> Groups,
+    bool HasMoreResults,
+    string? LastGroupName
+);
+
+#endregion // Responses
+
 #region GetGroupMembers
 
 public record GetGroupMembersReqDto(
