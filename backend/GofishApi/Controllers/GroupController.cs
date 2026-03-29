@@ -416,7 +416,7 @@ public class GroupController : ControllerBase
     }
 
     #endregion // Members
-    #region Posts
+    #region Pins
 
     [HttpGet("GetGroupPins")]
     public async Task<IActionResult> GetGroupPins([FromQuery] GetGroupPinsReqDto dto)
@@ -450,7 +450,6 @@ public class GroupController : ControllerBase
         query = query.Include(p => p.Groups);
 
         query = query
-            .Where(p => p.CreatedAt < dto.LastTimestamp)
             .OrderByDescending(p => p.CreatedAt)
             .ThenByDescending(p => p.Id)
             .Take(maxResults + 1);

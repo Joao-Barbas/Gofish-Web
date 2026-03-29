@@ -379,9 +379,23 @@ public class PinController : ControllerBase
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         var allowedTypes = new[] { "image/jpeg", "image/png" };
 
-        if (dto.GroupIds?.Any() == true && !await _visibility.IsMemberOfAllGroups(userId, dto.GroupIds))
+        if (dto.GroupIds?.Any() == true)
         {
-            throw new AppValidationException("GroupIds", "You are not a member of all specified groups.");
+            if (dto.Visibility != VisibilityLevel.Group)
+            {
+                throw new AppValidationException("Visibility", "Cannot create pins on group(s) with visibility other than 'group'");
+            }
+            if (!await _visibility.IsMemberOfAllGroups(userId, dto.GroupIds))
+            {
+                throw new AppValidationException("GroupIds", "You are not a member of all specified groups.");
+            }
+        }
+        else
+        {
+            if (dto.Visibility == VisibilityLevel.Group)
+            {
+                throw new AppValidationException("GroupIds", "A least a group is required to create a pin with group visibility");
+            }
         }
         if (!allowedTypes.Contains(dto.Image.ContentType))
         {
@@ -425,9 +439,23 @@ public class PinController : ControllerBase
     public async Task<IActionResult> CreateInfoPin([FromBody] CreateInfoPinReqDto dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        if (dto.GroupIds?.Any() == true && !await _visibility.IsMemberOfAllGroups(userId, dto.GroupIds))
+        if (dto.GroupIds?.Any() == true)
         {
-            throw new AppValidationException("GroupIds", "You are not a member of all specified groups.");
+            if (dto.Visibility != VisibilityLevel.Group)
+            {
+                throw new AppValidationException("Visibility", "Cannot create pins on group(s) with visibility other than 'group'");
+            }
+            if (!await _visibility.IsMemberOfAllGroups(userId, dto.GroupIds))
+            {
+                throw new AppValidationException("GroupIds", "You are not a member of all specified groups.");
+            }
+        }
+        else
+        {
+            if (dto.Visibility == VisibilityLevel.Group)
+            {
+                throw new AppValidationException("GroupIds", "A least a group is required to create a pin with group visibility");
+            }
         }
         var pinId = await SavePinAsync(new InfoPin
         {
@@ -449,9 +477,23 @@ public class PinController : ControllerBase
     public async Task<IActionResult> CreateWarnPin([FromBody] CreateWarnPinReqDto dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        if (dto.GroupIds?.Any() == true && !await _visibility.IsMemberOfAllGroups(userId, dto.GroupIds))
+        if (dto.GroupIds?.Any() == true)
         {
-            throw new AppValidationException("GroupIds", "You are not a member of all specified groups.");
+            if (dto.Visibility != VisibilityLevel.Group)
+            {
+                throw new AppValidationException("Visibility", "Cannot create pins on group(s) with visibility other than 'group'");
+            }
+            if (!await _visibility.IsMemberOfAllGroups(userId, dto.GroupIds))
+            {
+                throw new AppValidationException("GroupIds", "You are not a member of all specified groups.");
+            }
+        }
+        else
+        {
+            if (dto.Visibility == VisibilityLevel.Group)
+            {
+                throw new AppValidationException("GroupIds", "A least a group is required to create a pin with group visibility");
+            }
         }
         var pinId = await SavePinAsync(new WarnPin
         {
