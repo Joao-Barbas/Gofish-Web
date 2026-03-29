@@ -454,6 +454,7 @@ h6 {
   transition: box-shadow 0.15s ease;
   z-index: var(--gf-z-overlay);
   color: var(--gf-dark-text-muted);
+  transition: box-shadow .2s ease, color .2s ease;
 
   & > svg {
     width: 1.25rem;
