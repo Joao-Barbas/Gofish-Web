@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GofishApi.Dtos;
 
-#region User
+#region View Models
 
 public record SearchUserDto(
     string Id,
@@ -22,97 +22,6 @@ public record SearchUserDto(
         u.UserProfile?.AvatarUrl
     );
 }
-
-public record SearchUsersReqDto(
-    string Query,
-    int MaxResults = 20,
-    string? LastUsername = null
-)
-{ }
-
-public record SearchUsersResDto(
-    IEnumerable<SearchUserDto> Users,
-    bool HasMoreResults,
-    string? LastUsername
-)
-{ }
-
-public record GetUserReqDto(
-    // Unused
-)
-{ }
-
-public record GetUserResDto(
-    string UserName,
-    string FirstName,
-    string LastName,
-    FriendshipState? FriendshipState
-)
-{
-    public static GetUserResDto FromEntity(AppUser u, FriendshipState? friendshipState) => new(
-        u.UserName  ?? "",
-        u.FirstName ?? "",
-        u.LastName  ?? "",
-        friendshipState
-    );
-}
-
-public record GetUserSettingsReqDto(
-    // Unused
-)
-{ }
-
-public record GetUserSettingsResDto(
-    string UserName,
-    string FirstName,
-    string LastName,
-    string? Email,
-    string? PhoneNumber,
-    bool EmailConfirmed,
-    bool PhoneNumberConfirmed
-)
-{
-    public static GetUserSettingsResDto FromEntity(AppUser u) => new(
-        u.UserName ?? "",
-        u.FirstName ?? "",
-        u.LastName ?? "",
-        null,
-        null,
-        u.EmailConfirmed,
-        u.PhoneNumberConfirmed
-    );
-}
-
-public record PutUserReqDto(
-    [Required] string UserName,
-    [Required] string PhoneNumber,
-    [Required] string FirstName,
-    [Required] string LastName,
-    [Required] string Email
-)
-{ }
-
-public record PutUserResDto(
-    // Unused
-)
-{ }
-
-public record PatchUserReqDto(
-    string? UserName,
-    string? PhoneNumber,
-    string? FirstName,
-    string? LastName,
-    string? Email
-)
-{ }
-
-public record PatchUserResDto(
-    // Unused
-)
-{ }
-
-#endregion // User
-#region Friendship
 
 public record FriendshipUserDto(
     string UserId,
@@ -154,40 +63,6 @@ public record FriendshipDto(
     );
 }
 
-public record GetFriendshipsReqDto(
-    string? UserId          = null,
-    FriendshipState? State  = null,
-    int MaxResults          = 20,
-    DateTime? LastTimestamp = null
-)
-{ }
-
-public record GetFriendshipsResDto(
-    IEnumerable<FriendshipDto> Friendships,
-    bool HasMoreResults,
-    DateTime? LastTimestamp
-)
-{ }
-
-public record GetFriendshipBetweenReqDto(
-    string UserId1,
-    string UserId2
-)
-{ }
-
-public record RequestFriendshipReqDto(
-    string ReceiverId
-)
-{ }
-
-public record RequestFriendshipResDto(
-    int Id
-)
-{ }
-
-#endregion // Friendship
-#region Groups
-
 public record UserGroupDto(
     int Id,
     string Name,
@@ -212,11 +87,141 @@ public record UserGroupDto(
     public UserGroupDto SetMemberQty(int memberQty) => new(this) { MemberQty = memberQty };
     public UserGroupDto SetPinQty(int postQty) => new(this) { PostQty = postQty };
 }
-     
+
+#endregion
+#region Requests
+
+public record SearchUsersReqDto(
+    string Query,
+    int MaxResults = 20,
+    string? LastUsername = null
+)
+{ }
+
+public record GetUserReqDto(
+// Unused
+)
+{ }
+
+public record GetUserSettingsReqDto(
+// Unused
+)
+{ }
+
+public record PutUserReqDto(
+    [Required] string UserName,
+    [Required] string PhoneNumber,
+    [Required] string FirstName,
+    [Required] string LastName,
+    [Required] string Email
+)
+{ }
+
+public record PatchUserReqDto(
+    string? UserName,
+    string? PhoneNumber,
+    string? FirstName,
+    string? LastName,
+    string? Email
+)
+{ }
+
+public record GetFriendshipsReqDto(
+    string? UserId = null,
+    FriendshipState? State = null,
+    int MaxResults = 20,
+    DateTime? LastTimestamp = null
+)
+{ }
+
+public record GetFriendshipBetweenReqDto(
+    string UserId1,
+    string UserId2
+)
+{ }
+
+public record RequestFriendshipReqDto(
+    string ReceiverId
+)
+{ }
+
 public record GetUserGroupReqDto(
     string? UserId = null,
     int MaxResults = 20,
     DateTime? LastTimestamp = null
+)
+{ }
+
+#endregion
+#region Responses
+
+public record SearchUsersResDto(
+    IEnumerable<SearchUserDto> Users,
+    bool HasMoreResults,
+    string? LastUsername
+)
+{ }
+
+public record GetUserResDto(
+    string UserName,
+    string FirstName,
+    string LastName,
+    FriendshipState? FriendshipState
+)
+{
+    public static GetUserResDto FromEntity(AppUser u, FriendshipState? friendshipState) => new(
+        u.UserName ?? "",
+        u.FirstName ?? "",
+        u.LastName ?? "",
+        friendshipState
+    );
+}
+
+public record GetUserSettingsResDto(
+    string UserName,
+    string FirstName,
+    string LastName,
+    string? Email,
+    string? PhoneNumber,
+    bool EmailConfirmed,
+    bool PhoneNumberConfirmed
+)
+{
+    public static GetUserSettingsResDto FromEntity(AppUser u) => new(
+        u.UserName ?? "",
+        u.FirstName ?? "",
+        u.LastName ?? "",
+        null,
+        null,
+        u.EmailConfirmed,
+        u.PhoneNumberConfirmed
+    );
+}
+
+public record PutUserResDto(
+// Unused
+)
+{ }
+
+public record PatchUserResDto(
+// Unused
+)
+{ }
+
+public record GetFriendshipsResDto(
+    IEnumerable<FriendshipDto> Friendships,
+    bool HasMoreResults,
+    DateTime? LastTimestamp
+)
+{ }
+
+public record RequestFriendshipResDto(
+    int Id
+)
+{ }
+
+public record GetFriendshipBetweenResDto(
+    // Unused
 )
 { }
 
@@ -227,4 +232,4 @@ public record GetUserGroupResDto(
 )
 { }
 
-#endregion // Groups
+#endregion
