@@ -1,6 +1,6 @@
 import { filter, map } from 'rxjs';
 import { NgxSonnerToaster } from 'ngx-sonner';
-import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { HeaderComponent, HeaderKind } from "@gofish/features/header/header.component";
@@ -24,6 +24,6 @@ export class AppComponent {
     map((route) => route.snapshot.data))
   );
 
-  readonly headerKind = computed(() => (this.data()?.['header'] as HeaderKind) ?? 'flat');
+  readonly headerKind = computed(() => (this.data()?.['header'] as HeaderKind) ?? 'none');
   // readonly header = computed(() => (this.data()?.['header'] as HeaderKind) ?? 'flat');
 }

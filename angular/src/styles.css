@@ -113,6 +113,7 @@
   --gf-z-fixed: 1030;
   --gf-z-backdrop: 1040;
   --gf-z-modal: 1060;
+  --gf-z-overlay: 1067;
   --gf-z-popover: 1070; /* TODO: Change "popup" naming to "popover" project wide */
   --gf-z-tooltip: 1080;
 
@@ -451,7 +452,7 @@ h6 {
   background-color: var(--gf-dark-bg);
   box-shadow: var(--gf-shadow-lift-sm);
   transition: box-shadow 0.15s ease;
-  z-index: var(--z-opens-overlay);
+  z-index: var(--gf-z-overlay);
   color: var(--gf-dark-text-muted);
 
   & > svg {

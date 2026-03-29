@@ -1,7 +1,6 @@
 <!-- header.component.html -->
 
-@switch (kind()) {
-@case ('flat') {
+@if (kind() !== 'none') {
   <header>
     <div class="left">
       <!-- Logo -->
@@ -13,37 +12,14 @@
       </div>
       <!-- Nav -->
       <nav class="nav-container">
-        <a
-          [routerLink]="'/'"
-          [routerLinkActiveOptions]="{exact: true}"
-          routerLinkActive="active"
-          class="text-slim dark-text-muted">
-          HOME
-        </a>
-        <a
-          [routerLink]="authService.isAuthenticated() ? '/map' : '/signin'"
-          routerLinkActive="active"
-          class="text-slim dark-text-muted">
-          MAP
-        </a>
-        <a
-          [routerLink]="authService.isAuthenticated() ? '/forum' : '/signin'"
-          routerLinkActive="active"
-          class="text-slim dark-text-muted">
-          FORUM
-        </a>
-        <a
-          [routerLink]="'/about-us'"
-          routerLinkActive="active"
-          class="text-slim dark-text-muted">
-          ABOUT US
-        </a>
+        <a [routerLink]="'/'" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active" class="text-slim dark-text-muted">HOME</a>
+        <a [routerLink]="authService.isAuthenticated() ? '/map' : '/signin'" routerLinkActive="active" class="text-slim dark-text-muted">MAP</a>
+        <a [routerLink]="authService.isAuthenticated() ? '/forum' : '/signin'" routerLinkActive="active" class="text-slim dark-text-muted">FORUM</a>
+        <a [routerLink]="'/about-us'" routerLinkActive="active" class="text-slim dark-text-muted">ABOUT US</a>
       </nav>
     </div>
     <div class="right">
       <gf-header-actions></gf-header-actions>
     </div>
   </header>
-}
-@case ('overlay') {}
 }

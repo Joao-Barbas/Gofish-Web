@@ -6,7 +6,7 @@
   <!-- Overlay -->
   <!-- Everything else on top of the map goes inside this -->
   <div class="position-absolute top-0 start-0 w-100 h-100 gf-no-events">
-    <app-overlay-header></app-overlay-header>
+    <!-- <app-overlay-header></app-overlay-header> -->
     @if (this.popupService.isOpen('pin-preview')) {
     <div class="pin-detail-panel fade show gf-do-events">
       <app-pin-detail-panel [pinData]="selectedPin()" (cancel)="onPopupCancelPinPreview()" (coords)="goToCoords($event)">
