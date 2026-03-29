@@ -1,9 +1,3 @@
-/*
- * Remover se não for esta a cor
- * No figma, a cor de fundo é diferente aquela que está nos styles.css
-*/
-.figma-bg-dark-temporary {background-color: #191919;}
-
 .square {
   width: 381px;
   height: 290px;

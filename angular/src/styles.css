@@ -108,6 +108,7 @@
    * Values start at 1000+ to stay above bootstrap's z-index scale
    * See: https://getbootstrap.com/docs/5.0/layout/z-index/
    */
+  --gf-z-flat-header: 1; /* Neded because of about us background trick */
   --gf-z-overlay: 990;
   --gf-z-dropdown: 1000;
   --gf-z-sticky: 1020;
@@ -949,6 +950,8 @@ h6 {
 .gf-pb-20 { padding-bottom: var(--gf-20); }
 .gf-pb-24 { padding-bottom: var(--gf-24); }
 .gf-pb-32 { padding-bottom: var(--gf-32); }
+.gf-pb-64 { padding-bottom: var(--gf-64); }
+.gf-pb-96 { padding-bottom: var(--gf-96); }
 
 /* Pointer events */
 .gf-no-events { pointer-events: none !important; }
