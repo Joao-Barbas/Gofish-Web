@@ -3,7 +3,7 @@ import { NgxSonnerToaster } from 'ngx-sonner';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { HeaderComponent, HeaderKind } from "@gofish/features/header/header.component";
+import { HeaderComponent, HeaderVariant } from "@gofish/features/header/header.component";
 import { FooterVariant } from '@gofish/features/footer/footer.component';
 
 @Component({
@@ -25,6 +25,6 @@ export class AppComponent {
     map((route) => route.snapshot.data))
   );
 
-  readonly headerKind = computed(() => (this.data()?.['header'] as HeaderKind) ?? 'none');
-  readonly headerVariant = computed(() => (this.data()?.['footer'] as FooterVariant) ?? 'none');
+  readonly headerVariant = computed(() => (this.data()?.['header'] as HeaderVariant) ?? 'none');
+  readonly footerVariant = computed(() => (this.data()?.['footer'] as FooterVariant) ?? 'none');
 }

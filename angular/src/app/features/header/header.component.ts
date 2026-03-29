@@ -1,17 +1,18 @@
 // header.component.ts
 
 import { Component, inject, input } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { HeaderActionsComponent } from '@gofish/features/header/components/header-actions/header-actions.component';
 import { AuthService } from '@gofish/shared/services/auth.service';
 
-export type HeaderKind = 'flat' | 'overlay' | 'none';
+export type HeaderVariant = 'flat' | 'overlay' | 'none';
 
 @Component({
   selector: 'gf-header',
   host: {
-    '[class.flat]': "kind() === 'flat'",
-    '[class.overlay]': "kind() === 'overlay'"
+    '[class.flat]': "variant() === 'flat'",
+    '[class.overlay]': "variant() === 'overlay'",
+    '[class.none]': "variant() === 'none'",
   },
   imports: [
     RouterLink,
@@ -22,8 +23,6 @@ export type HeaderKind = 'flat' | 'overlay' | 'none';
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-  readonly kind = input.required<HeaderKind>();
-
-  readonly router      = inject(Router);
+  readonly variant     = input.required<HeaderVariant>();
   readonly authService = inject(AuthService);
 }
