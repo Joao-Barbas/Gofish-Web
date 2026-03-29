@@ -4,6 +4,7 @@ import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouterOutlet } 
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { HeaderComponent, HeaderKind } from "@gofish/features/header/header.component";
+import { FooterVariant } from '@gofish/features/footer/footer.component';
 
 @Component({
   selector: 'app-root',
@@ -25,5 +26,5 @@ export class AppComponent {
   );
 
   readonly headerKind = computed(() => (this.data()?.['header'] as HeaderKind) ?? 'none');
-  // readonly header = computed(() => (this.data()?.['header'] as HeaderKind) ?? 'flat');
+  readonly headerVariant = computed(() => (this.data()?.['footer'] as FooterVariant) ?? 'none');
 }
