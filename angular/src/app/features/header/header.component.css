@@ -151,12 +151,8 @@
 }
 
 @media (max-width: 36rem) {
-  .logo-holder {
-    .logo {
-      span {
-        display: none;
-      }
-    }
+  :host(.flat) .logo-holder .logo span {
+    display: none;
   }
 
   .nav-container {
