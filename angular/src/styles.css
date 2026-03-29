@@ -819,6 +819,7 @@ h6 {
 .gf-my-20   { margin-top: var(--gf-20); margin-bottom: var(--gf-20); }
 .gf-my-24   { margin-top: var(--gf-24); margin-bottom: var(--gf-24); }
 .gf-my-32   { margin-top: var(--gf-32); margin-bottom: var(--gf-32); }
+.gf-my-64   { margin-top: var(--gf-64); margin-bottom: var(--gf-64); }
 .gf-my-auto { margin-top: auto; margin-bottom: auto; }
 
 .gf-ml-0    { margin-left: 0; }
