@@ -167,6 +167,10 @@ public class PinController : ControllerBase
         {
             query = query.Include(p => p.Groups);
         }
+        if (dto.DataRequest?.IncludeComments is true)
+        {
+            query = query.Include(p => p.Comments);
+        }
 
         var results = await query
             .OrderByDescending(p => p.CreatedAt)
@@ -204,6 +208,12 @@ public class PinController : ControllerBase
                     p.Votes.Where(v => v.UserId == userId).Select(v => (VoteKind?)v.Value).FirstOrDefault(),
                     p.Votes.Sum(v => (int)v.Value),
                     p.Comments.Count));
+            }
+            if (req?.IncludeComments is true)
+            {
+                pin = pin.SetComments(p.Comments
+                    .Select(c => CommentDto.FromEntity(c))
+                    .ToList());
             }
 
             return pin;

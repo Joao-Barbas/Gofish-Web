@@ -104,6 +104,7 @@ public record PinDto(
     public PinDetailsDto? Details { get; init; }
     public PinStatsDto? Stats { get; init; }
     public PinUgcDto? Ugc { get; init; }
+    public List<CommentDto>? Comments { get; set; }
 
     public static PinDto FromEntity(Pin p) => new(
         p.Id,
@@ -117,6 +118,7 @@ public record PinDto(
     public PinDto SetDetails(Pin p) => this with { Details = PinDetailsDto.FromEntity(p) };
     public PinDto SetStats(PinStatsDto dto) => this with { Stats = dto };
     public PinDto SetUgc(Pin p) => this with { Ugc = PinUgcDto.FromEntity(p) };
+    public PinDto SetComments(List<CommentDto> c) => this with { Comments = c };
 }
 
 public record CommentAuthorDto(
@@ -165,7 +167,8 @@ public record GetPinsDataRequestDto(
     bool? IncludeDetails = false,
     bool? IncludeStats = false,
     bool? IncludeUgc = false, // IncludeBody + IncludeImage
-    bool? IncludeGroups = false
+    bool? IncludeGroups = false,
+    bool? IncludeComments = false
 );
 
 #endregion // Request Helpers
