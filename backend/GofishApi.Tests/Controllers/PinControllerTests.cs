@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using GofishApi.Data;
 using GofishApi.Dtos;
+using GofishApi.Enums;
 using GofishApi.Tests.Fixtures;
 using GofishApi.Tests.Fixtutes;
 using Microsoft.Extensions.DependencyInjection;
@@ -193,52 +194,101 @@ public class PinControllerTests : IClassFixture<WebAppFactory>
             pinId = pin.Id;
         }
 
-        var body = new
-        {
-            Ids = new[]
+        var body = new GetPinsReqDto(
+            Ids: new[]
             {
-            new { PinId = pinId }
-        },
-            DataRequest = new { }
-        };
+            new GetPinsIdDto(
+                PinId: pinId,
+                AuthorId: null,
+                GroupId: null
+            )
+            },
+            DataRequest: new GetPinsDataRequestDto(
+                IncludeGeolocation: true,
+                IncludeAuthor: false,
+                IncludeDetails: true,
+                IncludeStats: false,
+                IncludeUgc: true,
+                IncludeGroups: false
+            ),
+            MaxResults: 20,
+            LastTimestamp: null
+        );
 
         var res = await _client.PostAsJsonAsync("/api/Pin/GetPins", body);
 
         var content = await res.Content.ReadAsStringAsync();
-        Console.WriteLine(content); // debug
+        Console.WriteLine(content);
 
         res.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var dto = await res.Content.ReadFromJsonAsync<GetPinsResDTO>();
+        var dto = await res.Content.ReadFromJsonAsync<GetPinsResDto>();
+        dto.Should().NotBeNull();
         dto!.Pins.Should().Contain(p => p.Id == pinId);
+
+        var returnedPin = dto.Pins.Single(p => p.Id == pinId);
+        returnedPin.Geolocation.Should().NotBeNull();
+        returnedPin.Details.Should().NotBeNull();
+        returnedPin.Ugc.Should().NotBeNull();
     }
 
     [Fact]
     public async Task GetPins_ByAuthorId_ReturnsPins()
     {
-        string userId = "test-user-id"; // 🔥 usar o mesmo do auth
+        string userId = "test-user-id";
 
         using (var scope = _factory.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
             await PinSeedFixture.CreateInfoPinAsync(db, userId: userId);
         }
 
-        var body = new
-        {
-            Ids = new[]
+        var body = new GetPinsReqDto(
+            Ids: new[]
             {
-            new { AuthorId = userId }
-        },
-            DataRequest = new { }
-        };
+            new GetPinsIdDto(
+                PinId: null,
+                AuthorId: userId,
+                GroupId: null
+            )
+            },
+            DataRequest: new GetPinsDataRequestDto(
+                IncludeGeolocation: false,
+                IncludeAuthor: true,
+                IncludeDetails: false,
+                IncludeStats: false,
+                IncludeUgc: false,
+                IncludeGroups: false
+            ),
+            MaxResults: 20,
+            LastTimestamp: null
+        );
 
         var res = await _client.PostAsJsonAsync("/api/Pin/GetPins", body);
 
-        var dto = await res.Content.ReadFromJsonAsync<GetPinsResDTO>();
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
 
+        var dto = await res.Content.ReadFromJsonAsync<GetPinsResDto>();
+        dto.Should().NotBeNull();
         dto!.Pins.Should().NotBeEmpty();
+        dto.Pins.Should().OnlyContain(p => p.Author == null || p.Author.Id == userId);
+    }
+
+    [Fact]
+    public async Task GetFeed_ReturnsOk()
+    {
+        var body = new GetFeedReqDto(
+            Kind: FeedKind.Friends,
+            MaxResults: 10,
+            LastTimestamp: DateTime.UtcNow
+        );
+
+        var res = await _client.PostAsJsonAsync("/api/Pin/GetFeed", body);
+
+        var content = await res.Content.ReadAsStringAsync();
+        Console.WriteLine(content);
+
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     #endregion
@@ -286,6 +336,44 @@ public class PinControllerTests : IClassFixture<WebAppFactory>
         var res = await _client.DeleteAsync($"/api/Pin/DeletePin/{pinId}");
 
         res.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+    }
+
+    #endregion
+
+    #region Vote
+
+    [Fact]
+    public async Task Vote_ValidVote_ReturnsScore()
+    {
+        int pinId;
+
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var pin = await PinSeedFixture.CreateInfoPinAsync(db);
+            pinId = pin.Id;
+        }
+
+        var body = new VoteReqDto(Value: VoteKind.Upvote);
+
+        var res = await _client.PostAsJsonAsync($"/api/Pin/Vote/{pinId}", body);
+
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var dto = await res.Content.ReadFromJsonAsync<VoteResDto>();
+        dto.Should().NotBeNull();
+        dto!.NewScore.Should().Be(1);
+        dto.UserVote.Should().Be(VoteKind.Downvote);
+    }
+
+    [Fact]
+    public async Task Vote_PinNotFound_Returns404()
+    {
+        var body = new VoteReqDto(Value: VoteKind.Upvote);
+
+        var res = await _client.PostAsJsonAsync("/api/Pin/Vote/9999", body);
+
+        res.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
     #endregion

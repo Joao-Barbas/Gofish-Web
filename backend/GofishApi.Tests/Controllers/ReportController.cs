@@ -107,6 +107,7 @@ public class ReportController : IClassFixture<WebAppFactory>
     #endregion
 
     #region ReportComment
+
     [Fact]
     public async Task CreateCommentReport_ReturnsId()
     {
@@ -118,15 +119,15 @@ public class ReportController : IClassFixture<WebAppFactory>
 
             var pin = await PinSeedFixture.CreateInfoPinAsync(db);
 
-            var comment = new PostComment
+            var comment = new Comment
             {
-                PostId = pin.Post.Id,
+                PinId = pin.Id,
                 Body = "Test",
                 CreatedAt = DateTime.UtcNow,
                 UserId = "test-user-id"
             };
 
-            db.PostComments.Add(comment);
+            db.Comments.Add(comment);
             await db.SaveChangesAsync();
 
             commentId = comment.Id;
@@ -135,7 +136,7 @@ public class ReportController : IClassFixture<WebAppFactory>
         var body = new
         {
             CommentId = commentId,
-            Reason = 0, // enum CommentReportReason
+            Reason = 0,
             Description = "Spam"
         };
 
@@ -173,15 +174,15 @@ public class ReportController : IClassFixture<WebAppFactory>
 
             var pin = await PinSeedFixture.CreateInfoPinAsync(db);
 
-            var comment = new PostComment
+            var comment = new Comment
             {
-                PostId = pin.Post.Id,
+                PinId = pin.Id,
                 Body = "Test",
                 CreatedAt = DateTime.UtcNow,
                 UserId = "test-user-id"
             };
 
-            db.PostComments.Add(comment);
+            db.Comments.Add(comment);
             await db.SaveChangesAsync();
 
             db.CommentReports.Add(new CommentReport
@@ -189,7 +190,8 @@ public class ReportController : IClassFixture<WebAppFactory>
                 CommentId = comment.Id,
                 UserId = "test-user-id",
                 Reason = 0,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                Description = null
             });
 
             await db.SaveChangesAsync();
