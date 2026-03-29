@@ -119,5 +119,27 @@ public class StatsController : ControllerBase
 
         return Ok(new GetPinsWith15PositiveVotesResDTO(value));
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetWeeklyApiSuccessRate()
+    {
+        var start = DateTime.UtcNow.AddDays(-7);
+
+        var totalRequests = await _db.RequestLogs
+            .CountAsync(r => r.CreatedAt >= start);
+
+        if (totalRequests == 0)
+            return Ok(new GetSuccessRateOfRequestsDTO(0));
+
+        var successfulRequests = await _db.RequestLogs
+            .CountAsync(r =>
+                r.CreatedAt >= start &&
+                r.StatusCode >= 200 &&
+                r.StatusCode < 300);
+
+        var successRate = Math.Round((double)successfulRequests / totalRequests * 100, 2);
+
+        return Ok(new GetSuccessRateOfRequestsDTO(successRate));
+    }
 }
 

@@ -26,6 +26,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<UserProfile> UserProfiles { get; set; }
     public DbSet<PinReport> PinReports { get; set; }
     public DbSet<CommentReport> CommentReports { get; set; }
+    public DbSet<RequestLogs> RequestLogs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

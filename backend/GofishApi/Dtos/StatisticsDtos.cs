@@ -23,3 +23,15 @@ public record GetAveragePublishedPinsResDTO(
 public record GetActiveUsersResDTO(
     int ActiveUsers
 );
+
+public record GetSuccessRateOfRequestsDTO(
+    double SuccessRateOfRequests
+);
+
+public record GetDailyUserSatisfactionAverageDTO(
+    int UserSatisfactionAverage
+);
+
+public record GetPinDensityByLocation(
+    int PinDensityByLocation
+);
