@@ -6,6 +6,37 @@ namespace GofishApi.Dtos;
 
 #region User
 
+public record SearchUserDto(
+    string Id,
+    string UserName,
+    string FirstName,
+    string LastName,
+    string? AvatarUrl
+)
+{
+    public static SearchUserDto FromEntity(AppUser u) => new(
+        u.Id,
+        u.UserName ?? "",
+        u.FirstName ?? "",
+        u.LastName ?? "",
+        u.UserProfile?.AvatarUrl
+    );
+}
+
+public record SearchUsersReqDto(
+    string Query,
+    int MaxResults = 20,
+    string? LastUsername = null
+)
+{ }
+
+public record SearchUsersResDto(
+    IEnumerable<SearchUserDto> Users,
+    bool HasMoreResults,
+    string? LastUsername
+)
+{ }
+
 public record GetUserReqDto(
     // Unused
 )
