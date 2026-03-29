@@ -163,25 +163,13 @@
   <!-- Modals -->
   @switch (this.modalService.activeModal()) {
   @case ('app-change-username-modal') {
-    <app-change-username-modal
-      animate.enter="on-enter"
-      animate.leave="on-leave"
-      (positive)="onUsernameChange($event)"
-    ></app-change-username-modal>
+    <app-change-username-modal (positive)="onUsernameChange($event)" ></app-change-username-modal>
   }
   @case ('app-change-firstname-modal') {
-    <app-change-firstname-modal
-      animate.enter="on-enter"
-      animate.leave="on-leave"
-      (positive)="onFirstnameChange($event)"
-    ></app-change-firstname-modal>
+    <app-change-firstname-modal (positive)="onFirstnameChange($event)" ></app-change-firstname-modal>
   }
   @case ('app-change-lastname-modal') {
-    <app-change-lastname-modal
-      animate.enter="on-enter"
-      animate.leave="on-leave"
-      (positive)="onLastnameChange($event)"
-    ></app-change-lastname-modal>
+    <app-change-lastname-modal (positive)="onLastnameChange($event)" ></app-change-lastname-modal>
   }}
 }
 @else if (userSettings.error() || userProfileSettings.error()) {
