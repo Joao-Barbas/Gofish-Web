@@ -1,4 +1,7 @@
-.figma-bg-dark-temporary {background-color: #191919;}
+:host {
+  display: block;
+  margin-top: calc(-80rem / 16); /* Go behind the header */
+}
 
 .about-us-main-text {
   font-size: 1.75rem;
@@ -15,41 +18,12 @@
   font-weight: 900;
 }
 
-/* :host ::ng-deep app-flat-header .flat-header {
-  background: transparent;
-} */
-
 .about-hero-bg {
   position: relative;
-
-  background: linear-gradient(180deg, #455030 15%, #7E9550 100%);
+  padding-top: calc(80rem / 16);
+  background: linear-gradient(180deg, #1A2F4C 5%, #2C7AE8 90%);
 }
 
 .comparison-section {
-  padding: 6rem 0rem;
-}
-
-.about-hero-bg-invert {
-  position: relative;
-  background: linear-gradient(
-    0deg,
-    var(--gf-dark-bg) 0%,
-    var(--gf-dark-bg-light) 60%,
-    var(--gf-dark-bg-light) 100%
-  );
-}
-
-.about-hero-bg-invert::before {
-  content: "";
-  position: absolute;
-  top: --0.063rem;
-  left: 0;
-  width: 100%;
-  height: 4.375rem;
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,0),
-    var(--gf-dark-bg-light)
-  );
-  pointer-events: none;
+  margin: calc(256rem / 16) auto;
 }

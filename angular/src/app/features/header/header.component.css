@@ -1,7 +1,8 @@
 /* header.component.css */
 
 :host(.flat) {
-  position: inherit;
+  position: relative;
+  z-index: var(--gf-z-flat-header);
   top: 0;
   right: 0;
   left: 0;
@@ -26,12 +27,10 @@
 
     .left {
       gap: var(--gf-64);
-      background-color: rgb(75, 48, 48);
       justify-content: start;
     }
 
     .right {
-      background-color: rgb(46, 46, 65);
       margin-left: auto;
       justify-content: end;
     }
@@ -41,7 +40,7 @@
     .logo {
       display: inline-flex;
       text-decoration: none;
-      gap: var(--gf-2);
+      gap: var(--gf-8);
       align-items: center;
 
       span {
@@ -58,11 +57,11 @@
 
 :host(.overlay) {
   position: absolute;
+  pointer-events: none;
+  z-index: var(--gf-z-overlay);
   top: 0;
   right: 0;
   left: 0;
-  z-index: var(--gf-z-overlay);
-  pointer-events: none; /* let clicks pass through to map */
 
   header {
     display: flex;
