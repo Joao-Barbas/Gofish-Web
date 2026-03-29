@@ -3,7 +3,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Api } from "@gofish/shared/constants";
-import { FriendshipDTO, GetFriendshipBetweenReqDTO, GetFriendshipsResDTO, GetUserGroupReqDTO, GetUserGroupResDTO, GetUserResDTO, GetUserSettingsResDTO, PatchUserReqDTO, PutUserReqDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO } from "@gofish/shared/dtos/user.dto";
+import { FriendshipDTO, GetFriendshipBetweenReqDTO, GetFriendshipsResDTO, GetUserGroupReqDTO, GetUserGroupResDTO, GetUserResDTO, GetUserSettingsResDTO, PatchUserReqDTO, PutUserReqDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO, SearchUsersReqDTO, SearchUsersResDTO } from "@gofish/shared/dtos/user.dto";
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 import { map, Observable } from "rxjs";
 
@@ -29,6 +29,14 @@ export class UserApi {
 
   public patchUser(dto: PatchUserReqDTO): Observable<void> {
     return this.http.patch<void>(Api.User.action('PatchUser'), dto);
+  }
+
+  public searchUsers(dto: SearchUsersReqDTO): Observable<SearchUsersResDTO> {
+    let p = new HttpParams();
+    if (dto.query)        p = p.set('query', dto.query);
+    if (dto.maxResults)   p = p.set('maxResults', dto.maxResults);
+    if (dto.lastUsername) p = p.set('lastTimestamp', dto.lastUsername);
+    return this.http.get<SearchUsersResDTO>(Api.User.action('SearchUsers'), { params: p });
   }
 
   // Friendships

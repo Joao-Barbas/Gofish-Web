@@ -1,15 +1,8 @@
 import { Component, EventEmitter, inject, input, Output } from '@angular/core';
 import { GeoLocationDTO, PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
-import { TimeAgoPipe } from "../../../../shared/pipes/time-ago.pipe";
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { PopupController } from '@gofish/shared/core/popup-controller';
 import { AuthService } from '@gofish/shared/services/auth.service';
-import { Router } from '@angular/router';
-import { Coords } from '@gofish/shared/models/coords.model';
-import { PinService } from '@gofish/features/map/services/pin.service';
-import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
-import { HttpErrorResponse } from '@angular/common/http';
-import { JsonPipe } from '@angular/common';
 import { PinDetailPanelComponent } from '@gofish/features/map/components/pin-detail-panel/pin-detail-panel.component';
 import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 

@@ -1,6 +1,8 @@
 // app.routes.ts
 
 import { Routes } from '@angular/router';
+import { FooterVariant } from '@gofish/features/footer/footer.component';
+import { HeaderVariant } from '@gofish/features/header/header.component';
 import { PathSegment } from '@gofish/shared/constants';
 import { authGuard } from '@gofish/shared/guards/auth.guard';
 import { noTotpGuard } from '@gofish/shared/guards/no-totp.guard';
@@ -8,7 +10,11 @@ import { noTotpGuard } from '@gofish/shared/guards/no-totp.guard';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('@gofish/features/home/home.component').then(m => m.HomeComponent)
+    loadComponent: () => import('@gofish/features/home/home.component').then(m => m.HomeComponent),
+    data: {
+      header: 'flat' as HeaderVariant,
+      footer: 'big' as FooterVariant
+    }
   },
   {
     path: PathSegment.SIGN_UP,
@@ -28,24 +34,28 @@ export const routes: Routes = [
   },
   {
     path: 'profile/:id',
-    canActivate: [authGuard],
     loadComponent: () => import('@gofish/features/user/profile/profile-shell.component').then(m => m.ProfileShellComponent),
+    canActivate: [authGuard],
+    data: {
+      header: 'flat' as HeaderVariant,
+      footer: 'small' as FooterVariant
+    },
     children: [
       {
         path: '',
-        loadComponent: () => import('@gofish/features/user/profile/pages/overview/overview.component').then(m => m.OverviewComponent)
+        loadComponent: () => import('@gofish/features/user/profile/pages/overview/overview.component').then(m => m.OverviewComponent),
       },
       {
         path: 'friends',
-        loadComponent: () => import('@gofish/features/user/profile/pages/friends/friends.component').then(m => m.FriendsComponent)
+        loadComponent: () => import('@gofish/features/user/profile/pages/friends/friends.component').then(m => m.FriendsComponent),
       },
       {
         path: 'groups',
-        loadComponent: () => import('@gofish/features/user/profile/pages/groups/groups.component').then(m => m.GroupsComponent)
+        loadComponent: () => import('@gofish/features/user/profile/pages/groups/groups.component').then(m => m.GroupsComponent),
       },
       {
         path: 'pins',
-        loadComponent: () => import('@gofish/features/user/profile/pages/pins/pins.component').then(m => m.PinsComponent)
+        loadComponent: () => import('@gofish/features/user/profile/pages/pins/pins.component').then(m => m.PinsComponent),
       },
     ]
   },
@@ -53,17 +63,34 @@ export const routes: Routes = [
     path: PathSegment.SETTINGS,
     loadComponent: () => import('@gofish/features/user/settings/settings.component').then(m => m.SettingsComponent),
     canActivate: [authGuard],
+    data: {
+      header: 'flat' as HeaderVariant,
+      footer: 'small' as FooterVariant
+    },
     children: [
-      { path: '', redirectTo: 'general', pathMatch: 'full' },
-      { path: 'general', loadComponent: () => import('@gofish/features/user/settings/components/general/general.component').then(m => m.GeneralComponent) },
-      { path: 'personal-data', loadComponent: () => import('@gofish/features/user/settings/components/personal-data/personal-data.component').then(m => m.PersonalDataComponent) },
+      {
+        path: '',
+        redirectTo: 'general',
+        pathMatch: 'full'
+      },
+      {
+        path: 'general',
+        loadComponent: () => import('@gofish/features/user/settings/components/general/general.component').then(m => m.GeneralComponent)
+      },
+      {
+        path:
+        'personal-data',
+        loadComponent: () => import('@gofish/features/user/settings/components/personal-data/personal-data.component').then(m => m.PersonalDataComponent)
+      },
       {
         path: 'security',
         loadComponent: () => import('@gofish/features/user/settings/components/security/security.component').then(m => m.SecurityComponent),
         children: [
-          /*  {
-             path: 'setup-sms',
-           }, */
+          /*
+          {
+            path: 'setup-sms',
+          },
+          */
           {
             path: 'setup-totp',
             loadComponent: () => import('@gofish/features/user/settings/components/security/components/setup-totp/setup-totp.component').then(m => m.SetupTotpComponent),
@@ -77,6 +104,10 @@ export const routes: Routes = [
     path: PathSegment.MAP,
     loadComponent: () => import('@gofish/features/map/map.component').then(m => m.MapComponent),
     canActivate: [authGuard],
+    data: {
+      header: 'overlay' as HeaderVariant,
+      footer: 'none' as FooterVariant
+    },
     children: [
       { path: PathSegment.CREATE_CATCH_PIN, loadComponent: () => import('@gofish/features/map/components/create-pin-modals/catch-pin-modal/catch-pin-modal.component').then(c => c.CatchPinModalComponent) },
       { path: PathSegment.CREATE_INFO_PIN, loadComponent: () => import('@gofish/features/map/components/create-pin-modals/info-pin-modal/info-pin-modal.component').then(c => c.InfoPinModalComponent) },
@@ -87,24 +118,56 @@ export const routes: Routes = [
   {
     path: PathSegment.ABOUT_US,
     loadComponent: () => import('@gofish/features/about/about.component').then(a => a.AboutComponent),
+    data: {
+      header: 'flat' as HeaderVariant,
+      footer: 'big' as FooterVariant
+    }
   },
   {
     path: PathSegment.TERMS,
     loadComponent: () => import('@gofish/features/terms-of-service/terms-of-service.component').then(t => t.TermsOfServiceComponent),
+    data: {
+      header: 'flat' as HeaderVariant,
+      footer: 'big' as FooterVariant
+    }
   },
   {
     path: PathSegment.PRIVACY,
     loadComponent: () => import('@gofish/features/privacy-policy/privacy-policy.component').then(p => p.PrivacyPolicyComponent),
+    data: {
+      header: 'flat' as HeaderVariant,
+      footer: 'big' as FooterVariant
+    }
   },
   {
     path: 'forum',
     loadComponent: () => import('@gofish/features/forum/forum.component').then(f => f.ForumComponent),
+    data: {
+      header: 'flat' as HeaderVariant,
+      footer: 'small' as FooterVariant
+    },
     children: [
-      { path: '', redirectTo: PathSegment.FORUM_DISCOVER, pathMatch: 'full' },
-      { path: PathSegment.FORUM_DISCOVER, loadComponent: () => import('@gofish/features/forum/children/discover/discover.component').then(d => d.DiscoverComponent) },
-      { path: PathSegment.FORUM_FROM_FRIENDS, loadComponent: () => import('@gofish/features/forum/children/from-friends/from-friends.component').then(f => f.FromFriendsComponent) },
-      { path: `${PathSegment.FORUM_MY_GROUPS}/${PathSegment.CREATE_GROUP}`, loadComponent: () => import('@gofish/features/forum/children/my-groups/group-create/group-create.component').then(m => m.GroupCreateComponent) },
-      { path: PathSegment.FORUM_MY_GROUPS, loadComponent: () => import('@gofish/features/forum/children/my-groups/my-groups.component').then(m => m.MyGroupsComponent) },
+      {
+        path: '',
+        redirectTo: PathSegment.FORUM_DISCOVER,
+        pathMatch: 'full'
+      },
+      {
+        path: PathSegment.FORUM_DISCOVER,
+        loadComponent: () => import('@gofish/features/forum/children/discover/discover.component').then(d => d.DiscoverComponent)
+      },
+      {
+        path: PathSegment.FORUM_FROM_FRIENDS,
+        loadComponent: () => import('@gofish/features/forum/children/from-friends/from-friends.component').then(f => f.FromFriendsComponent)
+      },
+      {
+        path: `${PathSegment.FORUM_MY_GROUPS}/${PathSegment.CREATE_GROUP}`,
+        loadComponent: () => import('@gofish/features/forum/children/my-groups/group-create/group-create.component').then(m => m.GroupCreateComponent)
+      },
+      {
+        path: PathSegment.FORUM_MY_GROUPS,
+        loadComponent: () => import('@gofish/features/forum/children/my-groups/my-groups.component').then(m => m.MyGroupsComponent)
+      },
 
 
       // Rota do grupo com filhos (posts e members)
@@ -136,6 +199,7 @@ export const routes: Routes = [
     children: [ // unfinished
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', loadComponent: () => import('@gofish/features/statistics/children/stats-home/stats-home.component').then(d => d.StatsHomeComponent) },
+      { path: PathSegment.STATISTICS_PIN_DENSITY, loadComponent: () => import('@gofish/features/statistics/children/pin-density/pin-density.component').then(p => p.PinDensityComponent) },
       { path: 'reports', loadComponent: () => import('@gofish/features/statistics/children/stats-reports/stats-reports.component').then(d => d.StatsReportsComponent) },
       { path: 'reports/pin', loadComponent: () => import('@gofish/features/statistics/children/reported-pin-page/reported-pin-page.component').then(d => d.ReportedPinPageComponent) },
 

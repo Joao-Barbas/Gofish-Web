@@ -5,11 +5,6 @@
   box-shadow: none;
 }
 
-.post-author-profile-photo {
-  width: var(--gf-42);
-  height: var(--gf-42);
-}
-
 .post-author-name {
   font-size: var(--gf-14);
   word-break: break-all;
@@ -70,7 +65,7 @@
 
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 
@@ -171,43 +166,4 @@
 
 .active-down .post-icon {
   fill: currentColor;
-}
-
-.clickable {
-  cursor: pointer;
-}
-
-.see-more {
-  font-family: var(--gf-font-main);
-  font-size: var(--gf-16);
-  color: var(--gf-primary);
-
-  color: var(--gf-primary);
-  --underline-width: 100%;
-
-  background:none;
-  border: none;
-
-  text-decoration: underline;
-}
-
-.post-description-box.expanded {
-  display: block;
-  overflow: visible;
-  -webkit-line-clamp: unset;
-}
-
-.post-description-box {
-  margin: 0;
-  width: 100%;
-  min-width: 0;
-
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 6;
-  -webkit-box-orient: vertical;
 }

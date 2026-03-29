@@ -49,6 +49,14 @@ export interface GetUserGroupsResDTO{
 
 // View models
 
+export interface SearchGroupDTO {
+  id: number;
+  name: string;
+  description: string | null;
+  avatarUrl: string | null;
+  memberCount: number;
+}
+
 export interface GroupMemberDTO {
   userId: string;
   userName: string;
@@ -96,6 +104,12 @@ export interface GetGroupPostsReqDTO {
   lastTimestamp?: string;
 }
 
+export interface SearchGroupsReqDTO {
+  query: string;
+  maxResults?: number;
+  lastGroupName?: string;
+}
+
 // Responses
 
 export interface GetGroupMembersResDTO {
@@ -108,4 +122,10 @@ export interface GetGroupPostsResDTO {
   posts: GroupPostDTO[];
   hasMoreResults: boolean;
   lastTimestamp?: string;
+}
+
+export interface SearchGroupsResDTO {
+  groups: SearchGroupDTO[];
+  hasMoreResults: boolean;
+  lastGroupName: string | null;
 }

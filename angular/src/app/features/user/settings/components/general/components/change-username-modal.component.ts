@@ -11,6 +11,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-change-username-modal',
+  host: {
+    'animate.enter': 'on-enter',
+    'animate.leave': 'on-leave',
+  },
   imports: [
     AsyncButtonComponent,
     ReactiveFormsModule
@@ -62,6 +66,12 @@ import { HttpErrorResponse } from '@angular/common/http';
     </div>
   `,
   styles: `
+    :host {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: var(--gf-z-modal);
+    }
     :host(.on-enter) {
       animation: gf-modal-fade-in .2s ease-in-out;
     }

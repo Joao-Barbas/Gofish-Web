@@ -7,9 +7,9 @@
 
   <div class="top-of-post d-flex justify-content-between align-items-center">
 
-    <div class="d-flex align-items-center gap-2 clickable" [routerLink]="Path.PROFILE(post!.author!.id)">
+    <div class="d-flex align-items-center gap-2 gf-generic-clickable-wrapper" [routerLink]="Path.PROFILE(post!.author!.id)">
 
-      <img [src]="avatarService.resolve(post.author?.avatarUrl)" alt = "Avatar" class="rounded-circle post-author-profile-photo">
+      <img [src]="post.author!.avatarUrl" class="rounded-circle gf-big-avatar">
 
       <span class="user-output-no-overflow post-author-name text-bold">{{ post.author?.userName }}</span>
       <span class="post-date dark-text-muted">{{ post.createdAt | timeAgo }}</span>
@@ -67,11 +67,11 @@
     <!-- Post Description -->
 
     <div class="post-description">
-      <p class="mb-2 post-description-box" [class.expanded]="isExpanded">
-        {{ post.body}}
+      <p class="mb-2 description" [class.expanded]="isExpanded">
+        {{ isExpanded ? post.body : (post.body | slice:0:120) + (post.body!.length > 120 ? '...' : '')}}
       </p>
 
-      @if (post.body!.length > 200) {
+      @if (post.body!.length > 120) {
       <button type="button" class="see-more" (click)="toggleExpand()">
         {{ isExpanded ? 'See less' : 'See more' }}
       </button>
@@ -84,7 +84,6 @@
     }
     <!--  Banner (Pin Type ) -->
     <app-enum class="d-flex gap-2" [postData]=post></app-enum>
-
     <!-- Upvote / Downvote / Comment and Share-->
     <div class="d-flex gap-2">
 

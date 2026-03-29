@@ -8,6 +8,8 @@ namespace GofishApi.Models;
 
 public class AppUser : IdentityUser
 {
+    #region Scalar
+
     [PersonalData]
     [StringLength(256)]
     public string? FirstName { get; set; }
@@ -20,17 +22,22 @@ public class AppUser : IdentityUser
     [DefaultValue(TwoFactorMethod.None)]
     public TwoFactorMethod TwoFactorMethod { get; set; } = TwoFactorMethod.None;
 
-    // Navigation Properties
+    [PersonalData]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public UserProfile UserProfile { get; set; } = default!; // Should always exist
+    #endregion // Scalar
+    #region Navigation
 
+    public UserProfile UserProfile { get; set; } = null!; // Should always exist
     public List<Friendship> RequestedFriendships { get; set; } = [];
     public List<Friendship> ReceivedFriendships { get; set; } = [];
-
-    public List<PostVote> PostVotes { get; set; } = [];
-
+    public List<Vote> Votes { get; set; } = [];
     public List<Group> Groups { get; set; } = [];
     public List<GroupUser> GroupUsers { get; set; } = [];
+    public List<Pin> Pins { get; set; } = [];
+
+    #endregion // Navigation
+    #region Constructor
 
     /// <summary>
     /// Initializes a new instance of <see cref="AppUser"/>.
@@ -57,4 +64,6 @@ public class AppUser : IdentityUser
     {
         UserName = userName;
     }
+
+    #endregion // Constructor
 }

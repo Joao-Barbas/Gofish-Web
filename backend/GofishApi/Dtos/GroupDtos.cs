@@ -26,52 +26,45 @@ public record GroupMemberDto(
     );
 }
 
-public record GroupPostPinDto(
-    PinKind Kind,
-    VisibilityLevel Visibility,
-    DateTime? ExpiresAt,
-    GetPinsPinDetailsDTO Details,
-    GetPinsGeolocationDTO Geolocation
-)
-{
-    public static GroupPostPinDto FromEntity(Pin pin) => new(
-        pin.Kind,
-        pin.Visibility,
-        pin.ExpiresAt,
-        GetPinsPinDetailsDTO.FromPin(pin),
-        GetPinsGeolocationDTO.FromPin(pin)
-    );
-}
-
-public record GroupPostDto(
+public record SearchGroupDto(
     int Id,
-    string? Body,
-    string? ImageUrl,
-    DateTime CreatedAt,
-    int Score,
-    int CommentCount,
-    VoteKind? UserVote,
-    GroupMemberDto Author,
-    GroupPostPinDto Pin
+    string Name,
+    string? Description,
+    string? AvatarUrl,
+    int PostCount,
+    int MemberCount
 )
 {
-    public static GroupPostDto FromEntity(Post post, GroupUser groupUser, string userId) => new(
-        post.Id,
-        post.Body,
-        post.ImageUrl,
-        post.CreatedAt,
-        post.PostVotes.Sum(v => (int)v.Value),
-        post.CommentCount,
-        post.PostVotes
-            .Where(v => v.UserId == userId)
-            .Select(v => (VoteKind?)v.Value)
-            .FirstOrDefault(),
-        GroupMemberDto.FromEntity(groupUser),
-        GroupPostPinDto.FromEntity(post.Pin)
+    public static SearchGroupDto FromEntity(Group g) => new(
+        g.Id,
+        g.Name,
+        g.Description,
+        g.AvatarUrl,
+        g.GroupPins.Count,
+        g.GroupUsers.Count
     );
 }
 
 #endregion // View Models
+#region Requests
+
+public record SearchGroupsReqDto(
+    string Query,
+    int MaxResults = 20,
+    string? LastGroupName = null
+);
+
+#endregion // Requests
+#region Responses
+
+public record SearchGroupsResDto(
+    IEnumerable<SearchGroupDto> Groups,
+    bool HasMoreResults,
+    string? LastGroupName
+);
+
+#endregion // Responses
+
 #region GetGroupMembers
 
 public record GetGroupMembersReqDto(
@@ -92,7 +85,7 @@ public record GetGroupMembersResDto(
 #endregion // GetGroupMembers
 #region GetGroupPosts
 
-public record GetGroupPostsReqDto(
+public record GetGroupPinsReqDto(
     int GroupId,
     PinKind? Kind = null,
     int MaxResults = 20,
@@ -100,8 +93,8 @@ public record GetGroupPostsReqDto(
 )
 { }
 
-public record GetGroupPostsResDto(
-    IEnumerable<GroupPostDto> Posts,
+public record GetGroupPinsResDto(
+    IEnumerable<PinDto> Pins,
     bool HasMoreResults,
     DateTime? LastTimestamp
 )

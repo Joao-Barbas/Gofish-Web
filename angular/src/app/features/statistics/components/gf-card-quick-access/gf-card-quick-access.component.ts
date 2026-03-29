@@ -4,7 +4,7 @@ import { Router, RouterLink } from "@angular/router";
 
 export type QuickAccessType =
   | 'average-published-pins'
-  | 'pin-density'
+  | 'pin-density-by-location'
   | 'reports';
 
 @Component({

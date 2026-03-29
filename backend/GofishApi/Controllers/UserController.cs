@@ -37,18 +37,6 @@ public class UserController : ControllerBase
         _db = db;
     }
 
-    /*
-     * GET      /api/products        List all (with filtering & pagination)     200 OK
-     * GET      /api/products/{id}   Retrieve one resource                      200 OK / 404
-     * POST     /api/products        Create a new resource                      201 Created + Location header
-     * PUT      /api/products/{id}   Full replace — all fields required         200 OK / 404
-     * PATCH    /api/products/{id}   Partial update — only changed fields       200 OK / 404
-     * DELETE   /api/products/{id}   Remove a resource                          204 No Content / 404
-     *
-     * HEAD     /api/products/{id}   Check existence (headers only, no body)    200 / 404
-     * OPTIONS  /api/products        Discover allowed methods (CORS preflight)  200 + Allow header
-     */
-
     #region User
 
     [HttpGet("{id}")]
@@ -146,6 +134,41 @@ public class UserController : ControllerBase
 
         await transaction.CommitAsync();
         return Ok();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> SearchUsers([FromQuery] SearchUsersReqDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(dto.Query) || dto.Query.Length < 2)
+        {
+            return Ok(new SearchUsersResDto([], false, null));
+        }
+
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 50);
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var normalizedQuery = dto.Query.ToUpper();
+
+        var query = _db.Users
+            .Where(u => u.Id != userId)
+            .Where(u => u.NormalizedUserName!.Contains(normalizedQuery));
+
+        if (dto.LastUsername is not null)
+        {
+            query = query.Where(u => u.NormalizedUserName!.CompareTo(dto.LastUsername.ToUpper()) > 0);
+        }
+
+        var results = await query
+            .Include(u => u.UserProfile)
+            .OrderBy(u => u.NormalizedUserName)
+            .Take(maxResults + 1)
+            .ToListAsync();
+
+        var hasMore = results.Count > maxResults;
+        var page = results.Take(maxResults).ToList();
+        var data = page.Select(SearchUserDto.FromEntity);
+        var lastUsername = hasMore ? page[^1].NormalizedUserName : null;
+
+        return Ok(new SearchUsersResDto(data, hasMore, lastUsername));
     }
 
     // Helpers
@@ -357,7 +380,7 @@ public class UserController : ControllerBase
             .FromEntity(g)
             .SetRole(g.GroupUsers.First(gu => gu.UserId == targetUserId).Role)
             .SetMemberQty(g.GroupUsers.Count)
-            .SetPostQty(g.Posts.Count))
+            .SetPinQty(g.Pins.Count))
         .ToListAsync();
 
         var hasMore = results.Count > maxResults;
@@ -370,5 +393,4 @@ public class UserController : ControllerBase
     // TODO: Get group invites
 
     #endregion // Groups
-
 }

@@ -1,4 +1,5 @@
-﻿using GofishApi.Enums;
+﻿/*
+using GofishApi.Enums;
 using GofishApi.Models;
 using System.Net.NetworkInformation;
 
@@ -27,7 +28,7 @@ public record PostIdDTO(
 
 public record PostDataRequestDTO(
     bool? IncludeAuthor = false,
-    bool? IncludeGroups = false, 
+    bool? IncludeGroups = false,
     bool? IncludeComments = false,
     bool? IncludeCoords = false
 );
@@ -157,3 +158,4 @@ public record GetPostsCoordsDTO(
 }
 
 #endregion
+*/

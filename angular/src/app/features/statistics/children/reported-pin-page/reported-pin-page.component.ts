@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GetPostsPostDTO } from '@gofish/shared/dtos/get-post.dto';
 
 @Component({
   selector: 'gf-reported-pin-page',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './reported-pin-page.component.css',
 })
 export class ReportedPinPageComponent {
-
+  
 }

@@ -1,4 +1,5 @@
-﻿using GofishApi.Extensions;
+﻿/*
+using GofishApi.Extensions;
 
 namespace GofishApi.Dtos;
 
@@ -17,3 +18,4 @@ public record EnumDTO(
             .ToList();
     }
 };
+*/

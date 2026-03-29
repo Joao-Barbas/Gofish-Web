@@ -38,6 +38,7 @@ export const PathSegment = {
   FORUM_POST:             'post',
   PROFILE:                'profile',
   STATISTICS:             'statistics',
+  STATISTICS_PIN_DENSITY: 'pin-density-by-location',
   STATISTICS_REPORTS:     'reports',
   CREATE_GROUP:           'create-group'
 } as const;
@@ -78,6 +79,7 @@ export const Path = {
 
   STATISTICS:             `/${PathSegment.STATISTICS}`,
   STATISTICS_REPORTS:     `/${PathSegment.STATISTICS}/${PathSegment.STATISTICS_REPORTS}`,
+  STATISTICS_PIN_DENSITY: `/${PathSegment.STATISTICS}/${PathSegment.STATISTICS_PIN_DENSITY}`,
 } as const;
 
 /* Backend endpoints */

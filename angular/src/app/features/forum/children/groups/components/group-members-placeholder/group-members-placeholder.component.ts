@@ -10,5 +10,4 @@ import { GetGroupMemberDTO } from '@gofish/shared/dtos/members.dto';
 })
 export class GroupMembersPlaceholderComponent {
   members = input<GetGroupMemberDTO[]>([]);
-
 }

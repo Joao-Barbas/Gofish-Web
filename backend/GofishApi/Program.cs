@@ -6,6 +6,7 @@ using GofishApi.Extensions;
 using GofishApi.Services;
 using GofishApi.Options;
 using Microsoft.AspNetCore.Diagnostics;
+using GofishApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,7 @@ app.UseStatusCodePages();
 app.EnableSwaggerIfDevelopment();
 app.UseCors("angular");
 app.UseHttpsRedirection();
+app.UseMiddleware<ApiRequestLoggingMiddleware>();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

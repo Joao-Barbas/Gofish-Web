@@ -42,18 +42,6 @@ public class VisibilityService : IVisibilityService
         );
     }
 
-    public IQueryable<Post> FilterVisiblePosts(IQueryable<Post> query, string userId)
-    {
-        var friendIds = GetFriendIds(userId);
-        var groupIds  = GetGroupIds(userId);
-
-        return query.Where(p => p.UserId == userId
-            || (p.Pin.Visibility == VisibilityLevel.Public)
-            || (p.Pin.Visibility == VisibilityLevel.Friends && friendIds.Contains(p.UserId))
-            || (p.Pin.Visibility == VisibilityLevel.Group && p.Groups.Any(g => groupIds.Contains(g.Id)))
-        );
-    }
-
     public async Task<bool> IsMemberOfGroup(string userId, int groupId)
     {
         return await _db.GroupUsers.AnyAsync(gu => gu.UserId == userId && gu.GroupId == groupId);

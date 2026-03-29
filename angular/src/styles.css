@@ -13,7 +13,7 @@
   --gf-font-main: "Inter", sans-serif;
   --gf-font-heading: "Montserrat", sans-serif;
 
-  --gf-font-ugc: "Merriweather Sans", sans-serif;
+  --gf-font-ugc: "Merriweather Sans";
   --gf-font-date: "Poppins", sans-serif;
 
   --gf-text-3xs: 0.5rem; /* 8px */
@@ -53,6 +53,8 @@
   --gf-dark-bg-catch-pin: oklch(0.4227 0.1067 143.4);
   --gf-dark-bg-info-pin: oklch(0.3755 0.0561 240.12);
   --gf-dark-bg-warning-pin: oklch(0.4072 0.0586 75.58);
+  --gf-success-bg: oklch(0.6109 0.1615 143.75);
+  --gf-danger-bg: oklch(0.4945 0.1217 25.68);
 
   --gf-light-bg-dark: oklch(0.8263 0.0239 277.88);
   --gf-light-bg: oklch(0.9192 0.0055 274.96);
@@ -78,6 +80,7 @@
   --gf-catch-pin: oklch(0.7704 0.2598 142.53);
   --gf-info-pin: oklch(0.6751 0.1627 246.45);
   --gf-warning-pin: oklch(0.7664 0.1585 68.01);
+
 
   /* Shadows */
   --gf-shadow-lift-sm:
@@ -105,6 +108,7 @@
    * Values start at 1000+ to stay above bootstrap's z-index scale
    * See: https://getbootstrap.com/docs/5.0/layout/z-index/
    */
+  --gf-z-overlay: 990;
   --gf-z-dropdown: 1000;
   --gf-z-sticky: 1020;
   --gf-z-fixed: 1030;
@@ -158,11 +162,12 @@
   --gf-space-xl: var(--gf-32);
 
   /* Container sizes */
-  --gf-container-xs: 28rem; /* 448px */
-  --gf-container-sm: 37rem; /* 592px */
-  --gf-container-md: 48rem; /* 768px */
-  --gf-container-lg: 61rem; /* 976px */
-  --gf-container-xl: 75rem; /* 1200px */
+  --gf-container-xs:  28rem; /* 448px */
+  --gf-container-sm:  37rem; /* 592px */
+  --gf-container-md:  48rem; /* 768px */
+  --gf-container-lg:  61rem; /* 976px */
+  --gf-container-xl:  75rem; /* 1200px */
+  --gf-container-xxl: 88rem; /* 1408px */
 
   /*
   ** Deprecated below
@@ -318,28 +323,32 @@ h6 {
   user-select: none;
 }
 
+
+/*
+ * Prevents user generated text from
+ * overflowing Post cards or Post comments if they are too big
+ *
+ * Testing required
+ */
+
+.gf-ugc-username {
+  /* Define max-width according to your needs */
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.gf-ugc-text {
+  word-break: break-word;
+  overflow: hidden;
+}
+
 .user-output-no-overflow {
   max-width: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/*
- * Retroactively preventing user generated text from
- * overflowing Post cards or Post comments
- */
-
-/* Assim? */
-
-/* gf-ugc-text, <---------- */
-/* gf-ugc-name, <---------- */
-/* gf-ucg-description { <---------- */
-
-[class$="-text"],
-[class$="-name"],
-[class$="-description"] {
-  word-break: normal;
 }
 
 /* Layouts */
@@ -384,6 +393,31 @@ h6 {
   border-width: 0px;
 }
 
+.gf-tag,
+[class*="gf-tag-"] {
+  border-radius: 16px;
+  background-color: var(--gf-dark-bg-dark);
+  width: fit-content;
+
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  gap: 4px;
+
+  padding: 6px 16px;
+
+  & svg {
+    width: 20px;
+    height: 20px;
+    color: var(--gf-dark-text);
+  }
+
+  & span {
+    font-size: 12px;
+    color: var(--gf-dark-text);
+  }
+}
+
 /* Popovers */
 
 .gf-popover,
@@ -418,8 +452,9 @@ h6 {
   background-color: var(--gf-dark-bg);
   box-shadow: var(--gf-shadow-lift-sm);
   transition: box-shadow 0.15s ease;
-  z-index: var(--z-opens-overlay);
+  z-index: var(--gf-z-overlay);
   color: var(--gf-dark-text-muted);
+  transition: box-shadow .2s ease, color .2s ease;
 
   & > svg {
     width: 1.25rem;
@@ -598,6 +633,17 @@ h6 {
 }
 
 /* Avatars */
+.gf-big-avatar {
+  width: var(--gf-42);
+  height: var(--gf-42);
+}
+
+.gf-small-avatar {
+  width: var(--gf-32);
+  height: var(--gf-32);
+}
+
+
 /* Tooltips */
 /* Loaders */
 /* Alerts / Toasts */
@@ -773,6 +819,7 @@ h6 {
 .gf-my-20   { margin-top: var(--gf-20); margin-bottom: var(--gf-20); }
 .gf-my-24   { margin-top: var(--gf-24); margin-bottom: var(--gf-24); }
 .gf-my-32   { margin-top: var(--gf-32); margin-bottom: var(--gf-32); }
+.gf-my-64   { margin-top: var(--gf-64); margin-bottom: var(--gf-64); }
 .gf-my-auto { margin-top: auto; margin-bottom: auto; }
 
 .gf-ml-0    { margin-left: 0; }
@@ -906,6 +953,12 @@ h6 {
 /* Pointer events */
 .gf-no-events { pointer-events: none !important; }
 .gf-do-events { pointer-events: auto; }
+
+/* Cursor */
+
+.gf-generic-clickable-wrapper {
+  cursor: pointer;
+}
 
 /*
 

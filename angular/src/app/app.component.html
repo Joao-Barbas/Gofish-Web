@@ -1,3 +1,6 @@
 <!-- app.component.html -->
-<ngx-sonner-toaster position="bottom-center" richColors />
+
+<gf-header [variant]="headerVariant()"></gf-header>
+<ngx-sonner-toaster [position]="'bottom-center'" richColors></ngx-sonner-toaster>
 <router-outlet></router-outlet>
+<gf-footer [variant]="footerVariant()"></gf-footer>
