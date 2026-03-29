@@ -14,7 +14,7 @@ import { PinKind } from '@gofish/shared/models/pin.model';
 })
 export class EnumComponent {
   private readonly pinService = inject(PinService);
-  pinData = input<PinDataResDTO | null>(null);
+  pinData = input<PinDto | null>(null);
   postData = input<PinDto | null>(null);
   public pinKind = PinKind;
 

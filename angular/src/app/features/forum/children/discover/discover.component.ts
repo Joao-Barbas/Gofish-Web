@@ -32,32 +32,23 @@ export class DiscoverComponent {
     }
     this.pinService.getFeed(request).subscribe({
       next: (res) => {
-        /* this.allFeedPosts.update(current => {
-          if (!current) return res;
-          // Verify if backend is not sending same posts
-          const newPosts = res.posts.filter(newPost => !current.posts.some(currentPost => currentPost.id === newPost.id));
-
-          if (newPosts.length === 0) {
-            this.hasMoreResults.set(false);
-          }
-          return {
-            ...res,
-            posts: [...current!.posts, ...newPosts]
-          };
-        }); */
         this.allFeedPosts.update(current => {
+          const currentPins = current?.pins ?? [];
+          const newPins = res.pins.filter(
+            pin => !currentPins.some(existing => existing.id === pin.id)
+          );
 
           this.hasMoreResults.set(res.hasMoreResults);
 
           return {
             ...res,
-            posts: [...current!.pins, ...res.pins]
+            pins: [...currentPins, ...newPins]
           };
         });
 
         if (res.pins.length > 0) {
-          const lastPost = res.pins[res.pins.length - 1];
-          this.lastTimestamp = lastPost.createdAt;
+          const lastPin = res.pins[res.pins.length - 1];
+          this.lastTimestamp = lastPin.createdAt;
         } else {
           this.hasMoreResults.set(false);
         }

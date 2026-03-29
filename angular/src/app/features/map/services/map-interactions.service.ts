@@ -1,5 +1,5 @@
 import { Injectable, Signal, inject } from '@angular/core';
-import { ViewportPinDTO, GetPinsReqDTO, GetPinsResDTO, PinDataReqDTO, PinDataResDTO, PinIdDTO, PinDto } from '@gofish/shared/dtos/pin.dto';
+import { ViewportPinDTO, GetPinsReqDTO, GetPinsResDTO, PinDataReqDTO, PinDataResDTO, PinIdDTO, PinDto, GetPinsReqDto } from '@gofish/shared/dtos/pin.dto';
 import { PinService } from '@gofish/shared/services/pin.service';
 import { PinHoverPreviewService } from '@gofish/features/map/services/pin-hover-preview.service';
 import { PopupService } from '@gofish/shared/services/popup.service';
@@ -63,18 +63,20 @@ export class MapInteractionsService {
           };
         });
 
-        const request: GetPinsReqDTO = {
+        const request: GetPinsReqDto = {
           ids: pinIds,
           dataRequest: {
             includeGeolocation: true,
             includeAuthor: true,
-            includePost: true,
             includeDetails: true,
+            includeStats: true,
+            includeUgc: true,
             includeGroups: true,
+            includeComments: true
           }
         };
 
-        this.pinService.getPinPreview(request).subscribe({
+        this.pinService.getPins(request).subscribe({
           next: (res) => {
             selectedPins.set(res.pins);
             this.popupService.open('cluster-preview');

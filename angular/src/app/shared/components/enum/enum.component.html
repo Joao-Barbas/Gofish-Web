@@ -22,7 +22,7 @@
     <path d="M12 9v4" />
     <path d="M12 17h.01" />
   </svg>
-  <span>{{ getEnumDisplayName(warnTypeOptions, pinData()!.details!.warningKind) }}</span>
+  <span>{{ getEnumDisplayName(warnTypeOptions, pinData()!.details?.warningKind!) }}</span>
 </div>
 }
 @case (pinKind.INFORMATION) {
@@ -35,7 +35,7 @@
   </svg>
   <span>Info</span>
 </div>
-@if(pinData()?.details?.accessDificulty !== null) {
+@if(pinData()?.details?.accessDifficulty !== null) {
 <div class="d-flex align-items-center gf-badge-pin-type-and-extras">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
     stroke-linecap="round" stroke-linejoin="round">
@@ -45,7 +45,7 @@
     <path d="M13 12h8" />
     <path d="M13 18h8" />
   </svg>
-  <span>{{ getEnumDisplayName(accessDifficultyOptions, pinData()?.details?.accessDificulty!) }}</span>
+  <span>{{ getEnumDisplayName(accessDifficultyOptions, pinData()?.details?.accessDifficulty!) }}</span>
 </div>
 }
 @if(pinData()?.details?.seabed !== null) {

@@ -35,14 +35,6 @@ export class PinService {
     });
   }
 
-  getPinPreview(getPin: GetPinsReqDTO): Observable<GetPinsResDTO> {
-    return this.http.post<GetPinsResDTO>(Api.Pin.action('GetPins'), getPin);
-  }
-
-  vote(postId: number, value: 1 | -1): Observable<VotePostResDTO> {
-    return this.http.post<VotePostResDTO>(Api.Pin.action(`PostVote/${postId}`), { value });
-  }
-
   getPins(dto: GetPinsReqDto): Observable<GetPinsResDto> {
     return this.http.post<GetPinsResDto>(Api.Pin.action('GetPins'), dto);
   }

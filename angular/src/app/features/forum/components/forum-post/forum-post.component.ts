@@ -10,6 +10,7 @@ import { Path } from '@gofish/shared/constants';
 import { SlicePipe } from '@angular/common';
 import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { PinDto } from '@gofish/shared/dtos/pin.dto';
+import { VoteKind } from '@gofish/shared/enums/vote-kind.enum';
 
 @Component({
   selector: 'app-forum-post',
@@ -34,7 +35,7 @@ export class ForumPostComponent {
 
   ngOnInit() {
     const post = this.postData();
-    if(!post) return;
+    if (!post) return;
 
     this.score.set(post.stats?.score ?? 1000);
     this.currentVote.set(post.stats?.currentUserVote ?? null);
@@ -54,17 +55,34 @@ export class ForumPostComponent {
     });
   }
 
-  vote(value: 1 | -1) {
+  vote(value: VoteKind.Upvote | VoteKind.Downvote) {
     if (this.isVoting()) return;
 
     const postId = this.postData()?.id;
     if (!postId) return;
 
+    const current = this.currentVote();
     this.isVoting.set(true);
-    this.pinService.vote(postId, value).subscribe({
+
+    if (current === value) {
+      this.pinService.deleteVote(postId).subscribe({
+        next: (res) => {
+          this.score.set(res.newScore);
+          this.currentVote.set(res.userVote ?? null);
+          this.isVoting.set(false);
+        },
+        error: (err) => {
+          console.log(err);
+          this.isVoting.set(false);
+        }
+      });
+      return;
+    }
+
+    this.pinService.putVote(postId, { value }).subscribe({
       next: (res) => {
-        this.score.set(res.score);
-        this.currentVote.set(this.currentVote() === value ? null : value);
+        this.score.set(res.newScore);
+        this.currentVote.set(res.userVote ?? null);
         this.isVoting.set(false);
       },
       error: (err) => {
