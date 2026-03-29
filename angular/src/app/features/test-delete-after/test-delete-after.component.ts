@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { PreviewMarkerService } from '@gofish/features/map/services/preview-marker.service';
 import { MarkerRegistryService } from '@gofish/features/map/services/marker-registry.service';
 import { PinDetailPanelComponent } from '../map/components/pin-detail-panel/pin-detail-panel.component';
@@ -35,7 +35,7 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5
   selector: 'app-test-delete-after',
   imports: [CommonModule, FormsModule, GfCardPinPreviewComponent],
   templateUrl: './test-delete-after.component.html',
-  styleUrl: './test-delete-after.component.css',
+  /*styleUrl: './test-delete-after.component.css',*/
 })
 export class TestDELETEAFTERComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {

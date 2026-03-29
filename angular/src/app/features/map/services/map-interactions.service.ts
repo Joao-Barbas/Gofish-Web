@@ -1,6 +1,6 @@
 import { Injectable, Signal, inject } from '@angular/core';
 import { ViewportPinDTO, GetPinsReqDTO, GetPinsResDTO, PinDataReqDTO, PinDataResDTO, PinIdDTO } from '@gofish/shared/dtos/pin.dto';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { PinHoverPreviewService } from '@gofish/features/map/services/pin-hover-preview.service';
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { PIN_CONFIG } from '@gofish/shared/constants/index';

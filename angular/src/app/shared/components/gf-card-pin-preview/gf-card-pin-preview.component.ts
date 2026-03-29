@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
 import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';

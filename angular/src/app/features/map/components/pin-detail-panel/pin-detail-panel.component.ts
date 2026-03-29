@@ -7,7 +7,7 @@ import { GeoLocationDTO, PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 import { ReturnStatement } from '@angular/compiler';

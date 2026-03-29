@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { UrlService } from '@gofish/features/map/services/url.service';
 import { AsyncButtonComponent } from '@gofish/shared/components/async-button/async-button.component';
 import { BusyState } from '@gofish/shared/core/busy-state';

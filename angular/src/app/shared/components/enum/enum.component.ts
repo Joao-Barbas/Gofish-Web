@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, input } from '@angular/core';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { GetPostsPostDTO } from '@gofish/shared/dtos/get-post.dto';
 import { PinDataResDTO } from '@gofish/shared/dtos/pin.dto';

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';

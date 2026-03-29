@@ -5,6 +5,7 @@ import { GetPostsResDTO, GetPostsReqDTO } from '@gofish/shared/dtos/get-post.dto
 import { PostsService } from '@gofish/shared/services/posts.service';
 import { GetFeedReqDTO, GetFeedResDTO } from '@gofish/shared/dtos/get-feed.dto';
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
+import { PinService } from '@gofish/shared/services/pin.service';
 
 @Component({
   selector: 'app-discover',
@@ -14,7 +15,7 @@ import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinn
 })
 export class DiscoverComponent {
   private readonly router = inject(Router);
-  private readonly postService = inject(PostsService);
+  private readonly pinService = inject(PinService);
   allFeedPosts = signal<GetFeedResDTO | null>(null);
   hasMoreResults = signal(true);
   private lastTimestamp: string = new Date().toISOString();

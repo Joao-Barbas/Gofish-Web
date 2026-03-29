@@ -1,12 +1,11 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { GetPostsPostDTO, GetPostsReqDTO, GetPostsResDTO } from '@gofish/shared/dtos/get-post.dto';
-import { PostsService } from '@gofish/shared/services/posts.service';
 import { TimeAgoPipe } from "../../../../shared/pipes/time-ago.pipe";
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { EnumComponent } from "@gofish/shared/components/enum/enum.component";
 import { AuthService } from '@gofish/shared/services/auth.service';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { Path } from '@gofish/shared/constants';
 import { SlicePipe } from '@angular/common';
 import { AvatarService } from '@gofish/shared/services/avatar.service';

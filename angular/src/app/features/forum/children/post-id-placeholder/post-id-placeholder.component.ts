@@ -1,6 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
 import { GroupSettingsPopoverComponent } from "../groups/components/group-settings-popover/group-settings-popover.component";
-import { PostsService } from '@gofish/shared/services/posts.service';
 import { CreatePostCommentReqDTO, GetPostsCommentDTO, GetPostsPostDTO, GetPostsReqDTO, GetPostsResDTO, PostIdDTO } from '@gofish/shared/dtos/get-post.dto';
 import { ActivatedRoute } from '@angular/router';
 import { ForumPostComponent } from '@gofish/features/forum/components/forum-post/forum-post.component';
@@ -9,6 +8,8 @@ import { PostCommentsComponent } from "../post-comments/post-comments.component"
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { toast } from 'ngx-sonner';
+import { PinService } from '@gofish/shared/services/pin.service';
+import { CreateCommentReqDto, GetPinsReqDto, PinDto } from '@gofish/shared/dtos/pin.dto';
 
 @Component({
   selector: 'app-post-id-placeholder',
@@ -17,14 +18,14 @@ import { toast } from 'ngx-sonner';
   styleUrl: './post-id-placeholder.component.css',
 })
 export class PostIdPlaceholderComponent {
-  private readonly postService = inject(PostsService)
+  private readonly pinService = inject(PinService);
   private readonly route = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
   private readonly fb = inject(FormBuilder);
   userName = this.authService.getUserName();
   isAdmin = this.authService.isAdmin();
   id: string | null = null;
-  post = signal<GetPostsPostDTO | null>(null);
+  post = signal<PinDto | null>(null);
   isSubmitting = false;
   comments = signal<GetPostsCommentDTO[]>([]);
 
@@ -40,22 +41,22 @@ export class PostIdPlaceholderComponent {
     };
 
 
-    const dto: GetPostsReqDTO = {
-      ids: [{ postId: Number(this.id) }],
+    const dto: GetPinsReqDto = {
+      ids: [{ pinId: Number(this.id) }],
       dataRequest: {
+        includeGeolocation: true,
         includeAuthor: true,
-        includeComments: true,
-        includeGroups: true,
-        includeCoords: true
+        includeDetails: true,
+        includeStats: true,
+        includeUgc: true
       },
-      lastTimestamp: new Date().toISOString(),
       maxResults: 1,
     }
 
-    this.postService.getPosts(dto).subscribe({
+    this.pinService.getPins(dto).subscribe({
       next: (res) => {
-        this.post.set(res.posts[0]);
-        this.comments.set(res.posts[0].comments!);
+        this.post.set(res.pins[0]);
+        this.comments.set(res.pins[0].comments!);
       },
       error: (err) => {
         console.log(err);
@@ -76,11 +77,11 @@ export class PostIdPlaceholderComponent {
 
     this.isSubmitting = true;
 
-    const dto: CreatePostCommentReqDTO = {
-      postId: Number(this.id),
+    const dto: CreateCommentReqDto = {
+      pinId: Number(this.id),
       body: body
     };
-    this.postService.createComment(dto).subscribe({
+    this.pinService.createComment(dto).subscribe({
       next: () => {
         this.commentForm.reset();
         this.isSubmitting = false;

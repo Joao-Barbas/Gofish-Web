@@ -1,10 +1,11 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, CreatePinResDTO, GetPinsReqDTO, PinDataResDTO, GetPinsResDTO } from '@gofish/shared/dtos/pin.dto';
+import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, CreatePinResDTO, GetPinsReqDTO, PinDataResDTO, GetPinsResDTO, GetPinsReqDto, GetPinsResDto, GetFeedReqDto, GetFeedResDto, VoteReqDto, VoteResDto, CreateCommentReqDto, CreateCommentResDto } from '@gofish/shared/dtos/pin.dto';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { Api } from '@gofish/shared/constants';
 import { VotePostDTO, VotePostResDTO } from '@gofish/shared/dtos/vote-post.dto';
+import { GetFeedResDTO } from '@gofish/shared/dtos/get-feed.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class PinService {
     return this.http.post<CreatePinResDTO>(Api.Pin.action('CreateWarnPin'), dto);
   }
 
-  deletePin(id: number): Observable<void>{
+  deletePin(id: number): Observable<void> {
     return this.http.delete<void>(Api.Pin.action(`DeletePin/${id}`));
   }
 
@@ -39,7 +40,27 @@ export class PinService {
   }
 
   vote(postId: number, value: 1 | -1): Observable<VotePostResDTO> {
-    return this.http.post<VotePostResDTO>(Api.Post.action(`PostVote/${postId}`), {value});
+    return this.http.post<VotePostResDTO>(Api.Pin.action(`PostVote/${postId}`), { value });
+  }
+
+  getPins(dto: GetPinsReqDto): Observable<GetPinsResDto> {
+    return this.http.post<GetPinsResDto>(Api.Pin.action('GetPins'), dto);
+  }
+
+  getFeed(dto: GetFeedReqDto): Observable<GetFeedResDto> {
+    return this.http.post<GetFeedResDto>(Api.Pin.action('GetFeed'), dto);
+  }
+
+  putVote(postId: number, dto: VoteReqDto): Observable<VoteResDto> {
+    return this.http.post<VoteResDto>(Api.Pin.action(`PostVote/${postId}`), dto);
+  }
+
+  deleteVote(postId: number): Observable<VoteResDto> {
+    return this.http.delete<VoteResDto>(Api.Pin.action(`DeleteVote/${postId}`));
+  }
+
+  createComment(dto: CreateCommentReqDto): Observable<CreateCommentResDto> {
+    return this.http.post<CreateCommentResDto>(Api.Pin.action("CreateComment"), dto);
   }
 
   enumeratePinType = () => this.http.get<EnumDTO[]>(Api.Enums.action('PinKind'));

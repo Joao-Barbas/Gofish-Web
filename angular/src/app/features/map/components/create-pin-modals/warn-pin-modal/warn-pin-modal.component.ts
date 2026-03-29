@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/pin.dto';
