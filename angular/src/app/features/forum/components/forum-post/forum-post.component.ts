@@ -99,4 +99,11 @@ export class ForumPostComponent {
   toggleExpand() {
     this.isExpanded = !this.isExpanded
   }
+
+  deletePost() {
+    const id = this.postData()?.id;
+    if (!id) return;
+
+    this.router.navigate(['/forum', 'delete-post', id]);
+  }
 }

@@ -39,7 +39,7 @@ export class DeletePinComponent {
       next: () => {
         toast.success('deleted pin succesfully');
       }, error: (err) => {
-        alert(err);
+        alert('You dont have permissions do delete this pin');
       }
     });
     this.router.navigate(['map']);

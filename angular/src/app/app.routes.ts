@@ -191,6 +191,7 @@ export const routes: Routes = [
 
       },
       { path: 'post/:id', loadComponent: () => import('@gofish/features/forum/children/post-id-placeholder/post-id-placeholder.component').then(p => p.PostIdPlaceholderComponent) },
+      { path: PathSegment.DELETE_POST, loadComponent: ()=> import('@gofish/features/forum/children/delete-post/delete-post.component').then(p => p.DeletePostComponent)}
     ]
   },
   {

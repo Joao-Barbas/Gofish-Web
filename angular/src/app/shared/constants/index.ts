@@ -1,3 +1,4 @@
+import { DELETE } from "@angular/cdk/keycodes";
 import { PinKind } from "@gofish/shared/models/pin.model";
 import { environment } from "environments/environment";
 
@@ -36,6 +37,7 @@ export const PathSegment = {
   FORUM_MY_GROUPS:        'my-groups',
   FORUM_GROUPS:           'groups',
   FORUM_POST:             'post',
+  DELETE_POST:            'delete-post/:id',
   PROFILE:                'profile',
   STATISTICS:             'statistics',
   STATISTICS_PIN_DENSITY: 'pin-density-by-location',
