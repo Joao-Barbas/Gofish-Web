@@ -55,6 +55,10 @@ export class PinService {
     return this.http.post<CreateCommentResDto>(Api.Pin.action("CreateComment"), dto);
   }
 
+  deleteComment(commentId: number): Observable<void> {
+    return this.http.delete<void>(Api.Pin.action(`DeleteComment/${commentId}`));
+  }
+
   getComments(dto: GetCommentsReqDto): Observable<GetCommentsResDto> {
     return this.http.get<GetCommentsResDto>(Api.Pin.action("GetComments"), {
       params: {

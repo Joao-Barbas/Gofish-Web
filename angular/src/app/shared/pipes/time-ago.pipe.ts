@@ -36,7 +36,7 @@ export class TimeAgoPipe implements PipeTransform {
 
     const months = Math.floor(days / 30);
     if (months < 12) {
-      return `${months} month${months > 1 ? 'es' : ''}`;
+      return `${months} month${months > 1 ? 's' : ''}`;
     }
 
     const years = Math.floor(months / 12);

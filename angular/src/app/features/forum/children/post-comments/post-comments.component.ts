@@ -5,6 +5,8 @@ import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinn
 import { CommentDto } from '@gofish/shared/dtos/pin.dto';
 import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { AuthService } from '@gofish/shared/services/auth.service';
+import { PinService } from '@gofish/shared/services/pin.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-comments',
@@ -13,11 +15,14 @@ import { AuthService } from '@gofish/shared/services/auth.service';
   styleUrl: './post-comments.component.css',
 })
 export class PostCommentsComponent {
+  private readonly router = inject(Router);
   protected readonly avatarService = inject(AvatarService);
   private readonly authService = inject(AuthService);
   userName = this.authService.getUserName();
   isAdmin = this.authService.isAdmin();
   comments = input<CommentDto[]>([]);
 
-
+  deleteComment(commentId: number) {
+    this.router.navigate(['forum', 'delete-comment', commentId]);
+  }
 }

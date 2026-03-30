@@ -126,6 +126,7 @@ export class PostIdPlaceholderComponent {
         this.busyState.setBusy(false);
         toast.success("Comment submitted successfully");
         this.comments.set(null);
+        this.lastTimestamp = new Date().toISOString();
         this.loadComments(5);
       },
       error: (err) => {

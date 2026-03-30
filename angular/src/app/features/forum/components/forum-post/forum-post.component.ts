@@ -106,4 +106,6 @@ export class ForumPostComponent {
 
     this.router.navigate(['/forum', 'delete-post', id]);
   }
+
+
 }

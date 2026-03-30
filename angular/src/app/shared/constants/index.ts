@@ -38,6 +38,7 @@ export const PathSegment = {
   FORUM_GROUPS:           'groups',
   FORUM_POST:             'post',
   DELETE_POST:            'delete-post/:id',
+  DELETE_COMMENT:         'delete-comment/:id',
   PROFILE:                'profile',
   STATISTICS:             'statistics',
   STATISTICS_PIN_DENSITY: 'pin-density-by-location',
