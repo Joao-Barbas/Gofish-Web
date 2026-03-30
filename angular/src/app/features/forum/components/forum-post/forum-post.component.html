@@ -9,7 +9,7 @@
 
     <div class="d-flex align-items-center gap-2 gf-generic-clickable-wrapper" [routerLink]="Path.PROFILE(post!.author!.id)">
 
-      <img [src]="post.author!.avatarUrl" class="rounded-circle gf-big-avatar">
+      <img [src]="this.avatarService.resolve(post.author!.avatarUrl)" class="rounded-circle gf-big-avatar">
 
       <span class="user-output-no-overflow post-author-name text-bold">{{ post.author?.userName }}</span>
       <span class="post-date dark-text-muted">{{ post.createdAt | timeAgo }}</span>
