@@ -39,8 +39,7 @@ export class PostIdPlaceholderComponent {
       alert("Null id");
       return;
     };
-
-
+    
     const dto: GetPinsReqDto = {
       ids: [{ pinId: Number(this.id) }],
       dataRequest: {
@@ -62,21 +61,33 @@ export class PostIdPlaceholderComponent {
       }
     });
 
+    this.loadComments();
+  }
+
+  loadComments() {
+    if (!this.id) return;
+
     const req: GetCommentsReqDto = {
       pinId: Number(this.id),
       maxResults: 5,
-    }
+    };
+
     this.pinService.getComments(req).subscribe({
       next: (res) => {
-        this.comments.set(res);
+        this.comments.update(current => {
+          if (!current) return res;
+
+          return {
+            ...res,
+            comments: [...current.comments, ...res.comments]
+          };
+        });
       },
       error: (err) => {
         console.log(err);
       }
     });
   }
-
-  // LOAD MORE
 
   submitComment() {
     if (this.commentForm.invalid || this.isSubmitting) {

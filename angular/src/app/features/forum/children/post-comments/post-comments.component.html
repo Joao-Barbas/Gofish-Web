@@ -8,10 +8,9 @@
 
       <div class="d-flex align-items-center gap-2">
 
-        <img src="assets/images/placeholder_profile_pic.png" class="rounded-circle post-author-profile-photo">
+        <img [src]="this.avatarService.resolve(c.author.avatarUrl)" class="rounded-circle post-author-profile-photo">
 
         <span class="post-author-name text-bold">{{c.author.userName}}</span>
-        <span class="separator">•</span>
         <span class="post-date dark-text-muted">{{c.createdAt | timeAgo}}</span>
 
       </div>
@@ -45,19 +44,6 @@
 
         </button>
 
-        <!-- Location Post Button -->
-        <button class="gf-badge-post-comment-btn">
-
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <line x1="2" x2="5" y1="12" y2="12" />
-            <line x1="19" x2="22" y1="12" y2="12" />
-            <line x1="12" x2="12" y1="2" y2="5" />
-            <line x1="12" x2="12" y1="19" y2="22" />
-            <circle cx="12" cy="12" r="7" />
-          </svg>
-        </button>
-
       </div>
 
     </div>
@@ -71,7 +57,6 @@
          {{c.body}}
         </p>
       </div>
-
 
     </div>
   </div>

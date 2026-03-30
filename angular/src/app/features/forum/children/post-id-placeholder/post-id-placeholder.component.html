@@ -14,7 +14,7 @@
         Comment
       </button>
     </form>
-    @if (comments()) {
+    @if (!comments()) {
     <gf-loading-spinner></gf-loading-spinner>
     } @else if (comments()?.comments?.length == 0) {
     }@else {

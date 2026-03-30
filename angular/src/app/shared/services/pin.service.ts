@@ -56,7 +56,13 @@ export class PinService {
   }
 
   getComments(dto: GetCommentsReqDto): Observable<GetCommentsResDto> {
-    return this.http.post<GetCommentsResDto>(Api.Pin.action("GetComments"), dto);
+    return this.http.get<GetCommentsResDto>(Api.Pin.action("GetComments"), {
+      params: {
+        pinId: dto.pinId.toString(),
+        maxResults: dto.maxResults!.toString(),
+        ...(dto.lastTimestamp ? { lastTimestamp: dto.lastTimestamp } : {})
+      }
+    });
   }
 
   enumeratePinType = () => this.http.get<EnumDTO[]>(Api.Enums.action('PinKind'));
