@@ -68,16 +68,20 @@ public class PinController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> GetFeed([FromBody] GetFeedReqDto dto)
     {
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        if (userId is null) return Unauthorized();
-
         var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+        var userId     = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+
+        if (userId is null)
+        {
+            return Unauthorized();
+        }
+
         IQueryable<Pin> query = dto.Kind switch
         {
             FeedKind.Discovery => _visibility.FilterVisiblePins(_db.Pins, userId),
-            FeedKind.Friends => GetFriendsFeed(_db.Pins, userId),
-            FeedKind.Groups => GetGroupsFeed(_db.Pins, userId),
-            _ => throw new AppValidationException("UnknownFeedKind", "Feed kind must be Discovery, Friends, or Groups")
+            FeedKind.Friends   => _visibility.FilterFriendsPins(_db.Pins, userId),
+            FeedKind.Groups    => _visibility.FilterGroupsPins(_db.Pins, userId),
+            _ => throw new AppValidationException("Kind", "Feed kind must be Discovery, Friends, or Groups")
         };
 
         if (dto.LastTimestamp is not null)
@@ -85,28 +89,36 @@ public class PinController : ControllerBase
             query = query.Where(p => p.CreatedAt < dto.LastTimestamp.Value);
         }
 
-        query = query.Include(p => p.Votes);
-        query = query.Include(p => p.AppUser)
-            .ThenInclude(u => u.UserProfile);
-        query = query.Include(p => p.Comments)
-            .ThenInclude(c => c.AppUser)      // TODO: Are these necessary?
-            .ThenInclude(u => u.UserProfile); // TODO: Are these necessary?
-        query = query.Include(p => p.Groups);
-
-        query = query
+        var pins = await query
             .OrderByDescending(p => p.CreatedAt)
             .ThenByDescending(p => p.Id)
-            .Take(maxResults + 1);
-
-        var pins = await query.Select(p => PinDto.FromEntity(p)
-            .SetGeolocation(p)
-            .SetAuthor(p.AppUser, p.AppUser.UserProfile)
-            .SetDetails(p)
-            .SetUgc(p)
-            .SetStats(new(
-                p.Votes.Where(v => v.UserId == userId).Select(v => (VoteKind?)v.Value).FirstOrDefault(),
-                p.Votes.Sum(v => (int)v.Value),
-                p.Comments.Count)))
+            .Take(maxResults + 1)
+            .Select(p => new PinDto(p.Id, p.CreatedAt, p.Visibility, p.Kind)
+            {
+                Geolocation = new PinGeolocationDto(p.Latitude, p.Longitude),
+                Author = new PinAuthorDto
+                {
+                    Id = p.AppUser.Id,
+                    UserName = p.AppUser.UserName ?? "",
+                    FirstName = p.AppUser.FirstName ?? "",
+                    LastName = p.AppUser.LastName ?? "",
+                    AvatarUrl = p.AppUser.UserProfile.AvatarUrl
+                },
+                Details = new PinDetailsDto(
+                    ((CatchPin)p).Species,
+                    ((CatchPin)p).Bait,
+                    ((CatchPin)p).HookSize,
+                    ((InfoPin)p).AccessDifficulty,
+                    ((InfoPin)p).Seabed,
+                    ((WarnPin)p).WarningKind),
+                Ugc = new PinUgcDto(p.Body, p.ImageUrl),
+                Stats = new PinStatsDto(
+                    p.Votes.Where(v => v.UserId == userId)
+                           .Select(v => (VoteKind?)v.Value)
+                           .FirstOrDefault(),
+                    p.Votes.Sum(v => (int)v.Value),
+                    p.Comments.Count)
+            })
             .ToListAsync();
 
         var hasMore       = pins.Count > maxResults;
@@ -137,11 +149,11 @@ public class PinController : ControllerBase
             }
             if (id.AuthorId is not null && id.AuthorId != "")
             {
-                pinIds.AddRange(await GetVisiblePinIdsByAuthor(id.AuthorId, userId));
+                pinIds.AddRange(await _visibility.GetVisiblePinIdsByAuthor(id.AuthorId, userId).ToListAsync());
             }
             if (id.GroupId is not null)
             {
-                pinIds.AddRange(await GetVisiblePinIdsByGroup(id.GroupId.Value, userId));
+                pinIds.AddRange(await _visibility.GetVisiblePinIdsByGroup(id.GroupId.Value, userId).ToListAsync());
             }
         }
 
@@ -521,58 +533,7 @@ public class PinController : ControllerBase
         return Ok(new CreatePinResDto(pinId));
     }
 
-    #endregion
-    #region Helpers
-
-    // private static IQueryable<Pin> ApplyIncludes(IQueryable<Pin> query, PostDataRequestDTO? request)
-    // {
-    //     // Pin is always needed for visibility, kind, and pin-specific fields
-    // 
-    //     // query = query.Include(p => p.Votes);
-    // 
-    //     // if (request?.IncludeAuthor ?? false)
-    //     //     query = query.Include(p => p.AppUser);
-    //     // if (request?.IncludeComments ?? false)
-    //     //     query = query.Include(p => p.Comments).ThenInclude(c => c.AppUser).ThenInclude(u => u.UserProfile);
-    //     // if (request?.IncludeGroups ?? false)
-    //     //     query = query.Include(p => p.Groups);
-    // 
-    //     return query;
-    // }
-
-    private IQueryable<Pin> GetFriendsFeed(IQueryable<Pin> query, string userId)
-    {
-        var friendIds = _visibility.GetFriendIds(userId);
-        return query.Where(p => p.UserId == userId
-            || (friendIds.Contains(p.UserId)
-            && (p.Visibility == VisibilityLevel.Public || p.Visibility == VisibilityLevel.Friends)));
-    }
-
-    private IQueryable<Pin> GetGroupsFeed(IQueryable<Pin> query, string userId)
-    {
-        var groupIds = _visibility.GetGroupIds(userId);
-        return query.Where(p => p.UserId == userId
-            || p.Groups.Any(g => groupIds.Contains(g.Id)));
-    }
-
-    private async Task<List<int>> GetVisiblePinIdsByAuthor(string authorId, string currentUserId)
-    {
-        return await _visibility
-            .FilterVisiblePins(_db.Pins
-                .Where(p => p.UserId == authorId), currentUserId)
-            .Select(p => p.Id)
-            .ToListAsync();
-    }
-
-    private async Task<List<int>> GetVisiblePinIdsByGroup(int groupId, string currentUserId)
-    {
-        return await _visibility
-            .FilterVisiblePins(_db.Pins
-                .Where(p => p.Groups
-                .Any(g => g.Id == groupId)), currentUserId)
-            .Select(p => p.Id)
-            .ToListAsync();
-    }
+    // Helpers
 
     private async Task<int> SavePinAsync(Pin pin)
     {
@@ -587,5 +548,5 @@ public class PinController : ControllerBase
         return groupIds?.Select(gId => new GroupPin { GroupId = gId }).ToList() ?? [];
     }
 
-    #endregion // Helpers
+    #endregion
 }

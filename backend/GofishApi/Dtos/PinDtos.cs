@@ -46,33 +46,37 @@ public record PinDetailsDto (
     );
 }
 
-public record PinAuthorDto (
-    string Id,
-    string UserName,
-    string FirstName,
-    string LastName,
-    string? AvatarUrl,
+public record PinAuthorDto
+{
     // Rank (??)
     // Catch points (???)
 
-    // Group context
-    GroupRole? GroupRole = null
-)
-{
-    public static PinAuthorDto FromEntity(AppUser u, UserProfile up) => new(
-        u.Id,
-        u.UserName ?? "",
-        u.FirstName ?? "",
-        u.LastName ?? "",
-        up.AvatarUrl);
+    public required string Id { get; init; }
+    public required string UserName { get; init; }
+    public required string FirstName { get; init; }
+    public required string LastName { get; init; }
 
-    public static PinAuthorDto FromEntity(AppUser u, UserProfile up, GroupUser gu) => new(
-        u.Id,
-        u.UserName ?? "",
-        u.FirstName ?? "",
-        u.LastName ?? "",
-        up?.AvatarUrl,
-        gu.Role);
+    public string? AvatarUrl { get; init; }
+    public GroupRole? GroupRole { get; init; }
+
+    public static PinAuthorDto FromEntity(AppUser u, UserProfile up) => new()
+    {
+        Id        = u.Id,
+        UserName  = u.UserName ?? "",
+        FirstName = u.FirstName ?? "",
+        LastName  = u.LastName ?? "",
+        AvatarUrl = up.AvatarUrl
+    };
+
+    public static PinAuthorDto FromEntity(AppUser u, UserProfile up, GroupUser gu) => new()
+    {
+        Id        = u.Id,
+        UserName  = u.UserName ?? "",
+        FirstName = u.FirstName ?? "",
+        LastName  = u.LastName ?? "",
+        AvatarUrl = up?.AvatarUrl,
+        GroupRole = gu.Role
+    };
 }
 
 public record PinStatsDto(
