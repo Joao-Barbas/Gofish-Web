@@ -9,7 +9,10 @@ export class TimeAgoPipe implements PipeTransform {
     if (!value) return '';
 
     const now = new Date();
-    const date = new Date(value);
+    const date = typeof value === 'string' && !value.endsWith('Z')
+    ? new Date(value + 'Z')
+    : new Date(value);
+
     const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
     if (seconds < 60) {
