@@ -154,6 +154,7 @@
 .icon-upvote {
   transform: rotate(90deg);
 }
+
 .icon-downvote {
   transform: rotate(-90deg);
 }
@@ -181,45 +182,24 @@
   color: var(--gf-dark-text);
   font-family: var(--gf-font-ugc);
   flex: 1;
-  resize: vertical;
+  resize: none;
   max-height: 300px;
   min-height: 38px;
   width: 100%;
+  overflow-y: auto;
 }
 
 .comment-area:focus {
   outline: none;
 }
 
-/* Comment Section ========= */
-
-.comment-list-section {
-  display: flex;
-  flex-direction: column;
-}
-
-.comment-list-section > .gf-card-post-comment:first-child {
-  padding-bottom: 6px;
-
-}
-
-.comment-list-section > .gf-card-post-comment:not(:first-child) {
-  padding: 6px 0;
-
-}
-
-.comment-list-section > .gf-card-post-comment:not(:last-child) {
-  border-bottom: 1px solid var(--gf-dark-bg-light);
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
-
 
 /* Post Comment */
 
 .gf-card-post-comment {
-  padding: 0;
-  background: none;
+  padding: 12px;
+  background: var(--gf-dark-bg);
+  border-radius: var(--gf-12);
   box-shadow: none;
 
   display: flex;

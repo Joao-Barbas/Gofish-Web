@@ -10,18 +10,20 @@
         <textarea class="comment-area" placeholder="Join the conversation" minlength="5" maxlength="100" name=""
           formControlName="body" id=""></textarea>
       </div>
-      <button type="submit" [disabled]="commentForm.invalid || isSubmitting">
-        Comment
-      </button>
+      <app-async-button type="submit" labels="Publish" [state]="busyState.isBusy() ? 'busy' : 'idle'">
+      </app-async-button>
     </form>
-    @if (!comments()) {
-    <gf-loading-spinner></gf-loading-spinner>
-    } @else if (comments()?.comments?.length == 0) {
-    }@else {
-    <app-post-comments [comments]="comments()?.comments!"></app-post-comments>
-    }
+    <div class="comment-list-section">
+      @if (!comments()) {
+      <gf-loading-spinner></gf-loading-spinner>
+      } @else if (comments()?.comments?.length == 0) {
+      }@else {
+      <app-post-comments [comments]="comments()?.comments!"></app-post-comments>
+      }
+    </div>
 
     }
+
   </div>
 
 

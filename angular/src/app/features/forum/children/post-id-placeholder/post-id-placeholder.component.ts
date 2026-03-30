@@ -10,10 +10,12 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { toast } from 'ngx-sonner';
 import { PinService } from '@gofish/shared/services/pin.service';
 import { CommentDto, CreateCommentReqDto, GetCommentsReqDto, GetCommentsResDto, GetPinsReqDto, PinDto } from '@gofish/shared/dtos/pin.dto';
+import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
+import { BusyState } from '@gofish/shared/core/busy-state';
 
 @Component({
   selector: 'app-post-id-placeholder',
-  imports: [GroupSettingsPopoverComponent, ForumPostComponent, PostCommentsComponent, LoadingSpinnerComponent, ReactiveFormsModule],
+  imports: [GroupSettingsPopoverComponent, ForumPostComponent, PostCommentsComponent, LoadingSpinnerComponent, ReactiveFormsModule, AsyncButtonComponent],
   templateUrl: './post-id-placeholder.component.html',
   styleUrl: './post-id-placeholder.component.css',
 })
@@ -26,8 +28,8 @@ export class PostIdPlaceholderComponent {
   isAdmin = this.authService.isAdmin();
   id: string | null = null;
   post = signal<PinDto | null>(null);
-  isSubmitting = false;
   comments = signal<GetCommentsResDto | null>(null);
+  busyState: BusyState = new BusyState();
 
   commentForm = this.fb.group({
     body: ['', [Validators.required, Validators.maxLength(100)]]
@@ -39,7 +41,7 @@ export class PostIdPlaceholderComponent {
       alert("Null id");
       return;
     };
-    
+
     const dto: GetPinsReqDto = {
       ids: [{ pinId: Number(this.id) }],
       dataRequest: {
@@ -61,15 +63,15 @@ export class PostIdPlaceholderComponent {
       }
     });
 
-    this.loadComments();
+    this.loadComments(5);
   }
 
-  loadComments() {
+  loadComments(results: number) {
     if (!this.id) return;
 
     const req: GetCommentsReqDto = {
       pinId: Number(this.id),
-      maxResults: 5,
+      maxResults: results,
     };
 
     this.pinService.getComments(req).subscribe({
@@ -90,7 +92,7 @@ export class PostIdPlaceholderComponent {
   }
 
   submitComment() {
-    if (this.commentForm.invalid || this.isSubmitting) {
+    if (this.commentForm.invalid ) {
       this.commentForm.markAllAsTouched();
       return;
     }
@@ -98,8 +100,7 @@ export class PostIdPlaceholderComponent {
     const body = this.commentForm.controls.body.value?.trim();
     if (!body) return;
 
-    this.isSubmitting = true;
-
+    this.busyState.setBusy(true);
     const dto: CreateCommentReqDto = {
       pinId: Number(this.id),
       body: body
@@ -107,12 +108,14 @@ export class PostIdPlaceholderComponent {
     this.pinService.createComment(dto).subscribe({
       next: () => {
         this.commentForm.reset();
-        this.isSubmitting = false;
+        this.busyState.setBusy(false);
         toast.success("Comment submitted successfully");
+        this.comments.set(null);
+        this.loadComments(5);
       },
       error: (err) => {
         console.log(err);
-        this.isSubmitting = false;
+        this.busyState.setBusy(false);
         toast.error('Error submitting comment');
       }
     });
