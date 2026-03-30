@@ -3,7 +3,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Api } from "@gofish/shared/constants";
-import { GetGroupMembersReqDTO, GetGroupMembersResDTO, GetGroupPostsReqDTO, GetGroupPostsResDTO, SearchGroupsReqDTO, SearchGroupsResDTO } from "@gofish/shared/dtos/group.dto";
+import { GetGroupMembersReqDTO, GetGroupMembersResDTO, GetGroupPinsReqDto, GetGroupPinsResDto, GetGroupPostsReqDTO, GetGroupPostsResDTO, SearchGroupsReqDTO, SearchGroupsResDTO } from "@gofish/shared/dtos/group.dto";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -21,13 +21,13 @@ export class GroupApi/*Service*/ {
     return this.http.get<GetGroupMembersResDTO>(Api.Group.action('GetGroupMembers'), { params: p });
   }
 
-  public getGroupPosts(dto: GetGroupPostsReqDTO): Observable<GetGroupPostsResDTO> {
+  public getGroupPosts(dto: GetGroupPinsReqDto): Observable<GetGroupPinsResDto> {
     let p = new HttpParams();
     if (dto.groupId)       p = p.set('groupId', dto.groupId);
     if (dto.kind)          p = p.set('kind', dto.kind);
     if (dto.maxResults)    p = p.set('maxResults', dto.maxResults);
     if (dto.lastTimestamp) p = p.set('lastTimestamp', dto.lastTimestamp);
-    return this.http.get<GetGroupPostsResDTO>(Api.Group.action('GetGroupPosts'), { params: p });
+    return this.http.get<GetGroupPinsResDto>(Api.Group.action('GetGroupPins'), { params: p });
   }
 
   public searchGroups(dto: SearchGroupsReqDTO): Observable<SearchGroupsResDTO> {

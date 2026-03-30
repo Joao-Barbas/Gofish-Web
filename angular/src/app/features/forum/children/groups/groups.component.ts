@@ -10,7 +10,7 @@ import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-groups',
-  imports: [RouterLink, RouterOutlet, LoadingSpinnerComponent, GroupSettingsPopoverComponent, GroupMembersPlaceholderComponent],
+  imports: [RouterLink, RouterOutlet, LoadingSpinnerComponent, GroupSettingsPopoverComponent, GroupMembersPlaceholderComponent, RouterLinkActive],
   templateUrl: './groups.component.html',
   styleUrl: './groups.component.css',
 })
