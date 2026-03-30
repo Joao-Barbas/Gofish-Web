@@ -30,6 +30,8 @@ export class PostIdPlaceholderComponent {
   post = signal<PinDto | null>(null);
   comments = signal<GetCommentsResDto | null>(null);
   busyState: BusyState = new BusyState();
+  hasMoreResults = signal(true);
+  private lastTimestamp: string = new Date().toISOString();
 
   commentForm = this.fb.group({
     body: ['', [Validators.required, Validators.maxLength(100)]]
@@ -72,6 +74,7 @@ export class PostIdPlaceholderComponent {
     const req: GetCommentsReqDto = {
       pinId: Number(this.id),
       maxResults: results,
+      lastTimestamp: this.lastTimestamp
     };
 
     this.pinService.getComments(req).subscribe({
@@ -79,20 +82,32 @@ export class PostIdPlaceholderComponent {
         this.comments.update(current => {
           if (!current) return res;
 
+          this.hasMoreResults.set(res.hasMoreResults);
+
           return {
             ...res,
             comments: [...current.comments, ...res.comments]
           };
         });
+
+        if (res.comments.length > 0) {
+          const lastComment = res.comments[res.comments.length - 1];
+          this.lastTimestamp = lastComment.createdAt;
+        } else {
+          this.hasMoreResults.set(false);
+        }
       },
       error: (err) => {
         console.log(err);
       }
     });
   }
+  showMore() {
+    this.loadComments(5);
+  }
 
   submitComment() {
-    if (this.commentForm.invalid ) {
+    if (this.commentForm.invalid) {
       this.commentForm.markAllAsTouched();
       return;
     }
