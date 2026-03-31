@@ -27,6 +27,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<PinReport> PinReports { get; set; }
     public DbSet<CommentReport> CommentReports { get; set; }
     public DbSet<RequestLogs> RequestLogs { get; set; }
+    public DbSet<Ratings> Ratings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -206,6 +207,18 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .OnDelete(DeleteBehavior.Cascade);
 
         #endregion // CommentReport
+        #region Ratings
+
+        builder.Entity<Ratings>()
+            .HasKey(r => r.UserId);
+
+        builder.Entity<Ratings>()
+            .HasOne(r => r.AppUser)
+            .WithOne(u => u.Rating)
+            .HasForeignKey<Ratings>(r => r.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        #endregion
 
         SeedUsers(builder);
         SeedCatchPin(builder);
@@ -261,10 +274,9 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
         double baseLat = 38.5130;
         double baseLng = -8.8730;
-        var createdAt = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
-        var expiresAt = new DateTime(2026, 3, 11, 12, 0, 0, DateTimeKind.Utc);
         var random = new Random(1);
-
+        var createdAt = DateTime.UtcNow.AddDays(-random.Next(0, 7));
+        var expiresAt = createdAt.AddDays(7);
         var catchPins = new List<CatchPin>();
 
         for (int i = 0; i < 10; i++)
@@ -297,9 +309,9 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
         double baseLat = 38.5130;
         double baseLng = -8.8730;
-        var createdAt = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
-        var expiresAt = new DateTime(2026, 3, 11, 12, 0, 0, DateTimeKind.Utc);
         var random = new Random(2);
+        var createdAt = DateTime.UtcNow.AddDays(-random.Next(0, 7));
+        var expiresAt = createdAt.AddDays(7);
 
         var infoPins = new List<InfoPin>();
 
@@ -333,9 +345,9 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
         double baseLat = 38.5130;
         double baseLng = -8.8730;
-        var createdAt = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
-        var expiresAt = new DateTime(2026, 3, 11, 12, 0, 0, DateTimeKind.Utc);
         var random = new Random(3);
+        var createdAt = DateTime.UtcNow.AddDays(-random.Next(0, 7));
+        var expiresAt = createdAt.AddDays(7);
 
         var warnPins = new List<WarnPin>();
 
