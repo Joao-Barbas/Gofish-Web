@@ -26,10 +26,9 @@ import { AuthService } from '@gofish/shared/services/auth.service';
   styleUrl: './users-list.component.css',
 })
 export class UsersListComponent {
-  readonly query = input<string | undefined>(undefined, { alias: 'query' }); // Signal-based input given from :id
+  readonly query = input<string | undefined>(undefined, { alias: 'query' });
 
-  readonly userApi     = inject(UserApi);
-  readonly authService = inject(AuthService);
+  readonly userApi = inject(UserApi);
 
   readonly loadingState = new LoadingState();
   readonly busyState    = new BusyState();
