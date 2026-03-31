@@ -43,7 +43,7 @@ export class UsersListComponent {
     loader: () => firstValueFrom(
       this.userApi.searchUsers({
         query: this.query()!,
-        maxResults: 1
+        maxResults: 20
       }).pipe(
         map(res => res ?? null),
         catchError(() => of(null))
@@ -68,7 +68,7 @@ export class UsersListComponent {
     this.busyState.setBusy(true);
     this.userApi.searchUsers({
       query: this.query()!,
-      maxResults: 1,
+      maxResults: 20,
       lastUsername: this.usersCursor()
     }).subscribe({
       next: (res: SearchUsersResDTO) => {
