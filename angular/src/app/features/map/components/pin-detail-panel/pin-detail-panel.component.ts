@@ -118,7 +118,7 @@ export class PinDetailPanelComponent {
     const id = this.pinData()?.id;
     if (!id) return;
 
-    this.router.navigate(['/map', 'report', id]);
+    this.router.navigate(['/map', 'report-pin', id]);
    }
 }
 

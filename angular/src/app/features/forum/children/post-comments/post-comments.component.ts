@@ -25,4 +25,8 @@ export class PostCommentsComponent {
   deleteComment(commentId: number) {
     this.router.navigate(['forum', 'delete-comment', commentId]);
   }
+
+  report(id: number) {
+    this.router.navigate(['forum', 'report-comment', id]);
+  }
 }

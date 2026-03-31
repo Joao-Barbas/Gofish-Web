@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Api } from '@gofish/shared/constants';
-import { CreatePinReportReqDTO, CreatePinReportResDTO } from '@gofish/shared/dtos/report.dto';
+import { CreateCommentReportReqDTO, CreateCommentReportResDTO, CreatePinReportReqDTO, CreatePinReportResDTO } from '@gofish/shared/dtos/report.dto';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class ReportService {
   }
 
 
-  /* createCommentReport(dto: CreateCommentReportReqDTO): Observable<CreateCommentReportResDTO> {
+  createCommentReport(dto: CreateCommentReportReqDTO): Observable<CreateCommentReportResDTO> {
     return this.http.post<CreateCommentReportResDTO>(Api.Report.action('CreateCommentReport'), dto);
-  } */
+  }
 }

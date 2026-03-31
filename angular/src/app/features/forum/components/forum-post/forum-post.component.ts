@@ -111,6 +111,6 @@ export class ForumPostComponent {
     const id = this.postData()?.id;
     if (!id) return;
 
-    this.router.navigate(['/forum', 'report', id]);
+    this.router.navigate(['/forum', 'report-pin', id]);
    }
 }

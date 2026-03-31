@@ -1,22 +1,21 @@
-import { Component, inject } from '@angular/core';
-import { AsyncButtonComponent } from "../async-button/async-button.component";
-import { CreatePinReportReqDTO } from '@gofish/shared/dtos/report.dto';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BusyState } from '@gofish/shared/core/busy-state';
-import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
-import { PinReportReason, PinReportReasonLabel } from '@gofish/shared/enums/pin-report-reason.enum';
+import { CreateCommentReportReqDTO } from '@gofish/shared/dtos/report.dto';
+import { CommentReportReasonLabel, CommentReportReason } from '@gofish/shared/enums/comment-report-reason.enum';
 import { ReportService } from '@gofish/shared/services/report.service';
 import { toast } from 'ngx-sonner';
+import { AsyncButtonComponent } from "../async-button/async-button.component";
 
 @Component({
-  selector: 'gf-report',
+  selector: 'gf-report-comment',
   imports: [AsyncButtonComponent, ReactiveFormsModule],
-  templateUrl: './report.component.html',
-  styleUrl: './report.component.css',
+  templateUrl: './report-comment.component.html',
+  styleUrl: './report-comment.component.css',
 })
-export class ReportComponent {
+export class ReportCommentComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly reportService = inject(ReportService);
   private readonly fb = inject(FormBuilder);
@@ -24,17 +23,18 @@ export class ReportComponent {
 
   busyState: BusyState = new BusyState();
   errorMessage = '';
-  pinId: number | null = null;
+  commentId: number | null = null;
 
-  readonly reportReasonOptions = Object.keys(PinReportReasonLabel)
+  readonly reportReasonOptions = Object.keys(CommentReportReasonLabel)
     .filter(key => !isNaN(Number(key)))
     .map(key => {
-      const val = Number(key) as PinReportReason;
+      const val = Number(key) as CommentReportReason;
       return {
         value: val,
-        label: PinReportReasonLabel[val]
+        label: CommentReportReasonLabel[val]
       };
     });
+
   form = this.fb.group({
     reason: [null as number | null, [Validators.required]],
     description: ['', [Validators.maxLength(200)]]
@@ -42,46 +42,44 @@ export class ReportComponent {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-
     if (id) {
-      this.pinId = Number(id);
+      this.commentId = Number(id);
     } else {
-      this.errorMessage = "No Pin selected to report.";
+      this.errorMessage = "No comment selected to report.";
       toast.error(this.errorMessage);
     }
   }
 
   onCancel(): void {
-    // close modal and go back to previous page
     window.history.back();
   }
 
   onPublish(): void {
-    if (this.form.invalid || !this.pinId) {
+    if (this.form.invalid || !this.commentId) {
       this.form.markAllAsTouched();
       return;
     }
 
     this.busyState.setBusy(true);
-    const toastId = toast.loading('Sending report...');
+    const toastId = toast.loading('Reporting comment...');
 
-    const dto: CreatePinReportReqDTO = {
-      pinId: this.pinId,
+    const dto: CreateCommentReportReqDTO = {
+      commentId: this.commentId,
       reason: Number(this.form.value.reason),
       description: this.form.value.description ?? ''
     };
 
-    this.reportService.createPinReport(dto).subscribe({
+    this.reportService.createCommentReport(dto).subscribe({
       next: () => {
         this.busyState.setBusy(false);
         toast.dismiss(toastId);
-        toast.success('Report sent. We will review it shortly.');
+        toast.success('Thank you for reporting. We will investigate.');
         this.onCancel();
       },
       error: (err: HttpErrorResponse) => {
         this.busyState.setBusy(false);
         toast.dismiss(toastId);
-        this.errorMessage = typeof err.error === 'string' ? err.error : 'Failed to send report.';
+        this.errorMessage = typeof err.error === 'string' ? err.error : 'Failed to report comment.';
         toast.error(this.errorMessage);
       }
     });

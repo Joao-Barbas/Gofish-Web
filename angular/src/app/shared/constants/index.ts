@@ -44,7 +44,8 @@ export const PathSegment = {
   STATISTICS_PIN_DENSITY: 'pin-density-by-location',
   STATISTICS_REPORTS:     'reports',
   CREATE_GROUP:           'create-group',
-  REPORT:                 'report/:id',
+  REPORT_PIN:             'report-pin/:id',
+  REPORT_COMMENT:         'report-comment/:id',
 } as const;
 
 export const Path = {
