@@ -10,3 +10,16 @@ export enum PinReportReason {
   PrivateLocation = 8,
   Other = 9
 }
+
+export const PinReportReasonLabel: Record<PinReportReason, string> = {
+  [PinReportReason.OffensiveContent]: 'Offensive Content',
+  [PinReportReason.Spam]: 'Spam / Advertising',
+  [PinReportReason.WrongLocation]: 'Wrong Location',
+  [PinReportReason.MisleadingInfo]: 'Misleading Information',
+  [PinReportReason.InappropriateImage]: 'Inappropriate Image',
+  [PinReportReason.FakeCatch]: 'Fake Catch',
+  [PinReportReason.IllegalActivity]: 'Illegal Activity',
+  [PinReportReason.DuplicatePin]: 'Duplicate Pin',
+  [PinReportReason.PrivateLocation]: 'Private Location',
+  [PinReportReason.Other]: 'Other'
+};

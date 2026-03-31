@@ -113,6 +113,13 @@ export class PinDetailPanelComponent {
     this.router.navigate(['/forum/post', this.pinData()?.id]);
     this.popupController.close();
   }
+
+  report() {
+    const id = this.pinData()?.id;
+    if (!id) return;
+
+    this.router.navigate(['/map', 'report', id]);
+   }
 }
 
 

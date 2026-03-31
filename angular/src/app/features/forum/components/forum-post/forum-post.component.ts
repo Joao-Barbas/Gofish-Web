@@ -107,5 +107,10 @@ export class ForumPostComponent {
     this.router.navigate(['/forum', 'delete-post', id]);
   }
 
+  report() {
+    const id = this.postData()?.id;
+    if (!id) return;
 
+    this.router.navigate(['/forum', 'report', id]);
+   }
 }
