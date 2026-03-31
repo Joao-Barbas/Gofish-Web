@@ -46,4 +46,8 @@ export class HeaderActionsComponent {
     this.popupService.toggle('header-admin-popup');
     event.stopPropagation();
   }
+
+  onSearchClick(event: Event): void {
+    this.router.navigate(['/search'])
+  }
 }
