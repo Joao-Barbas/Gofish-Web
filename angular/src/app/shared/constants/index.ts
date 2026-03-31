@@ -1,4 +1,4 @@
-import { DELETE } from "@angular/cdk/keycodes";
+import { DELETE, R } from "@angular/cdk/keycodes";
 import { PinKind } from "@gofish/shared/models/pin.model";
 import { environment } from "environments/environment";
 
@@ -43,7 +43,8 @@ export const PathSegment = {
   STATISTICS:             'statistics',
   STATISTICS_PIN_DENSITY: 'pin-density-by-location',
   STATISTICS_REPORTS:     'reports',
-  CREATE_GROUP:           'create-group'
+  CREATE_GROUP:           'create-group',
+  REPORT:                 'report/:id',
 } as const;
 
 export const Path = {
@@ -104,6 +105,7 @@ export const Api = {
   UserAccount:  buildApi('UserAccount'),
   UserSecurity: buildApi('UserSecurity'),
   Post:         buildApi('Post'),
+  Report:       buildApi('Report'),
 } as const;
 
 export const PIN_CONFIG = [

@@ -112,7 +112,8 @@ export const routes: Routes = [
       { path: PathSegment.CREATE_CATCH_PIN, loadComponent: () => import('@gofish/features/map/components/create-pin-modals/catch-pin-modal/catch-pin-modal.component').then(c => c.CatchPinModalComponent) },
       { path: PathSegment.CREATE_INFO_PIN, loadComponent: () => import('@gofish/features/map/components/create-pin-modals/info-pin-modal/info-pin-modal.component').then(c => c.InfoPinModalComponent) },
       { path: PathSegment.CREATE_WARN_PIN, loadComponent: () => import('@gofish/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component').then(c => c.WarnPinModalComponent) },
-      { path: PathSegment.DELETE_PIN, loadComponent: () => import('@gofish/features/map/components/delete-pin/delete-pin.component').then(c => c.DeletePinComponent) }
+      { path: PathSegment.DELETE_PIN, loadComponent: () => import('@gofish/features/map/components/delete-pin/delete-pin.component').then(c => c.DeletePinComponent) },
+      { path: PathSegment.REPORT, loadComponent: () => import('@gofish/shared/components/report/report.component').then(c => c.ReportComponent) }
     ]
   },
   {
@@ -192,7 +193,8 @@ export const routes: Routes = [
       },
       { path: 'post/:id', loadComponent: () => import('@gofish/features/forum/children/post-id-placeholder/post-id-placeholder.component').then(p => p.PostIdPlaceholderComponent) },
       { path: PathSegment.DELETE_POST, loadComponent: ()=> import('@gofish/features/forum/children/delete-post/delete-post.component').then(p => p.DeletePostComponent)},
-      { path: PathSegment.DELETE_COMMENT, loadComponent: ()=> import('@gofish/features/forum/children/delete-comment/delete-comment.component').then(c => c.DeleteCommentComponent) }
+      { path: PathSegment.DELETE_COMMENT, loadComponent: ()=> import('@gofish/features/forum/children/delete-comment/delete-comment.component').then(c => c.DeleteCommentComponent) },
+      { path: PathSegment.REPORT, loadComponent: () => import('@gofish/shared/components/report/report.component').then(c => c.ReportComponent) }
     ]
   },
   {
