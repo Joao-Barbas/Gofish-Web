@@ -33,16 +33,12 @@ export class DiscoverComponent {
     this.pinService.getFeed(request).subscribe({
       next: (res) => {
         this.allFeedPosts.update(current => {
-          const currentPins = current?.pins ?? [];
-          const newPins = res.pins.filter(
-            pin => !currentPins.some(existing => existing.id === pin.id)
-          );
 
           this.hasMoreResults.set(res.hasMoreResults);
 
           return {
             ...res,
-            pins: [...currentPins, ...newPins]
+            pins: [...current?.pins ?? [], ...res.pins]
           };
         });
 
