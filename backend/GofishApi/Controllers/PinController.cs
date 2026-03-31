@@ -68,16 +68,20 @@ public class PinController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> GetFeed([FromBody] GetFeedReqDto dto)
     {
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        if (userId is null) return Unauthorized();
-
         var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+        var userId     = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+
+        if (userId is null)
+        {
+            return Unauthorized();
+        }
+
         IQueryable<Pin> query = dto.Kind switch
         {
             FeedKind.Discovery => _visibility.FilterVisiblePins(_db.Pins, userId),
-            FeedKind.Friends => GetFriendsFeed(_db.Pins, userId),
-            FeedKind.Groups => GetGroupsFeed(_db.Pins, userId),
-            _ => throw new AppValidationException("UnknownFeedKind", "Feed kind must be Discovery, Friends, or Groups")
+            FeedKind.Friends   => _visibility.FilterFriendsPins(_db.Pins, userId),
+            FeedKind.Groups    => _visibility.FilterGroupsPins(_db.Pins, userId),
+            _ => throw new AppValidationException("Kind", "Feed kind must be Discovery, Friends, or Groups")
         };
 
         if (dto.LastTimestamp is not null)
@@ -85,28 +89,36 @@ public class PinController : ControllerBase
             query = query.Where(p => p.CreatedAt < dto.LastTimestamp.Value);
         }
 
-        query = query.Include(p => p.Votes);
-        query = query.Include(p => p.AppUser)
-            .ThenInclude(u => u.UserProfile);
-        query = query.Include(p => p.Comments)
-            .ThenInclude(c => c.AppUser)      // TODO: Are these necessary?
-            .ThenInclude(u => u.UserProfile); // TODO: Are these necessary?
-        query = query.Include(p => p.Groups);
-
-        query = query
+        var pins = await query
             .OrderByDescending(p => p.CreatedAt)
             .ThenByDescending(p => p.Id)
-            .Take(maxResults + 1);
-
-        var pins = await query.Select(p => PinDto.FromEntity(p)
-            .SetGeolocation(p)
-            .SetAuthor(p.AppUser, p.AppUser.UserProfile)
-            .SetDetails(p)
-            .SetUgc(p)
-            .SetStats(new(
-                p.Votes.Where(v => v.UserId == userId).Select(v => (VoteKind?)v.Value).FirstOrDefault(),
-                p.Votes.Sum(v => (int)v.Value),
-                p.Comments.Count)))
+            .Take(maxResults + 1)
+            .Select(p => new PinDto(p.Id, p.CreatedAt, p.Visibility, p.Kind)
+            {
+                Geolocation = new PinGeolocationDto(p.Latitude, p.Longitude),
+                Author = new PinAuthorDto
+                {
+                    Id = p.AppUser.Id,
+                    UserName = p.AppUser.UserName ?? "",
+                    FirstName = p.AppUser.FirstName ?? "",
+                    LastName = p.AppUser.LastName ?? "",
+                    AvatarUrl = p.AppUser.UserProfile.AvatarUrl
+                },
+                Details = new PinDetailsDto(
+                    ((CatchPin)p).Species,
+                    ((CatchPin)p).Bait,
+                    ((CatchPin)p).HookSize,
+                    ((InfoPin)p).AccessDifficulty,
+                    ((InfoPin)p).Seabed,
+                    ((WarnPin)p).WarningKind),
+                Ugc = new PinUgcDto(p.Body, p.ImageUrl),
+                Stats = new PinStatsDto(
+                    p.Votes.Where(v => v.UserId == userId)
+                           .Select(v => (VoteKind?)v.Value)
+                           .FirstOrDefault(),
+                    p.Votes.Sum(v => (int)v.Value),
+                    p.Comments.Count)
+            })
             .ToListAsync();
 
         var hasMore       = pins.Count > maxResults;
@@ -120,107 +132,81 @@ public class PinController : ControllerBase
     public async Task<IActionResult> GetPins([FromBody] GetPinsReqDto dto)
     {
         var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var userId     = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
 
         if (userId is null)
         {
             return Unauthorized();
         }
 
-        var pinIds = new List<int>();
+        // Start with a database-backed query that returns nothing
+        IQueryable<int> pinIdQuery = _db.Pins.Where(p => false).Select(p => p.Id);
 
         foreach (var id in dto.Ids)
         {
             if (id.PinId is not null)
             {
-                pinIds.Add(id.PinId.Value);
+                pinIdQuery = pinIdQuery.Union(
+                    _db.Pins.Where(p => p.Id == id.PinId.Value).Select(p => p.Id));
             }
-            if (id.AuthorId is not null && id.AuthorId != "")
+            if (!string.IsNullOrEmpty(id.AuthorId))
             {
-                pinIds.AddRange(await GetVisiblePinIdsByAuthor(id.AuthorId, userId));
+                pinIdQuery = pinIdQuery.Union(
+                    _visibility.GetVisiblePinIdsByAuthor(id.AuthorId, userId));
             }
             if (id.GroupId is not null)
             {
-                pinIds.AddRange(await GetVisiblePinIdsByGroup(id.GroupId.Value, userId));
+                pinIdQuery = pinIdQuery.Union(
+                    _visibility.GetVisiblePinIdsByGroup(id.GroupId.Value, userId));
             }
         }
 
-        var query = _visibility.FilterVisiblePins(_db.Pins.Where(p => pinIds.Distinct().Contains(p.Id)), userId);
-
-        if (dto.LastTimestamp is not null)
-        {
-            query = query.Where(p => p.CreatedAt < dto.LastTimestamp.Value);
-        }
-        if (dto.DataRequest?.IncludeGeolocation is true) { }
-        if (dto.DataRequest?.IncludeAuthor is true)
-        {
-            query = query.Include(p => p.AppUser).ThenInclude(p => p.UserProfile);
-        }
-        if (dto.DataRequest?.IncludeDetails is true) { }
-        if (dto.DataRequest?.IncludeStats is true)
-        {
-            query = query.Include(p => p.Votes);
-            query = query.Include(p => p.Comments);
-        }
-        if (dto.DataRequest?.IncludeUgc is true) { }
-        if (dto.DataRequest?.IncludeGroups is true)
-        {
-            query = query.Include(p => p.Groups);
-        }
-        if (dto.DataRequest?.IncludeComments is true)
-        {
-            query = query.Include(p => p.Comments);
-        }
-
-        var results = await query
+        var req  = dto.DataRequest ?? new();
+        var pins = await _visibility
+            .FilterVisiblePins(_db.Pins.Where(p => pinIdQuery.Contains(p.Id)), userId)
+            .Where(p => dto.LastTimestamp == null || p.CreatedAt < dto.LastTimestamp.Value)
             .OrderByDescending(p => p.CreatedAt)
             .ThenByDescending(p => p.Id)
             .Take(maxResults + 1)
-            .ToListAsync();
+            .Select(p => new PinDto(p.Id, p.CreatedAt, p.Visibility, p.Kind)
+            {
+                Geolocation = req.IncludeGeolocation != true ? null : new PinGeolocationDto(
+                    p.Latitude,
+                    p.Longitude),
 
-        var hasMore = results.Count > maxResults;
-        var page = results.Take(maxResults).ToList();
+                Author = req.IncludeAuthor != true ? null : new PinAuthorDto
+                {
+                    Id = p.AppUser.Id,
+                    UserName = p.AppUser.UserName ?? "",
+                    FirstName = p.AppUser.FirstName ?? "",
+                    LastName = p.AppUser.LastName ?? "",
+                    AvatarUrl = p.AppUser.UserProfile.AvatarUrl
+                },
 
-        var req = dto.DataRequest;
-        var data = page.Select(p =>
-        {
-            var pin = PinDto.FromEntity(p);
+                Details = req.IncludeDetails != true ? null : new PinDetailsDto(
+                    ((CatchPin)p).Species,
+                    ((CatchPin)p).Bait,
+                    ((CatchPin)p).HookSize,
+                    ((InfoPin)p).AccessDifficulty,
+                    ((InfoPin)p).Seabed,
+                    ((WarnPin)p).WarningKind),
 
-            if (req?.IncludeGeolocation is true)
-            {
-                pin = pin.SetGeolocation(p);
-            }
-            if (req?.IncludeAuthor is true)
-            {
-                pin = pin.SetAuthor(p.AppUser, p.AppUser.UserProfile);
-            }
-            if (req?.IncludeDetails is true)
-            {
-                pin = pin.SetDetails(p);
-            }
-            if (req?.IncludeUgc is true)
-            {
-                pin = pin.SetUgc(p);
-            }
-            if (req?.IncludeStats is true)
-            {
-                pin = pin.SetStats(new(
+                Ugc = req.IncludeUgc != true ? null : new PinUgcDto(
+                    p.Body,
+                    p.ImageUrl),
+
+                Stats = req.IncludeStats != true ? null : new PinStatsDto(
                     p.Votes.Where(v => v.UserId == userId).Select(v => (VoteKind?)v.Value).FirstOrDefault(),
                     p.Votes.Sum(v => (int)v.Value),
-                    p.Comments.Count));
-            }
-            if (req?.IncludeComments is true)
-            {
-                pin = pin.SetComments(p.Comments
-                    .Select(c => CommentDto.FromEntity(c))
-                    .ToList());
-            }
+                    p.Comments.Count)
+            })
+            .ToListAsync();
 
-            return pin;
-        }).ToList();
-
+        var hasMore  = pins.Count > maxResults;
+        var page     = pins.Take(maxResults).ToList();
         var lastTime = hasMore ? page[^1].CreatedAt : (DateTime?)null;
-        return Ok(new GetPinsResDto(data, hasMore, lastTime));
+
+        return Ok(new GetPinsResDto(page, hasMore, lastTime));
     }
 
     [HttpDelete("{id}")]
@@ -521,58 +507,7 @@ public class PinController : ControllerBase
         return Ok(new CreatePinResDto(pinId));
     }
 
-    #endregion
-    #region Helpers
-
-    // private static IQueryable<Pin> ApplyIncludes(IQueryable<Pin> query, PostDataRequestDTO? request)
-    // {
-    //     // Pin is always needed for visibility, kind, and pin-specific fields
-    // 
-    //     // query = query.Include(p => p.Votes);
-    // 
-    //     // if (request?.IncludeAuthor ?? false)
-    //     //     query = query.Include(p => p.AppUser);
-    //     // if (request?.IncludeComments ?? false)
-    //     //     query = query.Include(p => p.Comments).ThenInclude(c => c.AppUser).ThenInclude(u => u.UserProfile);
-    //     // if (request?.IncludeGroups ?? false)
-    //     //     query = query.Include(p => p.Groups);
-    // 
-    //     return query;
-    // }
-
-    private IQueryable<Pin> GetFriendsFeed(IQueryable<Pin> query, string userId)
-    {
-        var friendIds = _visibility.GetFriendIds(userId);
-        return query.Where(p => p.UserId == userId
-            || (friendIds.Contains(p.UserId)
-            && (p.Visibility == VisibilityLevel.Public || p.Visibility == VisibilityLevel.Friends)));
-    }
-
-    private IQueryable<Pin> GetGroupsFeed(IQueryable<Pin> query, string userId)
-    {
-        var groupIds = _visibility.GetGroupIds(userId);
-        return query.Where(p => p.UserId == userId
-            || p.Groups.Any(g => groupIds.Contains(g.Id)));
-    }
-
-    private async Task<List<int>> GetVisiblePinIdsByAuthor(string authorId, string currentUserId)
-    {
-        return await _visibility
-            .FilterVisiblePins(_db.Pins
-                .Where(p => p.UserId == authorId), currentUserId)
-            .Select(p => p.Id)
-            .ToListAsync();
-    }
-
-    private async Task<List<int>> GetVisiblePinIdsByGroup(int groupId, string currentUserId)
-    {
-        return await _visibility
-            .FilterVisiblePins(_db.Pins
-                .Where(p => p.Groups
-                .Any(g => g.Id == groupId)), currentUserId)
-            .Select(p => p.Id)
-            .ToListAsync();
-    }
+    // Helpers
 
     private async Task<int> SavePinAsync(Pin pin)
     {
@@ -587,5 +522,5 @@ public class PinController : ControllerBase
         return groupIds?.Select(gId => new GroupPin { GroupId = gId }).ToList() ?? [];
     }
 
-    #endregion // Helpers
+    #endregion
 }

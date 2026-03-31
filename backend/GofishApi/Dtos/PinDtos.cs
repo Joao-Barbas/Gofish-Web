@@ -46,33 +46,37 @@ public record PinDetailsDto (
     );
 }
 
-public record PinAuthorDto (
-    string Id,
-    string UserName,
-    string FirstName,
-    string LastName,
-    string? AvatarUrl,
+public record PinAuthorDto
+{
     // Rank (??)
     // Catch points (???)
 
-    // Group context
-    GroupRole? GroupRole = null
-)
-{
-    public static PinAuthorDto FromEntity(AppUser u, UserProfile up) => new(
-        u.Id,
-        u.UserName ?? "",
-        u.FirstName ?? "",
-        u.LastName ?? "",
-        up.AvatarUrl);
+    public required string Id { get; init; }
+    public required string UserName { get; init; }
+    public required string FirstName { get; init; }
+    public required string LastName { get; init; }
 
-    public static PinAuthorDto FromEntity(AppUser u, UserProfile up, GroupUser gu) => new(
-        u.Id,
-        u.UserName ?? "",
-        u.FirstName ?? "",
-        u.LastName ?? "",
-        up?.AvatarUrl,
-        gu.Role);
+    public string? AvatarUrl { get; init; }
+    public GroupRole? GroupRole { get; init; }
+
+    public static PinAuthorDto FromEntity(AppUser u, UserProfile up) => new()
+    {
+        Id        = u.Id,
+        UserName  = u.UserName ?? "",
+        FirstName = u.FirstName ?? "",
+        LastName  = u.LastName ?? "",
+        AvatarUrl = up.AvatarUrl
+    };
+
+    public static PinAuthorDto FromEntity(AppUser u, UserProfile up, GroupUser gu) => new()
+    {
+        Id        = u.Id,
+        UserName  = u.UserName ?? "",
+        FirstName = u.FirstName ?? "",
+        LastName  = u.LastName ?? "",
+        AvatarUrl = up?.AvatarUrl,
+        GroupRole = gu.Role
+    };
 }
 
 public record PinStatsDto(
@@ -104,7 +108,6 @@ public record PinDto(
     public PinDetailsDto? Details { get; init; }
     public PinStatsDto? Stats { get; init; }
     public PinUgcDto? Ugc { get; init; }
-    public List<CommentDto>? Comments { get; set; }
 
     public static PinDto FromEntity(Pin p) => new(
         p.Id,
@@ -118,7 +121,6 @@ public record PinDto(
     public PinDto SetDetails(Pin p) => this with { Details = PinDetailsDto.FromEntity(p) };
     public PinDto SetStats(PinStatsDto dto) => this with { Stats = dto };
     public PinDto SetUgc(Pin p) => this with { Ugc = PinUgcDto.FromEntity(p) };
-    public PinDto SetComments(List<CommentDto> c) => this with { Comments = c };
 }
 
 public record CommentAuthorDto(
@@ -166,9 +168,8 @@ public record GetPinsDataRequestDto(
     bool? IncludeAuthor = false,
     bool? IncludeDetails = false,
     bool? IncludeStats = false,
-    bool? IncludeUgc = false, // IncludeBody + IncludeImage
-    bool? IncludeGroups = false,
-    bool? IncludeComments = false
+    bool? IncludeUgc = false,
+    bool? IncludeGroups = false
 );
 
 #endregion // Request Helpers

@@ -29,6 +29,7 @@ public class AppUser : IdentityUser
     #region Navigation
 
     public UserProfile UserProfile { get; set; } = null!; // Should always exist
+    public Ratings? Rating { get; set; }
     public List<Friendship> RequestedFriendships { get; set; } = [];
     public List<Friendship> ReceivedFriendships { get; set; } = [];
     public List<Vote> Votes { get; set; } = [];
