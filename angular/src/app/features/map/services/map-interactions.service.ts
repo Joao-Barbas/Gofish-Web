@@ -72,7 +72,6 @@ export class MapInteractionsService {
             includeStats: true,
             includeUgc: true,
             includeGroups: true,
-            includeComments: true
           }
         };
 
@@ -162,7 +161,6 @@ export class MapInteractionsService {
         includeStats: true,
         includeUgc: true,
         includeGroups: true,
-        includeComments: true
       }
     };
 
@@ -191,7 +189,6 @@ export class MapInteractionsService {
         includeStats: true,
         includeUgc: true,
         includeGroups: true,
-        includeComments: true
       }
     };
 
