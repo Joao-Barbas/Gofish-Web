@@ -17,6 +17,28 @@ export const routes: Routes = [
     }
   },
   {
+    path: 'search',
+    data: {
+      header: 'flat' as HeaderVariant,
+      footer: 'small' as FooterVariant
+    },
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('@gofish/features/search/search.component').then(m => m.SearchComponent),
+        pathMatch: 'full'
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('@gofish/features/search/pages/users-list/users-list.component').then(m => m.UsersListComponent),
+      },
+      {
+        path: 'groups',
+        loadComponent: () => import('@gofish/features/search/pages/groups-list/groups-list.component').then(m => m.GroupsListComponent),
+      },
+    ]
+  },
+  {
     path: PathSegment.SIGN_UP,
     loadComponent: () => import('@gofish/features/user/auth/signup/signup.component').then(m => m.SignupComponent)
   },
