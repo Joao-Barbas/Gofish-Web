@@ -170,9 +170,9 @@ public record GetPinsDataRequestDto(
     bool? IncludeAuthor = false,
     bool? IncludeDetails = false,
     bool? IncludeStats = false,
-    bool? IncludeUgc = false, // IncludeBody + IncludeImage
+    bool? IncludeUgc = false,
     bool? IncludeGroups = false,
-    bool? IncludeComments = false
+    bool? IncludeComments = false // Removed. use GetPinComments instead
 );
 
 #endregion // Request Helpers
