@@ -44,6 +44,9 @@
             placeholder="Tell us more about the issue..."
             formControlName="description">
           </textarea>
+          <small class="dark-text-muted text-end">
+            {{ form.value.description?.length ?? 0 }}/200
+          </small>
 
           @if (form.controls.description.touched && form.controls.description.hasError('maxlength')) {
             <p class="text-danger mt-2 mb-0">

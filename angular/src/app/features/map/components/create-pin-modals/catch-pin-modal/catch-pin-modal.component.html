@@ -51,6 +51,9 @@
           <textarea id="catchPinDescription" class="modal-body-description dark-bg-dark dark-text"
             placeholder="Add a description..." formControlName="body">
           </textarea>
+          <small class="dark-text-muted text-end">
+            {{ form.value.body?.length ?? 0 }}/500
+          </small>
 
           @if (form.controls.body.touched && form.controls.body.invalid) {
           <p class="text-danger mt-2 mb-0">

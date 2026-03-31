@@ -42,7 +42,7 @@ export class InfoPinModalComponent implements OnInit {
   selectedGroupIds = signal<number[]>([]);
 
   form = this.fb.group({
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
+    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
     visibility: [0, [Validators.required]],
     accessDifficulty: [0, [Validators.required]],
     seaBed: [0, [Validators.required]],

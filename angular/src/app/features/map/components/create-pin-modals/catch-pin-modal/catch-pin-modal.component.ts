@@ -43,7 +43,7 @@ export class CatchPinModalComponent {
   selectedGroupIds = signal<number[]>([]);
 
   form = this.fb.group({
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
+    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
     visibility: [0],
     species: [0],
     bait: [0],

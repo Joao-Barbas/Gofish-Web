@@ -34,7 +34,7 @@ export class PostIdPlaceholderComponent {
   private lastTimestamp: string = new Date().toISOString();
 
   commentForm = this.fb.group({
-    body: ['', [Validators.required, Validators.maxLength(100)]]
+    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]]
   });
 
   ngOnInit() {

@@ -19,6 +19,22 @@
             maxlength="100"
             formControlName="body">
           </textarea>
+          <small class="dark-text-muted text-end">
+            {{ commentForm.value.body?.length ?? 0 }}/500
+          </small>
+           @if (commentForm.controls.body.touched && commentForm.controls.body.invalid) {
+          <p class="text-danger mt-2 mb-0">
+            @if (commentForm.controls.body.errors?.['required']) {
+            Description is required.
+            }
+            @if (commentForm.controls.body.errors?.['minlength']) {
+            Description must have at least 10 characters.
+            }
+            @if (commentForm.controls.body.errors?.['maxlength']) {
+            Description cannot exceed 500 characters.
+            }
+          </p>
+          }
         </div>
 
         <app-async-button

@@ -29,6 +29,9 @@
           <textarea id="catchPinDescription" class="modal-body-description dark-bg-dark dark-text"
             placeholder="Add a description..." formControlName="body">
           </textarea>
+          <small class="dark-text-muted text-end">
+            {{ form.value.body?.length ?? 0 }}/500
+          </small>
 
           @if (form.controls.body.touched) {
           @if (form.controls.body.hasError('required')) {
@@ -41,7 +44,7 @@
           </p>
           } @else if (form.controls.body.hasError('maxlength')) {
           <p class="text-danger mt-2 mb-0">
-            Your description must be lower than 100 characters.
+            Your description must be lower than 500 characters.
           </p>
           }
           }
