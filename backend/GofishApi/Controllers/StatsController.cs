@@ -73,7 +73,7 @@ public class StatsController : ControllerBase
 
         var average = Math.Round((double)totalPublishedPins / daysInMonth, 2);
 
-        return Ok(new GetAveragePublishedPinsResDTO(average));
+        return Ok(new GetAverageVotesPerPinResDTO(average));
     }
 
     [HttpGet]
