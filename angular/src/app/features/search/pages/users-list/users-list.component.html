@@ -1,10 +1,10 @@
 <!-- users-list.component.html -->
 
+<h4>User results for <span>{{ query() }}</span></h4>
 @if (users.isLoading()) {
   <gf-loading-spinner></gf-loading-spinner>
 }
 @if (users.hasValue()) {
-  <h4>User results for <span>{{ query() }}</span></h4>
   <div class="list">
     @for (user of usersList(); track user.id) {
       <gf-users-list-card

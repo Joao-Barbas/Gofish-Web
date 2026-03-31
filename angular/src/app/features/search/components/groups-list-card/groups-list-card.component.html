@@ -3,7 +3,7 @@
 <a [routerLink]="['/forum/my-groups', group().id]">
   <img [src]="avatarService.resolve(group().avatarUrl)" alt="Avatar">
   <div class="gf-w-100">
-    <div class="gf-flow-horizontal gf-items-center gf-justify-between gf-w-100">
+    <div class="gf-flow-horizontal gf-items-center gf-gap-24 gf-w-100">
       <p>{{ group().name }}</p>
       <div class="gf-flow-horizontal gf-gap-6">
         <div class="gf-center-axes gf-py-0 gf-px-16 gf-text-xs user-stat">{{ `${group().memberCount} Members` }}</div>

@@ -1,10 +1,10 @@
 <!-- groups-list.component.ts -->
 
+<h4>Group results for <span>{{ query() }}</span></h4>
 @if (groups.isLoading()) {
   <gf-loading-spinner></gf-loading-spinner>
 }
 @if (groups.hasValue()) {
-  <h4>Group results for <span>{{ query() }}</span></h4>
   <div class="list">
     @for (group of groupsList(); track group.id) {
       <gf-groups-list-card

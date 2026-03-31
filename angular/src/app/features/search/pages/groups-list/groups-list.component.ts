@@ -17,7 +17,7 @@ import { AsyncButtonComponent } from "@gofish/shared/components/async-button-2/a
     GroupsListCardComponent,
     LoadingSpinnerComponent,
     AsyncButtonComponent
-  ],
+],
   templateUrl: './groups-list.component.html',
   styleUrl: './groups-list.component.css',
 })
