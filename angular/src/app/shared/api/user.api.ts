@@ -35,7 +35,7 @@ export class UserApi {
     let p = new HttpParams();
     if (dto.query)        p = p.set('query', dto.query);
     if (dto.maxResults)   p = p.set('maxResults', dto.maxResults);
-    if (dto.lastUsername) p = p.set('lastTimestamp', dto.lastUsername);
+    if (dto.lastUsername) p = p.set('lastUsername', dto.lastUsername);
     return this.http.get<SearchUsersResDTO>(Api.User.action('SearchUsers'), { params: p });
   }
 
