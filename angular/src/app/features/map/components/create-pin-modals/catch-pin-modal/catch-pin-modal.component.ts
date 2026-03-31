@@ -11,6 +11,7 @@ import { toast } from 'ngx-sonner';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 import { GroupsService } from '@gofish/shared/services/groups.service';
 import { GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
+import { BodyLengthConstraints } from '@gofish/shared/constants';
 
 @Component({
   selector: 'app-catch-pin-modal',
@@ -25,6 +26,7 @@ export class CatchPinModalComponent {
   private readonly urlService = inject(UrlService);
   private readonly route = inject(ActivatedRoute);
   private readonly groupService = inject(GroupsService);
+  protected readonly BodyLengthConstraints = BodyLengthConstraints;
   values: UrlQuery | null = null;
   busyState: BusyState = new BusyState();
 
@@ -43,7 +45,7 @@ export class CatchPinModalComponent {
   selectedGroupIds = signal<number[]>([]);
 
   form = this.fb.group({
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
+    body: ['', [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
     visibility: [0],
     species: [0],
     bait: [0],

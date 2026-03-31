@@ -12,6 +12,7 @@ import { PinService } from '@gofish/shared/services/pin.service';
 import { CommentDto, CreateCommentReqDto, GetCommentsReqDto, GetCommentsResDto, GetPinsReqDto, PinDto } from '@gofish/shared/dtos/pin.dto';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 import { BusyState } from '@gofish/shared/core/busy-state';
+import { BodyLengthConstraints } from '@gofish/shared/constants';
 
 @Component({
   selector: 'app-post-id-placeholder',
@@ -24,6 +25,7 @@ export class PostIdPlaceholderComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
   private readonly fb = inject(FormBuilder);
+  protected readonly BodyLengthConstraints = BodyLengthConstraints;
   userName = this.authService.getUserName();
   isAdmin = this.authService.isAdmin();
   id: string | null = null;
@@ -34,7 +36,7 @@ export class PostIdPlaceholderComponent {
   private lastTimestamp: string = new Date().toISOString();
 
   commentForm = this.fb.group({
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]]
+    body: ['', [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
   });
 
   ngOnInit() {

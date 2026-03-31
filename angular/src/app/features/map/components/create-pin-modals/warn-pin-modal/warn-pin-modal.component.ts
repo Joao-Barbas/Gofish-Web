@@ -13,6 +13,7 @@ import { AsyncButtonComponent } from "@gofish/shared/components/async-button/asy
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
 import { GroupsService } from '@gofish/shared/services/groups.service';
+import { BodyLengthConstraints } from '@gofish/shared/constants';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class WarnPinModalComponent {
   private readonly urlService = inject(UrlService);
   private readonly route = inject(ActivatedRoute);
   private readonly groupsService = inject(GroupsService);
+  protected readonly BodyLengthConstraints = BodyLengthConstraints;
   values: UrlQuery | null = null;
   busyState: BusyState = new BusyState();
 
@@ -41,7 +43,7 @@ export class WarnPinModalComponent {
   selectedGroupIds = signal<number[]>([]);
 
   form = this.fb.group({
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
+    body: ['', [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
     visibility: [0, Validators.required],
     warningKind: [0, Validators.required],
     groupIds: this.fb.control<number[]>([])

@@ -114,3 +114,8 @@ export const PIN_CONFIG = [
   { kind: PinKind.INFORMATION, color: '#3B82F6', iconUrl: 'assets/images/pins-icons/Kind=Information.png', icon: 'pin-Information', kindString: 'Information' },
   { kind: PinKind.WARNING, color: '#F97316', iconUrl: 'assets/images/pins-icons/Kind=Warning.png', icon: 'pin-Warning',  kindString: 'Warning'}
 ] as const;
+
+export const BodyLengthConstraints = {
+  MIN: 10,
+  MAX: 1000,
+} as const;

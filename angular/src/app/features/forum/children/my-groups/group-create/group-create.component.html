@@ -56,17 +56,19 @@
           <textarea id="Description" class="modal-body-description dark-bg-dark dark-text"
             placeholder="Add a description..." formControlName="body">
           </textarea>
-
+          <small class="dark-text-muted text-end">
+            {{ form.value.body?.length ?? 0 }}/{{ BodyLengthConstraints.MAX }}
+          </small>
           @if (form.controls.body.touched && form.controls.body.invalid) {
           <p class="text-danger mt-2 mb-0">
             @if (form.controls.body.errors?.['required']) {
             Description is required.
             }
             @if (form.controls.body.errors?.['minlength']) {
-            Description must have at least 10 characters.
+            Description must have at least {{BodyLengthConstraints.MIN}} characters.
             }
             @if (form.controls.body.errors?.['maxlength']) {
-            Description cannot exceed 500 characters.
+            Description cannot exceed {{BodyLengthConstraints.MAX}} characters.
             }
           </p>
           }

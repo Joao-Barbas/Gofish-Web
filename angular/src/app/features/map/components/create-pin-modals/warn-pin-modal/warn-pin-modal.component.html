@@ -30,7 +30,7 @@
             placeholder="Add a description..." formControlName="body">
           </textarea>
           <small class="dark-text-muted text-end">
-            {{ form.value.body?.length ?? 0 }}/500
+            {{ form.value.body?.length ?? 0 }}/{{ BodyLengthConstraints.MAX }}
           </small>
 
           @if (form.controls.body.touched) {
@@ -40,11 +40,12 @@
           </p>
           } @else if (form.controls.body.hasError('minlength')) {
           <p class="text-danger mt-2 mb-0">
-            Your description is too short!
+            Your description must be at least {{ BodyLengthConstraints.MIN }} characters long.
           </p>
           } @else if (form.controls.body.hasError('maxlength')) {
           <p class="text-danger mt-2 mb-0">
-            Your description must be lower than 500 characters.
+            Your description must be lower than {{ BodyLengthConstraints.MAX }} characters.
+
           </p>
           }
           }
