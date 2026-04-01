@@ -1,0 +1,9 @@
+:host {
+  display: block;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+canvas {
+  padding: 12px;
+}

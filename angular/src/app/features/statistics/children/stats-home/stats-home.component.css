@@ -20,6 +20,11 @@
   }
 }
 
+.user-chart-wrapper {
+  width: 100%;
+  max-width: 1000px;
+}
+
 .quick-view-grid {
   display: grid;
   grid-template-columns: repeat(3, 320px);
@@ -27,6 +32,12 @@
   width: 100%;
   justify-items: start;
 }
+
+.chart-grid-item {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
 
 .quick-access-list {
   display: flex;
