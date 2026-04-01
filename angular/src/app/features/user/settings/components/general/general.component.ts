@@ -83,7 +83,7 @@ export class GeneralComponent {
     this.saveSuccess = false;
     this.busyState.setBusy(true);
     this.userProfileApi.patchUserProfile({
-      bio: this.savedBio
+      bio: this.currentBio
     }).subscribe({
       next: () => {
         this.saveSuccess = true;
