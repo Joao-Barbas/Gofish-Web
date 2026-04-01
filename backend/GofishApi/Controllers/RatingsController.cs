@@ -75,6 +75,8 @@ public class RatingsController : ControllerBase
         return NoContent();
     }
 
+    #region GetRatings
+
     [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<IActionResult> GetRatings([FromQuery] GetRatingsReqDTO dto)
@@ -132,4 +134,23 @@ public class RatingsController : ControllerBase
         ));
     }
 
+    #endregion
+
+    #region DeleteRating
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteRating(int id)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var rating = await _db.Ratings.FindAsync(id);
+        if (rating is null) return NotFound();
+        var isOwner = rating.UserId == userId;
+        var isAdmin = User.IsInRole("Admin");
+        if (!isOwner && !isAdmin) return Forbid();
+        _db.Ratings.Remove(rating);
+        await _db.SaveChangesAsync();
+        return NoContent();
+    }
+
+    #endregion
 }
