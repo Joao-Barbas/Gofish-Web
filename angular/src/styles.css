@@ -65,6 +65,7 @@
 
   --gf-dark-text: oklch(0.9612 0 0);
   --gf-dark-text-muted: oklch(0.7668 0 0);
+  --gf-dark-text-muted-opacity-50: oklch(0.7668 0 0 / 50%); /* gf-users-chart fill */
   --gf-light-text: oklch(0.1591 0 0);
   --gf-light-text-muted: oklch(0.4202 0 0);
 
