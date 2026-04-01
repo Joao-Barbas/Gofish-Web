@@ -1,6 +1,6 @@
 // profile-shell.component.ts
 
-import { Component, computed, effect, inject, input, resource } from "@angular/core";
+import { Component, effect, inject, input, resource } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { AuthService } from "@gofish/shared/services/auth.service";
 import { ProfileContext } from "@gofish/features/user/profile/services/profile-context.service";
@@ -10,12 +10,8 @@ import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 
 @Component({
   selector: 'app-profile',
-  imports: [
-    RouterOutlet,
-  ],
-  providers: [
-    ProfileContext
-  ],
+  imports: [RouterOutlet],
+  providers: [ProfileContext],
   templateUrl: './profile-shell.component.html',
   styleUrl: './profile-shell.component.css',
 })
