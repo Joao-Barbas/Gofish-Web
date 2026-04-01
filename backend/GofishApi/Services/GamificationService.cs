@@ -6,12 +6,34 @@ public class GamificationService : IGamificationService
 {
     private readonly AppDbContext _db;
 
-    public GamificationService(
-        AppDbContext db
-    )
+    private static readonly (int Threshold, int Rank)[] Ranks =
+    {
+        (int.MinValue, 1),
+        (0, 2),
+        (15, 3),
+        (30, 4),
+        (120, 5)
+    };
+
+    public GamificationService(AppDbContext db)
     {
         _db = db;
     }
+
+    #region Ranking
+
+    public int GetRank(int points)
+    {
+        for (int i = Ranks.Length - 1; i >= 0; i--)
+        {
+            if (points >= Ranks[i].Threshold)
+                return Ranks[i].Rank;
+        }
+        return Ranks[0].Rank;
+    }
+
+    #endregion
+    #region Streak
 
     public async Task UpdateStreakAsync(string userId)
     {
@@ -49,4 +71,6 @@ public class GamificationService : IGamificationService
         var diff = (7 + (date.DayOfWeek - DayOfWeek.Monday)) % 7;
         return date.AddDays(-diff).Date;
     }
+
+    #endregion
 }
