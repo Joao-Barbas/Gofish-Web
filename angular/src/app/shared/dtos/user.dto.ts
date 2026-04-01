@@ -78,6 +78,8 @@ export interface FriendshipUserDTO {
   firstName: string;
   lastName: string;
   avatarUrl?: string;
+  catchPoints?: number,
+  rank?: number
 }
 
 export interface FriendshipDTO {

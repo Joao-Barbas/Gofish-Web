@@ -1,6 +1,7 @@
-﻿using GofishApi.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using GofishApi.Enums;
 using GofishApi.Models;
-using System.ComponentModel.DataAnnotations;
+using GofishApi.Services;
 
 namespace GofishApi.Dtos;
 
@@ -23,15 +24,19 @@ public record FriendshipUserDto(
     string UserName,
     string FirstName,
     string LastName,
-    string? AvatarUrl
+    string? AvatarUrl,
+    int? CatchPoints,
+    int? Rank
 )
 {
     public static FriendshipUserDto FromEntity(AppUser u) => new(
         u.Id,
-        u.UserName!,
+        u.UserName ?? "",
         u.FirstName ?? "",
         u.LastName ?? "",
-        u.UserProfile.AvatarUrl
+        u.UserProfile.AvatarUrl,
+        u.UserProfile.CatchPoints,
+        GamificationService.GetRank(u.UserProfile.CatchPoints)
     );
 }
 
