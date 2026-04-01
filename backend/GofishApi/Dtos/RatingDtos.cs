@@ -24,6 +24,13 @@ public record GetRatingResDTO(
     DateTime CreatedAt
 );
 
+public record GetRatingsReqDTO(
+    int MaxResults = 20,
+    DateTime? LastCreatedAt = null
+);
+
 public record GetRatingsResDTO(
-    IEnumerable<GetRatingResDTO> Ratings
+    IEnumerable<GetRatingResDTO> Ratings,
+    bool HasMoreResults,
+    DateTime? LastCreatedAt
 );

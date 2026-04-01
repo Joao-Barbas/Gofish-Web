@@ -77,15 +77,22 @@ public class RatingsController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpGet]
-    public async Task<IActionResult> GetRatings()
+    public async Task<IActionResult> GetRatings([FromQuery] GetRatingsReqDTO dto)
     {
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
-        if (user is null) return Unauthorized();
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
 
-        var ratings = await _db.Ratings
+        IQueryable<Rating> query = _db.Ratings;
+
+        if (dto.LastCreatedAt is not null)
+        {
+            query = query.Where(r => r.CreatedAt < dto.LastCreatedAt.Value);
+        }
+
+        var ratings = await query
             .AsNoTracking()
             .OrderByDescending(r => r.CreatedAt)
+            .Take(maxResults + 1)
             .Select(r => new GetRatingResDTO(
                 r.UserId,
                 r.Stars,
@@ -95,7 +102,15 @@ public class RatingsController : ControllerBase
             ))
             .ToListAsync();
 
-        return Ok(new GetRatingsResDTO(ratings));
+        var hasMoreResults = ratings.Count > maxResults;
+        var paginatedRatings = ratings.Take(maxResults).ToList();
+        var lastTimestamp = hasMoreResults ? paginatedRatings[^1].CreatedAt : (DateTime?)null;
+
+        return Ok(new GetRatingsResDTO(
+            paginatedRatings,
+            hasMoreResults,
+            lastTimestamp
+        ));
     }
 
     [Authorize(Roles = "Admin")]
