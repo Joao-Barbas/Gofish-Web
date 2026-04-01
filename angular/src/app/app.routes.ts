@@ -196,6 +196,10 @@ export const routes: Routes = [
   {
     path: 'statistics',
     loadComponent: () => import('@gofish/features/statistics/statistics.component').then(f => f.StatisticsComponent),
+    data: {
+      header: 'flat' as HeaderVariant,
+      footer: 'big' as FooterVariant
+    },
     children: [ // unfinished
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', loadComponent: () => import('@gofish/features/statistics/children/stats-home/stats-home.component').then(d => d.StatsHomeComponent) },
