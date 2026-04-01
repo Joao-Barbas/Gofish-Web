@@ -21,3 +21,24 @@ public record CreateCommentReportReqDTO(
 public record CreateCommentReportResDTO(
     int Id
 );
+
+public record GetReportResDTO(
+    int Id,
+    string UserId,
+    string Type,
+    int TargetId,
+    string ReasonText,
+    string? Description,
+    DateTime CreatedAt
+);
+
+public record GetReportReqDTO(
+    int MaxResults = 20,
+    DateTime? LastCreatedAt = null
+);
+
+public record GetReportsResDTO(
+    IEnumerable<GetReportResDTO> Reports,
+    bool HasMoreResults,
+    DateTime? LastCreatedAt
+);

@@ -11,6 +11,7 @@ using System.Security.Claims;
 
 namespace GofishApi.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class ReportController : ControllerBase
@@ -32,7 +33,6 @@ public class ReportController : ControllerBase
 
     #region CreateReports
 
-    [Authorize]
     [HttpPost("CreatePinReport")]
     public async Task<IActionResult> CreatePinReport([FromBody] CreatePinReportReqDTO dto)
     {
@@ -64,7 +64,6 @@ public class ReportController : ControllerBase
         return Ok(new CreatePinReportResDTO(report.Id));
     }
 
-    [Authorize]
     [HttpPost("CreateCommentReport")]
     public async Task<IActionResult> CreateCommentReport([FromBody] CreateCommentReportReqDTO dto)
     {
@@ -98,7 +97,158 @@ public class ReportController : ControllerBase
 
     #endregion
 
+    #region GetPinReports
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet("GetPinReports")]
+    public async Task<IActionResult> GetPinsReports([FromQuery] GetReportReqDTO dto)
+    {
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+
+        IQueryable<PinReport> query = _db.PinReports;
+
+        if (dto.LastCreatedAt is not null)
+        {
+            query = query.Where(r => r.CreatedAt < dto.LastCreatedAt.Value);
+        }
+
+        var pinreports = await query
+            .AsNoTracking()
+            .OrderByDescending(r => r.CreatedAt)
+            .Take(maxResults + 1)
+            .Select(r => new GetReportResDTO(
+                r.Id,
+                r.UserId,
+                "Pin",
+                r.PinId,
+                r.ReasonText,
+                r.Description,
+                r.CreatedAt
+            ))
+            .ToListAsync();
+
+        var hasMoreResults = pinreports.Count > maxResults;
+        var paginatedReports = pinreports.Take(maxResults).ToList();
+        var lastTimestamp = hasMoreResults ? paginatedReports[^1].CreatedAt : (DateTime?)null;
+
+        return Ok(new GetReportsResDTO(
+            paginatedReports,
+            hasMoreResults,
+            lastTimestamp
+        ));
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet("GetPinReport/{id}")]
+    public async Task<IActionResult> GetPinReports(int id)
+    {
+        var report = await _db.PinReports
+            .AsNoTracking()
+            .FirstOrDefaultAsync(r => r.Id == id);
+
+        if (report is null) return NotFound();
+
+        return Ok(new GetReportResDTO(
+            report.Id,
+            report.UserId,
+            "Pin",
+            report.PinId,
+            report.ReasonText,
+            report.Description,
+            report.CreatedAt
+        ));
+    }
+
+    #endregion
+
+    #region GetCommentReports
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet("GetCommentReports")]
+    public async Task<IActionResult> GetCommentReports([FromQuery] GetReportReqDTO dto)
+    {
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+
+        IQueryable<CommentReport> query = _db.CommentReports;
+
+        if (dto.LastCreatedAt is not null)
+        {
+            query = query.Where(r => r.CreatedAt < dto.LastCreatedAt.Value);
+        }
+
+        var commentReports = await query
+            .AsNoTracking()
+            .OrderByDescending(r => r.CreatedAt)
+            .Take(maxResults + 1)
+            .Select(r => new GetReportResDTO(
+                r.Id,
+                r.UserId,
+                "Comment",
+                r.CommentId,
+                r.ReasonText,
+                r.Description,
+                r.CreatedAt
+            ))
+            .ToListAsync();
+
+        var hasMoreResults = commentReports.Count > maxResults;
+        var paginatedReports = commentReports.Take(maxResults).ToList();
+        var lastTimestamp = hasMoreResults ? paginatedReports[^1].CreatedAt : (DateTime?)null;
+
+        return Ok(new GetReportsResDTO(
+            paginatedReports,
+            hasMoreResults,
+            lastTimestamp
+        ));
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet("GetCommentReport/{id}")]
+    public async Task<IActionResult> GetCommentReport(int id)
+    {
+        var report = await _db.CommentReports
+            .AsNoTracking()
+            .FirstOrDefaultAsync(r => r.Id == id);
+
+        if (report is null) return NotFound();
+
+        return Ok(new GetReportResDTO(
+            report.Id,
+            report.UserId,
+            "Comment",
+            report.CommentId,
+            report.ReasonText,
+            report.Description,
+            report.CreatedAt
+        ));
+    }
+
+
+    #endregion
+
     #region DeleteReports
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("DeletePinReport/{id}")]
+    public async Task<IActionResult> DeletePinReport(int id)
+    {
+        var report = await _db.PinReports.FindAsync(id);
+        if (report is null) return NotFound();
+        _db.PinReports.Remove(report);
+        await _db.SaveChangesAsync();
+        return NoContent();
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("DeleteCommentReport/{id}")]
+    public async Task<IActionResult> DeleteCommentReport(int id)
+    {
+        var report = await _db.CommentReports.FindAsync(id);
+        if (report is null) return NotFound();
+        _db.CommentReports.Remove(report);
+        await _db.SaveChangesAsync();
+        return NoContent();
+    }
 
     #endregion
 }

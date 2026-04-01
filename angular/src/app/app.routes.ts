@@ -224,14 +224,23 @@ export const routes: Routes = [
   {
     path: 'statistics',
     loadComponent: () => import('@gofish/features/statistics/statistics.component').then(f => f.StatisticsComponent),
+    data: {
+      header: 'flat' as HeaderVariant,
+      footer: 'big' as FooterVariant
+    },
     children: [ // unfinished
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', loadComponent: () => import('@gofish/features/statistics/children/stats-home/stats-home.component').then(d => d.StatsHomeComponent) },
-      { path: PathSegment.STATISTICS_PIN_DENSITY, loadComponent: () => import('@gofish/features/statistics/children/pin-density/pin-density.component').then(p => p.PinDensityComponent) },
       { path: 'reports', loadComponent: () => import('@gofish/features/statistics/children/stats-reports/stats-reports.component').then(d => d.StatsReportsComponent) },
       { path: 'reports/pin', loadComponent: () => import('@gofish/features/statistics/children/reported-pin-page/reported-pin-page.component').then(d => d.ReportedPinPageComponent) },
 
     ]
+  },
+
+  // Test Components - Do not delete
+  {
+    path: 'test',
+    loadComponent: () => import('@gofish/features/test-delete-after/test-delete-after.component').then(f => f.TestDELETEAFTERComponent),
   },
 
 ];
