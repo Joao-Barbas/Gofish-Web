@@ -4,10 +4,11 @@ import { AfterViewInit, Component, inject, OnDestroy, OnInit, signal } from '@an
 
 import { UsersChartComponent } from '@gofish/shared/components/users-chart/users-chart.component';
 import { GetUserProfileResDTO } from '@gofish/shared/dtos/user-profile.dto';
+import { UserSatisfactionIndexComponent } from "@gofish/shared/user-satisfaction-index/user-satisfaction-index.component";
 
 @Component({
   selector: 'app-test-delete-after',
-  imports: [UsersChartComponent],
+  imports: [UsersChartComponent, UserSatisfactionIndexComponent],
   templateUrl: './test-delete-after.component.html',
   styleUrl: './test-delete-after.component.css',
 })

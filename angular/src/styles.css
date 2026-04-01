@@ -54,6 +54,9 @@
   --gf-dark-bg-info-pin: oklch(0.3755 0.0561 240.12);
   --gf-dark-bg-warning-pin: oklch(0.4072 0.0586 75.58);
   --gf-success-bg: oklch(0.6109 0.1615 143.75);
+  --gf-success-bg-readable: oklch(0.7166 0.1615 143.75);
+  --gf-success-mild-bg: #1d9e75;
+  --gf-success-ocean-bg: oklch(0.7582 0.1365 171.09);
   --gf-danger-bg: oklch(0.4945 0.1217 25.68);
 
   --gf-light-bg-dark: oklch(0.8263 0.0239 277.88);
@@ -73,14 +76,18 @@
   --gf-primary: oklch(0.5998 0.1786 257.69);
   --gf-primary-disabled: oklch(0.5604 0.1526 257.4);
   --gf-primary-muted: oklch(0.7933 0.0299 254.71);
+  --gf-primary-muted-2: oklch(0.6182 0.0301 254.21); /* user satisfaction index */
   --gf-accent: oklch(0.7511 0.1465 70.53);
+  --gf-accent-mild: oklch(0.6365 0.1465 70.53);
   --gf-danger: oklch(0.6486 0.1879 28.63);
   --gf-warning: oklch(0.8832 0.1636 103.92);
   --gf-success: oklch(0.8255 0.2433 142.97);
+  --gf-success-mild: oklch(0.6306 0.1365 171.08);
   --gf-info: oklch(0.6119 0.1748 262.34);
   --gf-catch-pin: oklch(0.7704 0.2598 142.53);
   --gf-info-pin: oklch(0.6751 0.1627 246.45);
   --gf-warning-pin: oklch(0.7664 0.1585 68.01);
+  --gf-btn-disabled: oklch(0.2147 0.0058 285.9);
 
 
   /* Shadows */
@@ -467,6 +474,19 @@ h6 {
     color: var(--gf-dark-text);
     box-shadow: var(--gf-shadow-lift-md);
   }
+}
+
+button {
+  background: none;
+  color: var(--gf-dark-text);
+  width: fit-content;
+  height: fit-content;
+  border: none;
+}
+
+/* Used in user-satisfaction-index */
+.not-allowed {
+  cursor: not-allowed;
 }
 
 /* Navigation Links */
