@@ -33,6 +33,12 @@
   justify-items: start;
 }
 
+.chart-grid-item {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+
 .quick-access-list {
   display: flex;
   flex-direction: column;
