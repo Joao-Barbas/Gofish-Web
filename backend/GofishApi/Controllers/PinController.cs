@@ -102,6 +102,8 @@ public class PinController : ControllerBase
                     UserName = p.AppUser.UserName ?? "",
                     FirstName = p.AppUser.FirstName ?? "",
                     LastName = p.AppUser.LastName ?? "",
+                    CatchPoints = p.AppUser.UserProfile.CatchPoints,
+                    Rank = GamificationService.GetRank(p.AppUser.UserProfile.CatchPoints),
                     AvatarUrl = p.AppUser.UserProfile.AvatarUrl
                 },
                 Details = new PinDetailsDto(
@@ -180,6 +182,8 @@ public class PinController : ControllerBase
                     UserName = p.AppUser.UserName ?? "",
                     FirstName = p.AppUser.FirstName ?? "",
                     LastName = p.AppUser.LastName ?? "",
+                    CatchPoints = p.AppUser.UserProfile.CatchPoints,
+                    Rank = GamificationService.GetRank(p.AppUser.UserProfile.CatchPoints),
                     AvatarUrl = p.AppUser.UserProfile.AvatarUrl
                 },
 
