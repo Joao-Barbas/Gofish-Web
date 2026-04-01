@@ -6,10 +6,11 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } fro
 
 import { PinService } from '@gofish/shared/services/pin.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
-import { PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
+import { PinDataResDTO, PinDto } from '@gofish/shared/dtos/pin.dto';
 import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
 import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { PinKind } from '@gofish/shared/models/pin.model';
+import { GetReportResDTO } from '@gofish/shared/dtos/report.dto';
 
 
 export type PinType = 'catch' | 'info' | 'warning';
@@ -24,7 +25,7 @@ export class GfCardPinPreviewComponent implements OnInit {
   private readonly pinService = inject(PinService);
   readonly avatarService = inject(AvatarService);
 
-  pinData = input.required<PinDataResDTO>();
+  pinData = input.required<PinDto>();
   isReportedPin = input<boolean>(false);
   reportNumber = input<number>();
   reportIndex = input<number>();
@@ -32,10 +33,8 @@ export class GfCardPinPreviewComponent implements OnInit {
   pinKind = PinKind;
 
   pinLink = computed(
-    () => this.isReportedPin() ? `reports/pin/${this.pinData().id}` : `reports/pin/${this.pinData().id}`
+    () => this.isReportedPin() ? `pin/${this.pinData().id}` : `pin/${this.pinData().id}`
   )
-
-
 
   // Enum options
   speciesOptions: EnumDTO[] = [];
@@ -69,7 +68,6 @@ export class GfCardPinPreviewComponent implements OnInit {
   }
 
   getEnumDisplayName(options: EnumDTO[], value: number): string {
-    console.log('options:', options, 'value:', value);
     if (value === null) return '';
     const option = options.find(opt => opt.value === value);
     return option ? option.display : '';
