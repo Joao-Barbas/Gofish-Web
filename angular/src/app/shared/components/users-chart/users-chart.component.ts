@@ -50,8 +50,9 @@ export class UsersChartComponent implements OnChanges {
       groups[week] = (groups[week] ?? 0) + 1;
     }
 
-    const lineColor = this.getCssVar('--gf-primary');
+    const lineColor = this.getCssVar('--gf-dark-text');
     const textColor = this.getCssVar('--gf-dark-text-muted');
+    const gridColor = this.getCssVar('--gf-dark-text-muted-opacity-50');
     const fillColor = this.getCssVar('--gf-dark-text-muted-opacity-50');
 
     this.chartData = {
@@ -81,11 +82,11 @@ export class UsersChartComponent implements OnChanges {
       scales: {
         x: {
           ticks: { color: textColor },
-          grid: { color: fillColor },
+          grid: { color: gridColor },
         },
         y: {
           ticks: { color: textColor },
-          grid: { color: fillColor },
+          grid: { color: gridColor },
         }
       }
     };
@@ -98,6 +99,6 @@ export class UsersChartComponent implements OnChanges {
     const end = new Date(start);
     end.setDate(start.getDate() + 6);
     const format = (d: Date) => `${d.getDate()}/${d.getMonth() + 1}`;
-    return `${format(start)} a ${format(end)} de ${date.getFullYear()}`;
+    return `${format(start)} to ${format(end)} (${date.getFullYear()})`;
   }
 }
