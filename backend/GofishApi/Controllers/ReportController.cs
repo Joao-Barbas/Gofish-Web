@@ -97,6 +97,12 @@ public class ReportController : ControllerBase
 
     #endregion
 
+    #region GetReports
+
+
+
+    #endregion
+
     #region DeleteReports
 
     [Authorize(Roles = "Admin")]

@@ -27,7 +27,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<PinReport> PinReports { get; set; }
     public DbSet<CommentReport> CommentReports { get; set; }
     public DbSet<RequestLogs> RequestLogs { get; set; }
-    public DbSet<Ratings> Ratings { get; set; }
+    public DbSet<Rating> Ratings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -209,13 +209,13 @@ public class AppDbContext : IdentityDbContext<AppUser>
         #endregion // CommentReport
         #region Ratings
 
-        builder.Entity<Ratings>()
+        builder.Entity<Rating>()
             .HasKey(r => r.UserId);
 
-        builder.Entity<Ratings>()
+        builder.Entity<Rating>()
             .HasOne(r => r.AppUser)
             .WithOne(u => u.Rating)
-            .HasForeignKey<Ratings>(r => r.UserId)
+            .HasForeignKey<Rating>(r => r.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
         #endregion
