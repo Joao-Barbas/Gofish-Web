@@ -15,6 +15,8 @@ import { ReportService } from '@gofish/shared/services/report.service';
 import { GetReportReqDTO, GetReportResDTO } from '@gofish/shared/dtos/report.dto';
 import { PinService } from '@gofish/shared/services/pin.service';
 
+type PinReportMap = { [pinId: number]: GetReportResDTO[] };
+
 @Component({
   selector: 'app-stats-reports',
   imports: [GfCardPinPreviewComponent, /*RouterLink*/],
@@ -27,7 +29,7 @@ export class StatsReportsComponent {
   protected reportedPins = signal<PinDto[]>([]);
   protected hasMoreResults = signal(false);
   private lastTimestamp: string = new Date().toISOString();
-
+  protected reportMap = signal<PinReportMap>({});
 
   ngOnInit() {
     this.loadMore();
@@ -37,22 +39,30 @@ export class StatsReportsComponent {
     const request: GetReportReqDTO = {
       maxResults: 5,
       lastCreatedAt: this.lastTimestamp
-    }
+    };
 
     this.reportService.getPinReports(request).subscribe({
       next: (res) => {
         this.hasMoreResults.set(res.hasMoreResults);
-        if (res.lastCreatedAt) this.lastTimestamp = res.lastCreatedAt;
+        this.lastTimestamp = res.lastCreatedAt!;
 
+        const currentMap: PinReportMap = { ...this.reportMap() };
 
-        const pinIds = res.reports.map(r => ({ pinId: r.targetId }));
+        res.reports.forEach(report => {
+          const pinId = report.targetId;
+          if (!currentMap[pinId]) {
+            currentMap[pinId] = [];
+          }
 
-        if (pinIds.length > 0) {
-          this.fetchPinDetails(pinIds);
-        }
-      },
-      error: (err) => {
-        console.error(err);
+          if (!currentMap[pinId].some(r => r.id === report.id)) {
+            currentMap[pinId].push(report);
+          }
+        });
+
+        this.reportMap.set(currentMap);
+
+        const pinIdsToFetch = res.reports.map(r => ({ pinId: r.targetId }));
+        this.fetchPinDetails(pinIdsToFetch);
       }
     });
   }
@@ -75,5 +85,6 @@ export class StatsReportsComponent {
       error: (err) => console.error(err)
     });
   }
+
 }
 
