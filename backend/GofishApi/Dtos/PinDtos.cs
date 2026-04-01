@@ -1,10 +1,7 @@
-﻿using Azure.Core;
+﻿using System.ComponentModel.DataAnnotations;
 using GofishApi.Enums;
 using GofishApi.Models;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Net.NetworkInformation;
-using System.Text.Json.Serialization;
+using GofishApi.Services;
 
 namespace GofishApi.Dtos;
 
@@ -48,34 +45,36 @@ public record PinDetailsDto (
 
 public record PinAuthorDto
 {
-    // Rank (??)
-    // Catch points (???)
-
     public required string Id { get; init; }
     public required string UserName { get; init; }
     public required string FirstName { get; init; }
     public required string LastName { get; init; }
-
+    public required int CatchPoints { get; init; }
+    public required int Rank { get; init; }
     public string? AvatarUrl { get; init; }
     public GroupRole? GroupRole { get; init; }
 
     public static PinAuthorDto FromEntity(AppUser u, UserProfile up) => new()
     {
-        Id        = u.Id,
-        UserName  = u.UserName ?? "",
-        FirstName = u.FirstName ?? "",
-        LastName  = u.LastName ?? "",
-        AvatarUrl = up.AvatarUrl
+        Id          = u.Id,
+        UserName    = u.UserName ?? "",
+        FirstName   = u.FirstName ?? "",
+        LastName    = u.LastName ?? "",
+        CatchPoints = up.CatchPoints,
+        Rank        = GamificationService.GetRank(up.CatchPoints),
+        AvatarUrl   = up.AvatarUrl
     };
 
     public static PinAuthorDto FromEntity(AppUser u, UserProfile up, GroupUser gu) => new()
     {
-        Id        = u.Id,
-        UserName  = u.UserName ?? "",
-        FirstName = u.FirstName ?? "",
-        LastName  = u.LastName ?? "",
-        AvatarUrl = up?.AvatarUrl,
-        GroupRole = gu.Role
+        Id          = u.Id,
+        UserName    = u.UserName ?? "",
+        FirstName   = u.FirstName ?? "",
+        LastName    = u.LastName ?? "",
+        CatchPoints = up.CatchPoints,
+        Rank        = GamificationService.GetRank(up.CatchPoints),
+        AvatarUrl   = up.AvatarUrl,
+        GroupRole   = gu.Role
     };
 }
 
@@ -126,13 +125,17 @@ public record PinDto(
 public record CommentAuthorDto(
     string Id,
     string UserName,
+    int CatchPoints,
+    int Rank,
     string? AvatarUrl
 )
 {
-    public static CommentAuthorDto FromEntity(AppUser u) => new(
+    public static CommentAuthorDto FromEntity(AppUser u, UserProfile up) => new(
         u.Id,
         u.UserName ?? "",
-        u.UserProfile?.AvatarUrl
+        up.CatchPoints,
+        GamificationService.GetRank(up.CatchPoints),
+        up.AvatarUrl
     );
 }
 
@@ -147,7 +150,7 @@ public record CommentDto(
         c.Id,
         c.Body,
         c.CreatedAt,
-        CommentAuthorDto.FromEntity(c.AppUser)
+        CommentAuthorDto.FromEntity(c.AppUser, c.AppUser.UserProfile)
     );
 }
 
