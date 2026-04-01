@@ -1,0 +1,170 @@
+.gf-card-user-satisfaction-index {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  width: 480px;
+  padding: 12px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.top-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.top-title {
+  font-size: 16px;
+
+  & .gf-text-logo {
+    font-size: 16px !important;
+    letter-spacing: -0.04em;
+  }
+}
+
+.top-subtitle {
+  font-size: 14px;
+}
+
+.body-bottom-wrapper {
+  --current-selection-color: var(--gf-dark-text);
+  --current-selection-text-color: var(--gf-dark-text);
+  --current-selection-btn-color: var(--gf-btn-disabled);
+
+  /* 2. Atualizamos a variável baseada no botão selecionado */
+  &:has(.index.one.selected) {
+    --current-selection-color: var(--gf-danger);
+    --current-selection-text-color: var(--gf-danger);
+    --current-selection-btn-color: var(--gf-danger-bg);
+  }
+  &:has(.index.two.selected)   {
+    --current-selection-color: var(--gf-accent-mild);
+    --current-selection-text-color: var(--gf-accent-mild);
+    --current-selection-btn-color: var(--gf-accent-mild);
+  }
+  &:has(.index.three.selected) {
+    --current-selection-color: var(--gf-primary-muted-2);
+    --current-selection-text-color: var(--gf-primary-muted);
+    --current-selection-btn-color: var(--gf-primary-muted-2);
+  }
+  &:has(.index.four.selected) {
+    --current-selection-color: var(--gf-success-ocean-bg);
+    --current-selection-text-color: var(--gf-success-ocean-bg);
+    --current-selection-btn-color: var(--gf-success-mild-bg);
+  }
+  &:has(.index.five.selected)  {
+    --current-selection-color: var(--gf-success-bg-readable);
+    --current-selection-text-color: var(--gf-success-bg-readable);
+    --current-selection-btn-color: var(--gf-success-bg);
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--gf-dark-bg-light);
+
+
+}
+
+.index-wrapper {
+  display: grid;
+  grid-template-columns: repeat(5, 48px);
+  justify-content: center;
+  gap: 10px;
+}
+
+.index.selected {
+  --index-color: var(--current-selection-color) !important;
+  border-color: var(--current-selection-color);
+}
+
+.index {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--gf-dark-bg-dark);
+  width: fit-content;
+  padding: 12px;
+  border-radius: 12px;
+
+  & svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  --index-color: var(--gf-dark-text-muted);
+  border: 2px solid var(--index-color);
+
+  /*
+  &.one.selected{
+    --index-color: var(--gf-danger);
+    --index-text-color: var(--gf-danger);
+  }*/
+  &.two.selected {
+    --index-color: var(--gf-accent-mild);
+  }
+  &.three.selected {
+    --index-color: var(--gf-danger);
+  }
+  &.four.selected {
+    --index-color: var(--gf-success-mild);
+  }
+  &.five.selected {
+    --index-color: var(--gf-success-bg);
+  }
+}
+
+.index-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--current-selection-color);
+  color: var(--current-selection-text-color);
+
+  padding: 4px 0 8px;
+}
+
+.bottom {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 8px;
+  padding: 0 10px;
+  height: 40px;
+}
+
+.usi-action-btn {
+  padding: auto 32px;
+  border-radius: 8px;
+  border: 1px solid var(--gf-dark-text-muted);
+  width: 100%;
+  height: auto;
+}
+
+.usi-submit-btn {
+      /*--current-selection-color
+    --current-selection-text-color*/
+
+  background-color: var(--current-selection-btn-color);
+
+}
+
+.usi-submit-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
