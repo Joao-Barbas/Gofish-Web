@@ -11,6 +11,7 @@ using System.Security.Claims;
 
 namespace GofishApi.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class ReportController : ControllerBase
@@ -32,7 +33,6 @@ public class ReportController : ControllerBase
 
     #region CreateReports
 
-    [Authorize]
     [HttpPost("CreatePinReport")]
     public async Task<IActionResult> CreatePinReport([FromBody] CreatePinReportReqDTO dto)
     {
@@ -64,7 +64,6 @@ public class ReportController : ControllerBase
         return Ok(new CreatePinReportResDTO(report.Id));
     }
 
-    [Authorize]
     [HttpPost("CreateCommentReport")]
     public async Task<IActionResult> CreateCommentReport([FromBody] CreateCommentReportReqDTO dto)
     {
@@ -99,6 +98,28 @@ public class ReportController : ControllerBase
     #endregion
 
     #region DeleteReports
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("DeletePinReport/{id}")]
+    public async Task<IActionResult> DeletePinReport(int id)
+    {
+        var report = await _db.PinReports.FindAsync(id);
+        if (report is null) return NotFound();
+        _db.PinReports.Remove(report);
+        await _db.SaveChangesAsync();
+        return NoContent();
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("DeleteCommentReport/{id}")]
+    public async Task<IActionResult> DeleteCommentReport(int id)
+    {
+        var report = await _db.CommentReports.FindAsync(id);
+        if (report is null) return NotFound();
+        _db.CommentReports.Remove(report);
+        await _db.SaveChangesAsync();
+        return NoContent();
+    }
 
     #endregion
 }
