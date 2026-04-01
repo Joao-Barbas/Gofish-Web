@@ -10,6 +10,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NovaPasta1\**" />
+    <Compile Remove="NovaPasta2\**" />
+    <EmbeddedResource Remove="NovaPasta1\**" />
+    <EmbeddedResource Remove="NovaPasta2\**" />
+    <None Remove="NovaPasta1\**" />
+    <None Remove="NovaPasta2\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="LoadTests\scenarios\pin-getpins.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="dada.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="FluentAssertions" Version="8.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.22" />
@@ -31,6 +48,10 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

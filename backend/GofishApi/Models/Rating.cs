@@ -3,8 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GofishApi.Models;
 
-public class Ratings
+public class Rating
 {
+    [Key]
     [ForeignKey(nameof(AppUser))]
     public string UserId { get; set; }
 

@@ -15,12 +15,12 @@ using GofishApi.Models;
 
 namespace GofishApi.Tests.Controllers;
 
-public class ReportController : IClassFixture<WebAppFactory>
+public class ReportControllerTests : IClassFixture<WebAppFactory>
 {
     private readonly HttpClient _client;
     private readonly WebAppFactory _factory;
 
-    public ReportController(WebAppFactory factory)
+    public ReportControllerTests(WebAppFactory factory)
     {
         _client = factory.CreateClient();
         _factory = factory;
