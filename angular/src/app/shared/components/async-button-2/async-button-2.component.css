@@ -66,7 +66,7 @@ button {
 
     &.spinner-icon {
       position: absolute;
-      animation: gf-basic-gf-basic-spin 1.5s linear infinite;
+      animation: gf-basic-spin 1.5s linear infinite;
     }
 
     &.check-icon {

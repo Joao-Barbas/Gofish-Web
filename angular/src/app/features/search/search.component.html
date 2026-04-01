@@ -1,0 +1,23 @@
+<!-- search.component.html -->
+
+<h4 class="section-header">Search</h4>
+
+<div class="search-box">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+  <input id="query-input" type="text" placeholder="Enter at least 2 characters" (input)="query.set($any($event.target).value)">
+</div>
+
+@if (query().length > 2) {
+  <div class="search-action-shell" animate.enter="on-enter" animate.leave="on-leave">
+    <button (click)="search('users')">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-icon lucide-user-round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+      {{ query() }}
+      <span class="muted">in users</span>
+    </button>
+    <button (click)="search('groups')">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-round-icon lucide-users-round"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></svg>
+      {{ query() }}
+      <span class="muted">in groups</span>
+    </button>
+  </div>
+}

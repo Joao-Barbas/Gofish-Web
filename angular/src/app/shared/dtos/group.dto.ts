@@ -52,8 +52,9 @@ export interface GetUserGroupsResDTO{
 export interface SearchGroupDTO {
   id: number;
   name: string;
-  description: string | null;
-  avatarUrl: string | null;
+  description?: string;
+  avatarUrl?: string;
+  postCount: number;
   memberCount: number;
 }
 
