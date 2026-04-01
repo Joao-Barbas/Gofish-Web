@@ -17,10 +17,13 @@ public record UpdateRatingReqDTO(
 );
 
 public record GetRatingResDTO(
-    int Id,
     string UserId,
     int Stars,
     string? Title,
     string? Body,
     DateTime CreatedAt
+);
+
+public record GetRatingsResDTO(
+    IEnumerable<GetRatingResDTO> Ratings
 );

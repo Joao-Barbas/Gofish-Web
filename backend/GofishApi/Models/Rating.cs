@@ -5,6 +5,7 @@ namespace GofishApi.Models;
 
 public class Rating
 {
+    [Key]
     [ForeignKey(nameof(AppUser))]
     public string UserId { get; set; }
 
