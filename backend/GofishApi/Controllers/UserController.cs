@@ -178,20 +178,17 @@ public class UserController : ControllerBase
         var hasMore = users.Count > maxResults;
         var page = users.Take(maxResults).ToList();
 
-        var data = page.Select(u =>
+        var data = page.Select(u => new SearchUserDto
         {
-            var rank = _gamification.GetRank(u.CatchPoints);
-            return new SearchUserDto
-            {
-                Id = u.Id,
-                UserName = u.UserName ?? "",
-                FirstName = u.FirstName ?? "",
-                LastName = u.LastName ?? "",
-                AvatarUrl = u.AvatarUrl,
-                CatchPoints = u.CatchPoints,
-                Rank = rank,
-            };
-        }).ToList();
+            Id = u.Id,
+            UserName = u.UserName ?? "",
+            FirstName = u.FirstName ?? "",
+            LastName = u.LastName ?? "",
+            AvatarUrl = u.AvatarUrl,
+            CatchPoints = u.CatchPoints,
+            Rank = GamificationService.GetRank(u.CatchPoints),
+        })
+        .ToList();
 
         var lastUsername = hasMore ? users[^1].NormalizedUserName : null;
         return Ok(new SearchUsersResDto(data, hasMore, lastUsername));

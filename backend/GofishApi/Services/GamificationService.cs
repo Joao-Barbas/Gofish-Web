@@ -22,7 +22,7 @@ public class GamificationService : IGamificationService
 
     #region Ranking
 
-    public int GetRank(int points)
+    public static int GetRank(int points)
     {
         for (int i = Ranks.Length - 1; i >= 0; i--)
         {
