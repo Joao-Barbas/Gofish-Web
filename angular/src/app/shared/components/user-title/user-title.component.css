@@ -44,3 +44,13 @@ span.effect-rainbow::before {
   from { background-position: 300% 50%; }
   to { background-position: 0% 50%; }
 }
+
+.post-author-name {
+  font-size: var(--gf-14);
+  word-break: break-all;
+  cursor: pointer;
+}
+
+.user-output-no-overflow {
+  max-width: 200px;
+}
