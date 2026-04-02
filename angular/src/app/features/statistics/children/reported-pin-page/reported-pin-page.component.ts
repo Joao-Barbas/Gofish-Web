@@ -4,10 +4,11 @@ import { UserHelpBoxComponent } from "@gofish/shared/components/user-help-box/us
 import { PinDto, GetPinsReqDto } from '@gofish/shared/dtos/pin.dto';
 import { PinService } from '@gofish/shared/services/pin.service';
 import { ReportService } from '@gofish/shared/services/report.service';
+import { ForumPostComponent } from "@gofish/features/forum/components/forum-post/forum-post.component";
 
 @Component({
   selector: 'gf-reported-pin-page',
-  imports: [UserHelpBoxComponent],
+  imports: [UserHelpBoxComponent, ForumPostComponent],
   templateUrl: './reported-pin-page.component.html',
   styleUrl: './reported-pin-page.component.css',
 })
