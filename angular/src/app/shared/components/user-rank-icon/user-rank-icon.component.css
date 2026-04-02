@@ -1,7 +1,6 @@
 /* user-rank-icon.component.css */
 
 :host {
-  display: block;
   height: 32px;
   width: 32px;
 }

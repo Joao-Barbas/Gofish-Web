@@ -38,6 +38,22 @@
   }
 }
 
+.profile-user-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: visible;
+  max-height: var(--gf-text-lg);
+  gap: var(--gf-16);
+
+  gf-user-title {
+    --user-title-color: var(--gf-dark-text);
+    --user-title-font-size: var(--gf-text-lg);
+    --user-title-font-weight: var(--gf-font-bold);
+    --user-title-line-height: 1.0em;
+  }
+}
+
 gf-async-button  {
   --async-btn-height: var(--gf-40);
   --async-btn-max-height: var(--gf-40);
