@@ -55,9 +55,13 @@
   --gf-dark-bg-warning-pin: oklch(0.4072 0.0586 75.58);
   --gf-success-bg: oklch(0.6109 0.1615 143.75);
   --gf-success-bg-readable: oklch(0.7166 0.1615 143.75);
-  --gf-success-mild-bg: #1d9e75;
+  --gf-success-mild-bg: oklch(0.6231 0.1232 165.5);
   --gf-success-ocean-bg: oklch(0.7582 0.1365 171.09);
   --gf-danger-bg: oklch(0.4945 0.1217 25.68);
+  --gf-info-bg: oklch(0.6119 0.1748 262.34);
+  --gf-info-bg-muted: oklch(0.6119 0.1748 262.34 / 30%);
+  --gf-warning-bg: oklch(0.8285 0.1442 90.09 / 60%);
+  --gf-warning-bg-muted: oklch(0.8285 0.1442 90.09 / 30%);
 
   --gf-light-bg-dark: oklch(0.8263 0.0239 277.88);
   --gf-light-bg: oklch(0.9192 0.0055 274.96);
