@@ -14,6 +14,7 @@ span {
   display: var(--user-title-display, inline);
   text-align: var(--user-title-text-align, left);
   cursor: var(--user-title-cursor, default);
+  z-index: var(--gf-z-user-title-fg);
 }
 
 span.effect-none::before {
@@ -28,15 +29,15 @@ span.effect-rainbow::before {
   content: "";
   position: absolute;
   inset: 0px 6px 0px;
-  z-index: -1;
-  background-clip: border-box;
   background-size: 300% 100%;
   background-position: 0% 50%;
   background-image: linear-gradient(90deg, oklch(0.5299 0.2931 293.7740), oklch(0.9054 0.1546 194.7690), oklch(0.8905 0.264583 135.9499), oklch(0.6280 0.2577 29.2300));
+  background-clip: border-box;
   background-repeat: unset;
   animation: move-background 4s cubic-bezier(0.7,0.1,0.5,0.9) infinite;
   filter: blur(12px);
   transform: scaleY(0.6);
+  z-index: var(--gf-z-user-title-bg);
 }
 
 @keyframes move-background {

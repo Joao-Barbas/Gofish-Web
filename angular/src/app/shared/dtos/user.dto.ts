@@ -8,7 +8,9 @@ export interface SearchUserDTO {
   userName: string;
   firstName: string;
   lastName: string;
-  avatarUrl: string | null;
+  catchPoints: number;
+  rank: number;
+  avatarUrl?: string;
 }
 
 export interface SearchUsersReqDTO {
