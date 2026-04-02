@@ -42,3 +42,9 @@ public record GetReportsResDTO(
     bool HasMoreResults,
     DateTime? LastCreatedAt
 );
+
+public record GetPinReportsByPinReqDTO(
+    int PinId,
+    int MaxResults = 20,
+    DateTime? LastCreatedAt = null
+);

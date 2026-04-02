@@ -159,6 +159,46 @@ public class ReportController : ControllerBase
         ));
     }
 
+    [Authorize(Roles = "Admin")]
+    [HttpGet("GetPinReportsByPin")]
+    public async Task<IActionResult> GetPinReportsByPin([FromQuery] GetPinReportsByPinReqDTO dto)
+    {
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+
+        IQueryable<PinReport> query = _db.PinReports
+            .Where(r => r.PinId == dto.PinId);
+
+        if (dto.LastCreatedAt is not null)
+        {
+            query = query.Where(r => r.CreatedAt < dto.LastCreatedAt.Value);
+        }
+
+        var pinReports = await query
+            .AsNoTracking()
+            .OrderByDescending(r => r.CreatedAt)
+            .Take(maxResults + 1)
+            .Select(r => new GetReportResDTO(
+                r.Id,
+                r.UserId,
+                "Pin",
+                r.PinId,
+                r.ReasonText,
+                r.Description,
+                r.CreatedAt
+            ))
+            .ToListAsync();
+
+        var hasMoreResults = pinReports.Count > maxResults;
+        var paginatedReports = pinReports.Take(maxResults).ToList();
+        var lastTimestamp = hasMoreResults ? paginatedReports[^1].CreatedAt : (DateTime?)null;
+
+        return Ok(new GetReportsResDTO(
+            paginatedReports,
+            hasMoreResults,
+            lastTimestamp
+        ));
+    }
+
     #endregion
 
     #region GetCommentReports
