@@ -40,7 +40,9 @@
     </button>
   </div>
 
-  <div class="body">
-    <p class="help-body-text">{{ bodyText() }}</p>
-  </div>
+  @if (bodyText()) {
+    <div class="body">
+      <p class="help-body-text">{{ bodyText() }}</p>
+    </div>
+  }
 </div>

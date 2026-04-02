@@ -8,8 +8,8 @@ import { Component, Input, input } from '@angular/core';
 })
 export class UserHelpBoxComponent {
   type = input<'tooltip' | 'alert'>('tooltip');
-  headerText = input<string>("header text here");
-  bodyText = input<string>("body text here");
+  headerText = input<string>("");
+  bodyText = input<string>("");
 
 
 }
