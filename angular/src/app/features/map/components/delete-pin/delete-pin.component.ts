@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { resetConsumerBeforeComputation } from '@angular/core/primitives/signals';
 import { ActivatedRoute, Router, RouterLinkActive } from '@angular/router';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { toast } from 'ngx-sonner';
 import { reportUnhandledError } from 'rxjs/internal/util/reportUnhandledError';
@@ -39,7 +39,7 @@ export class DeletePinComponent {
       next: () => {
         toast.success('deleted pin succesfully');
       }, error: (err) => {
-        alert(err);
+        alert('You dont have permissions do delete this pin');
       }
     });
     this.router.navigate(['map']);

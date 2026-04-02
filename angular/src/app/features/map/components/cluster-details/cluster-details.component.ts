@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, input, Output } from '@angular/core';
-import { GeoLocationDTO, PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
+import { GeoLocationDTO, PinDataResDTO, PinDto } from '@gofish/shared/dtos/pin.dto';
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { PopupController } from '@gofish/shared/core/popup-controller';
 import { AuthService } from '@gofish/shared/services/auth.service';
@@ -16,7 +16,7 @@ export class ClusterDetailsComponent {
   private readonly authService = inject(AuthService);
   userName = this.authService.getUserName();
   readonly popupController = new PopupController('cluster-preview');
-  pinsData = input<PinDataResDTO[] | null>(null);
+  pinsData = input<PinDto[] | null>(null);
   public pinKind = PinKind;
   @Output() cancel = new EventEmitter<void>();
   @Output() coords = new EventEmitter<GeoLocationDTO>();

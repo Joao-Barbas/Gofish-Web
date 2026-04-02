@@ -6,7 +6,7 @@ import { UserHelpBoxComponent } from "@gofish/shared/components/user-help-box/us
   selector: 'app-test-delete-after',
   imports: [UserHelpBoxComponent],
   templateUrl: './test-delete-after.component.html',
-  styleUrl: './test-delete-after.component.css',
+  /*styleUrl: './test-delete-after.component.css',*/
 })
 export class TestDELETEAFTERComponent {
 

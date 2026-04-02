@@ -6,9 +6,9 @@
       <!-- Header -->
       <div class="modal-header text-white align-items-center mb-3 justify-content-between">
         <div>
-          <h5 class="mb-0 text-bold modal-header-title">Group Create</h5>
+          <h5 class="mb-0 text-bold modal-header-title">Crew Create</h5>
           <p class="mb-0 dark-text-muted modal-header-subtitle">
-            Add details about your group!
+            Add details about your crew!
           </p>
         </div>
 
@@ -56,28 +56,24 @@
           <textarea id="Description" class="modal-body-description dark-bg-dark dark-text"
             placeholder="Add a description..." formControlName="body">
           </textarea>
-
+          <small class="dark-text-muted text-end">
+            {{ form.value.body?.length ?? 0 }}/{{ BodyLengthConstraints.MAX }}
+          </small>
           @if (form.controls.body.touched && form.controls.body.invalid) {
           <p class="text-danger mt-2 mb-0">
             @if (form.controls.body.errors?.['required']) {
             Description is required.
             }
             @if (form.controls.body.errors?.['minlength']) {
-            Description must have at least 10 characters.
+            Description must have at least {{BodyLengthConstraints.MIN}} characters.
             }
             @if (form.controls.body.errors?.['maxlength']) {
-            Description cannot exceed 500 characters.
+            Description cannot exceed {{BodyLengthConstraints.MAX}} characters.
             }
           </p>
           }
 
         </section>
-
-
-
-
-
-
 
         <!-- Error -->
         @if (errorMessage) {

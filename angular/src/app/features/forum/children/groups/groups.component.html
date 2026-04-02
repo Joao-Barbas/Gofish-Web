@@ -19,14 +19,19 @@
         </div>
 
       </div>
-      <div class="group-settings-wrapper">
-        <button class="gf-badge-group-settings" (click)="openOptions()">
 
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis">
-            <circle cx="12" cy="12" r="1" />
-            <circle cx="19" cy="12" r="1" />
-            <circle cx="5" cy="12" r="1" />
+      <!-- put here a if to only admin/ group admin can delete group -->
+      <div class="group-settings-wrapper">
+        <button class="gf-badge-group-settings">
+
+          <svg xmlns=" http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-trash2-icon lucide-trash-2">
+            <path d="M10 11v6" />
+            <path d="M14 11v6" />
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+            <path d="M3 6h18" />
+            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
           </svg>
         </button>
         <app-group-settings-popover></app-group-settings-popover>
@@ -38,48 +43,63 @@
     <div class="group-stats">
 
       <div class="gf-badge-text">
-        <span>{{group.memberCount}} Members</span>
+        <span>{{group.memberCount == 1 ? `${group.memberCount} Tailor` : `${group.memberCount} Tailors`}} </span>
       </div>
 
       <div class="gf-badge-text">
-        <span>{{group.postCount}} Posts</span>
+        <span>{{group.postCount == 1 ? `${group.postCount} Post` : `${group.postCount} Posts`}}</span>
       </div>
 
+    </div>
+
+    <!-- se nao for membro do grupo esta div nao aparece -->
+    <div class="d-flex align-items-center create-group-wrapper">
+
+      <button class="gf-badge-create-group-btn">
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-plus-icon lucide-plus">
+          <path d="M5 12h14" />
+          <path d="M12 5v14" />
+        </svg>
+
+      </button>
+
+      <span class="create-group-text">Invite to group</span>
     </div>
 
     <!-- Group Description -->
 
     <div class="group-description">
-
-      <p class="group-description-text">
-        {{group.description}}
+      <p class="mb-2 group-description-box" [class.expanded]="isExpanded">
+        {{ group.description }}
       </p>
 
+      @if (group.description?.length! > 250) {
+      <button type="button" class="see-more" (click)="toggleExpand()">
+        {{ isExpanded ? 'See less' : 'See more' }}
+      </button>
+      }
     </div>
 
     <!-- Group Listing Tabs -->
     <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
-
-      <a (click)="toggleTab(true)" [class.active-tab]="postActive"
+      <a [routerLink]="['posts']" [routerLinkActive]="['active']"
         class="d-flex justify-content-center listing-tabs gf-text-selection">
         <span class="listing-tab-text">Posts</span>
       </a>
 
-      <a (click)="toggleTab(false)" [class.active-tab]="!postActive" routerLink="active"
+      <a [routerLink]="['members']" [routerLinkActive]="['active']"
         class="d-flex justify-content-center listing-tabs gf-text-selection">
         <span class="listing-tab-text">Members</span>
       </a>
     </div>
-    @if (postActive) {
 
-    }
-    @else {
-    <app-group-members-placeholder [members]="group.members!"></app-group-members-placeholder>
-    }
+    <!-- colocar o if de nao ser membro ate aqui -->
 
 
   </div>
-  <!-- / Group Header Info -->
 
 
   <div class="group-forum-feed">

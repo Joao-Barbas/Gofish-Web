@@ -10,3 +10,7 @@
   width: var(--gf-64);
   height: var(--gf-64);
 }
+
+.clickable {
+  cursor: pointer;
+}

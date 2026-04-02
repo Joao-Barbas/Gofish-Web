@@ -18,10 +18,15 @@
 
   <div class="quick-view-grid">
 
-    <!-- Quick View - Average Number of Published Pins-->
-    <app-gf-card-pin-preview [pinData]="testPin" [isReportedPin]="true" [reportNumber]="5" [reportIndex]="1" />
-    <app-gf-card-pin-preview [pinData]="testPin2" [isReportedPin]="true" [reportNumber]="5" [reportIndex]="1" />
+    @for (pin of reportedPins(); track pin.id) {
+    <app-gf-card-pin-preview [pinData]="pin" [isReportedPin]="true" [reportNumber]="pin.id" [reportIndex]="pin.id"></app-gf-card-pin-preview>
+  } @empty {
+    <p>No reports available.</p>
+  }
 
+  @if (hasMoreResults()) {
+    <button (click)="loadMore()" class="btn-show-more">Load More</button>
+  }
   </div>
 
 </div>

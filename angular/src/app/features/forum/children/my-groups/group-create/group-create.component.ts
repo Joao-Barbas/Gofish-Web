@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { UrlService } from '@gofish/features/map/services/url.service';
 import { AsyncButtonComponent } from '@gofish/shared/components/async-button/async-button.component';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { GroupsService } from '@gofish/shared/services/groups.service';
 import { toast } from 'ngx-sonner';
+import { BodyLengthConstraints } from '@gofish/shared/constants';
 
 @Component({
   selector: 'app-group-create',
@@ -19,6 +20,7 @@ export class GroupCreateComponent {
   private readonly groupsService = inject(GroupsService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+  protected readonly BodyLengthConstraints = BodyLengthConstraints;
   busyState: BusyState = new BusyState();
 
   groupName: string = '';
@@ -28,7 +30,7 @@ export class GroupCreateComponent {
   errorMessage: string = '';
 
   form = this.fb.group({
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
+    body: ['', [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
     groupName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
     imageUrl: [null, [Validators.required]]
   });

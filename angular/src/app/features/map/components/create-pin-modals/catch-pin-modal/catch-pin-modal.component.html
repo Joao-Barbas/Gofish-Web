@@ -51,6 +51,9 @@
           <textarea id="catchPinDescription" class="modal-body-description dark-bg-dark dark-text"
             placeholder="Add a description..." formControlName="body">
           </textarea>
+          <small class="dark-text-muted text-end">
+            {{ form.value.body?.length ?? 0 }}/{{BodyLengthConstraints.MAX}}
+          </small>
 
           @if (form.controls.body.touched && form.controls.body.invalid) {
           <p class="text-danger mt-2 mb-0">
@@ -58,10 +61,10 @@
             Description is required.
             }
             @if (form.controls.body.errors?.['minlength']) {
-            Description must have at least 10 characters.
+            Description must have at least {{BodyLengthConstraints.MIN}} characters.
             }
             @if (form.controls.body.errors?.['maxlength']) {
-            Description cannot exceed 500 characters.
+            Description cannot exceed {{BodyLengthConstraints.MAX}} characters.
             }
           </p>
           }
@@ -103,7 +106,7 @@
           @if (form.controls.visibility.value === 2) {
           <div class="options-line groups-line d-flex align-items-start justify-content-between dark-text-muted">
             <h5 class="modal-body-options-text text-slim mb-0 pt-2">Groups</h5>
-            <div class="groups-selector">
+            <div class="groups-selector flex-column">
               @for (group of userGroups(); track group.id) {
               <label class="group-chip" [class.selected]="selectedGroupIds().includes(group.id)">
                 <input type="checkbox" class="d-none" [checked]="selectedGroupIds().includes(group.id)"

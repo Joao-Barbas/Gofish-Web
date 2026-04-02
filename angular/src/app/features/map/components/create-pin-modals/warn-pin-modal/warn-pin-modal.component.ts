@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateWarnPinReqDTO } from '@gofish/shared/dtos/pin.dto';
@@ -13,6 +13,7 @@ import { AsyncButtonComponent } from "@gofish/shared/components/async-button/asy
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
 import { GroupsService } from '@gofish/shared/services/groups.service';
+import { BodyLengthConstraints } from '@gofish/shared/constants';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class WarnPinModalComponent {
   private readonly urlService = inject(UrlService);
   private readonly route = inject(ActivatedRoute);
   private readonly groupsService = inject(GroupsService);
+  protected readonly BodyLengthConstraints = BodyLengthConstraints;
   values: UrlQuery | null = null;
   busyState: BusyState = new BusyState();
 
@@ -41,7 +43,7 @@ export class WarnPinModalComponent {
   selectedGroupIds = signal<number[]>([]);
 
   form = this.fb.group({
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
+    body: ['', [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
     visibility: [0, Validators.required],
     warningKind: [0, Validators.required],
     groupIds: this.fb.control<number[]>([])
@@ -153,7 +155,7 @@ export class WarnPinModalComponent {
       visibility: this.form.value.visibility!,
       body: this.form.value.body ?? '',
       warningKind: Number(this.form.value.warningKind!),
-      /**groupIds: groupIds */
+      groupIds: groupIds
     };
     console.log('DTO to be sent:', dto);
     const toastId = toast.loading('Publishing your pin!');

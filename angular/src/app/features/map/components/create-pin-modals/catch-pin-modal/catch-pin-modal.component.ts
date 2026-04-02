@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
@@ -11,6 +11,7 @@ import { toast } from 'ngx-sonner';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 import { GroupsService } from '@gofish/shared/services/groups.service';
 import { GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
+import { BodyLengthConstraints } from '@gofish/shared/constants';
 
 @Component({
   selector: 'app-catch-pin-modal',
@@ -25,6 +26,7 @@ export class CatchPinModalComponent {
   private readonly urlService = inject(UrlService);
   private readonly route = inject(ActivatedRoute);
   private readonly groupService = inject(GroupsService);
+  protected readonly BodyLengthConstraints = BodyLengthConstraints;
   values: UrlQuery | null = null;
   busyState: BusyState = new BusyState();
 
@@ -43,7 +45,7 @@ export class CatchPinModalComponent {
   selectedGroupIds = signal<number[]>([]);
 
   form = this.fb.group({
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
+    body: ['', [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
     visibility: [0],
     species: [0],
     bait: [0],
@@ -168,13 +170,13 @@ export class CatchPinModalComponent {
     formData.append('Latitude', this.selectedCoords.latitude.toString());
     formData.append('Longitude', this.selectedCoords.longitude.toString());
     formData.append('Image', this.image);
-    formData.append('body', this.form.value.body!);
-    formData.append('visibility', String(this.form.value.visibility));
-    formData.append('species', String(this.form.value.species));
-    formData.append('bait', String(this.form.value.bait));
-    formData.append('hook', this.form.value.hook ?? '');
+    formData.append('Body', this.form.value.body!);
+    formData.append('Visibility', String(this.form.value.visibility));
+    formData.append('Species', String(this.form.value.species));
+    formData.append('Bait', String(this.form.value.bait));
+    formData.append('HookSize', this.form.value.hook ?? '');
     groupIds.forEach(id => {
-      formData.append('groupIds', id.toString());
+      formData.append('GroupIds', id.toString());
     });
 
     const toastId = toast.loading('Publishing your pin!');

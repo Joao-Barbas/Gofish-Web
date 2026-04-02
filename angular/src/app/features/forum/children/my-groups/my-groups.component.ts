@@ -3,10 +3,11 @@ import { GroupsService } from '@gofish/shared/services/groups.service';
 import { RouterLink } from "@angular/router";
 import { Path, PathSegment } from '@gofish/shared/constants';
 import { GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
+import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-my-groups',
-  imports: [RouterLink],
+  imports: [RouterLink, SlicePipe],
   templateUrl: './my-groups.component.html',
   styleUrl: './my-groups.component.css',
 })

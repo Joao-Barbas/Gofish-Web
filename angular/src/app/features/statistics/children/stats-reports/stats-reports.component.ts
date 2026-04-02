@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { GfCardPinPreviewComponent } from "@gofish/shared/components/gf-card-pin-preview/gf-card-pin-preview.component";
 import { NavigationEnd, Router, /*RouterLink, */ RouterLinkActive, RouterOutlet } from "@angular/router";
 
@@ -8,7 +8,14 @@ import { Bait } from '../../../../shared/enums/bait.enums';
 import { AccessDifficulty } from '../../../../shared/enums/access-difficulty.enums';
 import { Seabed } from '../../../../shared/enums/seabed.enum';
 import { WarningKind } from '../../../../shared/enums/warning-kind.enum';
-import { PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
+import { GetPinsReqDto, PinDataResDTO, PinDto } from '@gofish/shared/dtos/pin.dto';
+import { StatsService } from '@gofish/shared/services/stats.service';
+import { GetReportsWaitingReviewResDTO } from '@gofish/shared/dtos/stats.dto';
+import { ReportService } from '@gofish/shared/services/report.service';
+import { GetReportReqDTO, GetReportResDTO } from '@gofish/shared/dtos/report.dto';
+import { PinService } from '@gofish/shared/services/pin.service';
+
+type PinReportMap = { [pinId: number]: GetReportResDTO[] };
 
 @Component({
   selector: 'app-stats-reports',
@@ -17,77 +24,67 @@ import { PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
   styleUrl: './stats-reports.component.css',
 })
 export class StatsReportsComponent {
-  protected readonly Species = Species;
-  protected readonly Bait = Bait;
-  protected readonly AccessDifficulty = AccessDifficulty;
-  protected readonly Seabed = Seabed;
-  protected readonly WarningKind = WarningKind;
+  private readonly reportService = inject(ReportService);
+  private readonly pinService = inject(PinService);
+  protected reportedPins = signal<PinDto[]>([]);
+  protected hasMoreResults = signal(false);
+  private lastTimestamp: string = new Date().toISOString();
+  protected reportMap = signal<PinReportMap>({});
 
-  testPin = MOCK_CATCH_PIN;
-  testPin2 = MOCK_WARN_PIN;
+  ngOnInit() {
+    this.loadMore();
+  }
 
+  loadMore() {
+    const request: GetReportReqDTO = {
+      maxResults: 5,
+      lastCreatedAt: this.lastTimestamp
+    };
+
+    this.reportService.getPinReports(request).subscribe({
+      next: (res) => {
+        this.hasMoreResults.set(res.hasMoreResults);
+        this.lastTimestamp = res.lastCreatedAt!;
+
+        const currentMap: PinReportMap = { ...this.reportMap() };
+
+        res.reports.forEach(report => {
+          const pinId = report.targetId;
+          if (!currentMap[pinId]) {
+            currentMap[pinId] = [];
+          }
+
+          if (!currentMap[pinId].some(r => r.id === report.id)) {
+            currentMap[pinId].push(report);
+          }
+        });
+
+        this.reportMap.set(currentMap);
+
+        const pinIdsToFetch = res.reports.map(r => ({ pinId: r.targetId }));
+        this.fetchPinDetails(pinIdsToFetch);
+      }
+    });
+  }
+
+  private fetchPinDetails(ids: { pinId: number }[]) {
+    const pinRequest: GetPinsReqDto = {
+      ids: ids,
+      dataRequest: {
+        includeAuthor: true,
+        includeDetails: true,
+        includeUgc: true,
+        includeStats: true
+      }
+    };
+
+    this.pinService.getPins(pinRequest).subscribe({
+      next: (res) => {
+        this.reportedPins.update(current => [...current, ...res.pins]);
+      },
+      error: (err) => console.error(err)
+    });
+  }
 
 }
 
-// Exemplo de um PIN DE PESCA (Kind: 0)
-export const MOCK_CATCH_PIN: PinDataResDTO = {
-  id: 101,
-  createdAt: new Date().toISOString(),
-  visibility: 0,
-  kind: 0, // Catch
-  author: {
-    id: 'user-1',
-    userName: 'pedro_pesca_88',
-    firstName: 'Pedro',
-    lastName: 'Silva',
-    avatarUrl: 'https://i.pravatar.cc/150?u=pedro'
-  },
-  post: {
-    id: 501,
-    body: 'Grande captura na Barragem de Montargil!',
-    imageUrl: 'https://images.unsplash.com/photo-1544551763-47a184230184?w=500', // Imagem de pesca
-    score: 25,
-    commentCount: 4,
-    userVote: 1 // Utilizador já deu upvote
-  },
-  details: {
-    species: 1, // Robalo
-    bait: 2,    // Minhoca
-    hookSize: 'Nº 4',
-    accessDificulty: 0, // Note: Spelling do teu DTO (Dificulty com 1 'f')
-    seabed: 0,
-    warningKind: 0
-  },
-  geolocation: {
-    latitude: 39.2483,
-    longitude: -8.1583
-  }
-};
-
-// Exemplo de um PIN DE AVISO (Kind: 2)
-export const MOCK_WARN_PIN: PinDataResDTO = {
-  id: 102,
-  createdAt: '2024-11-10T14:00:00Z',
-  visibility: 0,
-  kind: 2, // Warning
-  author: {
-    id: 'user-2',
-    userName: 'mar_seguro',
-    firstName: 'Ana',
-    lastName: 'Costa',
-    avatarUrl: 'https://i.pravatar.cc/150?u=ana'
-  },
-  post: {
-    body: 'Zona com rochas submersas perigosas na maré vazia.',
-    score: -2,
-    commentCount: 1
-  },
-  details: {
-    species: 0,
-    bait: 0,
-    hookSize: '',
-    accessDificulty: 0,
-    seabed: 0,
-    warningKind: 1 // Perigo/Rocha
-  }
-};

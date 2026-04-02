@@ -3,16 +3,18 @@ import { Component, EventEmitter, inject, input, Output, signal } from '@angular
 import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { PopupController } from '@gofish/shared/core/popup-controller';
-import { GeoLocationDTO, PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
+import { GeoLocationDTO, PinDataResDTO, PinDto } from '@gofish/shared/dtos/pin.dto';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 import { ReturnStatement } from '@angular/compiler';
 import { EnumComponent } from "@gofish/shared/components/enum/enum.component";
 import { Path } from '@gofish/shared/constants';
+import { AvatarService } from '@gofish/shared/services/avatar.service';
+import { VoteKind } from '@gofish/shared/enums/vote-kind.enum';
 
 @Component({
   selector: 'app-pin-detail-panel',
@@ -24,10 +26,12 @@ export class PinDetailPanelComponent {
   private readonly pinService = inject(PinService);
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  readonly avatarService = inject(AvatarService);
+  readonly VoteKind = VoteKind;
   userName = this.authService.getUserName();
   isAdmin = this.authService.isAdmin();
   readonly popupController = new PopupController('cluster-preview');
-  pinData = input<PinDataResDTO | null>(null);
+  pinData = input<PinDto | null>(null);
   public pinKind = PinKind;
   readonly Path = Path;
   @Output() cancel = new EventEmitter<void>();
@@ -39,24 +43,41 @@ export class PinDetailPanelComponent {
   isVoting = signal<boolean>(false);
 
   ngOnInit() {
-    const post = this.pinData()?.post;
+    const post = this.pinData()?.stats;
     if(!post) return;
 
     this.score.set(post.score ?? 1000);
-    this.currentVote.set(post.userVote ?? null);
+    this.currentVote.set(post.currentUserVote ?? null);
   }
 
-  vote(value: 1 | -1) {
+  vote(value: VoteKind.Upvote | VoteKind.Downvote) {
     if (this.isVoting()) return;
 
-    const postId = this.pinData()?.post?.id;
-    if (!postId) return;
+    const pinId = this.pinData()?.id;
+    if (!pinId) return;
 
+    const current = this.currentVote();
     this.isVoting.set(true);
-    this.pinService.vote(postId, value).subscribe({
+
+    if (current === value) {
+      this.pinService.deleteVote(pinId).subscribe({
+        next: (res) => {
+          this.score.set(res.newScore);
+          this.currentVote.set(res.userVote ?? null);
+          this.isVoting.set(false);
+        },
+        error: (err) => {
+          console.log(err);
+          this.isVoting.set(false);
+        }
+      });
+      return;
+    }
+
+    this.pinService.putVote(pinId, { value }).subscribe({
       next: (res) => {
-        this.score.set(res.score);
-        this.currentVote.set(this.currentVote() === value ? null : value);
+        this.score.set(res.newScore);
+        this.currentVote.set(res.userVote ?? null);
         this.isVoting.set(false);
       },
       error: (err) => {
@@ -81,7 +102,6 @@ export class PinDetailPanelComponent {
   onPreviewClick(coords: GeoLocationDTO): void {
     this.coords.emit(coords);
     this.popupController.close();
-    console.log("SIIIIIIIIIIIIIIIIIIIIIII");
   }
 
   openGoogleMaps() {
@@ -90,9 +110,16 @@ export class PinDetailPanelComponent {
   }
 
   goToPost() {
-    this.router.navigate(['/forum/post', this.pinData()?.post?.id]);
+    this.router.navigate(['/forum/post', this.pinData()?.id]);
     this.popupController.close();
   }
+
+  report() {
+    const id = this.pinData()?.id;
+    if (!id) return;
+
+    this.router.navigate(['/map', 'report-pin', id]);
+   }
 }
 
 

@@ -1,3 +1,5 @@
+import { DELETE, R } from "@angular/cdk/keycodes";
+import { PinKind } from "@gofish/shared/models/pin.model";
 import { environment } from "environments/environment";
 
 export const DEFAULT_AVATAR = 'assets/vectors/avatar-template-dark.clr.svg';
@@ -35,11 +37,15 @@ export const PathSegment = {
   FORUM_MY_GROUPS:        'my-groups',
   FORUM_GROUPS:           'groups',
   FORUM_POST:             'post',
+  DELETE_POST:            'delete-post/:id',
+  DELETE_COMMENT:         'delete-comment/:id',
   PROFILE:                'profile',
   STATISTICS:             'statistics',
   STATISTICS_PIN_DENSITY: 'pin-density-by-location',
   STATISTICS_REPORTS:     'reports',
-  CREATE_GROUP:           'create-group'
+  CREATE_GROUP:           'create-group',
+  REPORT_PIN:             'report-pin/:id',
+  REPORT_COMMENT:         'report-comment/:id',
 } as const;
 
 export const Path = {
@@ -68,7 +74,7 @@ export const Path = {
   // /forum/groups/:id?tab=members
   FORUM_GROUPS_test_members: '/forum/groups/group-posts-placeholder/members',
 
-  FORUM_POST:           (id: string) => `/${PathSegment.FORUM}/${PathSegment.FORUM_POST}/${id}`,
+  FORUM_POST:             (id: string) => `/${PathSegment.FORUM}/${PathSegment.FORUM_POST}/${id}`,
 
   PROFILE:                (id: string) => `/profile/${id}`,
   PROFILE_FRIENDS:        (id: string) => `/profile/${id}/friends`,
@@ -100,6 +106,19 @@ export const Api = {
   UserAccount:  buildApi('UserAccount'),
   UserSecurity: buildApi('UserSecurity'),
   Post:         buildApi('Post'),
+  Report:       buildApi('Report'),
+  Stats:        buildApi('Stats'),
+} as const;
+
+export const PIN_CONFIG = [
+  { kind: PinKind.CATCH,       color: '#16A34A', iconUrl: 'assets/images/pins-icons/Kind=Catch.png',       icon: 'pin-catch',       kindString: 'Catch' },
+  { kind: PinKind.INFORMATION, color: '#3B82F6', iconUrl: 'assets/images/pins-icons/Kind=Information.png', icon: 'pin-Information', kindString: 'Information' },
+  { kind: PinKind.WARNING,     color: '#F97316', iconUrl: 'assets/images/pins-icons/Kind=Warning.png',     icon: 'pin-Warning',     kindString: 'Warning'}
+] as const;
+
+export const BodyLengthConstraints = {
+  MIN: 10,
+  MAX: 1000,
 } as const;
 
 export const Rank = [

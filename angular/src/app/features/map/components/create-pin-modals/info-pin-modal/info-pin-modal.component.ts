@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
@@ -14,6 +14,7 @@ import { groupBy, Subscription } from 'rxjs';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 import { GroupsService } from '@gofish/shared/services/groups.service';
 import { GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
+import { BodyLengthConstraints } from '@gofish/shared/constants';
 
 @Component({
   selector: 'app-info-pin-modal',
@@ -28,6 +29,7 @@ export class InfoPinModalComponent implements OnInit {
   private readonly urlService = inject(UrlService);
   private readonly fb = inject(FormBuilder);
   private readonly groupsService = inject(GroupsService);
+  protected readonly BodyLengthConstraints = BodyLengthConstraints;
   values: UrlQuery | null = null;
   busyState: BusyState = new BusyState();
 
@@ -42,7 +44,7 @@ export class InfoPinModalComponent implements OnInit {
   selectedGroupIds = signal<number[]>([]);
 
   form = this.fb.group({
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
+    body: ['', [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
     visibility: [0, [Validators.required]],
     accessDifficulty: [0, [Validators.required]],
     seaBed: [0, [Validators.required]],
@@ -164,7 +166,7 @@ export class InfoPinModalComponent implements OnInit {
       body: this.form.value.body ?? '',
       accessDifficulty: Number(this.form.value.accessDifficulty!),
       seaBedType: Number(this.form.value.seaBed!),
-      /**groupIds: groupIds */
+      groupIds: groupIds
     };
     console.log(dto);
 

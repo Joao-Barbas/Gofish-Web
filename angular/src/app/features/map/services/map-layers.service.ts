@@ -1,20 +1,18 @@
 import { Injectable, WritableSignal } from '@angular/core';
-import { ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
+import { PIN_CONFIG } from '@gofish/shared/constants';
+import { GetInViewportResDto, PinDto, ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
 import { PinKind } from '@gofish/shared/models/pin.model';
 
-export const PIN_CONFIG = [
-  { kind: PinKind.CATCH, color: '#16A34A', iconUrl: 'assets/images/pins-icons/Kind=Catch.png', icon: 'pin-catch' },
-  { kind: PinKind.INFORMATION, color: '#3B82F6', iconUrl: 'assets/images/pins-icons/Kind=Information.png', icon: 'pin-Information' },
-  { kind: PinKind.WARNING, color: '#F97316', iconUrl: 'assets/images/pins-icons/Kind=Warning.png', icon: 'pin-Warning' }
-];
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class MapLayersService {
-  updateLayers(map: mapboxgl.Map, allPins: WritableSignal<ViewportPinDTO[]>): void {
+  protected readonly pinConfigs = PIN_CONFIG;
+  updateLayers(map: mapboxgl.Map, allPins: WritableSignal<PinDto[]>): void {
     this.loadPinIcons(map);
-    PIN_CONFIG.forEach(({ kind, color, icon }) => {
+    this.pinConfigs.forEach(({ kind, color, icon }) => {
       const pinsOfKind = allPins().filter(pin => pin.kind === kind);
       const sourceId = `pins-${kind}`;
 
@@ -22,7 +20,7 @@ export class MapLayersService {
         type: 'FeatureCollection',
         features: pinsOfKind.map(pin => ({
           type: 'Feature',
-          geometry: { type: 'Point', coordinates: [pin.longitude, pin.latitude] },
+          geometry: { type: 'Point', coordinates: [pin.geolocation!.longitude, pin.geolocation!.latitude] },
           properties: { id: pin.id, kind: pin.kind }
         }))
       };
@@ -87,7 +85,7 @@ export class MapLayersService {
   }
 
   public loadPinIcons(map: mapboxgl.Map) {
-    PIN_CONFIG.forEach(({ icon, iconUrl }) => {
+    this.pinConfigs.forEach(({ icon, iconUrl }) => {
       if (map.hasImage(icon)) return;
 
       map.loadImage(iconUrl, (error, image) => {

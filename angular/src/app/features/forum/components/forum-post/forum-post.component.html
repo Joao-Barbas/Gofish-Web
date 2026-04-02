@@ -9,7 +9,7 @@
 
     <div class="d-flex align-items-center gap-2 gf-generic-clickable-wrapper" [routerLink]="Path.PROFILE(post!.author!.id)">
 
-      <img [src]="post.author!.avatarUrl" class="rounded-circle gf-big-avatar">
+      <img [src]="this.avatarService.resolve(post.author!.avatarUrl)" class="rounded-circle gf-big-avatar">
 
       <span class="user-output-no-overflow post-author-name text-bold">{{ post.author?.userName }}</span>
       <span class="post-date dark-text-muted">{{ post.createdAt | timeAgo }}</span>
@@ -20,7 +20,7 @@
 
       <!-- Delete Post Button -->
       @if (post!.author!.userName == this.userName || isAdmin) {
-      <button class="gf-badge">
+      <button class="gf-badge" (click)="deletePost()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2">
           <path d="M10 11v6" />
@@ -32,7 +32,7 @@
       </button>
       }
       <!-- Report Post Button -->
-      <button class="gf-badge">
+      <button class="gf-badge" (click)="report()">
 
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flag-icon lucide-flag gf-badge-icon">
@@ -68,10 +68,10 @@
 
     <div class="post-description">
       <p class="mb-2 description" [class.expanded]="isExpanded">
-        {{ isExpanded ? post.body : (post.body | slice:0:120) + (post.body!.length > 120 ? '...' : '')}}
+        {{ isExpanded ? post.ugc : (post.ugc?.body| slice:0:120) + (post.ugc?.body!.length > 120 ? '...' : '')}}
       </p>
 
-      @if (post.body!.length > 120) {
+      @if (post.ugc?.body!.length > 120) {
       <button type="button" class="see-more" (click)="toggleExpand()">
         {{ isExpanded ? 'See less' : 'See more' }}
       </button>
@@ -79,7 +79,7 @@
     </div>
     @if (post.kind === pinKind.CATCH) {
     <div class="post-image-wrapper">
-      <img [src]="post.imageUrl" class="post-image">
+      <img [src]="post.ugc?.imageUrl" class="post-image">
     </div>
     }
     <!--  Banner (Pin Type ) -->
@@ -128,7 +128,7 @@
             d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
         </svg>
 
-        <span class="post-stats post-fishing-points">{{ post.commentCount }}</span>
+        <span class="post-stats post-fishing-points">{{ post.stats?.commentCount }}</span>
       </button>
 
       <!-- Share button -->

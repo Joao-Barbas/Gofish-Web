@@ -67,8 +67,8 @@ app-cluster-details{
     border: none;
     padding: 0;
     background-color: transparent;
-    height: 36px;
-    width: 36px;
+    height: 45px;
+    width: 45px;
     min-height: 36px;
     min-width: 36px;
     color: var(--gf-dark-text-muted);

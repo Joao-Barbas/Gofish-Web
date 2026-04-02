@@ -1,6 +1,6 @@
 import { GetPostsPostDTO } from "@gofish/shared/dtos/get-post.dto";
 import { GetGroupMemberDTO } from "@gofish/shared/dtos/members.dto";
-import { GeoLocationDTO, PinDetailsDTO } from "@gofish/shared/dtos/pin.dto";
+import { GeoLocationDTO, PinDetailsDTO, PinDto } from "@gofish/shared/dtos/pin.dto";
 import { GroupRole } from "@gofish/shared/enums/group-role.enum";
 import { VisibilityLevel } from "@gofish/shared/enums/visibility-level.enum";
 import { VoteKind } from "@gofish/shared/enums/vote-kind.enum";
@@ -77,7 +77,7 @@ export interface GroupPostPinDTO {
 }
 
 export interface GroupPostDTO {
-    Id: number,
+    id: number,
     body?: string,
     imageUrl?: string,
     createdAt: string,
@@ -86,6 +86,7 @@ export interface GroupPostDTO {
     userVote: VoteKind,
     author: GroupMemberDTO,
     pin: GroupPostPinDTO
+    kind?: PinKind;
 }
 
 // Requests
@@ -129,3 +130,22 @@ export interface SearchGroupsResDTO {
   hasMoreResults: boolean;
   lastGroupName: string | null;
 }
+
+// ================================
+// NOVOS DTOS
+// ================================
+
+export interface GetGroupPinsReqDto {
+  groupId: number;
+  kind?: PinKind;
+  maxResults?: number;
+  lastTimestamp?: string;
+}
+
+export interface GetGroupPinsResDto {
+  pins: PinDto[];
+  hasMoreResults: boolean;
+  lastTimeStamp?: string;
+}
+
+

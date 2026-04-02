@@ -15,7 +15,7 @@
 
     </button>
 
-    <span class="create-group-text">Create group</span>
+    <span class="create-group-text">Create crew</span>
   </div>
 
   <!-- Search Group -->
@@ -39,8 +39,7 @@
 @for(group of groups()?.groups; track group.id) {
 
 <!-- Group Listing -->
-
-<div class="d-flex flex-column group-list-wrapper" [routerLink]="[Path.FORUM_MY_GROUPS, group.id]">
+<div class="d-flex flex-column group-list-wrapper clickable" [routerLink]="[Path.FORUM_MY_GROUPS, group.id]">
 
   <!-- #Comp my-group-listing-card -->
   <div class="gf-card-group-listing d-flex">
@@ -58,22 +57,29 @@
         <div class="d-flex stats-wrapper ms-auto">
 
           <div class="gf-badge-text">
-            <span>{{group.memberCount}} Members</span>
+            <span>{{group.memberCount == 1 ? `${group.memberCount} Tailor` : `${group.memberCount} Tailors`}} </span>
           </div>
 
           <div class="gf-badge-text ms-2">
-            <span>{{group.postCount}} Posts</span>
+            <span>{{group.postCount == 1 ? `${group.postCount} Post` : `${group.postCount} Posts`}}</span>
           </div>
         </div>
       </div>
 
       <!-- Description -->
-      <p class="group-description">{{group.description}}</p>
+      <div class="group-description">
+        <p class="mb-2 description">
+          {{(group.description| slice:0:120) + (group.description!.length > 120 ? '...' : '')}}
+        </p>
+
+        @if (group.description!.length > 120) {
+        <button type="button" class="see-more"> See more </button>
+        }
+      </div>
+
     </div>
 
   </div>
-
-
 </div>
 }
 
@@ -95,6 +101,6 @@
       <path d="M12 8v8" />
     </svg>
 
-    <span class="new-group-create-text">Create a new group</span>
+    <span class="new-group-create-text">Create a new crew</span>
   </div>
 </button>

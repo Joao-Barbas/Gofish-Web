@@ -4,7 +4,7 @@ import { GetGroupMemberDTO } from '@gofish/shared/dtos/members.dto';
 
 @Component({
   selector: 'app-group-members-placeholder',
-  imports: [UserCardComponent],
+  imports: [],
   templateUrl: './group-members-placeholder.component.html',
   styleUrl: './group-members-placeholder.component.css',
 })

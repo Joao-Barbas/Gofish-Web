@@ -1,0 +1,65 @@
+<div class="modal-backdrop-custom d-flex justify-content-center align-items-center">
+  <div class="modal-custom gf-card">
+    <form id="report-comment-modal" [formGroup]="form" (ngSubmit)="onPublish()">
+
+      <div class="modal-header text-white d-flex align-items-center mb-3 justify-content-between">
+        <div>
+          <h5 class="mb-0 text-bold modal-header-title">Report Comment</h5>
+          <p class="mb-0 dark-text-muted modal-header-subtitle">
+            Why are you reporting this comment?
+          </p>
+        </div>
+
+        <button type="button" class="gf-btn-icon" (click)="onCancel()"
+          style="background: none; border: none; color: var(--gf-dark-text-muted); cursor: pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <h5 class="text-slim modal-body-section-title">Reason</h5>
+        <section class="d-flex flex-column mb-3">
+          <select class="form-select form-select-sm custom-dropdown" formControlName="reason">
+            <option [ngValue]="null" disabled>Select a reason...</option>
+            @for (option of reportReasonOptions; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+          @if (form.controls.reason.touched && form.controls.reason.invalid) {
+            <small class="text-danger mt-1">Please select a reason.</small>
+          }
+        </section>
+
+        <h5 class="text-slim modal-body-section-title">Details (Optional)</h5>
+        <section class="d-flex flex-column">
+          <textarea
+            class="modal-body-description dark-bg-dark dark-text"
+            placeholder="Help us understand the issue..."
+            formControlName="description">
+          </textarea>
+          <small class="dark-text-muted text-end">
+            {{ form.value.description?.length ?? 0 }}/200
+          </small>
+        </section>
+
+        @if (errorMessage) {
+          <p class="text-danger mt-3 mb-0 text-center">{{ errorMessage }}</p>
+        }
+      </div>
+
+      <div class="modal-footer mt-4 action-btns">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">
+          Cancel
+        </button>
+        <app-async-button
+          type="submit"
+          form="report-comment-modal"
+          labels="Report"
+          [state]="busyState.isBusy() ? 'busy' : 'idle'" />
+      </div>
+    </form>
+  </div>
+</div>

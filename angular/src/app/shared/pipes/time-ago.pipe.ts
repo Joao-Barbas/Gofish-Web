@@ -9,7 +9,10 @@ export class TimeAgoPipe implements PipeTransform {
     if (!value) return '';
 
     const now = new Date();
-    const date = new Date(value);
+    const date = typeof value === 'string' && !value.endsWith('Z')
+    ? new Date(value + 'Z')
+    : new Date(value);
+
     const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
     if (seconds < 60) {
@@ -33,7 +36,7 @@ export class TimeAgoPipe implements PipeTransform {
 
     const months = Math.floor(days / 30);
     if (months < 12) {
-      return `${months} month${months > 1 ? 'es' : ''}`;
+      return `${months} month${months > 1 ? 's' : ''}`;
     }
 
     const years = Math.floor(months / 12);

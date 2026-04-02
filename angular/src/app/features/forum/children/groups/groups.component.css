@@ -90,7 +90,64 @@
   position: relative;
 }
 
-.active-tab {
+.active {
+  border-bottom: 2px solid #007bff;
+  color: #007bff !important;
+  font-weight: bold;
+}
+
+.create-group-wrapper {
+  gap: var(--gf-10);
+}
+.gf-badge-create-group-btn {
+  & svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+.see-more {
+  font-family: var(--gf-font-main);
+  font-size: var(--gf-16);
+  color: var(--gf-primary);
+
+  color: var(--gf-primary);
+  --underline-width: 100%;
+
+  background: none;
+  border: none;
+
+  text-decoration: underline;
+}
+
+.group-description-box {
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+}
+
+
+.group-description-box.expanded {
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+}
+.listing-tabs.active {
+  border-bottom: 2px solid #007bff;
+  color: #007bff !important;
+  font-weight: bold;
+}
+
+.gf-card-listing-tabs .listing-tabs.active {
   border-bottom: 2px solid #007bff;
   color: #007bff !important;
   font-weight: bold;
