@@ -1018,14 +1018,18 @@ button {
 
 */
 
-@media (max-width: 36rem) {
+@media (max-width: 37rem) {
   .gf-background-map-fixed {
     background-image: none;
     background-color: var(--gf-dark-bg-dark);
   }
 }
 
-@media (max-width: 62rem) {
+@media (max-width: 48rem) {
+  /* Nothing to see here */
+}
+
+@media (max-width: 61rem) {
   /* Nothing to see here */
 }
 
