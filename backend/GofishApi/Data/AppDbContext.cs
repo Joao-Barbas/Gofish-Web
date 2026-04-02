@@ -114,7 +114,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
         builder.Entity<Comment>()
             .HasOne(p => p.Pin)
-            .WithMany(p => p.Comments)
+            .WithMany()
             .HasForeignKey(p => p.PinId)
             .OnDelete(DeleteBehavior.Cascade);
 
@@ -243,6 +243,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
             {
                 Id = $"seed-player-{i}",
                 UserName = $"player{i}",
+                FirstName = $"player-{i}",
+                LastName = $"player-last-name-{i}",
                 NormalizedUserName = $"PLAYER{i}",
                 Email = $"player{i}@gofish.com",
                 NormalizedEmail = $"PLAYER{i}@GOFISH.COM",
