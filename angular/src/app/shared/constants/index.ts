@@ -101,3 +101,11 @@ export const Api = {
   UserSecurity: buildApi('UserSecurity'),
   Post:         buildApi('Post'),
 } as const;
+
+export const Rank = [
+  "Small Fry",
+  "Sailor",
+  "Viking",
+  "Old Hook",
+  "King of the Sea",
+]

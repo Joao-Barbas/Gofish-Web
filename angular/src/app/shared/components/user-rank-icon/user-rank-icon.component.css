@@ -3,6 +3,7 @@
 :host {
   height: 32px;
   width: 32px;
+  content: ""; /* Needed for title to work for some reason */
 }
 
 :host(.rank-1) {
