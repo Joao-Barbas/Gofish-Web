@@ -8,7 +8,6 @@ import { Path, PathSegment } from '@gofish/shared/constants';
 import { PopupController } from '@gofish/shared/core/popup-controller';
 import { ClickOutsideDirective } from '@gofish/shared/directives/click-outside.directive';
 import { AuthService } from '@gofish/shared/services/auth.service';
-import { AvatarService } from '@gofish/shared/services/avatar.service';
 
 @Component({
   selector: 'gf-nav-popover',
@@ -25,7 +24,6 @@ import { AvatarService } from '@gofish/shared/services/avatar.service';
   },
   imports: [
     CommonModule,
-    ClickOutsideDirective,
     RouterLinkActive,
     RouterLink
   ],

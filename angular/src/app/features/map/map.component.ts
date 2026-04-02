@@ -10,14 +10,12 @@ import { PinService } from '@gofish/features/map/services/pin.service';
 import { PreviewMarkerService } from '@gofish/features/map/services/preview-marker.service';
 import { MarkerRegistryService } from '@gofish/features/map/services/marker-registry.service';
 import { PinDetailPanelComponent } from './components/pin-detail-panel/pin-detail-panel.component';
-import { OverlayHeaderComponent } from '@gofish/features/header/overlay-header/overlay-header.component';
 import { ViewportPinsResDTO, ViewportPinDTO, PinDataResDTO, GeoLocationDTO } from '@gofish/shared/dtos/pin.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { ChoosePinPopupComponent } from '@gofish/features/map/components/choose-pin-popup/choose-pin-popup.component';
 import { GeolocationService } from '@gofish/shared/services/geolocation.service';
-import { PinKind } from '@gofish/shared/models/pin.model';
 import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
 import { PopupKey } from '@gofish/shared/models/popup.model';
 import { NgxSonnerToaster } from 'ngx-sonner';
@@ -26,7 +24,6 @@ import { RouterOutlet } from '@angular/router';
 import { MapLayersService } from '@gofish/features/map/services/map-layers.service';
 import { MapInteractionsService } from '@gofish/features/map/services/map-interactions.service';
 import { ClusterDetailsComponent } from '@gofish/features/map/components/cluster-details/cluster-details.component';
-import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5yNmNrM2RqdSJ9.R1MbbXiR-ZmnVF3eFp3HyQ';
@@ -38,7 +35,6 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21rcGdvN2tnMGVqeTNmcW5
     CommonModule,
     FormsModule,
     PinDetailPanelComponent,
-    OverlayHeaderComponent,
     ChoosePinPopupComponent,
     RouterOutlet,
     NgxSonnerToaster,

@@ -1,14 +1,11 @@
 // map.component.ts
-import { AfterViewInit, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { UserSatisfactionIndexComponent } from '@gofish/shared/components/user-satisfaction-index/user-satisfaction-index.component';
-
-
-import { UsersChartComponent } from '@gofish/shared/components/users-chart/users-chart.component';
 import { GetUserProfileResDTO } from '@gofish/shared/dtos/user-profile.dto';
 
 @Component({
   selector: 'app-test-delete-after',
-  imports: [UsersChartComponent, UserSatisfactionIndexComponent],
+  imports: [UserSatisfactionIndexComponent],
   templateUrl: './test-delete-after.component.html',
   styleUrl: './test-delete-after.component.css',
 })
@@ -16,8 +13,6 @@ export class TestDELETEAFTERComponent {
   mockUsers = MOCK_USERS;
 
 }
-
-
 
 export const MOCK_USERS: Partial<GetUserProfileResDTO>[] = [
   // Semana 1 Mar (3/3 a 9/3) — 5 utilizadores (12.5%)

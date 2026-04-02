@@ -1,9 +1,7 @@
 // profile-shell.component.ts
 
 import { Component, computed, effect, inject, input, resource } from "@angular/core";
-import { FlatHeaderComponent } from "@gofish/features/header/flat-header/flat-header.component";
-import { FooterComponent } from "@gofish/features/footer/footer.component";
-import { ActivatedRoute, RouterOutlet } from "@angular/router";
+import { RouterOutlet } from "@angular/router";
 import { AuthService } from "@gofish/shared/services/auth.service";
 import { ProfileContext } from "@gofish/features/user/profile/services/profile-context.service";
 import { catchError, firstValueFrom, map, of } from "rxjs";
@@ -13,9 +11,7 @@ import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 @Component({
   selector: 'app-profile',
   imports: [
-    FlatHeaderComponent,
     RouterOutlet,
-    FooterComponent,
   ],
   providers: [
     ProfileContext
