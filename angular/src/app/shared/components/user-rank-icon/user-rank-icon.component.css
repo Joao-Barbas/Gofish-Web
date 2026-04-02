@@ -1,0 +1,42 @@
+/* user-rank-icon.component.css */
+
+:host {
+  height: 32px;
+  width: 32px;
+  content: ""; /* Needed for title to work for some reason */
+}
+
+:host(.rank-1) {
+  background-image: url('/assets/vectors/rank-1.clr.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+:host(.rank-2) {
+  background-image: url('/assets/vectors/rank-2.clr.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+:host(.rank-3) {
+  background-image: url('/assets/vectors/rank-3.clr.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+:host(.rank-4) {
+  background-image: url('/assets/vectors/rank-4.clr.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+:host(.rank-5) {
+  background-image: url('/assets/vectors/rank-5.clr.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}

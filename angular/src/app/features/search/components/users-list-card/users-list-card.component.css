@@ -33,8 +33,13 @@ img {
   object-fit: cover;
 }
 
-p {
-  font-size: var(--gf-text-sm);
+gf-user-title {
+  display: block;
+  cursor: hand;
+
+  --user-title-display: block;
+  --user-title-font-size: var(--gf-text-sm);
+  --user-title-cursor: hand;
 }
 
 small {

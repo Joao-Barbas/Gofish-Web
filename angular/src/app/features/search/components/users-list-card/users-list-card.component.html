@@ -4,9 +4,7 @@
   <a [routerLink]="['/profile', user().id]">
     <img [src]="avatar.resolve(user().avatarUrl)" alt="Avatar">
     <div>
-      @if (user().firstName !== '' || user().lastName !== ''){
-        <p>{{ user().firstName + ' ' + user().lastName }}</p>
-      }
+      <gf-user-title [text]="`${user().firstName} ${user().lastName}`" [effect]="user().rank > 4 ? 'rainbow' : 'none'"></gf-user-title>
       <small>@{{ user().userName }}</small>
     </div>
   </a>

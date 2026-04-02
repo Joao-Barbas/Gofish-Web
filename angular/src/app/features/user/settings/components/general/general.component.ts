@@ -83,9 +83,10 @@ export class GeneralComponent {
     this.saveSuccess = false;
     this.busyState.setBusy(true);
     this.userProfileApi.patchUserProfile({
-      bio: this.savedBio
+      bio: this.currentBio
     }).subscribe({
       next: () => {
+        this.busyState.setBusy(false);
         this.saveSuccess = true;
         setTimeout(() => {
           this.saveSuccess = false;
@@ -93,10 +94,8 @@ export class GeneralComponent {
         }, 2000);
       },
       error: () => {
-        this.toast.error('Something went saving biography');
-      },
-      complete: () => {
         this.busyState.setBusy(false);
+        this.toast.error('Something went saving biography');
       }
     });
   }

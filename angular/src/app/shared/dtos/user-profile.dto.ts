@@ -12,6 +12,7 @@ export interface GetUserProfileResDTO {
   lastName?: string;
   userName?: string;
   catchPoints: number;
+  rank: number;
   bio?: string;
   avatarUrl?: string;
   joinedAt: string;

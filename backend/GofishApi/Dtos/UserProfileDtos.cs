@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using GofishApi.Enums;
 using GofishApi.Models;
+using GofishApi.Services;
 
 namespace GofishApi.Dtos;
 
@@ -15,6 +16,7 @@ public record GetUserProfileResDto(
     string LastName,
     string UserName,
     int CatchPoints,
+    int Rank,
     string? Bio,
     string? AvatarUrl,
     DateTime JoinedAt,
@@ -33,6 +35,7 @@ public record GetUserProfileResDto(
         e.AppUser.LastName ?? "",
         e.AppUser.UserName ?? "",
         e.CatchPoints,
+        GamificationService.GetRank(e.CatchPoints),
         e.Bio,
         e.AvatarUrl,
         e.JoinedAt,
