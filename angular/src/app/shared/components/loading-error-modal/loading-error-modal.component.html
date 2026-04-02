@@ -1,0 +1,24 @@
+<!-- loading-error-modal.component.html -->
+
+<div class="gf-modal-backdrop" (click)="$event.stopPropagation()">
+  <div class="gf-flow-vertical gf-modal-shell gf-gap-16" (click)="$event.stopPropagation()">
+    <div class="gf-flow-horizontal gf-justify-between gf-items-center">
+      <h5>{{ 'Unable to navigate high seas :(' }}</h5>
+      <button class="gf-modal-close-button" (click)="onNegative()" title="Return home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"/>
+          <path d="m6 6 12 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="error-box">
+      <p>An error occured while loading this page. It is recommended not to access this page again after several tries.</p><br>
+      <p>Please contact <a class="email">gofish@gmail.com</a> with the link to this page and the following error message bellow</p><br>
+      <p>{{ error().message }}</p>
+      @if ( error().cause ) {
+        <p>{{ error().cause | json }}</p>
+      }
+    </div>
+    <button class="try-again-btn" (click)="onPositive()">Try Again</button>
+  </div>
+</div>

@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { FlatHeaderComponent } from '@gofish/features/header/flat-header/flat-header.component';
-import { FooterComponent } from '@gofish/features/footer/footer.component';
+
 
 @Component({
   selector: 'app-terms-of-service',
-  imports: [FlatHeaderComponent, FooterComponent],
+  imports: [],
   templateUrl: './terms-of-service.component.html',
   styleUrl: './terms-of-service.component.css',
 })

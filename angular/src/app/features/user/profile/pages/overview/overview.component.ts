@@ -11,7 +11,7 @@ import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button-2/async-button-2.component";
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { FriendshipDTO } from '@gofish/shared/dtos/user.dto';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { toast } from 'ngx-sonner';
 import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
 import { SmallFriendshipCarouselCardComponent } from "./components/small-friendship-carousel-card/small-friendship-carousel-card.component";
@@ -19,6 +19,10 @@ import { CommonModule } from '@angular/common';
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { ProfileActionsPopoverComponent } from "./components/profile-actions-popover/profile-actions-popover.component";
 import { SmallGroupCarouselCardComponent } from "./components/small-group-carousel-card/small-group-carousel-card.component";
+import { LoadingErrorModalComponent } from "@gofish/shared/components/loading-error-modal/loading-error-modal.component";
+import { Path } from '@gofish/shared/constants';
+import { UserRankIconComponent } from "@gofish/shared/components/user-rank-icon/user-rank-icon.component";
+import { UserTitleComponent } from "@gofish/shared/components/user-title/user-title.component";
 
 @Component({
   selector: 'app-overview',
@@ -29,7 +33,10 @@ import { SmallGroupCarouselCardComponent } from "./components/small-group-carous
     SmallFriendshipCarouselCardComponent,
     CommonModule,
     ProfileActionsPopoverComponent,
-    SmallGroupCarouselCardComponent
+    SmallGroupCarouselCardComponent,
+    LoadingErrorModalComponent,
+    UserRankIconComponent,
+    UserTitleComponent
 ],
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.css',
@@ -41,8 +48,10 @@ export class OverviewComponent {
   readonly authService    = inject(AuthService);
   readonly avatarService  = inject(AvatarService);
   readonly popupService   = inject(PopupService);
+  readonly router         = inject(Router)
 
   readonly busyState = new BusyState();
+  readonly Path = Path;
 
   readonly hasProfileActions = computed(() =>
     // Add more conditions here with || as new actions are introduced
@@ -63,6 +72,18 @@ export class OverviewComponent {
     params: () => this.profileContext.profileId(),
     loader: ({ params: id }) => firstValueFrom(this.userApi.getUserGroups({ userId: id, maxResults: 8 }))
   })
+
+  resources = computed(() => {
+    const profile = this.userProfile;
+    const friends = this.userFriends;
+    const groups  = this.userGroups;
+    return {
+      isLoading: profile.isLoading() || friends.isLoading() || groups.isLoading(),
+      error: profile.error() || friends.error() || groups.error(),
+      hasValue: profile.hasValue() && friends.hasValue() && groups.hasValue(),
+      value: { profile: profile.value(), friends: friends.value(), groups: groups.value() }
+    };
+  });
 
   bioTextRef         = viewChild<ElementRef>('bioText');
   bioToggleRef       = viewChild<ElementRef>('bioToggle');
@@ -109,6 +130,13 @@ export class OverviewComponent {
     event.stopPropagation();
   }
 
-  // End events
+  onErrorModalPositive() {
+    window.location.reload();
+  }
 
+  onErrorModalNegative() {
+    this.router.navigate([Path.HOME]);
+  }
+
+  // End events
 }

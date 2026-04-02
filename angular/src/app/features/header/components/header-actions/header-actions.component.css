@@ -37,7 +37,7 @@
   }
 }
 
-@media (max-width: 36rem) {
+@media (max-width: 48rem) {
   .nav-menu-toggle {
     display: inline-flex;
   }

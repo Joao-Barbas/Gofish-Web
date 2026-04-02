@@ -25,16 +25,19 @@ public class UserController : ControllerBase
     private readonly ILogger<UserController> _logger;
     private readonly UserManager<AppUser> _userManager;
     private readonly AppDbContext _db;
+    private readonly IGamificationService _gamification;
 
     public UserController(
         ILogger<UserController> logger,
         UserManager<AppUser> userManager,
-        AppDbContext db
+        AppDbContext db,
+        IGamificationService gamification
     )
     {
         _logger = logger;
         _userManager = userManager;
         _db = db;
+        _gamification = gamification;
     }
 
     #region User
@@ -157,17 +160,37 @@ public class UserController : ControllerBase
             query = query.Where(u => u.NormalizedUserName!.CompareTo(dto.LastUsername.ToUpper()) > 0);
         }
 
-        var results = await query
-            .Include(u => u.UserProfile)
+        var users = await query
             .OrderBy(u => u.NormalizedUserName)
             .Take(maxResults + 1)
+            .Select(u => new
+            {
+                u.Id,
+                u.UserName,
+                u.FirstName,
+                u.LastName,
+                u.UserProfile.AvatarUrl,
+                u.UserProfile.CatchPoints,
+                u.NormalizedUserName
+            })
             .ToListAsync();
 
-        var hasMore = results.Count > maxResults;
-        var page = results.Take(maxResults).ToList();
-        var data = page.Select(SearchUserDto.FromEntity);
-        var lastUsername = hasMore ? page[^1].NormalizedUserName : null;
+        var hasMore = users.Count > maxResults;
+        var page = users.Take(maxResults).ToList();
 
+        var data = page.Select(u => new SearchUserDto
+        {
+            Id = u.Id,
+            UserName = u.UserName ?? "",
+            FirstName = u.FirstName ?? "",
+            LastName = u.LastName ?? "",
+            AvatarUrl = u.AvatarUrl,
+            CatchPoints = u.CatchPoints,
+            Rank = GamificationService.GetRank(u.CatchPoints),
+        })
+        .ToList();
+
+        var lastUsername = hasMore ? users[^1].NormalizedUserName : null;
         return Ok(new SearchUsersResDto(data, hasMore, lastUsername));
     }
 

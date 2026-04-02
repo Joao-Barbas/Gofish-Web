@@ -120,3 +120,11 @@ export const BodyLengthConstraints = {
   MIN: 10,
   MAX: 1000,
 } as const;
+
+export const Rank = [
+  "Small Fry",
+  "Sailor",
+  "Viking",
+  "Old Hook",
+  "King of the Sea",
+]

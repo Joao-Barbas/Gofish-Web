@@ -51,7 +51,7 @@
     <div class="report-panel-body">
 
       <div class="pin-report-left">
-        <div class="help-box"></div>
+        <gf-user-help-box [headerText]="this.header" [bodyText]="this.body"></gf-user-help-box>
 
         <div class="reported-pin-post">
 
@@ -130,7 +130,7 @@
     </div>
 
     <div class="report-panel-bottom">
-      <div class="warning-box"></div>
+      <gf-user-help-box type="alert" [headerText]="this.alertText"></gf-user-help-box>
 
       <div class="report-action-buttons-wrapper">
 

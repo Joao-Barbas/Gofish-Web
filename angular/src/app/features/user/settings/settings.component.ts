@@ -4,7 +4,6 @@ import { filter } from 'rxjs';
 import { Component, WritableSignal, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { FlatHeaderComponent } from "@gofish/features/header/flat-header/flat-header.component";
 import { Path } from '@gofish/shared/constants';
 
 type NavPath = {
@@ -14,7 +13,7 @@ type NavPath = {
 
 @Component({
   selector: 'app-settings',
-  imports: [ RouterLink, RouterLinkActive, RouterOutlet, FlatHeaderComponent ],
+  imports: [ RouterLink, RouterLinkActive, RouterOutlet ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css',
 })

@@ -13,7 +13,7 @@
   --gf-font-main: "Inter", sans-serif;
   --gf-font-heading: "Montserrat", sans-serif;
 
-  --gf-font-ugc: "Merriweather Sans";
+  --gf-font-ugc: "Merriweather Sans", sans-serif;
   --gf-font-date: "Poppins", sans-serif;
 
   --gf-text-3xs: 0.5rem; /* 8px */
@@ -54,7 +54,14 @@
   --gf-dark-bg-info-pin: oklch(0.3755 0.0561 240.12);
   --gf-dark-bg-warning-pin: oklch(0.4072 0.0586 75.58);
   --gf-success-bg: oklch(0.6109 0.1615 143.75);
+  --gf-success-bg-readable: oklch(0.7166 0.1615 143.75);
+  --gf-success-mild-bg: oklch(0.6231 0.1232 165.5);
+  --gf-success-ocean-bg: oklch(0.7582 0.1365 171.09);
   --gf-danger-bg: oklch(0.4945 0.1217 25.68);
+  --gf-info-bg: oklch(0.6119 0.1748 262.34);
+  --gf-info-bg-muted: oklch(0.6119 0.1748 262.34 / 30%);
+  --gf-warning-bg: oklch(0.8285 0.1442 90.09 / 60%);
+  --gf-warning-bg-muted: oklch(0.8285 0.1442 90.09 / 30%);
 
   --gf-light-bg-dark: oklch(0.8263 0.0239 277.88);
   --gf-light-bg: oklch(0.9192 0.0055 274.96);
@@ -73,14 +80,42 @@
   --gf-primary: oklch(0.5998 0.1786 257.69);
   --gf-primary-disabled: oklch(0.5604 0.1526 257.4);
   --gf-primary-muted: oklch(0.7933 0.0299 254.71);
+  --gf-primary-muted-2: oklch(0.6182 0.0301 254.21); /* user satisfaction index */
   --gf-accent: oklch(0.7511 0.1465 70.53);
+  --gf-accent-mild: oklch(0.6365 0.1465 70.53);
   --gf-danger: oklch(0.6486 0.1879 28.63);
   --gf-warning: oklch(0.8832 0.1636 103.92);
   --gf-success: oklch(0.8255 0.2433 142.97);
+  --gf-success-mild: oklch(0.6306 0.1365 171.08);
   --gf-info: oklch(0.6119 0.1748 262.34);
   --gf-catch-pin: oklch(0.7704 0.2598 142.53);
   --gf-info-pin: oklch(0.6751 0.1627 246.45);
   --gf-warning-pin: oklch(0.7664 0.1585 68.01);
+  --gf-btn-disabled: oklch(0.2147 0.0058 285.9);
+
+
+
+  /* ^^^ Ja tiveste a javardar as cores todas meu 02/04/2026 */
+  /* Usa estas se nao tiveres contente com alguma diz - Barbas */
+  --gf-accent:           oklch(0.7511 0.1465 70.53);
+  --gf-accent-disabled:  oklch(0.6908 0.1278 71.85);
+  --gf-accent-muted:     oklch(0.8196 0.0298 77.51);
+  --gf-danger:           oklch(0.6486 0.1879 28.63);
+  --gf-danger-bg:        oklch(0.6486 0.1879 28.63 / 60%);
+  --gf-danger-bg-muted:  oklch(0.6486 0.1879 28.63 / 30%);
+  --gf-warning:          oklch(0.8285 0.1442 90.09);
+  --gf-warning-bg:       oklch(0.8285 0.1442 90.09 / 60%);
+  --gf-warning-bg-muted: oklch(0.8285 0.1442 90.09 / 30%);
+  --gf-success:          oklch(0.7432 0.2007 147.22);
+  --gf-success-bg:       oklch(0.7432 0.2007 147.22 / 60%);
+  --gf-success-bg-muted: oklch(0.7432 0.2007 147.22 / 30%);
+  --gf-info:             oklch(0.6119 0.1748 262.34);
+  --gf-info-bg:          oklch(0.6119 0.1748 262.34 / 60%);
+  --gf-info-bg-muted:    oklch(0.6119 0.1748 262.34 / 30%);
+  --gf-primary:          oklch(0.5923 0.183 258.03);
+  --gf-primary-disabled: oklch(0.5923 0.183 258.03 / 60%);
+  --gf-primary-muted:    oklch(0.5923 0.183 258.03 / 30%);
+
 
 
   /* Shadows */
@@ -109,7 +144,9 @@
    * Values start at 1000+ to stay above bootstrap's z-index scale
    * See: https://getbootstrap.com/docs/5.0/layout/z-index/
    */
-  --gf-z-flat-header: 1; /* Neded because of about us background trick */
+  --gf-z-user-title-bg: -1;
+  --gf-z-user-title-fg: 1;
+  --gf-z-flat-header: 10; /* Needed because of about us background trick */
   --gf-z-overlay: 990;
   --gf-z-dropdown: 1000;
   --gf-z-sticky: 1020;
@@ -469,6 +506,19 @@ h6 {
   }
 }
 
+button {
+  background: none;
+  color: var(--gf-dark-text);
+  width: fit-content;
+  height: fit-content;
+  border: none;
+}
+
+/* Used in user-satisfaction-index */
+.not-allowed {
+  cursor: not-allowed;
+}
+
 /* Navigation Links */
 
 .gf-text-selection,
@@ -538,7 +588,11 @@ h6 {
   cursor: pointer;
   color: var(--gf-dark-text-muted);
   width: 36px;
+  max-width: 36px;
+  min-width: 36px;
   height: 36px;
+  max-height: 36px;
+  min-height: 36px;
   transition: box-shadow .2s ease, color .2s ease;
 
   &:hover {
@@ -970,14 +1024,18 @@ h6 {
 
 */
 
-@media (max-width: 36rem) {
+@media (max-width: 37rem) {
   .gf-background-map-fixed {
     background-image: none;
     background-color: var(--gf-dark-bg-dark);
   }
 }
 
-@media (max-width: 62rem) {
+@media (max-width: 48rem) {
+  /* Nothing to see here */
+}
+
+@media (max-width: 61rem) {
   /* Nothing to see here */
 }
 
