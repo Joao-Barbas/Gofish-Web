@@ -155,6 +155,11 @@ public record GetUserGroupReqDto(
 #endregion
 #region Responses
 
+public record GetUserPointsResDto
+{
+    public required int Points { get; init; }
+}
+
 public record SearchUsersResDto(
     IEnumerable<SearchUserDto> Users,
     bool HasMoreResults,

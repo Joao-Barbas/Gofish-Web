@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using System.Diagnostics.Metrics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -89,6 +90,9 @@ public class UserController : ControllerBase
 
         using var transaction = await _db.Database.BeginTransactionAsync();
 
+        var gamificationResult = await _gamification.TryDecrementPoints(userId, 100);
+        if (!gamificationResult.Succeeded) throw new GamificationException(gamificationResult);
+
         user.UserName = dto.UserName;
         user.PhoneNumber = dto.PhoneNumber;
         user.FirstName = dto.FirstName;
@@ -117,7 +121,13 @@ public class UserController : ControllerBase
 
         using var transaction = await _db.Database.BeginTransactionAsync();
 
-        if (dto.UserName is not null) user.UserName = dto.UserName;
+        if (dto.UserName is not null)
+        {
+            var gamificationResult = await _gamification.TryDecrementPoints(userId, 100);
+            if (!gamificationResult.Succeeded) throw new GamificationException(gamificationResult);
+            user.UserName = dto.UserName;
+        }
+
         if (dto.PhoneNumber is not null) user.PhoneNumber = dto.PhoneNumber;
         if (dto.FirstName is not null) user.FirstName = dto.FirstName;
         if (dto.LastName is not null) user.LastName = dto.LastName;
