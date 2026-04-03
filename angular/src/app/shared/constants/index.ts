@@ -111,9 +111,9 @@ export const Api = {
 } as const;
 
 export const PIN_CONFIG = [
-  { kind: PinKind.CATCH,       color: '#16A34A', iconUrl: 'assets/images/pins-icons/Kind=Catch.png',       icon: 'pin-catch',       kindString: 'Catch' },
-  { kind: PinKind.INFORMATION, color: '#3B82F6', iconUrl: 'assets/images/pins-icons/Kind=Information.png', icon: 'pin-Information', kindString: 'Information' },
-  { kind: PinKind.WARNING,     color: '#F97316', iconUrl: 'assets/images/pins-icons/Kind=Warning.png',     icon: 'pin-Warning',     kindString: 'Warning'}
+  { kind: PinKind.CATCH,       color: 'var(--gf-catch-pin)', iconUrl: 'assets/images/pins-icons/Kind=Catch.png',       icon: 'pin-catch',       kindString: 'Catch' },
+  { kind: PinKind.INFORMATION, color: 'var(--gf-info-pin)', iconUrl: 'assets/images/pins-icons/Kind=Information.png', icon: 'pin-Information', kindString: 'Information' },
+  { kind: PinKind.WARNING,     color: 'var(--gf-warning-pin)', iconUrl: 'assets/images/pins-icons/Kind=Warning.png',     icon: 'pin-Warning',     kindString: 'Warning'}
 ] as const;
 
 export const BodyLengthConstraints = {
