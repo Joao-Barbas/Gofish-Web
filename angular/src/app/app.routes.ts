@@ -17,6 +17,14 @@ export const routes: Routes = [
     }
   },
   {
+    path: 'leaderboard',
+    loadComponent: () => import('@gofish/features/leaderboard/leaderboard.component').then(m => m.LeaderboardComponent),
+    data: {
+      header: 'flat' as HeaderVariant,
+      footer: 'small' as FooterVariant
+    }
+  },
+  {
     path: 'search',
     data: {
       header: 'flat' as HeaderVariant,

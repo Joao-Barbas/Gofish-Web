@@ -7,13 +7,24 @@ namespace GofishApi.Dtos;
 
 #region View Models
 
+public record LeaderboardUserDto
+{
+    public required int Position { get; init; }
+    public required string UserId { get; init; }
+    public required string UserName { get; init; }
+    public required string FirstName { get; init; }
+    public required string LastName { get; init; }
+    public required int CatchPoints { get; init; }
+    public required int Rank { get; init; }
+    public string? AvatarUrl { get; init; }
+}
+
 public record SearchUserDto
 {
     public required string Id { get; init; }
     public required string UserName { get; init; }
     public required string FirstName { get; init; }
     public required string LastName { get; init; }
-
     public int? CatchPoints { get; init; }
     public int? Rank { get; init; }
     public string? AvatarUrl { get; init; }
@@ -202,6 +213,11 @@ public record GetUserSettingsResDto(
         u.PhoneNumberConfirmed
     );
 }
+
+public record LeaderboardResDto(
+    IReadOnlyCollection<LeaderboardUserDto> Entries,
+    LeaderboardUserDto? CurrentUser
+);
 
 public record PutUserResDto(
 // Unused

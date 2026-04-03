@@ -3,6 +3,22 @@
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 import { GroupRole } from "@gofish/shared/enums/group-role.enum";
 
+export interface LeaderboardUserDTO {
+  position: number;
+  userId: string;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  catchPoints: number;
+  rank: number;
+  avatarUrl?: string;
+}
+
+export interface LeaderboardResDTO {
+  entries: LeaderboardUserDTO[];
+  currentUser?: LeaderboardUserDTO;
+}
+
 export interface SearchUserDTO {
   id: string;
   userName: string;
