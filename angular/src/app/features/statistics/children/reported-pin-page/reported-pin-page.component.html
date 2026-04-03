@@ -1,162 +1,123 @@
-<div class="container stats-section-wrapper">
+@if (pinData(); as pin) {
+  <div class="container stats-section-wrapper">
 
-  <!-- #region Quick View -->
-  <div class="d-flex align-items-center quick-header-wrapper">
-
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round"
-      class="lucide lucide-message-circle-warning-icon lucide-message-circle-warning">
-      <path
-        d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
-      <path d="M12 8v4" />
-      <path d="M12 16h.01" />
-    </svg>
-
-    <span class="text-bold">Reports / {{ pinData()[0].id }}</span>
-  </div>
-  <!-- #endregion -->
-
-  <div class="gf-card-plain pin-report-panel">
-
-    <div class="report-panel-top">
-
-      <div class="pin-author-date-wrapper gf-generic-clickable-wrapper">
-
-      </div>
-
-      <div class="top-button-wrapper">
-        <button class="pin-report-panel-top-button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-square-arrow-out-up-right-icon lucide-square-arrow-out-up-right">
-            <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" />
-            <path d="m21 3-9 9" />
-            <path d="M15 3h6v6" />
-          </svg>
-        </button>
-
-        <button class="pin-report-panel-top-button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x">
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
-          </svg>
-        </button>
-      </div>
-
-
-
+    <div class="d-flex align-items-center quick-header-wrapper">
+      <span class="text-bold">Reports / {{ pin.id }}</span>
     </div>
 
-    <div class="report-panel-body">
+    <div class="gf-card-plain pin-report-panel">
 
-      <div class="pin-report-left">
-        <gf-user-help-box [headerText]="this.header" [bodyText]="this.body"></gf-user-help-box>
+      <div class="report-panel-body">
 
-        <div class="reported-pin-post">
+        <div class="pin-report-left">
+          <gf-user-help-box
+            [headerText]="header"
+            [bodyText]="body">
+          </gf-user-help-box>
 
-         <app-forum-post [postData]="pinData()[0]"></app-forum-post>
+          <div class="reported-pin-post">
+            <app-forum-post [postData]="pin"></app-forum-post>
+          </div>
         </div>
 
+        <div class="pin-report-right">
+          <div class="pin-report-right-inside">
 
-      </div>
+            <div class="reports-listing-header">
+              <span class="text-bold">Reports ({{ reports().length }})</span>
+            </div>
 
-      <div class="pin-report-right">
-        <div class="pin-report-right-inside">
+            <div class="reports-listing">
 
+              @if (reports().length > 0) {
+                @for (report of reports(); track report.id) {
+                  <div class="report-wrapper">
 
-          <!-- Header -->
-          <div class="reports-listing-header">
-            <span class="text-bold">Reports</span>
-          </div>
+                    <div class="report-header profile-pin-previews">
+                      <div class="pin-author-date-wrapper gf-generic-clickable-wrapper">
+                        <img
+                          src="assets/images/placeholder_profile_pic.png"
+                          class="rounded-circle gf-small-avatar"
+                          alt="User avatar"
+                        >
 
-          <div class="reports-listing">
+                        <span class="gf-ugc-username pin-report-username">
+                          {{ report. }}
+                        </span>
 
-            <!-- * Singular Report -->
-            <div class="report-wrapper">
+                        <span>•</span>
 
-              <!-- * Report Header -->
-              <div class="report-header profile-pin-previews">
+                        <span class="reported-pin-date dark-text-muted">
+                          {{ report.createdAt | timeAgo }}
+                        </span>
+                      </div>
 
-                <div class="pin-author-date-wrapper gf-generic-clickable-wrapper">
+                      <input
+                        type="checkbox"
+                        class="report-checkbox"
+                        [checked]="isReportSelected(report.id)"
+                        (change)="toggleReportSelection(report.id)"
+                      >
+                    </div>
 
-                  <img src="assets/images/placeholder_profile_pic.png" class="rounded-circle gf-small-avatar">
+                    <div class="report-body">
+                      <div class="gf-tag-report">
+                        <span>{{ report.reasonText || 'No reason provided' }}</span>
+                      </div>
 
-                  <span class="gf-ugc-username pin-report-username">Lorem Ipsum
-                    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaDolor</span>
-                  <span>•</span>
-                  <span class="reported-pin-date dark-text-muted">9 hours</span>
+                      <span class="gf-ugc-text report-body-text">
+                        {{ report.description || 'No description provided.' }}
+                      </span>
+                    </div>
 
+                  </div>
+                }
+              } @else {
+                <div class="report-wrapper">
+                  <div class="report-body">
+                    <span class="gf-ugc-text report-body-text">
+                      No reports found for this pin.
+                    </span>
+                  </div>
                 </div>
-
-                <input type="checkbox" class="report-checkbox" name="" value="">
-
-              </div>
-
-              <!-- * Report Body -->
-              <div class="report-body">
-
-                <!-- * Report Tag -->
-                <div class="gf-tag-report">
-
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-flag-icon lucide-flag">
-                    <path
-                      d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />
-                  </svg>
-
-                  <span>Report Type</span>
-
-                </div>
-
-                <span class="gf-ugc-text report-body-text">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ipsum sem, fringilla sed ex a, pulvinar
-                  pretium leo. Nulla leo dolor, dignissim id vehicula nec, euismod in mi. Aenean tortor tellus, congue
-                  sodales augue vitae, vehicula cursus odio. Duis placerat quis mauris vel dictum. Quisque sodales sem
-                  pellentesque mattis luctus.
-                </span>
-
-              </div>
+              }
 
             </div>
 
-
           </div>
+        </div>
+      </div>
+
+      <div class="report-panel-bottom">
+        <gf-user-help-box
+          type="alert"
+          [headerText]="alertText">
+        </gf-user-help-box>
+
+        <div class="report-action-buttons-wrapper">
+
+          <button
+            class="gf-tag-report-actions success"
+            type="button"
+            [disabled]="!hasSelectedReports()"
+            (click)="acceptSelectedReports()">
+            <span>Accept Reports and Delete Pin</span>
+          </button>
+
+          <button
+            class="gf-tag-report-actions reject"
+            type="button"
+            [disabled]="!hasSelectedReports()"
+            (click)="rejectSelectedReports()">
+            <span>Reject Selected Reports and Keep Pin</span>
+          </button>
 
         </div>
 
       </div>
-    </div>
-
-    <div class="report-panel-bottom">
-      <gf-user-help-box type="alert" [headerText]="this.alertText"></gf-user-help-box>
-
-      <div class="report-action-buttons-wrapper">
-
-        <button class="gf-tag-report-actions success">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-icon lucide-circle-check">
-            <circle cx="12" cy="12" r="10" />
-            <path d="m9 12 2 2 4-4" />
-          </svg>
-          <span>Accept Reports and Delete Pin</span>
-        </button>
-
-        <button class="gf-tag-report-actions reject">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-circle-x-icon lucide-circle-x">
-            <circle cx="12" cy="12" r="10" />
-            <path d="m15 9-6 6" />
-            <path d="m9 9 6 6" />
-          </svg>
-          <span>Reject All Reports and Keep Pin</span>
-        </button>
-
-      </div>
 
     </div>
-
   </div>
-
+} @else {
+  <gf-loading-spinner></gf-loading-spinner>
+}

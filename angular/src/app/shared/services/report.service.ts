@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Api } from '@gofish/shared/constants';
-import { CreateCommentReportReqDTO, CreateCommentReportResDTO, CreatePinReportReqDTO, CreatePinReportResDTO, GetReportReqDTO, GetReportResDTO, GetReportsResDTO } from '@gofish/shared/dtos/report.dto';
+import { CreateCommentReportReqDTO, CreateCommentReportResDTO, CreatePinReportReqDTO, CreatePinReportResDTO, GetPinReportsByPinReqDTO, GetReportReqDTO, GetReportResDTO, GetReportsResDTO } from '@gofish/shared/dtos/report.dto';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -14,7 +14,6 @@ export class ReportService {
   createPinReport(dto: CreatePinReportReqDTO): Observable<CreatePinReportResDTO> {
     return this.http.post<CreatePinReportResDTO>(Api.Report.action('CreatePinReport'), dto);
   }
-
 
   createCommentReport(dto: CreateCommentReportReqDTO): Observable<CreateCommentReportResDTO> {
     return this.http.post<CreateCommentReportResDTO>(Api.Report.action('CreateCommentReport'), dto);
@@ -38,6 +37,15 @@ export class ReportService {
       params = params.set('lastCreatedAt', dto.lastCreatedAt);
     }
     return this.http.get<GetReportsResDTO>(Api.Report.action('GetCommentReports'), { params });
+  }
+
+  getPinReportsByPin(dto: GetPinReportsByPinReqDTO): Observable<GetReportsResDTO> {
+    let params = new HttpParams().set('pinId', dto.pinId.toString())
+      .set('maxResults', dto.maxResults.toString());
+    if (dto.lastCreatedAt) {
+      params = params.set('lastCreatedAt', dto.lastCreatedAt);
+    }
+    return this.http.get<GetReportsResDTO>(Api.Report.action('GetPinReportsByPin'), { params });
   }
 
   getCommentReportById(id: number): Observable<GetReportResDTO> {

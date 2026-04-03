@@ -41,3 +41,9 @@ export interface GetReportsResDTO {
   hasMoreResults: boolean;
   lastCreatedAt?: string;
 }
+
+export interface GetPinReportsByPinReqDTO {
+  pinId: number;
+  maxResults: number;
+  lastCreatedAt?: string;
+}
