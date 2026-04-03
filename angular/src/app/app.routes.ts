@@ -226,11 +226,12 @@ export const routes: Routes = [
     loadComponent: () => import('@gofish/features/statistics/statistics.component').then(f => f.StatisticsComponent),
     data: {
       header: 'flat' as HeaderVariant,
-      footer: 'big' as FooterVariant
+      footer: 'small' as FooterVariant
     },
     children: [ // unfinished
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', loadComponent: () => import('@gofish/features/statistics/children/stats-home/stats-home.component').then(d => d.StatsHomeComponent) },
+      { path: 'average-published-pins', loadComponent: () => import('@gofish/features/statistics/children/stats-average-published-pins/stats-average-published-pins.component').then(s => s.StatsAveragePublishedPinsComponent) },
       { path: 'reports', loadComponent: () => import('@gofish/features/statistics/children/stats-reports/stats-reports.component').then(d => d.StatsReportsComponent) },
       { path: 'reports/pin/:id', loadComponent: () => import('@gofish/features/statistics/children/reported-pin-page/reported-pin-page.component').then(d => d.ReportedPinPageComponent) },
 

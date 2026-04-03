@@ -1,0 +1,26 @@
+:host {
+  display: flex;
+  width: 100%;
+}
+
+.stats-section-wrapper {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.quick-header-wrapper {
+  max-width: 45%;
+  gap: 10px;
+  padding-left: 5px;
+
+  & span {
+    font-family: var(--gf-font-date);
+    font-size: 24px;
+  }
+  & svg {
+    width: 24px;
+    height: 24px;
+  }
+}
