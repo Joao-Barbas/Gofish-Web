@@ -10,6 +10,7 @@ export interface LeaderboardUserDTO {
   firstName: string;
   lastName: string;
   catchPoints: number;
+  catchPointsDelta: number;
   rank: number;
   avatarUrl?: string;
 }
