@@ -41,7 +41,7 @@ export const PathSegment = {
   DELETE_COMMENT:         'delete-comment/:id',
   PROFILE:                'profile',
   STATISTICS:             'statistics',
-  STATISTICS_PIN_DENSITY: 'pin-density-by-location',
+  STATISTICS_AVG_PUBLISHED: 'average-published-pins',
   STATISTICS_REPORTS:     'reports',
   CREATE_GROUP:           'create-group',
   REPORT_PIN:             'report-pin/:id',
@@ -84,7 +84,7 @@ export const Path = {
 
   STATISTICS:             `/${PathSegment.STATISTICS}`,
   STATISTICS_REPORTS:     `/${PathSegment.STATISTICS}/${PathSegment.STATISTICS_REPORTS}`,
-  STATISTICS_PIN_DENSITY: `/${PathSegment.STATISTICS}/${PathSegment.STATISTICS_PIN_DENSITY}`,
+  STATISTICS_AVG_PUBLISHED: `/${PathSegment.STATISTICS}/${PathSegment.STATISTICS_AVG_PUBLISHED}`,
 } as const;
 
 /* Backend endpoints */

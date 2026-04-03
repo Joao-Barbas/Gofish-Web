@@ -5,17 +5,46 @@ import { GfCardQuickViewComponent } from "../../components/gf-card-quick-view/gf
 import { UsersChartComponent } from "@gofish/shared/components/users-chart/users-chart.component";
 import { GetUserProfileResDTO } from '@gofish/shared/dtos/user-profile.dto';
 import { GfCardQuickAccessComponent } from '@gofish/features/statistics/components/gf-card-quick-access/gf-card-quick-access.component';
+import { PinsAvgPublishedChart } from "@gofish/shared/components/pins-avg-published-chart/pins-avg-published-chart.component";
+
+export interface PinMonthStats {
+  monthName: string;
+  year: number;
+  catchCount: number;
+  infoCount: number;
+  warningCount: number;
+}
+
 
 @Component({
   selector: 'app-home',
-  imports: [/*RouterLink, */ GfCardQuickViewComponent, GfCardQuickAccessComponent, UsersChartComponent],
+  imports: [/*RouterLink, */ GfCardQuickViewComponent, GfCardQuickAccessComponent, UsersChartComponent, PinsAvgPublishedChart],
   templateUrl: './stats-home.component.html',
   styleUrl: './stats-home.component.css',
 })
 export class StatsHomeComponent {
   private readonly router = inject(Router);
 
-    mockUsers = MOCK_USERS;
+  // pins-average-published-chart
+  public marchStats: PinMonthStats = {
+    monthName: 'March',
+    year: 2025,
+    catchCount: 45,
+    infoCount: 20,
+    warningCount: 5
+  };
+
+  // Dados Mock para o mês de Maio
+  public aprilStats: PinMonthStats = {
+    monthName: 'April',
+    year: 2025,
+    catchCount: 55,
+    infoCount: 15,
+    warningCount: 12
+  };
+
+  // users-chart
+  mockUsers = MOCK_USERS;
 
 }
 

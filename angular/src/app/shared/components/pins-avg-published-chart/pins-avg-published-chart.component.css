@@ -1,0 +1,74 @@
+:host {
+  display: flex;
+}
+
+.chart-main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+}
+
+
+/* March 2025 or April 2025*/
+.month-label {
+  color: var(--gf-dark-text-muted);
+  font-family: var(--gf-font-date);
+  margin-bottom: 0px;
+}
+
+.canvas-holder {
+  width: 200px;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+}
+
+canvas {
+  width:150px;
+  padding: 18px;
+
+}
+
+
+/* --- Estilos da Legenda --- */
+.custom-legend {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;              /* Espaço entre linhas */
+  width: 100%;
+
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* Cores das bolinhas usando as tuas variáveis */
+.dot.catch { background-color: var(--gf-catch-pin); }
+.dot.info { background-color: var(--gf-info-pin); }
+.dot.warning { background-color: var(--gf-warning-pin); }
+
+.label-text {
+  color: #ffffff;
+  font-size: 14px;
+  font-family: var(--gf-font-date);
+  min-width: 100px; /* Ajuda a alinhar os números à direita */
+}
+
+.value-text {
+  color: var(--gf-dark-text-muted);
+  font-size: 14px;
+  font-weight: bold;
+  text-align: right;
+}

@@ -1,26 +1,49 @@
 <div class="container stats-section-wrapper">
 
   <!-- #region Quick View -->
-  <div class="d-flex align-items-center quick-header-wrapper">
+  <div class="quick-header-wrapper">
 
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye">
-      <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
+    <div class="icon-quick-view-wrapper">
 
-    <span class="text-bold">Quick View</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye">
+        <path
+          d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+
+      <span class="text-bold">Quick View</span>
+    </div>
+
+    <div class="switch-chart-btn-wrapper">
+
+      <button>Mês</button>
+      <button>Semana</button>
+    </div>
+
+
   </div>
   <!-- #endregion -->
+
+  <div class="quick-view-grid">
+    <div class="pin-chart-grid-item gf-card pin-chart-wrapper">
+      <gf-pins-average-published-chart [pinStats]="marchStats"></gf-pins-average-published-chart>
+    </div>
+
+    <div class="pin-chart-grid-item gf-card">
+      <gf-pins-average-published-chart [pinStats]="aprilStats"></gf-pins-average-published-chart>
+    </div>
+
+    <div class="chart-grid-item ">
+      <!-- Shows weeks from last two months -->
+      <gf-users-chart class="gf-card " [users]="mockUsers"></gf-users-chart>
+    </div>
+
+  </div>
 
 
   <!-- #region Quick View GRID -->
   <div class="quick-view-grid">
-
-    <div class="chart-grid-item ">
-      <!-- Shows weeks from last two months -->
-      <gf-users-chart class="gf-card" [users]="mockUsers"></gf-users-chart>
-    </div>
 
     <!-- Quick View Item - 1 -->
     <app-gf-card-quick-view type="system-requests" bigText="99%"
@@ -74,4 +97,3 @@
     <app-gf-card-quick-access type="reports" title="Reports" [extraTexts]="['Reports awaiting review: 6']" />
 
   </div>
-
