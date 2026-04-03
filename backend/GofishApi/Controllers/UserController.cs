@@ -236,7 +236,8 @@ public class UserController : ControllerBase
             up.AppUser.LastName,
             up.AvatarUrl,
             up.CatchPoints,
-            up.CatchPointsLastMonth
+            up.CatchPointsLastMonth,
+            up.WeeklyStreak
         })
         .ToListAsync();
 
@@ -250,6 +251,7 @@ public class UserController : ControllerBase
             AvatarUrl        = u.AvatarUrl,
             CatchPoints      = u.CatchPoints,
             CatchPointsDelta = u.CatchPoints - u.CatchPointsLastMonth,
+            WeeklyStreak     = u.WeeklyStreak,
             Rank             = GamificationService.GetRank(u.CatchPoints),
         })
         .ToList();
@@ -265,12 +267,13 @@ public class UserController : ControllerBase
             .Where(up => up.UserId == userId)
             .Select(up => new
             {
-                up.CatchPoints,
-                up.AvatarUrl,
                 up.AppUser.UserName,
                 up.AppUser.FirstName,
                 up.AppUser.LastName,
-                up.CatchPointsLastMonth
+                up.AvatarUrl,
+                up.CatchPoints,
+                up.CatchPointsLastMonth,
+                up.WeeklyStreak
             })
             .FirstOrDefaultAsync();
 
@@ -290,6 +293,7 @@ public class UserController : ControllerBase
                 AvatarUrl        = userProfile.AvatarUrl,
                 CatchPoints      = userProfile.CatchPoints,
                 CatchPointsDelta = userProfile.CatchPoints - userProfile.CatchPointsLastMonth,
+                WeeklyStreak     = userProfile.WeeklyStreak,
                 Rank             = GamificationService.GetRank(userProfile.CatchPoints),
             };
         }
@@ -320,7 +324,8 @@ public class UserController : ControllerBase
             up.AppUser.LastName,
             up.AvatarUrl,
             up.CatchPoints,
-            up.CatchPointsLastMonth
+            up.CatchPointsLastMonth,
+            up.WeeklyStreak
         })
         .ToListAsync();
 
@@ -334,6 +339,7 @@ public class UserController : ControllerBase
             AvatarUrl        = u.AvatarUrl,
             CatchPoints      = u.CatchPoints,
             CatchPointsDelta = u.CatchPoints - u.CatchPointsLastMonth,
+            WeeklyStreak     = u.WeeklyStreak,
             Rank             = GamificationService.GetRank(u.CatchPoints)
         })
         .ToList();

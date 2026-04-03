@@ -16,6 +16,7 @@ public record LeaderboardUserDto
     public required string LastName { get; init; }
     public required int CatchPoints { get; init; }
     public required int CatchPointsDelta { get; init; }
+    public required int WeeklyStreak { get; init; }
     public required int Rank { get; init; }
     public string? AvatarUrl { get; init; }
 }
