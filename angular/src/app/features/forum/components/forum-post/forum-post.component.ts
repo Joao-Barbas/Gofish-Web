@@ -11,10 +11,11 @@ import { SlicePipe } from '@angular/common';
 import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { PinDto } from '@gofish/shared/dtos/pin.dto';
 import { VoteKind } from '@gofish/shared/enums/vote-kind.enum';
+import { UserTitleComponent } from "@gofish/shared/components/user-title/user-title.component";
 
 @Component({
   selector: 'app-forum-post',
-  imports: [TimeAgoPipe, EnumComponent, RouterLink, SlicePipe],
+  imports: [TimeAgoPipe, EnumComponent, RouterLink, SlicePipe, UserTitleComponent],
   templateUrl: './forum-post.component.html',
   styleUrl: './forum-post.component.css',
 })

@@ -15,6 +15,9 @@ span {
   text-align: var(--user-title-text-align, left);
   cursor: var(--user-title-cursor, default);
   z-index: var(--gf-z-user-title-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 span.effect-none::before {

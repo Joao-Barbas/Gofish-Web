@@ -11,7 +11,9 @@
 
       <img [src]="this.avatarService.resolve(post.author!.avatarUrl)" class="rounded-circle gf-big-avatar">
 
-      <span class="user-output-no-overflow post-author-name text-bold">{{ post.author?.userName }}</span>
+      <gf-user-title class="post-author-name text-bold" [text]="post.author!.userName" [rank]="post.author!.rank"></gf-user-title>
+
+      <!-- <span >{{ post.author?.userName }}</span> -->
       <span class="post-date dark-text-muted">{{ post.createdAt | timeAgo }}</span>
 
     </div>

@@ -33,9 +33,7 @@
   @if (pins.hasValue()) {
     <div class="list">
       @for (p of pinsList(); track p.id) {
-        <app-gf-card-pin-preview
-          [pinData]="p" [isReportedPin]="true" [reportNumber]="5" [reportIndex]="1"
-        ></app-gf-card-pin-preview>
+        <app-gf-card-pin-preview [pinData]="p"></app-gf-card-pin-preview>
       } @empty {
         @if (!pins.isLoading() && !loadingState.isLoading()) {
           <p>{{ 'No friends yet. :(' }}</p>

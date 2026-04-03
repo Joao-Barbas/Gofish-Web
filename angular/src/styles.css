@@ -372,7 +372,7 @@ h6 {
 
 .gf-ugc-username {
   /* Define max-width according to your needs */
-  max-width: 200px;
+  /*max-width: 200px;*/
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -4,7 +4,7 @@ import { Component, computed, effect, inject, input, resource, signal } from '@a
 import { ProfileContext } from '@gofish/features/user/profile/services/profile-context.service';
 import { PinApi } from '@gofish/shared/api/pin.api';
 import { UserApi } from '@gofish/shared/api/user.api';
-import { GetPinsResDTO, PinDataResDTO } from '@gofish/shared/dtos/pin.dto';
+import { GetPinsResDto, GetPinsResDTO, PinDataResDTO, PinDto } from '@gofish/shared/dtos/pin.dto';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { firstValueFrom } from 'rxjs';
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
@@ -45,7 +45,7 @@ export class PinsComponent {
 
   pinsCursor  = signal<string | undefined>(undefined);
   pinsHasMore = signal(true);
-  pinsList    = signal<PinDataResDTO[]>([]);
+  pinsList    = signal<PinDto[]>([]);
 
   user = resource({
     params: () => this.profileContext.profileId(),
@@ -58,7 +58,7 @@ export class PinsComponent {
       ids: [{ authorId: id }],
       dataRequest: {
         includeAuthor: true,
-        includePost: true,
+        includeStats: true,
         includeDetails: true,
       },
       maxResults: 20,
@@ -90,13 +90,13 @@ export class PinsComponent {
       ids: [{ authorId: profileId }],
       dataRequest: {
         includeAuthor: true,
-        includePost: true,
+        includeStats: true,
         includeDetails: true,
       },
       maxResults: 20,
       lastTimestamp: this.pinsCursor()
     }).subscribe({
-      next: (res: GetPinsResDTO) => {
+      next: (res: GetPinsResDto) => {
         this.pinsList.update(list => [...list, ...res.pins]);
         this.pinsHasMore.set(res.hasMoreResults);
         this.pinsCursor.set(res.lastTimestamp);

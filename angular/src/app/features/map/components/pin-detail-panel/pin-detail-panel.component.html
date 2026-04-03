@@ -11,7 +11,10 @@
           <img [src]="this.avatarService.resolve(pin.author?.avatarUrl)"
             class="rounded-circle post-author-profile-photo">
 
-          <span class="post-author-name">{{ pin.author?.userName ?? 'User' }}</span>
+          <!-- <span class="post-author-name">{{ pin.author?.userName ?? 'User' }}</span> -->
+
+          <gf-user-title [text]="pin.author!.userName" [rank]="pin.author!.rank"></gf-user-title>
+
           <span class="separator">•</span>
           <span class="post-date dark-text-muted">{{ pin.createdAt | timeAgo }}</span>
         </div>

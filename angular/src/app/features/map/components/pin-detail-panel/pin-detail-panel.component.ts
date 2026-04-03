@@ -15,10 +15,11 @@ import { EnumComponent } from "@gofish/shared/components/enum/enum.component";
 import { Path } from '@gofish/shared/constants';
 import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { VoteKind } from '@gofish/shared/enums/vote-kind.enum';
+import { UserTitleComponent } from "@gofish/shared/components/user-title/user-title.component";
 
 @Component({
   selector: 'app-pin-detail-panel',
-  imports: [CommonModule, TimeAgoPipe, EnumComponent, RouterLink],
+  imports: [CommonModule, TimeAgoPipe, EnumComponent, RouterLink, UserTitleComponent],
   templateUrl: './pin-detail-panel.component.html',
   styleUrls: ['./pin-detail-panel.component.css']
 })

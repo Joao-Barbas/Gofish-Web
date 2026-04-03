@@ -7,10 +7,11 @@ import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { PinService } from '@gofish/shared/services/pin.service';
 import { Router } from '@angular/router';
+import { UserTitleComponent } from "@gofish/shared/components/user-title/user-title.component";
 
 @Component({
   selector: 'app-post-comments',
-  imports: [TimeAgoPipe, LoadingSpinnerComponent],
+  imports: [TimeAgoPipe, LoadingSpinnerComponent, UserTitleComponent],
   templateUrl: './post-comments.component.html',
   styleUrl: './post-comments.component.css',
 })
