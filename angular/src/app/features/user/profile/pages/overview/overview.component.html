@@ -23,7 +23,7 @@
           <div>
             @if (profile.firstName !== '' && profile.lastName !== '') {
               <div class="profile-user-title">
-                <gf-user-title [text]="`${profile.firstName} ${profile.lastName}`" [effect]="profile.rank > 4 ? 'rainbow' : 'none'"></gf-user-title>
+                <gf-user-title [text]="`${profile.firstName} ${profile.lastName}`" [rank]="profile.rank"></gf-user-title>
                 <gf-user-rank-icon [rank]="profile.rank"></gf-user-rank-icon>
               </div>
             }
