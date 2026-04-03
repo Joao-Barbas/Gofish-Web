@@ -71,7 +71,7 @@
 
 .gf-card-listing-tabs {
   box-shadow: none;
-  border-radius: var(--gf-16) var(--gf-16) 0 0;
+  border-radius: var(--gf-16) var(--gf-16);
   padding: 0;
 }
 
@@ -80,6 +80,8 @@
   font-size: var(--gf-14);
   flex:1;
   padding: 8px;
+  text-decoration: none;
+  color: var(--gf-dark-text);
 }
 
 .group-forum-feed {
@@ -91,9 +93,8 @@
 }
 
 .active {
-  border-bottom: 2px solid #007bff;
-  color: #007bff !important;
-  font-weight: bold;
+  color: var(--gf-primary) !important;
+  text-decoration: none;
 }
 
 .create-group-wrapper {
@@ -142,13 +143,9 @@
   -webkit-line-clamp: unset;
 }
 .listing-tabs.active {
-  border-bottom: 2px solid #007bff;
   color: #007bff !important;
-  font-weight: bold;
 }
 
 .gf-card-listing-tabs .listing-tabs.active {
-  border-bottom: 2px solid #007bff;
-  color: #007bff !important;
-  font-weight: bold;
+  color: var(--gf-primary) !important;
 }
