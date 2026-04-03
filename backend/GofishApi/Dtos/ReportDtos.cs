@@ -1,4 +1,5 @@
 ﻿using GofishApi.Enums;
+using GofishApi.Models;
 
 namespace GofishApi.Dtos;
 
@@ -49,4 +50,9 @@ public record GetPinReportsByPinReqDTO(
     int PinId,
     int MaxResults = 20,
     DateTime? LastCreatedAt = null
+);
+
+public record DeleteReportsReqDTO
+(
+    IEnumerable<int> Ids
 );
