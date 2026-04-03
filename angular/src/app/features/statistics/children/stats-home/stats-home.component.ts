@@ -1,10 +1,13 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, /*RouterLink */ } from "@angular/router";
 import { GfCardQuickViewComponent } from "../../components/gf-card-quick-view/gf-card-quick-view.component";
 
 import { UsersChartComponent } from "@gofish/shared/components/users-chart/users-chart.component";
 import { GetUserProfileResDTO } from '@gofish/shared/dtos/user-profile.dto';
 import { GfCardQuickAccessComponent } from '@gofish/features/statistics/components/gf-card-quick-access/gf-card-quick-access.component';
+import { StatsService } from '@gofish/shared/services/stats.service';
+import { sign } from 'chart.js/helpers';
+import { GetReportsWaitingReviewResDTO } from '@gofish/shared/dtos/stats.dto';
 
 @Component({
   selector: 'app-home',
@@ -14,9 +17,17 @@ import { GfCardQuickAccessComponent } from '@gofish/features/statistics/componen
 })
 export class StatsHomeComponent {
   private readonly router = inject(Router);
-
+  private readonly statsService = inject(StatsService);
+  protected reportsWaitingReview = signal<GetReportsWaitingReviewResDTO | null>(null);
     mockUsers = MOCK_USERS;
 
+  ngOnInit() {
+    this.statsService.getReportsWaitingReview().subscribe({
+      next: (res) => {
+        this.reportsWaitingReview.set(res);
+      }
+    });
+  }
 }
 
 export const MOCK_USERS: Partial<GetUserProfileResDTO>[] = [
