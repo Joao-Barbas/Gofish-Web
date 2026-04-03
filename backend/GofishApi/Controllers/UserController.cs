@@ -229,27 +229,28 @@ public class UserController : ControllerBase
         var top100 = await _db.UserProfiles
         .OrderByDescending(up => up.CatchPoints)
         .Take(100)
-        .Select(up => new
-        {
+        .Select(up => new {
             up.UserId,
             up.AppUser.UserName,
             up.AppUser.FirstName,
             up.AppUser.LastName,
             up.AvatarUrl,
-            up.CatchPoints
+            up.CatchPoints,
+            up.CatchPointsLastMonth
         })
         .ToListAsync();
 
         var entries = top100.Select((u, i) => new LeaderboardUserDto
         { 
-            Position    = i + 1,
-            UserId      = u.UserId,
-            UserName    = u.UserName ?? "",
-            FirstName   = u.FirstName ?? "",
-            LastName    = u.LastName ?? "",
-            AvatarUrl   = u.AvatarUrl,
-            CatchPoints = u.CatchPoints,
-            Rank        = GamificationService.GetRank(u.CatchPoints),
+            Position         = i + 1,
+            UserId           = u.UserId,
+            UserName         = u.UserName ?? "",
+            FirstName        = u.FirstName ?? "",
+            LastName         = u.LastName ?? "",
+            AvatarUrl        = u.AvatarUrl,
+            CatchPoints      = u.CatchPoints,
+            CatchPointsDelta = u.CatchPoints - u.CatchPointsLastMonth,
+            Rank             = GamificationService.GetRank(u.CatchPoints),
         })
         .ToList();
 
@@ -262,7 +263,15 @@ public class UserController : ControllerBase
 
             var userProfile = await _db.UserProfiles
             .Where(up => up.UserId == userId)
-            .Select(up => new { up.CatchPoints, up.AvatarUrl, up.AppUser.UserName, up.AppUser.FirstName, up.AppUser.LastName })
+            .Select(up => new
+            {
+                up.CatchPoints,
+                up.AvatarUrl,
+                up.AppUser.UserName,
+                up.AppUser.FirstName,
+                up.AppUser.LastName,
+                up.CatchPointsLastMonth
+            })
             .FirstOrDefaultAsync();
 
             if (userProfile is null)
@@ -273,14 +282,15 @@ public class UserController : ControllerBase
             var position = await _db.UserProfiles.CountAsync(up => up.CatchPoints > userProfile.CatchPoints) + 1;
             currentUser = new LeaderboardUserDto
             {
-                Position = position,
-                UserId = userId,
-                UserName = userProfile.UserName ?? "",
-                FirstName = userProfile.FirstName ?? "",
-                LastName = userProfile.LastName ?? "",
-                AvatarUrl = userProfile.AvatarUrl,
-                CatchPoints = userProfile.CatchPoints,
-                Rank = GamificationService.GetRank(userProfile.CatchPoints),
+                Position         = position,
+                UserId           = userId,
+                UserName         = userProfile.UserName ?? "",
+                FirstName        = userProfile.FirstName ?? "",
+                LastName         = userProfile.LastName ?? "",
+                AvatarUrl        = userProfile.AvatarUrl,
+                CatchPoints      = userProfile.CatchPoints,
+                CatchPointsDelta = userProfile.CatchPoints - userProfile.CatchPointsLastMonth,
+                Rank             = GamificationService.GetRank(userProfile.CatchPoints),
             };
         }
 
@@ -309,20 +319,22 @@ public class UserController : ControllerBase
             up.AppUser.FirstName,
             up.AppUser.LastName,
             up.AvatarUrl,
-            up.CatchPoints
+            up.CatchPoints,
+            up.CatchPointsLastMonth
         })
         .ToListAsync();
 
         var entries = top25.Select((u, i) => new LeaderboardUserDto
         {
-            Position = i + 1,
-            UserId = u.UserId,
-            UserName = u.UserName ?? "",
-            FirstName = u.FirstName ?? "",
-            LastName = u.LastName ?? "",
-            AvatarUrl = u.AvatarUrl,
-            CatchPoints = u.CatchPoints,
-            Rank = GamificationService.GetRank(u.CatchPoints)
+            Position         = i + 1,
+            UserId           = u.UserId,
+            UserName         = u.UserName ?? "",
+            FirstName        = u.FirstName ?? "",
+            LastName         = u.LastName ?? "",
+            AvatarUrl        = u.AvatarUrl,
+            CatchPoints      = u.CatchPoints,
+            CatchPointsDelta = u.CatchPoints - u.CatchPointsLastMonth,
+            Rank             = GamificationService.GetRank(u.CatchPoints)
         })
         .ToList();
 
