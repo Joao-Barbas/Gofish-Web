@@ -1,5 +1,5 @@
-import { AsyncPipe, CommonModule, NgLocaleLocalization, NumberSymbol, SlicePipe } from '@angular/common';
-import { Component, computed, EventEmitter, inject, input, Output, resource, signal } from '@angular/core';
+import { AsyncPipe, CommonModule, NgLocaleLocalization, NumberSymbol } from '@angular/common';
+import { Component, EventEmitter, inject, input, Output, signal } from '@angular/core';
 import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { PopupController } from '@gofish/shared/core/popup-controller';
@@ -16,23 +16,9 @@ import { Path } from '@gofish/shared/constants';
 import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { VoteKind } from '@gofish/shared/enums/vote-kind.enum';
 
-// Novos imports
-import { UserProfileApi } from '@gofish/shared/api/user-profile.api';
-import { firstValueFrom } from 'rxjs';
-import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
-import { UserTitleComponent } from "@gofish/shared/components/user-title/user-title.component";
-
 @Component({
   selector: 'app-pin-detail-panel',
-  imports: [
-    CommonModule,
-    TimeAgoPipe,
-    EnumComponent,
-    RouterLink,
-    SlicePipe,
-    LoadingSpinnerComponent,
-    UserTitleComponent
-  ],
+  imports: [CommonModule, TimeAgoPipe, EnumComponent, RouterLink],
   templateUrl: './pin-detail-panel.component.html',
   styleUrls: ['./pin-detail-panel.component.css']
 })
@@ -41,8 +27,6 @@ export class PinDetailPanelComponent {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   readonly avatarService = inject(AvatarService);
-  readonly userProfileApi = inject(UserProfileApi); // API para o Rank
-
   readonly VoteKind = VoteKind;
   userName = this.authService.getUserName();
   isAdmin = this.authService.isAdmin();
@@ -52,26 +36,6 @@ export class PinDetailPanelComponent {
   readonly Path = Path;
   @Output() cancel = new EventEmitter<void>();
   @Output() coords = new EventEmitter<GeoLocationDTO>();
-
-  // Resource para carregar o autor e obter o rank
-  authorResource = resource({
-    params: () => this.pinData()?.author?.id,
-    loader: ({ params: id }) => {
-      if (!id) return Promise.reject('No author ID');
-      return firstValueFrom(this.userProfileApi.getUserProfile(id));
-    }
-  });
-
-  // Computed para facilitar o uso no HTML (Loading / Error / Value)
-  resources = computed(() => {
-    const res = this.authorResource;
-    return {
-      isLoading: res.isLoading(),
-      error: res.error(),
-      hasValue: res.hasValue(),
-      profile: res.value()
-    };
-  });
 
   // Vote
   currentVote = signal<number | null>(null);

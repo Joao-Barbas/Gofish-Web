@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, resource, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { GetPostsPostDTO, GetPostsReqDTO, GetPostsResDTO } from '@gofish/shared/dtos/get-post.dto';
 import { TimeAgoPipe } from "../../../../shared/pipes/time-ago.pipe";
@@ -12,14 +12,9 @@ import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { PinDto } from '@gofish/shared/dtos/pin.dto';
 import { VoteKind } from '@gofish/shared/enums/vote-kind.enum';
 
-import { UserProfileApi } from '@gofish/shared/api/user-profile.api';
-import { firstValueFrom } from 'rxjs';
-import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
-import { UserTitleComponent } from "@gofish/shared/components/user-title/user-title.component";
-
 @Component({
   selector: 'app-forum-post',
-  imports: [TimeAgoPipe, EnumComponent, RouterLink, SlicePipe, LoadingSpinnerComponent, UserTitleComponent],
+  imports: [TimeAgoPipe, EnumComponent, RouterLink, SlicePipe],
   templateUrl: './forum-post.component.html',
   styleUrl: './forum-post.component.css',
 })
@@ -37,26 +32,6 @@ export class ForumPostComponent {
   score = signal<number | null>(null);
   isVoting = signal<boolean>(false);
   isExpanded = false;
-
-  readonly userProfileApi = inject(UserProfileApi);
-
-  authorResource = resource({
-    params: () => this.postData()?.author?.id,
-    loader: ({ params: id }) => {
-      if (!id) return Promise.reject('No author ID');
-      return firstValueFrom(this.userProfileApi.getUserProfile(id));
-    }
-  });
-
-  resources = computed(() => {
-    const res = this.authorResource;
-    return {
-      isLoading: res.isLoading(),
-      error: res.error(),
-      hasValue: res.hasValue(),
-      profile: res.value()
-    };
-  });
 
   ngOnInit() {
     const post = this.postData();
