@@ -7,7 +7,7 @@ import { GetUserProfileResDTO } from '@gofish/shared/dtos/user-profile.dto';
 import { GfCardQuickAccessComponent } from '@gofish/features/statistics/components/gf-card-quick-access/gf-card-quick-access.component';
 import { StatsService } from '@gofish/shared/services/stats.service';
 import { sign } from 'chart.js/helpers';
-import { GetReportsWaitingReviewResDTO } from '@gofish/shared/dtos/stats.dto';
+import { GetActiveUsersResDTO, GetPinsCreatedTodayResDTO, GetPinsWith15PositiveVotesResDTO, GetReportsWaitingReviewResDTO } from '@gofish/shared/dtos/stats.dto';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +19,10 @@ export class StatsHomeComponent {
   private readonly router = inject(Router);
   private readonly statsService = inject(StatsService);
   protected reportsWaitingReview = signal<GetReportsWaitingReviewResDTO | null>(null);
+  protected activeUsers = signal<GetActiveUsersResDTO | null>(null);
+  protected pinsCreatedToday = signal<GetPinsCreatedTodayResDTO | null>(null);
+  protected pinsWith15PositiveVotes = signal<GetPinsWith15PositiveVotesResDTO | null>(null);
+  protected weeklyApiSuccessRate = signal<number | null>(null);
     mockUsers = MOCK_USERS;
 
   ngOnInit() {
@@ -27,6 +31,31 @@ export class StatsHomeComponent {
         this.reportsWaitingReview.set(res);
       }
     });
+
+    this.statsService.getActiveUsers().subscribe({
+      next: (res) => {
+        this.activeUsers.set(res);
+      }
+    });
+
+    this.statsService.getPinsCreatedToday().subscribe({
+      next: (res) => {
+        this.pinsCreatedToday.set(res);
+      }
+    });
+
+    this.statsService.getPinsWith15PositiveVotes().subscribe({
+      next: (res) => {
+        this.pinsWith15PositiveVotes.set(res);
+      }
+    });
+
+    this.statsService.getWeeklyApiSuccessRate().subscribe({
+      next: (res) => {
+        this.weeklyApiSuccessRate.set(res.successRateOfRequests);
+      }
+    });
+
   }
 }
 

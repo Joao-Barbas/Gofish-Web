@@ -23,22 +23,22 @@
     </div>
 
     <!-- Quick View Item - 1 -->
-    <app-gf-card-quick-view type="system-requests" bigText="99%"
-      littleText="of system requests were successful"></app-gf-card-quick-view>
+    <app-gf-card-quick-view type="system-requests" bigText=" {{ weeklyApiSuccessRate() !== null ? weeklyApiSuccessRate() + '%' : 'Loading...' }}"
+      littleText="of system requests were successful(weekly)"></app-gf-card-quick-view>
 
     <!-- Quick View Item - 2 -->
     <app-gf-card-quick-view type="satisfaction-index" bigText="4.6"
       littleText="User Satisfaction Index"></app-gf-card-quick-view>
 
     <!-- Quick View Item - 3 -->
-    <app-gf-card-quick-view type="positive-votes" bigText="105"
+    <app-gf-card-quick-view type="positive-votes" bigText="{{ pinsWith15PositiveVotes()?.pinsWith15PositiveVotes }}"
       littleText="Pins with 15+ Positive Votes"></app-gf-card-quick-view>
 
     <!-- Quick View Item - 4 -->
-    <app-gf-card-quick-view type="pins-today" bigText="11" littleText="Pins created today"></app-gf-card-quick-view>
+    <app-gf-card-quick-view type="pins-today" bigText="{{ pinsCreatedToday()?.pinsCreatedToday }}" littleText="Pins created today"></app-gf-card-quick-view>
 
     <!-- Quick View Item - 5 -->
-    <app-gf-card-quick-view type="active-users" bigText="11" littleText="Active users"></app-gf-card-quick-view>
+    <app-gf-card-quick-view type="active-users" bigText="{{ activeUsers()?.activeUsers }}" littleText="Active users"></app-gf-card-quick-view>
 
   </div>
   <!-- #endregion -->
