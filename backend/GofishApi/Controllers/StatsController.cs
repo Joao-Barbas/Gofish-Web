@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GofishApi.Controllers;
 
-[Authorize]
 [Route("api/[controller]/[action]")]
 [ApiController]
 public class StatsController : ControllerBase 
@@ -31,6 +30,7 @@ public class StatsController : ControllerBase
         _userManager = userManager;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetPinsCreatedToday()
     {
@@ -43,6 +43,7 @@ public class StatsController : ControllerBase
         return Ok(new GetPinsCreatedTodayResDTO(value));
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetReportsWaitingReview()
     {
@@ -54,6 +55,7 @@ public class StatsController : ControllerBase
         return Ok(new GetReportsWaitingReviewResDTO(total));
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAverageVotesPerPin(
     [FromQuery] int month,
@@ -76,6 +78,7 @@ public class StatsController : ControllerBase
         return Ok(new GetAverageVotesPerPinResDTO(average));
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAveragePublishedPins(
         [FromQuery] int month,
@@ -97,6 +100,7 @@ public class StatsController : ControllerBase
         return Ok(new GetAveragePublishedPinsResDTO(value));
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetActiveUsers()
     {
@@ -111,6 +115,7 @@ public class StatsController : ControllerBase
         return Ok(new GetActiveUsersResDTO(value));
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetPinsWith15PositiveVotes()
     {
@@ -120,6 +125,7 @@ public class StatsController : ControllerBase
         return Ok(new GetPinsWith15PositiveVotesResDTO(value));
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetWeeklyApiSuccessRate()
     {
@@ -142,6 +148,7 @@ public class StatsController : ControllerBase
         return Ok(new GetSuccessRateOfRequestsDTO(successRate));
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetNewUsersToday()
     {

@@ -119,6 +119,8 @@ public class ReportController : ControllerBase
             .Select(r => new GetReportResDTO(
                 r.Id,
                 r.UserId,
+                r.AppUser.UserProfile.AvatarUrl,
+                r.AppUser.UserName,
                 "Pin",
                 r.PinId,
                 r.ReasonText,
@@ -151,6 +153,8 @@ public class ReportController : ControllerBase
         return Ok(new GetReportResDTO(
             report.Id,
             report.UserId,
+            report.AppUser.UserProfile.AvatarUrl,
+            report.AppUser.UserName,
             "Pin",
             report.PinId,
             report.ReasonText,
@@ -180,6 +184,8 @@ public class ReportController : ControllerBase
             .Select(r => new GetReportResDTO(
                 r.Id,
                 r.UserId,
+                r.AppUser.UserProfile.AvatarUrl,
+                r.AppUser.UserName,
                 "Pin",
                 r.PinId,
                 r.ReasonText,
@@ -223,6 +229,8 @@ public class ReportController : ControllerBase
             .Select(r => new GetReportResDTO(
                 r.Id,
                 r.UserId,
+                r.AppUser.UserProfile.AvatarUrl,
+                r.AppUser.UserName,
                 "Comment",
                 r.CommentId,
                 r.ReasonText,
@@ -255,6 +263,8 @@ public class ReportController : ControllerBase
         return Ok(new GetReportResDTO(
             report.Id,
             report.UserId,
+            report.AppUser.UserProfile.AvatarUrl,
+            report.AppUser.UserName,
             "Comment",
             report.CommentId,
             report.ReasonText,
@@ -269,13 +279,22 @@ public class ReportController : ControllerBase
     #region DeleteReports
 
     [Authorize(Roles = "Admin")]
-    [HttpDelete("DeletePinReport/{id}")]
-    public async Task<IActionResult> DeletePinReport(int id)
+    [HttpDelete("DeletePinReports")]
+    public async Task<IActionResult> DeletePinReports([FromBody] DeleteReportsReqDTO dto)
     {
-        var report = await _db.PinReports.FindAsync(id);
-        if (report is null) return NotFound();
-        _db.PinReports.Remove(report);
+        if (dto == null || dto.Ids == null || !dto.Ids.Any())
+            return BadRequest("No ids provided");
+
+        var reports = await _db.PinReports
+            .Where(r => dto.Ids.Contains(r.Id))
+            .ToListAsync();
+
+        if (reports.Count == 0)
+            return NotFound("No reports found");
+
+        _db.PinReports.RemoveRange(reports);
         await _db.SaveChangesAsync();
+
         return NoContent();
     }
 
@@ -287,6 +306,27 @@ public class ReportController : ControllerBase
         if (report is null) return NotFound();
         _db.CommentReports.Remove(report);
         await _db.SaveChangesAsync();
+        return NoContent();
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("ResolvePinReport/{reportId}")]
+    public async Task<IActionResult> ResolvePinReport(int reportId)
+    {
+        var report = await _db.PinReports
+            .FirstOrDefaultAsync(r => r.Id == reportId);
+
+        if (report is null)
+            return NotFound("Report not found");
+
+        var pin = await _db.Pins.FindAsync(report.PinId);
+
+        if (pin is null)
+            return NotFound("Associated pin not found");
+
+        _db.Pins.Remove(pin);
+        await _db.SaveChangesAsync();
+
         return NoContent();
     }
 
