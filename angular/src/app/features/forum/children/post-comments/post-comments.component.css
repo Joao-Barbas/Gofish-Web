@@ -36,6 +36,10 @@
   flex-shrink: 0;
 }
 
+gf-user-title {
+  --user-title-cursor: pointer;
+}
+
 .post-author-name {
   font-size: var(--gf-14);
   font-family: var(--gf-font-main);

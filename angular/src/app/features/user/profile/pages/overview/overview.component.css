@@ -54,6 +54,10 @@
   }
 }
 
+gf-user-title {
+  --user-title-cursor: pointer;
+}
+
 gf-async-button  {
   --async-btn-height: var(--gf-40);
   --async-btn-max-height: var(--gf-40);
