@@ -231,6 +231,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
         SeedPinReports(builder);
         SeedVotes(builder);
         SeedFriendships(builder);
+        SeedUserRoles(builder); 
     }
 
     private static void SeedUsers(ModelBuilder builder)
@@ -271,7 +272,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
         {
             Id = "seed-admin-1",
             UserName = "admin1",
-            NormalizedUserName = "ADMIN",
+            NormalizedUserName = "ADMIN1",
             Email = "admin@gofish.com",
             NormalizedEmail = "ADMIN@GOFISH.COM",
             EmailConfirmed = true,
@@ -586,4 +587,14 @@ public class AppDbContext : IdentityDbContext<AppUser>
         builder.Entity<Friendship>().HasData(friendships);
     }
 
+    private static void SeedUserRoles(ModelBuilder builder)
+    {
+        builder.Entity<IdentityUserRole<string>>().HasData(
+            new IdentityUserRole<string>
+            {
+                UserId = "seed-admin-1",
+                RoleId = "role-admin"
+            }
+        );
+    }
 }
