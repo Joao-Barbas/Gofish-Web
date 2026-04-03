@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Reflection.Emit;
 
 namespace GofishApi.Data;
@@ -31,6 +32,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+
         base.OnModelCreating(builder);
 
         #region Friendship
@@ -221,6 +223,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
         #endregion
 
         SeedUsers(builder);
+        SeedRoles(builder);
         SeedCatchPin(builder);
         SeedInfoPin(builder);
         SeedWarnPin(builder);
@@ -264,8 +267,50 @@ public class AppDbContext : IdentityDbContext<AppUser>
             });
         }
 
+        var admin = new AppUser
+        {
+            Id = "seed-admin-1",
+            UserName = "admin1",
+            NormalizedUserName = "ADMIN",
+            Email = "admin@gofish.com",
+            NormalizedEmail = "ADMIN@GOFISH.COM",
+            EmailConfirmed = true,
+            SecurityStamp = "seed-admin-stamp",
+            ConcurrencyStamp = "seed-admin-cstamp",
+            LockoutEnabled = false,
+        };
+
+        admin.PasswordHash = hasher.HashPassword(admin, "123456@");
+        users.Add(admin);
+
+        profiles.Add(new UserProfile
+        {
+            UserId = admin.Id,
+            JoinedAt = now,
+            LastActiveAt = now,
+            LastUpdateAt = now
+        });
+
         builder.Entity<AppUser>().HasData(users);
         builder.Entity<UserProfile>().HasData(profiles);
+    }
+
+    private static void SeedRoles(ModelBuilder builder)
+    {
+        builder.Entity<IdentityRole>().HasData(
+            new IdentityRole
+            {
+                Id = "role-admin",
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            },
+            new IdentityRole
+            {
+                Id = "role-user",
+                Name = "User",
+                NormalizedName = "USER"
+            }
+        );
     }
 
     private static void SeedCatchPin(ModelBuilder builder)
@@ -540,4 +585,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
         builder.Entity<Friendship>().HasData(friendships);
     }
+
 }

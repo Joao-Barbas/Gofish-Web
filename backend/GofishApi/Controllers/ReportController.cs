@@ -119,6 +119,8 @@ public class ReportController : ControllerBase
             .Select(r => new GetReportResDTO(
                 r.Id,
                 r.UserId,
+                r.AppUser.UserProfile.AvatarUrl,
+                r.AppUser.UserName,
                 "Pin",
                 r.PinId,
                 r.ReasonText,
@@ -151,6 +153,8 @@ public class ReportController : ControllerBase
         return Ok(new GetReportResDTO(
             report.Id,
             report.UserId,
+            report.AppUser.UserProfile.AvatarUrl,
+            report.AppUser.UserName,
             "Pin",
             report.PinId,
             report.ReasonText,
@@ -180,6 +184,8 @@ public class ReportController : ControllerBase
             .Select(r => new GetReportResDTO(
                 r.Id,
                 r.UserId,
+                r.AppUser.UserProfile.AvatarUrl,
+                r.AppUser.UserName,
                 "Pin",
                 r.PinId,
                 r.ReasonText,
@@ -223,6 +229,8 @@ public class ReportController : ControllerBase
             .Select(r => new GetReportResDTO(
                 r.Id,
                 r.UserId,
+                r.AppUser.UserProfile.AvatarUrl,
+                r.AppUser.UserName,
                 "Comment",
                 r.CommentId,
                 r.ReasonText,
@@ -255,6 +263,8 @@ public class ReportController : ControllerBase
         return Ok(new GetReportResDTO(
             report.Id,
             report.UserId,
+            report.AppUser.UserProfile.AvatarUrl,
+            report.AppUser.UserName,
             "Comment",
             report.CommentId,
             report.ReasonText,

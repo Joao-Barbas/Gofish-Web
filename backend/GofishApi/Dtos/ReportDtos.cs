@@ -25,6 +25,8 @@ public record CreateCommentReportResDTO(
 public record GetReportResDTO(
     int Id,
     string UserId,
+    string? ImageURL,
+    string? Username,
     string Type,
     int TargetId,
     string ReasonText,
