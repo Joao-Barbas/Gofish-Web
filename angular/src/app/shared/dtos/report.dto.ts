@@ -24,6 +24,8 @@ export interface CreateCommentReportResDTO {
 export interface GetReportResDTO {
   id: number;
   userId: string;
+  imageURL?: string;
+  username?: string;
   type: string;
   targetId: number;
   reasonText: string;

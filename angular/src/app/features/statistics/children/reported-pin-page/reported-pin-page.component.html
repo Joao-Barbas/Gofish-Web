@@ -36,13 +36,13 @@
                     <div class="report-header profile-pin-previews">
                       <div class="pin-author-date-wrapper gf-generic-clickable-wrapper">
                         <img
-                          src="assets/images/placeholder_profile_pic.png"
+                          [src]="report.imageURL || 'assets/images/placeholder_profile_pic.png'"
                           class="rounded-circle gf-small-avatar"
                           alt="User avatar"
                         >
 
                         <span class="gf-ugc-username pin-report-username">
-                          {{ report.userId }}
+                          {{ report.username }}
                         </span>
 
                         <span>•</span>
