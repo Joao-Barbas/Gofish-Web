@@ -153,5 +153,32 @@ public class StatsController : ControllerBase
 
         return Ok(new GetNewUsersTodayResDTO(value));
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetTotalPinsCreated()
+    {
+        var value = await _db.Pins.CountAsync();
+
+        return Ok(new GetTotalPinsCreatedResDTO(value));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetTotalCatchPinsCreated()
+    {
+        var value = await _db.Pins
+            .CountAsync(p => p.Kind == PinKind.Catch);
+
+        return Ok(new GetTotalCatchPinsCreatedResDTO(value));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetTotalWarningPinsCreated()
+    {
+        var value = await _db.Pins
+            .CountAsync(p => p.Kind == PinKind.Warning);
+
+        return Ok(new GetTotalWarningPinsCreatedResDTO(value));
+    }
 }
+
 
