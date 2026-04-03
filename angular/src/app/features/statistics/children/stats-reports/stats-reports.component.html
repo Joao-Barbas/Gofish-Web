@@ -19,7 +19,7 @@
   <div class="quick-view-grid">
 
     @for (pin of reportedPins(); track pin.id) {
-    <app-gf-card-pin-preview [pinData]="pin" [isReportedPin]="true" [reportNumber]="pin.id" [reportIndex]="pin.id"></app-gf-card-pin-preview>
+    <app-gf-card-pin-preview [pinData]="pin" [isReportedPin]="true" [reportNumber]="getReportCount(pin.id) " [reportIndex]="pin.id"></app-gf-card-pin-preview>
   } @empty {
     <p>No reports available.</p>
   }

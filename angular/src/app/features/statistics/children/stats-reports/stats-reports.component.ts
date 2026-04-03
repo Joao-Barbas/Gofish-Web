@@ -28,48 +28,74 @@ export class StatsReportsComponent {
   private readonly pinService = inject(PinService);
   protected reportedPins = signal<PinDto[]>([]);
   protected hasMoreResults = signal(false);
-  private lastTimestamp: string = new Date().toISOString();
   protected reportMap = signal<PinReportMap>({});
+  private lastCreatedAt: string | undefined = new Date().toISOString();
+  private isLoading = false;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadMore();
   }
 
-  loadMore() {
+  loadMore(): void {
+    if (this.isLoading) return;
+
+    this.isLoading = true;
+
     const request: GetReportReqDTO = {
       maxResults: 5,
-      lastCreatedAt: this.lastTimestamp
+      lastCreatedAt: this.lastCreatedAt
     };
 
     this.reportService.getPinReports(request).subscribe({
       next: (res) => {
         this.hasMoreResults.set(res.hasMoreResults);
-        this.lastTimestamp = res.lastCreatedAt!;
+        this.lastCreatedAt = res.lastCreatedAt ?? undefined;
 
-        const currentMap: PinReportMap = { ...this.reportMap() };
-
-        res.reports.forEach(report => {
-          const pinId = report.targetId;
-          if (!currentMap[pinId]) {
-            currentMap[pinId] = [];
-          }
-
-          if (!currentMap[pinId].some(r => r.id === report.id)) {
-            currentMap[pinId].push(report);
-          }
-        });
-
-        this.reportMap.set(currentMap);
-
-        const pinIdsToFetch = res.reports.map(r => ({ pinId: r.targetId }));
-        this.fetchPinDetails(pinIdsToFetch);
+        this.mergeReportsByPin(res.reports);
+        this.loadMissingPins(res.reports);
+      },
+      error: (err) => {
+        console.error('Failed to load reports:', err);
+      },
+      complete: () => {
+        this.isLoading = false;
       }
     });
   }
 
-  private fetchPinDetails(ids: { pinId: number }[]) {
-    const pinRequest: GetPinsReqDto = {
-      ids: ids,
+  private mergeReportsByPin(reports: GetReportResDTO[]): void {
+    const updatedMap: PinReportMap = { ...this.reportMap() };
+
+    for (const report of reports) {
+      const pinId = report.targetId;
+
+      if (!updatedMap[pinId]) {
+        updatedMap[pinId] = [];
+      }
+
+      const alreadyExists = updatedMap[pinId].some(existing => existing.id === report.id);
+
+      if (!alreadyExists) {
+        updatedMap[pinId].push(report);
+      }
+    }
+
+    this.reportMap.set(updatedMap);
+  }
+
+  private loadMissingPins(reports: GetReportResDTO[]): void {
+    const existingPinIds = new Set(this.reportedPins().map(pin => pin.id));
+
+    const missingPinIds = [...new Set(
+      reports
+        .map(report => report.targetId)
+        .filter(pinId => !existingPinIds.has(pinId))
+    )];
+
+    if (missingPinIds.length === 0) return;
+
+    const request: GetPinsReqDto = {
+      ids: missingPinIds.map(pinId => ({ pinId })),
       dataRequest: {
         includeAuthor: true,
         includeDetails: true,
@@ -78,13 +104,19 @@ export class StatsReportsComponent {
       }
     };
 
-    this.pinService.getPins(pinRequest).subscribe({
+    this.pinService.getPins(request).subscribe({
       next: (res) => {
         this.reportedPins.update(current => [...current, ...res.pins]);
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.error('Failed to load pin details:', err);
+      }
     });
   }
 
+  getReportCount(pinId: number): number {
+  return this.reportMap()[pinId]?.length ?? 0;
 }
+}
+
 
