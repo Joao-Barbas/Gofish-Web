@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Api } from '@gofish/shared/constants';
-import { CreateCommentReportReqDTO, CreateCommentReportResDTO, CreatePinReportReqDTO, CreatePinReportResDTO, GetPinReportsByPinReqDTO, GetReportReqDTO, GetReportResDTO, GetReportsResDTO } from '@gofish/shared/dtos/report.dto';
+import { CreateCommentReportReqDTO, CreateCommentReportResDTO, CreatePinReportReqDTO, CreatePinReportResDTO, DeleteReportsReqDTO, GetPinReportsByPinReqDTO, GetReportReqDTO, GetReportResDTO, GetReportsResDTO } from '@gofish/shared/dtos/report.dto';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -53,11 +53,15 @@ export class ReportService {
   }
 
 
-  deletePinReport(id: number): Observable<void> {
-    return this.http.delete<void>(Api.Report.action(`DeletePinReport/${id}`));
+  deletePinReports(dto: DeleteReportsReqDTO): Observable<void> {
+    return this.http.delete<void>(Api.Report.action(`DeletePinReports`), { body: dto });
   }
 
   deleteCommentReport(id: number): Observable<void> {
     return this.http.delete<void>(Api.Report.action(`DeleteCommentReport/${id}`));
+  }
+
+  resolvePinReport(id: number): Observable<void> {
+    return this.http.delete<void>(Api.Report.action(`ResolvePinReport/${id}`));
   }
 }

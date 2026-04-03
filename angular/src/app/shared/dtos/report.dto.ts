@@ -47,3 +47,7 @@ export interface GetPinReportsByPinReqDTO {
   maxResults: number;
   lastCreatedAt?: string;
 }
+
+export interface DeleteReportsReqDTO {
+  ids: number[];
+}

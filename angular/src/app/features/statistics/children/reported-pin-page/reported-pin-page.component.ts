@@ -123,10 +123,11 @@ export class ReportedPinPageComponent {
         toast.success('Selected reports accepted and pin deleted successfully');
       }
     });
+    window.history.back();
   }
 
   rejectSelectedReports() {
-    this.reportService.deletePinReport(Array.from(this.selectedReportIds())[0]).subscribe({
+    this.reportService.deletePinReports({ ids: Array.from(this.selectedReportIds()) }).subscribe({
       next: () => {
         toast.success('Selected reports rejected and pin kept successfully');
         this.reports.update(current => current.filter(r => r.id !== Array.from(this.selectedReportIds())[0]));
