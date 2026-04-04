@@ -6,6 +6,7 @@ import { UsersChartComponent } from "@gofish/shared/components/users-chart/users
 import { GetUserProfileResDTO } from '@gofish/shared/dtos/user-profile.dto';
 import { GfCardQuickAccessComponent } from '@gofish/features/statistics/components/gf-card-quick-access/gf-card-quick-access.component';
 import { PinsAvgPublishedChart } from "@gofish/shared/components/pins-avg-published-chart/pins-avg-published-chart.component";
+import { PinWeekStats, PinsPerWeekComponent } from '@gofish/shared/components/pins-per-week/pins-per-week.component';
 
 export interface PinMonthStats {
   monthName: string;
@@ -15,17 +16,15 @@ export interface PinMonthStats {
   warningCount: number;
 }
 
-
 @Component({
   selector: 'app-home',
-  imports: [/*RouterLink, */ GfCardQuickViewComponent, GfCardQuickAccessComponent, UsersChartComponent, PinsAvgPublishedChart],
+  imports: [/*RouterLink, */ GfCardQuickViewComponent, GfCardQuickAccessComponent, UsersChartComponent, PinsAvgPublishedChart, PinsPerWeekComponent],
   templateUrl: './stats-home.component.html',
   styleUrl: './stats-home.component.css',
 })
 export class StatsHomeComponent {
   private readonly router = inject(Router);
 
-  // pins-average-published-chart
   public marchStats: PinMonthStats = {
     monthName: 'March',
     year: 2025,
@@ -34,7 +33,6 @@ export class StatsHomeComponent {
     warningCount: 5
   };
 
-  // Dados Mock para o mês de Maio
   public aprilStats: PinMonthStats = {
     monthName: 'April',
     year: 2025,
@@ -42,6 +40,13 @@ export class StatsHomeComponent {
     infoCount: 15,
     warningCount: 12
   };
+
+  mockPinWeeks: PinWeekStats[] = [
+    { weekLabel: 'Day 3 to day 9', catchCount: 8, infoCount: 3, warningCount: 1 },
+    { weekLabel: 'Day 10 to day 16', catchCount: 4, infoCount: 2, warningCount: 0 },
+    { weekLabel: 'Day 17 to day 23', catchCount: 12, infoCount: 5, warningCount: 3 },
+    { weekLabel: 'Day 24 to day 30', catchCount: 6, infoCount: 1, warningCount: 2 },
+  ];
 
   // users-chart
   mockUsers = MOCK_USERS;

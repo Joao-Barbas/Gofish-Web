@@ -25,19 +25,25 @@
   </div>
   <!-- #endregion -->
 
-  <div class="quick-view-grid">
-    <div class="pin-chart-grid-item gf-card pin-chart-wrapper">
-      <gf-pins-average-published-chart [pinStats]="marchStats"></gf-pins-average-published-chart>
-    </div>
+  <div class="new-grid">
+    <gf-pins-average-published-chart class="gf-card" [pinStats]="aprilStats"></gf-pins-average-published-chart>
+    <gf-pins-per-week class="gf-card" [pins]="mockPinWeeks"></gf-pins-per-week>
+  </div>
 
-    <div class="pin-chart-grid-item gf-card">
+  <div class="quick-view-grid">
+    @if(0) {
+
+    <div class="pin-chart-grid-item gf-card pin-chart-wrapper">
+
       <gf-pins-average-published-chart [pinStats]="aprilStats"></gf-pins-average-published-chart>
     </div>
+    }
 
     <div class="chart-grid-item ">
       <!-- Shows weeks from last two months -->
       <gf-users-chart class="gf-card " [users]="mockUsers"></gf-users-chart>
     </div>
+
 
   </div>
 
@@ -89,10 +95,6 @@
   <!-- #endregion -->
 
   <div class="quick-access-list">
-
-
-    <app-gf-card-quick-access type="average-published-pins" title="Average Number of Published Pins"
-      [extraTexts]="['Published in the last week: 12', 'Published in the last month: 105']" />
 
     <app-gf-card-quick-access type="reports" title="Reports" [extraTexts]="['Reports awaiting review: 6']" />
 

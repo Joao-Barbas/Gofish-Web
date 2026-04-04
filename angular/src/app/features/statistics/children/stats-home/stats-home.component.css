@@ -51,11 +51,20 @@
   max-width: 1000px;
 }
 
+.new-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;  /* donut ocupa o que precisa, barras ocupa o resto */
+  gap: 20px;
+  width: 100%;
+  min-height: 376px;
+}
+
 .quick-view-grid {
   display: grid;
-  grid-template-columns: repeat(3, 320px);
-  gap: 20px 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px 6px;
   width: 100%;
+  height: fit-content;
   justify-items: start;
 }
 
@@ -68,7 +77,6 @@
   display: flex;
   justify-content: space-between;
 }
-
 
 .quick-access-list {
   display: flex;

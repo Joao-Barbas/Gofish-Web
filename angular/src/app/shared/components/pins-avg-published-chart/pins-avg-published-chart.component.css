@@ -5,6 +5,7 @@
 .chart-main-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   width: fit-content;
 }
@@ -18,7 +19,7 @@
 }
 
 .canvas-holder {
-  width: 200px;
+  width: fit-content;
   height: fit-content;
   display: flex;
   justify-content: center;
