@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { ModalService } from '@gofish/shared/services/modal.service';
 import { ConfirmDeletionModalComponent } from '@gofish/features/user/settings/components/personal-data/components/confirm-deletion-modal/confirm-deletion-modal.component';
 import { BusyState } from '@gofish/shared/core/busy-state';
-import { UserSecurityService } from '@gofish/shared/services/user-security.service';
 import { TwoFactorMethod } from '@gofish/shared/models/user-security.models';
 import { Path } from '@gofish/shared/constants';
 import { AuthService } from '@gofish/shared/services/auth.service';
@@ -13,6 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DeleteAccountResDTO } from '@gofish/shared/dtos/user-account.dto';
 import { getFirstError, ProblemDetails } from '@gofish/shared/core/problem-details';
 import { UserAccountApi } from '@gofish/shared/api/user-account.api';
+import { UserSecurityApi } from '@gofish/shared/api/user-security.api';
 
 @Component({
   selector: 'app-personal-data',
@@ -34,7 +34,7 @@ export class PersonalDataComponent {
     private readonly router: Router,
     private readonly userAccountApi: UserAccountApi,
     private readonly authService: AuthService,
-    public  readonly userSecurityService: UserSecurityService,
+    public  readonly userSecurityApi: UserSecurityApi,
     public  readonly modalService: ModalService,
   ){}
 

@@ -1,3 +1,5 @@
+// user-security.api.ts
+
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
@@ -7,10 +9,8 @@ import { ChangePasswordReqDTO, ChangePasswordResDTO, EnableTotpReqDTO, EnableTot
 @Injectable({
   providedIn: 'root',
 })
-export class UserSecurityService {
+export class UserSecurityApi {
   private readonly http = inject(HttpClient);
-
-  // Api endpoints
 
   getSecurityInfo(): Observable<SecurityInfoResDTO> {
     return this.http.get<SecurityInfoResDTO>(Api.UserSecurity.action('GetSecurityInfo'));
@@ -31,6 +31,4 @@ export class UserSecurityService {
   disableTotp(dto: EnableTotpReqDTO): Observable<void> {
     return this.http.post<void>(Api.UserSecurity.action('DisableTotp'), dto);
   }
-
-  // End api endpoints
 }
