@@ -232,11 +232,14 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'stats', redirectTo: 'statistics/home',
+  },
+  {
     path: 'statistics',
     loadComponent: () => import('@gofish/features/statistics/statistics.component').then(f => f.StatisticsComponent),
     data: {
       header: 'flat' as HeaderVariant,
-      footer: 'big' as FooterVariant
+      footer: 'small' as FooterVariant
     },
     children: [ // unfinished
       { path: '', redirectTo: 'home', pathMatch: 'full' },

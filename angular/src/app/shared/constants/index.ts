@@ -41,7 +41,7 @@ export const PathSegment = {
   DELETE_COMMENT:         'delete-comment/:id',
   PROFILE:                'profile',
   STATISTICS:             'statistics',
-  STATISTICS_PIN_DENSITY: 'pin-density-by-location',
+  STATISTICS_AVG_PUBLISHED: 'average-published-pins',
   STATISTICS_REPORTS:     'reports',
   CREATE_GROUP:           'create-group',
   REPORT_PIN:             'report-pin/:id',
@@ -84,7 +84,7 @@ export const Path = {
 
   STATISTICS:             `/${PathSegment.STATISTICS}`,
   STATISTICS_REPORTS:     `/${PathSegment.STATISTICS}/${PathSegment.STATISTICS_REPORTS}`,
-  STATISTICS_PIN_DENSITY: `/${PathSegment.STATISTICS}/${PathSegment.STATISTICS_PIN_DENSITY}`,
+  STATISTICS_AVG_PUBLISHED: `/${PathSegment.STATISTICS}/${PathSegment.STATISTICS_AVG_PUBLISHED}`,
 } as const;
 
 /* Backend endpoints */
@@ -111,9 +111,9 @@ export const Api = {
 } as const;
 
 export const PIN_CONFIG = [
-  { kind: PinKind.CATCH,       color: '#16A34A', iconUrl: 'assets/images/pins-icons/Kind=Catch.png',       icon: 'pin-catch',       kindString: 'Catch' },
-  { kind: PinKind.INFORMATION, color: '#3B82F6', iconUrl: 'assets/images/pins-icons/Kind=Information.png', icon: 'pin-Information', kindString: 'Information' },
-  { kind: PinKind.WARNING,     color: '#F97316', iconUrl: 'assets/images/pins-icons/Kind=Warning.png',     icon: 'pin-Warning',     kindString: 'Warning'}
+  { kind: PinKind.CATCH,       color: 'var(--gf-catch-pin)', iconUrl: 'assets/images/pins-icons/Kind=Catch.png',       icon: 'pin-catch',       kindString: 'Catch' },
+  { kind: PinKind.INFORMATION, color: 'var(--gf-info-pin)', iconUrl: 'assets/images/pins-icons/Kind=Information.png', icon: 'pin-Information', kindString: 'Information' },
+  { kind: PinKind.WARNING,     color: 'var(--gf-warning-pin)', iconUrl: 'assets/images/pins-icons/Kind=Warning.png',     icon: 'pin-Warning',     kindString: 'Warning'}
 ] as const;
 
 export const BodyLengthConstraints = {

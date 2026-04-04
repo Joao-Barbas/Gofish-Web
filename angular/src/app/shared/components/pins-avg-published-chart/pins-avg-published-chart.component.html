@@ -1,0 +1,28 @@
+@if (pinStats()) {
+<div class="chart-main-container">
+  <h4 class="month-label">{{ pinStats()?.monthName }} {{ pinStats()?.year }}</h4>
+
+  <div class="canvas-holder">
+    <canvas baseChart [data]="doughnutChartData" [options]="chartOptions" [type]="'doughnut'">
+    </canvas>
+  </div>
+
+  <div class="custom-legend">
+    <div class="legend-item">
+      <span class="dot catch"></span>
+      <span class="label-text">Catch Pins</span>
+      <span class="value-text">{{ pinStats()?.catchCount }}</span>
+    </div>
+    <div class="legend-item">
+      <span class="dot info"></span>
+      <span class="label-text">Info Pins</span>
+      <span class="value-text">{{ pinStats()?.infoCount }}</span>
+    </div>
+    <div class="legend-item">
+      <span class="dot warning"></span>
+      <span class="label-text">Warning Pins</span>
+      <span class="value-text">{{ pinStats()?.warningCount }}</span>
+    </div>
+  </div>
+</div>
+}

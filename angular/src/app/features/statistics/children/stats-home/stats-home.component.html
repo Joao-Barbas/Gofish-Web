@@ -1,26 +1,66 @@
 <div class="container stats-section-wrapper">
 
   <!-- #region Quick View -->
-  <div class="d-flex align-items-center quick-header-wrapper">
+  <div class="quick-header-wrapper">
 
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye">
-      <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
+    <div class="icon-quick-view-wrapper">
 
-    <span class="text-bold">Quick View</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye">
+        <path
+          d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+
+      <span class="text-bold">Quick View</span>
+    </div>
+
+    <div class="segmented-control">
+      <div class="radio-btn">
+
+        <input type="radio" name="month" id="current" [checked]="!isLastMonth" (change)="isLastMonth = false" checked>
+        <label for="current">Current Month</label>
+
+        <input type="radio" name="month" id="last" [checked]="isLastMonth" (change)="isLastMonth = true">
+        <label  for="last">Last Month</label>
+
+      </div>
+
+    </div>
+
+
+
   </div>
   <!-- #endregion -->
 
+  <div class="new-grid">
+    @if (!isLastMonth) {
 
-  <!-- #region Quick View GRID -->
+      <gf-pins-average-published-chart class="gf-card" [pinStats]="currentMonthStats"></gf-pins-average-published-chart>
+      <gf-pins-per-week class="gf-card" [pins]="mockPinWeeksCurrentMonth"></gf-pins-per-week>
+    }
+    @else {
+      <gf-pins-average-published-chart class="gf-card" [pinStats]="lastMonthStats"></gf-pins-average-published-chart>
+      <gf-pins-per-week class="gf-card" [pins]="mockPinWeeksLastMonth"></gf-pins-per-week>
+    }
+  </div>
+
+  <!-- #region Created Users Chart -->
+
   <div class="quick-view-grid">
 
     <div class="chart-grid-item ">
       <!-- Shows weeks from last two months -->
-      <gf-users-chart class="gf-card" [users]="mockUsers"></gf-users-chart>
+      <gf-users-chart class="gf-card " [users]="mockUsers"></gf-users-chart>
     </div>
+
+  </div>
+
+  <!-- #endregion-->
+
+
+  <!-- #region Quick View GRID -->
+  <div class="quick-view-grid">
 
     <!-- Quick View Item - 1 -->
     <app-gf-card-quick-view type="system-requests" bigText="99%"
@@ -46,9 +86,13 @@
 
 </div>
 
+<!-- * Quick Access Items -->
+
 <div class="container stats-section-wrapper">
 
-  <!-- #region Quick View -->
+  <!-- #region Quick Access -->
+
+
   <div class="d-flex align-items-center quick-header-wrapper">
 
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
@@ -63,15 +107,14 @@
 
     <span class="text-bold">Quick Access</span>
   </div>
+
   <!-- #endregion -->
 
-  <div class="quick-access-list">
 
-
-    <app-gf-card-quick-access type="average-published-pins" title="Average Number of Published Pins"
-      [extraTexts]="['Published in the last week: 12', 'Published in the last month: 105']" />
-
-    <app-gf-card-quick-access type="reports" title="Reports" [extraTexts]="['Reports awaiting review: 6']" />
-
+  <!-- Go to Reports -->
+  <div class="quick-view-grid">
+    <app-gf-card-quick-access class="quick-access-grid-item" type="reports" title="Reports"
+      [extraTexts]="['Reports awaiting review: 6']" />
   </div>
 
+</div>

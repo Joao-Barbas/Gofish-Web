@@ -5,6 +5,10 @@
   box-shadow: none;
 }
 
+gf-user-title {
+  --user-title-cursor: pointer;
+}
+
 .post-author-name {
   font-size: var(--gf-14);
   word-break: break-all;
