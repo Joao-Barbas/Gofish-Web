@@ -1,3 +1,5 @@
+// user-account.api.ts
+
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
@@ -7,10 +9,8 @@ import { Api } from '@gofish/shared/constants';
 @Injectable({
   providedIn: 'root',
 })
-export class UserAccountService {
+export class UserAccountApi {
   private readonly http = inject(HttpClient);
-
-  // Api endpoints
 
   downloadPersonalData(): Observable<Blob> {
     return this.http.get(Api.UserAccount.action('DownloadPersonalData'), { responseType: 'blob' });
@@ -23,6 +23,4 @@ export class UserAccountService {
   deletePersonalData(dto: DeleteAccountReqDTO): Observable<void> {
     return this.http.delete<void>(Api.UserAccount.action('DeletePersonalData'), { body: dto });
   }
-
-  // End api endpoints
 }
