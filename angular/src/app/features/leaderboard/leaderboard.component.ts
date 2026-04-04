@@ -39,12 +39,10 @@ export class LeaderboardComponent {
 
   leaderboard = resource({
     params: () => this.activeTabOrDefault(),
-    loader: ({ params: tab }) => {
-      console.log(tab);
-      return firstValueFrom(tab === 'global'
+    loader: ({ params: tab }) => firstValueFrom(tab === 'global'
       ? this.userApi.getGlobalLeaderboard()
       : this.userApi.getFriendsLeaderboard()
-  )}});
+  )});
 
   readonly topThree   = computed(() => this.leaderboard.value()?.entries.slice(0, 3) ?? []);
   readonly rest       = computed(() => this.leaderboard.value()?.entries.slice(3)    ?? []);
