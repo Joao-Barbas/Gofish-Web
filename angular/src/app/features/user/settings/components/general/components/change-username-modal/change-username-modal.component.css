@@ -1,0 +1,52 @@
+/* change-username-modal.component.css */
+
+:host {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: var(--gf-z-modal);
+}
+:host(.on-enter) {
+  animation: gf-modal-fade-in .2s ease-in-out;
+}
+:host(.on-enter) .gf-modal-shell {
+  animation: gf-modal-scale-in .2s cubic-bezier(0.34, 1.8, 0.64, 1);
+}
+:host(.on-leave) {
+  opacity: 0;
+  transition: opacity .2s ease-out;
+}
+
+.gf-modal-shell {
+  border-radius: var(--gf-12);
+  max-width: calc(416rem / 16);
+}
+
+.warning-box {
+  background: var(--gf-warning-bg-muted);
+  border: 2px solid var(--gf-warning);
+  border-radius: var(--gf-4);
+  padding: var(--gf-8);
+  font-size: var(--gf-text-sm);
+  overflow-wrap: break-word; /* modern, preferred */
+  word-break: break-word;    /* fallback */
+
+  .email {
+    text-decoration: underline;
+    color: #0000EE;
+  }
+}
+
+gf-async-button {
+  width: 100%;
+  --async-btn-width: 100%;
+
+  &.btn-negative {
+    --async-btn-bg: var(--gf-light-bg-dark);
+    --async-btn-color: var(--gf-light-text);
+  }
+}
+
+h5 {
+  color: var(--gf-dark-text);
+}

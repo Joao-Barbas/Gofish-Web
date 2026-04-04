@@ -35,6 +35,7 @@ export class UserProfileApi {
   }
 
   public getUserAvatar(id: string): Observable<string> {
-    return this.http.get<string>(Api.UserProfile.action(`GetUserAvatar/${id}`));
+    const url = Api.UserProfile.action(`GetUserAvatar/${id}`);
+    return this.http.get(url, { responseType: 'text' });
   }
 }

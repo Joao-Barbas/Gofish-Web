@@ -17,6 +17,8 @@ public class UserProfile
 
     public int CatchPoints { get; set; } = 0;
 
+    public int CatchPointsLastMonth { get; set; } = 0;
+
     public DateTime JoinedAt { get; set; } = DateTime.Now;
     
     public DateTime LastActiveAt { get; set; } = DateTime.Now;
@@ -32,4 +34,8 @@ public class UserProfile
     // Navigation
 
     public AppUser AppUser { get; set; } = null!;
+
+    // Computed
+
+    public int MonthlyPointsDelta => CatchPoints - CatchPointsLastMonth;
 }

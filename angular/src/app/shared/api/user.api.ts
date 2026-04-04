@@ -3,7 +3,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Api } from "@gofish/shared/constants";
-import { FriendshipDTO, GetFriendshipBetweenReqDTO, GetFriendshipsResDTO, GetUserGroupReqDTO, GetUserGroupResDTO, GetUserResDTO, GetUserSettingsResDTO, PatchUserReqDTO, PutUserReqDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO, SearchUsersReqDTO, SearchUsersResDTO } from "@gofish/shared/dtos/user.dto";
+import { FriendshipDTO, GetFriendshipBetweenReqDTO, GetFriendshipsResDTO, GetUserGroupReqDTO, GetUserGroupResDTO, GetUserResDTO, GetUserSettingsResDTO, LeaderboardResDTO, PatchUserReqDTO, PutUserReqDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO, SearchUsersReqDTO, SearchUsersResDTO } from "@gofish/shared/dtos/user.dto";
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 import { map, Observable } from "rxjs";
 
@@ -37,6 +37,14 @@ export class UserApi {
     if (dto.maxResults)   p = p.set('maxResults', dto.maxResults);
     if (dto.lastUsername) p = p.set('lastUsername', dto.lastUsername);
     return this.http.get<SearchUsersResDTO>(Api.User.action('SearchUsers'), { params: p });
+  }
+
+  public getGlobalLeaderboard(): Observable<LeaderboardResDTO> {
+    return this.http.get<LeaderboardResDTO>(Api.User.action('GetGlobalLeaderboard'));
+  }
+
+  public getFriendsLeaderboard(): Observable<LeaderboardResDTO> {
+    return this.http.get<LeaderboardResDTO>(Api.User.action('GetFriendsLeaderboard'));
   }
 
   // Friendships
