@@ -29,13 +29,15 @@ public class UserProfileController : ControllerBase
     private readonly AppDbContext _context;
     private readonly UserManager<AppUser> _userManager;
     private readonly IVisibilityService _visibility;
+    private readonly IGamificationService _gamification;
 
     public UserProfileController(
         ILogger<UserProfileController> logger,
         IBlobStorageService blobStorage,
         AppDbContext context,
         UserManager<AppUser> userManager,
-        IVisibilityService visibility
+        IVisibilityService visibility,
+        IGamificationService gamification
     )
     {
         _logger = logger;
@@ -43,6 +45,7 @@ public class UserProfileController : ControllerBase
         _context = context;
         _userManager = userManager;
         _visibility = visibility;
+        _gamification = gamification;
     }
 
     [HttpGet("{id}")]
@@ -78,6 +81,17 @@ public class UserProfileController : ControllerBase
             FriendsCount = friendsCount,
             GroupsCount = groupsCount
         });
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUserPoints(string id)
+    {
+        var points = await _gamification.TryGetPoints(id);
+        if (points is not int value)
+        {
+            return NotFound();
+        }
+        return Ok(new GetUserPointsResDto { Points = value });
     }
 
     [HttpGet]

@@ -40,36 +40,60 @@ public class GroupController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("GetGroup")]
-    public async Task<IActionResult> GetGroup([FromBody] GetGroupReqDTO dto)
+    [HttpGet("GetGroup/{id}")]
+    public async Task<IActionResult> GetGroup([FromRoute] int id)
     {
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
-        if (user is null) return Unauthorized();
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
 
-        var query = _db.Groups.AsQueryable();
+        var group = await _db.Groups
+            .Where(g => g.Id == id)
+            .Select(g => new
+            {
+                g.Id,
+                g.Name,
+                g.Description,
+                g.AvatarUrl,
+                g.CreatedAt,
+                MemberCount = g.GroupUsers.Count,
+                PinCount = g.Pins.Count,
+                Owner = g.GroupUsers
+                    .Where(gu => gu.Role == GroupRole.Owner)
+                    .Select(gu => new
+                    {
+                        gu.AppUser.Id,
+                        gu.AppUser.UserName,
+                        gu.AppUser.FirstName,
+                        gu.AppUser.LastName,
+                        gu.AppUser.UserProfile.AvatarUrl,
+                        gu.Role,
+                        gu.JoinedAt
+                    })
+                    .FirstOrDefault()
+            })
+            .FirstOrDefaultAsync();
 
-        if (dto.DataRequest?.IncludeMembers ?? true)
-        {
-            query = query
-                .Include(g => g.GroupUsers)
-                .ThenInclude(gu => gu.AppUser)
-                .ThenInclude(u => u.UserProfile)
-                .Include(g => g.GroupUsers);
-                // .ThenInclude(gu => gu.Role);
-        }
-        if (dto.DataRequest?.IncludePosts ?? true)
-        {
-            query = query
-                .Include(g => g.Pins)
-                .ThenInclude(p => p.Votes);
-        }
-
-        var group = await query.FirstOrDefaultAsync(g => g.Id == dto.GroupId);
         if (group is null) return NotFound();
 
-        var data = GetGroupDTO.FromGroup(group, dto.DataRequest);
-        return Ok(new GetGroupResDTO(data));
+        var ownerDto = group.Owner is null ? null : new GroupMemberDto(
+            group.Owner.Id,
+            group.Owner.UserName ?? "",
+            group.Owner.FirstName ?? "",
+            group.Owner.LastName ?? "",
+            group.Owner.AvatarUrl,
+            group.Owner.Role,
+            group.Owner.JoinedAt);
+
+        return Ok(new GroupDto()
+        {
+            Id = group.Id,
+            Name = group.Name,
+            Description = group.Description,
+            AvatarUrl = group.AvatarUrl,
+            CreatedAt = group.CreatedAt,
+            MemberCount = group.MemberCount,
+            PinCount = group.PinCount,
+            Owner = ownerDto!
+        });
     }
 
     [Authorize]

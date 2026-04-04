@@ -1,0 +1,162 @@
+<!-- leaderboard.component.ts -->
+
+<div class="leaderboard-header">
+  <h4>GOFISH Leaderboard</h4>
+  <nav>
+    <a
+      [routerLink]="'.'"
+      [queryParams]="{ tab: 'global' }"
+      [class.active]="activeTabOrDefault() === 'global'">
+      Global
+    </a>
+    <a
+      [routerLink]="'.'"
+      [queryParams]="{ tab: 'friends' }"
+      [class.active]="activeTabOrDefault() === 'friends'">
+      Friends
+    </a>
+  </nav>
+</div>
+
+@if (leaderboard.isLoading()) {
+  <gf-loading-spinner></gf-loading-spinner>
+} @else if (leaderboard.error()) {
+  <gf-loading-error-modal
+    [error]="leaderboard.error()!"
+    (negative)="router.navigate([Path.HOME]);"
+    (positive)="window.location.reload();">
+  </gf-loading-error-modal>
+} @else {
+  @switch (activeTabOrDefault()) {
+  @case ('global') {
+    <!-- Top 3 podium cards -->
+    <div class="podium">
+      @for (entry of topThree(); track entry.userId) {
+        <div class="podium-card">
+          <div class="podium-card-top">
+            <img class="avatar avatar-lg" [src]="avatarService.resolve(entry.avatarUrl)" alt="Avatar">
+            <div class="podium-user-info">
+              <gf-user-title [text]="`${entry.firstName} ${entry.lastName} ${entry.userId === authService.userId() ? '(You)' : ''}`" [rank]="entry.rank"></gf-user-title>
+              <span class="user-handle">&#64;{{ entry.userName }}</span>
+            </div>
+          </div>
+          <div class="podium-card-stats">
+            <div class="stat catch-points">
+              <small>Catch points</small>
+              <div>
+                <span>{{ `${entry.catchPoints}` }}</span>
+                @if (entry.catchPointsDelta > 0) {
+                  <svg class="delta gain" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+                  <span class="delta gain">{{ `+${entry.catchPointsDelta | abs}` }}</span>
+                } @else if (entry.catchPointsDelta < 0) {
+                  <svg class="delta loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+                  <span class="delta loss">{{ `-${entry.catchPointsDelta | abs}` }}</span>
+                } @else {
+                  <svg class="delta neutral" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+                  <span class="delta neutral">{{ `0` }}</span>
+                }
+              </div>
+            </div>
+            <div class="stat generic">
+              <small>Rank</small>
+              <span>{{ Rank[entry.rank - 1] }}</span>
+            </div>
+            <div class="stat generic">
+              <small>Weekly Streak</small>
+              <span>{{ entry.weeklyStreak }}</span>
+            </div>
+          </div>
+          <div class="podium-card-actions">
+            <a class="btn-action" [routerLink]="['/profile', entry.userId]">View Profile</a>
+            <a class="btn-action" [routerLink]="['/profile', entry.userId, 'pins']">View pins</a>
+          </div>
+        </div>
+      }
+    </div>
+    <!-- Remaining rows -->
+    <table class="remaining-table">
+      <tr>
+        <th class="col-position">Place</th>
+        <th class="col-user">User</th>
+        <th class="col-points">Catch points</th>
+        <th class="col-streak">Weekly Streak</th>
+        <th class="col-actions"></th>
+      </tr>
+      @for (entry of rest(); track entry.userId) {
+        <tr>
+          <td class="col-position">{{ entry.position }}</td>
+          <td class="col-user">
+            <img class="avatar avatar-sm" [src]="avatarService.resolve(entry.avatarUrl)" alt="Avatar">
+            <div class="">
+              <gf-user-title [text]="`${entry.firstName} ${entry.lastName} ${entry.userId === authService.userId() ? '(You)' : ''}`" [rank]="entry.rank"></gf-user-title>
+              <span class="user-handle">&#64;{{ entry.userName }}</span>
+            </div>
+          </td>
+          <td class="col-points">
+            <span>{{ `${entry.catchPoints}` }}</span>
+            @if (entry.catchPointsDelta > 0) {
+              <svg class="delta gain" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+              <span class="delta gain">{{ `+${entry.catchPointsDelta | abs}` }}</span>
+            } @else if (entry.catchPointsDelta < 0) {
+              <svg class="delta loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+              <span class="delta loss">{{ `-${entry.catchPointsDelta | abs}` }}</span>
+            } @else {
+              <svg class="delta neutral" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+              <span class="delta neutral">{{ `0` }}</span>
+            }
+          </td>
+          <td class="col-streak">{{ entry.weeklyStreak }}</td>
+          <td class="col-actions">
+            <a class="btn-action" [routerLink]="['/profile', entry.userId]">View Profile</a>
+            <a class="btn-action" [routerLink]="['/profile', entry.userId, 'pins']">View pins</a>
+          </td>
+        </tr>
+      }
+    </table>
+  }
+  @case ('friends') {
+    @if (allEntries().length > 1) {
+      <table class="remaining-table">
+        <tr>
+          <th class="col-position">Place</th>
+          <th class="col-user">User</th>
+          <th class="col-points">Catch points</th>
+          <th class="col-streak">Weekly Streak</th>
+          <th class="col-actions"></th>
+        </tr>
+        @for (entry of allEntries(); track entry.userId) {
+          <tr>
+            <td class="col-position">{{ entry.position }}</td>
+            <td class="col-user">
+              <img class="avatar avatar-sm" [src]="avatarService.resolve(entry.avatarUrl)" alt="Avatar">
+              <div class="">
+                <gf-user-title [text]="`${entry.firstName} ${entry.lastName} ${entry.userId === authService.userId() ? '(You)' : ''}`" [rank]="entry.rank"></gf-user-title>
+                <span class="user-handle">&#64;{{ entry.userName }}</span>
+              </div>
+            </td>
+            <td class="col-points">
+              <span>{{ `${entry.catchPoints}` }}</span>
+              @if (entry.catchPointsDelta > 0) {
+                <svg class="delta gain" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+                <span class="delta gain">{{ `+${entry.catchPointsDelta | abs}` }}</span>
+              } @else if (entry.catchPointsDelta < 0) {
+                <svg class="delta loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+                <span class="delta loss">{{ `-${entry.catchPointsDelta | abs}` }}</span>
+              } @else {
+                <svg class="delta neutral" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+                <span class="delta neutral">{{ `0` }}</span>
+              }
+            </td>
+            <td class="col-streak">{{ entry.weeklyStreak }}</td>
+            <td class="col-actions">
+              <a class="btn-action" [routerLink]="['/profile', entry.userId]">View Profile</a>
+              <a class="btn-action" [routerLink]="['/profile', entry.userId, 'pins']">View pins</a>
+            </td>
+          </tr>
+        }
+      </table>
+    } @else {
+      <p>{{ 'No friends to go against :(' }}</p>
+    }
+  }}
+}

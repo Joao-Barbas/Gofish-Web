@@ -89,6 +89,17 @@ export interface GroupPostDTO {
     kind?: PinKind;
 }
 
+export interface GroupDTO {
+  id: number;
+  name: string;
+  createdAt: string;
+  memberCount: number;
+  pinCount: number;
+  owner: GroupMemberDTO;
+  description?: string;
+  avatarUrl?: string;
+}
+
 // Requests
 
 export interface GetGroupMembersReqDTO {
@@ -147,5 +158,3 @@ export interface GetGroupPinsResDto {
   hasMoreResults: boolean;
   lastTimeStamp?: string;
 }
-
-

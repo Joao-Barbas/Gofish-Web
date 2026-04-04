@@ -45,6 +45,18 @@ public record SearchGroupDto(
     );
 }
 
+public record GroupDto
+{
+    public required int Id { get; init; }
+    public required string Name { get; init; }
+    public required DateTime CreatedAt { get; init; }
+    public required int MemberCount { get; init; }
+    public required int PinCount { get; init; }
+    public required GroupMemberDto Owner { get; init; }
+    public string? Description { get; init; }
+    public string? AvatarUrl { get; init; }
+}
+
 #endregion // View Models
 #region Requests
 

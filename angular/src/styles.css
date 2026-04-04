@@ -192,6 +192,7 @@
   --gf-72: 4.5rem;
   --gf-80: 5rem;
   --gf-96: 6rem;
+  --gf-128: 8rem;
 
   /* Semantic sizings */
   --gf-space-xs: var(--gf-4);

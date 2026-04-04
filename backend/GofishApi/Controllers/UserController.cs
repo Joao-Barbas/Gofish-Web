@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using System.Diagnostics.Metrics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -26,18 +27,21 @@ public class UserController : ControllerBase
     private readonly UserManager<AppUser> _userManager;
     private readonly AppDbContext _db;
     private readonly IGamificationService _gamification;
+    private readonly IVisibilityService _visibility;
 
     public UserController(
         ILogger<UserController> logger,
         UserManager<AppUser> userManager,
         AppDbContext db,
-        IGamificationService gamification
+        IGamificationService gamification,
+        IVisibilityService visibility
     )
     {
         _logger = logger;
         _userManager = userManager;
         _db = db;
         _gamification = gamification;
+        _visibility = visibility;
     }
 
     #region User
@@ -89,6 +93,9 @@ public class UserController : ControllerBase
 
         using var transaction = await _db.Database.BeginTransactionAsync();
 
+        var gamificationResult = await _gamification.TryDecrementPoints(userId, 100);
+        if (!gamificationResult.Succeeded) throw new GamificationException(gamificationResult);
+
         user.UserName = dto.UserName;
         user.PhoneNumber = dto.PhoneNumber;
         user.FirstName = dto.FirstName;
@@ -117,7 +124,13 @@ public class UserController : ControllerBase
 
         using var transaction = await _db.Database.BeginTransactionAsync();
 
-        if (dto.UserName is not null) user.UserName = dto.UserName;
+        if (dto.UserName is not null)
+        {
+            var gamificationResult = await _gamification.TryDecrementPoints(userId, 100);
+            if (!gamificationResult.Succeeded) throw new GamificationException(gamificationResult);
+            user.UserName = dto.UserName;
+        }
+
         if (dto.PhoneNumber is not null) user.PhoneNumber = dto.PhoneNumber;
         if (dto.FirstName is not null) user.FirstName = dto.FirstName;
         if (dto.LastName is not null) user.LastName = dto.LastName;
@@ -193,6 +206,167 @@ public class UserController : ControllerBase
         var lastUsername = hasMore ? users[^1].NormalizedUserName : null;
         return Ok(new SearchUsersResDto(data, hasMore, lastUsername));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    [HttpGet]
+    public async Task<IActionResult> GetGlobalLeaderboard()
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+
+        var top100 = await _db.UserProfiles
+        .OrderByDescending(up => up.CatchPoints)
+        .Take(100)
+        .Select(up => new {
+            up.UserId,
+            up.AppUser.UserName,
+            up.AppUser.FirstName,
+            up.AppUser.LastName,
+            up.AvatarUrl,
+            up.CatchPoints,
+            up.CatchPointsLastMonth,
+            up.WeeklyStreak
+        })
+        .ToListAsync();
+
+        var entries = top100.Select((u, i) => new LeaderboardUserDto
+        { 
+            Position         = i + 1,
+            UserId           = u.UserId,
+            UserName         = u.UserName ?? "",
+            FirstName        = u.FirstName ?? "",
+            LastName         = u.LastName ?? "",
+            AvatarUrl        = u.AvatarUrl,
+            CatchPoints      = u.CatchPoints,
+            CatchPointsDelta = u.CatchPoints - u.CatchPointsLastMonth,
+            WeeklyStreak     = u.WeeklyStreak,
+            Rank             = GamificationService.GetRank(u.CatchPoints),
+        })
+        .ToList();
+
+        var currentUser = entries.FirstOrDefault(e => e.UserId == userId);
+
+        if (currentUser is null)
+        {
+            // User isn't in top 100.
+            // Fetch their position separately
+
+            var userProfile = await _db.UserProfiles
+            .Where(up => up.UserId == userId)
+            .Select(up => new
+            {
+                up.AppUser.UserName,
+                up.AppUser.FirstName,
+                up.AppUser.LastName,
+                up.AvatarUrl,
+                up.CatchPoints,
+                up.CatchPointsLastMonth,
+                up.WeeklyStreak
+            })
+            .FirstOrDefaultAsync();
+
+            if (userProfile is null)
+            {
+                return BadRequest("Current does not has a profile.");
+            }
+
+            var position = await _db.UserProfiles.CountAsync(up => up.CatchPoints > userProfile.CatchPoints) + 1;
+            currentUser = new LeaderboardUserDto
+            {
+                Position         = position,
+                UserId           = userId,
+                UserName         = userProfile.UserName ?? "",
+                FirstName        = userProfile.FirstName ?? "",
+                LastName         = userProfile.LastName ?? "",
+                AvatarUrl        = userProfile.AvatarUrl,
+                CatchPoints      = userProfile.CatchPoints,
+                CatchPointsDelta = userProfile.CatchPoints - userProfile.CatchPointsLastMonth,
+                WeeklyStreak     = userProfile.WeeklyStreak,
+                Rank             = GamificationService.GetRank(userProfile.CatchPoints),
+            };
+        }
+
+        return Ok(new LeaderboardResDto(entries, currentUser));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetFriendsLeaderboard()
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+
+        List<string> friendIds =
+        [
+            .. await _visibility.GetFriendIds(userId).ToListAsync(),
+            userId, // Include self
+        ];
+
+        var top25 = await _db.UserProfiles
+        .Where(up => friendIds.Contains(up.UserId))
+        .OrderByDescending(up => up.CatchPoints)
+        .Take(25)
+        .Select(up => new
+        {
+            up.UserId,
+            up.AppUser.UserName,
+            up.AppUser.FirstName,
+            up.AppUser.LastName,
+            up.AvatarUrl,
+            up.CatchPoints,
+            up.CatchPointsLastMonth,
+            up.WeeklyStreak
+        })
+        .ToListAsync();
+
+        var entries = top25.Select((u, i) => new LeaderboardUserDto
+        {
+            Position         = i + 1,
+            UserId           = u.UserId,
+            UserName         = u.UserName ?? "",
+            FirstName        = u.FirstName ?? "",
+            LastName         = u.LastName ?? "",
+            AvatarUrl        = u.AvatarUrl,
+            CatchPoints      = u.CatchPoints,
+            CatchPointsDelta = u.CatchPoints - u.CatchPointsLastMonth,
+            WeeklyStreak     = u.WeeklyStreak,
+            Rank             = GamificationService.GetRank(u.CatchPoints)
+        })
+        .ToList();
+
+        var currentUser = entries.FirstOrDefault(e => e.UserId == userId);
+
+        return Ok(new LeaderboardResDto(entries, currentUser));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Helpers
 
