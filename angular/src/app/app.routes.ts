@@ -19,6 +19,7 @@ export const routes: Routes = [
   {
     path: 'leaderboard',
     loadComponent: () => import('@gofish/features/leaderboard/leaderboard.component').then(m => m.LeaderboardComponent),
+    canActivate: [authGuard],
     data: {
       header: 'flat' as HeaderVariant,
       footer: 'small' as FooterVariant
@@ -26,6 +27,7 @@ export const routes: Routes = [
   },
   {
     path: 'search',
+    canActivate: [authGuard],
     data: {
       header: 'flat' as HeaderVariant,
       footer: 'small' as FooterVariant

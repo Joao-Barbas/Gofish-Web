@@ -41,7 +41,7 @@ h5 {
 
 .gf-modal-shell {
   border-radius: var(--gf-12);
-  max-width: 40%;
+  max-width: 70ch;
 }
 
 .error-box {
