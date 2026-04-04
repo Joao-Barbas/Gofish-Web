@@ -1,23 +1,19 @@
-﻿using GofishApi.Controllers;
 using GofishApi.Data;
+using GofishApi.Enums;
 using GofishApi.Models;
 using GofishApi.Options;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Options;
 
 namespace GofishApi.Services;
 
 public class GamificationService : IGamificationService
 {
-    private readonly ILogger<GamificationService> _logger;
-    private readonly IOptions<GamificationOptions> _options;
+    private readonly GamificationOptions _opts;
     private readonly AppDbContext _db;
-    private readonly UserManager<AppUser> _userManager;
 
-    private static readonly RankDefinition LowestRank = new() { Threshold = int.MinValue, Rank = 1 };
+    // Rank definitions are static because GetRank is called from DTO factory methods
+    // that have no access to DI. To add ranks, extend this list in ascending threshold order.
+    // Rank 1 is implicit for any score below the first threshold.
     private static readonly IReadOnlyList<RankDefinition> Ranks =
     [
         new() { Threshold = 0,   Rank = 2 },
@@ -27,16 +23,12 @@ public class GamificationService : IGamificationService
     ];
 
     public GamificationService(
-        ILogger<GamificationService> logger,
         IOptions<GamificationOptions> options,
-        AppDbContext db,
-        UserManager<AppUser> userManager
+        AppDbContext db
     )
     {
-        _logger = logger;
-        _options = options;
+        _opts = options.Value;
         _db = db;
-        _userManager = userManager;
     }
 
     #region Points
@@ -45,6 +37,18 @@ public class GamificationService : IGamificationService
     {
         var profile = await _db.UserProfiles.FindAsync(userId);
         return profile?.CatchPoints;
+    }
+
+    public async Task<GamificationResult> ApplyUserPoints(string userId, int points)
+    {
+        var profile = await _db.UserProfiles.FindAsync(userId);
+        if (profile is null)
+        {
+            return GamificationResult.Failed("Unable to find user.");
+        }
+        profile.CatchPoints += points;
+        await _db.SaveChangesAsync();
+        return GamificationResult.Success;
     }
 
     public async Task<GamificationResult> TryDecrementPoints(string userId, int points)
@@ -63,16 +67,83 @@ public class GamificationService : IGamificationService
         return GamificationResult.Success;
     }
 
+    // Called from DTO factory methods — must remain public static.
     public static int GetRank(int points)
     {
         for (int i = Ranks.Count - 1; i >= 0; i--)
         {
             if (points >= Ranks[i].Threshold)
-            {
                 return Ranks[i].Rank;
-            }
         }
-        return LowestRank.Rank;
+        return 1;
+    }
+
+    #endregion
+    #region Voting
+
+    public async Task<int> ApplyVoteAsync(string voterId, Pin pin, VoteKind newVote, Vote? existingVote)
+    {
+        bool wasDownvote = existingVote?.Value == VoteKind.Downvote;
+        bool isDownvote  = newVote == VoteKind.Downvote;
+
+        int ownerPointsDelta;
+        int pinScoreDelta;
+
+        if (existingVote is null)
+        {
+            // New vote
+            ownerPointsDelta = isDownvote ? -_opts.DownvotePointLoss : _opts.UpvotePointGain;
+            pinScoreDelta    = isDownvote ? -1 : 1;
+            _db.Votes.Add(new Vote 
+            {
+                PinId = pin.Id,
+                UserId = voterId,
+                Value = newVote,
+                CreatedAt = DateTime.UtcNow
+            });
+        }
+        else
+        {
+            // Switching vote: reverse previous effect, apply new
+            int prevEffect = wasDownvote ? -_opts.DownvotePointLoss : _opts.UpvotePointGain;
+            int newEffect  = isDownvote  ? -_opts.DownvotePointLoss : _opts.UpvotePointGain;
+
+            ownerPointsDelta = newEffect - prevEffect;
+            pinScoreDelta    = (isDownvote ? -1 : 1) - (wasDownvote ? -1 : 1);
+
+            existingVote.Value = newVote;
+        }
+
+        var ownerProfile = await _db.UserProfiles.FindAsync(pin.UserId);
+        if (ownerProfile is not null) ownerProfile.CatchPoints += ownerPointsDelta;
+        pin.Score += pinScoreDelta;
+
+        using var transaction = await _db.Database.BeginTransactionAsync();
+        await _db.SaveChangesAsync();
+        await transaction.CommitAsync();
+
+        return pin.Score;
+    }
+
+    public async Task<int> RemoveVoteAsync(string voterId, Pin pin, Vote existingVote)
+    {
+        bool wasDownvote = existingVote.Value == VoteKind.Downvote;
+
+        // Reverse the vote's effects
+        int ownerPointsDelta = wasDownvote ? _opts.DownvotePointLoss : -_opts.UpvotePointGain;
+        int pinScoreDelta    = wasDownvote ? 1 : -1;
+
+        _db.Votes.Remove(existingVote);
+
+        var ownerProfile = await _db.UserProfiles.FindAsync(pin.UserId);
+        if (ownerProfile is not null) ownerProfile.CatchPoints += ownerPointsDelta;
+        pin.Score += pinScoreDelta;
+
+        using var transaction = await _db.Database.BeginTransactionAsync();
+        await _db.SaveChangesAsync();
+        await transaction.CommitAsync();
+
+        return pin.Score;
     }
 
     #endregion
@@ -106,8 +177,6 @@ public class GamificationService : IGamificationService
         profile.LastPinWeekStart = currentWeekStart;
         await _db.SaveChangesAsync();
     }
-
-    // Helpers
 
     private static DateTime GetWeekStart(DateTime date)
     {
@@ -143,5 +212,4 @@ public sealed class RankDefinition
 {
     public int Threshold { get; init; }
     public int Rank { get; init; }
-    // public string Name { get; init; } = string.Empty;
 }

@@ -4,7 +4,9 @@ using GofishApi.Enums;
 using GofishApi.Exceptions;
 using GofishApi.Extensions;
 using GofishApi.Models;
+using GofishApi.Options;
 using GofishApi.Services;
+using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -28,13 +30,15 @@ public class UserController : ControllerBase
     private readonly AppDbContext _db;
     private readonly IGamificationService _gamification;
     private readonly IVisibilityService _visibility;
+    private readonly IOptions<GamificationOptions> _gamificationOptions;
 
     public UserController(
         ILogger<UserController> logger,
         UserManager<AppUser> userManager,
         AppDbContext db,
         IGamificationService gamification,
-        IVisibilityService visibility
+        IVisibilityService visibility,
+        IOptions<GamificationOptions> gamificationOptions
     )
     {
         _logger = logger;
@@ -42,6 +46,7 @@ public class UserController : ControllerBase
         _db = db;
         _gamification = gamification;
         _visibility = visibility;
+        _gamificationOptions = gamificationOptions;
     }
 
     #region User
@@ -93,7 +98,7 @@ public class UserController : ControllerBase
 
         using var transaction = await _db.Database.BeginTransactionAsync();
 
-        var gamificationResult = await _gamification.TryDecrementPoints(userId, 100);
+        var gamificationResult = await _gamification.TryDecrementPoints(userId, _gamificationOptions.Value.UsernameChangeCost);
         if (!gamificationResult.Succeeded) throw new GamificationException(gamificationResult);
 
         user.UserName = dto.UserName;
@@ -126,7 +131,7 @@ public class UserController : ControllerBase
 
         if (dto.UserName is not null)
         {
-            var gamificationResult = await _gamification.TryDecrementPoints(userId, 100);
+            var gamificationResult = await _gamification.TryDecrementPoints(userId, _gamificationOptions.Value.UsernameChangeCost);
             if (!gamificationResult.Succeeded) throw new GamificationException(gamificationResult);
             user.UserName = dto.UserName;
         }
