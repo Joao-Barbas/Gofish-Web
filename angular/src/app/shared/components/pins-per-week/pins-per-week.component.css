@@ -1,11 +1,10 @@
 :host {
   display: block;
   border-radius: 12px;
-  padding: 24px;
   height: 100%;
   box-sizing: border-box;
 }
 
 canvas {
-  
+
 }

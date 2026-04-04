@@ -15,37 +15,48 @@
       <span class="text-bold">Quick View</span>
     </div>
 
-    <div class="switch-chart-btn-wrapper">
+    <div class="segmented-control">
+      <div class="radio-btn">
 
-      <button>Mês</button>
-      <button>Semana</button>
+        <input type="radio" name="month" id="current" [checked]="!isLastMonth" (change)="isLastMonth = false" checked>
+        <label for="current">Current Month</label>
+
+        <input type="radio" name="month" id="last" [checked]="isLastMonth" (change)="isLastMonth = true">
+        <label  for="last">Last Month</label>
+
+      </div>
+
     </div>
+
 
 
   </div>
   <!-- #endregion -->
 
   <div class="new-grid">
-    <gf-pins-average-published-chart class="gf-card" [pinStats]="aprilStats"></gf-pins-average-published-chart>
-    <gf-pins-per-week class="gf-card" [pins]="mockPinWeeks"></gf-pins-per-week>
+    @if (!isLastMonth) {
+
+      <gf-pins-average-published-chart class="gf-card" [pinStats]="currentMonthStats"></gf-pins-average-published-chart>
+      <gf-pins-per-week class="gf-card" [pins]="mockPinWeeksCurrentMonth"></gf-pins-per-week>
+    }
+    @else {
+      <gf-pins-average-published-chart class="gf-card" [pinStats]="lastMonthStats"></gf-pins-average-published-chart>
+      <gf-pins-per-week class="gf-card" [pins]="mockPinWeeksLastMonth"></gf-pins-per-week>
+    }
   </div>
 
+  <!-- #region Created Users Chart -->
+
   <div class="quick-view-grid">
-    @if(0) {
-
-    <div class="pin-chart-grid-item gf-card pin-chart-wrapper">
-
-      <gf-pins-average-published-chart [pinStats]="aprilStats"></gf-pins-average-published-chart>
-    </div>
-    }
 
     <div class="chart-grid-item ">
       <!-- Shows weeks from last two months -->
       <gf-users-chart class="gf-card " [users]="mockUsers"></gf-users-chart>
     </div>
 
-
   </div>
+
+  <!-- #endregion-->
 
 
   <!-- #region Quick View GRID -->
@@ -75,9 +86,13 @@
 
 </div>
 
+<!-- * Quick Access Items -->
+
 <div class="container stats-section-wrapper">
 
-  <!-- #region Quick View -->
+  <!-- #region Quick Access -->
+
+
   <div class="d-flex align-items-center quick-header-wrapper">
 
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
@@ -92,10 +107,14 @@
 
     <span class="text-bold">Quick Access</span>
   </div>
+
   <!-- #endregion -->
 
-  <div class="quick-access-list">
 
-    <app-gf-card-quick-access type="reports" title="Reports" [extraTexts]="['Reports awaiting review: 6']" />
-
+  <!-- Go to Reports -->
+  <div class="quick-view-grid">
+    <app-gf-card-quick-access class="quick-access-grid-item" type="reports" title="Reports"
+      [extraTexts]="['Reports awaiting review: 6']" />
   </div>
+
+</div>

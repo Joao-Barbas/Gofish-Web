@@ -5,6 +5,7 @@ import { ChartConfiguration, Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 export interface PinWeekStats {
+  year: number;
   weekLabel: string;
   catchCount: number;
   infoCount: number;
@@ -19,6 +20,8 @@ export interface PinWeekStats {
   styleUrl: './pins-per-week.component.css',
 })
 export class PinsPerWeekComponent implements OnInit {
+
+
 
   @Input() pins: PinWeekStats[] = [];
 
@@ -68,10 +71,14 @@ export class PinsPerWeekComponent implements OnInit {
     this.chartOptions = {
       responsive: true,
       maintainAspectRatio: false,
+      animation: {
+        duration: 400,
+        easing: 'easeInOutQuart',
+      },
       plugins: {
         legend: {
           display: true,
-          onClick: () => {},
+          onClick: () => { },
           labels: {
             color: textColor,
             font: { size: 13 }
@@ -91,5 +98,8 @@ export class PinsPerWeekComponent implements OnInit {
       },
 
     };
+  }
+  ngOnChanges(): void {
+    this.buildChart();
   }
 }

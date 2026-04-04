@@ -21,7 +21,6 @@ export interface PinMonthStats {
 })
 export class PinsAvgPublishedChart implements OnInit {
 
-  // Mudamos o nome de 'data' para 'pinStats' para evitar conflitos
   pinStats = input<PinMonthStats>();
 
   public doughnutChartData: ChartConfiguration<'doughnut'>['data'] = {
@@ -45,7 +44,7 @@ export class PinsAvgPublishedChart implements OnInit {
   }
 
   private buildChart(): void {
-    // Chamamos pinStats() como função porque é um Signal
+
     const stats = this.pinStats();
 
     if (!stats) return;

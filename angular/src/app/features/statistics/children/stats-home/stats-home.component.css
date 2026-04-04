@@ -41,9 +41,36 @@
   }
 }
 
-.switch-chart-btn-wrapper {
+.segmented-control {
   display: flex;
-  gap: 12px;
+  border-radius: 8px;
+  padding: 12px;
+  gap: 8px;
+}
+
+.segmented-control input[type="radio"] {
+  display: none;
+}
+
+.radio-btn {
+  display: flex;
+  gap: 4px;
+}
+
+.radio-btn label {
+  padding: 8px;
+  border-radius: 8px;
+  color: var(--gf-dark-text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  background-color: var(--gf-dark-bg-dark);
+}
+
+.radio-btn input[type="radio"]:checked + label {
+  box-shadow: var(--gf-shadow-lift-sm);
+  background-color: var(--gf-dark-bg);
+  color: var(--gf-dark-text);
 }
 
 .user-chart-wrapper {
@@ -53,7 +80,7 @@
 
 .new-grid {
   display: grid;
-  grid-template-columns: auto 1fr;  /* donut ocupa o que precisa, barras ocupa o resto */
+  grid-template-columns: auto 1fr;
   gap: 20px;
   width: 100%;
   min-height: 376px;
@@ -62,16 +89,22 @@
 .quick-view-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px 6px;
+  gap: 20px 20px;
   width: 100%;
   height: fit-content;
   justify-items: start;
+}
+
+.quick-access-grid-item {
+  grid-column: 1;
+
 }
 
 .chart-grid-item {
   grid-column: 1 / -1;
   width: 100%;
 }
+
 
 .pin-chart-wrapper {
   display: flex;

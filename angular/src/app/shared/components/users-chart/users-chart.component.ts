@@ -62,6 +62,7 @@ export class UsersChartComponent implements OnChanges {
 
     this.chartOptions = {
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           display: true,
