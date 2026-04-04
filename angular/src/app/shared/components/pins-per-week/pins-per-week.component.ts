@@ -72,7 +72,7 @@ export class PinsPerWeekComponent implements OnInit {
       responsive: true,
       maintainAspectRatio: false,
       animation: {
-        duration: 400,
+        duration: 0,
         easing: 'easeInOutQuart',
       },
       plugins: {
