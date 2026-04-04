@@ -64,7 +64,7 @@ export class AuthService {
   // End token storage
   // Jwt claim getters
 
-  readonly userId        = computed<JwtPayload["sub"]>(() => this.decodedToken()?.sub ?? '');
+  readonly userId        = computed<JwtPayload["sub"]>(() => this.decodedToken()?.sub ?? null);
   readonly userName      = computed<JwtPayload["unique_name"]>(() => this.decodedToken()?.unique_name ?? '');
   readonly userFirstName = computed<JwtPayload["given_name"]>(() => this.decodedToken()?.given_name ?? '');
   readonly userLastName  = computed<JwtPayload["family_name"]>(() => this.decodedToken()?.family_name ?? '');
