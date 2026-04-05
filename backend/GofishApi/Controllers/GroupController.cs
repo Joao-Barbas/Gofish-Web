@@ -391,14 +391,40 @@ public class GroupController : ControllerBase
         _db.GroupUsers.Add(membership);
         await _db.SaveChangesAsync();
 
-        return Ok("Invite accepted successfully.");
+        return Ok();
+    }
+
+    [HttpDelete("DeleteGroupInvite/{id}")]
+    public async Task<IActionResult> DeleteGroupInvite([FromRoute] int id)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var invite = await _db.GroupInvites.FindAsync(id);
+        if (invite is null) return NotFound();
+
+        // Only receiver or requester can delete
+        var isParticipant = invite.ReceiverUserId == userId || invite.RequesterUserId == userId;
+        if (!isParticipant) return NotFound();
+
+        // Can only delete pending invites
+        if (invite.State != FriendshipState.Pending)
+        {
+            throw new AppValidationException("State", "Only pending invites can be deleted.");
+        }
+
+        _db.GroupInvites.Remove(invite);
+        await _db.SaveChangesAsync();
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> IgnoreGroupInvite([FromRoute] int id)
+    {
+        return await DeleteGroupInvite(id);
     }
 
     [Authorize]
     [HttpDelete("RemoveMember/{groupId}/{userId}")]
-    public async Task<IActionResult> RemoveMember(
-    [FromRoute] int groupId,
-    [FromRoute] string userId)
+    public async Task<IActionResult> RemoveMember([FromRoute] int groupId, [FromRoute] string userId)
     {
         var requesterUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         if (string.IsNullOrEmpty(requesterUserId))
