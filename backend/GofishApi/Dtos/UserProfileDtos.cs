@@ -28,75 +28,37 @@ public record UserProfileDto
 }
 
 #endregion // View Models
+#region Request Wrappers
 
-public record GetUserProfileReqDTO(
-    // Unused
-)
-{ }
+public record GetUserProfileReqDTO { } // Unused
 
-public record GetUserProfileResDto(
-    string UserId,
-    string FirstName,
-    string LastName,
-    string UserName,
-    int CatchPoints,
-    int Rank,
-    string? Bio,
-    string? AvatarUrl,
-    DateTime JoinedAt,
-    DateTime LastActiveAt,
-    FriendshipState? FriendshipState,
-    int WeeklyStreak,
-    int MaxWeeklySteak,
-    int PinsCount,
-    int FriendsCount,
-    int GroupsCount
-)
+public record GetUserProfileSettingsReqDto { } // Unused
+
+public record PutUserProfileReqDto
 {
-    public static GetUserProfileResDto FromEntity(UserProfile e, FriendshipState? friendshipState) => new(
-        e.UserId,
-        e.AppUser.FirstName ?? "",
-        e.AppUser.LastName ?? "",
-        e.AppUser.UserName ?? "",
-        e.CatchPoints,
-        GamificationService.GetRank(e.CatchPoints),
-        e.Bio,
-        e.AvatarUrl,
-        e.JoinedAt,
-        e.LastActiveAt,
-        friendshipState,
-        e.WeeklyStreak,
-        e.MaxWeeklyStreak,
-        0,
-        0,
-        0
-    );
+    [Required] public required string Bio { get; init; }
+    [Required] public required IFormFile Avatar { get; init; }
 }
 
-public record GetUserProfileSettingsReqDto(
-// Unused
-)
-{ }
-
-public record GetUserProfileSettingsResDto(
-    string? Bio,
-    string? AvatarUrl
-)
+public record PatchUserProfileReqDto
 {
-    public static GetUserProfileSettingsResDto FromEntity(UserProfile e) => new(
-        e.Bio,
-        e.AvatarUrl
-    );
+    public string? Bio { get; init; }
+    public IFormFile? Avatar { get; init; }
 }
 
-public record PutUserProfileReqDto(
-    [Required] string Bio,
-    [Required] IFormFile Avatar
-)
-{ }
+#endregion // Request Wrappers
+#region Response Wrappers
 
-public record PatchUserProfileReqDto(
-    string? Bio,
-    IFormFile? Avatar
-)
-{ }
+public record GetUserProfileSettingsResDto
+{
+    public string? Bio { get; init; }
+    public string? AvatarUrl { get; init; }
+
+    public static GetUserProfileSettingsResDto FromEntity(UserProfile e) => new()
+    {
+        Bio = e.Bio,
+        AvatarUrl = e.AvatarUrl
+    };
+}
+
+#endregion // Response Wrappers

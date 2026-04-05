@@ -61,14 +61,14 @@ public class UserProfileController : ControllerBase
             return NotFound();
         }
 
-        var pinsCount = await _visibility
+        var pinCount = await _visibility
         .FilterVisiblePins(_context.Pins.Where(p => p.UserId == id), authUserId)
         .CountAsync();
 
-        var friendsCount = await _context.Friendships
+        var friendCount = await _context.Friendships
         .CountAsync(f => (f.RequesterUserId == id || f.ReceiverUserId == id) && f.State == FriendshipState.Accepted);
 
-        var groupsCount = await _context.GroupUsers
+        var groupCount = await _context.GroupUsers
         .CountAsync(gu => gu.UserId == id);
 
         var friendship = await _context.Friendships.FirstOrDefaultAsync(f =>
@@ -90,9 +90,9 @@ public class UserProfileController : ControllerBase
             Friendship = friendship is not null ? FriendshipDto.FromEntity(friendship) : null,
             WeeklyStreak = thisUserProfile.WeeklyStreak,
             MaxWeeklySteak = thisUserProfile.MaxWeeklyStreak,
-            PinsCount = pinsCount,
-            FriendsCount = friendsCount,
-            GroupsCount = groupsCount
+            PinsCount = pinCount,
+            FriendsCount = friendCount,
+            GroupsCount = groupCount
         };
 
         return Ok(data);
