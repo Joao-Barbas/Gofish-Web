@@ -2,7 +2,7 @@
 
 import { JsonPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, effect, inject, input, resource, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, resource, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProfileContext } from '@gofish/features/user/profile/services/profile-context.service';
 import { UserApi } from '@gofish/shared/api/user.api';
@@ -15,28 +15,25 @@ import { FriendsListComponent } from "./components/friends-list/friends-list.com
 import { RequestsListComponent } from "./components/requests-list/requests-list.component";
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 
+type ProfileFriendsListRouteTab = 'friends' | 'requests';
+
 @Component({
   selector: 'app-friends',
   imports: [
     RouterLink,
     RequestsListComponent,
-    FriendsListComponent,
-    LoadingSpinnerComponent
-],
+    FriendsListComponent
+  ],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.css',
 })
 export class FriendsComponent {
-  readonly activeTab = input<string | undefined>(undefined, { alias: 'tab' }); // Signal-based input given from ?tab=
+  readonly activeTab = input<ProfileFriendsListRouteTab | undefined>(undefined, { alias: 'tab' }); // Signal-based input given from ?tab=
+  readonly activeTabOrDefault = computed<ProfileFriendsListRouteTab>(() => this.activeTab() ?? 'friends' )
 
   readonly userApi        = inject(UserApi);
   readonly profileContext = inject(ProfileContext);
   readonly authService    = inject(AuthService);
-
-  user = resource({
-    params: () => this.profileContext.profileId(),
-    loader: ({ params: id }) => firstValueFrom(this.userApi.getUser(id))
-  });
 
   constructor() { }
 }

@@ -61,26 +61,44 @@ public class UserProfileController : ControllerBase
             return NotFound();
         }
 
-        var pinsCount = await _visibility
+        var pinCount = await _visibility
         .FilterVisiblePins(_context.Pins.Where(p => p.UserId == id), authUserId)
         .CountAsync();
 
-        var friendsCount = await _context.Friendships
+        var friendCount = await _context.Friendships
         .CountAsync(f => (f.RequesterUserId == id || f.ReceiverUserId == id) && f.State == FriendshipState.Accepted);
 
-        var groupsCount = await _context.GroupUsers
+        var groupCount = await _context.GroupUsers
         .CountAsync(gu => gu.UserId == id);
 
-        var friendship = await _context.Friendships.FirstOrDefaultAsync(f =>
+        var friendship = await _context.Friendships
+        .Include(f => f.Requester).ThenInclude(u => u.UserProfile)
+        .Include(f => f.Receiver).ThenInclude(u => u.UserProfile)
+        .FirstOrDefaultAsync(f =>
             (f.RequesterUserId == authUserId && f.ReceiverUserId == id) ||
             (f.RequesterUserId == id && f.ReceiverUserId == authUserId));
 
-        return Ok(GetUserProfileResDto.FromEntity(thisUserProfile, friendship?.State) with
+        var data = new UserProfileDto
         {
-            PinsCount = pinsCount,
-            FriendsCount = friendsCount,
-            GroupsCount = groupsCount
-        });
+            UserId = thisUserProfile.UserId,
+            FirstName = thisUserProfile.AppUser.FirstName ?? "",
+            LastName = thisUserProfile.AppUser.LastName ?? "",
+            UserName = thisUserProfile.AppUser.UserName ?? "",
+            CatchPoints = thisUserProfile.CatchPoints,
+            Rank = GamificationService.GetRank(thisUserProfile.CatchPoints),
+            Bio = thisUserProfile.Bio,
+            AvatarUrl = thisUserProfile.AvatarUrl,
+            JoinedAt = thisUserProfile.JoinedAt,
+            LastActiveAt = thisUserProfile.LastActiveAt,
+            Friendship = friendship is not null ? FriendshipDto.FromEntity(friendship) : null,
+            WeeklyStreak = thisUserProfile.WeeklyStreak,
+            MaxWeeklySteak = thisUserProfile.MaxWeeklyStreak,
+            PinsCount = pinCount,
+            FriendsCount = friendCount,
+            GroupsCount = groupCount
+        };
+
+        return Ok(data);
     }
 
     [HttpGet("{id}")]

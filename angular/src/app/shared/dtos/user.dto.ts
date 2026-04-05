@@ -133,7 +133,7 @@ export interface RequestFriendshipReqDTO {
 }
 
 export interface RequestFriendshipResDTO {
-  id: number;
+  // Unused
 }
 
 // Groups

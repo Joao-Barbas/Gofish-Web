@@ -8,7 +8,7 @@ import { GetPinsResDto, GetPinsResDTO, PinDataResDTO, PinDto } from '@gofish/sha
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { firstValueFrom } from 'rxjs';
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button-2/async-button-2.component";
@@ -16,6 +16,7 @@ import { PinKind } from '@gofish/shared/models/pin.model';
 import { GfCardPinPreviewComponent } from "@gofish/shared/components/gf-card-pin-preview/gf-card-pin-preview.component";
 import { Path, PathSegment } from '@gofish/shared/constants';
 import { HttpErrorResponse } from '@angular/common/http';
+import { LoadingErrorModalComponent } from "@gofish/shared/components/loading-error-modal/loading-error-modal.component";
 
 @Component({
   selector: 'app-pins',
@@ -24,6 +25,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     RouterLink,
     AsyncButtonComponent,
     GfCardPinPreviewComponent,
+    LoadingErrorModalComponent
 ],
   templateUrl: './pins.component.html',
   styleUrl: './pins.component.css',
@@ -35,25 +37,22 @@ export class PinsComponent {
   readonly pinApi         = inject(PinApi);
   readonly profileContext = inject(ProfileContext);
   readonly authService    = inject(AuthService);
+  readonly router         = inject(Router);
 
   readonly loadingState = new LoadingState();
   readonly busyState    = new BusyState();
 
-  PinKind     = PinKind;
-  Path        = Path;
-  PathSegment = PathSegment;
+  readonly window      = window;
+  readonly PinKind     = PinKind;
+  readonly Path        = Path;
+  readonly PathSegment = PathSegment;
 
   pinsCursor  = signal<string | undefined>(undefined);
   pinsHasMore = signal(true);
   pinsList    = signal<PinDto[]>([]);
 
-  user = resource({
-    params: () => this.profileContext.profileId(),
-    loader: ({ params: id }) => firstValueFrom(this.userApi.getUser(id))
-  });
-
   pins = resource({
-    params: () => this.profileContext.profileId(),
+    params: () => this.profileContext.userProfileId(),
     loader: ({ params: id }) => firstValueFrom(this.pinApi.getPins({
       ids: [{ authorId: id }],
       dataRequest: {
@@ -83,7 +82,7 @@ export class PinsComponent {
   }
 
   loadMorePins() {
-    let profileId = this.profileContext.profileId();
+    let profileId = this.profileContext.userProfileId();
     this.loadingState.start();
     this.busyState.setBusy(true);
     this.pinApi.getPins({

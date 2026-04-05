@@ -1,6 +1,6 @@
 // groups.component.html
 
-import { Component, inject, input, resource } from '@angular/core';
+import { Component, computed, inject, input, resource } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProfileContext } from '@gofish/features/user/profile/services/profile-context.service';
 import { UserApi } from '@gofish/shared/api/user.api';
@@ -10,11 +10,12 @@ import { firstValueFrom } from 'rxjs';
 import { GroupsListComponent } from "./components/groups-list/groups-list.component";
 import { GroupInvitesListComponent } from "./components/group-invites-list/group-invites-list.component";
 
+type ProfileGroupListRouteTab = 'groups' | 'invites';
+
 @Component({
   selector: 'app-groups',
   imports: [
     RouterLink,
-    LoadingSpinnerComponent,
     GroupsListComponent,
     GroupInvitesListComponent
 ],
@@ -22,16 +23,12 @@ import { GroupInvitesListComponent } from "./components/group-invites-list/group
   styleUrl: './groups.component.css',
 })
 export class GroupsComponent {
-  readonly activeTab = input<string | undefined>(undefined, { alias: 'tab' }); // Signal-based input given from ?tab=
+  readonly activeTab = input<ProfileGroupListRouteTab | undefined>(undefined, { alias: 'tab' }); // Signal-based input given from ?tab=
+  readonly activeTabOrDefault = computed<ProfileGroupListRouteTab>(() => this.activeTab() ?? 'groups' )
 
   readonly userApi        = inject(UserApi);
   readonly profileContext = inject(ProfileContext);
   readonly authService    = inject(AuthService);
-
-  user = resource({
-    params: () => this.profileContext.profileId(),
-    loader: ({ params: id }) => firstValueFrom(this.userApi.getUser(id))
-  });
 
   constructor() { }
 }

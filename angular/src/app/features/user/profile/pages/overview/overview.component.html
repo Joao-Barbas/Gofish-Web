@@ -1,148 +1,140 @@
 <!-- overview.component.html -->
 
-@if (resources().isLoading) {
+@if (overviewData.isLoading()) {
   <gf-loading-spinner></gf-loading-spinner>
-} @else if (resources().error) {
-  <gf-loading-error-modal [error]="resources().error!" (negative)="onErrorModalNegative()" (positive)="onErrorModalPositive()"> </gf-loading-error-modal>
-} @else if (resources().hasValue) {
-  @let profile = resources().value.profile!;
-  @let friends = resources().value.friends!;
-  @let groups  = resources().value.groups!;
+} @else if (overviewData.error()) {
+  <gf-loading-error-modal
+    [error]="overviewData.error()!"
+    (negative)="onErrorModalNegative()"
+    (positive)="onErrorModalPositive()"
+  ></gf-loading-error-modal>
+} @else if (overviewData.hasValue()) {
+  @let profile = profileContext.userProfile();
 
-  <div class="gf-container-lg gf-w-90 gf-mx-auto gf-pt-64 gf-flow-vertical gf-gap-24">
+  @let friends = overviewData.value().friends;
+  @let groups  = overviewData.value().groups;
 
-    <!-- Overview -->
-    <div class="gf-flow-vertical gf-gap-16">
-
-      <!-- Avatar, name & actions -->
-      <div class="gf-flow-horizontal gf-items-center gf-justify-between">
-
-        <!-- Avatar & name -->
-        <div class="gf-flow-horizontal gf-items-center gf-gap-16">
-          <img [src]="avatarService.resolve(profile.avatarUrl)" alt="Avatar" style="width: 96px; height: 96px; border-radius: 100%; object-fit: cover;">
-          <div>
-            @if (profile.firstName !== '' && profile.lastName !== '') {
-              <div class="profile-user-title">
-                <gf-user-title [text]="`${profile.firstName} ${profile.lastName}`" [rank]="profile.rank"></gf-user-title>
-                <gf-user-rank-icon [rank]="profile.rank"></gf-user-rank-icon>
-              </div>
-            }
-            <small class="gf-text-sm">{{ profile.userName }}</small>
-          </div>
-        </div>
-
-        <!-- actions -->
-        <div class="gf-flow-horizontal-rev gf-gap-6">
-          @if (hasProfileActions()) {
-            <div style="position: relative;">
-              <button class="gf-center-axes action-btn btn-ellipsis" (click)="onProfilePopoverClick($event)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="1"/>
-                  <circle cx="19" cy="12" r="1"/>
-                  <circle cx="5" cy="12" r="1"/>
-                </svg>
-              </button>
-              @if (popupService.activePopup() === 'gf-profile-actions-popover') {
-                <gf-profile-actions-popover></gf-profile-actions-popover>
-              }
+  <!-- Overview -->
+  <div class="gf-flow-vertical gf-gap-16">
+    <!-- Avatar, name & actions -->
+    <div class="gf-flow-horizontal gf-items-center gf-justify-between">
+      <!-- Avatar & name -->
+      <div class="gf-flow-horizontal gf-items-center gf-gap-16">
+        <img [src]="avatarService.resolve(profile.avatarUrl)" alt="Avatar" style="width: 96px; height: 96px; border-radius: 100%; object-fit: cover;">
+        <div>
+          @if (profile.firstName !== '' && profile.lastName !== '') {
+            <div class="profile-user-title">
+              <gf-user-title [text]="`${profile.firstName} ${profile.lastName}`" [rank]="profile.rank"></gf-user-title>
+              <gf-user-rank-icon [rank]="profile.rank"></gf-user-rank-icon>
             </div>
           }
-
-          @if (profile.userId !== authService.userId()) {
-            @if (!profileContext.isFriend()) {
-              <gf-async-button
-                [labels]="{ idle: 'Send Friend Request' }"
-                [states]="{ busy: busyState.isBusy(), success: isFriendshipSent() }"
-                (click)="onSendFriendshipRequest()"
-              ></gf-async-button>
-            }
-          } @else {
-            <a class="gf-center-axes gf-px-32 action-btn btn-edit" [routerLink]="'/settings'">
-              Edit profile
-            </a>
+          <small class="gf-text-sm">{{ profile.userName }}</small>
+        </div>
+      </div>
+      <!-- actions -->
+      <div class="gf-flow-horizontal-rev gf-gap-6">
+        <div style="position: relative;">
+          <button class="gf-center-axes action-btn btn-ellipsis" (click)="onProfilePopoverClick($event)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="1"/>
+              <circle cx="19" cy="12" r="1"/>
+              <circle cx="5" cy="12" r="1"/>
+            </svg>
+          </button>
+          @if (popoverService.activePopover() === ProfileActionsPopoverComponent.Key) {
+            <gf-profile-actions-popover></gf-profile-actions-popover>
           }
         </div>
-
-      </div>
-
-      <!-- Under avatar stats -->
-      <div class="gf-flow-horizontal gf-gap-6">
-        <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">
-          <a [routerLink]="'pins'" style="text-decoration: none; color: var(--gf-dark-text)">{{ `${profile.pinsCount} Pins` }}
+        @if (profile.userId !== authService.userId()) {
+          @if (!profileContext.isFriend()) {
+            <gf-async-button
+              [labels]="{ idle: 'Send Friend Request', disabled: 'Pending' }"
+              [states]="{ busy: busyState.isBusy(), disabled: profileContext.userProfile().friendship?.state === FriendshipState.Pending }"
+              (click)="onSendFriendshipRequest()"
+            ></gf-async-button>
+          }
+        } @else {
+          <a class="gf-center-axes gf-px-32 action-btn btn-edit" [routerLink]="'/settings'">
+            Edit profile
           </a>
-        </div>
-        <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">
-          <span>{{ `${profile.catchPoints} Catch Points` }}</span>
-        </div>
-        <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">
-          <span>{{ `${profile.weeklyStreak} Weekly Streak` }}</span>
-        </div>
-        <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">
-          <span>{{ `${profile.maxWeeklySteak} Max Weekly Streak` }}</span>
-        </div>
-      </div>
-
-      <!-- Bio -->
-      <div class="gf-pos-relative bio">
-        <p #bioText [class.collapsed]="bioCollapsed()">{{ profile?.bio ?? 'No bio yet.' }}</p>
-        @if (bioOverflows()) {
-          <button #bioToggle (click)="bioCollapsed.set(!bioCollapsed())">
-            {{ bioCollapsed() ? 'Show more' : 'Show less' }}
-          </button>
         }
       </div>
-
     </div>
-
-    <!-- Horizontal friends list -->
-    @if (friends.friendships.length > 0) {
-      <div>
-        <div class="gf-flow-horizontal gf-justify-between">
-          <p class="gf-text-md gf-font-semibold">Friends ({{ profile.friendsCount }})</p>
-          <a [routerLink]="'friends'" class="gf-d-flex gf-items-center gf-text-sm see-all">
-            See all
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m9 18 6-6-6-6"/>
-            </svg>
-          </a>
-        </div>
-
-        <!-- Friends carousel -->
-        <div #friendsCarousel id="friends-carousel" class="carousel-list gf-mt-8">
-          @for (f of friends.friendships; track f.id) {
-            <gf-small-friendship-carousel-card [friendship]="f"></gf-small-friendship-carousel-card>
-          }
-        </div>
+    <!-- Under avatar stats -->
+    <div class="gf-flow-horizontal gf-gap-6">
+      <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">
+        <a [routerLink]="'pins'" style="text-decoration: none; color: var(--gf-dark-text)">{{ `${profile.pinsCount} Pins` }}
+        </a>
       </div>
-    }
-
-    <!-- Horizontal groups list -->
-    @if (groups.groups.length > 0) {
-      <div>
-        <div class="gf-flow-horizontal gf-justify-between">
-          <p class="gf-text-md gf-font-semibold">Crews ({{ profile.groupsCount }})</p>
-          <a [routerLink]="'groups'" class="gf-d-flex gf-items-center gf-text-sm see-all">
-            See all
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m9 18 6-6-6-6"/>
-            </svg>
-          </a>
-        </div>
-
-        <!-- Groups carousel -->
-        <div #groupsCarousel id="groups-carousel" class="carousel-list gf-mt-8">
-          @for (g of groups.groups; track g.id) {
-            <gf-small-group-carousel-card [group]="g"></gf-small-group-carousel-card>
-          }
-        </div>
+      <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">
+        <span>{{ `${profile.catchPoints} Catch Points` }}</span>
       </div>
-    }
-
+      <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">
+        <span>{{ `${profile.weeklyStreak} Weekly Streak` }}</span>
+      </div>
+      <div class="gf-center-axes gf-card gf-py-0 gf-px-16 gf-text-xs user-stat">
+        <span>{{ `${profile.maxWeeklySteak} Max Weekly Streak` }}</span>
+      </div>
+    </div>
+    <!-- Bio -->
+    <div class="gf-pos-relative bio">
+      <p #bioText [class.collapsed]="bioCollapsed()">{{ profile?.bio ?? 'No bio yet.' }}</p>
+      @if (bioOverflows()) {
+        <button #bioToggle (click)="bioCollapsed.set(!bioCollapsed())">
+          {{ bioCollapsed() ? 'Show more' : 'Show less' }}
+        </button>
+      }
+    </div>
   </div>
+  <!-- Horizontal friends list -->
+  @if (friends.friendships.length > 0) {
+    <div>
+      <div class="gf-flow-horizontal gf-justify-between">
+        <p class="gf-text-md gf-font-semibold">Friends ({{ profile.friendsCount }})</p>
+        <a [routerLink]="'friends'" class="gf-d-flex gf-items-center gf-text-sm see-all">
+          See all
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+        </a>
+      </div>
+      <!-- Friends carousel -->
+      <div #friendsCarousel id="friends-carousel" class="carousel-list gf-mt-8">
+        @for (f of friends.friendships; track f.id) {
+          <gf-small-friendship-carousel-card [friendship]="f"></gf-small-friendship-carousel-card>
+        }
+      </div>
+    </div>
+  }
+  <!-- Horizontal groups list -->
+  @if (groups.groups.length > 0) {
+    <div>
+      <div class="gf-flow-horizontal gf-justify-between">
+        <p class="gf-text-md gf-font-semibold">Crews ({{ profile.groupsCount }})</p>
+        <a [routerLink]="'groups'" class="gf-d-flex gf-items-center gf-text-sm see-all">
+          See all
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+        </a>
+      </div>
+      <!-- Groups carousel -->
+      <div #groupsCarousel id="groups-carousel" class="carousel-list gf-mt-8">
+        @for (g of groups.groups; track g.id) {
+          <gf-small-group-carousel-card [group]="g"></gf-small-group-carousel-card>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Modals -->
+  @if (modalService.activeModal() === ProfileShowMoreModalComponent.Key) {
+    <gf-profile-show-more-modal [userProfile]="profile"></gf-profile-show-more-modal>
+  }
 }

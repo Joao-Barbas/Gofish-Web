@@ -1,0 +1,10 @@
+/* groups-list.component.css */
+
+.list {
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: 1;
+  grid-template-rows: auto;
+  row-gap: var(--gf-8);
+  column-gap: var(--gf-8);
+}

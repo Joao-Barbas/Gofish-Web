@@ -12,62 +12,38 @@ import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
 import { firstValueFrom } from 'rxjs';
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 import { FriendshipListCardComponent } from '@gofish/features/user/profile/pages/friends/components/friendship-list-card/friendship-list-card.component';
+import { LoadingErrorModalComponent } from "@gofish/shared/components/loading-error-modal/loading-error-modal.component";
+import { Path } from '@gofish/shared/constants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-requests-list',
   imports: [
     FriendshipListCardComponent,
     AsyncButtonComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    LoadingErrorModalComponent
 ],
-  template: `
-    @if (requests.isLoading()) {
-      <gf-loading-spinner></gf-loading-spinner>
-    }
-    @if (requests.hasValue()) {
-      <div class="list">
-        @for (requests of requestsList(); track requests.id) {
-          <gf-friendship-list-card
-            [friendship]="requests"
-            [small]="false"
-            [actions]="true"
-          ></gf-friendship-list-card>
-        } @empty {
-          @if (!requests.isLoading() && !loadingState.isLoading()) {
-            <p>{{ 'No requests yet. :(' }}</p>
-          }
-        }
-      </div>
-      @if (requestsHasMore()) {
-        <gf-async-button
-          [labels]="{ idle: 'Load more', busy: 'Loading...' }"
-          [states]="{ busy: busyState.isBusy() }"
-          (click)="loadMoreFriends()"
-        ></gf-async-button>
-      }
-    }
-    @if (requests.error()) {
-      <div class="failed-container gf-flow-vertical gf-center-axes">
-        <span>{{ requests.error() }}</span>
-        <button (click)="requests.reload()">Try Again</button>
-      </div>
-    }
-  `,
-  styleUrl: '../../friends.component.css',
+  templateUrl: './requests-list.component.html',
+  styleUrl: './requests-list.component.css',
 })
 export class RequestsListComponent {
   readonly profileContext = inject(ProfileContext);
   readonly userApi        = inject(UserApi);
+  readonly router         = inject(Router);
 
   readonly loadingState = new LoadingState();
   readonly busyState    = new BusyState();
+
+  readonly Path = Path;
+  readonly window = window;
 
   requestsCursor  = signal<string | undefined>(undefined);
   requestsHasMore = signal(true);
   requestsList    = signal<FriendshipDTO[]>([]);
 
   requests = resource({
-    params: () => this.profileContext.profileId(),
+    params: () => this.profileContext.userProfileId(),
     loader: ({ params: id }) => firstValueFrom(this.userApi.getFriendships({ userId: id, state: FriendshipState.Pending, maxResults: 1, lastTimestamp: undefined }))
   });
 
@@ -81,7 +57,7 @@ export class RequestsListComponent {
   }
 
   loadMoreFriends() {
-    let profileId = this.profileContext.profileId();
+    let profileId = this.profileContext.userProfileId();
     this.loadingState.start();
     this.busyState.setBusy(true);
     this.userApi.getFriendships({
