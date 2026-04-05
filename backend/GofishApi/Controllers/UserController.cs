@@ -499,8 +499,13 @@ public class UserController : ControllerBase
         _db.Friendships.Add(friendship);
         await _db.SaveChangesAsync();
 
+        await _db.Entry(friendship).Reference(f => f.Requester).LoadAsync();
+        await _db.Entry(friendship.Requester).Reference(u => u.UserProfile).LoadAsync();
+        await _db.Entry(friendship).Reference(f => f.Receiver).LoadAsync();
+        await _db.Entry(friendship.Receiver).Reference(u => u.UserProfile).LoadAsync();
+
         var res = FriendshipDto.FromEntity(friendship);
-        return CreatedAtAction(nameof(GetFriendship), res, res);
+        return CreatedAtAction(nameof(GetFriendship), new { id = friendship.Id }, res);
     }
 
     [HttpPatch("{id}")]

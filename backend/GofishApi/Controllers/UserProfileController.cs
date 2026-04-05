@@ -71,7 +71,10 @@ public class UserProfileController : ControllerBase
         var groupCount = await _context.GroupUsers
         .CountAsync(gu => gu.UserId == id);
 
-        var friendship = await _context.Friendships.FirstOrDefaultAsync(f =>
+        var friendship = await _context.Friendships
+        .Include(f => f.Requester).ThenInclude(u => u.UserProfile)
+        .Include(f => f.Receiver).ThenInclude(u => u.UserProfile)
+        .FirstOrDefaultAsync(f =>
             (f.RequesterUserId == authUserId && f.ReceiverUserId == id) ||
             (f.RequesterUserId == id && f.ReceiverUserId == authUserId));
 
