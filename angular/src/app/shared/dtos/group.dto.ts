@@ -1,6 +1,7 @@
 import { GetPostsPostDTO } from "@gofish/shared/dtos/get-post.dto";
 import { GetGroupMemberDTO } from "@gofish/shared/dtos/members.dto";
 import { GeoLocationDTO, PinDetailsDTO, PinDto } from "@gofish/shared/dtos/pin.dto";
+import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 import { GroupRole } from "@gofish/shared/enums/group-role.enum";
 import { VisibilityLevel } from "@gofish/shared/enums/visibility-level.enum";
 import { VoteKind } from "@gofish/shared/enums/vote-kind.enum";
@@ -165,4 +166,12 @@ export interface GetGroupPinsResDto {
   pins: PinDto[];
   hasMoreResults: boolean;
   lastTimeStamp?: string;
+}
+
+export interface GroupInviteDTO {
+  id: number;
+  group: GroupDTO;
+  inviteState: FriendshipState;
+  createdAt: string;
+  requester: GroupMemberDTO;
 }

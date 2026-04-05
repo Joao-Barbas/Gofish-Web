@@ -1,5 +1,6 @@
 // user.dto.ts
 
+import { GroupInviteDTO } from "@gofish/shared/dtos/group.dto";
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 import { GroupRole } from "@gofish/shared/enums/group-role.enum";
 
@@ -169,6 +170,18 @@ export interface GetInvitableGroupsReqDTO {
 
 export interface GetInvitableGroupsResDTO {
   groups: UserGroupDTO[];
+  hasMoreResults: boolean;
+  lastTimestamp?: string;
+}
+
+export interface GetGroupInvitesReqDTO {
+  state?: FriendshipState;
+  maxResults?: number;
+  lastTimestamp?: string;
+}
+
+export interface GetGroupInvitesResDTO {
+  invites: GroupInviteDTO[];
   hasMoreResults: boolean;
   lastTimestamp?: string;
 }

@@ -159,6 +159,13 @@ public record GetInvitableGroupsReqDto(
 )
 { }
 
+public record GetGroupInvitesReqDto
+{
+    public FriendshipState? State { get; init; } = null;
+    public int MaxResults { get; init; } = 20;
+    public DateTime? LastTimestamp { get; init; } = null;
+}
+
 #endregion
 #region Response wrappers
 
@@ -251,6 +258,12 @@ public record GetUserGroupResDto(
 
 public record GetInvitableGroupsResDto(
     IEnumerable<UserGroupDto> Groups,
+    bool HasMoreResults,
+    DateTime? LastTimestamp
+);
+
+public record GetGroupInvitesResDto(
+    IEnumerable<GroupInviteDto> Invites,
     bool HasMoreResults,
     DateTime? LastTimestamp
 );

@@ -669,7 +669,116 @@ public class UserController : ControllerBase
         return Ok(new GetInvitableGroupsResDto(page, hasMore, lastTime));
     }
 
-    // TODO: Get group invites
+    [HttpGet]
+    public async Task<IActionResult> GetGroupInvites([FromQuery] GetGroupInvitesReqDto dto)
+    {
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+
+        var query = _db.GroupInvites.Where(gi => gi.ReceiverUserId == userId);
+
+        if (dto.State is not null)
+        {
+            query = query.Where(gi => gi.State == dto.State);
+        }
+        if (dto.LastTimestamp is not null)
+        {
+            query = query.Where(gi => gi.CreatedAt < dto.LastTimestamp.Value);
+        }
+
+        var results = await query
+        .OrderByDescending(gi => gi.CreatedAt)
+        .ThenByDescending(gi => gi.Id)
+        .Take(maxResults + 1)
+        .Select(gi => new
+        {
+            // Invite data
+            gi.Id,
+            gi.State,
+            gi.CreatedAt,
+            // Requester
+            Requester = new
+            {
+                gi.Requester.Id,
+                gi.Requester.UserName,
+                gi.Requester.FirstName,
+                gi.Requester.LastName,
+                gi.Requester.UserProfile.AvatarUrl,
+                Membership = gi.Group.GroupUsers
+                .Where(gu => gu.UserId == gi.RequesterUserId)
+                .Select(gu => new { gu.Role, gu.JoinedAt })
+                .FirstOrDefault()
+            },
+            // Group
+            Group = new
+            {
+                gi.Group.Id,
+                gi.Group.Name,
+                gi.Group.Description,
+                gi.Group.AvatarUrl,
+                gi.Group.CreatedAt,
+                MemberCount = gi.Group.GroupUsers.Count,
+                PinCount = gi.Group.Pins.Count,
+                Owner = gi.Group.GroupUsers
+                .Where(gu => gu.Role == GroupRole.Owner)
+                .Select(gu => new
+                {
+                    gu.AppUser.Id,
+                    gu.AppUser.UserName,
+                    gu.AppUser.FirstName,
+                    gu.AppUser.LastName,
+                    gu.AppUser.UserProfile.AvatarUrl,
+                    gu.Role,
+                    gu.JoinedAt
+                })
+                .FirstOrDefault()
+            }
+        })
+        .ToListAsync();
+
+        var hasMore = results.Count > maxResults;
+        var page = results.Take(maxResults).ToList();
+
+        var data = page.Select(i => new GroupInviteDto
+        {
+                        // Invite data
+            Id = i.Id,
+            InviteState = i.State,
+            CreatedAt = i.CreatedAt,
+            // Requester
+            Requester = new GroupMemberDto(
+                i.Requester.Id,
+                i.Requester.UserName ?? "",
+                i.Requester.FirstName ?? "",
+                i.Requester.LastName ?? "",
+                i.Requester.AvatarUrl,
+                i.Requester.Membership?.Role ?? GroupRole.Member,
+                i.Requester.Membership?.JoinedAt ?? default
+            ),
+            // Group
+            Group = new GroupDto
+            {
+                Id = i.Group.Id,
+                Name = i.Group.Name,
+                Description = i.Group.Description,
+                AvatarUrl = i.Group.AvatarUrl,
+                CreatedAt = i.Group.CreatedAt,
+                MemberCount = i.Group.MemberCount,
+                PinCount = i.Group.PinCount,
+                Owner = i.Group.Owner is null ? null! : new GroupMemberDto(
+                    i.Group.Owner.Id,
+                    i.Group.Owner.UserName ?? "",
+                    i.Group.Owner.FirstName ?? "",
+                    i.Group.Owner.LastName ?? "",
+                    i.Group.Owner.AvatarUrl,
+                    i.Group.Owner.Role,
+                    i.Group.Owner.JoinedAt)
+            }
+        }).ToList();
+
+        var lastTime = hasMore ? page[^1].CreatedAt : (DateTime?)null;
+        return Ok(new GetGroupInvitesResDto(data, hasMore, lastTime));
+    }
 
     #endregion // Groups
 }

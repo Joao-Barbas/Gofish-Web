@@ -57,6 +57,32 @@ public record GroupDto
     public string? AvatarUrl { get; init; }
 }
 
+public record GroupInviteDto
+{
+    public required int Id { get; init; }
+    public required GroupDto Group { get; init; }
+    public required FriendshipState InviteState { get; init; }
+    public required DateTime CreatedAt { get; init; }
+    public required GroupMemberDto Requester { get; init; }
+
+    // public static GroupInviteDto FromProjection(dynamic i) => new()
+    // {
+        // (int)i.Id,
+        // (int)i.GroupId,
+        // (string)i.GroupName,
+        // (string?)i.GroupAvatarUrl,
+        // (FriendshipState)i.State,
+        // (DateTime)i.CreatedAt,
+        // new GroupInviteUserDto(
+        //     (string)i.RequesterId,
+        //     (string)(i.RequesterUserName ?? ""),
+        //     (string)(i.RequesterFirstName ?? ""),
+        //     (string)(i.RequesterLastName ?? ""),
+        //     (string?)i.RequesterAvatarUrl
+        // )
+    // };
+}
+
 #endregion // View Models
 #region Requests
 
