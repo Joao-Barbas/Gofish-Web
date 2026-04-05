@@ -568,33 +568,105 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetUserGroups([FromQuery] GetUserGroupReqDto dto)
     {
-        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
-        var authUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var maxResults   = Math.Clamp(dto.MaxResults, 1, 100);
+        var authUserId   = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         var targetUserId = dto.UserId ?? authUserId;
 
         var userExists = await _db.Users.AnyAsync(u => u.Id == targetUserId);
-        if (!userExists) return NotFound();
+
+        if (!userExists)
+        {
+            return NotFound();
+        }
 
         var query = _db.Groups.Where(g => g.GroupUsers.Any(gu => gu.UserId == targetUserId));
 
         if (dto.LastTimestamp is not null)
+        {
             query = query.Where(g => g.CreatedAt < dto.LastTimestamp.Value);
+        }
 
-        var results = await query
+        var groups = await query
         .OrderByDescending(g => g.CreatedAt)
+        .ThenByDescending(g => g.Id)
         .Take(maxResults + 1)
-        .Select(g => UserGroupDto
-            .FromEntity(g)
-            .SetRole(g.GroupUsers.First(gu => gu.UserId == targetUserId).Role)
-            .SetMemberQty(g.GroupUsers.Count)
-            .SetPinQty(g.Pins.Count))
+        .Select(g => new UserGroupDto
+        {
+            Id          = g.Id,
+            Name        = g.Name,
+            Description = g.Description,
+            AvatarUrl   = g.AvatarUrl,
+            CreatedAt   = g.CreatedAt,
+            Role        = g.GroupUsers.First(gu => gu.UserId == targetUserId).Role,
+            MemberCount = g.GroupUsers.Count,
+            PinCount    = g.Pins.Count
+        })
         .ToListAsync();
 
-        var hasMore = results.Count > maxResults;
-        var page = results.Take(maxResults).ToList();
+        var hasMore = groups.Count > maxResults;
+        var page = groups.Take(maxResults).ToList();
         var lastTime = hasMore ? page[^1].CreatedAt : (DateTime?)null;
 
         return Ok(new GetUserGroupResDto(page, hasMore, lastTime));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetInvitableGroups([FromQuery] GetInvitableGroupsReqDto dto)
+    {
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+        var authUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+
+        if (authUserId == dto.TargetUserId)
+        {
+            return BadRequest(ProblemDetailsFactory.CreateValidationProblemDetails(
+                HttpContext, "InvalidTarget", "You cannot invite yourself."));
+        }
+
+        var targetExists = await _db.Users.AnyAsync(u => u.Id == dto.TargetUserId);
+
+        if (!targetExists)
+        {
+            return NotFound();
+        }
+
+        var query = _db.Groups
+        // B is owner or moderator, aka can invite
+        .Where(g => g.GroupUsers.Any(gu => gu.UserId == authUserId
+            && (gu.Role == GroupRole.Owner || gu.Role == GroupRole.Moderator)))
+        // A is not already a member
+        .Where(g => !g.GroupUsers.Any(gu => gu.UserId == dto.TargetUserId))
+        // A doesn't have a pending invite
+        .Where(g => !_db.GroupInvites.Any(gi => gi.GroupId == g.Id
+            && gi.ReceiverUserId == dto.TargetUserId
+            && gi.State == FriendshipState.Pending));
+
+        if (dto.LastTimestamp is not null)
+        {
+            query = query.Where(g => g.CreatedAt < dto.LastTimestamp.Value);
+        }
+
+        var groups = await query
+        .OrderByDescending(g => g.CreatedAt)
+        .ThenByDescending(g => g.Id)
+        .Take(maxResults + 1)
+        .Select(g => new UserGroupDto
+        {
+            Id = g.Id,
+            Name = g.Name,
+            Description = g.Description,
+            AvatarUrl = g.AvatarUrl,
+            CreatedAt = g.CreatedAt,
+            Role = g.GroupUsers.First(gu => gu.UserId == authUserId).Role,
+            MemberCount = g.GroupUsers.Count,
+            PinCount = g.Pins.Count
+        })
+        .ToListAsync();
+
+        var hasMore = groups.Count > maxResults;
+        var page = groups.Take(maxResults).ToList();
+        var lastTime = hasMore ? page[^1].CreatedAt : (DateTime?)null;
+
+        return Ok(new GetInvitableGroupsResDto(page, hasMore, lastTime));
     }
 
     // TODO: Get group invites

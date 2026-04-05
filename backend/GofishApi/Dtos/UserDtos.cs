@@ -5,7 +5,7 @@ using GofishApi.Services;
 
 namespace GofishApi.Dtos;
 
-#region View Models
+#region View models
 
 public record LeaderboardUserDto
 {
@@ -76,33 +76,20 @@ public record FriendshipDto(
     );
 }
 
-public record UserGroupDto(
-    int Id,
-    string Name,
-    string? Description,
-    string? AvatarUrl,
-    DateTime CreatedAt
-)
+public record UserGroupDto
 {
+    public required int Id { get; init; }
+    public required string Name { get; init; }
+    public string? Description { get; init; }
+    public string? AvatarUrl { get; init; }
+    public required DateTime CreatedAt { get; init; }
     public GroupRole Role { get; init; }
-    public int MemberQty { get; init; }
-    public int PostQty { get; init; }
-
-    public static UserGroupDto FromEntity(Group g) => new(
-        g.Id,
-        g.Name,
-        g.Description,
-        g.AvatarUrl,
-        g.CreatedAt
-    );
-
-    public UserGroupDto SetRole(GroupRole role) => new(this) { Role = role };
-    public UserGroupDto SetMemberQty(int memberQty) => new(this) { MemberQty = memberQty };
-    public UserGroupDto SetPinQty(int postQty) => new(this) { PostQty = postQty };
+    public int MemberCount { get; init; }
+    public int PinCount { get; init; }
 }
 
 #endregion
-#region Requests
+#region Request wrappers
 
 public record SearchUsersReqDto(
     string Query,
@@ -158,15 +145,22 @@ public record RequestFriendshipReqDto(
 )
 { }
 
-public record GetUserGroupReqDto(
-    string? UserId = null,
+public record GetUserGroupReqDto
+{
+    public string? UserId { get; init; } = null;
+    public int MaxResults { get; init; } = 20;
+    public DateTime? LastTimestamp { get; init; } = null;
+}
+
+public record GetInvitableGroupsReqDto(
+    string TargetUserId,
     int MaxResults = 20,
     DateTime? LastTimestamp = null
 )
 { }
 
 #endregion
-#region Responses
+#region Response wrappers
 
 public record GetUserPointsResDto
 {
@@ -254,5 +248,11 @@ public record GetUserGroupResDto(
     DateTime? LastTimestamp
 )
 { }
+
+public record GetInvitableGroupsResDto(
+    IEnumerable<UserGroupDto> Groups,
+    bool HasMoreResults,
+    DateTime? LastTimestamp
+);
 
 #endregion
