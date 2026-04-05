@@ -1,7 +1,14 @@
 /* pins.component.css */
 
 :host {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: var(--gf-container-lg);
+  gap: var(--gf-16);
+  margin: 0 auto;
+  color: var(--gf-dark-text);
+  padding: var(--gf-32) 0 var(--gf-128);
+  color: var(--gf-dark-text);
 }
 
 gf-async-button {
@@ -38,7 +45,6 @@ nav {
   overflow: hidden;
   grid-template-rows: auto;
   grid-template-columns: repeat(auto-fill, calc((var(--gf-container-lg) - 1 * var(--gf-8)) / 2));
-  /* grid-auto-rows: 0; */
   row-gap: var(--gf-8);
   column-gap: var(--gf-8);
 }

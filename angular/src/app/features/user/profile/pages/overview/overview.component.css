@@ -1,9 +1,15 @@
 /* overview.component.css */
 
 :host {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: var(--gf-container-lg);
+  gap: var(--gf-24);
+  margin: 0 auto;
+  color: var(--gf-dark-text);
+  padding: var(--gf-32) 0 var(--gf-128);
+  color: var(--gf-dark-text);
 }
-
 
 .action-btn {
   border: none;

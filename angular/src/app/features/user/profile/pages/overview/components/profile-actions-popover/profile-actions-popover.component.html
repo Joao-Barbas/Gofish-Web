@@ -1,1 +1,12 @@
-<p>profile-actions-popover works!</p>
+<!-- profile-actions-popover.component.html -->
+
+@if (profileContext.isFriend()) {
+  <button (click)="onUnfriend()">Unfriend</button>
+}
+@if (profileContext.userProfile().friendship?.state === FriendshipState.Pending) {
+  <button (click)="onFriendshipCancel()">Cancel friend request</button>
+}
+<button (click)="onUnfriend()">Friends</button>
+<button (click)="onPins()">Pins</button>
+<button (click)="onGroups()">Groups</button>
+<button (click)="onShowMore()">See more</button>

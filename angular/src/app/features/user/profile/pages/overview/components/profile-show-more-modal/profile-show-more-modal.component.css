@@ -1,0 +1,62 @@
+/* profile-show-more-modal.component.css */
+
+:host {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: var(--gf-z-modal);
+}
+:host(.on-enter) {
+  animation: gf-modal-fade-in .2s ease-in-out;
+}
+:host(.on-enter) .gf-modal-shell {
+  animation: gf-modal-scale-in .2s cubic-bezier(0.34, 1.8, 0.64, 1);
+}
+:host(.on-leave) {
+  opacity: 0;
+  transition: opacity .2s ease-out;
+}
+
+h5, h6 {
+  color: var(--gf-dark-text);
+  margin-bottom: var(--gf-8);
+}
+
+p {
+  color: var(--gf-dark-text);
+  font-size: var(--gf-text-sm);
+  margin: var(--gf-4) 0;
+  width: calc(100% - 36px - 16px); /* Close button width + padding */
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.gf-modal-shell {
+  position: relative;
+  border-radius: var(--gf-12);
+  max-width: 70ch;
+}
+
+.gf-modal-close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+@media (max-width: 62rem) {
+  .gf-modal-shell {
+    max-width: 70%;
+  }
+}
+
+@media (max-width: 36rem) {
+  .gf-modal-shell {
+    max-width: 90%;
+  }
+}

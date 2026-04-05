@@ -1,16 +1,22 @@
 // profile-shell.component.ts
 
 import { Component, effect, inject, input, resource } from "@angular/core";
-import { RouterOutlet } from "@angular/router";
+import { Router, RouterOutlet } from "@angular/router";
 import { AuthService } from "@gofish/shared/services/auth.service";
 import { ProfileContext } from "@gofish/features/user/profile/services/profile-context.service";
-import { catchError, firstValueFrom, map, of } from "rxjs";
+import { catchError, firstValueFrom, forkJoin, map, of } from "rxjs";
 import { UserApi } from "@gofish/shared/api/user.api";
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
+import { rxResource } from "@angular/core/rxjs-interop";
+import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
+import { LoadingErrorModalComponent } from "@gofish/shared/components/loading-error-modal/loading-error-modal.component";
+import { Path, PathSegment } from "@gofish/shared/constants";
+import { toast } from "ngx-sonner";
+import { UserProfileApi } from "@gofish/shared/api/user-profile.api";
 
 @Component({
   selector: 'app-profile',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, LoadingSpinnerComponent, LoadingErrorModalComponent],
   providers: [ProfileContext],
   templateUrl: './profile-shell.component.html',
   styleUrl: './profile-shell.component.css',
@@ -18,33 +24,32 @@ import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 export class ProfileShellComponent {
   readonly profileId = input<string | undefined>(undefined, { alias: 'id' }); // Signal-based input given from :id
 
-  private readonly authService    = inject(AuthService);
-  private readonly profileContext = inject(ProfileContext);
-  private readonly userApi        = inject(UserApi);
+  readonly authService    = inject(AuthService);
+  readonly router         = inject(Router);
+  readonly profileContext = inject(ProfileContext);
+  readonly userProfileApi = inject(UserProfileApi);
 
-  friendship = resource({
+  Path = Path;
+  PathSegment = PathSegment;
+  window = window;
+  toast = toast;
+
+  userProfileData = rxResource({
     params: () => this.profileId(),
-    loader: ({ params: id }) => firstValueFrom(
-      this.userApi.getFriendshipBetween({
-        userId1: id!,
-        userId2: this.authService.userId()!
-      }).pipe(
-        map(res => res ?? null),
-        catchError(() => of(null))
-      )
-    )
+    stream: ({ params: id }) => this.userProfileApi.getUserProfile(id)
   });
 
   constructor() {
     effect(() => {
-      if (!this.profileId()) throw new Error('Profile requires a route :id param.');
-      this.profileContext.profileId.set(this.profileId()!);
-      this.profileContext.isOwner.set(this.profileId() === this.authService.userId());
+      if (this.profileId()) return;
+      this.toast.warning('Profile requires a route :id param.');
+      this.router.navigate([Path.HOME]);
     });
     effect(() => {
-      const friendship = this.friendship.value();
-      this.profileContext.friendship.set(friendship);
-      this.profileContext.isFriend.set(friendship?.state === FriendshipState.Accepted);
+      let id   = this.profileId();
+      let data = this.userProfileData.value();
+      if (!id || !data) return;
+      this.profileContext.load(id, data);
     });
   }
 }

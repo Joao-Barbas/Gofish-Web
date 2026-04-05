@@ -3,7 +3,7 @@
 <button
   [attr.form]="form()"
   [type]="type()" [disabled]="busy() || success() || disabled()"
-  [class.idle]="idle()" [class.busy]="busy()" [class.success]="success()">
+  [class.idle]="idle()" [class.busy]="busy()" [class.success]="success()" [class.disabled]="disabled()">
   <span class="icon-slot">
     @if (busy() && !disabled()) {
       <svg class="spinner-icon" animate.enter="spinner-enter" xmlns="http://www.w3.org/2000/svg"

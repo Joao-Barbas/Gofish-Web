@@ -79,8 +79,8 @@ export class UserApi {
     );
   }
 
-  public requestFriendship(dto: RequestFriendshipReqDTO): Observable<RequestFriendshipResDTO> {
-    return this.http.post<RequestFriendshipResDTO>(Api.User.action('RequestFriendship'), dto);
+  public requestFriendship(dto: RequestFriendshipReqDTO): Observable<FriendshipDTO> {
+    return this.http.post<FriendshipDTO>(Api.User.action('RequestFriendship'), dto);
   }
 
   public acceptFriendship(id: number): Observable<void> {
