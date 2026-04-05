@@ -1,4 +1,5 @@
 ﻿using GofishApi.Enums;
+using GofishApi.Models;
 
 namespace GofishApi.Dtos;
 
@@ -25,6 +26,8 @@ public record CreateCommentReportResDTO(
 public record GetReportResDTO(
     int Id,
     string UserId,
+    string? ImageURL,
+    string? Username,
     string Type,
     int TargetId,
     string ReasonText,
@@ -41,4 +44,15 @@ public record GetReportsResDTO(
     IEnumerable<GetReportResDTO> Reports,
     bool HasMoreResults,
     DateTime? LastCreatedAt
+);
+
+public record GetPinReportsByPinReqDTO(
+    int PinId,
+    int MaxResults = 20,
+    DateTime? LastCreatedAt = null
+);
+
+public record DeleteReportsReqDTO
+(
+    IEnumerable<int> Ids
 );
