@@ -145,8 +145,8 @@ export interface UserGroupDTO {
   avatarUrl?: string;
   createdAt: string;
   role: GroupRole;
-  memberQty: number;
-  postQty: number;
+  memberCount: number;
+  pinCount: number;
 }
 
 export interface GetUserGroupReqDTO {
@@ -159,4 +159,16 @@ export interface GetUserGroupResDTO {
   groups: UserGroupDTO[];
   hasMoreResults: boolean;
   lastTimestamp: string
+}
+
+export interface GetInvitableGroupsReqDTO {
+  targetUserId: string;
+  maxResults?: number;
+  lastTimestamp?: string;
+}
+
+export interface GetInvitableGroupsResDTO {
+  groups: UserGroupDTO[];
+  hasMoreResults: boolean;
+  lastTimestamp?: string;
 }

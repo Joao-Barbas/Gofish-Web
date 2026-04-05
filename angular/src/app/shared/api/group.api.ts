@@ -3,7 +3,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Api } from "@gofish/shared/constants";
-import { GetGroupMembersReqDTO, GetGroupMembersResDTO, GetGroupPinsReqDto, GetGroupPinsResDto, GetGroupPostsReqDTO, GetGroupPostsResDTO, GroupDTO, SearchGroupsReqDTO, SearchGroupsResDTO } from "@gofish/shared/dtos/group.dto";
+import { GetGroupMembersReqDTO, GetGroupMembersResDTO, GetGroupPinsReqDto, GetGroupPinsResDto, GetGroupPostsReqDTO, GetGroupPostsResDTO, GroupDTO, SearchGroupsReqDTO, SearchGroupsResDTO, SendGroupInviteReqDTO, SendGroupInviteResDTO } from "@gofish/shared/dtos/group.dto";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -40,5 +40,9 @@ export class GroupApi/*Service*/ {
     if (dto.maxResults)    p = p.set('maxResults', dto.maxResults);
     if (dto.lastGroupName) p = p.set('lastGroupName', dto.lastGroupName);
     return this.http.get<SearchGroupsResDTO>(Api.Group.action('SearchGroups'), { params: p });
+  }
+
+  public sendInvite(groupId: number, dto: SendGroupInviteReqDTO): Observable<SendGroupInviteResDTO> {
+    return this.http.post<SendGroupInviteResDTO>(Api.Group.action(`SendInvite/${groupId}`), dto);
   }
 }

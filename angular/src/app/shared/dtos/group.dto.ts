@@ -122,6 +122,10 @@ export interface SearchGroupsReqDTO {
   lastGroupName?: string;
 }
 
+export interface SendGroupInviteReqDTO {
+  receiverUserId: string;
+}
+
 // Responses
 
 export interface GetGroupMembersResDTO {
@@ -141,6 +145,10 @@ export interface SearchGroupsResDTO {
   hasMoreResults: boolean;
   lastGroupName: string | null;
 }
+
+export interface SendGroupInviteResDTO {
+  inviteId: number
+};
 
 // ================================
 // NOVOS DTOS
