@@ -186,6 +186,47 @@ public class StatsController : ControllerBase
 
         return Ok(new GetTotalWarningPinsCreatedResDTO(value));
     }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> GetRegisteredUsersWeeklyStats([FromQuery] GetRegisteredUsersWeeklyStatsReqDTO dto)
+    {
+        if (dto.Year < 2000 || dto.Year > 3000)
+            return BadRequest("Invalid year.");
+
+        var startDate = new DateTime(dto.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        var endDate = dto.Year == DateTime.UtcNow.Year
+            ? DateTime.UtcNow
+            : startDate.AddYears(1);
+
+        var usersCreatedAt = await _userManager.Users
+            .AsNoTracking()
+            .Where(u => u.CreatedAt >= startDate && u.CreatedAt < endDate)
+            .Select(u => u.CreatedAt)
+            .ToListAsync();
+
+        var result = new List<GetRegisteredUsersWeeklyStatsResDTO>();
+
+        var cursor = startDate;
+
+        while (cursor < endDate)
+        {
+            var next = cursor.AddDays(7);
+            if (next > endDate)
+                next = endDate;
+
+            var count = usersCreatedAt.Count(createdAt =>
+                createdAt >= cursor && createdAt < next);
+
+            result.Add(new GetRegisteredUsersWeeklyStatsResDTO(
+                Label: $"{cursor:dd/MM} - {next.AddDays(-1):dd/MM}",
+                Value: count
+            ));
+
+            cursor = next;
+        }
+        return Ok(result);
+    }
 }
 
 

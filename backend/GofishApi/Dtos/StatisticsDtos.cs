@@ -47,3 +47,12 @@ public record GetTotalCatchPinsCreatedResDTO(
 public record GetTotalWarningPinsCreatedResDTO(
     int Value
 );
+
+public record GetRegisteredUsersWeeklyStatsReqDTO(
+    int Year
+);
+
+public record GetRegisteredUsersWeeklyStatsResDTO(
+    string Label,
+    int Value
+);
