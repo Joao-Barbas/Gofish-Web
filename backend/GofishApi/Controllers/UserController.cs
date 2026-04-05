@@ -499,7 +499,7 @@ public class UserController : ControllerBase
         _db.Friendships.Add(friendship);
         await _db.SaveChangesAsync();
 
-        var res = new RequestFriendshipResDto(friendship.Id);
+        var res = FriendshipDto.FromEntity(friendship);
         return CreatedAtAction(nameof(GetFriendship), res, res);
     }
 

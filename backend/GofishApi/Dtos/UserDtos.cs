@@ -239,7 +239,7 @@ public record GetFriendshipsResDto(
 { }
 
 public record RequestFriendshipResDto(
-    int Id
+    // Unused
 )
 { }
 

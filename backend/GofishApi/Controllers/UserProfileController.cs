@@ -75,12 +75,27 @@ public class UserProfileController : ControllerBase
             (f.RequesterUserId == authUserId && f.ReceiverUserId == id) ||
             (f.RequesterUserId == id && f.ReceiverUserId == authUserId));
 
-        return Ok(GetUserProfileResDto.FromEntity(thisUserProfile, friendship?.State) with
+        var data = new UserProfileDto
         {
+            UserId = thisUserProfile.UserId,
+            FirstName = thisUserProfile.AppUser.FirstName ?? "",
+            LastName = thisUserProfile.AppUser.LastName ?? "",
+            UserName = thisUserProfile.AppUser.UserName ?? "",
+            CatchPoints = thisUserProfile.CatchPoints,
+            Rank = GamificationService.GetRank(thisUserProfile.CatchPoints),
+            Bio = thisUserProfile.Bio,
+            AvatarUrl = thisUserProfile.AvatarUrl,
+            JoinedAt = thisUserProfile.JoinedAt,
+            LastActiveAt = thisUserProfile.LastActiveAt,
+            Friendship = friendship is not null ? FriendshipDto.FromEntity(friendship) : null,
+            WeeklyStreak = thisUserProfile.WeeklyStreak,
+            MaxWeeklySteak = thisUserProfile.MaxWeeklyStreak,
             PinsCount = pinsCount,
             FriendsCount = friendsCount,
             GroupsCount = groupsCount
-        });
+        };
+
+        return Ok(data);
     }
 
     [HttpGet("{id}")]

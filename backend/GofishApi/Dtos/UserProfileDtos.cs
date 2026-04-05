@@ -5,6 +5,30 @@ using GofishApi.Services;
 
 namespace GofishApi.Dtos;
 
+#region View Models
+
+public record UserProfileDto
+{
+    public required string UserId { get; init; }
+    public required string FirstName { get; init; }
+    public required string LastName { get; init; }
+    public required string UserName { get; init; }
+    public required int CatchPoints { get; init; }
+    public required int Rank { get; init; }
+    public string? Bio { get; init; }
+    public string? AvatarUrl { get; init; }
+    public required DateTime JoinedAt { get; init; }
+    public required DateTime LastActiveAt { get; init; }
+    public FriendshipDto? Friendship { get; init; }
+    public required int WeeklyStreak { get; init; }
+    public required int MaxWeeklySteak { get; init; }
+    public int PinsCount { get; init; }
+    public int FriendsCount { get; init; }
+    public int GroupsCount { get; init; }
+}
+
+#endregion // View Models
+
 public record GetUserProfileReqDTO(
     // Unused
 )
