@@ -35,3 +35,15 @@ public record GetDailyUserSatisfactionAverageDTO(
 public record GetNewUsersTodayResDTO(
     int UsersRegisteredToday
 );
+
+public record GetTotalPinsCreatedResDTO(
+    int Value
+);
+
+public record GetTotalCatchPinsCreatedResDTO(
+    int Value
+);
+
+public record GetTotalWarningPinsCreatedResDTO(
+    int Value
+);
