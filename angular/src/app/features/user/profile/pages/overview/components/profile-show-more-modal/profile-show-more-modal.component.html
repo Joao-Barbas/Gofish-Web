@@ -14,10 +14,10 @@
 
     <div>
       <h6>More statistics</h6>
-      <p>Weekly streak: {{ userProfile().weeklyStreak }}</p>
-      <p>Maximum weekly streak achieved: {{ userProfile().maxWeeklySteak }}</p>
-      <p>Join date: {{ userProfile().joinedAt | date:'dd/MM/yyyy' }}</p>
-      <p>Last active at: {{ userProfile().lastActiveAt | date:'dd/MM/yyyy' }}</p>
+      <p><span>Weekly streak:</span> {{ userProfile().weeklyStreak }}</p>
+      <p><span>Maximum weekly streak achieved:</span> {{ userProfile().maxWeeklySteak }}</p>
+      <p><span>Join date:</span> {{ userProfile().joinedAt | date:'dd/MM/yyyy' }}</p>
+      <p><span>Last active at:</span> {{ userProfile().lastActiveAt | date:'dd/MM/yyyy' }}</p>
     </div>
   </div>
 </div>

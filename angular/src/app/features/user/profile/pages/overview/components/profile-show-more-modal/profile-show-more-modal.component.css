@@ -35,6 +35,10 @@ p {
   &:last-child {
     margin-bottom: 0;
   }
+
+  span {
+    color: var(--gf-dark-text-muted);
+  }
 }
 
 .gf-modal-shell {

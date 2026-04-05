@@ -12,6 +12,7 @@ import { PopoverController, PopoverKey } from '@gofish/shared/core/popover-contr
 import { ClickOutsideDirective } from '@gofish/shared/directives/click-outside.directive';
 import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
 import { ModalService } from '@gofish/shared/services/modal.service';
+import { InviteToGroupsModalComponent } from '@gofish/shared/components/invite-to-groups-modal/invite-to-groups-modal.component';
 
 @Component({
   selector: 'gf-profile-actions-popover',
@@ -41,6 +42,7 @@ export class ProfileActionsPopoverComponent {
   readonly router          = inject(Router);
 
   readonly controller = new PopoverController(ProfileActionsPopoverComponent.Key);
+
   readonly Path = Path;
   readonly FriendshipState = FriendshipState;
   readonly toast = toast;
@@ -91,5 +93,10 @@ export class ProfileActionsPopoverComponent {
   onShowMore() {
     this.controller.close();
     this.modalService.open(ProfileShowMoreModalComponent.Key)
+  }
+
+  onInviteToGroup() {
+    this.controller.close();
+    this.modalService.open(InviteToGroupsModalComponent.Key)
   }
 }
