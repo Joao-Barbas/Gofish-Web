@@ -30,20 +30,16 @@ export class UsersChartComponent implements OnChanges {
   };
 
   chartOptions: ChartConfiguration<'line'>['options'] = {};
-  chartTitle: string = 'Registered Users Per Week';
+  chartTitle: string = `Registered Users Per Week ${new Date().getFullYear()}`;
 
   ngOnChanges(): void {
     this.buildChart();
   }
 
   private buildChart(): void {
-    const groups: Record<string, number> = {};
+    const usersData = this.users();
 
-    for (const user of this.users) {
-      if (!user.label) continue;
-      const week = this.getWeekLabel(new Date(user.label));
-      groups[week] = (groups[week] ?? 0) + 1;
-    }
+    if (!usersData || usersData.length === 0) return;
 
     const lineColor = this.getCssVar('--gf-dark-text');
     const textColor = this.getCssVar('--gf-dark-text-muted');
@@ -51,10 +47,10 @@ export class UsersChartComponent implements OnChanges {
     const fillColor = this.getCssVar('--gf-dark-text-muted-opacity-50');
 
     this.chartData = {
-      labels: Object.keys(groups),
+      labels: usersData.map(u => u.label),
       datasets: [{
         label: 'Weekly Registered Users',
-        data: Object.values(groups),
+        data: usersData.map(u => u.value),
         borderColor: lineColor,
         backgroundColor: fillColor,
         tension: 0.3,
@@ -82,25 +78,10 @@ export class UsersChartComponent implements OnChanges {
         }
       },
       scales: {
-        x: {
-          ticks: { color: textColor },
-          grid: { color: gridColor },
-        },
-        y: {
-          ticks: { color: textColor },
-          grid: { color: gridColor },
-        }
+        x: { ticks: { color: textColor }, grid: { color: gridColor } },
+        y: { ticks: { color: textColor }, grid: { color: gridColor }, beginAtZero: true }}
       }
     };
   }
 
-  private getWeekLabel(date: Date): string {
-    const day = date.getDay();
-    const start = new Date(date);
-    start.setDate(date.getDate() - ((day + 6) % 7));
-    const end = new Date(start);
-    end.setDate(start.getDate() + 6);
-    const format = (d: Date) => `${d.getDate()}/${d.getMonth() + 1}`;
-    return `${format(start)} to ${format(end)} (${date.getFullYear()})`;
-  }
-}
+
