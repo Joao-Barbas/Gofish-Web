@@ -1,12 +1,14 @@
+import { A } from '@angular/cdk/keycodes';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileContext } from '@gofish/features/user/profile/services/profile-context.service';
 import { UserApi } from '@gofish/shared/api/user.api';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { FriendshipDTO, GetFriendshipsResDTO } from '@gofish/shared/dtos/user.dto';
 import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
+import { GroupsService } from '@gofish/shared/services/groups.service';
 
 @Component({
   selector: 'gf-group-invite',
@@ -16,8 +18,10 @@ import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
 })
 export class GroupInviteComponent {
   readonly profileContext = inject(ProfileContext);
-  readonly userApi = inject(UserApi);
-  readonly router = inject(Router);
+  private readonly userApi = inject(UserApi);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly groupsService = inject(GroupsService);
   readonly loadingState = new LoadingState();
   readonly busyState = new BusyState();
   friendsCursor = signal<string | undefined>(undefined);
@@ -30,9 +34,7 @@ export class GroupInviteComponent {
   }
 
   toggleFriend(id: string) {
-    this.selectedFriendIds.update(ids =>
-      ids.includes(id) ? ids.filter(i => i !== id) : [...ids, id]
-    );
+    this.selectedFriendIds.update(ids =>ids.includes(id) ? [] : [id]);
   }
 
   onScroll(event: any) {
@@ -50,7 +52,28 @@ export class GroupInviteComponent {
   }
 
   onSendInvites() {
-    
+    const selectedIds = this.selectedFriendIds();
+    const receiverId = selectedIds[0];
+    const groupId = Number(this.route.snapshot.params['id']);
+
+    if (!receiverId || !groupId) return;
+
+    this.busyState.setBusy(true);
+
+
+    this.groupsService.createGroupInvite({
+      groupId: groupId,
+      receiverUserId: receiverId
+    }).subscribe({
+      next: () => {
+        this.busyState.setBusy(false);
+        this.onCancel();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.loadingState.fail(err.error || 'Failed to send invite.');
+        this.busyState.setBusy(false);
+      }
+    });
   }
 
   private loadMoreFriends() {
