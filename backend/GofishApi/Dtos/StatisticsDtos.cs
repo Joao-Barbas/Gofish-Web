@@ -60,3 +60,16 @@ public record GetRegisteredUsersWeeklyStatsResDTO(
 public record GetTotalUsersResDTO(
     int UsersRegistered
 );
+
+public record GetPinsWeeklyStatsReqDTO(
+    int Year,
+    int Month
+);
+
+public record GetPinsWeeklyStatsResDTO(
+    int Year,
+    string WeekLabel,
+    int CatchCount,
+    int InfoCount,
+    int WarningCount
+);
