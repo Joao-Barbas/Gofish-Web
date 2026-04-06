@@ -1,9 +1,10 @@
-import { Component, input, Input, OnChanges } from '@angular/core';
+import { Component, inject, input, Input, OnChanges, signal } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration } from 'chart.js';
 import { Chart, registerables } from 'chart.js';
 import { GetUserProfileResDTO } from '@gofish/shared/dtos/user-profile.dto';
 import { GetRegisteredUsersWeeklyStatsResDTO } from '@gofish/shared/dtos/stats.dto';
+import { StatsService } from '@gofish/shared/services/stats.service';
 
 Chart.register(...registerables);
 
@@ -14,9 +15,10 @@ Chart.register(...registerables);
   templateUrl: './users-chart.component.html',
   styleUrl: './users-chart.component.css',
 })
-export class UsersChartComponent implements OnChanges {
-
-  users = input<GetRegisteredUsersWeeklyStatsResDTO[]>([]);
+export class UsersChartComponent {
+  private readonly statsService = inject(StatsService);
+  protected users = signal<GetRegisteredUsersWeeklyStatsResDTO[]>([]);
+  protected currentYear = new Date().getFullYear();
 
   private getCssVar(variable: string): string {
     return getComputedStyle(document.documentElement)
@@ -32,9 +34,19 @@ export class UsersChartComponent implements OnChanges {
   chartOptions: ChartConfiguration<'line'>['options'] = {};
   chartTitle: string = `Registered Users Per Week ${new Date().getFullYear()}`;
 
-  ngOnChanges(): void {
-    this.buildChart();
+  ngOnInit(): void {
+    this.statsService.getRegisteredUsersWeeklyStats(this.currentYear).subscribe({
+      next: (res) => {
+        this.users.set(res);
+         this.buildChart();
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+
   }
+
 
   private buildChart(): void {
     const usersData = this.users();

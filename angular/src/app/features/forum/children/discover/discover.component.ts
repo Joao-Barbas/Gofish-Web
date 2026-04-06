@@ -19,12 +19,28 @@ export class DiscoverComponent {
   allFeedPosts = signal<GetFeedResDto | null>(null);
   hasMoreResults = signal(true);
   private lastTimestamp: string = new Date().toISOString();
+  isLoading = signal(false);
+
+  onScroll = () => {
+    const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 200;
+    if (nearBottom && this.hasMoreResults() && !this.isLoading()) {
+      this.loadPosts();
+    }
+  }
 
   ngOnInit() {
     this.loadPosts();
+    window.addEventListener('scroll', this.onScroll);
   }
 
+   ngOnDestroy() {
+    window.removeEventListener('scroll', this.onScroll);
+  }
+
+
+
   loadPosts() {
+    this.isLoading.set(true);
     const request: GetFeedReqDto = {
       kind: FeedKind.Discovery,
       maxResults: 5,
@@ -48,9 +64,11 @@ export class DiscoverComponent {
         } else {
           this.hasMoreResults.set(false);
         }
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.log(err);
+        this.isLoading.set(false);
       }
     });
   }

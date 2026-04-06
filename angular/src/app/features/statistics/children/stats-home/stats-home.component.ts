@@ -121,15 +121,6 @@ export class StatsHomeComponent {
         this.weeklyApiSuccessRate.set(res.successRateOfRequests);
       }
     });
-
-    this.statsService.getRegisteredUsersWeeklyStats(this.currentYear).subscribe({
-      next: (res) => {
-        this.usersWeeklyStats.set(res);
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
   }
 
 }
