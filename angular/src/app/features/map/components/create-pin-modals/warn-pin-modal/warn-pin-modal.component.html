@@ -27,8 +27,7 @@
         <h5 class="text-slim modal-body-section-title mt-3">Content</h5>
         <section class="d-flex flex-column">
           <textarea id="catchPinDescription" class="modal-body-description dark-bg-dark dark-text"
-            placeholder="Add a description..." formControlName="body">
-          </textarea>
+            placeholder="Add a description..." formControlName="body" maxlength="{{ BodyLengthConstraints.MAX }}"></textarea>
           <small class="dark-text-muted text-end">
             {{ form.value.body?.length ?? 0 }}/{{ BodyLengthConstraints.MAX }}
           </small>
