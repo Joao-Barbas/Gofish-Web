@@ -14,11 +14,12 @@ import { GetReportsWaitingReviewResDTO } from '@gofish/shared/dtos/stats.dto';
 import { ReportService } from '@gofish/shared/services/report.service';
 import { GetReportReqDTO, GetReportResDTO } from '@gofish/shared/dtos/report.dto';
 import { PinService } from '@gofish/shared/services/pin.service';
+import { GfCardCommentPreviewComponent } from '@gofish/shared/components/gf-card-comment-preview/gf-card-comment-preview.component';
 
 
 @Component({
   selector: 'app-stats-reports',
-  imports: [GfCardPinPreviewComponent, /*RouterLink*/],
+  imports: [GfCardPinPreviewComponent, GfCardCommentPreviewComponent],
   templateUrl: './stats-reports.component.html',
   styleUrl: './stats-reports.component.css',
 })
@@ -27,9 +28,12 @@ export class StatsReportsComponent {
   private readonly pinService = inject(PinService);
   protected readonly reportedPins = signal<GetReportResDTO[]>([]);
   protected readonly reportedComments = signal<GetReportResDTO[]>([]);
-  protected hasMoreResults = signal(false);
-  private lastCreatedAt: string | undefined = new Date().toISOString();
-  private isLoading = false;
+  protected pinhasMoreResults = signal(false);
+  protected commenthasMoreResults = signal(false);
+  private pinlastCreatedAt: string | undefined = new Date().toISOString();
+  private commentlastCreatedAt: string | undefined = new Date().toISOString();
+  private isLoadingPins = false;
+  private isLoadingComments = false;
 
   ngOnInit(): void {
     this.loadMorePins();
@@ -37,19 +41,19 @@ export class StatsReportsComponent {
   }
 
   protected loadMorePins(): void {
-    if (this.isLoading) return;
+    if (this.isLoadingPins) return;
 
-    this.isLoading = true;
+    this.isLoadingPins = true;
 
     const request: GetReportReqDTO = {
       maxResults: 5,
-      lastCreatedAt: this.lastCreatedAt
+      lastCreatedAt: this.pinlastCreatedAt
     };
 
     this.reportService.getPinReports(request).subscribe({
       next: (res) => {
-        this.hasMoreResults.set(res.hasMoreResults);
-        this.lastCreatedAt = res.lastCreatedAt ?? undefined;
+        this.pinhasMoreResults.set(res.hasMoreResults);
+        this.pinlastCreatedAt = res.lastCreatedAt ?? undefined;
         this.reportedPins.update(current => [...current, ...res.reports]);
       },
       error: (err) => {
@@ -59,20 +63,21 @@ export class StatsReportsComponent {
   }
 
   protected loadMoreComments(): void {
-    if (this.isLoading) return;
+    if (this.isLoadingComments) return;
 
-    this.isLoading = true;
+    this.isLoadingComments = true;
 
     const request: GetReportReqDTO = {
       maxResults: 5,
-      lastCreatedAt: this.lastCreatedAt
+      lastCreatedAt: this.commentlastCreatedAt
     };
 
     this.reportService.getCommentReports(request).subscribe({
       next: (res) => {
-        this.hasMoreResults.set(res.hasMoreResults);
-        this.lastCreatedAt = res.lastCreatedAt ?? undefined;
+        this.commenthasMoreResults.set(res.hasMoreResults);
+        this.commentlastCreatedAt = res.lastCreatedAt ?? undefined;
         this.reportedComments.update(current => [...current, ...res.reports]);
+        console.log(this.reportedComments());
       },
       error: (err) => {
         console.error('Failed to load reports:', err);

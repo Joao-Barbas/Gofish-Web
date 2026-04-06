@@ -1,0 +1,93 @@
+:host {
+  display: flex;
+  width: 100%;
+}
+
+.gf-card-comment-preview {
+  padding: 12px;
+  width: 100%;
+  min-width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+.top-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment-user-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+gf-user-title {
+  --user-title-font-size: 14px;
+  --user-title-max-width: 100px;
+}
+
+.comment-author-profile-photo {
+  width: var(--gf-32);
+  height: var(--gf-32);
+}
+
+.separator,
+.comment-time-ago {
+  font-size: var(--gf-12);
+  font-family: var(--gf-font-date);
+  word-break: break-all;
+}
+
+.badge-wrapper {
+  display: flex;
+  gap: 4px;
+}
+
+.gf-badge-comment-preview {
+  width: fit-content;
+  height: 32px;
+  padding: 8px 16px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.gf-badge-comment-preview svg {
+  color: var(--gf-dark-text-muted);
+  width: var(--gf-16);
+  height: var(--gf-16);
+}
+
+.gf-badge-comment-preview:last-child {
+  padding: 8px;
+}
+
+.gf-badge-comment-preview:last-child:hover svg {
+  color: var(--gf-dark-text);
+}
+
+.bottom-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.comment-body {
+  margin: 0;
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.report-number {
+  font-size: 24px;
+  white-space: nowrap;
+}

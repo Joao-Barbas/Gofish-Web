@@ -26,15 +26,19 @@
     }
     <h2>Reported Comments</h2>
     @for (comment of reportedComments(); track comment.id) {
-    <app-gf-card-comment-preview [commentId]="comment.targetId" [isReportedComment]="true"
-      [reportNumber]="getCommentReportCount(comment.targetId)" [reportIndex]="comment.id"></app-gf-card-comment-preview>
+    <gf-gf-card-comment-preview [commentId]="comment.targetId" [isReportedComment]="true"
+      [reportNumber]="getCommentReportCount(comment.targetId)" [reportIndex]="comment.id"></gf-gf-card-comment-preview>
     } @empty {
     <p>No comment reports available.</p>
     }
 
-    @if (hasMoreResults()) {
+    @if (pinhasMoreResults()) {
     <button (click)="loadMorePins()" class="btn-show-more">Load More</button>
     }
+    @if (commenthasMoreResults()) {
+    <button (click)="loadMoreComments()" class="btn-show-more">Load More</button>
+    }
+
   </div>
 
 </div>

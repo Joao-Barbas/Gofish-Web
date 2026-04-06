@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, CreatePinResDTO, GetPinsReqDTO, PinDataResDTO, GetPinsResDTO, GetPinsReqDto, GetPinsResDto, GetFeedReqDto, GetFeedResDto, VoteReqDto, VoteResDto, CreateCommentReqDto, CreateCommentResDto, GetCommentsReqDto, GetCommentsResDto, GetInViewportResDto } from '@gofish/shared/dtos/pin.dto';
+import { CreateInfoPinReqDTO, CreateWarnPinReqDTO, ViewportPinsResDTO, CreatePinResDTO, GetPinsReqDTO, PinDataResDTO, GetPinsResDTO, GetPinsReqDto, GetPinsResDto, GetFeedReqDto, GetFeedResDto, VoteReqDto, VoteResDto, CreateCommentReqDto, CreateCommentResDto, GetCommentsReqDto, GetCommentsResDto, GetInViewportResDto, CommentDto } from '@gofish/shared/dtos/pin.dto';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { Api } from '@gofish/shared/constants';
 import { VotePostDTO, VotePostResDTO } from '@gofish/shared/dtos/vote-post.dto';
@@ -57,6 +57,10 @@ export class PinService {
 
   deleteComment(commentId: number): Observable<void> {
     return this.http.delete<void>(Api.Pin.action(`DeleteComment/${commentId}`));
+  }
+
+  getComment(id: number): Observable<CommentDto> {
+    return this.http.get<CommentDto>(Api.Pin.action(`GetComment/${id}`));
   }
 
   getComments(dto: GetCommentsReqDto): Observable<GetCommentsResDto> {
