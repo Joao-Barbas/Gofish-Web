@@ -12,10 +12,11 @@ import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { PinDto } from '@gofish/shared/dtos/pin.dto';
 import { VoteKind } from '@gofish/shared/enums/vote-kind.enum';
 import { UserTitleComponent } from "@gofish/shared/components/user-title/user-title.component";
+import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-forum-post',
-  imports: [TimeAgoPipe, EnumComponent, RouterLink, SlicePipe, UserTitleComponent],
+  imports: [TimeAgoPipe, EnumComponent, RouterLink, SlicePipe, UserTitleComponent, CdkCopyToClipboard],
   templateUrl: './forum-post.component.html',
   styleUrl: './forum-post.component.css',
 })
@@ -114,4 +115,10 @@ export class ForumPostComponent {
 
     this.router.navigate(['/forum', 'report-pin', id]);
   }
+
+  copyLink(postId: number | string) {
+    const link = `${window.location.origin}/forum/post/${postId}`;
+  navigator.clipboard.writeText(link);
+  }
+
 }
