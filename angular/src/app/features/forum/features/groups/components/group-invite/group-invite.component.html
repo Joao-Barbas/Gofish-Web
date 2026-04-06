@@ -1,0 +1,81 @@
+<div class="modal-backdrop-custom d-flex justify-content-center align-items-center">
+  <div class="modal-custom gf-card">
+    <div id="invite-modal">
+
+      <div class="modal-header text-white align-items-center mb-3 justify-content-between">
+        <div>
+          <h5 class="mb-0 text-bold modal-header-title">Invite to Group</h5>
+          <p class="mb-0 dark-text-muted modal-header-subtitle">
+            Select the friends you want to invite to this group.
+          </p>
+        </div>
+
+        <button class="gf-btn-icon" (click)="onCancel()"
+          style="background: none; border: none; color: var(--gf-dark-text-muted); cursor: pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="search-container mb-3">
+          <input type="text" class="form-control dark-bg-dark dark-text border-0"
+                 placeholder="Search friends..." (input)="onSearchFriends($event)">
+        </div>
+
+        <h5 class="text-slim modal-body-section-title mt-3">Your Friends</h5>
+        <section class="d-flex flex-column friend-list-container">
+
+          <div class="friends-selector d-flex flex-column gap-2">
+            @for (friend of userFriends(); track friend.id) {
+              <label class="friend-row-item d-flex align-items-center justify-content-between"
+                     [class.selected]="selectedFriendIds().includes(friend.id)">
+
+                <div class="d-flex align-items-center gap-3">
+                  <input type="checkbox" class="d-none"
+                         [checked]="selectedFriendIds().includes(friend.id)"
+                         (change)="toggleFriend(friend.id)">
+
+                  <img [src]="friend.avatarUrl || 'assets/default-avatar.png'" class="friend-avatar">
+                  <div class="d-flex flex-column">
+                    <span class="friend-name">{{ friend.firstName }} {{ friend.lastName }}</span>
+                    <small class="dark-text-muted">&#64;{{ friend.userName }}</small>
+                  </div>
+                </div>
+
+                @if (selectedFriendIds().includes(friend.id)) {
+                  <span class="text-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                  </span>
+                }
+              </label>
+            } @empty {
+              <p class="dark-text-muted text-center py-4">No friends found to invite.</p>
+            }
+          </div>
+        </section>
+
+        @if (errorMessage) {
+          <p class="text-danger mt-2 mb-0">{{ errorMessage }}</p>
+        }
+      </div>
+
+      <div class="modal-footer mt-4 action-btns">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">
+          Cancel
+        </button>
+
+        <app-async-button
+          (click)="onSendInvites()"
+          labels="Send Invites"
+          [disabled]="selectedFriendIds().length === 0"
+          [state]="busyState.isBusy() ? 'busy' : 'idle'" />
+      </div>
+    </div>
+  </div>
+</div>
