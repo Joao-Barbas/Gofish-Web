@@ -51,7 +51,7 @@ export class CatchPinModalComponent {
     species: [0],
     bait: [0],
     hook: ['', [Validators.maxLength(20)]],
-    imageUrl: ['', [Validators.required, Validators.pattern(/^.*\.(png|jpeg)$/i)]],
+    imageUrl: ['', [Validators.required, Validators.pattern(/^.*\.(png|jpeg|jpg)$/i)]],
     groupIds: this.fb.control<number[]>([])
   });
 
@@ -125,7 +125,7 @@ export class CatchPinModalComponent {
 
     const file = input.files[0];
 
-    const allowedTypes = ['image/png', 'image/jpeg'];
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
 
     if (!allowedTypes.includes(file.type)) {
       alert('Only PNG or JPEG images are allowed');
