@@ -13,7 +13,7 @@ import { PinService } from '@gofish/shared/services/pin.service';
   styleUrl: './gf-card-comment-preview.component.css',
 })
 export class GfCardCommentPreviewComponent {
-private readonly pinService = inject(PinService);
+  private readonly pinService = inject(PinService);
   readonly avatarService = inject(AvatarService);
 
   commentId = input.required<number>();
@@ -28,12 +28,12 @@ private readonly pinService = inject(PinService);
 
 
   ngOnInit() {
-    this.pinService.getComments({ ids: [{ commentId: this.commentId() }] }).subscribe({
+    /* this.pinService.getComments({ ids: [{ commentId: this.commentId() }] }).subscribe({
       next: (res) => {
         this.commentData.set(res.comments[0]);
       },
       error: (err: HttpErrorResponse) => console.error(err)
-    });
+    }); */
   }
 
   getEnumDisplayName(options: EnumDTO[], value: number): string {

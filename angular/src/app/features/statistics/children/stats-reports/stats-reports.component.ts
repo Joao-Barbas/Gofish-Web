@@ -36,7 +36,7 @@ export class StatsReportsComponent {
     this.loadMoreComments();
   }
 
-  private loadMorePins(): void {
+  protected loadMorePins(): void {
     if (this.isLoading) return;
 
     this.isLoading = true;
@@ -58,7 +58,7 @@ export class StatsReportsComponent {
     });
   }
 
-  private loadMoreComments(): void {
+  protected loadMoreComments(): void {
     if (this.isLoading) return;
 
     this.isLoading = true;

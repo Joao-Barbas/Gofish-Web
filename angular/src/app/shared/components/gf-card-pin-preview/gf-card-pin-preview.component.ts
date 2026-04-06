@@ -67,13 +67,23 @@ export class GfCardPinPreviewComponent implements OnInit {
       next: (res) => this.warningKindOptions = res,
       error: (err: HttpErrorResponse) => console.error(err)
     });
-
-    this.pinService.getPins({ ids: [{ pinId: this.pinId() }] }).subscribe({
-      next: (res) => {
-        this.pinInfo.set(res.pins[0]);
-      },
-      error: (err: HttpErrorResponse) => console.error(err)
-    });
+    if (!this.pinData() && this.pinId()) {
+      const request = {
+        ids: [{ pinId: this.pinId() }],
+        dataRequest: {
+          includeAuthor: true,
+          includeDetails: true,
+          includeGeolocation: true,
+          includeStats: true,
+        }
+      };
+      this.pinService.getPins(request).subscribe({
+        next: (res) => {
+          this.pinInfo.set(res.pins[0]);
+          },
+        error: (err: HttpErrorResponse) => console.error(err)
+      });
+    }
   }
 
   getEnumDisplayName(options: EnumDTO[], value: number): string {
