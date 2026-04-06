@@ -42,7 +42,19 @@ export class GroupApi/*Service*/ {
     return this.http.get<SearchGroupsResDTO>(Api.Group.action('SearchGroups'), { params: p });
   }
 
-  public sendInvite(groupId: number, dto: SendGroupInviteReqDTO): Observable<SendGroupInviteResDTO> {
-    return this.http.post<SendGroupInviteResDTO>(Api.Group.action(`SendInvite/${groupId}`), dto);
+  public createGroupInvite(dto: SendGroupInviteReqDTO): Observable<SendGroupInviteResDTO> {
+    return this.http.post<SendGroupInviteResDTO>(Api.Group.action('CreateGroupInvite'), dto);
+  }
+
+  public acceptGroupInvite(inviteId: number): Observable<void>  {
+    return this.http.patch<void>(Api.Group.action(`AcceptGroupInvite/${inviteId}`), null);
+  }
+
+  public deleteGroupInvite(inviteId: number): Observable<void> {
+    return this.http.delete<void>(Api.Group.action(`DeleteGroupInvite/${inviteId}`));
+  }
+
+  public ignoreGroupInvite(inviteId: number): Observable<void> {
+    return this.deleteGroupInvite(inviteId);
   }
 }

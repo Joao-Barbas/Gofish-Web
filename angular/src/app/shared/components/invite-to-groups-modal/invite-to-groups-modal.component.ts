@@ -118,10 +118,9 @@ export class InviteToGroupsModalComponent implements SimpleModal {
   onInvite(group: InvitableGroup): void {
     if (group.inviteState() === 'invited') return;
     group.inviteState.set('inviting');
-    this.groupApi.sendInvite(
-      group.id,
-      { receiverUserId: this.targetUserId() }
-    ).subscribe({
+    this.groupApi.createGroupInvite({
+      groupId: group.id,receiverUserId: this.targetUserId()
+    }).subscribe({
       next: () => group.inviteState.set('invited'),
       error: () => toast.error('Something went wrong. Try again later.')
     });

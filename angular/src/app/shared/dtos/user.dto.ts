@@ -159,7 +159,7 @@ export interface GetUserGroupReqDTO {
 export interface GetUserGroupResDTO {
   groups: UserGroupDTO[];
   hasMoreResults: boolean;
-  lastTimestamp: string
+  lastTimestamp?: string
 }
 
 export interface GetInvitableGroupsReqDTO {

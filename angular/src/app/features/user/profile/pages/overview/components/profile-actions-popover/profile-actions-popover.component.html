@@ -9,5 +9,7 @@
 <button (click)="onUnfriend()">View all friends</button>
 <button (click)="onPins()">View all pins</button>
 <button (click)="onGroups()">View all groups</button>
-<button (click)="onInviteToGroup()">Invite to group...</button>
+@if (!profileContext.isOwner()) {
+  <button (click)="onInviteToGroup()">Invite to group...</button>
+}
 <button (click)="onShowMore()">See more...</button>

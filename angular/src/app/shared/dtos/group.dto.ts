@@ -124,6 +124,7 @@ export interface SearchGroupsReqDTO {
 }
 
 export interface SendGroupInviteReqDTO {
+  groupId: number,
   receiverUserId: string;
 }
 
