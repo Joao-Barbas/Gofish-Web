@@ -179,12 +179,127 @@ public class StatsController : ControllerBase
     }
 
     [HttpGet]
+    public async Task<IActionResult> GetTotalUsers()
+    {
+        var value = await _userManager.Users.CountAsync();
+
+        return Ok(new GetTotalUsersResDTO(value));
+    }
+
+    [HttpGet]
     public async Task<IActionResult> GetTotalWarningPinsCreated()
     {
         var value = await _db.Pins
             .CountAsync(p => p.Kind == PinKind.Warning);
 
         return Ok(new GetTotalWarningPinsCreatedResDTO(value));
+    }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> GetPinsWeeklyStats([FromQuery] GetPinsWeeklyStatsReqDTO dto)
+    {
+        if (dto.Year < 2000 || dto.Year > 3000)
+            return BadRequest("Invalid year.");
+
+        if (dto.Month < 1 || dto.Month > 12)
+            return BadRequest("Invalid month.");
+
+        var startDate = new DateTime(dto.Year, dto.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+        var endDate = startDate.AddMonths(1);
+
+        var pins = await _db.Pins
+            .AsNoTracking()
+            .Where(p => p.CreatedAt >= startDate && p.CreatedAt < endDate)
+            .Select(p => new
+            {
+                p.CreatedAt,
+                p.Kind
+            })
+            .ToListAsync();
+
+        var result = new List<GetPinsWeeklyStatsResDTO>();
+
+        var cursor = startDate;
+        var dayNumber = 1;
+
+        while (cursor < endDate)
+        {
+            var next = cursor.AddDays(7);
+            if (next > endDate)
+                next = endDate;
+
+            var catchCount = pins.Count(p =>
+                p.CreatedAt >= cursor &&
+                p.CreatedAt < next &&
+                p.Kind == PinKind.Catch);
+
+            var infoCount = pins.Count(p =>
+                p.CreatedAt >= cursor &&
+                p.CreatedAt < next &&
+                p.Kind == PinKind.Information);
+
+            var warningCount = pins.Count(p =>
+                p.CreatedAt >= cursor &&
+                p.CreatedAt < next &&
+                p.Kind == PinKind.Warning);
+
+            var lastDayOfRange = next.AddDays(-1).Day;
+
+            result.Add(new GetPinsWeeklyStatsResDTO(
+                Year: dto.Year,
+                WeekLabel: $"Day {dayNumber} to day {lastDayOfRange}",
+                CatchCount: catchCount,
+                InfoCount: infoCount,
+                WarningCount: warningCount
+            ));
+
+            dayNumber = next.Day;
+            cursor = next;
+        }
+
+        return Ok(result);
+    }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> GetRegisteredUsersWeeklyStats([FromQuery] GetRegisteredUsersWeeklyStatsReqDTO dto)
+    {
+        if (dto.Year < 2000 || dto.Year > 3000)
+            return BadRequest("Invalid year.");
+
+        var startDate = new DateTime(dto.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        var endDate = dto.Year == DateTime.UtcNow.Year
+            ? DateTime.UtcNow
+            : startDate.AddYears(1);
+
+        var usersCreatedAt = await _userManager.Users
+            .AsNoTracking()
+            .Where(u => u.CreatedAt >= startDate && u.CreatedAt < endDate)
+            .Select(u => u.CreatedAt)
+            .ToListAsync();
+
+        var result = new List<GetRegisteredUsersWeeklyStatsResDTO>();
+
+        var cursor = startDate;
+
+        while (cursor < endDate)
+        {
+            var next = cursor.AddDays(7);
+            if (next > endDate)
+                next = endDate;
+
+            var count = usersCreatedAt.Count(createdAt =>
+                createdAt >= cursor && createdAt < next);
+
+            result.Add(new GetRegisteredUsersWeeklyStatsResDTO(
+                Label: $"{cursor:dd/MM} - {next.AddDays(-1):dd/MM}",
+                Value: count
+            ));
+
+            cursor = next;
+        }
+        return Ok(result);
     }
 }
 

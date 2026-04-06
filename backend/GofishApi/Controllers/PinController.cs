@@ -322,6 +322,21 @@ public class PinController : ControllerBase
         return Ok(new GetCommentsResDto(data, hasMore, lastTime));
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetComment(int id)
+    {
+        var comment = await _db.Comments
+            .AsNoTracking()
+            .Include(c => c.AppUser)
+            .ThenInclude(u => u.UserProfile)
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (comment is null)
+            return NotFound();
+
+        return Ok(CommentDto.FromEntity(comment));
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateComment([FromBody] CreateCommentReqDto dto)
     {
