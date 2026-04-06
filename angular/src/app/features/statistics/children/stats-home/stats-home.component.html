@@ -63,7 +63,7 @@
   <div class="quick-view-grid">
 
     <!-- Quick View Item - 1 -->
-    <app-gf-card-quick-view type="system-requests" bigText=" {{ weeklyApiSuccessRate() !== null ? weeklyApiSuccessRate() + '%' : 'Loading...' }}"
+    <app-gf-card-quick-view type="system-requests" bigText=" {{ weeklyApiSuccessRate() !== null ? `${weeklyApiSuccessRate()}%` : 'Loading...' }}"
       littleText="of system requests were successful(weekly)"></app-gf-card-quick-view>
 
     <!-- Quick View Item - 2 -->
@@ -114,7 +114,7 @@
   <!-- Go to Reports -->
   <div class="quick-view-grid">
     <app-gf-card-quick-access class="quick-access-grid-item" type="reports" title="Reports"
-      [extraTexts]="['Reports awaiting review: 6']" />
+      [extraTexts]="['Reports awaiting review: ' + (reportsWaitingReview()?.reportsWaitingReview || 0)]" />
   </div>
 
 </div>

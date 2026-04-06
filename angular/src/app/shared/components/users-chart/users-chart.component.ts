@@ -61,6 +61,7 @@ export class UsersChartComponent implements OnChanges {
     this.chartOptions = {
       responsive: true,
       maintainAspectRatio: false,
+      devicePixelRatio: window.devicePixelRatio,
       plugins: {
         title: {
           display: true,
