@@ -1,25 +1,24 @@
 import { Component, inject, signal } from '@angular/core';
-import { ForumPostComponent } from "../../components/forum-post/forum-post.component";
 import { Router } from '@angular/router';
-import { GetFeedReqDTO, GetFeedResDTO } from '@gofish/shared/dtos/get-feed.dto';
-import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
-import { PinService } from '@gofish/shared/services/pin.service';
-import { GetFeedReqDto, GetFeedResDto } from '@gofish/shared/dtos/pin.dto';
+import { GetFeedResDto, GetFeedReqDto } from '@gofish/shared/dtos/pin.dto';
 import { FeedKind } from '@gofish/shared/enums/feed-kind.enum';
+import { PinService } from '@gofish/shared/services/pin.service';
+import { ForumPostComponent } from "../../components/forum-post/forum-post.component";
+import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 
 @Component({
-  selector: 'app-discover',
+  selector: 'app-from-friends',
   imports: [ForumPostComponent, LoadingSpinnerComponent],
-  templateUrl: './discover.component.html',
-  styleUrl: './discover.component.css',
+  templateUrl: './from-friends.component.html',
+  styleUrl: './from-friends.component.css',
 })
-export class DiscoverComponent {
+export class FromFriendsComponent {
   private readonly router = inject(Router);
   private readonly pinService = inject(PinService);
   allFeedPosts = signal<GetFeedResDto | null>(null);
   hasMoreResults = signal(true);
   private lastTimestamp: string = new Date().toISOString();
-  isLoading = signal(false);
+   isLoading = signal(false);
 
   onScroll = () => {
     const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 200;
@@ -33,16 +32,13 @@ export class DiscoverComponent {
     window.addEventListener('scroll', this.onScroll);
   }
 
-   ngOnDestroy() {
+  ngOnDestroy() {
     window.removeEventListener('scroll', this.onScroll);
   }
-
-
-
   loadPosts() {
     this.isLoading.set(true);
     const request: GetFeedReqDto = {
-      kind: FeedKind.Discovery,
+      kind: FeedKind.Friends,
       maxResults: 5,
       lastTimestamp: this.lastTimestamp
     }

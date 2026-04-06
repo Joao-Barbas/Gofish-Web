@@ -1,10 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
-import { GroupSettingsPopoverComponent } from "../groups/components/group-settings-popover/group-settings-popover.component";
-import { CreatePostCommentReqDTO, GetPostsCommentDTO, GetPostsPostDTO, GetPostsReqDTO, GetPostsResDTO, PostIdDTO } from '@gofish/shared/dtos/get-post.dto';
 import { ActivatedRoute } from '@angular/router';
 import { ForumPostComponent } from '@gofish/features/forum/components/forum-post/forum-post.component';
 import { AuthService } from '@gofish/shared/services/auth.service';
-import { PostCommentsComponent } from "../post-comments/post-comments.component";
+
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { toast } from 'ngx-sonner';
@@ -13,10 +11,11 @@ import { CommentDto, CreateCommentReqDto, GetCommentsReqDto, GetCommentsResDto, 
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { BodyLengthConstraints } from '@gofish/shared/constants';
+import { PostCommentsComponent } from '@gofish/features/forum/features/post/post-comments/post-comments.component';
 
 @Component({
   selector: 'app-post-id-placeholder',
-  imports: [GroupSettingsPopoverComponent, ForumPostComponent, PostCommentsComponent, LoadingSpinnerComponent, ReactiveFormsModule, AsyncButtonComponent],
+  imports: [ForumPostComponent, PostCommentsComponent, LoadingSpinnerComponent, ReactiveFormsModule, AsyncButtonComponent],
   templateUrl: './post-id-placeholder.component.html',
   styleUrl: './post-id-placeholder.component.css',
 })

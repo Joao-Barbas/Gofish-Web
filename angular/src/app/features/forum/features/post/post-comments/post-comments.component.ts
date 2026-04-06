@@ -1,6 +1,5 @@
 import { Component, inject, input } from '@angular/core';
 import { GetPostsCommentDTO } from '@gofish/shared/dtos/get-post.dto';
-import { TimeAgoPipe } from "../../../../shared/pipes/time-ago.pipe";
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 import { CommentDto } from '@gofish/shared/dtos/pin.dto';
 import { AvatarService } from '@gofish/shared/services/avatar.service';
@@ -8,6 +7,7 @@ import { AuthService } from '@gofish/shared/services/auth.service';
 import { PinService } from '@gofish/shared/services/pin.service';
 import { Router } from '@angular/router';
 import { UserTitleComponent } from "@gofish/shared/components/user-title/user-title.component";
+import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
 
 @Component({
   selector: 'app-post-comments',
