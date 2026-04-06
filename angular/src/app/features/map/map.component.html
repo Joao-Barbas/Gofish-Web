@@ -9,14 +9,16 @@
     <!-- <app-overlay-header></app-overlay-header> -->
     @if (this.popupService.isOpen('pin-preview')) {
     <div class="pin-detail-panel fade show gf-do-events">
-      <app-pin-detail-panel [pinData]="selectedPin()" (cancel)="onPopupCancelPinPreview()" (coords)="goToCoords($event)">
+      <app-pin-detail-panel [pinData]="selectedPin()" (cancel)="onPopupCancelPinPreview()"
+        (coords)="goToCoords($event)">
       </app-pin-detail-panel>
     </div>
     }
 
     @if (this.popupService.isOpen('cluster-preview')) {
     <div class="cluster-detail-panel fade show gf-do-events">
-      <app-cluster-details [pinsData] ="selectedPins()" (cancel)="onPopupCancelPinPreview()" (coords)="goToCoords($event)">
+      <app-cluster-details [pinsData]="selectedPins()" (cancel)="onPopupCancelPinPreview()"
+        (coords)="goToCoords($event)">
       </app-cluster-details>
     </div>
     }
@@ -26,7 +28,7 @@
       <!-- Create pin & ask location -->
       <div class="d-flex flex-column actions-bundle-container">
         <!-- Show overlay to selecte pin type to create button -->
-        <button class="map-action" (click)="toggleCreatePinOverlay($event)">
+        <button class="map-action" (click)="toggleCreatePinOverlay($event)" title="Create new pin">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path
@@ -36,9 +38,17 @@
             <path d="M19 15v6" />
           </svg>
         </button>
+
+        @if (this.popupService.isOpen('choose-pin-popup')) {
+        <app-choose-pin-popup class="position-action-overlay" animate.enter="on-enter" animate.leave="on-leave"
+          [coords]="selectedCoords()" (requestPickOnMap)="onRequestPickOnMap()" (requestGeoOnMap)="onGeo($event)"
+          (cancel)="onPopupCancelPinOverlay()">
+        </app-choose-pin-popup>
+        }
+
         <!-- Get location permissions button -->
         <button id="map-action-ask-location" class="map-action" [disabled]="isGeolocationDenied"
-          (click)="requestGeolocation()">
+          (click)="requestGeolocation()" title="Ask for location permission">
           @switch (getGeolocationState) {
           @case ('prompt') {
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -77,14 +87,14 @@
       </div>
       <!-- Zoom -->
       <div class="d-flex flex-column actions-bundle-container">
-        <button class="map-action" (click)="zoomIn()">
+        <button class="map-action" (click)="zoomIn()" title="Zoom in">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14" />
             <path d="M12 5v14" />
           </svg>
         </button>
-        <button class="map-action" (click)="zoomOut()">
+        <button class="map-action" (click)="zoomOut()" title="Zoom out">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14" />
@@ -92,13 +102,6 @@
         </button>
       </div>
       <!-- popup overlays  -->
-      <!-- Choose pin type -->
-      @if (this.popupService.isOpen('choose-pin-popup')) {
-      <app-choose-pin-popup class="position-action-overlay" animate.enter="on-enter" animate.leave="on-leave"
-        [coords]="selectedCoords()"
-        (requestPickOnMap)="onRequestPickOnMap()" (requestGeoOnMap)="onGeo($event)" (cancel)="(onPopupCancelPinOverlay())">
-      </app-choose-pin-popup>
-      }
 
       <!-- End popup overlays  -->
     </div>
