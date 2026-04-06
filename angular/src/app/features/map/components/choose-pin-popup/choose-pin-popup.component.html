@@ -5,11 +5,13 @@
     <p>1. First select your coordinates</p>
     <!-- Botões de escolha de localização -->
     <div class="d-flex flex-row gf-gap-16 pin-types-showcase justify-content-center">
-      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="onCreateByGeolocation()">
+      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="onCreateByGeolocation()"
+        title="Create pin at current location">
         <button class="modal-info-box location-toggle-btn" [class.active]="selectedLocationMode === 'geo'">Current
           Location</button>
       </div>
-      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="chooseOnMap()">
+      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="chooseOnMap()"
+        title="Click anywhere on the map to set coordinates">
         <button class="modal-info-box location-toggle-btn" [class.active]="selectedLocationMode === 'pick'">On
           Map</button>
       </div>
