@@ -11,22 +11,26 @@
     <!-- Comment Form -->
     <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
 
-      <div class="gf-card-comment-area d-flex flex-column"> <textarea class="comment-area"
-          placeholder="Join the conversation" formControlName="body" rows="3"> </textarea>
+      <div class="gf-card-comment-area d-flex flex-column">
+        <textarea class="comment-area" maxlength="{{ BodyLengthConstraints.MAX }}" placeholder="Join the conversation"
+          formControlName="body" rows="3"> </textarea>
 
-        <div class="d-flex justify-content-between mt-1">
+        <div class="text-end mt-1">
           <small class="dark-text-muted">
             {{ commentForm.value.body?.length ?? 0 }}/{{ BodyLengthConstraints.MAX }}
           </small>
+          @if (commentForm.controls.body.touched && commentForm.controls.body.invalid) {
+          <p class="text-danger mt-2 mb-0">
+            @if (commentForm.controls.body.errors?.['required']) { Description is required. }
+            @if (commentForm.controls.body.errors?.['minlength']) { Must have at least {{ BodyLengthConstraints.MIN }}
+            characters. }
+            @if (commentForm.controls.body.errors?.['maxlength']) { Cannot exceed {{ BodyLengthConstraints.MAX }}
+            characters. }
+          </p>
+          }
         </div>
 
-        @if (commentForm.controls.body.touched && commentForm.controls.body.invalid) {
-        <p class="text-danger mt-2 mb-0">
-          @if (commentForm.controls.body.errors?.['required']) { Description is required. }
-          @if (commentForm.controls.body.errors?.['minlength']) { Must have at least {{ BodyLengthConstraints.MIN }} characters. }
-          @if (commentForm.controls.body.errors?.['maxlength']) { Cannot exceed {{ BodyLengthConstraints.MAX }} characters. }
-        </p>
-        }
+
       </div>
 
       <app-async-button type="submit" labels="Publish" [state]="busyState.isBusy() ? 'busy' : 'idle'">
