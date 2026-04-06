@@ -80,6 +80,14 @@ export class StatsReportsComponent {
     });
   }
 
+  getPinReportCount(pinId: number): number {
+    return this.reportedPins().filter(r => r.targetId === pinId).length;
+  }
+
+  getCommentReportCount(commentId: number): number {
+    return this.reportedComments().filter(r => r.targetId === commentId).length;
+  }
+
 }
 
 

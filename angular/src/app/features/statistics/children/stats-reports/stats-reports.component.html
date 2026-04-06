@@ -19,21 +19,22 @@
   <div class="quick-view-grid">
     <h2>Reported Pins</h2>
     @for (pin of reportedPins(); track pin.id) {
-      <p>pin: {{ pin.targetId }}</p>
-    <app-gf-card-pin-preview [pinId]="pin.targetId" [isReportedPin]="true" [reportIndex]="pin.id"></app-gf-card-pin-preview>
-  } @empty {
+    <app-gf-card-pin-preview [pinId]="pin.targetId" [isReportedPin]="true"
+      [reportNumber]="getPinReportCount(pin.targetId)" [reportIndex]="pin.id"></app-gf-card-pin-preview>
+    } @empty {
     <p>No pin reports available.</p>
-  }
+    }
     <h2>Reported Comments</h2>
     @for (comment of reportedComments(); track comment.id) {
-    <!-- <app-gf-card-comment-preview [commentData]="comment" [isReportedComment]="true" [reportNumber]="getReportCount(comment.id) " [reportIndex]="comment.id"></app-gf-card-comment-preview>
-   -->} @empty {
+    <app-gf-card-comment-preview [commentId]="comment.targetId" [isReportedComment]="true"
+      [reportNumber]="getCommentReportCount(comment.targetId)" [reportIndex]="comment.id"></app-gf-card-comment-preview>
+    } @empty {
     <p>No comment reports available.</p>
-  }
+    }
 
-  @if (hasMoreResults()) {
+    @if (hasMoreResults()) {
     <button (click)="loadMorePins()" class="btn-show-more">Load More</button>
-  }
+    }
   </div>
 
 </div>

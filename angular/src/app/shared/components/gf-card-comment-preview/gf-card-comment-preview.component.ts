@@ -16,7 +16,7 @@ export class GfCardCommentPreviewComponent {
   private readonly pinService = inject(PinService);
   readonly avatarService = inject(AvatarService);
 
-  commentId = input.required<number>();
+  commentId = input<number>();
   commentData = signal<PinDto | null>(null);
   isReportedPin = input<boolean>(false);
   reportNumber = input<number>();
@@ -28,12 +28,12 @@ export class GfCardCommentPreviewComponent {
 
 
   ngOnInit() {
-    /* this.pinService.getComments({ ids: [{ commentId: this.commentId() }] }).subscribe({
+    /*  */ this.pinService.getComments({ ids: [{ commentId: this.commentId() }] }).subscribe({
       next: (res) => {
         this.commentData.set(res.comments[0]);
       },
       error: (err: HttpErrorResponse) => console.error(err)
-    }); */
+    });
   }
 
   getEnumDisplayName(options: EnumDTO[], value: number): string {
