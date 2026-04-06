@@ -231,7 +231,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
         SeedPinReports(builder);
         SeedVotes(builder);
         SeedFriendships(builder);
-        SeedUserRoles(builder); 
+        SeedUserRoles(builder);
+        SeedComments(builder);
     }
 
     private static void SeedUsers(ModelBuilder builder)
@@ -420,6 +421,38 @@ public class AppDbContext : IdentityDbContext<AppUser>
         }
 
         builder.Entity<WarnPin>().HasData(warnPins);
+    }
+
+    private static void SeedComments(ModelBuilder builder)
+    {
+        var now = new DateTime(2026, 3, 8, 12, 0, 0, DateTimeKind.Utc);
+
+        var comments = new List<Comment>();
+        int id = 1;
+
+        var pinIds = new List<int>
+    {
+        1, 2, 3,        // Catch
+        101, 102, 103,  // Info
+        201, 202, 203   // Warn
+    };
+
+        foreach (var pinId in pinIds)
+        {
+            for (int u = 1; u <= 3; u++) 
+            {
+                comments.Add(new Comment
+                {
+                    Id = id++,
+                    PinId = pinId,
+                    UserId = $"seed-player-{u}",
+                    Body = $"Comment {id} on pin {pinId}",
+                    CreatedAt = now.AddMinutes(-id)
+                });
+            }
+        }
+
+        builder.Entity<Comment>().HasData(comments);
     }
 
     private static void SeedGroups(ModelBuilder builder)
