@@ -1,15 +1,15 @@
 <div class="modal-backdrop-custom d-flex justify-content-center align-items-center">
   <div class="modal-custom gf-card">
     <div id="invite-modal">
-      <div class="modal-header text-white d-flex align-items-center mb-3 justify-content-between">
+
+      <div class="modal-header text-white d-flex align-items-center justify-content-between">
         <div>
           <h5 class="mb-0 text-bold modal-header-title">Invite Friends</h5>
           <p class="mb-0 dark-text-muted modal-header-subtitle">
             Find friends to join this group
           </p>
         </div>
-        <button class="gf-btn-icon" (click)="onCancel()"
-          style="background: none; border: none; color: var(--gf-dark-text-muted); cursor: pointer;">
+        <button class="gf-btn-icon close-button" (click)="onCancel()">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round">
             <path d="M18 6L6 18M6 6l12 12" />
@@ -18,22 +18,20 @@
       </div>
 
       <div class="modal-body">
-        <section class="friend-list-container d-flex flex-column" (scroll)="onScroll($event)"
-          style="max-height: 400px; overflow-y: auto;">
+        <section class="friend-list-container d-flex flex-column" (scroll)="onScroll($event)">
           <div class="friends-selector d-flex flex-column gap-2">
+
             @for (friendship of friendsList(); track friendship.id) {
             @let friend = (friendship.requesterUserId === this.authService.userId())
-              ? friendship.receiver
-              : friendship.requester;
+            ? friendship.receiver
+            : friendship.requester;
             @let isAlreadyMember = groupMemberIds().includes(friend.userId);
 
-            <div class="friend-row-item d-flex align-items-center justify-content-between p-2"
-              style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <div class="friend-row-item">
               <div class="d-flex align-items-center gap-3">
-                <img [src]="friend.avatarUrl || 'assets/default-avatar.png'" class="friend-avatar"
-                  style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;">
+                <img [src]="this.avatarService.resolve(friend.avatarUrl)" class="friend-avatar">
                 <div class="d-flex flex-column">
-                  <span class="friend-name text-white text-bold">
+                  <span class="friend-name">
                     {{ friend.firstName }} {{ friend.lastName }}
                   </span>
                   <small class="dark-text-muted">@{{ friend.userName }}</small>
@@ -45,6 +43,7 @@
                 [class.btn-outline-secondary]="sentInviteIds().includes(friend.userId) || isAlreadyMember"
                 [disabled]="sentInviteIds().includes(friend.userId) || isAlreadyMember || busyState.isBusy()"
                 (click)="sendInvite(friend.userId)">
+
                 @if (isAlreadyMember) {
                 <i class="bi bi-people-fill"></i> In group
                 } @else if (sentInviteIds().includes(friend.userId)) {
@@ -75,7 +74,7 @@
         }
       </div>
 
-      <div class="modal-footer mt-4 d-flex justify-content-end">
+      <div class="modal-footer d-flex justify-content-end">
         <button type="button" class="btn btn-secondary px-4" (click)="onCancel()">
           Done
         </button>

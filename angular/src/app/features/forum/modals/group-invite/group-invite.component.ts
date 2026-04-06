@@ -9,6 +9,7 @@ import { LoadingState } from '@gofish/shared/core/loading-state';
 import { FriendshipDTO, GetFriendshipsResDTO } from '@gofish/shared/dtos/user.dto';
 import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
 import { AuthService } from '@gofish/shared/services/auth.service';
+import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { GroupsService } from '@gofish/shared/services/groups.service';
 
 @Component({
@@ -20,6 +21,7 @@ import { GroupsService } from '@gofish/shared/services/groups.service';
 export class GroupInviteComponent {
   readonly profileContext = inject(ProfileContext);
   protected readonly authService = inject(AuthService);
+  protected readonly avatarService = inject(AvatarService);
   private readonly userApi = inject(UserApi);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
