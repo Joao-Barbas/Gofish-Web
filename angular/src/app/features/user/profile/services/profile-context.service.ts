@@ -7,7 +7,11 @@ import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { UserManagerService } from '@gofish/shared/services/user-manager.service';
 
-@Injectable()
+@Injectable(
+  {
+    providedIn: 'root',
+  }
+)
 export class ProfileContext {
   private readonly userManagerService = inject(UserManagerService);
   private readonly authService = inject(AuthService);
@@ -22,7 +26,7 @@ export class ProfileContext {
 
   // Computed
 
-  readonly isOwner  = computed<boolean>(() => this._userProfileId() === this.authService.userId())
+  readonly isOwner = computed<boolean>(() => this._userProfileId() === this.authService.userId())
   readonly isFriend = computed<boolean>(() => this._userProfile().friendship?.state === FriendshipState.Accepted);
 
   // Mutations

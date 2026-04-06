@@ -111,7 +111,7 @@ export const routes: Routes = [
       },
       {
         path:
-        'personal-data',
+          'personal-data',
         loadComponent: () => import('@gofish/features/user/settings/components/personal-data/personal-data.component').then(m => m.PersonalDataComponent)
       },
       {
@@ -211,6 +211,7 @@ export const routes: Routes = [
           { path: '', redirectTo: 'posts', pathMatch: 'full' },
           { path: 'posts', loadComponent: () => import('@gofish/features/forum/features/groups/children/group-posts-placeholder/group-posts-placeholder.component').then(c => c.GroupPostsPlaceholderComponent) },
           { path: 'members', loadComponent: () => import('@gofish/features/forum/features/groups/children/members-group/members-group.component').then(c => c.MembersGroupComponent) },
+          { path: 'invite', loadComponent: () => import('@gofish/features/forum/modals/group-invite/group-invite.component').then(m => m.GroupInviteComponent)},
         ]
       },
 
@@ -225,8 +226,8 @@ export const routes: Routes = [
       },
       { path: 'post/:id', loadComponent: () => import('@gofish/features/forum/features/post/post-id-placeholder/post-id-placeholder.component').then(p => p.PostIdPlaceholderComponent) },
 
-      { path: PathSegment.DELETE_POST, loadComponent: ()=> import('@gofish/features/forum/modals/delete-post/delete-post.component').then(p => p.DeletePostComponent)},
-      { path: PathSegment.DELETE_COMMENT, loadComponent: ()=> import('@gofish/features/forum/modals/delete-comment/delete-comment.component').then(c => c.DeleteCommentComponent) },
+      { path: PathSegment.DELETE_POST, loadComponent: () => import('@gofish/features/forum/modals/delete-post/delete-post.component').then(p => p.DeletePostComponent) },
+      { path: PathSegment.DELETE_COMMENT, loadComponent: () => import('@gofish/features/forum/modals/delete-comment/delete-comment.component').then(c => c.DeleteCommentComponent) },
       { path: PathSegment.REPORT_COMMENT, loadComponent: () => import('@gofish/shared/components/report-comment/report-comment.component').then(c => c.ReportCommentComponent) },
       { path: PathSegment.REPORT_PIN, loadComponent: () => import('@gofish/shared/components/report-pin/report-pin.component').then(c => c.ReportPinComponent) }
     ]

@@ -19,6 +19,7 @@ export class GroupsComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly groupsService = inject(GroupsService);
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   protected groupData = signal<GroupDTO | null>(null);
   protected postActive: boolean = true;
   protected isExpanded = false;
@@ -51,6 +52,10 @@ export class GroupsComponent {
     this.isExpanded = !this.isExpanded
   }
 
-
+  invite() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) return;
+    this.router.navigate(['invite'], { relativeTo: this.route });
+  }
 
 }

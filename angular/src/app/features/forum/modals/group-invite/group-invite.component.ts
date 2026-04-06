@@ -8,6 +8,7 @@ import { BusyState } from '@gofish/shared/core/busy-state';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { FriendshipDTO, GetFriendshipsResDTO } from '@gofish/shared/dtos/user.dto';
 import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
+import { AuthService } from '@gofish/shared/services/auth.service';
 import { GroupsService } from '@gofish/shared/services/groups.service';
 
 @Component({
@@ -18,24 +19,24 @@ import { GroupsService } from '@gofish/shared/services/groups.service';
 })
 export class GroupInviteComponent {
   readonly profileContext = inject(ProfileContext);
+  protected readonly authService = inject(AuthService);
   private readonly userApi = inject(UserApi);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly groupsService = inject(GroupsService);
   readonly loadingState = new LoadingState();
   readonly busyState = new BusyState();
+  groupMemberIds = signal<string[]>([]);
   friendsCursor = signal<string | undefined>(undefined);
   friendsHasMore = signal(true);
   friendsList = signal<FriendshipDTO[]>([]);
-  selectedFriendIds = signal<string[]>([]);
+  sentInviteIds = signal<string[]>([]);
 
   ngOnInit() {
     this.loadMoreFriends();
+    this.loadGroupMembers();
   }
 
-  toggleFriend(id: string) {
-    this.selectedFriendIds.update(ids =>ids.includes(id) ? [] : [id]);
-  }
 
   onScroll(event: any) {
     const element = event.target;
@@ -51,42 +52,49 @@ export class GroupInviteComponent {
     window.history.back();
   }
 
-  onSendInvites() {
-    const selectedIds = this.selectedFriendIds();
-    const receiverId = selectedIds[0];
-    const groupId = Number(this.route.snapshot.params['id']);
-
-    if (!receiverId || !groupId) return;
+  sendInvite(friendId: string) {
+    const groupId = Number(this.route.parent?.snapshot.params['id']);
+    if (!groupId || this.busyState.isBusy()) return;
 
     this.busyState.setBusy(true);
 
-
     this.groupsService.createGroupInvite({
       groupId: groupId,
-      receiverUserId: receiverId
+      receiverUserId: friendId
     }).subscribe({
       next: () => {
         this.busyState.setBusy(false);
-        this.onCancel();
+        this.sentInviteIds.update(ids => [...ids, friendId]);
       },
       error: (err: HttpErrorResponse) => {
-        this.loadingState.fail(err.error || 'Failed to send invite.');
         this.busyState.setBusy(false);
+        this.loadingState.fail(err.error || 'Failed to send invite.');
+      }
+    });
+  }
+
+  private loadGroupMembers() {
+    const groupId = Number(this.route.parent?.snapshot.params['id']);
+    console.log('groupId:', groupId);
+    this.groupsService.getGroupMembers({ groupId: groupId }).subscribe({
+      next: (res) => {
+        this.groupMemberIds.set(res.members.map(m => m.userId));
       }
     });
   }
 
   private loadMoreFriends() {
-    let profileId = this.profileContext.userProfileId();
+    const userId = this.profileContext.userProfile()?.userId;
     this.loadingState.start();
     this.busyState.setBusy(true);
     this.userApi.getFriendships({
-      userId: profileId,
+      userId: userId,
       state: FriendshipState.Accepted,
-      maxResults: 1,
+      maxResults: 10,
       lastTimestamp: this.friendsCursor()
     }).subscribe({
       next: (res: GetFriendshipsResDTO) => {
+        console.log('friendships:', res.friendships);
         this.friendsList.update(list => [...list, ...res.friendships]);
         this.friendsHasMore.set(res.hasMoreResults);
         this.friendsCursor.set(res.lastTimestamp);
@@ -94,7 +102,7 @@ export class GroupInviteComponent {
         this.busyState.setBusy(false);
       },
       error: (err: HttpErrorResponse) => {
-        this.loadingState.fail('Something went wrong while trying to load friends.');
+        this.loadingState.fail('Something went wrong while trying to load friends.' + err.message);
         this.busyState.setBusy(false);
       }
     })
