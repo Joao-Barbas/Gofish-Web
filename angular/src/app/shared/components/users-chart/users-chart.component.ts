@@ -1,8 +1,9 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, input, Input, OnChanges } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration } from 'chart.js';
 import { Chart, registerables } from 'chart.js';
 import { GetUserProfileResDTO } from '@gofish/shared/dtos/user-profile.dto';
+import { GetRegisteredUsersWeeklyStatsResDTO } from '@gofish/shared/dtos/stats.dto';
 
 Chart.register(...registerables);
 
@@ -15,7 +16,7 @@ Chart.register(...registerables);
 })
 export class UsersChartComponent implements OnChanges {
 
-  @Input() users: Partial<GetUserProfileResDTO>[] = [];
+  users = input<GetRegisteredUsersWeeklyStatsResDTO[]>([]);
 
   private getCssVar(variable: string): string {
     return getComputedStyle(document.documentElement)
@@ -39,8 +40,8 @@ export class UsersChartComponent implements OnChanges {
     const groups: Record<string, number> = {};
 
     for (const user of this.users) {
-      if (!user.joinedAt) continue;
-      const week = this.getWeekLabel(new Date(user.joinedAt));
+      if (!user.label) continue;
+      const week = this.getWeekLabel(new Date(user.label));
       groups[week] = (groups[week] ?? 0) + 1;
     }
 

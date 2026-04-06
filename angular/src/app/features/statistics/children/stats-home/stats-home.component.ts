@@ -7,7 +7,7 @@ import { GetUserProfileResDTO } from '@gofish/shared/dtos/user-profile.dto';
 import { GfCardQuickAccessComponent } from '@gofish/features/statistics/components/gf-card-quick-access/gf-card-quick-access.component';
 import { PinsAvgPublishedChart } from "@gofish/shared/components/pins-avg-published-chart/pins-avg-published-chart.component";
 import { PinWeekStats, PinsPerWeekComponent } from '@gofish/shared/components/pins-per-week/pins-per-week.component';
-import { GetActiveUsersResDTO, GetPinsCreatedTodayResDTO, GetPinsWith15PositiveVotesResDTO, GetReportsWaitingReviewResDTO } from '@gofish/shared/dtos/stats.dto';
+import { GetActiveUsersResDTO, GetPinsCreatedTodayResDTO, GetPinsWith15PositiveVotesResDTO, GetRegisteredUsersWeeklyStatsResDTO, GetReportsWaitingReviewResDTO } from '@gofish/shared/dtos/stats.dto';
 import { StatsService } from '@gofish/shared/services/stats.service';
 
 export interface PinMonthStats {
@@ -35,6 +35,7 @@ export class StatsHomeComponent {
   protected pinsCreatedToday = signal<GetPinsCreatedTodayResDTO | null>(null);
   protected pinsWith15PositiveVotes = signal<GetPinsWith15PositiveVotesResDTO | null>(null);
   protected weeklyApiSuccessRate = signal<number | null>(null);
+  protected usersWeeklyStats = signal<GetRegisteredUsersWeeklyStatsResDTO[]>([]);
     mockUsers = MOCK_USERS;
 
   isLastMonth: boolean = false;
@@ -118,6 +119,15 @@ export class StatsHomeComponent {
     this.statsService.getWeeklyApiSuccessRate().subscribe({
       next: (res) => {
         this.weeklyApiSuccessRate.set(res.successRateOfRequests);
+      }
+    });
+
+    this.statsService.getRegisteredUsersWeeklyStats(new Date().getFullYear()).subscribe({
+      next: (res) => {
+        this.usersWeeklyStats.set(res);
+      },
+      error: (err) => {
+        console.error(err);
       }
     });
   }
