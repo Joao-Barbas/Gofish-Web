@@ -1,4 +1,3 @@
-
 .modal-backdrop-custom {
   position: fixed;
   inset: 0;
@@ -15,17 +14,31 @@
   padding: 16px;
 }
 
-.modal-header-title { font-size: 24px; }
-.modal-body { border-top: 2px solid var(--gf-dark-bg-light); }
+.modal-header-title {
+  font-size: 24px;
+}
 
+.close-button {
+  background: none;
+  border: none;
+  color: var(--gf-dark-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
 
+.modal-body {
+  border-top: 2px solid var(--gf-dark-bg-light);
+  padding-top: 16px;
+}
 
 .friend-list-container {
-  max-height: 320px;
+  max-height: 400px;
   overflow-y: auto;
   margin-top: 12px;
   padding-right: 4px;
-
   scrollbar-width: thin;
   scrollbar-color: #444 transparent;
 }
@@ -45,7 +58,6 @@
   margin-bottom: 6px;
   border-radius: 12px;
   background-color: var(--gf-dark-bg-light);
-  cursor: pointer;
   transition: all 0.2s ease;
   border: 1px solid transparent;
 }
@@ -54,15 +66,9 @@
   background-color: var(--gf-dark-bg-dark);
 }
 
-.friend-row-item.selected {
-  border-color: var(--gf-primary);
-  background-color: rgba(var(--gf-primary-rgb), 0.1);
-
-}
-
 .friend-avatar {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   object-fit: cover;
   background: #333;
@@ -70,35 +76,11 @@
 
 .friend-name {
   font-size: 16px;
-  font-weight: 500;
-  color: var(--gf-dark-text);
+  font-weight: 700;
+  color: white;
   display: block;
 }
 
-
-.search-container input {
-  background-color: var(--gf-dark-bg-dark);
-  color: white;
-  border: 1px solid var(--gf-dark-bg-light);
-  border-radius: 8px;
-  padding: 10px;
-  width: 100%;
-  outline: none;
-}
-
-.search-container input:focus {
-  border-color: var(--gf-primary);
-}
-
-
-.action-btns {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-
-.action-btns button,
-.action-btns app-async-button {
-  flex: 1;
+.modal-footer {
+  margin-top: 24px;
 }
