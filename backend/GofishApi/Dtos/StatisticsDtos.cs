@@ -56,3 +56,7 @@ public record GetRegisteredUsersWeeklyStatsResDTO(
     string Label,
     int Value
 );
+
+public record GetTotalUsersResDTO(
+    int UsersRegistered
+);

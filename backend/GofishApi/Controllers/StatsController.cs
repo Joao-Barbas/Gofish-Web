@@ -150,6 +150,15 @@ public class StatsController : ControllerBase
 
     [Authorize]
     [HttpGet]
+    public async Task<IActionResult> GetTotalUsers()
+    {
+        var value = await _userManager.Users.CountAsync();
+
+        return Ok(new GetTotalUsersResDTO(value));
+    }
+
+    [Authorize]
+    [HttpGet]
     public async Task<IActionResult> GetNewUsersToday()
     {
         var today = DateTime.UtcNow.Date;
