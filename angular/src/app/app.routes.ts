@@ -17,7 +17,17 @@ export const routes: Routes = [
     }
   },
   {
+    path: 'leaderboard',
+    loadComponent: () => import('@gofish/features/leaderboard/leaderboard.component').then(m => m.LeaderboardComponent),
+    canActivate: [authGuard],
+    data: {
+      header: 'flat' as HeaderVariant,
+      footer: 'small' as FooterVariant
+    }
+  },
+  {
     path: 'search',
+    canActivate: [authGuard],
     data: {
       header: 'flat' as HeaderVariant,
       footer: 'small' as FooterVariant
@@ -222,11 +232,14 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'stats', redirectTo: 'statistics/home',
+  },
+  {
     path: 'statistics',
     loadComponent: () => import('@gofish/features/statistics/statistics.component').then(f => f.StatisticsComponent),
     data: {
       header: 'flat' as HeaderVariant,
-      footer: 'big' as FooterVariant
+      footer: 'small' as FooterVariant
     },
     children: [ // unfinished
       { path: '', redirectTo: 'home', pathMatch: 'full' },

@@ -1,0 +1,26 @@
+/* groups-list.component.css */
+
+.list {
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: 1;
+  grid-template-rows: auto;
+  row-gap: var(--gf-8);
+  column-gap: var(--gf-8);
+}
+
+.load-more-btn {
+  width: 100%;
+  background-color: transparent;
+  margin-top: var(--gf-12);
+  border: var(--gf-2) solid var(--gf-primary);
+  border-radius: var(--gf-8);
+  font-size: var(--gf-text-sm);
+  color: var(--gf-dark-text);
+  padding: calc(var(--gf-8) - var(--gf-2)) 0;
+  transition: background-color 0.2s ease;
+
+  &:not(:disabled):hover {
+    background-color: var(--gf-primary-muted);
+  }
+}

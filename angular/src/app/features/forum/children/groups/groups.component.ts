@@ -1,6 +1,6 @@
 import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { GetGroupReqDTO, GetGroupResDTO } from '@gofish/shared/dtos/group.dto';
+import { GetGroupReqDTO, GetGroupResDTO, GroupDTO } from '@gofish/shared/dtos/group.dto';
 import { GroupsService } from '@gofish/shared/services/groups.service';
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 import { PopupService } from '@gofish/shared/services/popup.service';
@@ -17,7 +17,7 @@ import { SlicePipe } from '@angular/common';
 export class GroupsComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly groupsService = inject(GroupsService);
-  protected groupData = signal<GetGroupResDTO | null>(null);
+  protected groupData = signal<GroupDTO | null>(null);
   protected postActive: boolean = true;
   protected isExpanded = false;
 
@@ -32,7 +32,7 @@ export class GroupsComponent {
         includePosts: true
       }
     }
-    this.groupsService.getGroup(dto).subscribe({
+    this.groupsService.getGroup(Number(id)).subscribe({
       next: (res) => {
         this.groupData.set(res);
         console.log(res);

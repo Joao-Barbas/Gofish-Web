@@ -1,35 +1,28 @@
-@if (resources().isLoading) {
-  <div class="d-flex justify-content-center p-4">
-    <gf-loading-spinner></gf-loading-spinner>
-  </div>
-}
+@if(postData(); as post) {
 
-@else if (resources().hasValue) {
-  <!-- Criamos a variável 'profile' (que tem o rank) e 'post' para facilitar -->
-  @let profile = resources().profile!;
-  @let post = postData()!;
 
-  <div class="d-grid gap-3 gf-card-forum-post">
-    <!-- Post Header -->
-    <div class="top-of-post d-flex justify-content-between align-items-center">
-      <div class="d-flex align-items-center gap-2 " >
+<div class="d-grid gap-3 gf-card-forum-post">
 
-        <img [src]="this.avatarService.resolve(post.author!.avatarUrl)" class="rounded-circle gf-big-avatar">
+  <!-- Post Header -->
 
-        <!-- AQUI: Usamos o 'profile.rank' que acabámos de carregar -->
-        <gf-user-title [routerLink]="Path.PROFILE(post.author!.id)"
-          [text]="post.author?.userName ?? ''"
-          [effect]="profile.rank > 4 ? 'rainbow' : 'none'">
-        </gf-user-title>
+  <div class="top-of-post d-flex justify-content-between align-items-center">
 
-        <span class="post-date dark-text-muted">{{ post.createdAt | timeAgo }}</span>
-      </div>
+    <div class="d-flex align-items-center gap-2 gf-generic-clickable-wrapper" [routerLink]="Path.PROFILE(post!.author!.id)">
 
-      <div class="d-flex gap-1 post-action-buttons">
+      <img [src]="this.avatarService.resolve(post.author!.avatarUrl)" class="rounded-circle gf-big-avatar">
+
+      <gf-user-title class="post-author-name text-bold" [text]="post.author!.userName" [rank]="post.author!.rank"></gf-user-title>
+
+      <!-- <span >{{ post.author?.userName }}</span> -->
+      <span class="post-date dark-text-muted">{{ post.createdAt | timeAgo }}</span>
+
+    </div>
+
+    <div class="d-flex gap-1 post-action-buttons">
 
       <!-- Delete Post Button -->
       @if (post!.author!.userName == this.userName || isAdmin) {
-      <button class="gf-badge">
+      <button class="gf-badge" (click)="deletePost()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2">
           <path d="M10 11v6" />
@@ -41,7 +34,7 @@
       </button>
       }
       <!-- Report Post Button -->
-      <button class="gf-badge">
+      <button class="gf-badge" (click)="report()">
 
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flag-icon lucide-flag gf-badge-icon">
@@ -65,30 +58,35 @@
 
     </div>
 
-    </div>
+  </div>
 
-    <!-- Post Content -->
-    <div class="ps-5 post-content">
-      <div class="post-description">
-        <p class="mb-2 description" [class.expanded]="isExpanded">
-          {{ isExpanded ? post.ugc?.body : (post.ugc?.body | slice:0:120) + (post.ugc?.body!.length > 120 ? '...' : '') }}
-        </p>
-        @if (post.ugc?.body!.length > 120) {
-          <button type="button" class="see-more" (click)="toggleExpand()">
-            {{ isExpanded ? 'See less' : 'See more' }}
-          </button>
-        }
-      </div>
 
-      @if (post.kind === pinKind.CATCH) {
-        <div class="post-image-wrapper">
-          <img [src]="post.ugc?.imageUrl" class="post-image">
-        </div>
+  <!-- Post Content -->
+
+  <div class="ps-5 post-content">
+
+
+    <!-- Post Description -->
+
+    <div class="post-description">
+      <p class="mb-2 description" [class.expanded]="isExpanded">
+        {{ isExpanded ? post.ugc : (post.ugc?.body| slice:0:120) + (post.ugc?.body!.length > 120 ? '...' : '')}}
+      </p>
+
+      @if (post.ugc?.body!.length > 120) {
+      <button type="button" class="see-more" (click)="toggleExpand()">
+        {{ isExpanded ? 'See less' : 'See more' }}
+      </button>
       }
-
-      <app-enum class="d-flex gap-2" [postData]="post"></app-enum>
-
-      <!-- Upvote / Downvote / Comment e Share -->
+    </div>
+    @if (post.kind === pinKind.CATCH) {
+    <div class="post-image-wrapper">
+      <img [src]="post.ugc?.imageUrl" class="post-image">
+    </div>
+    }
+    <!--  Banner (Pin Type ) -->
+    <app-enum class="d-flex gap-2" [postData]=post></app-enum>
+    <!-- Upvote / Downvote / Comment and Share-->
     <div class="d-flex gap-2">
 
       <div class="gf-badge-vote post-interact-wrapper">
@@ -147,10 +145,8 @@
         <span class="post-stats post-fishing-points">Share</span>
       </button>
     </div>
-    </div>
-  </div>
-}
 
-@else if (resources().error) {
-  <div class="alert alert-danger">Erro ao carregar autor do post.</div>
+  </div>
+
+</div>
 }

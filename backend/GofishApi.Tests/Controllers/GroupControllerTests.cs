@@ -308,10 +308,10 @@ public class GroupControllerTests : IClassFixture<WebAppFactory>
 
     #endregion
 
-    #region SendInvite
+    #region CreateGroupInvite
 
     [Fact]
-    public async Task SendInvite_AsOwner_ReturnsOk()
+    public async Task CreateGroupInvite_AsOwner_ReturnsOk()
     {
         int groupId;
 
@@ -352,9 +352,9 @@ public class GroupControllerTests : IClassFixture<WebAppFactory>
             groupId = group.Id;
         }
 
-        var body = new SendGroupInviteReqDTO("receiver-user-id");
+        var body = new SendGroupInviteReqDTO(groupId, "receiver-user-id");
 
-        var res = await _client.PostAsJsonAsync($"/api/Group/SendInvite/{groupId}", body);
+        var res = await _client.PostAsJsonAsync($"/api/Group/CreateGroupInvite", body);
 
         var content = await res.Content.ReadAsStringAsync();
 
@@ -366,7 +366,7 @@ public class GroupControllerTests : IClassFixture<WebAppFactory>
     }
 
     [Fact]
-    public async Task SendInvite_ToSelf_ReturnsBadRequest()
+    public async Task CreateGroupInvite_ToSelf_ReturnsBadRequest()
     {
         int groupId;
 
@@ -397,15 +397,15 @@ public class GroupControllerTests : IClassFixture<WebAppFactory>
             groupId = group.Id;
         }
 
-        var body = new SendGroupInviteReqDTO("test-user-id");
+        var body = new SendGroupInviteReqDTO(groupId, "test-user-id");
 
-        var res = await _client.PostAsJsonAsync($"/api/Group/SendInvite/{groupId}", body);
+        var res = await _client.PostAsJsonAsync($"/api/Group/CreateGroupInvite", body);
 
         res.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
     [Fact]
-    public async Task SendInvite_WhenUserIsNotOwnerOrModerator_ReturnsForbid()
+    public async Task CreateGroupInvite_WhenUserIsNotOwnerOrModerator_ReturnsForbid()
     {
         int groupId;
 
@@ -436,27 +436,27 @@ public class GroupControllerTests : IClassFixture<WebAppFactory>
             groupId = group.Id;
         }
 
-        var body = new SendGroupInviteReqDTO("receiver-user-id");
+        var body = new SendGroupInviteReqDTO(groupId, "receiver-user-id");
 
-        var res = await _client.PostAsJsonAsync($"/api/Group/SendInvite/{groupId}", body);
+        var res = await _client.PostAsJsonAsync($"/api/Group/CreateGroupInvite", body);
 
         res.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 
     #endregion
 
-    #region AcceptInvite
+    #region AcceptGroupInvite
 
     [Fact]
-    public async Task AcceptInvite_WhenInviteDoesNotExist_ReturnsNotFound()
+    public async Task AcceptGroupInvite_WhenInviteDoesNotExist_ReturnsNotFound()
     {
-        var res = await _client.PostAsync("/api/Group/AcceptInvite/999999", null);
+        var res = await _client.PatchAsync("/api/Group/AcceptGroupInvite/999999", null);
 
         res.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
     [Fact]
-    public async Task AcceptInvite_WhenInviteReceiverIsDifferent_ReturnsForbid()
+    public async Task AcceptGroupInvite_WhenInviteReceiverIsDifferent_ReturnsForbid()
     {
         int inviteId;
 
@@ -491,7 +491,7 @@ public class GroupControllerTests : IClassFixture<WebAppFactory>
             inviteId = invite.Id;
         }
 
-        var res = await _client.PostAsync($"/api/Group/AcceptInvite/{inviteId}", null);
+        var res = await _client.PatchAsync($"/api/Group/AcceptGroupInvite/{inviteId}", null);
 
         res.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }

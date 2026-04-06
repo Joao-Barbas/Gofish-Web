@@ -18,9 +18,9 @@ import { LoadingState } from '@gofish/shared/core/loading-state';
 import { HttpErrorResponse } from '@angular/common/http';
 import { toast } from 'ngx-sonner';
 import { ModalService } from '@gofish/shared/services/modal.service';
-import { ChangeUsernameModalComponent } from "./components/change-username-modal.component";
-import { ChangeFirstnameModalComponent } from "./components/change-firstname-modal.component";
-import { ChangeLastnameModalComponent } from "./components/change-lastname-modal.component";
+import { ChangeUsernameModalComponent } from "./components/change-username-modal/change-username-modal.component";
+import { ChangeFirstnameModalComponent } from "./components/change-firstname-modal/change-firstname-modal.component";
+import { ChangeLastnameModalComponent } from "./components/change-lastname-modal/change-lastname-modal.component";
 
 @Component({
   selector: 'app-general',

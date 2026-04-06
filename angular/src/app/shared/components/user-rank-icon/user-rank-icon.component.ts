@@ -6,7 +6,7 @@ import { Rank } from '@gofish/shared/constants';
 @Component({
   selector: 'gf-user-rank-icon',
   host: {
-    '[title]': 'Rank[rank()]',
+    '[title]': 'Rank[rank() - 1]',
     '[class.rank-1]': 'rank() === 1',
     '[class.rank-2]': 'rank() === 2',
     '[class.rank-3]': 'rank() === 3',

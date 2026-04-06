@@ -25,6 +25,11 @@
   gap: 8px;
 }
 
+gf-user-title {
+  --user-title-font-size: 14px;
+  --user-title-max-width: 100px;
+}
+
 .pin-author-profile-photo {
   width: var(--gf-32);
   height: var(--gf-32);

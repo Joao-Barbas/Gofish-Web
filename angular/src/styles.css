@@ -98,8 +98,8 @@
   /* ^^^ Ja tiveste a javardar as cores todas meu 02/04/2026 */
   /* Usa estas se nao tiveres contente com alguma diz - Barbas */
   --gf-accent:           oklch(0.7511 0.1465 70.53);
-  --gf-accent-disabled:  oklch(0.6908 0.1278 71.85);
-  --gf-accent-muted:     oklch(0.8196 0.0298 77.51);
+  --gf-accent-disabled:  oklch(0.7511 0.1465 70.53 / 60%);
+  --gf-accent-muted:     oklch(0.7511 0.1465 70.53 / 30%);
   --gf-danger:           oklch(0.6486 0.1879 28.63);
   --gf-danger-bg:        oklch(0.6486 0.1879 28.63 / 60%);
   --gf-danger-bg-muted:  oklch(0.6486 0.1879 28.63 / 30%);
@@ -192,6 +192,7 @@
   --gf-72: 4.5rem;
   --gf-80: 5rem;
   --gf-96: 6rem;
+  --gf-128: 8rem;
 
   /* Semantic sizings */
   --gf-space-xs: var(--gf-4);
@@ -372,7 +373,7 @@ h6 {
 
 .gf-ugc-username {
   /* Define max-width according to your needs */
-  max-width: 200px;
+  /*max-width: 200px;*/
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -575,7 +576,7 @@ button {
 
 .gf-modal-shell {
   background-color: var(--gf-dark-bg);
-  box-shadow: var(--gf-shadow-lift-sm);
+  box-shadow: var(--gf-shadow-lift-lg);
   width: 90%;
   padding: var(--gf-16);
 }
@@ -706,18 +707,27 @@ button {
 /* Separators */
 
 .gf-separator {
-  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
   margin: 0 16px;
+}
+.gf-separator,
+.gf-separator-no-margin {
+  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
 }
 
 .gf-popover-separator {
-  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
   margin: 0 16px;
+}
+.gf-popover-separator,
+.gf-popover-separator-no-margin {
+  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
 }
 
 .gf-modal-separator {
-  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
   margin: 0 16px;
+}
+.gf-modal-separator,
+.gf-modal-separator-no-margin {
+  border-top: 2px solid var(--gf-dark-bg-light);
 }
 
 /* Icons / Svgs */
@@ -1328,8 +1338,8 @@ button {
   --gf-btn-padding: var(--gf-btn-padding-default);
   padding: var(--gf-btn-padding);
 
-  --gf-btn-bg-default: #333;
-  --gf-btn-bg: var(--gf-btn-bg-default);
+
+  --gf-btn-bg: var(--gf-dark-bg);
 
   background-color: var(--gf-btn-bg);
 

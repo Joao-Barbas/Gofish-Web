@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,8 +10,6 @@ using GofishApi.Models;
 using GofishApi.Services;
 using GofishApi.Enums;
 using GofishApi.Exceptions;
-using Microsoft.Extensions.Hosting;
-using System.Net.NetworkInformation;
 using GofishApi.Extensions;
 
 namespace GofishApi.Controllers;
@@ -115,10 +113,8 @@ public class PinController : ControllerBase
                     ((WarnPin)p).WarningKind),
                 Ugc = new PinUgcDto(p.Body, p.ImageUrl),
                 Stats = new PinStatsDto(
-                    p.Votes.Where(v => v.UserId == userId)
-                           .Select(v => (VoteKind?)v.Value)
-                           .FirstOrDefault(),
-                    p.Votes.Sum(v => (int)v.Value),
+                    p.Votes.Where(v => v.UserId == userId).Select(v => (VoteKind?)v.Value).FirstOrDefault(),
+                    p.Score,
                     p.Comments.Count)
             })
             .ToListAsync();
@@ -201,7 +197,7 @@ public class PinController : ControllerBase
 
                 Stats = req.IncludeStats != true ? null : new PinStatsDto(
                     p.Votes.Where(v => v.UserId == userId).Select(v => (VoteKind?)v.Value).FirstOrDefault(),
-                    p.Votes.Sum(v => (int)v.Value),
+                    p.Score,
                     p.Comments.Count)
             })
             .ToListAsync();
@@ -234,29 +230,28 @@ public class PinController : ControllerBase
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
 
-        var pinExists = await _db.Pins.AnyAsync(p => p.Id == pinId);
-        if (!pinExists) return NotFound();
-        if (!Enum.IsDefined(dto.Value)) throw new AppValidationException("Value", "Invalid vote value.");
+        if (!Enum.IsDefined(dto.Value))
+        {
+            throw new AppValidationException("Value", "Invalid vote value.");
+        }
+
+        var pin = await _db.Pins.FindAsync(pinId);
+        if (pin is null) return NotFound();
+
+        if (pin.UserId == userId)
+        {
+            throw new AppValidationException("Vote", "You cannot vote on your own pin.");
+        }
 
         var existingVote = await _db.Votes.FirstOrDefaultAsync(v => v.PinId == pinId && v.UserId == userId);
-        if (existingVote is not null)
+
+        if (existingVote?.Value == dto.Value)
         {
-            existingVote.Value = dto.Value;
-        }
-        else
-        {
-            _db.Votes.Add(new Vote
-            {
-                PinId     = pinId,
-                UserId    = userId,
-                Value     = dto.Value,
-                CreatedAt = DateTime.UtcNow
-            });
+            return Ok(new VoteResDto(dto.Value, pin.Score));
         }
 
-        await _db.SaveChangesAsync();
-        var score = await _db.Votes.Where(v => v.PinId == pinId).SumAsync(v => (int)v.Value);
-        return Ok(new VoteResDto(dto.Value, score));
+        var newScore = await _gamification.ApplyVoteAsync(userId, pin, dto.Value, existingVote);
+        return Ok(new VoteResDto(dto.Value, newScore));
     }
 
     [HttpDelete("{pinId}")]
@@ -265,36 +260,30 @@ public class PinController : ControllerBase
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         var vote = await _db.Votes.FirstOrDefaultAsync(v => v.PinId == pinId && v.UserId == userId);
         if (vote is null) return NotFound();
-        _db.Votes.Remove(vote);
-        await _db.SaveChangesAsync();
-        var score = await _db.Votes.Where(v => v.PinId == pinId).SumAsync(v => (int)v.Value);
-        return Ok(new VoteResDto(null, score));
+
+        var pin = await _db.Pins.FindAsync(pinId);
+        if (pin is null) return NotFound();
+
+        var newScore = await _gamification.RemoveVoteAsync(userId, pin, vote);
+        return Ok(new VoteResDto(null, newScore));
     }
 
     /// <summary>
-    /// Get authenticated user's vote and score
+    /// Get authenticated user's vote and score for a pin.
     /// </summary>
     [HttpGet("{pinId}")]
     public async Task<IActionResult> GetUserVote(int pinId)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        var pinExists = await _db.Pins.AnyAsync(p => p.Id == pinId);
-
-        if (!pinExists)
-        {
-            return NotFound();
-        }
+        var pin = await _db.Pins.FindAsync(pinId);
+        if (pin is null) return NotFound();
 
         var userVote = await _db.Votes
             .Where(v => v.PinId == pinId && v.UserId == userId)
             .Select(v => (VoteKind?)v.Value)
             .FirstOrDefaultAsync();
 
-        var score = await _db.Votes
-            .Where(v => v.PinId == pinId)
-            .SumAsync(v => (int)v.Value);
-
-        return Ok(new VoteResDto(userVote, score));
+        return Ok(new VoteResDto(userVote, pin.Score));
     }
 
     #endregion // Votes

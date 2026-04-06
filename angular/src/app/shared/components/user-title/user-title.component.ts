@@ -8,6 +8,6 @@ import { Component, input } from '@angular/core';
   styleUrl: './user-title.component.css',
 })
 export class UserTitleComponent {
-  readonly text   = input.required<string>();
-  readonly effect = input.required<'rainbow' | 'none'>();
+  readonly text = input.required<string>();
+  readonly rank = input.required<number>();
 }

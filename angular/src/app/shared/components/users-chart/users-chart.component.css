@@ -1,9 +1,12 @@
 :host {
   display: block;
   border-radius: 12px;
-  padding: 12px;
+  height: 376px;
+  box-sizing: border-box;
 }
 
 canvas {
   padding: 12px;
+  width: 100% !important;
+  height: 100% !important;
 }

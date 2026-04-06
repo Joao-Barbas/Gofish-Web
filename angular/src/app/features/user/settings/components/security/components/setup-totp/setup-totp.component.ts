@@ -9,11 +9,11 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { LoadingState } from '@gofish/shared/core/loading-state';
-import { UserSecurityService } from '@gofish/shared/services/user-security.service';
 import { EnableTotpResDTO } from '@gofish/shared/dtos/user-security.dto';
 import { ValidationProblemDetails } from '@gofish/shared/core/problem-details';
 import { Path } from '@gofish/shared/constants';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
+import { UserSecurityApi } from '@gofish/shared/api/user-security.api';
 
 @Component({
   selector: 'app-setup-totp',
@@ -22,9 +22,9 @@ import { AsyncButtonComponent } from "@gofish/shared/components/async-button/asy
   styleUrl: './setup-totp.component.css',
 })
 export class SetupTotpComponent implements OnInit {
-  private readonly userSecurityService = inject(UserSecurityService);
-  private readonly formBuilder         = inject(FormBuilder);
-  private readonly router              = inject(Router);
+  private readonly userSecurityApi = inject(UserSecurityApi);
+  private readonly formBuilder     = inject(FormBuilder);
+  private readonly router          = inject(Router);
 
   readonly loadingState = new LoadingState();
   readonly busyState    = new BusyState();
@@ -46,7 +46,7 @@ export class SetupTotpComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingState.start();
-    this.userSecurityService.getTotpSetup().subscribe({
+    this.userSecurityApi.getTotpSetup().subscribe({
       next: async (res) => {
         this.authenticatorKey = res.authenticatorKey;
         this.qrCodeImageUrl   = await QRCode.toDataURL(res.qrCodeUri, { margin: 2, width: 180 });
@@ -69,7 +69,7 @@ export class SetupTotpComponent implements OnInit {
     if (this.verifyForm.invalid) return;
     this.busyState.setBusy(true);
 
-    this.userSecurityService.enableTotp({ totpCode: this.verifyForm.value.totpCode }).subscribe({
+    this.userSecurityApi.enableTotp({ totpCode: this.verifyForm.value.totpCode }).subscribe({
       next: (res: EnableTotpResDTO) => {
         this.busyState.setBusy(false);
         setTimeout(() => {

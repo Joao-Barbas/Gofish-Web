@@ -41,8 +41,8 @@ export class StatisticsComponent {
 
   public navPaths: NavPath[] = [
     { path: Path.STATISTICS, label: 'home' },
+    { path: Path.STATISTICS_AVG_PUBLISHED, label: 'average-published-pins' },
     { path: Path.STATISTICS_REPORTS, label: 'reports' },
-    { path: Path.FORUM_FROM_FRIENDS, label: 'reports' },
   ];
 
 

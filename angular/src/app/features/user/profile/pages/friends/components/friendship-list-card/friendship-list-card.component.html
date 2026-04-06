@@ -1,6 +1,8 @@
 <!-- friendship-list-card.component.html -->
 
-@let otherUser = friendship().requesterUserId === profileContext.profileId() ? friendship().receiver : friendship().requester;
+@let otherUser = friendship().requesterUserId === profileContext.userProfileId()
+  ? friendship().receiver
+  : friendship().requester;
 
 @if (small()) {
   <a [routerLink]="['/profile', otherUser.userId]">

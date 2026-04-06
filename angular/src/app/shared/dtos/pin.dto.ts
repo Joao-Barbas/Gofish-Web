@@ -155,6 +155,8 @@ export interface PinAuthorDto {
   userName: string;
   firstName: string;
   lastName: string;
+  catchPoint: number;
+  rank: number;
   avatarUrl?: string;
   groupRole?: GroupRole;
 }
@@ -186,6 +188,8 @@ export interface PinDto {
 export interface CommentAuthorDto {
   id: string;
   userName: string;
+  catchPoint: number;
+  rank: number;
   avatarUrl?: string;
 }
 

@@ -1,7 +1,26 @@
 // user.dto.ts
 
+import { GroupInviteDTO } from "@gofish/shared/dtos/group.dto";
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 import { GroupRole } from "@gofish/shared/enums/group-role.enum";
+
+export interface LeaderboardUserDTO {
+  position: number;
+  userId: string;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  catchPoints: number;
+  catchPointsDelta: number;
+  weeklyStreak: number;
+  rank: number;
+  avatarUrl?: string;
+}
+
+export interface LeaderboardResDTO {
+  entries: LeaderboardUserDTO[];
+  currentUser?: LeaderboardUserDTO;
+}
 
 export interface SearchUserDTO {
   id: string;
@@ -115,7 +134,7 @@ export interface RequestFriendshipReqDTO {
 }
 
 export interface RequestFriendshipResDTO {
-  id: number;
+  // Unused
 }
 
 // Groups
@@ -127,8 +146,8 @@ export interface UserGroupDTO {
   avatarUrl?: string;
   createdAt: string;
   role: GroupRole;
-  memberQty: number;
-  postQty: number;
+  memberCount: number;
+  pinCount: number;
 }
 
 export interface GetUserGroupReqDTO {
@@ -140,5 +159,29 @@ export interface GetUserGroupReqDTO {
 export interface GetUserGroupResDTO {
   groups: UserGroupDTO[];
   hasMoreResults: boolean;
-  lastTimestamp: string
+  lastTimestamp?: string
+}
+
+export interface GetInvitableGroupsReqDTO {
+  targetUserId: string;
+  maxResults?: number;
+  lastTimestamp?: string;
+}
+
+export interface GetInvitableGroupsResDTO {
+  groups: UserGroupDTO[];
+  hasMoreResults: boolean;
+  lastTimestamp?: string;
+}
+
+export interface GetGroupInvitesReqDTO {
+  state?: FriendshipState;
+  maxResults?: number;
+  lastTimestamp?: string;
+}
+
+export interface GetGroupInvitesResDTO {
+  invites: GroupInviteDTO[];
+  hasMoreResults: boolean;
+  lastTimestamp?: string;
 }

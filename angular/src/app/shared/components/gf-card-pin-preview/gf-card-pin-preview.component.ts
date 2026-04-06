@@ -11,13 +11,14 @@ import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
 import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { GetReportResDTO } from '@gofish/shared/dtos/report.dto';
+import { UserTitleComponent } from "../user-title/user-title.component";
 
 
 export type PinType = 'catch' | 'info' | 'warning';
 
 @Component({
   selector: 'app-gf-card-pin-preview',
-  imports: [NgClass, TimeAgoPipe, RouterLink],
+  imports: [NgClass, TimeAgoPipe, RouterLink, UserTitleComponent],
   templateUrl: './gf-card-pin-preview.component.html',
   styleUrl: './gf-card-pin-preview.component.css',
 })

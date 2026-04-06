@@ -1,7 +1,14 @@
 /* groups.component.css */
 
 :host {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: var(--gf-container-lg);
+  gap: var(--gf-16);
+  margin: 0 auto;
+  color: var(--gf-dark-text);
+  padding: var(--gf-32) 0 var(--gf-128);
+  color: var(--gf-dark-text);
 }
 
 gf-async-button {
@@ -24,53 +31,11 @@ nav {
     color: var(--gf-dark-text-muted);
 
     &:hover {
+      color: var(--gf-dark-text);
+    }
+
+    &.active {
       color: var(--gf-primary);
     }
   }
 }
-
-.list {
-  display: grid;
-  overflow: hidden;
-  grid-template-columns: 1;
-  grid-template-rows: auto;
-  /* grid-template-columns: repeat(auto-fill, calc((var(--gf-container-lg) - 2 * var(--gf-8)) / 3)); */
-  /* grid-auto-rows: 0; */
-  row-gap: var(--gf-8);
-  column-gap: var(--gf-8);
-}
-
-/* Error state */
-
-.failed-container {
-  padding: var(--gf-32);
-
-  & span {
-    font-size: var(--gf-text-md);
-  }
-
-  & button, a {
-    display: block;
-    background-color: transparent;
-    text-decoration: none;
-    text-align: center;
-    border: none;
-    width: 25%;
-    padding: calc(1em / 2) var(--gf-8);
-    margin: var(--gf-12) 0;
-    box-shadow: 0 0 0 2px var(--gf-primary);
-    color: var(--gf-dark-text);
-    border-radius: var(--gf-8);
-    transition: box-shadow 0.2s ease;
-
-    &:hover {
-      box-shadow: 0 0 0 4px var(--gf-primary);
-    }
-
-    & span {
-      font-size: var(--gf-text-md);
-    }
-  }
-}
-
-/* End error state */

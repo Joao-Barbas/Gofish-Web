@@ -20,6 +20,8 @@ builder.Services.AddScoped<IGamificationService, GamificationService>();
 builder.Services.AddScoped<IVisibilityService, VisibilityService>();
 builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
 
+builder.Services.AddHostedService<MonthlySnapshotService>();
+
 builder.Services.AddDataProtection();
 builder.Services.AddDbContext<AppDbContext>((options) => options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings")["Default"]!));
 builder.Services.AddIdentityHandlersAndStores();

@@ -6,67 +6,44 @@ import { ProfileContext } from '@gofish/features/user/profile/services/profile-c
 import { UserApi } from '@gofish/shared/api/user.api';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { LoadingState } from '@gofish/shared/core/loading-state';
-import { GetUserGroupReqDTO, GetUserGroupResDTO, UserGroupDTO } from '@gofish/shared/dtos/user.dto';
+import { GetUserGroupResDTO, UserGroupDTO } from '@gofish/shared/dtos/user.dto';
 import { firstValueFrom } from 'rxjs';
 import { GroupListCardComponent } from "../group-list-card/group-list-card.component";
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button-2/async-button-2.component";
+import { LoadingErrorModalComponent } from "@gofish/shared/components/loading-error-modal/loading-error-modal.component";
+import { Path } from '@gofish/shared/constants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'gf-groups-list',
   imports: [
     GroupListCardComponent,
     LoadingSpinnerComponent,
-    AsyncButtonComponent
-  ],
-  template: `
-    @if (groups.isLoading()) {
-      <gf-loading-spinner></gf-loading-spinner>
-    }
-    @if (groups.hasValue()) {
-      <div class="list">
-        @for (group of groupsList(); track group.id) {
-          <gf-group-list-card
-            [group]="group"
-            [actions]="false"
-          ></gf-group-list-card>
-        } @empty {
-          @if (!groups.isLoading() && !loadingState.isLoading()) {
-            <p>{{ 'You are not in any group' }}</p>
-          }
-        }
-      </div>
-      @if (groupsHasMore()) {
-        <gf-async-button
-          [labels]="{ idle: 'Load more', busy: 'Loading...' }"
-          [states]="{ busy: busyState.isBusy() }"
-          (click)="loadMoreGroups()"
-        ></gf-async-button>
-      }
-    }
-    @if (groups.error()) {
-      <div class="failed-container gf-flow-vertical gf-center-axes">
-        <span>{{ groups.error() }}</span>
-        <button (click)="groups.reload()">Try Again</button>
-      </div>
-    }
-  `,
-  styleUrl: '../../groups.component.css',
+    AsyncButtonComponent,
+    LoadingErrorModalComponent
+],
+  templateUrl: './groups-list.component.html',
+  styleUrl: './groups-list.component.css',
 })
 export class GroupsListComponent {
   readonly profileContext = inject(ProfileContext);
   readonly userApi        = inject(UserApi);
+  readonly router         = inject(Router);
 
   readonly loadingState = new LoadingState();
   readonly busyState    = new BusyState();
+
+  readonly Path = Path;
+  readonly window = window;
 
   groupsCursor  = signal<string | undefined>(undefined);
   groupsHasMore = signal(true);
   groupsList    = signal<UserGroupDTO[]>([]);
 
   groups = resource({
-    params: () => this.profileContext.profileId(),
-    loader: ({ params: id }) => firstValueFrom(this.userApi.getUserGroups({ userId: id, maxResults: 1, lastTimestamp: undefined }))
+    params: () => this.profileContext.userProfileId(),
+    loader: ({ params: id }) => firstValueFrom(this.userApi.getUserGroups({ userId: id, maxResults: 20, lastTimestamp: undefined }))
   });
 
   constructor() {
@@ -79,12 +56,12 @@ export class GroupsListComponent {
   }
 
   loadMoreGroups() {
-    let profileId = this.profileContext.profileId();
+    let profileId = this.profileContext.userProfileId();
     this.loadingState.start();
     this.busyState.setBusy(true);
     this.userApi.getUserGroups({
       userId: profileId,
-      maxResults: 1,
+      maxResults: 20,
       lastTimestamp: this.groupsCursor()
     }).subscribe({
       next: (res: GetUserGroupResDTO) => {

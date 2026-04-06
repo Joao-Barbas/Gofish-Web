@@ -35,6 +35,8 @@ public abstract class Pin
 
     public DateTime? ExpiresAt { get; set; } // Info pin does not expire
 
+    public int Score { get; set; }
+
     [MaxLength(2000)]
     public string? Body { get; set; }
 

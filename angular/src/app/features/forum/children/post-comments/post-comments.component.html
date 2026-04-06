@@ -6,7 +6,10 @@
       <div class="d-flex align-items-center gap-2">
         <img [src]="avatarService.resolve(c.author.avatarUrl)" class="rounded-circle post-author-profile-photo">
 
-        <span class="post-author-name text-bold">{{ c.author.userName }}</span>
+        <!-- <span class="post-author-name text-bold">{{ c.author.userName }}</span>-->
+
+        <gf-user-title class="post-author-name text-bold" [text]="c.author!.userName" [rank]="c.author!.rank"></gf-user-title>
+
         <span class="post-date">{{ c.createdAt | timeAgo }}</span>
       </div>
 

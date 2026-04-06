@@ -1,0 +1,30 @@
+<!-- groups-list.component.html -->
+
+@if (groupInvites.isLoading()) {
+  <gf-loading-spinner></gf-loading-spinner>
+} @else if (groupInvites.error()) {
+  <gf-loading-error-modal
+    [error]="groupInvites.error()!"
+    (negative)="router.navigate([Path.HOME]);"
+    (positive)="window.location.reload();">
+  </gf-loading-error-modal>
+} @else {
+  <div class="list">
+    @for (invite of groupInvitesList(); track invite.id) {
+      <gf-group-invites-card [groupInvite]="invite" (declined)="onGroupInviteDecline($event)"></gf-group-invites-card>
+    } @empty {
+      @if (!groupInvites.isLoading() && !busyState.isBusy()) {
+        <p>{{ 'You do not have any invites :(' }}</p>
+      }
+    }
+  </div>
+  @if (groupInvitesHasMore()) {
+    <button
+      class="load-more-btn"
+      gfAsyncBtn
+      (click)="loadMoreGroupInvites()"
+      [labels]="{ idle: 'Load more', busy: 'Loading...' }"
+      [states]="{ busy: busyState.isBusy() }">
+    </button>
+  }
+}

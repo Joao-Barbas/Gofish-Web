@@ -1,6 +1,7 @@
 import { GetPostsPostDTO } from "@gofish/shared/dtos/get-post.dto";
 import { GetGroupMemberDTO } from "@gofish/shared/dtos/members.dto";
 import { GeoLocationDTO, PinDetailsDTO, PinDto } from "@gofish/shared/dtos/pin.dto";
+import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 import { GroupRole } from "@gofish/shared/enums/group-role.enum";
 import { VisibilityLevel } from "@gofish/shared/enums/visibility-level.enum";
 import { VoteKind } from "@gofish/shared/enums/vote-kind.enum";
@@ -89,6 +90,17 @@ export interface GroupPostDTO {
     kind?: PinKind;
 }
 
+export interface GroupDTO {
+  id: number;
+  name: string;
+  createdAt: string;
+  memberCount: number;
+  pinCount: number;
+  owner: GroupMemberDTO;
+  description?: string;
+  avatarUrl?: string;
+}
+
 // Requests
 
 export interface GetGroupMembersReqDTO {
@@ -111,6 +123,11 @@ export interface SearchGroupsReqDTO {
   lastGroupName?: string;
 }
 
+export interface SendGroupInviteReqDTO {
+  groupId: number,
+  receiverUserId: string;
+}
+
 // Responses
 
 export interface GetGroupMembersResDTO {
@@ -131,6 +148,10 @@ export interface SearchGroupsResDTO {
   lastGroupName: string | null;
 }
 
+export interface SendGroupInviteResDTO {
+  inviteId: number
+};
+
 // ================================
 // NOVOS DTOS
 // ================================
@@ -148,4 +169,10 @@ export interface GetGroupPinsResDto {
   lastTimeStamp?: string;
 }
 
-
+export interface GroupInviteDTO {
+  id: number;
+  group: GroupDTO;
+  inviteState: FriendshipState;
+  createdAt: string;
+  requester: GroupMemberDTO;
+}
