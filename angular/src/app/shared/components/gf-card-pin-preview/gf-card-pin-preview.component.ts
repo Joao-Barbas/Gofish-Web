@@ -26,8 +26,9 @@ export class GfCardPinPreviewComponent implements OnInit {
   private readonly pinService = inject(PinService);
   readonly avatarService = inject(AvatarService);
 
-  pinId = input.required<number>();
-  pinData = signal<PinDto | null>(null);
+  pinId = input<number>();
+  pinData = input<PinDto>();
+  pinInfo = signal<PinDto | null>(null);
   isReportedPin = input<boolean>(false);
   reportNumber = input<number>();
   reportIndex = input<number>();
@@ -35,6 +36,7 @@ export class GfCardPinPreviewComponent implements OnInit {
   pinKind = PinKind;
 
   pinLink = computed(() => `pin/${this.pinId()}`);
+  currentPin = computed(() => this.pinData() ?? this.pinInfo());
 
   // Enum options
   speciesOptions: EnumDTO[] = [];
@@ -68,7 +70,7 @@ export class GfCardPinPreviewComponent implements OnInit {
 
     this.pinService.getPins({ ids: [{ pinId: this.pinId() }] }).subscribe({
       next: (res) => {
-        this.pinData.set(res.pins[0]);
+        this.pinInfo.set(res.pins[0]);
       },
       error: (err: HttpErrorResponse) => console.error(err)
     });

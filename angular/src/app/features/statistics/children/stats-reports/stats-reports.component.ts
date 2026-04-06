@@ -26,15 +26,17 @@ export class StatsReportsComponent {
   private readonly reportService = inject(ReportService);
   private readonly pinService = inject(PinService);
   protected readonly reportedPins = signal<GetReportResDTO[]>([]);
+  protected readonly reportedComments = signal<GetReportResDTO[]>([]);
   protected hasMoreResults = signal(false);
   private lastCreatedAt: string | undefined = new Date().toISOString();
   private isLoading = false;
 
   ngOnInit(): void {
-    this.loadMore();
+    this.loadMorePins();
+    this.loadMoreComments();
   }
 
-  loadMore(): void {
+  private loadMorePins(): void {
     if (this.isLoading) return;
 
     this.isLoading = true;
@@ -49,6 +51,28 @@ export class StatsReportsComponent {
         this.hasMoreResults.set(res.hasMoreResults);
         this.lastCreatedAt = res.lastCreatedAt ?? undefined;
         this.reportedPins.update(current => [...current, ...res.reports]);
+      },
+      error: (err) => {
+        console.error('Failed to load reports:', err);
+      }
+    });
+  }
+
+  private loadMoreComments(): void {
+    if (this.isLoading) return;
+
+    this.isLoading = true;
+
+    const request: GetReportReqDTO = {
+      maxResults: 5,
+      lastCreatedAt: this.lastCreatedAt
+    };
+
+    this.reportService.getCommentReports(request).subscribe({
+      next: (res) => {
+        this.hasMoreResults.set(res.hasMoreResults);
+        this.lastCreatedAt = res.lastCreatedAt ?? undefined;
+        this.reportedComments.update(current => [...current, ...res.reports]);
       },
       error: (err) => {
         console.error('Failed to load reports:', err);
