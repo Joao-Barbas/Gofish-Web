@@ -16,17 +16,44 @@ import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
 })
 export class GroupInviteComponent {
   readonly profileContext = inject(ProfileContext);
-  readonly userApi        = inject(UserApi);
-  readonly router         = inject(Router);
-
+  readonly userApi = inject(UserApi);
+  readonly router = inject(Router);
   readonly loadingState = new LoadingState();
-  readonly busyState    = new BusyState();
-
-  friendsCursor  = signal<string | undefined>(undefined);
+  readonly busyState = new BusyState();
+  friendsCursor = signal<string | undefined>(undefined);
   friendsHasMore = signal(true);
-  friendsList    = signal<FriendshipDTO[]>([]);
+  friendsList = signal<FriendshipDTO[]>([]);
+  selectedFriendIds = signal<string[]>([]);
 
-  loadMoreFriends() {
+  ngOnInit() {
+    this.loadMoreFriends();
+  }
+
+  toggleFriend(id: string) {
+    this.selectedFriendIds.update(ids =>
+      ids.includes(id) ? ids.filter(i => i !== id) : [...ids, id]
+    );
+  }
+
+  onScroll(event: any) {
+    const element = event.target;
+    const atBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 50;
+
+    if (atBottom && this.friendsHasMore() && !this.busyState.isBusy()) {
+      this.loadMoreFriends();
+    }
+  }
+
+
+  onCancel() {
+    window.history.back();
+  }
+
+  onSendInvites() {
+    
+  }
+
+  private loadMoreFriends() {
     let profileId = this.profileContext.userProfileId();
     this.loadingState.start();
     this.busyState.setBusy(true);

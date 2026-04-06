@@ -4,9 +4,9 @@
 
       <div class="modal-header text-white align-items-center mb-3 justify-content-between">
         <div>
-          <h5 class="mb-0 text-bold modal-header-title">Invite to Group</h5>
+          <h5 class="mb-0 text-bold modal-header-title">Invite Friends</h5>
           <p class="mb-0 dark-text-muted modal-header-subtitle">
-            Select the friends you want to invite to this group.
+            Select friends to join the group
           </p>
         </div>
 
@@ -21,16 +21,12 @@
 
       <div class="modal-body">
 
-        <div class="search-container mb-3">
-          <input type="text" class="form-control dark-bg-dark dark-text border-0"
-                 placeholder="Search friends..." (input)="onSearchFriends($event)">
-        </div>
+        <section class="friend-list-container d-flex flex-column" (scroll)="onScroll($event)">
 
-        <h5 class="text-slim modal-body-section-title mt-3">Your Friends</h5>
-        <section class="d-flex flex-column friend-list-container">
+          <div class="friends-selector d-flex flex-column">
+            @for (friendship of friendsList(); track friendship.id) {
+              @let friend = friendship.requesterId === profileContext.userProfileId() ? friendship.receiver : friendship.requester;
 
-          <div class="friends-selector d-flex flex-column gap-2">
-            @for (friend of userFriends(); track friend.id) {
               <label class="friend-row-item d-flex align-items-center justify-content-between"
                      [class.selected]="selectedFriendIds().includes(friend.id)">
 
@@ -39,10 +35,11 @@
                          [checked]="selectedFriendIds().includes(friend.id)"
                          (change)="toggleFriend(friend.id)">
 
-                  <img [src]="friend.avatarUrl || 'assets/default-avatar.png'" class="friend-avatar">
+                  <img [src]="friend.userProfile?.avatarUrl || 'assets/default-avatar.png'" class="friend-avatar">
+
                   <div class="d-flex flex-column">
                     <span class="friend-name">{{ friend.firstName }} {{ friend.lastName }}</span>
-                    <small class="dark-text-muted">&#64;{{ friend.userName }}</small>
+                    <small class="dark-text-muted text-slim">@{{ friend.userName }}</small>
                   </div>
                 </div>
 
@@ -55,13 +52,21 @@
                 }
               </label>
             } @empty {
-              <p class="dark-text-muted text-center py-4">No friends found to invite.</p>
+              @if (!loadingState.isLoading()) {
+                <p class="dark-text-muted text-center py-4">No friends found.</p>
+              }
+            }
+
+            @if (busyState.isBusy()) {
+              <div class="d-flex justify-content-center p-3">
+                <div class="spinner-border spinner-border-sm text-primary"></div>
+              </div>
             }
           </div>
         </section>
 
-        @if (errorMessage) {
-          <p class="text-danger mt-2 mb-0">{{ errorMessage }}</p>
+        @if (loadingState.error()) {
+          <p class="text-danger mt-2 mb-0">{{ loadingState.message() }}</p>
         }
       </div>
 
@@ -70,11 +75,11 @@
           Cancel
         </button>
 
-        <app-async-button
-          (click)="onSendInvites()"
-          labels="Send Invites"
-          [disabled]="selectedFriendIds().length === 0"
-          [state]="busyState.isBusy() ? 'busy' : 'idle'" />
+        <button class="btn btn-primary"
+                [disabled]="selectedFriendIds().length === 0 || busyState.isBusy()"
+                (click)="onSendInvites()">
+          Send Invites ({{ selectedFriendIds().length }})
+        </button>
       </div>
     </div>
   </div>
