@@ -29,6 +29,7 @@ export class UsersChartComponent implements OnChanges {
   };
 
   chartOptions: ChartConfiguration<'line'>['options'] = {};
+  chartTitle: string = 'Registered Users Per Week';
 
   ngOnChanges(): void {
     this.buildChart();
@@ -64,6 +65,12 @@ export class UsersChartComponent implements OnChanges {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
+        title: {
+          display: true,
+          text: this.chartTitle,
+          font: { size: 16 },
+          color: textColor,
+        },
         legend: {
           display: true,
           onClick: () => {},
