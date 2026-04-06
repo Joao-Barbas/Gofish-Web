@@ -1,9 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GetGroupPostsResDTO, GetGroupPostsReqDTO, GetGroupMembersReqDTO, GetGroupMembersResDTO } from '@gofish/shared/dtos/group.dto';
 import { PinKind } from '@gofish/shared/models/pin.model';
 import { GroupsService } from '@gofish/shared/services/groups.service';
 import { UserCardComponent } from "../../components/user-card/user-card.component";
+import { GroupRole } from '@gofish/shared/enums/group-role.enum';
 
 @Component({
   selector: 'gf-members-group',
@@ -15,6 +16,7 @@ export class MembersGroupComponent {
   private readonly groupsService = inject(GroupsService);
   private readonly route = inject(ActivatedRoute);
   protected membersData = signal<GetGroupMembersResDTO | null>(null);
+  viewerRole = input.required<GroupRole>();
 
   ngOnInit() {
 

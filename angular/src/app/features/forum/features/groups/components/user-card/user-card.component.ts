@@ -23,7 +23,7 @@ export class UserCardComponent {
 
   member = input<GroupMemberDTO | null>(null);
 
-  
+  viewerRole = input.required<GroupRole>();
 
 
   popoverKey = computed(() => `member-settings-${this.member()?.userId}`);
