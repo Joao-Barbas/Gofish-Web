@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, input, inject} from '@angular/core';
+import { GroupMemberDTO } from '@gofish/shared/dtos/group.dto';
+import { PopoverService } from '@gofish/shared/services/popover.service';
 
 @Component({
   selector: 'app-group-member-settings-popover',
@@ -8,4 +10,16 @@ import { Component } from '@angular/core';
 })
 export class GroupMemberSettingsPopoverComponent {
 
+  member = input.required<GroupMemberDTO>();
+
+  protected readonly popoverService = inject(PopoverService);
+
+  close() {
+    this.popoverService.close();
+  }
+
+  onKick() {
+    console.log('Kicking user:', this.member().userId);
+    this.close();
+  }
 }

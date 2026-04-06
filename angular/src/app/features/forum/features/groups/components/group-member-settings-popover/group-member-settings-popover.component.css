@@ -1,3 +1,16 @@
+/* group-member-settings-popover.component.css */
+:host {
+  position: absolute;
+  top: 70px;
+  right: 0;
+  z-index: 100;
+  background-color: var(--gf-dark-bg);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--gf-dark-bg-light);
+  display: block;
+}
+
 .gf-card-group-member-settings {
   display: flex;
   flex-direction: column;

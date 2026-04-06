@@ -5,7 +5,7 @@ namespace GofishApi.Enums;
 public enum GroupRole
 {
     [Display(Name="Member")]     Member    = 0,
-    [Display(Name="Moderator ")] Moderator = 1,
+    [Display(Name="Moderator")] Moderator = 1,
     [Display(Name="Owner")]      Owner     = 2
 }
 
