@@ -98,8 +98,8 @@
   /* ^^^ Ja tiveste a javardar as cores todas meu 02/04/2026 */
   /* Usa estas se nao tiveres contente com alguma diz - Barbas */
   --gf-accent:           oklch(0.7511 0.1465 70.53);
-  --gf-accent-disabled:  oklch(0.6908 0.1278 71.85);
-  --gf-accent-muted:     oklch(0.8196 0.0298 77.51);
+  --gf-accent-disabled:  oklch(0.7511 0.1465 70.53 / 60%);
+  --gf-accent-muted:     oklch(0.7511 0.1465 70.53 / 30%);
   --gf-danger:           oklch(0.6486 0.1879 28.63);
   --gf-danger-bg:        oklch(0.6486 0.1879 28.63 / 60%);
   --gf-danger-bg-muted:  oklch(0.6486 0.1879 28.63 / 30%);
@@ -576,7 +576,7 @@ button {
 
 .gf-modal-shell {
   background-color: var(--gf-dark-bg);
-  box-shadow: var(--gf-shadow-lift-sm);
+  box-shadow: var(--gf-shadow-lift-lg);
   width: 90%;
   padding: var(--gf-16);
 }
@@ -707,18 +707,27 @@ button {
 /* Separators */
 
 .gf-separator {
-  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
   margin: 0 16px;
+}
+.gf-separator,
+.gf-separator-no-margin {
+  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
 }
 
 .gf-popover-separator {
-  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
   margin: 0 16px;
+}
+.gf-popover-separator,
+.gf-popover-separator-no-margin {
+  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
 }
 
 .gf-modal-separator {
-  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
   margin: 0 16px;
+}
+.gf-modal-separator,
+.gf-modal-separator-no-margin {
+  border-top: 2px solid var(--gf-dark-bg-light);
 }
 
 /* Icons / Svgs */

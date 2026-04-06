@@ -1,0 +1,67 @@
+<!-- invite-to-groups-modal.component.html -->
+
+<div class="gf-modal-backdrop" (click)="$event.stopPropagation()">
+  <div class="gf-modal-shell" (click)="$event.stopPropagation()">
+
+    <div class="title-container">
+      <h5>{{ `Invite @${targetUserName()} to a group` }}</h5>
+      <button class="gf-modal-close-button" (click)="onNegative()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="gf-modal-separator-no-margin"></div>
+
+    <div class="body-container">
+      <div class="search-box">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        <input type="text" placeholder="Search your groups..." [ngModel]="searchQuery()" (ngModelChange)="onSearch($event)">
+      </div>
+      <div class="group-list-box" [class.loading]="groups.isLoading()">
+        @if (groups.isLoading()) {
+          <gf-loading-spinner></gf-loading-spinner>
+        } @else if (groups.error()) {
+          <div class="error-box">
+            <p>An error occured while trying to get group list.</p>
+          </div>
+        } @else {
+          @for (group of filteredGroups(); track group.id) {
+            <div class="group-list-row">
+              <img class="group-avatar" [src]="avatarService.resolve(group.avatarUrl)" alt="Group avatar"/>
+              <div class="group-info">
+                <span class="name gf-truncate">{{ group.name }}</span>
+                <span class="meta">{{ group.memberCount }} members</span>
+              </div>
+              <button
+                class="group-invite-btn"
+                gfAsyncBtn
+                (click)="onInvite(group)"
+                [labels]="{ idle: 'Invite', success: 'Invited' }"
+                [states]="{ busy: group.inviteState() === 'inviting', success: group.inviteState() === 'invited' }">
+              </button>
+            </div>
+          } @empty {
+            @if (!groups.isLoading() && !moreGroupLoadingState.isLoading()) {
+              <small>
+                @if (searchQuery()) {
+                  No groups match "{{ searchQuery() }}"
+                } @else {
+                  You have no groups you can invite to.
+                }
+              </small>
+            }
+          }
+        }
+      </div>
+      @if (groupsHasMore()) {
+        <button
+          class="load-more-btn"
+          gfAsyncBtn
+          [labels]="{ idle: 'Load more' }"
+          [states]="{ busy: busyState.isBusy() }"
+        ></button>
+      }
+    </div>
+
+  </div>
+</div>
