@@ -37,14 +37,6 @@ export class GroupMemberSettingsPopoverComponent {
   protected readonly GroupRole = GroupRole;
 
 
-  constructor() {
-    // Isto vai ajudar-te a ver no F12 se os valores são o que esperas
-    effect(() => {
-      console.log('O meu cargo é:', this.member());
-      console.log('Comparação com Owner:', this.member().role === GroupRole.Owner);
-    });
-  }
-
   onKick() {
     console.log('Kicking user:', this.member().userId);
   }

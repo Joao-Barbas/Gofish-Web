@@ -21,17 +21,16 @@
         <circle cx="19" cy="12" r="1" />
         <circle cx="5" cy="12" r="1" />
       </svg>
-
     </button>
 
     @if (popoverService.isOpen(popoverKey())) {
-    <gf-group-member-settings-popover [member]="member" (click)="$event.stopPropagation()">
-    </gf-group-member-settings-popover>
+      <gf-group-member-settings-popover
+        [member]="member"
+        (click)="$event.stopPropagation()">
+      </gf-group-member-settings-popover>
     }
   </div>
   }
-
-
 
 </div>
 }
