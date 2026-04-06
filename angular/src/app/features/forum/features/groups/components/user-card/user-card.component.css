@@ -1,5 +1,9 @@
 .gf-card-user-card {
   padding: 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .user-photo-username-wrapper {

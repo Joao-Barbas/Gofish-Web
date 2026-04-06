@@ -2,15 +2,15 @@
 <div class="d-flex align-items-center justify-content-between gf-card-user-card">
 
   <div class="d-flex align-items-center user-photo-username-wrapper clickable" [routerLink]="Path.PROFILE(member.userId)">
-
-    <img [src]="this.avatarService.resolve(member.avatarUrl)"  class="rounded-circle user-photo">
+    <img [src]="this.avatarService.resolve(member.avatarUrl)" class="rounded-circle user-photo">
     <div class="d-flex flex-column user-name-handle-name-wrapper">
       <span class="user-name">{{member.userName}}</span>
       <span class="user-handle-name">@{{member.userName}}</span>
     </div>
   </div>
 
-  <button class="gf-badge-user-settings">
+  @if (!isCurrentUser()) {
+  <button class="gf-badge-user-settings" (click)="onSettingsClick($event)">
 
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis">
@@ -20,6 +20,14 @@
     </svg>
 
   </button>
+  }
+
+  @if (popoverService.isOpen(popoverKey())) {
+  <app-group-member-settings-popover
+    [member]="member"
+    (click)="$event.stopPropagation()">
+  </app-group-member-settings-popover>
+  }
 
 </div>
 }
