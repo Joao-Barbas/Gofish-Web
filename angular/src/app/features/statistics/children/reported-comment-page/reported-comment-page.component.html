@@ -1,0 +1,161 @@
+@if (commentData(); as comment) {
+  <div class="container stats-section-wrapper">
+
+    <div class="d-flex align-items-center quick-header-wrapper">
+      <span class="text-bold">Reports / {{ comment.id }}</span>
+    </div>
+
+    <div class="gf-card-plain pin-report-panel">
+
+      <div class="report-panel-body">
+
+        <div class="pin-report-left">
+          <gf-user-help-box
+            [headerText]="header"
+            [bodyText]="body">
+          </gf-user-help-box>
+
+          <div class="reported-pin-post">
+
+            <div class="gf-card-comment-preview">
+              <div class="top-wrapper">
+                <div class="comment-user-wrapper">
+                  <img
+                    [src]="comment.author?.avatarUrl || 'assets/images/placeholder_profile_pic.png'"
+                    class="rounded-circle comment-author-profile-photo"
+                    alt="User avatar"
+                  >
+
+                  @if (comment.author; as author) {
+                    <span class="gf-ugc-username">
+                      {{ author.userName }}
+                    </span>
+                  }
+
+                  <span>•</span>
+
+                  <span class="comment-date dark-text-muted">
+                    {{ comment.createdAt | timeAgo }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="bottom-wrapper">
+                <span class="gf-ugc-text comment-body-text">
+                  {{ comment.body }}
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="pin-report-right">
+          <div class="pin-report-right-inside">
+
+            <div class="reports-listing-header">
+              <span class="text-bold">Reports ({{ reports().length }})</span>
+            </div>
+
+            <div class="reports-listing">
+
+              @if (reports().length > 0) {
+                @for (report of reports(); track report.id) {
+                  <div class="report-wrapper">
+
+                    <div class="report-header profile-pin-previews">
+                      <div class="pin-author-date-wrapper gf-generic-clickable-wrapper">
+                        <img
+                          [src]="report.imageURL || 'assets/images/placeholder_profile_pic.png'"
+                          class="rounded-circle gf-small-avatar"
+                          alt="User avatar"
+                        >
+
+                        <span class="gf-ugc-username pin-report-username">
+                          {{ report.username }}
+                        </span>
+
+                        <span>•</span>
+
+                        <span class="reported-pin-date dark-text-muted">
+                          {{ report.createdAt | timeAgo }}
+                        </span>
+                      </div>
+
+                      <input
+                        type="checkbox"
+                        class="report-checkbox"
+                        [checked]="isReportSelected(report.id)"
+                        (change)="toggleReportSelection(report.id)"
+                      >
+                    </div>
+
+                    <div class="report-body">
+                      <div class="gf-tag-report">
+                        <span>{{ report.reasonText || 'No reason provided' }}</span>
+                      </div>
+
+                      <span class="gf-ugc-text report-body-text">
+                        {{ report.description || 'No description provided.' }}
+                      </span>
+                    </div>
+
+                  </div>
+                }
+              } @else {
+                <div class="report-wrapper">
+                  <div class="report-body">
+                    <span class="gf-ugc-text report-body-text">
+                      No reports found for this comment.
+                    </span>
+                  </div>
+                </div>
+              }
+
+            </div>
+
+            @if (hasMoreResults()) {
+              <button
+                type="button"
+                class="btn-show-more"
+                (click)="loadMoreReports()">
+                Load more
+              </button>
+            }
+
+          </div>
+        </div>
+      </div>
+
+      <div class="report-panel-bottom">
+        <gf-user-help-box
+          type="alert"
+          [headerText]="alertText">
+        </gf-user-help-box>
+
+        <div class="report-action-buttons-wrapper">
+
+          <button
+            class="gf-tag-report-actions success"
+            type="button"
+            [disabled]="!hasSelectedReports()"
+            (click)="acceptSelectedReports()">
+            <span>Accept Reports and Delete Comment</span>
+          </button>
+
+          <button
+            class="gf-tag-report-actions reject"
+            type="button"
+            [disabled]="!hasSelectedReports()"
+            (click)="rejectSelectedReports()">
+            <span>Reject Selected Reports and Keep Comment</span>
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+} @else {
+  <gf-loading-spinner></gf-loading-spinner>
+}

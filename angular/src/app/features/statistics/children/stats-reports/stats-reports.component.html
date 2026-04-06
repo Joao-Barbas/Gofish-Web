@@ -17,27 +17,34 @@
   <!-- #endregion -->
 
   <div class="quick-view-grid">
-    <h2>Reported Pins</h2>
-    @for (pin of reportedPins(); track pin.id) {
-    <app-gf-card-pin-preview [pinId]="pin.targetId" [isReportedPin]="true"
-      [reportNumber]="getPinReportCount(pin.targetId)" [reportIndex]="pin.id"></app-gf-card-pin-preview>
-    } @empty {
-    <p>No pin reports available.</p>
-    }
-    <h2>Reported Comments</h2>
-    @for (comment of reportedComments(); track comment.id) {
-    <gf-gf-card-comment-preview [commentId]="comment.targetId" [isReportedComment]="true"
-      [reportNumber]="getCommentReportCount(comment.targetId)" [reportIndex]="comment.id"></gf-gf-card-comment-preview>
-    } @empty {
-    <p>No comment reports available.</p>
-    }
+    <div class="column">
+      <h2>Reported Pins</h2>
+      @for (pin of reportedPins(); track pin.id) {
+      <app-gf-card-pin-preview [pinId]="pin.targetId" [isReportedPin]="true"
+        [reportNumber]="getPinReportCount(pin.targetId)" [reportIndex]="pin.id"></app-gf-card-pin-preview>
+      } @empty {
+      <p>No pin reports available.</p>
+      }
+      @if (pinhasMoreResults()) {
+      <button (click)="loadMorePins()" class="btn-show-more">Load More</button>
+      }
+    </div>
+    <div class="column">
+      <h2>Reported Comments</h2>
+      @for (comment of reportedComments(); track comment.id) {
+      <gf-gf-card-comment-preview [commentId]="comment.targetId" [isReportedComment]="true"
+        [reportNumber]="getCommentReportCount(comment.targetId)"
+        [reportIndex]="comment.id"></gf-gf-card-comment-preview>
+      } @empty {
+      <p>No comment reports available.</p>
+      }
+      @if (commenthasMoreResults()) {
+      <button (click)="loadMoreComments()" class="btn-show-more">Load More</button>
+      }
+    </div>
 
-    @if (pinhasMoreResults()) {
-    <button (click)="loadMorePins()" class="btn-show-more">Load More</button>
-    }
-    @if (commenthasMoreResults()) {
-    <button (click)="loadMoreComments()" class="btn-show-more">Load More</button>
-    }
+
+
 
   </div>
 
