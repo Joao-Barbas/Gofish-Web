@@ -32,6 +32,8 @@
   min-width: 0;
 }
 
+/* End global styles tweaks */
+
 .title-container {
   display: flex;
   flex-direction: row;
@@ -39,12 +41,10 @@
   align-items: center;
   padding: var(--gf-16);
 
-  h5 {
+  .title {
     color: var(--gf-dark-text);
   }
 }
-
-/* End global styles tweaks */
 
 .body-container {
   display: block;
@@ -190,6 +190,8 @@
   overflow-wrap: break-word; /* modern, preferred */
   word-break: break-word;    /* fallback */
 }
+
+/* Media */
 
 @media (max-width: 62rem) {
   .gf-modal-shell {

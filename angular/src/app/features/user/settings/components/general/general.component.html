@@ -37,9 +37,23 @@
           <label>{{ 'E-mail:' }}</label>
           <span class="gf-ml-8">{{ userSettings.value().email | fallback }}</span>
         </div>
-        <button type="button" class="gf-d-inline">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
-        </button>
+        <div class="gf-d-flex gf-items-center">
+          @if (userSettings.value().emailConfirmed) {
+            <div class="setting-verified-status verified">
+              Verified
+            </div>
+          } @else {
+            <div
+              class="setting-verified-status unverified"
+              title="Click to begin email verification"
+              (click)="this.modalService.open(VerifyEmailModalComponent.Key)">
+              Unverified
+            </div>
+          }
+          <button type="button" class="gf-d-inline" (click)="this.modalService.open(ChangeEmailModalComponent.Key)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+          </button>
+        </div>
       </div>
 
       <!-- Password -->
@@ -163,13 +177,19 @@
   <!-- Modals -->
   @switch (this.modalService.activeModal()) {
   @case ('app-change-username-modal') {
-    <app-change-username-modal (positive)="onUsernameChange($event)" ></app-change-username-modal>
+    <app-change-username-modal (positive)="onUsernameChange($event)"></app-change-username-modal>
   }
   @case ('app-change-firstname-modal') {
-    <app-change-firstname-modal (positive)="onFirstnameChange($event)" ></app-change-firstname-modal>
+    <app-change-firstname-modal (positive)="onFirstnameChange($event)"></app-change-firstname-modal>
   }
   @case ('app-change-lastname-modal') {
-    <app-change-lastname-modal (positive)="onLastnameChange($event)" ></app-change-lastname-modal>
+    <app-change-lastname-modal (positive)="onLastnameChange($event)"></app-change-lastname-modal>
+  }
+  @case (ChangeEmailModalComponent.Key) {
+    <gf-change-email-modal></gf-change-email-modal>
+  }
+  @case (VerifyEmailModalComponent.Key) {
+    <gf-verify-email-modal (positive)="onEmailVerified()"></gf-verify-email-modal>
   }}
 }
 @else if (userSettings.error() || userProfileSettings.error()) {

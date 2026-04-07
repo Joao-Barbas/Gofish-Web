@@ -12,9 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 builder.Services.Configure<AzureStorageOptions>(builder.Configuration.GetSection("AzureStorage"));
+builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("Email"));
 
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ITwoFactorTokenService, TwoFactorTokenService>();
+builder.Services.AddScoped<ISensitiveActionTokenService, SensitiveActionTokenService>();
+builder.Services.AddScoped<IEmailChangeTokenService, EmailChangeTokenService>();
 builder.Services.AddScoped<IAppUserBuilder, AppUserBuilder>();
 builder.Services.AddScoped<IGamificationService, GamificationService>();
 builder.Services.AddScoped<IVisibilityService, VisibilityService>();

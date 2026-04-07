@@ -21,6 +21,8 @@ import { ModalService } from '@gofish/shared/services/modal.service';
 import { ChangeUsernameModalComponent } from "./components/change-username-modal/change-username-modal.component";
 import { ChangeFirstnameModalComponent } from "./components/change-firstname-modal/change-firstname-modal.component";
 import { ChangeLastnameModalComponent } from "./components/change-lastname-modal/change-lastname-modal.component";
+import { ChangeEmailModalComponent } from '@gofish/features/user/settings/components/general/components/change-email-modal/change-email-modal.component';
+import { VerifyEmailModalComponent } from '@gofish/features/user/settings/components/general/components/verify-email-modal/verify-email-modal.component';
 
 @Component({
   selector: 'app-general',
@@ -34,7 +36,9 @@ import { ChangeLastnameModalComponent } from "./components/change-lastname-modal
     AsyncButtonComponent,
     ChangeUsernameModalComponent,
     ChangeLastnameModalComponent,
-    ChangeFirstnameModalComponent
+    ChangeFirstnameModalComponent,
+    ChangeEmailModalComponent,
+    VerifyEmailModalComponent
 ],
   templateUrl: './general.component.html',
   styleUrl: './general.component.css',
@@ -50,7 +54,9 @@ export class GeneralComponent {
   readonly loadingState = new LoadingState();
   readonly busyState    = new BusyState();
 
-  protected readonly toast = toast;
+  readonly ChangeEmailModalComponent = ChangeEmailModalComponent;
+  readonly VerifyEmailModalComponent = VerifyEmailModalComponent;
+  readonly toast = toast;
 
   Path = Path;
   PathSegment = PathSegment;
@@ -161,6 +167,15 @@ export class GeneralComponent {
   onLastnameChange(lastname: string) {
     if (!this.userSettings.hasValue()) return;
     this.userSettings.value().lastName = lastname;
+  }
+
+  onEmailChange(email: string) {
+    if (!this.userSettings.hasValue()) return;
+    this.userSettings.value().email = email;
+  }
+
+  onEmailVerified() {
+    this.userSettings.reload();
   }
 
   // End modals events

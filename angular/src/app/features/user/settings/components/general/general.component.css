@@ -120,6 +120,25 @@ h4 {
   }
 }
 
+.setting-verified-status {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: var(--gf-text-xs);
+  margin-right: 4px;
+  align-self: stretch;
+
+  &.verified {
+    background-color: var(--gf-success-bg);
+  }
+
+  &.unverified {
+    background-color: var(--gf-danger-bg);
+    cursor: pointer;
+  }
+}
+
 gf-async-button {
   width: 20%;
   --async-btn-width: 100%;
