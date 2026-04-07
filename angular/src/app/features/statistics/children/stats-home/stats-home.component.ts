@@ -19,8 +19,6 @@ export interface PinMonthStats {
 }
 
 
-
-
 @Component({
   selector: 'app-home',
   imports: [/*RouterLink, */ GfCardQuickViewComponent, GfCardQuickAccessComponent, UsersChartComponent, PinsAvgPublishedChart, PinsPerWeekComponent],
@@ -37,6 +35,8 @@ export class StatsHomeComponent {
   protected weeklyApiSuccessRate = signal<number | null>(null);
   protected usersWeeklyStats = signal<GetRegisteredUsersWeeklyStatsResDTO[]>([]);
   protected currentYear = new Date().getFullYear();
+  protected pinWeeksCurrentMonth = signal<PinWeekStats[]>([]);
+  protected pinWeeksLastMonth = signal<PinWeekStats[]>([]);
 
   isLastMonth: boolean = false;
 
@@ -57,20 +57,22 @@ export class StatsHomeComponent {
     monthStats.catchCount = catchTotal;
     monthStats.infoCount = infoTotal;
     monthStats.warningCount = warningTotal;
-    monthStats.year = weeks[0].year;
+    if (weeks.length > 0) {
+      monthStats.year = weeks[0].year;
+    }
   }
 
   public lastMonthStats: PinMonthStats = {
-    monthName: 'March',
-    year: 2025,
+    monthName: '',
+    year: 0,
     catchCount: 0,
     infoCount: 0,
     warningCount: 0
   };
 
   public currentMonthStats: PinMonthStats = {
-    monthName: 'April',
-    year: 2025,
+    monthName: '',
+    year: 0,
     catchCount: 0,
     infoCount: 0,
     warningCount: 0
@@ -107,7 +109,55 @@ export class StatsHomeComponent {
       }
     });
 
-    this.statsService
+    const current = this.getCurrentMonthAndYear();
+    const last = this.getLastMonthAndYear();
+
+    this.currentMonthStats.monthName = this.getMonthName(current.month, current.year);
+    this.currentMonthStats.year = current.year;
+
+    this.lastMonthStats.monthName = this.getMonthName(last.month, last.year);
+    this.lastMonthStats.year = last.year;
+
+    this.statsService.getPinsWeeklyStats(last.month, last.year).subscribe({
+      next: (res) => {
+        this.pinWeeksLastMonth.set(res);
+        const stats = { ...this.lastMonthStats };
+        this.calcTotals(res, stats);
+        this.lastMonthStats = stats;
+        console.log('Last Month Stats:', this.lastMonthStats);
+      }
+    });
+
+    this.statsService.getPinsWeeklyStats(current.month, current.year).subscribe({
+      next: (res) => {
+        this.pinWeeksCurrentMonth.set(res);
+        const stats = { ...this.currentMonthStats };
+        this.calcTotals(res, stats);
+        this.currentMonthStats = stats;
+        console.log('Current Month Stats:', this.currentMonthStats);
+      }
+    });
+  }
+  private getCurrentMonthAndYear(): { month: number; year: number } {
+    const now = new Date();
+    return {
+      month: now.getMonth() + 1,
+      year: now.getFullYear()
+    };
+  }
+
+  private getLastMonthAndYear(): { month: number; year: number } {
+    const now = new Date();
+    const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+    return {
+      month: lastMonthDate.getMonth() + 1, // January is 0
+      year: lastMonthDate.getFullYear()
+    };
+  }
+
+  private getMonthName(month: number, year: number): string {
+    return new Date(year, month - 1, 1).toLocaleString('en-US', { month: 'long' });
   }
 
 }
