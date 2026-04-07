@@ -23,6 +23,7 @@ import { ChangeFirstnameModalComponent } from "./components/change-firstname-mod
 import { ChangeLastnameModalComponent } from "./components/change-lastname-modal/change-lastname-modal.component";
 import { ChangeEmailModalComponent } from '@gofish/features/user/settings/components/general/components/change-email-modal/change-email-modal.component';
 import { VerifyEmailModalComponent } from '@gofish/features/user/settings/components/general/components/verify-email-modal/verify-email-modal.component';
+import { ChangePhoneModalComponent } from '@gofish/features/user/settings/components/general/components/change-phone-modal/change-phone-modal.component';
 
 @Component({
   selector: 'app-general',
@@ -38,7 +39,8 @@ import { VerifyEmailModalComponent } from '@gofish/features/user/settings/compon
     ChangeLastnameModalComponent,
     ChangeFirstnameModalComponent,
     ChangeEmailModalComponent,
-    VerifyEmailModalComponent
+    VerifyEmailModalComponent,
+    ChangePhoneModalComponent
 ],
   templateUrl: './general.component.html',
   styleUrl: './general.component.css',
@@ -167,6 +169,11 @@ export class GeneralComponent {
   onLastnameChange(lastname: string) {
     if (!this.userSettings.hasValue()) return;
     this.userSettings.value().lastName = lastname;
+  }
+
+  onPhoneNumberChange(phoneNumber: string) {
+    if (!this.userSettings.hasValue()) return;
+    this.userSettings.value().phoneNumber = phoneNumber;
   }
 
   onEmailChange(email: string) {
