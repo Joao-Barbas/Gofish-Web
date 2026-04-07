@@ -39,7 +39,6 @@ export class GroupsComponent {
     this.groupsService.getGroup(Number(id)).subscribe({
       next: (res) => {
         this.groupData.set(res);
-        console.log(res);
       },
       error: (err) => {
         console.log(err);

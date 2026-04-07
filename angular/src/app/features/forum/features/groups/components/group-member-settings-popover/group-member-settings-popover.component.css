@@ -58,9 +58,12 @@
 }
 
 .first-option {
-  padding-bottom: 12px;
-  border-bottom: 2px solid var(--gf-dark-bg-light);
   width: 100%;
+}
+
+.separator {
+  border-top: 1px solid var(--gf-dark-bg-light);
+  margin: 0 1rem;
 }
 
 .option-wrapper {

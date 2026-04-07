@@ -10,7 +10,7 @@
     </div>
   </div>
 
-  @if (!isCurrentUser()) {
+  @if (canManage()) {
   <div class="gf-pos-relative">
 
     <button class="gf-badge-user-settings" (click)="onSettingsClick($event)">
@@ -24,10 +24,8 @@
     </button>
 
     @if (popoverService.isOpen(popoverKey())) {
-      <gf-group-member-settings-popover
-        [member]="member"
-        (click)="$event.stopPropagation()">
-      </gf-group-member-settings-popover>
+    <gf-group-member-settings-popover [viewerRole]="viewerRole()" [member]="member" (click)="$event.stopPropagation()">
+    </gf-group-member-settings-popover>
     }
   </div>
   }

@@ -27,18 +27,19 @@ import { PopoverService } from '@gofish/shared/services/popover.service';
   styleUrl: './group-member-settings-popover.component.css',
 })
 export class GroupMemberSettingsPopoverComponent {
+
   static readonly Key: PopoverKey = 'gf-group-member-settings-popover';
-  readonly controller = new PopoverController(ProfileActionsPopoverComponent.Key);
+  readonly controller = new PopoverController(GroupMemberSettingsPopoverComponent.Key);
 
   member = input.required<GroupMemberDTO>();
+  viewerRole = input.required<GroupRole>();
 
-  private elementRef = inject(ElementRef);
-  protected readonly popoverService = inject(PopoverService);
-  protected readonly GroupRole = GroupRole;
+  protected readonly Role = GroupRole;
 
-
-  onKick() {
-    console.log('Kicking user:', this.member().userId);
+  // Métodos de ação (exemplo)
+  onAction(action: string) {
+    console.log(`${action} member:`, this.member().userId);
+    this.controller.close();
   }
 
 }

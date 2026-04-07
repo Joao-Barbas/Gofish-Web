@@ -20,22 +20,35 @@ export class UserCardComponent {
   readonly authService = inject(AuthService);
   readonly popoverService = inject(PopoverService);
 
-  readonly GroupMemberSettingsPopoverComponent = GroupMemberSettingsPopoverComponent
   readonly Path = Path;
 
+  readonly GroupMemberSettingsPopoverComponent = GroupMemberSettingsPopoverComponent
 
-  member = input<GroupMemberDTO | null>(null);
+  member = input.required<GroupMemberDTO>();
+  viewerRole = input.required<GroupRole>();
 
+  canManage = computed(() => {
+    const m = this.member();
+    return m.userId !== this.authService.userId() && this.viewerRole() > m.role;
+  });
+
+  popoverKey = computed(() => `member-settings-${this.member().userId}`);
+
+  toggleSettings(event: Event) {
+    event.stopPropagation();
+    this.popoverService.toggle(this.popoverKey());
+  }
+
+  /*
   popoverKey = computed(() => `${GroupMemberSettingsPopoverComponent.Key}-${this.member()?.userId}`);
 
   isCurrentUser = computed(() => this.member()?.userId === this.authService.userId());
   isOwner = computed(() => this.member()?.role === GroupRole.Owner);
   isModerator = computed(() => this.member()?.role === GroupRole.Moderator);
 
+  }*/
   onSettingsClick(event: Event) {
     event.stopPropagation();
     this.popoverService.toggle(this.popoverKey());
   }
-
 }
-

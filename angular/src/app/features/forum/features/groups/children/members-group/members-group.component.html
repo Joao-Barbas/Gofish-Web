@@ -4,7 +4,7 @@
 
 <div class="user-card-grid">
   @for (m of membersData()?.members; track m.userId) {
-  <app-user-card [member]="m"
+  <app-user-card [viewerRole]="viewerRole()"  [member]="m"
     (click)="$event.stopPropagation()">></app-user-card>
   }
 </div>
