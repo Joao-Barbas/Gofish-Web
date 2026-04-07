@@ -217,6 +217,7 @@ input.modal-info-box:focus {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
+  height: 100%;
 }
 
 .action-btns>button,

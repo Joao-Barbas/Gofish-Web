@@ -145,7 +145,7 @@
   border-radius: var(--gf-16);
   padding: 1.563rem 1.563rem;
   background: none;
-  margin-bottom: var(--gf-10);
+  width: 100%;
 }
 
 .new-group-create-icon {

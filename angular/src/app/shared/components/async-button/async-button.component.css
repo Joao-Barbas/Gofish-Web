@@ -1,5 +1,10 @@
 /* async-button.component.css */
 
+:host {
+  display: flex;
+  align-self: stretch; /* ocupa a altura do flex container pai */
+}
+
 button {
   display: inline-flex;
   align-items: center;
@@ -10,7 +15,8 @@ button {
 
   /* Customizable via css variables */
   width: var(--async-btn-width, 100%);
-  height: var(--async-btn-height, auto);
+  /*height: var(--async-btn-height, auto);*/
+  height: 100% !important;
   padding: var(--async-btn-padding, calc(1em / 2) var(--gf-8));
   font-size: var(--async-btn-font-size, var(--gf-text-sm));
   border-radius: var(--async-btn-radius, var(--gf-8));
@@ -54,7 +60,7 @@ button {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  height: 18px;
+  height: 100%;
   width: 0;
   transition: width 0.2s ease;
 
