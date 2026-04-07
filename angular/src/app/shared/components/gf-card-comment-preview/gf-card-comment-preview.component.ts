@@ -27,7 +27,7 @@ export class GfCardCommentPreviewComponent {
   reportIndex = input<number>();
 
 
-  commentLink = computed(() => `comment/${this.commentId()}`);
+  commentLink = computed(() => `${this.commentId()}`);
   currentComment = computed(() => this.commentData() );
 
   ngOnInit() {

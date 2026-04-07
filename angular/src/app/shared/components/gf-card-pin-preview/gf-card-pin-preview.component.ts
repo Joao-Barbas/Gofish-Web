@@ -35,7 +35,7 @@ export class GfCardPinPreviewComponent implements OnInit {
 
   pinKind = PinKind;
 
-  pinLink = computed(() => `pin/${this.pinId()}`);
+  pinLink = computed(() => `${this.pinId()}`);
   currentPin = computed(() => this.pinData() ?? this.pinInfo());
 
   // Enum options
