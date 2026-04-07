@@ -47,14 +47,35 @@
             Image is required.
           </p>
           }
+          @if (form.controls.imageUrl.errors?.['invalidType']) {
+          <p class="text-danger mt-2 mb-0">
+            Only PNG or JPEG or JPG images are allowed.
+          </p>
+          }
           <div class="options-line d-flex align-items-center justify-content-between">
             <h5 class="modal-body-options-text text-slim mb-0">Group Name</h5>
             <input type="text" minlength="3" maxlength="25" class="dark-bg-dark dark-text modal-info-box"
-              placeholder="Enter group name..." formControlName="groupName" />
+              placeholder="Enter group name..." formControlName="groupName" maxlength="50" />
           </div>
+          <small class="dark-text-muted text-end">
+            {{ form.value.groupName?.length ?? 0 }}/{{ 50 }}
+          </small>
+          @if (form.controls.groupName.touched && form.controls.groupName.invalid) {
+          <p class="text-danger mt-2 mb-0">
+            @if (form.controls.groupName.errors?.['required']) {
+            Group name is required.
+            }
+            @if (form.controls.groupName.errors?.['minlength']) {
+            Group name must have at least 3 characters.
+            }
+            @if (form.controls.groupName.errors?.['maxlength']) {
+            Group name cannot exceed 50 characters.
+            }
+          </p>
+          }
           <!-- Description -->
           <textarea id="Description" class="modal-body-description dark-bg-dark dark-text"
-            placeholder="Add a description..." formControlName="body">
+            maxlength="{{ BodyLengthConstraints.MAX }}" placeholder="Add a description..." formControlName="body">
           </textarea>
           <small class="dark-text-muted text-end">
             {{ form.value.body?.length ?? 0 }}/{{ BodyLengthConstraints.MAX }}

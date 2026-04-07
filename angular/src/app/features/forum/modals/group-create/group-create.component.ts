@@ -41,10 +41,10 @@ export class GroupCreateComponent {
 
     const file = input.files[0];
 
-    const allowedTypes = ['image/png', 'image/jpeg'];
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
 
     if (!allowedTypes.includes(file.type)) {
-      alert('Only PNG or JPEG images are allowed');
+      alert('Only PNG or JPEG or JPG images are allowed');
       return;
     }
 
@@ -58,6 +58,7 @@ export class GroupCreateComponent {
   }
 
   onPublish(): void {
+    this.form.markAllAsTouched();
     this.errorMessage = '';
 
     if (!this.image) {

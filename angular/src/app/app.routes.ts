@@ -195,7 +195,7 @@ export const routes: Routes = [
       },
       {
         path: `${PathSegment.FORUM_MY_GROUPS}/${PathSegment.CREATE_GROUP}`,
-        loadComponent: () => import('@gofish/features/forum/features/my-groups/group-create/group-create.component').then(m => m.GroupCreateComponent)
+        loadComponent: () => import('@gofish/features/forum/modals/group-create/group-create.component').then(m => m.GroupCreateComponent)
       },
       {
         path: PathSegment.FORUM_MY_GROUPS,
