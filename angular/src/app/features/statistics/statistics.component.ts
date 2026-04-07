@@ -27,14 +27,15 @@ export class StatisticsComponent {
   });
 
   public goBack() {
-    const url = this.currentPath();
+    /* const url = this.currentPath();
 
     const segments = url.split('/');
     if (segments.length > 1) {
       segments.pop(); // Remove a última "pasta"
       const parentPath = segments.join('/');
       this.router.navigateByUrl(parentPath);
-    }
+    } */
+   this.router.navigate(['/statistics/home']);
   }
 
 
