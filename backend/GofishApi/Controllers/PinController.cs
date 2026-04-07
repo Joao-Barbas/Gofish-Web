@@ -238,10 +238,10 @@ public class PinController : ControllerBase
         var pin = await _db.Pins.FindAsync(pinId);
         if (pin is null) return NotFound();
 
-        if (pin.UserId == userId)
-        {
-            throw new AppValidationException("Vote", "You cannot vote on your own pin.");
-        }
+        // if (pin.UserId == userId)
+        // {
+        //    throw new AppValidationException("Vote", "You cannot vote on your own pin.");
+        // }
 
         var existingVote = await _db.Votes.FirstOrDefaultAsync(v => v.PinId == pinId && v.UserId == userId);
 
