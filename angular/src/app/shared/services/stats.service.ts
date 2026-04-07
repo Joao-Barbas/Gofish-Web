@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Api } from '@gofish/shared/constants';
-import { GetPinsCreatedTodayResDTO, GetReportsWaitingReviewResDTO, GetAverageVotesPerPinResDTO, GetAveragePublishedPinsResDTO, GetActiveUsersResDTO, GetPinsWith15PositiveVotesResDTO, GetSuccessRateOfRequestsDTO, GetNewUsersTodayResDTO, GetTotalCatchPinsCreatedResDTO, GetTotalPinsCreatedResDTO, GetTotalWarningPinsCreatedResDTO } from '@gofish/shared/dtos/stats.dto';
+import { GetPinsCreatedTodayResDTO, GetReportsWaitingReviewResDTO, GetAverageVotesPerPinResDTO, GetAveragePublishedPinsResDTO, GetActiveUsersResDTO, GetPinsWith15PositiveVotesResDTO, GetSuccessRateOfRequestsDTO, GetNewUsersTodayResDTO, GetTotalCatchPinsCreatedResDTO, GetTotalPinsCreatedResDTO, GetTotalWarningPinsCreatedResDTO, GetTotalUsersResDTO } from '@gofish/shared/dtos/stats.dto';
 
 import { Observable } from 'rxjs';
 
@@ -58,4 +58,9 @@ export class StatsService {
   getTotalWarningPinsCreated(): Observable<GetTotalWarningPinsCreatedResDTO> {
     return this.http.get<GetTotalWarningPinsCreatedResDTO>(Api.Stats.action('GetTotalWarningPinsCreated'));
   }
+
+  GetTotalUsers(): Observable<GetTotalUsersResDTO> {
+    return this.http.get<GetTotalUsersResDTO>(Api.Stats.action('GetTotalUsers'));
+  }
+  
 }

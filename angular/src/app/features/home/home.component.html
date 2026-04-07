@@ -154,8 +154,8 @@
 
       <!-- Head -->
       <div class="dark-text reviews-head">
-        <h1 class="">
-          Join over 99 million anglers
+        <h1>
+          Join over {{ totalAnglers | number }} {{ totalAnglers > 1 ? 'anglers' : "angler" }}
         </h1>
 
         <div class="overall-reviews-wrapper">

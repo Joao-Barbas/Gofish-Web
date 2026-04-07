@@ -5,7 +5,7 @@ import { StatsService } from '@gofish/shared/services/stats.service';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink],
+  imports: [RouterLink, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -15,6 +15,7 @@ export class HomeComponent {
   totalPins: number = 0;
   totalCatches: number = 0;
   totalWarnings: number = 0;
+  totalAnglers: number = 0;
 
   ngOnInit(): void {
     this.statsService.getTotalPinsCreated().subscribe({
@@ -28,5 +29,18 @@ export class HomeComponent {
     this.statsService.getTotalWarningPinsCreated().subscribe({
       next: (res) => this.totalWarnings = res.value
     });
+
+    this.statsService.GetTotalUsers().subscribe({
+      next: (res) => this.totalAnglers = res.usersRegistered
+    });
+
+    this.statsService.GetTotalUsers().subscribe({
+  next: (res) => {
+    console.log('Resposta do servidor:', res); // Verifique o nome exato do campo no console
+    this.totalAnglers = res.usersRegistered;
+  },
+  error: (err) => console.error('Erro ao buscar pescadores:', err)
+});
   }
+
 }
