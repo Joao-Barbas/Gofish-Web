@@ -1,31 +1,30 @@
 <!-- groups-list.component.html -->
 
-<!-- @if (groups.isLoading()) {
+@if (groupInvites.isLoading()) {
   <gf-loading-spinner></gf-loading-spinner>
-} @else if (groups.error()) {
+} @else if (groupInvites.error()) {
   <gf-loading-error-modal
-    [error]="groups.error()!"
+    [error]="groupInvites.error()!"
     (negative)="router.navigate([Path.HOME]);"
     (positive)="window.location.reload();">
   </gf-loading-error-modal>
-} @else if (groups.hasValue()) {
+} @else {
   <div class="list">
-    @for (group of groupsList(); track group.id) {
-      <gf-group-list-card
-        [group]="group"
-        [actions]="false"
-      ></gf-group-list-card>
+    @for (invite of groupInvitesList(); track invite.id) {
+      <gf-group-invites-card [groupInvite]="invite" (declined)="onGroupInviteDecline($event)"></gf-group-invites-card>
     } @empty {
-      @if (!groups.isLoading() && !loadingState.isLoading()) {
-        <p>{{ 'You are not in any group' }}</p>
+      @if (!groupInvites.isLoading() && !busyState.isBusy()) {
+        <p>{{ 'You do not have any invites :(' }}</p>
       }
     }
   </div>
-  @if (groupsHasMore()) {
-    <gf-async-button
+  @if (groupInvitesHasMore()) {
+    <button
+      class="load-more-btn"
+      gfAsyncBtn
+      (click)="loadMoreGroupInvites()"
       [labels]="{ idle: 'Load more', busy: 'Loading...' }"
-      [states]="{ busy: busyState.isBusy() }"
-      (click)="loadMoreGroups()"
-    ></gf-async-button>
+      [states]="{ busy: busyState.isBusy() }">
+    </button>
   }
-} -->
+}

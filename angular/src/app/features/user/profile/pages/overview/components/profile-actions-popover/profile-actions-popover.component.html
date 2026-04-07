@@ -6,7 +6,10 @@
 @if (profileContext.userProfile().friendship?.state === FriendshipState.Pending) {
   <button (click)="onFriendshipCancel()">Cancel friend request</button>
 }
-<button (click)="onUnfriend()">Friends</button>
-<button (click)="onPins()">Pins</button>
-<button (click)="onGroups()">Groups</button>
-<button (click)="onShowMore()">See more</button>
+<button (click)="onUnfriend()">View all friends</button>
+<button (click)="onPins()">View all pins</button>
+<button (click)="onGroups()">View all groups</button>
+@if (!profileContext.isOwner()) {
+  <button (click)="onInviteToGroup()">Invite to group...</button>
+}
+<button (click)="onShowMore()">See more...</button>

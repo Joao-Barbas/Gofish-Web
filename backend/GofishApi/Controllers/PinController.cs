@@ -238,10 +238,10 @@ public class PinController : ControllerBase
         var pin = await _db.Pins.FindAsync(pinId);
         if (pin is null) return NotFound();
 
-        if (pin.UserId == userId)
-        {
-            throw new AppValidationException("Vote", "You cannot vote on your own pin.");
-        }
+        // if (pin.UserId == userId)
+        // {
+        //    throw new AppValidationException("Vote", "You cannot vote on your own pin.");
+        // }
 
         var existingVote = await _db.Votes.FirstOrDefaultAsync(v => v.PinId == pinId && v.UserId == userId);
 
@@ -320,6 +320,21 @@ public class PinController : ControllerBase
         var lastTime = hasMore ? page[^1].CreatedAt : (DateTime?)null;
 
         return Ok(new GetCommentsResDto(data, hasMore, lastTime));
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetComment(int id)
+    {
+        var comment = await _db.Comments
+            .AsNoTracking()
+            .Include(c => c.AppUser)
+            .ThenInclude(u => u.UserProfile)
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (comment is null)
+            return NotFound();
+
+        return Ok(CommentDto.FromEntity(comment));
     }
 
     [HttpPost]

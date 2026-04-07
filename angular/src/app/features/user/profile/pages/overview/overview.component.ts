@@ -26,6 +26,7 @@ import { PopoverService } from '@gofish/shared/services/popover.service';
 import { ModalService } from '@gofish/shared/services/modal.service';
 import { ProfileShowMoreModalComponent } from '@gofish/features/user/profile/pages/overview/components/profile-show-more-modal/profile-show-more-modal.component';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { InviteToGroupsModalComponent } from '@gofish/shared/components/invite-to-groups-modal/invite-to-groups-modal.component';
 
 @Component({
   selector: 'app-overview',
@@ -40,7 +41,8 @@ import { rxResource } from '@angular/core/rxjs-interop';
     LoadingErrorModalComponent,
     UserRankIconComponent,
     UserTitleComponent,
-    ProfileShowMoreModalComponent
+    ProfileShowMoreModalComponent,
+    InviteToGroupsModalComponent
 ],
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.css',
@@ -58,6 +60,7 @@ export class OverviewComponent {
   readonly busyState = new BusyState();
   readonly Path = Path;
   readonly FriendshipState = FriendshipState;
+  readonly InviteToGroupModalComponent = InviteToGroupsModalComponent;
   readonly ProfileActionsPopoverComponent = ProfileActionsPopoverComponent;
   readonly ProfileShowMoreModalComponent = ProfileShowMoreModalComponent;
 
@@ -93,8 +96,7 @@ export class OverviewComponent {
       receiverId: this.profileContext.userProfileId() // Also userId
     }).pipe(finalize(() => {
       this.busyState.setBusy(false);
-    })
-    ).subscribe({
+    })).subscribe({
       next: (res) => {
         this.profileContext.befriends(res);
       },

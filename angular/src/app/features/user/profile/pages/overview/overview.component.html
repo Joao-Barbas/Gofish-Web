@@ -134,7 +134,16 @@
   }
 
   <!-- Modals -->
-  @if (modalService.activeModal() === ProfileShowMoreModalComponent.Key) {
-    <gf-profile-show-more-modal [userProfile]="profile"></gf-profile-show-more-modal>
+  @switch (modalService.activeModal()) {
+  @case (ProfileShowMoreModalComponent.Key) {
+    <gf-profile-show-more-modal
+      [userProfile]="profile"
+    ></gf-profile-show-more-modal>
   }
+  @case (InviteToGroupModalComponent.Key) {
+    <gf-invite-to-groups-modal
+      [targetUserId]="profile.userId"
+      [targetUserName]="profile.userName"
+    ></gf-invite-to-groups-modal>
+  }}
 }

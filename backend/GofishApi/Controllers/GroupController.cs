@@ -298,9 +298,8 @@ public class GroupController : ControllerBase
 
     #region ManageMembers
 
-    [Authorize]
-    [HttpPost("SendInvite/{groupId}")]
-    public async Task<IActionResult> SendInvite(int groupId, [FromBody] SendGroupInviteReqDTO dto)
+    [HttpPost("CreateGroupInvite")]
+    public async Task<IActionResult> CreateGroupInvite([FromBody] SendGroupInviteReqDTO dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
@@ -309,11 +308,11 @@ public class GroupController : ControllerBase
         if (dto.ReceiverUserId == userId)
             return BadRequest("You cannot invite yourself.");
 
-        var group = await _db.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
+        var group = await _db.Groups.FirstOrDefaultAsync(g => g.Id == dto.GroupId);
         if (group is null) return NotFound();
 
         var isAllowed = await _db.GroupUsers.AnyAsync(gu =>
-            gu.GroupId == groupId &&
+            gu.GroupId == dto.GroupId &&
             gu.UserId == userId &&
             (gu.Role == GroupRole.Owner || gu.Role == GroupRole.Moderator));
 
@@ -325,14 +324,14 @@ public class GroupController : ControllerBase
             return BadRequest("Receiver user does not exist.");
 
         var alreadyMember = await _db.GroupUsers.AnyAsync(gu =>
-            gu.GroupId == groupId &&
+            gu.GroupId == dto.GroupId &&
             gu.UserId == dto.ReceiverUserId);
 
         if (alreadyMember)
             return BadRequest("This user is already a member of the group.");
 
         var pendingInviteExists = await _db.GroupInvites.AnyAsync(gi =>
-            gi.GroupId == groupId &&
+            gi.GroupId == dto.GroupId &&
             gi.ReceiverUserId == dto.ReceiverUserId &&
             gi.State == FriendshipState.Pending);
 
@@ -341,7 +340,7 @@ public class GroupController : ControllerBase
 
         var invite = new GroupInvite
         {
-            GroupId = groupId,
+            GroupId = dto.GroupId,
             RequesterUserId = userId,
             ReceiverUserId = dto.ReceiverUserId,
             CreatedAt = DateTime.UtcNow,
@@ -353,9 +352,8 @@ public class GroupController : ControllerBase
         return Ok(new SendGroupInviteResDTO(invite.Id));
     }
 
-    [Authorize]
-    [HttpPost("AcceptInvite/{inviteId}")]
-    public async Task<IActionResult> AcceptInvite([FromRoute] int inviteId)
+    [HttpPatch("AcceptGroupInvite/{inviteId}")]
+    public async Task<IActionResult> AcceptGroupInvite([FromRoute] int inviteId)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         if (string.IsNullOrEmpty(userId))
@@ -391,14 +389,39 @@ public class GroupController : ControllerBase
         _db.GroupUsers.Add(membership);
         await _db.SaveChangesAsync();
 
-        return Ok("Invite accepted successfully.");
+        return Ok();
     }
 
-    [Authorize]
+    [HttpDelete("DeleteGroupInvite/{inviteId}")]
+    public async Task<IActionResult> DeleteGroupInvite([FromRoute] int inviteId)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var invite = await _db.GroupInvites.FindAsync(inviteId);
+        if (invite is null) return NotFound();
+
+        // Only receiver or requester can delete
+        var isParticipant = invite.ReceiverUserId == userId || invite.RequesterUserId == userId;
+        if (!isParticipant) return NotFound();
+
+        // Can only delete pending invites
+        if (invite.State != FriendshipState.Pending)
+        {
+            throw new AppValidationException("State", "Only pending invites can be deleted.");
+        }
+
+        _db.GroupInvites.Remove(invite);
+        await _db.SaveChangesAsync();
+        return NoContent();
+    }
+
+    [HttpDelete("IgnoreGroupInvite/{inviteId}")]
+    public async Task<IActionResult> IgnoreGroupInvite([FromRoute] int inviteId)
+    {
+        return await DeleteGroupInvite(inviteId);
+    }
+
     [HttpDelete("RemoveMember/{groupId}/{userId}")]
-    public async Task<IActionResult> RemoveMember(
-    [FromRoute] int groupId,
-    [FromRoute] string userId)
+    public async Task<IActionResult> RemoveMember([FromRoute] int groupId, [FromRoute] string userId)
     {
         var requesterUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         if (string.IsNullOrEmpty(requesterUserId))
