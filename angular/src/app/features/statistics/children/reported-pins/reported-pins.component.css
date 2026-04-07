@@ -55,8 +55,3 @@
     text-decoration: none;
     color: var(--gf-dark-text);
   }
-
-  .active {
-    color: var(--gf-primary) !important;
-    text-decoration: none;
-  }

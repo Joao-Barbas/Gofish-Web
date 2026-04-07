@@ -211,7 +211,7 @@ export const routes: Routes = [
           { path: '', redirectTo: 'posts', pathMatch: 'full' },
           { path: 'posts', loadComponent: () => import('@gofish/features/forum/features/groups/children/group-posts-placeholder/group-posts-placeholder.component').then(c => c.GroupPostsPlaceholderComponent) },
           { path: 'members', loadComponent: () => import('@gofish/features/forum/features/groups/children/members-group/members-group.component').then(c => c.MembersGroupComponent) },
-          { path: 'invite', loadComponent: () => import('@gofish/features/forum/modals/group-invite/group-invite.component').then(m => m.GroupInviteComponent)},
+          { path: 'invite', loadComponent: () => import('@gofish/features/forum/modals/group-invite/group-invite.component').then(m => m.GroupInviteComponent) },
         ]
       },
 
@@ -245,9 +245,15 @@ export const routes: Routes = [
     children: [ // unfinished
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', loadComponent: () => import('@gofish/features/statistics/children/stats-home/stats-home.component').then(d => d.StatsHomeComponent) },
-      { path: 'reports', loadComponent: () => import('@gofish/features/statistics/children/stats-reports/stats-reports.component').then(d => d.StatsReportsComponent) },
-      { path: 'reports/pin/:id', loadComponent: () => import('@gofish/features/statistics/children/reported-pin-page/reported-pin-page.component').then(d => d.ReportedPinPageComponent) },
-      { path: 'reports/comment/:id', loadComponent: () => import('@gofish/features/statistics/children/reported-comment-page/reported-comment-page.component').then(d => d.ReportedCommentPageComponent) },
+      { path: 'reports', loadComponent: () => import('@gofish/features/statistics/children/stats-reports/stats-reports.component').then(d => d.StatsReportsComponent),
+        children: [
+          { path: '', redirectTo: 'pins', pathMatch: 'full' },
+          { path: 'pins', loadComponent: () =>import('@gofish/features/statistics/children/reported-pins/reported-pins.component').then(d => d.ReportedPinsComponent)},
+          { path: 'comments', loadComponent: () => import('@gofish/features/statistics/children/reported-comments/reported-comments.component').then(d => d.ReportedCommentsComponent)},
+          { path: 'pins/:id', loadComponent: () => import('@gofish/features/statistics/children/reported-pin-page/reported-pin-page.component').then(d => d.ReportedPinPageComponent)},
+          { path: 'comments/:id', loadComponent: () => import('@gofish/features/statistics/children/reported-comment-page/reported-comment-page.component').then(d => d.ReportedCommentPageComponent)}
+        ]
+      }
 
     ]
   },

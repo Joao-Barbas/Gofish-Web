@@ -1,0 +1,11 @@
+<div class="column">
+      @for (pin of reportedPins(); track pin.id) {
+      <app-gf-card-pin-preview [pinId]="pin.targetId" [isReportedPin]="true"
+        [reportNumber]="getPinReportCount(pin.targetId)" [reportIndex]="pin.id"></app-gf-card-pin-preview>
+      } @empty {
+      <p>No pin reports available.</p>
+      }
+      @if (pinhasMoreResults()) {
+      <button (click)="loadMorePins()" class="btn-show-more">Load More</button>
+      }
+    </div>
