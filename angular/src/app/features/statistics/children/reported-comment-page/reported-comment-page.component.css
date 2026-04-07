@@ -11,14 +11,16 @@
 }
 
 .quick-header-wrapper {
-  max-width: 45%;
+  display: flex;
+  align-items: center;
   gap: 10px;
   padding-left: 5px;
+  max-width: 45%;
+}
 
-  & span {
-    font-family: var(--gf-font-date);
-    font-size: 24px;
-  }
+.quick-header-wrapper span {
+  font-family: var(--gf-font-date);
+  font-size: 24px;
 }
 
 .gf-card-plain {
@@ -30,19 +32,21 @@
 .pin-report-panel {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 
 .report-panel-body {
-  display: flex;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
 }
 
 .pin-report-left {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  min-width: 0;
 }
 
 .reported-pin-post {
@@ -52,13 +56,11 @@
   padding: 0 4px;
 }
 
-/* Card do comentário */
 .gf-card-comment-preview {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   border-radius: var(--gf-16);
   background-color: var(--gf-dark-bg-dark);
-
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -68,6 +70,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
 }
 
 .comment-user-wrapper {
@@ -75,22 +78,28 @@
   align-items: center;
   gap: 8px;
   min-width: 0;
+  flex-wrap: wrap;
 }
 
 .comment-author-profile-photo {
   width: var(--gf-32);
   height: var(--gf-32);
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .gf-ugc-username {
   font-size: var(--gf-14);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .comment-date {
   font-size: var(--gf-12);
   font-family: var(--gf-font-date);
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .separator {
@@ -109,55 +118,52 @@
   font-family: var(--gf-font-ugc);
   white-space: pre-wrap;
   word-break: break-word;
+  line-height: 1.45;
 }
 
-/* Painel da direita */
 .pin-report-right {
-  flex: 1;
-  gap: 10px;
   display: flex;
-  overflow-y: auto;
-  height: fit-content;
-  align-items: center;
   flex-direction: column;
-  padding: 8px 0 8px 8px;
-
+  justify-content: flex-start;
+  min-width: 0;
+  max-height: 720px;
+  padding: 10px 0 10px 10px;
   background-color: var(--gf-dark-bg-dark);
   border-radius: 14px;
 }
 
 .pin-report-right-inside {
   width: 100%;
-  padding-right: 6px;
+  padding-right: 8px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  min-height: 0;
 }
 
 .reports-listing-header {
-  border-bottom: 1px solid #fff;
   width: 100%;
-
   display: flex;
   justify-content: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
 
-  & span {
-    font-family: var(--gf-font-date);
-    font-size: 16px;
-  }
+.reports-listing-header span {
+  font-family: var(--gf-font-date);
+  font-size: 16px;
 }
 
 .reports-listing {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 10px;
   width: 100%;
   max-height: 600px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #444 #000;
-
   padding-right: 6px;
 }
 
@@ -176,11 +182,10 @@
 }
 
 .report-wrapper {
-  background-color: var(--gf-dark-bg);
   width: 100%;
   padding: 12px;
   border-radius: 16px;
-
+  background-color: var(--gf-dark-bg);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -188,8 +193,9 @@
 
 .report-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  gap: 12px;
 }
 
 .pin-author-date-wrapper {
@@ -197,14 +203,22 @@
   align-items: center;
   gap: 10px;
   min-width: 0;
+  flex: 1;
+  flex-wrap: wrap;
 }
 
 .pin-report-username {
   font-size: var(--gf-14);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .reported-pin-date {
-  font-size: var(--gf-14);
+  font-size: var(--gf-12);
+  font-family: var(--gf-font-date);
+  word-break: break-word;
 }
 
 .report-checkbox {
@@ -216,6 +230,11 @@
   background: transparent;
   cursor: pointer;
   flex-shrink: 0;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+}
+
+.report-checkbox:hover {
+  transform: scale(1.03);
 }
 
 .report-checkbox:checked {
@@ -234,8 +253,9 @@
 }
 
 .report-body-text {
-  font-size: 10px;
+  font-size: 12px;
   font-family: var(--gf-font-date);
+  line-height: 1.45;
   white-space: normal;
   word-break: break-word;
 }
@@ -244,27 +264,84 @@
   align-self: center;
 }
 
-/* Bottom */
 .report-panel-bottom {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .report-action-buttons-wrapper {
   display: flex;
   gap: 10px;
   padding: 4px;
+  flex-wrap: wrap;
 }
 
 .gf-tag-report-actions {
   border: none;
+  flex: 1;
+  min-width: 260px;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+}
 
-  &.success {
-    background-color: var(--gf-success-bg);
+.gf-tag-report-actions.success {
+  background-color: var(--gf-success-bg);
+}
+
+.gf-tag-report-actions.reject {
+  background-color: var(--gf-danger-bg);
+}
+
+.gf-tag-report-actions:hover:not(:disabled) {
+  opacity: 0.92;
+}
+
+.gf-tag-report-actions:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.gf-tag-report-actions:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 992px) {
+  .report-panel-body {
+    grid-template-columns: 1fr;
   }
 
-  &.reject {
-    background-color: var(--gf-danger-bg);
+  .pin-report-right {
+    max-height: none;
+  }
+
+  .reports-listing {
+    max-height: 420px;
+  }
+
+  .quick-header-wrapper {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .stats-section-wrapper {
+    padding: 14px;
+    gap: 20px;
+  }
+
+  .gf-card-plain {
+    padding: 12px;
+  }
+
+  .quick-header-wrapper span {
+    font-size: 20px;
+  }
+
+  .report-action-buttons-wrapper {
+    flex-direction: column;
+  }
+
+  .gf-tag-report-actions {
+    min-width: 100%;
   }
 }
