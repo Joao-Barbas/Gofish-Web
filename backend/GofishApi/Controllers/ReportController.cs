@@ -273,6 +273,47 @@ public class ReportController : ControllerBase
         ));
     }
 
+    [Authorize(Roles = "Admin")]
+    [HttpGet("GetCommentReportsByComment")]
+    public async Task<IActionResult> GetCommentReportsByComment([FromQuery] GetCommentsReportsByCommentReqDTO dto)
+    {
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+
+        IQueryable<CommentReport> query = _db.CommentReports
+            .Where(r => r.CommentId == dto.CommentId);
+
+        if (dto.LastCreatedAt is not null)
+        {
+            query = query.Where(r => r.CreatedAt < dto.LastCreatedAt.Value);
+        }
+
+        var commentReports = await query
+            .AsNoTracking()
+            .OrderByDescending(r => r.CreatedAt)
+            .Take(maxResults + 1)
+            .Select(r => new GetReportResDTO(
+                r.Id,
+                r.UserId,
+                r.AppUser.UserProfile.AvatarUrl,
+                r.AppUser.UserName,
+                "Comment",
+                r.CommentId,
+                r.ReasonText,
+                r.Description,
+                r.CreatedAt
+            ))
+            .ToListAsync();
+
+        var hasMoreResults = commentReports.Count > maxResults;
+        var paginatedReports = commentReports.Take(maxResults).ToList();
+        var lastTimestamp = hasMoreResults ? paginatedReports[^1].CreatedAt : (DateTime?)null;
+
+        return Ok(new GetReportsResDTO(
+            paginatedReports,
+            hasMoreResults,
+            lastTimestamp
+        ));
+    }
 
     #endregion
 
@@ -306,6 +347,26 @@ public class ReportController : ControllerBase
         if (report is null) return NotFound();
         _db.CommentReports.Remove(report);
         await _db.SaveChangesAsync();
+        return NoContent();
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("DeleteCommentReports")]
+    public async Task<IActionResult> DeleteCommentReports([FromBody] DeleteReportsReqDTO dto)
+    {
+        if (dto == null || dto.Ids == null || !dto.Ids.Any())
+            return BadRequest("No ids provided");
+
+        var reports = await _db.CommentReports
+            .Where(r => dto.Ids.Contains(r.Id))
+            .ToListAsync();
+
+        if (reports.Count == 0)
+            return NotFound("No reports found");
+
+        _db.CommentReports.RemoveRange(reports);
+        await _db.SaveChangesAsync();
+
         return NoContent();
     }
 
