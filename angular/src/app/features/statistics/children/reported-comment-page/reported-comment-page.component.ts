@@ -52,13 +52,13 @@ export class ReportedCommentPageComponent {
     });
   }
 
-  private loadReports(pinId: number) {
+  private loadReports(commentId: number) {
     const request = {
-      pinId,
+      commentId,
       maxResults: 5,
       lastCreatedAt: this.lastCreatedAt
     };
-    this.reportService.getPinReportsByPin(request).subscribe({
+    this.reportService.getCommentReportsByComment(request).subscribe({
       next: (res) => {
         this.reports.update(current => [...current, ...res.reports]);
 
@@ -94,7 +94,7 @@ export class ReportedCommentPageComponent {
     if (this.selectedReportIds().size > 0) {
       this.alertText = `You have selected ${this.selectedReportIds().size} report(s) to action.`;
     } else {
-      this.alertText = "You have yet to mark the Pin post with one of the report type on the right";
+      this.alertText = "You have yet to mark the Comment post with one of the report type on the right";
     }
   }
 
@@ -110,16 +110,16 @@ export class ReportedCommentPageComponent {
     if (!this.commentId()) return;
     this.pinService.deletePin(this.commentId()!).subscribe({
       next: () => {
-        toast.success('Selected reports accepted and pin deleted successfully');
+        toast.success('Selected reports accepted and comment deleted successfully');
       }
     });
     window.history.back();
   }
 
   rejectSelectedReports() {
-    this.reportService.deletePinReports({ ids: Array.from(this.selectedReportIds()) }).subscribe({
+    this.reportService.deleteCommentReports({ ids: Array.from(this.selectedReportIds()) }).subscribe({
       next: () => {
-        toast.success('Selected reports rejected and pin kept successfully');
+        toast.success('Selected reports rejected and comment kept successfully');
         this.reports.update(current => current.filter(r => r.id !== Array.from(this.selectedReportIds())[0]));
         this.selectedReportIds.set(new Set());
         this.updateAlertText();

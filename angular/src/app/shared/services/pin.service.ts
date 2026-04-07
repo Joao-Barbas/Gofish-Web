@@ -43,12 +43,16 @@ export class PinService {
     return this.http.post<GetFeedResDto>(Api.Pin.action('GetFeed'), dto);
   }
 
-  putVote(postId: number, dto: VoteReqDto): Observable<VoteResDto> {
-    return this.http.put<VoteResDto>(Api.Pin.action(`PutVote/${postId}`), dto);
+  putVote(pinId: number, dto: VoteReqDto): Observable<VoteResDto> {
+    return this.http.put<VoteResDto>(Api.Pin.action(`PutVote/${pinId}`), dto);
   }
 
-  deleteVote(postId: number): Observable<VoteResDto> {
-    return this.http.delete<VoteResDto>(Api.Pin.action(`DeleteVote/${postId}`));
+  deleteVote(pinId: number): Observable<VoteResDto> {
+    return this.http.delete<VoteResDto>(Api.Pin.action(`DeleteVote/${pinId}`));
+  }
+
+  getUserVote(pinId: number): Observable<VoteResDto> {
+    return this.http.get<VoteResDto>(Api.Pin.action(`GetUserVote/${pinId}`));
   }
 
   createComment(dto: CreateCommentReqDto): Observable<CreateCommentResDto> {

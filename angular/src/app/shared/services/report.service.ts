@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Api } from '@gofish/shared/constants';
-import { CreateCommentReportReqDTO, CreateCommentReportResDTO, CreatePinReportReqDTO, CreatePinReportResDTO, DeleteReportsReqDTO, GetPinReportsByPinReqDTO, GetReportReqDTO, GetReportResDTO, GetReportsResDTO } from '@gofish/shared/dtos/report.dto';
+import { CreateCommentReportReqDTO, CreateCommentReportResDTO, CreatePinReportReqDTO, CreatePinReportResDTO, DeleteReportsReqDTO, GetCommentsReportsByCommentReqDTO, GetPinReportsByPinReqDTO, GetReportReqDTO, GetReportResDTO, GetReportsResDTO } from '@gofish/shared/dtos/report.dto';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -61,7 +61,23 @@ export class ReportService {
     return this.http.delete<void>(Api.Report.action(`DeleteCommentReport/${id}`));
   }
 
+  deleteCommentReports(dto: DeleteReportsReqDTO): Observable<void> {
+    return this.http.delete<void>(Api.Report.action('DeleteCommentReports'), { body: dto });
+  }
+
   resolvePinReport(id: number): Observable<void> {
     return this.http.delete<void>(Api.Report.action(`ResolvePinReport/${id}`));
+  }
+
+  getCommentReportsByComment(dto: GetCommentsReportsByCommentReqDTO): Observable<GetReportsResDTO> {
+    let params = new HttpParams().set('commentId', dto.commentId.toString());
+
+    if (dto.lastCreatedAt) {
+      params = params.set('lastCreatedAt', dto.lastCreatedAt);
+    }
+    if (dto.maxResults) {
+      params = params.set('maxResults', dto.maxResults.toString());
+    }
+    return this.http.get<GetReportsResDTO>(Api.Report.action('GetCommentReportsByComment'), { params });
   }
 }

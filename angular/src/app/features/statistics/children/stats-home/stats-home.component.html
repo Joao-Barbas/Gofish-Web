@@ -37,11 +37,11 @@
     @if (!isLastMonth) {
 
       <gf-pins-average-published-chart class="gf-card" [pinStats]="currentMonthStats"></gf-pins-average-published-chart>
-      <gf-pins-per-week class="gf-card" [pins]="mockPinWeeksCurrentMonth"></gf-pins-per-week>
+      <gf-pins-per-week class="gf-card" [pins]="pinWeeksCurrentMonth()"></gf-pins-per-week>
     }
     @else {
       <gf-pins-average-published-chart class="gf-card" [pinStats]="lastMonthStats"></gf-pins-average-published-chart>
-      <gf-pins-per-week class="gf-card" [pins]="mockPinWeeksLastMonth"></gf-pins-per-week>
+      <gf-pins-per-week class="gf-card" [pins]="pinWeeksLastMonth()"></gf-pins-per-week>
     }
   </div>
 
