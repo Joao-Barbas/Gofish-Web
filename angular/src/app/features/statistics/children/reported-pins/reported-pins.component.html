@@ -1,11 +1,18 @@
-<div class="column">
-      @for (pin of reportedPins(); track pin.id) {
-      <app-gf-card-pin-preview [pinId]="pin.targetId" [isReportedPin]="true"
-        [reportNumber]="getPinReportCount(pin.targetId)" [reportIndex]="pin.id"></app-gf-card-pin-preview>
-      } @empty {
-      <p>No pin reports available.</p>
-      }
-      @if (pinhasMoreResults()) {
-      <button (click)="loadMorePins()" class="btn-show-more">Load More</button>
-      }
-    </div>
+<div class="reported-pins-container">
+  @for (pin of reportedPins(); track pin.id) {
+    <app-gf-card-pin-preview
+      [pinId]="pin.targetId"
+      [isReportedPin]="true"
+      [reportNumber]="getPinReportCount(pin.targetId)"
+      [reportIndex]="pin.id">
+    </app-gf-card-pin-preview>
+  } @empty {
+    <p class="empty-state">No pin reports available.</p>
+  }
+
+  @if (pinhasMoreResults()) {
+    <button (click)="loadMorePins()" class="btn-show-more">
+      Load More
+    </button>
+  }
+</div>
