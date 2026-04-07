@@ -470,6 +470,50 @@ public class GroupController : ControllerBase
         ));
     }
 
+    [HttpPatch("DemoteAdminToMember/{groupId}/{userId}")]
+    public async Task<IActionResult> DemoteAdminToMember([FromRoute] int groupId, [FromRoute] string userId)
+    {
+        var requesterUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(requesterUserId))
+            return Unauthorized();
+
+        var groupExists = await _db.Groups.AnyAsync(g => g.Id == groupId);
+        if (!groupExists)
+            return NotFound("Group not found.");
+
+        var requesterMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == requesterUserId);
+
+        if (requesterMembership is null || requesterMembership.Role != GroupRole.Owner)
+            return Forbid();
+
+        var targetMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
+
+        if (targetMembership is null)
+            return NotFound("User is not a member of this group.");
+
+        if (targetMembership.UserId == requesterUserId)
+            return BadRequest("You cannot demote yourself.");
+
+        if (targetMembership.Role == GroupRole.Owner)
+            return BadRequest("The owner cannot be demoted.");
+
+        if (targetMembership.Role == GroupRole.Member)
+            return BadRequest("This user is already a member.");
+
+        targetMembership.Role = GroupRole.Member;
+
+        await _db.SaveChangesAsync();
+
+        return Ok(new UpdateGroupMemberRoleResDto(
+            groupId,
+            userId,
+            targetMembership.Role.ToString(),
+            "User demoted successfully."
+        ));
+    }
+
     [HttpDelete("DeleteGroupInvite/{inviteId}")]
     public async Task<IActionResult> DeleteGroupInvite([FromRoute] int inviteId)
     {
@@ -516,6 +560,9 @@ public class GroupController : ControllerBase
             return Forbid();
 
         if (requesterMembership.Role != GroupRole.Owner && requesterMembership.Role != GroupRole.Moderator)
+            return Forbid();
+
+        if(requesterMembership.Role == GroupRole.Moderator && requesterMembership.Role == GroupRole.Moderator)
             return Forbid();
 
         var targetMembership = await _db.GroupUsers
