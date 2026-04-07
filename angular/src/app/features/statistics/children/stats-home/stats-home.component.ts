@@ -40,19 +40,6 @@ export class StatsHomeComponent {
 
   isLastMonth: boolean = false;
 
-  mockPinWeeksLastMonth: PinWeekStats[] = [
-    { year: 2026, weekLabel: 'Day 3 to day 9', catchCount: 6, infoCount: 3, warningCount: 1 },
-    { year: 2026, weekLabel: 'Day 10 to day 16', catchCount: 7, infoCount: 3, warningCount: 14 },
-    { year: 2026, weekLabel: 'Day 17 to day 23', catchCount: 12, infoCount: 9, warningCount: 19 },
-    { year: 2026, weekLabel: 'Day 24 to day 30', catchCount: 9, infoCount: 6, warningCount: 17 },
-  ];
-
-  mockPinWeeksCurrentMonth: PinWeekStats[] = [
-    { year: 2026, weekLabel: 'Day 3 to day 9', catchCount: 8, infoCount: 3, warningCount: 4 },
-    { year: 2026, weekLabel: 'Day 10 to day 16', catchCount: 31, infoCount: 26, warningCount: 19 },
-    { year: 2026, weekLabel: 'Day 17 to day 23', catchCount: 27, infoCount: 19, warningCount: 13 },
-    { year: 2026, weekLabel: 'Day 24 to day 30', catchCount: 6, infoCount: 3, warningCount: 1 },
-  ];
 
 
   private calcTotals(weeks: PinWeekStats[], monthStats: PinMonthStats): void {
@@ -90,8 +77,6 @@ export class StatsHomeComponent {
   };
 
   ngOnInit() {
-    this.calcTotals(this.mockPinWeeksLastMonth, this.lastMonthStats);
-    this.calcTotals(this.mockPinWeeksCurrentMonth, this.currentMonthStats);
     this.statsService.getReportsWaitingReview().subscribe({
       next: (res) => {
         this.reportsWaitingReview.set(res);
@@ -121,6 +106,8 @@ export class StatsHomeComponent {
         this.weeklyApiSuccessRate.set(res.successRateOfRequests);
       }
     });
+
+    this.statsService
   }
 
 }
