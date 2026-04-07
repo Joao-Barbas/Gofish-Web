@@ -84,6 +84,24 @@
   color: var(--gf-dark-text);
 }
 
+.not-member-text {
+  display: block;
+  justify-content: center;
+  font-family: var(--gf-font-date);
+  color: var(--gf-dark-text-muted);
+  font-style: italic;
+
+  & a {
+    font-family: var(--gf-font-main);
+    color: var(--gf-dark-text-muted);
+  }
+  & a:hover {
+    font-family: var(--gf-font-main);
+    color: var(--gf-dark-text);
+  }
+
+}
+
 .group-forum-feed {
   width: 100%;
 }

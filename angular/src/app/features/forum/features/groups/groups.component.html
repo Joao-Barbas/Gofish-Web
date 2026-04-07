@@ -20,21 +20,23 @@
 
       </div>
 
-      <!-- put here a if to only admin/ group admin can delete group -->
+      @if (viewerRole() !== null && viewerRole()! >= GroupRole.Moderator) {
       <div class="group-settings-wrapper">
-        <button class="gf-badge-group-settings">
-
-          <svg xmlns=" http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-trash2-icon lucide-trash-2">
-            <path d="M10 11v6" />
-            <path d="M14 11v6" />
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-            <path d="M3 6h18" />
-            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+        <button class="gf-badge-group-settings" (click)="onGroupSettingsClick($event)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis">
+            <circle cx="12" cy="12" r="1" />
+            <circle cx="19" cy="12" r="1" />
+            <circle cx="5" cy="12" r="1" />
           </svg>
+
+          @if (popoverService.isOpen(groupPopoverKey)) {
+          <gf-group-popover [viewerRole]="viewerRole()!" [member]="currentMember()!"
+            (click)="$event.stopPropagation()"></gf-group-popover>
+          }
         </button>
       </div>
+      }
     </div>
 
     <!-- Group Stats -->
@@ -52,24 +54,6 @@
 
     </div>
 
-    <!-- se nao for membro do grupo esta div nao aparece -->
-
-    <div class="d-flex align-items-center create-group-wrapper" (click)="invite()">
-
-      <button class="gf-badge-create-group-btn">
-
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-plus-icon lucide-plus">
-          <path d="M5 12h14" />
-          <path d="M12 5v14" />
-        </svg>
-
-      </button>
-
-      <span class="create-group-text">Invite to group</span>
-    </div>
-
     <!-- Group Description -->
 
     <div class="group-description">
@@ -84,24 +68,24 @@
       }
     </div>
 
-    <!-- Group Listing Tabs -->
-    <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
-      <a [routerLink]="['posts']" [routerLinkActive]="['active']"
-        class="d-flex justify-content-center listing-tabs">
-        <span class="listing-tab-text">Posts</span>
-      </a>
+    @if (viewerRole() !== null && viewerRole()! >= GroupRole.Member) {
 
-      <a [routerLink]="['members']" [routerLinkActive]="['active']"
-        class="d-flex justify-content-center listing-tabs">
-        <span class="listing-tab-text">Members</span>
-      </a>
-    </div>
+      <!-- Group Listing Tabs -->
+      <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
+        <a [routerLink]="['posts']" [routerLinkActive]="['active']" class="d-flex justify-content-center listing-tabs">
+          <span class="listing-tab-text">Posts</span>
+        </a>
 
-    <!-- colocar o if de nao ser membro ate aqui -->
-
+        <a [routerLink]="['members']" [routerLinkActive]="['active']" class="d-flex justify-content-center listing-tabs">
+          <span class="listing-tab-text">Members</span>
+        </a>
+      </div>
+    }
+    @else {
+      <span class="not-member-text">You need to be a member of the crew to see the posts and its members. Why not <a [routerLink]="Path.FORUM_CREATE_GROUP">create your own crew?</a></span>
+    }
 
   </div>
-
 
   <div class="group-forum-feed">
     <router-outlet></router-outlet>

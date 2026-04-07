@@ -13,7 +13,7 @@
 
 
 @if (viewerRole() === Role.Owner) {
-  <div class="separator"></div>
+<div class="separator"></div>
 <div class="option-wrapper">
 
   <button class="group-member-settings-option">
@@ -28,10 +28,9 @@
     }
 
     @case (Role.Moderator) {
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-down-icon lucide-chevrons-down">
-      <path d="m7 6 5 5 5-5" />
-      <path d="m7 13 5 5 5-5" />
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus-icon lucide-minus">
+      <path d="M5 12h14" />
     </svg>
     }
     }
@@ -58,7 +57,7 @@
 
   </button>
 
-  <button class="group-member-settings-option option-wrapper-warning-btn">
+  <button class="group-member-settings-option option-wrapper-warning-btn" [gfTooltip]="promoteToOwnerTooltip()">
 
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert">
