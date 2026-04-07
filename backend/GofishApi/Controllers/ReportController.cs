@@ -351,6 +351,26 @@ public class ReportController : ControllerBase
     }
 
     [Authorize(Roles = "Admin")]
+    [HttpDelete("DeleteCommentReports")]
+    public async Task<IActionResult> DeleteCommentReports([FromBody] DeleteReportsReqDTO dto)
+    {
+        if (dto == null || dto.Ids == null || !dto.Ids.Any())
+            return BadRequest("No ids provided");
+
+        var reports = await _db.CommentReports
+            .Where(r => dto.Ids.Contains(r.Id))
+            .ToListAsync();
+
+        if (reports.Count == 0)
+            return NotFound("No reports found");
+
+        _db.CommentReports.RemoveRange(reports);
+        await _db.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [Authorize(Roles = "Admin")]
     [HttpDelete("ResolvePinReport/{reportId}")]
     public async Task<IActionResult> ResolvePinReport(int reportId)
     {
@@ -370,6 +390,8 @@ public class ReportController : ControllerBase
 
         return NoContent();
     }
+
+
 
     #endregion
 }
