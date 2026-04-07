@@ -101,6 +101,13 @@ public record SearchGroupsResDto(
     string? LastGroupName
 );
 
+public record UpdateGroupMemberRoleResDto(
+    int GroupId,
+    string UserId,
+    string Role,
+    string Message
+);
+
 #endregion // Responses
 
 #region GetGroupMembers
