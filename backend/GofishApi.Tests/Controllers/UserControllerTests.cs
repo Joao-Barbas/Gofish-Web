@@ -3,6 +3,7 @@ using GofishApi.Dtos;
 using GofishApi.Enums;
 using GofishApi.Models;
 using GofishApi.Tests.Fixtures;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using System.Net.Http.Json;
@@ -190,6 +191,15 @@ public class UserControllerTests : IClassFixture<WebAppFactory>
             LastName = "Two",
             EmailConfirmed = true,
             CreatedAt = DateTime.UtcNow
+        });
+        db.UserProfiles.Add(new UserProfile
+        {
+            UserId = "user-2",
+            JoinedAt = DateTime.UtcNow,
+            LastActiveAt = DateTime.UtcNow,
+            LastUpdateAt = DateTime.UtcNow,
+            CatchPoints = 0,
+            AvatarUrl = null
         });
 
         await db.SaveChangesAsync();

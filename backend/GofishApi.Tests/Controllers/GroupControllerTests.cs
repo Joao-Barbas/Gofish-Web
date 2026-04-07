@@ -71,7 +71,7 @@ public class GroupControllerTests : IClassFixture<WebAppFactory>
             )
         );
 
-        var res = await _client.PostAsJsonAsync("/api/Group/GetGroup", body);
+        var res = await _client.GetAsync($"/api/Group/GetGroup/{groupId}");
 
         res.StatusCode.Should().Be(HttpStatusCode.OK);
     }
