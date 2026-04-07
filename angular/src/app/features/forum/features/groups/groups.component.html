@@ -15,12 +15,13 @@
 
         <div class="d-flex flex-column group-name-creator">
           <span class="group-name-text">{{group.name}}</span>
-          <span class="group-creator-text">By @{{group.owner.userName}}</span>
+          <span class="group-creator-text">By @{{ (group.owner?.userName) || (group.owner?.userName) || 'Unknown'
+            }}</span>
         </div>
 
       </div>
 
-      @if (viewerRole() !== null && viewerRole()! >= GroupRole.Moderator) {
+      @if (1) { <!-- isMember? -->
       <div class="group-settings-wrapper">
         <button class="gf-badge-group-settings" (click)="onGroupSettingsClick($event)">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -31,7 +32,7 @@
           </svg>
 
           @if (popoverService.isOpen(groupPopoverKey)) {
-          <gf-group-popover [viewerRole]="viewerRole()!" [member]="currentMember()!"
+          <gf-group-popover [viewerRole]="viewerRole()!" [member]="mockOwner"
             (click)="$event.stopPropagation()"></gf-group-popover>
           }
         </button>
@@ -68,21 +69,22 @@
       }
     </div>
 
-    @if (viewerRole() !== null && viewerRole()! >= GroupRole.Member) {
+    @if (1) { <!-- isMember? -->
 
-      <!-- Group Listing Tabs -->
-      <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
-        <a [routerLink]="['posts']" [routerLinkActive]="['active']" class="d-flex justify-content-center listing-tabs">
-          <span class="listing-tab-text">Posts</span>
-        </a>
+    <!-- Group Listing Tabs -->
+    <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
+      <a [routerLink]="['posts']" [routerLinkActive]="['active']" class="d-flex justify-content-center listing-tabs">
+        <span class="listing-tab-text">Posts</span>
+      </a>
 
-        <a [routerLink]="['members']" [routerLinkActive]="['active']" class="d-flex justify-content-center listing-tabs">
-          <span class="listing-tab-text">Members</span>
-        </a>
-      </div>
+      <a [routerLink]="['members']" [routerLinkActive]="['active']" class="d-flex justify-content-center listing-tabs">
+        <span class="listing-tab-text">Members</span>
+      </a>
+    </div>
     }
     @else {
-      <span class="not-member-text">You need to be a member of the crew to see the posts and its members. Why not <a [routerLink]="Path.FORUM_CREATE_GROUP">create your own crew?</a></span>
+    <span class="not-member-text">You need to be a member of the crew to see the posts and its members. Why not <a
+        [routerLink]="Path.FORUM_CREATE_GROUP">create your own crew?</a></span>
     }
 
   </div>

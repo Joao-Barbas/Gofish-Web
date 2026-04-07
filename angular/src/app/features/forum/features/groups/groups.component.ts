@@ -11,6 +11,16 @@ import { GroupPopoverComponent } from '@gofish/features/forum/features/groups/co
 import { GroupRole } from '@gofish/shared/enums/group-role.enum';
 import { Path } from '@gofish/shared/constants';
 
+const MOCK_OWNER: GroupMemberDTO = {
+  userId: 'seed-player-1',
+  userName: 'player1',
+  firstName: 'player1',
+  lastName: 'player',
+  avatarUrl: '',
+  role: GroupRole.Owner,
+  joinedAt: new Date().toISOString()
+};
+
 @Component({
   selector: 'app-groups',
   imports: [RouterLink, RouterOutlet, LoadingSpinnerComponent, RouterLinkActive, GroupPopoverComponent],
@@ -28,55 +38,57 @@ export class GroupsComponent {
   protected isExpanded = false;
   protected readonly Path = Path;
 
+  protected readonly mockOwner = MOCK_OWNER;
+
   protected readonly GroupRole = GroupRole;
 
   viewerRole = computed(() => {
     const group = this.groupData();
     const myId = this.authService.userId();
 
-    if (!group || !myId) return null;
+    if (!myId) return null;
 
-    const members = (group as any).members as GroupMemberDTO[];
-    if (members) {
-      const me = members.find((m: GroupMemberDTO) => m.userId === myId); // Corrigido para userId
-      if (me) return me.role;
-    }
+    // TESTE: Se você for o player1 (Mock), libera como Owner
+    if (this.mockOwner.userId === myId) return GroupRole.Owner;
 
-    // 2. Fallback: Verificar se eu sou o Owner (usando userId)
-    if (group.owner && group.owner.userId === myId) { // Corrigido para userId
+    if (!group) return null;
+
+    // Lógica real: verifica o dono e membros
+    // Nota: Usei 'any' para aceitar 'Owner' ou 'owner' vindo do backend
+    const owner = (group as any).owner || (group as any).Owner;
+    if (owner && String(owner.userId) === String(myId)) {
       return GroupRole.Owner;
     }
 
+    const members = (group as any).members || (group as any).Members;
+    if (members && Array.isArray(members)) {
+      const me = members.find((m: any) => String(m.userId) === String(myId));
+      if (me) return me.role;
+    }
+
     return null;
+  });
+
+  isMember = computed(() => {
+    const role = this.viewerRole();
+    return role !== null && role >= GroupRole.Member;
   });
 
   currentMember = computed(() => {
     const group = this.groupData();
     const myId = this.authService.userId();
-    if (!group || !myId) return null;
+    if (!myId) return null;
+    if (this.mockOwner.userId === myId) return this.mockOwner;
 
-    const members = (group as any).members as GroupMemberDTO[];
-    if (members) {
-      return members.find((m: GroupMemberDTO) => m.userId === myId) ?? null; // Corrigido para userId
-    }
-
-    // Se a lista de membros não existir mas eu for o Owner,
-    // retorno o objeto owner do DTO
-    if (group.owner && group.owner.userId === myId) {
-      return group.owner;
-    }
+    if (!group) return null;
+    const owner = (group as any).owner || (group as any).Owner;
+    if (owner && String(owner.userId) === String(myId)) return owner;
 
     return null;
   });
 
-  isMember = this.viewerRole()! !== null && this.viewerRole()! >= GroupRole.Member;
-
   groupPopoverKey = GroupPopoverComponent.Key;
 
-  onGroupSettingsClick(event: Event) {
-    event.stopPropagation();
-    this.popoverService.toggle(this.groupPopoverKey);
-  }
 
 
 
@@ -85,15 +97,19 @@ export class GroupsComponent {
     if (!id) return;
 
     this.groupsService.getGroup(Number(id)).subscribe({
-      next: (res) => {
-        this.groupData.set(res);
-        console.log(res);
+      next: (res: any) => {
+        // Se a API retornar { group: {...} }, pegamos o .group, senão o res
+        const data = res.group ? res.group : res;
+        this.groupData.set(data);
       },
-      error: (err) => {
-        console.log(err);
-      }
+      error: (err) => console.error(err)
     });
+  }
 
+  // ... (outros métodos toggleExpand, etc)
+  onGroupSettingsClick(event: Event) {
+    event.stopPropagation();
+    this.popoverService.toggle(GroupPopoverComponent.Key);
   }
 
   toggleExpand() {
