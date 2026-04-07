@@ -53,3 +53,9 @@ export interface GetPinReportsByPinReqDTO {
 export interface DeleteReportsReqDTO {
   ids: number[];
 }
+
+export interface GetCommentsReportsByCommentReqDTO {
+  commentId: number;
+  maxResults?: number;
+  lastCreatedAt?: string;
+}

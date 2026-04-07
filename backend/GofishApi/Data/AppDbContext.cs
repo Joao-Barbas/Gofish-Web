@@ -324,7 +324,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
         double baseLat = 38.5130;
         double baseLng = -8.8730;
         var random = new Random(1);
-        var createdAt = DateTime.UtcNow.AddDays(-random.Next(0, 7));
+        var createdAt = DateTime.UtcNow.AddDays(-random.Next(0, 30));
         var expiresAt = createdAt.AddDays(7);
         var catchPins = new List<CatchPin>();
 

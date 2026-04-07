@@ -44,7 +44,7 @@ export class PinService {
   }
 
   putVote(postId: number, dto: VoteReqDto): Observable<VoteResDto> {
-    return this.http.put<VoteResDto>(Api.Pin.action(`PutVote/${postId}`), dto);
+    return this.http.put<VoteResDto>(Api.Pin.action(`${postId}`), dto);
   }
 
   deleteVote(postId: number): Observable<VoteResDto> {

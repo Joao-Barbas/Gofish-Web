@@ -1,5 +1,4 @@
-<div class="column">
-      <h2>Reported Comments</h2>
+<div class="reported-comments-container">
       @for (comment of reportedComments(); track comment.id) {
       <gf-gf-card-comment-preview [commentId]="comment.targetId" [isReportedComment]="true"
         [reportNumber]="getCommentReportCount(comment.targetId)"
