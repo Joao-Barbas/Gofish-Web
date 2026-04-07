@@ -25,7 +25,6 @@ export class MembersGroupComponent {
     return me?.role ?? GroupRole.Member;
   });
 
-
   ngOnInit() {
 
     const id = Number(this.route.parent?.snapshot.paramMap.get('id'));

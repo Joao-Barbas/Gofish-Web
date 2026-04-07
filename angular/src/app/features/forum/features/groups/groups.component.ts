@@ -84,13 +84,6 @@ export class GroupsComponent {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
 
-    const dto: GetGroupReqDTO = {
-      groupId: Number(id),
-      dataRequest: {
-        includeMembers: true,
-        includePosts: true
-      }
-    }
     this.groupsService.getGroup(Number(id)).subscribe({
       next: (res) => {
         this.groupData.set(res);
@@ -106,5 +99,12 @@ export class GroupsComponent {
   toggleExpand() {
     this.isExpanded = !this.isExpanded
   }
+
+  invite() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) return;
+    this.router.navigate(['invite'], { relativeTo: this.route });
+  }
+
 
 }
