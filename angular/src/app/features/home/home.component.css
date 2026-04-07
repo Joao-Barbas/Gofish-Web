@@ -115,11 +115,13 @@
   font-size: 16px;
 }
 
+/* 1. PADRÃO (Telemóvel / Ecrãs Pequenos) */
 .review-listing {
   display: grid;
-  grid-template-columns: repeat(6, 1fr); /* 6 colunas "virtuais" */
-  row-gap: var(--gf-8);
-  column-gap: var(--gf-8);
+  /* Apenas 1 coluna: os cards vão ocupar a largura toda e empilhar */
+  grid-template-columns: 1fr;
+  row-gap: 16px;
+  column-gap: 16px;
   width: 100%;
 }
 
@@ -128,18 +130,42 @@
   flex-direction: column;
   padding: 16px;
   gap: 12px;
-  grid-column: span 2;
+  /* No mobile, ele ocupa a única coluna existente */
+  grid-column: span 1;
 }
 
-.gf-card-review:last-child:nth-child(3n - 2) {
-  grid-column: 3 / 5;
+/* 2. TABLET (Ecrãs Médios - a partir de 768px) */
+@media (min-width: 768px) {
+  .review-listing {
+    /* Passa a ter 2 colunas: ficam 2 cards por linha */
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.gf-card-review:nth-last-child(2):nth-child(3n + 1) {
-  grid-column: 2 / 4;
-}
-.gf-card-review:nth-last-child(1):nth-child(3n + 2) {
-  grid-column: 4 / 6;
+/* 3. DESKTOP (Ecrãs Grandes - a partir de 1024px) */
+@media (min-width: 1024px) {
+  .review-listing {
+    /* Volta às suas 6 colunas originais */
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .gf-card-review {
+    /* Cada card volta a ocupar 2 das 6 colunas (3 por linha) */
+    grid-column: span 2;
+  }
+
+  /* OPCIONAL: Sua lógica de centralização para quando sobrarem cards */
+  /* Só ativamos isto no Desktop para não estragar o layout do telemóvel */
+  .gf-card-review:last-child:nth-child(3n - 2) {
+    grid-column: 3 / 5;
+  }
+
+  .gf-card-review:nth-last-child(2):nth-child(3n + 1) {
+    grid-column: 2 / 4;
+  }
+  .gf-card-review:nth-last-child(1):nth-child(3n + 2) {
+    grid-column: 4 / 6;
+  }
 }
 
 .review-card-header {
