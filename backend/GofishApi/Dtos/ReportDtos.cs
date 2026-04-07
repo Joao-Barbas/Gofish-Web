@@ -56,3 +56,9 @@ public record DeleteReportsReqDTO
 (
     IEnumerable<int> Ids
 );
+
+public record GetCommentsReportsByCommentReqDTO(
+    int CommentId,
+    int MaxResults = 20,
+    DateTime? LastCreatedAt = null
+);
