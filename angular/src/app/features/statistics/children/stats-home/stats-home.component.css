@@ -42,10 +42,11 @@
 }
 
 .segmented-control {
-  display: flex;
-  border-radius: 8px;
-  padding: 12px;
-  gap: 8px;
+  display: inline-flex;
+  background: var(--gf-dark-bg);
+  box-shadow: var(--gf-shadow-lift-sm);
+  border-radius: var(--gf-8);
+  overflow: visible;
 }
 
 .segmented-control input[type="radio"] {
@@ -53,24 +54,28 @@
 }
 
 .radio-btn {
-  display: flex;
-  gap: 4px;
+  display: inline-flex;
 }
 
 .radio-btn label {
-  padding: 8px;
-  border-radius: 8px;
+  padding: calc(7rem / 16) var(--gf-22);
+  font-size: var(--gf-text-sm);
   color: var(--gf-dark-text-muted);
+  border-radius: var(--gf-8);
+  border: 2px solid transparent;
   cursor: pointer;
-  transition: all 0.2s;
   white-space: nowrap;
-  background-color: var(--gf-dark-bg-dark);
+  transition: color 150ms ease;
+  &:hover {
+    color: var(--gf-dark-text);
+  }
+
+  user-select: none;
 }
 
 .radio-btn input[type="radio"]:checked + label {
-  box-shadow: var(--gf-shadow-lift-sm);
-  background-color: var(--gf-dark-bg);
   color: var(--gf-dark-text);
+  border: 2px solid var(--gf-primary);
 }
 
 .user-chart-wrapper {

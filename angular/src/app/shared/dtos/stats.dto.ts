@@ -33,3 +33,20 @@ export interface GetDailyUserSatisfactionAverageDTO {
 export interface GetNewUsersTodayResDTO {
   usersRegisteredToday: number;
 }
+
+// Home page
+export interface GetTotalPinsCreatedResDTO {
+  value: number;
+}
+
+export interface GetTotalCatchPinsCreatedResDTO {
+  value: number;
+}
+
+export interface GetTotalWarningPinsCreatedResDTO {
+  value: number;
+}
+
+export interface GetTotalUsersResDTO {
+  usersRegistered: number;
+}

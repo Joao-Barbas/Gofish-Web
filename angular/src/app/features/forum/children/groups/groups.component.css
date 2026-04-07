@@ -45,8 +45,8 @@
 
 .gf-badge-group-settings {
 
-  width: var(--gf-30);
-  height: var(--gf-30);
+  width: var(--gf-36);
+  height: var(--gf-36);
 
   & svg {
     width: var(--gf-20);
