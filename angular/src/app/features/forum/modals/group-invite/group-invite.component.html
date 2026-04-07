@@ -1,0 +1,84 @@
+<div class="modal-backdrop-custom d-flex justify-content-center align-items-center">
+  <div class="modal-custom gf-card">
+    <div id="invite-modal">
+
+      <div class="modal-header text-white d-flex align-items-center justify-content-between">
+        <div>
+          <h5 class="mb-0 text-bold modal-header-title">Invite Friends</h5>
+          <p class="mb-0 dark-text-muted modal-header-subtitle">
+            Find friends to join this group
+          </p>
+        </div>
+        <button class="gf-btn-icon close-button" (click)="onCancel()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <section class="friend-list-container d-flex flex-column" (scroll)="onScroll($event)">
+          <div class="friends-selector d-flex flex-column gap-2">
+
+            @for (friendship of friendsList(); track friendship.id) {
+            @let friend = (friendship.requesterUserId === this.authService.userId())
+            ? friendship.receiver
+            : friendship.requester;
+            @let isAlreadyMember = groupMemberIds().includes(friend.userId);
+
+            <div class="friend-row-item">
+              <div class="d-flex align-items-center gap-3">
+                <img [src]="this.avatarService.resolve(friend.avatarUrl)" class="friend-avatar">
+                <div class="d-flex flex-column">
+                  <span class="friend-name">
+                    {{ friend.firstName }} {{ friend.lastName }}
+                  </span>
+                  <small class="dark-text-muted">@{{ friend.userName }}</small>
+                </div>
+              </div>
+
+              <button class="btn btn-sm"
+                [class.btn-primary]="!sentInviteIds().includes(friend.userId) && !isAlreadyMember"
+                [class.btn-outline-secondary]="sentInviteIds().includes(friend.userId) || isAlreadyMember"
+                [disabled]="sentInviteIds().includes(friend.userId) || isAlreadyMember || busyState.isBusy()"
+                (click)="sendInvite(friend.userId)">
+
+                @if (isAlreadyMember) {
+                <i class="bi bi-people-fill"></i> In group
+                } @else if (sentInviteIds().includes(friend.userId)) {
+                <i class="bi bi-check2"></i> Sent
+                } @else {
+                Invite
+                }
+              </button>
+            </div>
+            } @empty {
+            @if (!loadingState.isLoading()) {
+            <p class="dark-text-muted text-center py-4">No friends found.</p>
+            }
+            }
+
+            @if (busyState.isBusy() && friendsList().length > 0) {
+            <div class="d-flex justify-content-center p-3">
+              <div class="spinner-border spinner-border-sm text-primary"></div>
+            </div>
+            }
+          </div>
+        </section>
+
+        @if (loadingState.error()) {
+        <div class="alert alert-danger mt-3 p-2 small">
+          {{ loadingState.error() }}
+        </div>
+        }
+      </div>
+
+      <div class="modal-footer d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary px-4" (click)="onCancel()">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

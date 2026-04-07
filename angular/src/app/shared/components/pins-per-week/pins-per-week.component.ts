@@ -20,9 +20,6 @@ export interface PinWeekStats {
   styleUrl: './pins-per-week.component.css',
 })
 export class PinsPerWeekComponent implements OnInit {
-
-
-
   @Input() pins: PinWeekStats[] = [];
 
   chartData: ChartConfiguration<'bar'>['data'] = {
@@ -31,6 +28,7 @@ export class PinsPerWeekComponent implements OnInit {
   };
 
   chartOptions: ChartConfiguration<'bar'>['options'] = {};
+  chartTitle: string = 'Pins per Week';
 
   ngOnInit(): void {
     this.buildChart();
@@ -76,6 +74,12 @@ export class PinsPerWeekComponent implements OnInit {
         easing: 'easeInOutQuart',
       },
       plugins: {
+        title: {
+          display: true,
+          text: this.chartTitle,
+          font: { size: 16 },
+          color: textColor,
+        },
         legend: {
           display: true,
           onClick: () => { },

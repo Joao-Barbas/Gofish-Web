@@ -1,90 +1,88 @@
 import { Component, inject, signal } from '@angular/core';
 import { GfCardPinPreviewComponent } from "@gofish/shared/components/gf-card-pin-preview/gf-card-pin-preview.component";
-import { NavigationEnd, Router, /*RouterLink, */ RouterLinkActive, RouterOutlet } from "@angular/router";
-
-
-import { Species } from '../../../../shared/enums/species.enum';
-import { Bait } from '../../../../shared/enums/bait.enums';
-import { AccessDifficulty } from '../../../../shared/enums/access-difficulty.enums';
-import { Seabed } from '../../../../shared/enums/seabed.enum';
-import { WarningKind } from '../../../../shared/enums/warning-kind.enum';
-import { GetPinsReqDto, PinDataResDTO, PinDto } from '@gofish/shared/dtos/pin.dto';
-import { StatsService } from '@gofish/shared/services/stats.service';
-import { GetReportsWaitingReviewResDTO } from '@gofish/shared/dtos/stats.dto';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { ReportService } from '@gofish/shared/services/report.service';
 import { GetReportReqDTO, GetReportResDTO } from '@gofish/shared/dtos/report.dto';
 import { PinService } from '@gofish/shared/services/pin.service';
+import { GfCardCommentPreviewComponent } from '@gofish/shared/components/gf-card-comment-preview/gf-card-comment-preview.component';
 
-type PinReportMap = { [pinId: number]: GetReportResDTO[] };
 
 @Component({
   selector: 'app-stats-reports',
-  imports: [GfCardPinPreviewComponent, /*RouterLink*/],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './stats-reports.component.html',
   styleUrl: './stats-reports.component.css',
 })
 export class StatsReportsComponent {
   private readonly reportService = inject(ReportService);
   private readonly pinService = inject(PinService);
-  protected reportedPins = signal<PinDto[]>([]);
-  protected hasMoreResults = signal(false);
-  private lastTimestamp: string = new Date().toISOString();
-  protected reportMap = signal<PinReportMap>({});
+  protected readonly reportedPins = signal<GetReportResDTO[]>([]);
+  protected readonly reportedComments = signal<GetReportResDTO[]>([]);
+  protected pinhasMoreResults = signal(false);
+  protected commenthasMoreResults = signal(false);
+  private pinlastCreatedAt: string | undefined = new Date().toISOString();
+  private commentlastCreatedAt: string | undefined = new Date().toISOString();
+  private isLoadingPins = false;
+  private isLoadingComments = false;
 
-  ngOnInit() {
-    this.loadMore();
+  ngOnInit(): void {
+    this.loadMorePins();
+    this.loadMoreComments();
   }
 
-  loadMore() {
+  protected loadMorePins(): void {
+    if (this.isLoadingPins) return;
+
+    this.isLoadingPins = true;
+
     const request: GetReportReqDTO = {
       maxResults: 5,
-      lastCreatedAt: this.lastTimestamp
+      lastCreatedAt: this.pinlastCreatedAt
     };
 
     this.reportService.getPinReports(request).subscribe({
       next: (res) => {
-        this.hasMoreResults.set(res.hasMoreResults);
-        this.lastTimestamp = res.lastCreatedAt!;
-
-        const currentMap: PinReportMap = { ...this.reportMap() };
-
-        res.reports.forEach(report => {
-          const pinId = report.targetId;
-          if (!currentMap[pinId]) {
-            currentMap[pinId] = [];
-          }
-
-          if (!currentMap[pinId].some(r => r.id === report.id)) {
-            currentMap[pinId].push(report);
-          }
-        });
-
-        this.reportMap.set(currentMap);
-
-        const pinIdsToFetch = res.reports.map(r => ({ pinId: r.targetId }));
-        this.fetchPinDetails(pinIdsToFetch);
+        this.pinhasMoreResults.set(res.hasMoreResults);
+        this.pinlastCreatedAt = res.lastCreatedAt ?? undefined;
+        this.reportedPins.update(current => [...current, ...res.reports]);
+      },
+      error: (err) => {
+        console.error('Failed to load reports:', err);
       }
     });
   }
 
-  private fetchPinDetails(ids: { pinId: number }[]) {
-    const pinRequest: GetPinsReqDto = {
-      ids: ids,
-      dataRequest: {
-        includeAuthor: true,
-        includeDetails: true,
-        includeUgc: true,
-        includeStats: true
-      }
+  protected loadMoreComments(): void {
+    if (this.isLoadingComments) return;
+
+    this.isLoadingComments = true;
+
+    const request: GetReportReqDTO = {
+      maxResults: 5,
+      lastCreatedAt: this.commentlastCreatedAt
     };
 
-    this.pinService.getPins(pinRequest).subscribe({
+    this.reportService.getCommentReports(request).subscribe({
       next: (res) => {
-        this.reportedPins.update(current => [...current, ...res.pins]);
+        this.commenthasMoreResults.set(res.hasMoreResults);
+        this.commentlastCreatedAt = res.lastCreatedAt ?? undefined;
+        this.reportedComments.update(current => [...current, ...res.reports]);
+        console.log(this.reportedComments());
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.error('Failed to load reports:', err);
+      }
     });
+  }
+
+  getPinReportCount(pinId: number): number {
+    return this.reportedPins().filter(r => r.targetId === pinId).length;
+  }
+
+  getCommentReportCount(commentId: number): number {
+    return this.reportedComments().filter(r => r.targetId === commentId).length;
   }
 
 }
+
 

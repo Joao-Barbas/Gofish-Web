@@ -36,10 +36,12 @@
             } @else {
             <div class="drag-icon mb-3 mt-1"></div>
             <p class="drag-text mb-0">Drag And Drop</p>
+            <p class="drag-text mb-0">(Only .png or .jpeg or .jpg)</p>
             }
           </div>
 
-          <input #fileInput type="file" accept="image/png,image/jpeg" hidden (change)="onImageSelected($event)" />
+          <input #fileInput type="file" accept="image/png,image/jpeg,image/jpg" hidden
+            (change)="onImageSelected($event)" />
 
           @if (form.controls.imageUrl.touched && form.controls.imageUrl.invalid) {
           <p class="text-danger mt-2 mb-0">
@@ -49,8 +51,8 @@
 
           <!-- Description -->
           <textarea id="catchPinDescription" class="modal-body-description dark-bg-dark dark-text"
-            placeholder="Add a description..." formControlName="body">
-          </textarea>
+            placeholder="Add a description..." formControlName="body"
+            maxlength="{{BodyLengthConstraints.MAX}}"></textarea>
           <small class="dark-text-muted text-end">
             {{ form.value.body?.length ?? 0 }}/{{BodyLengthConstraints.MAX}}
           </small>
@@ -143,10 +145,28 @@
           </div>
 
           <!-- Hook Size -->
-          <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
-            <h5 class="modal-body-options-text text-slim mb-0">Hook Size</h5>
-            <input type="text" class="dark-bg-dark dark-text modal-info-box" placeholder="ex: 2/0"
-              formControlName="hook" />
+          <div class="options-line d-flex flex-column dark-text-muted mt-2">
+            <div class="d-flex align-items-center justify-content-between w-100">
+              <h5 class="modal-body-options-text text-slim mb-0">Hook Size</h5>
+
+              <div class="d-flex align-items-center gap-2"
+                style="flex: 1; max-width: 200px; justify-content: flex-end;">
+                <input type="text" class="dark-bg-dark dark-text modal-info-box w-100" placeholder="ex: 2/0"
+                  formControlName="hook" maxlength="20" />
+
+                <small class="dark-text-muted mt-1" style="font-size: 0.7rem;">
+                  {{ form.value.hook?.length ?? 0 }}/20
+                </small>
+              </div>
+            </div>
+
+            @if (form.controls.hook.touched && form.controls.hook.invalid) {
+            @if (form.controls.hook.errors?.['maxlength']) {
+            <p class="text-danger mt-1 mb-0 text-end" style="font-size: 0.8rem;">
+              Hook cannot exceed 20 characters.
+            </p>
+            }
+            }
           </div>
 
         </section>

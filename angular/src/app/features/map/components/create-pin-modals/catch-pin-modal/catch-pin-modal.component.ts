@@ -12,6 +12,7 @@ import { AsyncButtonComponent } from "@gofish/shared/components/async-button/asy
 import { GroupsService } from '@gofish/shared/services/groups.service';
 import { GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
 import { BodyLengthConstraints } from '@gofish/shared/constants';
+import { V } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-catch-pin-modal',
@@ -49,8 +50,8 @@ export class CatchPinModalComponent {
     visibility: [0],
     species: [0],
     bait: [0],
-    hook: [''],
-    imageUrl: [null, [Validators.required]],
+    hook: ['', [Validators.maxLength(20)]],
+    imageUrl: ['', [Validators.required, Validators.pattern(/^.*\.(png|jpeg|jpg)$/i)]],
     groupIds: this.fb.control<number[]>([])
   });
 
@@ -124,14 +125,18 @@ export class CatchPinModalComponent {
 
     const file = input.files[0];
 
-    const allowedTypes = ['image/png', 'image/jpeg'];
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
 
     if (!allowedTypes.includes(file.type)) {
       alert('Only PNG or JPEG images are allowed');
+      this.form.patchValue({ imageUrl: null });
+      this.image = null;
       return;
     }
 
+    this.errorMessage = '';
     this.image = file;
+    this.form.patchValue({ imageUrl: file.name });
   }
 
 

@@ -37,11 +37,11 @@
     @if (!isLastMonth) {
 
       <gf-pins-average-published-chart class="gf-card" [pinStats]="currentMonthStats"></gf-pins-average-published-chart>
-      <gf-pins-per-week class="gf-card" [pins]="mockPinWeeksCurrentMonth"></gf-pins-per-week>
+      <gf-pins-per-week class="gf-card" [pins]="pinWeeksCurrentMonth()"></gf-pins-per-week>
     }
     @else {
       <gf-pins-average-published-chart class="gf-card" [pinStats]="lastMonthStats"></gf-pins-average-published-chart>
-      <gf-pins-per-week class="gf-card" [pins]="mockPinWeeksLastMonth"></gf-pins-per-week>
+      <gf-pins-per-week class="gf-card" [pins]="pinWeeksLastMonth()"></gf-pins-per-week>
     }
   </div>
 
@@ -51,7 +51,7 @@
 
     <div class="chart-grid-item ">
       <!-- Shows weeks from last two months -->
-      <gf-users-chart class="gf-card " [users]="mockUsers"></gf-users-chart>
+      <gf-users-chart class="gf-card "></gf-users-chart>
     </div>
 
   </div>
@@ -63,22 +63,22 @@
   <div class="quick-view-grid">
 
     <!-- Quick View Item - 1 -->
-    <app-gf-card-quick-view type="system-requests" bigText="99%"
-      littleText="of system requests were successful"></app-gf-card-quick-view>
+    <app-gf-card-quick-view type="system-requests" bigText=" {{ weeklyApiSuccessRate() !== null ? `${weeklyApiSuccessRate()}%` : 'Loading...' }}"
+      littleText="of system requests were successful(weekly)"></app-gf-card-quick-view>
 
     <!-- Quick View Item - 2 -->
     <app-gf-card-quick-view type="satisfaction-index" bigText="4.6"
       littleText="User Satisfaction Index"></app-gf-card-quick-view>
 
     <!-- Quick View Item - 3 -->
-    <app-gf-card-quick-view type="positive-votes" bigText="105"
+    <app-gf-card-quick-view type="positive-votes" bigText="{{ pinsWith15PositiveVotes()?.pinsWith15PositiveVotes }}"
       littleText="Pins with 15+ Positive Votes"></app-gf-card-quick-view>
 
     <!-- Quick View Item - 4 -->
-    <app-gf-card-quick-view type="pins-today" bigText="11" littleText="Pins created today"></app-gf-card-quick-view>
+    <app-gf-card-quick-view type="pins-today" bigText="{{ pinsCreatedToday()?.pinsCreatedToday }}" littleText="Pins created today"></app-gf-card-quick-view>
 
     <!-- Quick View Item - 5 -->
-    <app-gf-card-quick-view type="active-users" bigText="11" littleText="Active users"></app-gf-card-quick-view>
+    <app-gf-card-quick-view type="active-users" bigText="{{ activeUsers()?.activeUsers }}" littleText="Active users"></app-gf-card-quick-view>
 
   </div>
   <!-- #endregion -->
@@ -114,7 +114,7 @@
   <!-- Go to Reports -->
   <div class="quick-view-grid">
     <app-gf-card-quick-access class="quick-access-grid-item" type="reports" title="Reports"
-      [extraTexts]="['Reports awaiting review: 6']" />
+      [extraTexts]="['Reports awaiting review: ' + (reportsWaitingReview()?.reportsWaitingReview || 0)]" />
   </div>
 
 </div>

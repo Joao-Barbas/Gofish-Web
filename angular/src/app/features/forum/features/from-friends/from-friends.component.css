@@ -1,0 +1,30 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gf-8);
+  width: 100%;
+
+}
+
+.show-more-text {
+  font-family: var(--gf-font-main);
+  font-size: var(--gf-16);
+  color: var(--gf-primary);
+
+  color: var(--gf-primary);
+  --underline-width: 100%;
+
+  background:none;
+  border: none;
+
+  text-decoration: underline;
+}
+
+.end-message {
+  text-align: center;
+  color: #777777;
+  font-size: var(--gf-14);
+  font-style: italic;
+  padding: var(--gf-16);
+  font-weight: 700;
+}

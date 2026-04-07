@@ -1,0 +1,18 @@
+@if (membersData()) {
+<!-- Temporary space -->
+<div style="margin-top:8px;"></div>
+
+<div class="user-card-grid">
+  @for (m of membersData()?.members; track m.userId) {
+  <app-user-card [viewerRole]="viewerRole()"  [member]="m"
+    (click)="$event.stopPropagation()">></app-user-card>
+  }
+</div>
+
+<!-- Temporary space -->
+<div style="margin-top:8px;"></div>
+
+<!-- <app-group-member-settings-popover></app-group-member-settings-popover> -->
+} @else {
+<p>No members</p>
+}

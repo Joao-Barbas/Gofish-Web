@@ -1,0 +1,86 @@
+.modal-backdrop-custom {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .6);
+  z-index: 1050;
+}
+
+.modal-custom {
+  width: 100%;
+  max-width: 500px;
+  background: #22232A;
+  border-radius: 16px;
+  box-shadow: var(--gf-shadow-lift-lg);
+  padding: 16px;
+}
+
+.modal-header-title {
+  font-size: 24px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: var(--gf-dark-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.modal-body {
+  border-top: 2px solid var(--gf-dark-bg-light);
+  padding-top: 16px;
+}
+
+.friend-list-container {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 12px;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: #444 transparent;
+}
+
+.friend-list-container::-webkit-scrollbar { width: 6px; }
+.friend-list-container::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 10px;
+}
+
+.friend-row-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border-radius: 12px;
+  background-color: var(--gf-dark-bg-light);
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.friend-row-item:hover {
+  background-color: var(--gf-dark-bg-dark);
+}
+
+.friend-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #333;
+}
+
+.friend-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  display: block;
+}
+
+.modal-footer {
+  margin-top: 24px;
+}

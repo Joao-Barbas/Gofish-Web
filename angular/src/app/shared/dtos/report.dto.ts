@@ -24,6 +24,8 @@ export interface CreateCommentReportResDTO {
 export interface GetReportResDTO {
   id: number;
   userId: string;
+  imageURL?: string;
+  username?: string;
   type: string;
   targetId: number;
   reasonText: string;
@@ -39,5 +41,21 @@ export interface GetReportReqDTO {
 export interface GetReportsResDTO {
   reports: GetReportResDTO[];
   hasMoreResults: boolean;
+  lastCreatedAt?: string;
+}
+
+export interface GetPinReportsByPinReqDTO {
+  pinId: number;
+  maxResults: number;
+  lastCreatedAt?: string;
+}
+
+export interface DeleteReportsReqDTO {
+  ids: number[];
+}
+
+export interface GetCommentsReportsByCommentReqDTO {
+  commentId: number;
+  maxResults?: number;
   lastCreatedAt?: string;
 }

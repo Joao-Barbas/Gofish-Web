@@ -15,18 +15,17 @@
     <span class="text-bold">Reports</span>
   </div>
   <!-- #endregion -->
+  <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
+    <a [routerLink]="['pins']" [routerLinkActive]="['active']" class="d-flex justify-content-center listing-tabs">
+      <span class="listing-tab-text">Pins</span>
+    </a>
 
-  <div class="quick-view-grid">
-
-    @for (pin of reportedPins(); track pin.id) {
-    <app-gf-card-pin-preview [pinData]="pin" [isReportedPin]="true" [reportNumber]="pin.id" [reportIndex]="pin.id"></app-gf-card-pin-preview>
-  } @empty {
-    <p>No reports available.</p>
-  }
-
-  @if (hasMoreResults()) {
-    <button (click)="loadMore()" class="btn-show-more">Load More</button>
-  }
+    <a [routerLink]="['comments']" [routerLinkActive]="['active']" class="d-flex justify-content-center listing-tabs">
+      <span class="listing-tab-text">Comments</span>
+    </a>
   </div>
+
+  <router-outlet></router-outlet>
+
 
 </div>

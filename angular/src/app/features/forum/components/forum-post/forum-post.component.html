@@ -7,11 +7,13 @@
 
   <div class="top-of-post d-flex justify-content-between align-items-center">
 
-    <div class="d-flex align-items-center gap-2 gf-generic-clickable-wrapper" [routerLink]="Path.PROFILE(post!.author!.id)">
+    <div class="d-flex align-items-center gap-2 gf-generic-clickable-wrapper"
+      [routerLink]="Path.PROFILE(post!.author!.id)" title="Go to user profile">
 
       <img [src]="this.avatarService.resolve(post.author!.avatarUrl)" class="rounded-circle gf-big-avatar">
 
-      <gf-user-title class="post-author-name text-bold" [text]="post.author!.userName" [rank]="post.author!.rank"></gf-user-title>
+      <gf-user-title class="post-author-name text-bold" [text]="post.author!.userName"
+        [rank]="post.author!.rank"></gf-user-title>
 
       <!-- <span >{{ post.author?.userName }}</span> -->
       <span class="post-date dark-text-muted">{{ post.createdAt | timeAgo }}</span>
@@ -22,7 +24,7 @@
 
       <!-- Delete Post Button -->
       @if (post!.author!.userName == this.userName || isAdmin) {
-      <button class="gf-badge" (click)="deletePost()">
+      <button class="gf-badge" (click)="deletePost()" title="Delete post">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2">
           <path d="M10 11v6" />
@@ -34,7 +36,7 @@
       </button>
       }
       <!-- Report Post Button -->
-      <button class="gf-badge" (click)="report()">
+      <button class="gf-badge" (click)="report()" title="Report post">
 
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flag-icon lucide-flag gf-badge-icon">
@@ -44,7 +46,7 @@
       </button>
 
       <!-- Location Post Button -->
-      <button class="gf-badge" (click)="goToPin()">
+      <button class="gf-badge" (click)="goToPin()" title="View post location">
 
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
@@ -74,7 +76,7 @@
       </p>
 
       @if (post.ugc?.body!.length > 120) {
-      <button type="button" class="see-more" (click)="toggleExpand()">
+      <button type="button" class="see-more" (click)="toggleExpand()" title="Toggle full post description">
         {{ isExpanded ? 'See less' : 'See more' }}
       </button>
       }
@@ -92,8 +94,8 @@
       <div class="gf-badge-vote post-interact-wrapper">
 
         <!-- Upvote button -->
-        <button class="post-interact-btn" [class.active-up]="currentVote() === 1" [disabled]="isVoting()"
-          (click)="vote(1)">
+        <button class="post-interact-btn" [class.active-up]="currentVote() === 1" [disabled]="isVoting() "
+          (click)="vote(1)" title="Upvote">
 
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round"
@@ -104,11 +106,13 @@
 
         </button>
 
-        <span class="post-stats post-fishing-points">{{ score() }}</span>
+        <span class="post-stats post-fishing-points" title="Fishing points">
+          {{ score() }}
+        </span>
 
         <!-- Downvote button -->
         <button class="post-interact-btn" class="post-interact-btn" [class.active-down]="currentVote() === -1"
-          [disabled]="isVoting()" (click)="vote(-1)">
+          [disabled]="isVoting()" (click)="vote(-1)" title="Downvote">
 
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round"
@@ -121,7 +125,8 @@
       </div>
 
       <!-- Comment button -->
-      <button class="gf-badge-comment post-interact-wrapper post-interact-comment-wrapper" (click)="goToPost()">
+      <button class="gf-badge-comment post-interact-wrapper post-interact-comment-wrapper" (click)="goToPost()"
+        title="Comments">
 
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round"
@@ -134,7 +139,7 @@
       </button>
 
       <!-- Share button -->
-      <button class="gf-badge-comment post-interact-wrapper post-interact-comment-wrapper">
+      <button class="gf-badge-comment post-interact-wrapper post-interact-comment-wrapper" (click)="copyLink(post.id)" title="Share post link">
 
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-forward-icon lucide-forward">
@@ -142,7 +147,9 @@
           <path d="M4 18v-2a4 4 0 0 1 4-4h12" />
         </svg>
 
-        <span class="post-stats post-fishing-points">Share</span>
+        <span class="post-stats post-fishing-points" >
+          Share
+        </span>
       </button>
     </div>
 

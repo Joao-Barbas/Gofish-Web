@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, Input, OnInit } from '@angular/core';
+import { Component, computed, inject, input, Input, OnInit, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -26,16 +26,17 @@ export class GfCardPinPreviewComponent implements OnInit {
   private readonly pinService = inject(PinService);
   readonly avatarService = inject(AvatarService);
 
-  pinData = input.required<PinDto>();
+  pinId = input<number>();
+  pinData = input<PinDto>();
+  pinInfo = signal<PinDto | null>(null);
   isReportedPin = input<boolean>(false);
   reportNumber = input<number>();
   reportIndex = input<number>();
 
   pinKind = PinKind;
 
-  pinLink = computed(
-    () => this.isReportedPin() ? `pin/${this.pinData().id}` : `pin/${this.pinData().id}`
-  )
+  pinLink = computed(() => `${this.pinId()}`);
+  currentPin = computed(() => this.pinData() ?? this.pinInfo());
 
   // Enum options
   speciesOptions: EnumDTO[] = [];
@@ -66,6 +67,23 @@ export class GfCardPinPreviewComponent implements OnInit {
       next: (res) => this.warningKindOptions = res,
       error: (err: HttpErrorResponse) => console.error(err)
     });
+    if (!this.pinData() && this.pinId()) {
+      const request = {
+        ids: [{ pinId: this.pinId() }],
+        dataRequest: {
+          includeAuthor: true,
+          includeDetails: true,
+          includeGeolocation: true,
+          includeStats: true,
+        }
+      };
+      this.pinService.getPins(request).subscribe({
+        next: (res) => {
+          this.pinInfo.set(res.pins[0]);
+          },
+        error: (err: HttpErrorResponse) => console.error(err)
+      });
+    }
   }
 
   getEnumDisplayName(options: EnumDTO[], value: number): string {

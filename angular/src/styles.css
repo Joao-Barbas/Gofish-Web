@@ -88,9 +88,9 @@
   --gf-success: oklch(0.8255 0.2433 142.97);
   --gf-success-mild: oklch(0.6306 0.1365 171.08);
   --gf-info: oklch(0.6119 0.1748 262.34);
-  --gf-catch-pin: oklch(0.7704 0.2598 142.53);
-  --gf-info-pin: oklch(0.6751 0.1627 246.45);
-  --gf-warning-pin: oklch(0.7664 0.1585 68.01);
+  --gf-catch-pin: oklab(77.038% -0.20626 0.15811);
+  --gf-info-pin: oklab(67.508% -0.065 -0.14926);
+  --gf-warning-pin: oklab(76.642% 0.05933 0.14687);
   --gf-btn-disabled: oklch(0.2147 0.0058 285.9);
 
 
@@ -1026,6 +1026,23 @@ button {
 
 .gf-generic-clickable-wrapper {
   cursor: pointer;
+}
+
+.gf-mouse-tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: var(--gf-dark-bg);
+  color: var(--gf-dark-text-muted);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 10000;
+  box-shadow: var(--gf-shadow-lift-s);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  white-space: pre-line;
 }
 
 /*

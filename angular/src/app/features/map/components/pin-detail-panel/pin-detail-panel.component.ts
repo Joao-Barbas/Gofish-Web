@@ -11,11 +11,12 @@ import { PinService } from '@gofish/shared/services/pin.service';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { ClickOutsideDirective } from "@gofish/shared/directives/click-outside.directive";
 import { ReturnStatement } from '@angular/compiler';
-import { EnumComponent } from "@gofish/shared/components/enum/enum.component";
+
 import { Path } from '@gofish/shared/constants';
 import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { VoteKind } from '@gofish/shared/enums/vote-kind.enum';
 import { UserTitleComponent } from "@gofish/shared/components/user-title/user-title.component";
+import { EnumComponent } from '@gofish/shared/components/enum/enum.component';
 
 @Component({
   selector: 'app-pin-detail-panel',
