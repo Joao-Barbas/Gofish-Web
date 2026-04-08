@@ -92,7 +92,8 @@ public class GroupController : ControllerBase
             CreatedAt = group.CreatedAt,
             MemberCount = group.MemberCount,
             PinCount = group.PinCount,
-            Owner = ownerDto!
+            Owner = ownerDto!,
+            IsMember = await _db.GroupUsers.AnyAsync(gu => gu.GroupId == id && gu.UserId == userId)
         });
     }
 
