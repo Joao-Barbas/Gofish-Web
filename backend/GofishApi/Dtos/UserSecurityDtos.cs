@@ -81,4 +81,18 @@ public record ChangePasswordResDTO(
     // Unused
 );
 
+public sealed record ForgotPasswordReqDto
+{
+    public required string Email { get; init; }
+}
+public sealed record ForgotPasswordResDto { } // Unused
+
+public sealed record ResetPasswordReqDto
+{
+    public required string Email { get; init; }
+    public required string Code { get; init; }
+    public required string NewPassword { get; init; }
+}
+public sealed record ResetPasswordResDto { } // Unused
+
 #endregion // Request-Response Wrappers
