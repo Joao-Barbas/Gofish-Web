@@ -1,11 +1,15 @@
 @if(postsData()) {
 @for (post of postsData(); track post.id) {
- <app-forum-post [postData]="post"></app-forum-post>
+<app-forum-post [postData]="post"></app-forum-post>
 }
 
 @if (hasMoreResults()) {
 <div class="show-more" (click)="showMore()">
   <button class="show-more-text">Show more</button>
+</div>
+} @else {
+<div class="end-message">
+  <p>Looks like you've cleared the pond! Even the fish are taking a nap.</p>
 </div>
 }
 
