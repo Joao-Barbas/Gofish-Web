@@ -95,7 +95,7 @@ public class GroupController : ControllerBase
             MemberCount = group.MemberCount,
             PinCount = group.PinCount,
             Owner = ownerDto!,
-            IsMember = groupUser is not null,
+            IsCurrentUserMember = groupUser is not null,
             CurrentUserMembership = groupUser is null ? null : GroupMemberDto.FromEntity(groupUser)
         });
     }

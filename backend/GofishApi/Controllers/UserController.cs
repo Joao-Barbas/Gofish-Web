@@ -758,6 +758,7 @@ public class UserController : ControllerBase
                 CreatedAt = i.Group.CreatedAt,
                 MemberCount = i.Group.MemberCount,
                 PinCount = i.Group.PinCount,
+                IsCurrentUserMember = false, 
                 Owner = i.Group.Owner is null ? null! : new GroupMemberDto(
                     i.Group.Owner.Id,
                     i.Group.Owner.UserName ?? "",
