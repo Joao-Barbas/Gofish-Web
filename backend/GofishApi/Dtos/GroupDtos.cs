@@ -53,6 +53,8 @@ public record GroupDto
     public required int MemberCount { get; init; }
     public required int PinCount { get; init; }
     public required GroupMemberDto Owner { get; init; }
+    public required bool IsCurrentUserMember { get; init; }
+    public GroupMemberDto? CurrentUserMembership { get; init; }
     public string? Description { get; init; }
     public string? AvatarUrl { get; init; }
 }
@@ -99,6 +101,13 @@ public record SearchGroupsResDto(
     IEnumerable<SearchGroupDto> Groups,
     bool HasMoreResults,
     string? LastGroupName
+);
+
+public record UpdateGroupMemberRoleResDto(
+    int GroupId,
+    string UserId,
+    string Role,
+    string Message
 );
 
 #endregion // Responses

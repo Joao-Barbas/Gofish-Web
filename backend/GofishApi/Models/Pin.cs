@@ -33,7 +33,7 @@ public abstract class Pin
 
     public required DateTime CreatedAt { get; set; }
 
-    public DateTime? ExpiresAt { get; set; } // Info pin does not expire
+    public required DateTime ExpiresAt { get; set; }
 
     public int Score { get; set; }
 

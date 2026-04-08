@@ -34,7 +34,7 @@ interface InvitableGroup extends UserGroupDTO {
     FormsModule,
     LoadingSpinnerComponent,
     AsyncButtonComponent
-],
+  ],
   templateUrl: './invite-to-groups-modal.component.html',
   styleUrl: './invite-to-groups-modal.component.css',
 })

@@ -1,7 +1,7 @@
-<div class="modal-backdrop-custom d-flex justify-content-center align-items-center">
+<div class="modal-backdrop-custom d-flex justify-content-center align-items-center" data-testid="catch-pin-modal">
   <div class="modal-custom gf-card">
 
-    <form id="catch-modal" [formGroup]="form" (ngSubmit)="onPublish()">
+    <form id="catch-modal" [formGroup]="form" (ngSubmit)="onPublish()" data-testid="catch-pin-form">
 
       <!-- Header -->
       <div class="modal-header text-white align-items-center mb-3 justify-content-between">
@@ -12,7 +12,7 @@
           </p>
         </div>
 
-        <button class="gf-btn-icon" (click)="onCancel()"
+        <button class="gf-btn-icon" (click)="onCancel()" data-testid="catch-pin-cancel"
           style="background: none; border: none; color: var(--gf-dark-text-muted); cursor: pointer;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round">
@@ -30,7 +30,7 @@
           <!-- Upload -->
           <div
             class="modal-body-drag-n-drop d-flex flex-column justify-content-center align-items-center generic-select-wrapper-text"
-            (click)="fileInput.click()">
+            (click)="fileInput.click()" data-testid="catch-image-dropzone">
             @if (image) {
             <p class="drag-text mb-0">{{ image.name }}</p>
             } @else {
@@ -41,7 +41,7 @@
           </div>
 
           <input #fileInput type="file" accept="image/png,image/jpeg,image/jpg" hidden
-            (change)="onImageSelected($event)" />
+            (change)="onImageSelected($event)" data-testid="catch-image-input"/>
 
           @if (form.controls.imageUrl.touched && form.controls.imageUrl.invalid) {
           <p class="text-danger mt-2 mb-0">
@@ -52,7 +52,7 @@
           <!-- Description -->
           <textarea id="catchPinDescription" class="modal-body-description dark-bg-dark dark-text"
             placeholder="Add a description..." formControlName="body"
-            maxlength="{{BodyLengthConstraints.MAX}}"></textarea>
+            maxlength="{{BodyLengthConstraints.MAX}}" data-testid="catch-pin-body"></textarea>
           <small class="dark-text-muted text-end">
             {{ form.value.body?.length ?? 0 }}/{{BodyLengthConstraints.MAX}}
           </small>
@@ -95,7 +95,7 @@
               @for (option of visibilityOptions; track option.value) {
               <div class="visibility-option">
                 <input type="radio" class="d-none" [id]="'vis-' + option.value" [value]="option.value"
-                  formControlName="visibility">
+                  formControlName="visibility" [attr.data-testid]="'catch-visibility-' + option.value">
 
                 <label [for]="'vis-' + option.value" class="modal-visibility-btn"
                   [class.active]="form.controls.visibility.value === option.value">
@@ -110,7 +110,7 @@
             <h5 class="modal-body-options-text text-slim mb-0 pt-2">Groups</h5>
             <div class="groups-selector flex-column">
               @for (group of userGroups(); track group.id) {
-              <label class="group-chip" [class.selected]="selectedGroupIds().includes(group.id)">
+              <label class="group-chip" [class.selected]="selectedGroupIds().includes(group.id)"[attr.data-testid]="'catch-group-' + group.id" >
                 <input type="checkbox" class="d-none" [checked]="selectedGroupIds().includes(group.id)"
                   (change)="toggleGroup(group.id)" class="group-chip-image">
                 <img [src]="group.imageUrl" class="group-chip-image">
@@ -124,7 +124,7 @@
           <div class="options-line d-flex align-items-center justify-content-between dark-text-muted mb-3">
             <h5 class="modal-body-options-text text-slim mb-0">Species</h5>
             <div class="d-flex align-items-center">
-              <select class="form-select form-select-sm custom-dropdown" formControlName="species">
+              <select class="form-select form-select-sm custom-dropdown" formControlName="species" data-testid="catch-species">
                 @for (option of speciesOptions; track option.value) {
                 <option [value]="option.value">{{ option.label }}</option>
                 }
@@ -136,7 +136,7 @@
           <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">
             <h5 class="modal-body-options-text text-slim mb-0">Bait</h5>
             <div class="d-flex align-items-center">
-              <select class="form-select form-select-sm custom-dropdown" formControlName="bait">
+              <select class="form-select form-select-sm custom-dropdown" formControlName="bait" data-testid="catch-bait">
                 @for (option of baitOptions; track option.value) {
                 <option [value]="option.value">{{ option.label }}</option>
                 }
@@ -152,7 +152,7 @@
               <div class="d-flex align-items-center gap-2"
                 style="flex: 1; max-width: 200px; justify-content: flex-end;">
                 <input type="text" class="dark-bg-dark dark-text modal-info-box w-100" placeholder="ex: 2/0"
-                  formControlName="hook" maxlength="20" />
+                  formControlName="hook" maxlength="20" data-testid="catch-hook"/>
 
                 <small class="dark-text-muted mt-1" style="font-size: 0.7rem;">
                   {{ form.value.hook?.length ?? 0 }}/20
@@ -173,7 +173,7 @@
 
         <!-- Error -->
         @if (errorMessage) {
-        <p class="text-danger mt-2 mb-0">{{ errorMessage }}</p>
+        <p class="text-danger mt-2 mb-0" data-testid="catch-pin-error">{{ errorMessage }}</p>
         }
 
       </div>
@@ -185,7 +185,7 @@
         </button>
 
         <app-async-button type="submit" form="catch-modal" labels="Publish"
-          [state]="busyState.isBusy() ? 'busy' : 'idle'" />
+          [state]="busyState.isBusy() ? 'busy' : 'idle'" testId="catch-pin-publish"/>
       </div>
 
     </form>

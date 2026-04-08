@@ -391,7 +391,5 @@ public class ReportController : ControllerBase
         return NoContent();
     }
 
-
-
     #endregion
 }

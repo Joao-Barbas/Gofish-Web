@@ -55,3 +55,19 @@ export interface GetPinsWeeklyStatsResDTO {
   infoCount: number;
   warningCount: number;
 }
+// Home page
+export interface GetTotalPinsCreatedResDTO {
+  value: number;
+}
+
+export interface GetTotalCatchPinsCreatedResDTO {
+  value: number;
+}
+
+export interface GetTotalWarningPinsCreatedResDTO {
+  value: number;
+}
+
+export interface GetTotalUsersResDTO {
+  usersRegistered: number;
+}

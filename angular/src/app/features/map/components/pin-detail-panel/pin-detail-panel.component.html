@@ -1,6 +1,6 @@
-<div class="sidebar-wrapper">
+<div class="sidebar-wrapper" >
 
-  <aside class="pin-side-panel">
+  <aside class="pin-side-panel" data-testid="pin-details-card">
     @if (pinData(); as pin) {
     <div class="gf-card-pin">
       <!-- Post Header -->
@@ -91,7 +91,7 @@
 
               <!-- Upvote button -->
               <button class="post-interact-btn" [class.active-up]="currentVote() === VoteKind.Upvote"
-                [disabled]="isVoting()" (click)="vote(VoteKind.Upvote)" title="UpVote">
+                [disabled]="isVoting()" (click)="vote(VoteKind.Upvote)" title="UpVote" data-testid="pin-vote-up">
 
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -102,12 +102,12 @@
 
               </button>
 
-              <span class="post-stats post-fishing-points" title="Score">{{ score() }}</span>
+              <span class="post-stats post-fishing-points" title="Score" data-testid="pin-score">{{ score() }}</span>
 
               <!-- Downvote button -->
               <button class="post-interact-btn" class="post-interact-btn"
                 [class.active-down]="currentVote() === VoteKind.Downvote" [disabled]="isVoting()"
-                (click)="vote(VoteKind.Downvote)" title="DownVote">
+                (click)="vote(VoteKind.Downvote)" title="DownVote" data-testid="pin-vote-down">
 
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

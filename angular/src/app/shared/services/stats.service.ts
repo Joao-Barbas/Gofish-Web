@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Api } from '@gofish/shared/constants';
-import { GetPinsCreatedTodayResDTO, GetReportsWaitingReviewResDTO, GetAverageVotesPerPinResDTO, GetAveragePublishedPinsResDTO, GetActiveUsersResDTO, GetPinsWith15PositiveVotesResDTO, GetSuccessRateOfRequestsDTO, GetNewUsersTodayResDTO, GetRegisteredUsersWeeklyStatsResDTO, GetPinsWeeklyStatsResDTO } from '@gofish/shared/dtos/stats.dto';
+import { GetPinsCreatedTodayResDTO, GetReportsWaitingReviewResDTO, GetAverageVotesPerPinResDTO, GetAveragePublishedPinsResDTO, GetActiveUsersResDTO, GetPinsWith15PositiveVotesResDTO, GetSuccessRateOfRequestsDTO, GetNewUsersTodayResDTO, GetTotalCatchPinsCreatedResDTO, GetTotalPinsCreatedResDTO, GetTotalWarningPinsCreatedResDTO, GetTotalUsersResDTO, GetPinsWeeklyStatsResDTO, GetRegisteredUsersWeeklyStatsResDTO } from '@gofish/shared/dtos/stats.dto';
+
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -53,4 +54,22 @@ export class StatsService {
     const params = new HttpParams().set('month', month).set('year', year);
     return this.http.get<GetPinsWeeklyStatsResDTO[]>(Api.Stats.action('GetPinsWeeklyStats'),{ params });
   }
+  // Home page
+
+  getTotalPinsCreated(): Observable<GetTotalPinsCreatedResDTO> {
+    return this.http.get<GetTotalPinsCreatedResDTO>(Api.Stats.action('GetTotalPinsCreated'));
+  }
+
+  getTotalCatchPinsCreated(): Observable<GetTotalCatchPinsCreatedResDTO> {
+    return this.http.get<GetTotalCatchPinsCreatedResDTO>(Api.Stats.action('GetTotalCatchPinsCreated'));
+  }
+
+  getTotalWarningPinsCreated(): Observable<GetTotalWarningPinsCreatedResDTO> {
+    return this.http.get<GetTotalWarningPinsCreatedResDTO>(Api.Stats.action('GetTotalWarningPinsCreated'));
+  }
+
+  GetTotalUsers(): Observable<GetTotalUsersResDTO> {
+    return this.http.get<GetTotalUsersResDTO>(Api.Stats.action('GetTotalUsers'));
+  }
+  
 }

@@ -109,11 +109,9 @@ public class UserController : ControllerBase
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded) throw new IdentityException(result);
 
-        if (dto.Email != user.Email)
+        if (!string.Equals(dto.Email, user.Email, StringComparison.OrdinalIgnoreCase))
         {
-            var token = await _userManager.GenerateChangeEmailTokenAsync(user, dto.Email);
-            var result2 = await _userManager.ChangeEmailAsync(user, dto.Email, token);
-            if (!result2.Succeeded) throw new IdentityException(result2);
+            throw new AppException("Bad Request", "Use the dedicated email change flow to change your email.", StatusCodes.Status400BadRequest);
         }
 
         await transaction.CommitAsync();
@@ -143,15 +141,10 @@ public class UserController : ControllerBase
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded) throw new IdentityException(result);
 
-        if (dto.Email is not null && dto.Email != user.Email)
+        if (dto.Email is not null && !string.Equals(dto.Email, user.Email, StringComparison.OrdinalIgnoreCase))
         {
-            var token = await _userManager.GenerateChangeEmailTokenAsync(user, dto.Email);
-            var result2 = await _userManager.ChangeEmailAsync(user, dto.Email, token);
-            if (!result2.Succeeded) throw new IdentityException(result2);
+            throw new AppException("Bad Request", "Use the dedicated email change flow to change your email.", StatusCodes.Status400BadRequest);
         }
-
-        // TODO: Email change auto verifies this way
-        // TODO: Implement proper change email flow: change -> send confirm email -> confirm
 
         await transaction.CommitAsync();
         return Ok();
@@ -765,6 +758,7 @@ public class UserController : ControllerBase
                 CreatedAt = i.Group.CreatedAt,
                 MemberCount = i.Group.MemberCount,
                 PinCount = i.Group.PinCount,
+                IsCurrentUserMember = false, 
                 Owner = i.Group.Owner is null ? null! : new GroupMemberDto(
                     i.Group.Owner.Id,
                     i.Group.Owner.UserName ?? "",

@@ -16,6 +16,7 @@ export class AsyncButtonComponent {
   labels = input<string | [string, string?, string?]>(['Submit']);
   state  = input<AsyncButtonState>('idle');
   form   = input<string | null>(null);
+  testId = input<string | null>(null);
 
   readonly label   = computed((l = this.labels()) => typeof l === 'string' ? l : l[StateIndex[this.state()]] ?? l[0]);
   readonly idle    = computed(() => this.state() === 'idle');

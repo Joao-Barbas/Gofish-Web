@@ -46,33 +46,37 @@ public class GroupController : ControllerBase
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
 
         var group = await _db.Groups
-            .Where(g => g.Id == id)
-            .Select(g => new
-            {
-                g.Id,
-                g.Name,
-                g.Description,
-                g.AvatarUrl,
-                g.CreatedAt,
-                MemberCount = g.GroupUsers.Count,
-                PinCount = g.Pins.Count,
-                Owner = g.GroupUsers
-                    .Where(gu => gu.Role == GroupRole.Owner)
-                    .Select(gu => new
-                    {
-                        gu.AppUser.Id,
-                        gu.AppUser.UserName,
-                        gu.AppUser.FirstName,
-                        gu.AppUser.LastName,
-                        gu.AppUser.UserProfile.AvatarUrl,
-                        gu.Role,
-                        gu.JoinedAt
-                    })
-                    .FirstOrDefault()
-            })
-            .FirstOrDefaultAsync();
+        .Where(g => g.Id == id)
+        .Select(g => new
+        {
+            g.Id,
+            g.Name,
+            g.Description,
+            g.AvatarUrl,
+            g.CreatedAt,
+            MemberCount = g.GroupUsers.Count,
+            PinCount = g.Pins.Count,
+            Owner = g.GroupUsers
+                .Where(gu => gu.Role == GroupRole.Owner)
+                .Select(gu => new
+                {
+                    gu.AppUser.Id,
+                    gu.AppUser.UserName,
+                    gu.AppUser.FirstName,
+                    gu.AppUser.LastName,
+                    gu.AppUser.UserProfile.AvatarUrl,
+                    gu.Role,
+                    gu.JoinedAt
+                })
+                .FirstOrDefault()
+        })
+        .FirstOrDefaultAsync();
 
         if (group is null) return NotFound();
+
+        var groupUser = await _db.GroupUsers
+        .Include(gu => gu.AppUser)
+        .FirstOrDefaultAsync(gu => gu.GroupId == id && gu.UserId == userId);
 
         var ownerDto = group.Owner is null ? null : new GroupMemberDto(
             group.Owner.Id,
@@ -92,7 +96,9 @@ public class GroupController : ControllerBase
             CreatedAt = group.CreatedAt,
             MemberCount = group.MemberCount,
             PinCount = group.PinCount,
-            Owner = ownerDto!
+            Owner = ownerDto!,
+            IsCurrentUserMember = groupUser is not null,
+            CurrentUserMembership = groupUser is null ? null : GroupMemberDto.FromEntity(groupUser)
         });
     }
 
@@ -392,6 +398,128 @@ public class GroupController : ControllerBase
         return Ok();
     }
 
+    [HttpPatch("PromoteMemberToAdmin/{groupId}/{userId}")]
+    public async Task<IActionResult> PromoteMemberToAdmin([FromRoute] int groupId, [FromRoute] string userId)
+    {
+        var requesterUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(requesterUserId)) return Unauthorized();
+        var groupExists = await _db.Groups.AnyAsync(g => g.Id == groupId);
+        if (!groupExists) return NotFound("Group not found.");
+
+        var requesterMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == requesterUserId);
+
+        if(requesterMembership is null || requesterMembership.Role != GroupRole.Owner) return Forbid();
+
+        var targetMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
+
+        if (targetMembership is null)
+            return NotFound("User is not a member of this group.");
+
+        if (targetMembership.UserId == requesterUserId) return BadRequest("You cannot promote yourself.");
+
+        if (targetMembership.Role == GroupRole.Owner) return BadRequest("The owner cannot be promoted.");
+
+        if (targetMembership.Role == GroupRole.Moderator) return BadRequest("This user is already an admin.");
+        targetMembership.Role = GroupRole.Moderator;
+
+        await _db.SaveChangesAsync();
+
+        return Ok(new UpdateGroupMemberRoleResDto(
+            groupId,
+            userId,
+            targetMembership.Role.ToString(),
+            "User promoted successfully."
+        ));
+    }
+
+    [HttpPatch("PromoteMemberToOwner/{groupId}/{userId}")]
+    public async Task<IActionResult> PromoteMemberToOwner([FromRoute] int groupId, [FromRoute] string userId)
+    {
+        var requesterUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(requesterUserId))
+            return Unauthorized();
+
+        var groupExists = await _db.Groups.AnyAsync(g => g.Id == groupId);
+        if (!groupExists)
+            return NotFound("Group not found.");
+
+        var currentOwnerMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == requesterUserId);
+
+        if (currentOwnerMembership is null || currentOwnerMembership.Role != GroupRole.Owner)
+            return Forbid();
+
+        var targetMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
+
+        if (targetMembership is null)
+            return NotFound("User is not a member of this group.");
+
+        if (targetMembership.UserId == requesterUserId)
+            return BadRequest("You are already the owner.");
+
+        if (targetMembership.Role == GroupRole.Owner)
+            return BadRequest("This user is already the owner.");
+
+        currentOwnerMembership.Role = GroupRole.Moderator;
+        targetMembership.Role = GroupRole.Owner;
+
+        await _db.SaveChangesAsync();
+
+        return Ok(new UpdateGroupMemberRoleResDto(
+            groupId,
+            userId,
+            targetMembership.Role.ToString(),
+            "Ownership transferred successfully."
+        ));
+    }
+
+    [HttpPatch("DemoteAdminToMember/{groupId}/{userId}")]
+    public async Task<IActionResult> DemoteAdminToMember([FromRoute] int groupId, [FromRoute] string userId)
+    {
+        var requesterUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(requesterUserId))
+            return Unauthorized();
+
+        var groupExists = await _db.Groups.AnyAsync(g => g.Id == groupId);
+        if (!groupExists)
+            return NotFound("Group not found.");
+
+        var requesterMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == requesterUserId);
+
+        if (requesterMembership is null || requesterMembership.Role != GroupRole.Owner)
+            return Forbid();
+
+        var targetMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
+
+        if (targetMembership is null)
+            return NotFound("User is not a member of this group.");
+
+        if (targetMembership.UserId == requesterUserId)
+            return BadRequest("You cannot demote yourself.");
+
+        if (targetMembership.Role == GroupRole.Owner)
+            return BadRequest("The owner cannot be demoted.");
+
+        if (targetMembership.Role == GroupRole.Member)
+            return BadRequest("This user is already a member.");
+
+        targetMembership.Role = GroupRole.Member;
+
+        await _db.SaveChangesAsync();
+
+        return Ok(new UpdateGroupMemberRoleResDto(
+            groupId,
+            userId,
+            targetMembership.Role.ToString(),
+            "User demoted successfully."
+        ));
+    }
+
     [HttpDelete("DeleteGroupInvite/{inviteId}")]
     public async Task<IActionResult> DeleteGroupInvite([FromRoute] int inviteId)
     {
@@ -438,6 +566,9 @@ public class GroupController : ControllerBase
             return Forbid();
 
         if (requesterMembership.Role != GroupRole.Owner && requesterMembership.Role != GroupRole.Moderator)
+            return Forbid();
+
+        if(requesterMembership.Role == GroupRole.Moderator && requesterMembership.Role == GroupRole.Moderator)
             return Forbid();
 
         var targetMembership = await _db.GroupUsers

@@ -21,6 +21,7 @@ public class AuthController : ControllerBase
     private readonly ITwoFactorTokenService _twoFactorService;
     private readonly IAppUserBuilder _userBuilder;
     private readonly IConfiguration _configuration;
+    private readonly IEmailService _emailService;
 
     public AuthController(
         ILogger<AuthController> logger,
@@ -29,7 +30,8 @@ public class AuthController : ControllerBase
         IJwtService jwtService,
         ITwoFactorTokenService twoFactorService,
         IAppUserBuilder userBuilder,
-        IConfiguration configuration
+        IConfiguration configuration,
+        IEmailService emailService
     )
     {
         _logger = logger;
@@ -39,6 +41,7 @@ public class AuthController : ControllerBase
         _twoFactorService = twoFactorService;
         _userBuilder = userBuilder;
         _configuration = configuration;
+        _emailService = emailService;
     }
 
     [HttpPost("SignUp")]
@@ -68,6 +71,15 @@ public class AuthController : ControllerBase
         }
         if (user.TwoFactorEnabled)
         {
+            if (user.TwoFactorMethod == TwoFactorMethod.Email)
+            {
+                var code = await _userManager.GenerateTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider);
+                var (subject, body) = EmailResources.TwoFactorSignIn(code);
+                await _emailService.SendAsync(user.Email!, subject, body);
+                var twoFactorToken = _twoFactorService.CreateTwoFactorToken(user);
+                return Ok(new SignInResDTO(null, true, twoFactorToken));
+            }
+
             var hasAuthenticator = await _userManager.GetAuthenticatorKeyAsync(user) is { Length: > 0 };
             if (hasAuthenticator)
             {
@@ -94,9 +106,17 @@ public class AuthController : ControllerBase
         {
             return Unauthorized();
         }
-        if (!await _userManager.VerifyTwoFactorTokenAsync(user, _userManager.Options.Tokens.AuthenticatorTokenProvider, dto.TwoFactorCode))
+
+        var tokenProvider = user.TwoFactorMethod switch
         {
-            throw new AppException("Bad Request", "Incorrect code.", StatusCodes.Status400BadRequest);
+            TwoFactorMethod.Email => TokenOptions.DefaultEmailProvider,
+            TwoFactorMethod.Sms => TokenOptions.DefaultPhoneProvider,
+            _ => _userManager.Options.Tokens.AuthenticatorTokenProvider
+        };
+
+        if (!await _userManager.VerifyTwoFactorTokenAsync(user, tokenProvider, dto.TwoFactorCode))
+        {
+            throw new AppException("Bad Request", StatusCodes.Status400BadRequest, "Incorrect code.");
         }
 
         var token = await _jwtService.CreateTokenAsync(user);

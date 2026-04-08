@@ -1,0 +1,9 @@
+<!-- verify-twofa-container.component.html -->
+
+<small>Two Factor Verification</small>
+<form [formGroup]="twofaCodeFormController.form">
+  <input class="input-box" type="text" appNumbersOnly placeholder="Enter your two factor code" formControlName="code">
+</form>
+@if (twofaCodeFormController.getFirstError(); as errorText) {
+  <small class="gf-text-error">{{ errorText }}</small>
+}

@@ -10,12 +10,8 @@ public class AppException : Exception
     public int? Status { get; protected set; }
     public string? Detail { get; protected set; }
 
-    public AppException(
-        string? title = null,
-        int? status = null,
-        string? detail = null,
-        string? message = null
-    ) : base(message ?? detail ?? "An unexpected error on the server has occurred")
+    public AppException(string? title = null, int? status = null, string? detail = null, string? message = null)
+        : base(message ?? detail ?? "An unexpected error on the server has occurred")
     {
         Status = status ?? StatusCodes.Status500InternalServerError;
         Title = title ?? "Internal server error";

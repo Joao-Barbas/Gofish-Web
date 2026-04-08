@@ -1,3 +1,6 @@
+/* user-security.models.ts */
+
+/** @deprecated Use two-factor-method.enum.ts */
 export enum TwoFactorMethod {
   None  = 0,
   Totp  = 1,
@@ -6,7 +9,8 @@ export enum TwoFactorMethod {
 }
 
 export interface SecurityInfo {
-  identityProvider: string,
-  twoFactorEnabled: boolean,
-  twoFactorMethod: TwoFactorMethod
+  identityProvider: string;
+  twoFactorEnabled: boolean;
+  twoFactorMethod: TwoFactorMethod;
+  emailConfirmed: boolean;
 }

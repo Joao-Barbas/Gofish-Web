@@ -172,7 +172,10 @@ public record GetPinsDataRequestDto(
     bool? IncludeDetails = false,
     bool? IncludeStats = false,
     bool? IncludeUgc = false,
-    bool? IncludeGroups = false
+    bool? IncludeGroups = false,
+    bool? IncludeCatch = true,
+    bool? IncludeInformation = true,
+    bool? IncludeWarning = true
 );
 
 #endregion // Request Helpers
