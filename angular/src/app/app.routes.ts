@@ -61,6 +61,10 @@ export const routes: Routes = [
     loadComponent: () => import('@gofish/features/user/auth/signin-verify/signin-verify.component').then(m => m.SigninVerifyComponent)
   },
   {
+    path: PathSegment.FORGOT_PASSWORD,
+    loadComponent: () => import('@gofish/features/user/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent)
+  },
+  {
     path: 'auth/callback',
     loadComponent: () => import('@gofish/features/user/auth/auth-callback/auth-callback.component').then(m => m.AuthCallbackComponent)
   },

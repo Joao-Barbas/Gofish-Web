@@ -1,3 +1,11 @@
 /* signin.component.css */
 
 @import '../auth-styles.css';
+
+.forgot-password {
+  display: block;
+  text-align: end;
+  margin-top: 4px;
+  font-size: var(--gf-text-xs);
+  text-decoration: none;
+}
