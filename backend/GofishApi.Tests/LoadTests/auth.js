@@ -1,7 +1,7 @@
 import http from 'k6/http';
 import { check } from 'k6';
 
-const BASE_URL = 'https://localhost:7113';
+const BASE_URL = __ENV.BASE_URL || 'https://localhost:7113';
 
 export function signIn() {
     const payload = JSON.stringify({
