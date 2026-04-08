@@ -66,11 +66,22 @@ export class PinsComponent {
   });
 
   counts = computed(() => ({
-    all: this.pinsList().length,
-    catch: this.pinsList().filter(p => p.kind === PinKind.CATCH).length,
+    all:         this.pinsList().length,
+    catch:       this.pinsList().filter(p => p.kind === PinKind.CATCH).length,
     information: this.pinsList().filter(p => p.kind === PinKind.INFORMATION).length,
-    warning: this.pinsList().filter(p => p.kind === PinKind.WARNING).length,
+    warning:     this.pinsList().filter(p => p.kind === PinKind.WARNING).length,
   }));
+
+  filteredPins = computed(() => {
+    const tab = this.activeTab() ?? 'all';
+    const list = this.pinsList();
+    switch (tab) {
+      case 'catch':       return list.filter(p => p.kind === PinKind.CATCH);
+      case 'information': return list.filter(p => p.kind === PinKind.INFORMATION);
+      case 'warning':     return list.filter(p => p.kind === PinKind.WARNING);
+      default:            return list;
+    }
+  });
 
   constructor() {
     effect(() => {

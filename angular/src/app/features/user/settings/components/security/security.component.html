@@ -93,6 +93,27 @@
             <circle cx="12" cy="12" r="10"/>
           </svg>
         </label>
+        <!-- Email one time password -->
+        <label class="two-step-option gf-card gf-flow-horizontal gf-p-12 gf-my-8 justify-content-start" [class.active]="hasTwoFactor && twoFactorMethod === TwoFactorMethod.Email">
+          <div>
+            <p>Email</p>
+            <small>Use your email to receive unique security codes for sensitive actions. You need to have a validated email address to enable this mode</small>
+          </div>
+          <input type="radio" name="twoFactorMethod" value="email"
+                [checked]="hasTwoFactor && twoFactorMethod === TwoFactorMethod.Email"
+                (click)="$event.preventDefault(); onTwoFactorToEmail()">
+          <svg class="icon-checked" xmlns="http://www.w3.org/2000/svg"
+              width="24" height="24" viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" fill="none"/>
+            <circle cx="12" cy="12" r="6" fill="currentColor"/>
+          </svg>
+          <svg class="icon-unchecked" xmlns="http://www.w3.org/2000/svg"
+              width="24" height="24" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+          </svg>
+        </label>
         <!-- Time-based one time password -->
         <label class="two-step-option gf-card gf-flow-horizontal gf-p-12 gf-my-8 justify-content-start" [class.active]="hasTwoFactor && twoFactorMethod === TwoFactorMethod.Totp">
           <div>

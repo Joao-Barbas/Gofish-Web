@@ -33,11 +33,11 @@
   </gf-loading-error-modal>
 } @else if (pins.hasValue()) {
   <div class="list">
-    @for (p of pinsList(); track p.id) {
+    @for (p of filteredPins(); track p.id) {
       <app-gf-card-pin-preview [pinData]="p"></app-gf-card-pin-preview>
     } @empty {
       @if (!pins.isLoading() && !loadingState.isLoading()) {
-        <p>{{ 'No friends yet. :(' }}</p>
+        <p>@if (counts().all < 1) { No pins to observe here. } @else { No pins in this category. }</p>
       }
     }
   </div>

@@ -18,6 +18,7 @@ import { filter } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { UserSecurityApi } from '@gofish/shared/api/user-security.api';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-security',
@@ -46,8 +47,9 @@ export class SecurityComponent implements OnInit {
   readonly Path = Path;
   readonly Api = Api;
   readonly TwoFactorMethod = TwoFactorMethod;
+  readonly toast = toast;
 
-  modalAction: 'change-password' | 'disable-2fa' = 'change-password';
+  modalAction: 'change-password' | 'disable-totp' | 'disable-email' = 'change-password';
   modalError: string | null = null;
 
   hasTwoFactor: boolean = false;
@@ -65,7 +67,7 @@ export class SecurityComponent implements OnInit {
       Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/)
     ]],
     confirmPassword: [ '', [ Validators.required ]],
-    totpCode: [ '', []] // TODO: Change to "twofaCode". Needs backend change too
+    twoFactorCode: [ '', []]
   }, { validators: [
     (control: AbstractControl) => this.passwordsMatch(control),
     (control: AbstractControl) => this.notDuplicatePassword(control)
@@ -179,14 +181,42 @@ export class SecurityComponent implements OnInit {
 
     this.modalAction = 'change-password';
     this.modalError  = null;
+
+    if (this.twoFactorMethod === TwoFactorMethod.Email) {
+      this.userSecurityApi.sendTwoFactorEmail().subscribe({
+        next: () => this.modalService.open('totp-validation-modal'),
+        error: () => this.toast.error('Failed to send verification email. Try again.')
+      });
+      return;
+    }
+
     this.modalService.open('totp-validation-modal');
   }
 
   onTwoFactorToNone(): void {
     if (!this.hasTwoFactor) return;
     this.modalError = null;
-    this.modalAction = 'disable-2fa';
+    switch (this.twoFactorMethod) {
+    case (TwoFactorMethod.Email): { this.modalAction = 'disable-email'; break; }
+    case (TwoFactorMethod.Totp): { this.modalAction = 'disable-totp'; break; }
+    }
     this.modalService.open('totp-validation-modal');
+  }
+
+  onTwoFactorToEmail(): void {
+    if (this.hasTwoFactor && this.twoFactorMethod === TwoFactorMethod.Email) return;
+    this.userSecurityApi.enableEmailTwoFactor().subscribe({
+      next: () => {
+        this.hasTwoFactor    = true;
+        this.twoFactorMethod = TwoFactorMethod.Email;
+        this.toast.success('E-mail two factor authentication enabled successfully!');
+      },
+      error: (err: HttpErrorResponse) => {
+        var problem = err.error as ProblemDetails;
+        if (!problem.detail) return;
+        this.toast.warning(problem.detail);
+      }
+    })
   }
 
   onTwoFactorToTotp(): void {
@@ -201,11 +231,11 @@ export class SecurityComponent implements OnInit {
     switch (this.modalAction) {
     case ('change-password'): {
       this.modalService.close();
-      this.newPassForm.controls['totpCode'].setValue(totp);
+      this.newPassForm.controls['twoFactorCode'].setValue(totp);
       this.doChangePassword();
       return;
     }
-    case ('disable-2fa'): {
+    case ('disable-totp'): {
       this.busyState.setBusy(true);
       this.userSecurityApi.disableTotp({ totpCode: totp }).subscribe({
         next: () => {
@@ -218,6 +248,24 @@ export class SecurityComponent implements OnInit {
           this.busyState.setBusy(false);
           if (!isProblemDetails(err.error)) return;
           this.modalError = getFirstError(err.error) ?? 'Server error. Try again later.';
+        }
+      });
+      return;
+    }
+    case ('disable-email'): {
+      this.busyState.setBusy(true);
+      this.userSecurityApi.disableEmailTwoFactor().subscribe({
+        next: () => {
+          this.busyState.setBusy(false);
+          this.hasTwoFactor    = false;
+          this.twoFactorMethod = TwoFactorMethod.None;
+          this.toast.info('E-mail two factor authentication was disabled.');
+        },
+        error: (err: HttpErrorResponse) => {
+          this.busyState.setBusy(false);
+          var problem = err.error as ProblemDetails;
+          if (!problem.detail) return;
+          this.toast.warning(problem.detail);
         }
       });
       return;

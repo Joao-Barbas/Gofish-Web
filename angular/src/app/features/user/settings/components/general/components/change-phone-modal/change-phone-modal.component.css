@@ -1,0 +1,37 @@
+/* change-phone-modal.component.css */
+
+:host {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: var(--gf-z-modal);
+}
+:host(.on-enter) {
+  animation: gf-modal-fade-in .2s ease-in-out;
+}
+:host(.on-enter) .gf-modal-shell {
+  animation: gf-modal-scale-in .2s cubic-bezier(0.34, 1.8, 0.64, 1);
+}
+:host(.on-leave) {
+  opacity: 0;
+  transition: opacity .2s ease-out;
+}
+
+.gf-modal-shell {
+  border-radius: var(--gf-12);
+  max-width: calc(416rem / 16);
+}
+
+gf-async-button {
+  width: 100%;
+  --async-btn-width: 100%;
+
+  &.btn-negative {
+    --async-btn-bg: var(--gf-light-bg-dark);
+    --async-btn-color: var(--gf-light-text);
+  }
+}
+
+h5 {
+  color: var(--gf-dark-text);
+}

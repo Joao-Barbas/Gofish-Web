@@ -120,6 +120,15 @@ gf-async-button  {
   }
 }
 
+.grid-list {
+  display: grid;
+  overflow: hidden;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(auto-fill, calc((var(--gf-container-lg) - 3 * var(--gf-8)) / 4));
+  row-gap: var(--gf-8);
+  column-gap: var(--gf-8);
+}
+
 .see-all {
   text-decoration: none;
   color: var(--gf-dark-text-muted);
@@ -164,5 +173,13 @@ gf-async-button  {
     & span {
       font-size: var(--gf-text-md);
     }
+  }
+}
+
+/* media */
+
+@media (max-width: 37rem) {
+  .grid-list {
+    grid-template-columns: repeat(auto-fill, calc((var(--gf-container-lg) - 2 * var(--gf-8)) / 3));
   }
 }

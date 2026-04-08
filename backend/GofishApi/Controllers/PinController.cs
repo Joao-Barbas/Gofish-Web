@@ -159,9 +159,21 @@ public class PinController : ControllerBase
             }
         }
 
-        var req  = dto.DataRequest ?? new();
+        var req = dto.DataRequest ?? new();
+        var allowedKinds = new List<PinKind>();
+
+        if (req.IncludeCatch != false) allowedKinds.Add(PinKind.Catch);
+        if (req.IncludeInformation != false) allowedKinds.Add(PinKind.Information);
+        if (req.IncludeWarning != false) allowedKinds.Add(PinKind.Warning);
+
+        if (allowedKinds.Count == 0)
+        {
+            return Ok(new GetPinsResDto([], false, null));
+        }
+
         var pins = await _visibility
             .FilterVisiblePins(_db.Pins.Where(p => pinIdQuery.Contains(p.Id)), userId)
+            .Where(p => allowedKinds.Contains(p.Kind))
             .Where(p => dto.LastTimestamp == null || p.CreatedAt < dto.LastTimestamp.Value)
             .OrderByDescending(p => p.CreatedAt)
             .ThenByDescending(p => p.Id)
@@ -171,7 +183,6 @@ public class PinController : ControllerBase
                 Geolocation = req.IncludeGeolocation != true ? null : new PinGeolocationDto(
                     p.Latitude,
                     p.Longitude),
-
                 Author = req.IncludeAuthor != true ? null : new PinAuthorDto
                 {
                     Id = p.AppUser.Id,
@@ -182,7 +193,6 @@ public class PinController : ControllerBase
                     Rank = GamificationService.GetRank(p.AppUser.UserProfile.CatchPoints),
                     AvatarUrl = p.AppUser.UserProfile.AvatarUrl
                 },
-
                 Details = req.IncludeDetails != true ? null : new PinDetailsDto(
                     ((CatchPin)p).Species,
                     ((CatchPin)p).Bait,
@@ -190,11 +200,9 @@ public class PinController : ControllerBase
                     ((InfoPin)p).AccessDifficulty,
                     ((InfoPin)p).Seabed,
                     ((WarnPin)p).WarningKind),
-
                 Ugc = req.IncludeUgc != true ? null : new PinUgcDto(
                     p.Body,
                     p.ImageUrl),
-
                 Stats = req.IncludeStats != true ? null : new PinStatsDto(
                     p.Votes.Where(v => v.UserId == userId).Select(v => (VoteKind?)v.Value).FirstOrDefault(),
                     p.Score,
@@ -202,8 +210,8 @@ public class PinController : ControllerBase
             })
             .ToListAsync();
 
-        var hasMore  = pins.Count > maxResults;
-        var page     = pins.Take(maxResults).ToList();
+        var hasMore = pins.Count > maxResults;
+        var page = pins.Take(maxResults).ToList();
         var lastTime = hasMore ? page[^1].CreatedAt : (DateTime?)null;
 
         return Ok(new GetPinsResDto(page, hasMore, lastTime));

@@ -1,7 +1,7 @@
 // user-manager.service.ts
 
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
-import { forkJoin, map, Observable, switchMap, tap } from 'rxjs';
+import { firstValueFrom, forkJoin, map, Observable, switchMap, tap } from 'rxjs';
 import { UserApi } from '@gofish/shared/api/user.api';
 import { UserProfileApi } from '@gofish/shared/api/user-profile.api';
 import { AuthService } from '@gofish/shared/services/auth.service';
@@ -63,6 +63,26 @@ export class UserManagerService {
   readonly bio                  = computed(() => this._state()?.bio);
   readonly avatarUrl            = computed(() => this._state()?.avatarUrl);
 
+  // Reload everything from backend
+
+  async refetchData(): Promise<void> {
+    const data = await firstValueFrom(forkJoin({
+      settings:        this.userApi.getUserSettings(),
+      profileSettings: this.userProfileApi.getUserProfileSettings()
+    }));
+    this.userResource.set({
+      userName:             data.settings.userName,
+      firstName:            data.settings.firstName,
+      lastName:             data.settings.lastName,
+      email:                data.settings.email,
+      phoneNumber:          data.settings.phoneNumber,
+      emailConfirmed:       data.settings.emailConfirmed,
+      phoneNumberConfirmed: data.settings.phoneNumberConfirmed,
+      bio:                  data.profileSettings.bio,
+      avatarUrl:            data.profileSettings.avatarUrl,
+    } as UserState);
+  }
+
   // User mutations
   // Each calls the api and updates state on success.
 
@@ -84,17 +104,17 @@ export class UserManagerService {
     );
   }
 
-  updateEmail(email: string): Observable<void> {
-    return this.userApi.patchUser({ email }).pipe(
-      tap(() => this._state.update(s => s && ({ ...s, email })))
-    );
-  }
+  // updateEmail(email: string): {
+  //   // return this.userApi.patchUser({ email }).pipe(
+  //   //   tap(() => this._state.update(s => s && ({ ...s, email })))
+  //   // );
+  // }
 
-  updatePhoneNumber(phoneNumber: string): Observable<void> {
-    return this.userApi.patchUser({ phoneNumber }).pipe(
-      tap(() => this._state.update(s => s && ({ ...s, phoneNumber })))
-    );
-  }
+  // updatePhoneNumber(phoneNumber: string): Observable<void> {
+  //   return this.userApi.patchUser({ phoneNumber }).pipe(
+  //     tap(() => this._state.update(s => s && ({ ...s, phoneNumber })))
+  //   );
+  // }
 
   // Profile mutations
 

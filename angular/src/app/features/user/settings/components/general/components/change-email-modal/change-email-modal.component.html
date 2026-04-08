@@ -1,0 +1,88 @@
+<!-- change-email-modal.component.html -->
+
+<div class="gf-modal-backdrop" (click)="$event.stopPropagation()">
+  <div class="gf-modal-shell" (click)="$event.stopPropagation()">
+
+    <div class="title-container">
+      <h5 class="title">Change account email</h5>
+      <button class="gf-modal-close-button" (click)="controller.close()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="gf-modal-separator-no-margin"></div>
+
+    @if (securityInfo.isLoading()) {
+      <div class="body-container">
+        <gf-loading-spinner class="gf-loading-spinner-icon"></gf-loading-spinner>
+      </div>
+    } @else if (securityInfo.error()) {
+      <!-- @let error = securityInfo.error()!; -->
+      <div class="error-container">
+        <p>An error occured while loading necessary information. Please try again later.</p>
+      </div>
+    } @else if (securityInfo.hasValue()) {
+      <div class="step-wrapper">
+        @switch (bodyState()) {
+        @case ('verify') {
+          <div class="body-container" animate.enter="on-enter" animate.leave="on-leave">
+            <gf-verify-twofa-container
+              #verifyTwofaComponent
+              (verified)="onTwofaVerified($event)"
+              (state)="onTwofaStateChange($event)">
+            </gf-verify-twofa-container>
+          </div>
+        }
+        @case ('new-email') {
+          <div class="body-container" animate.enter="on-enter" animate.leave="on-leave">
+            <small class="input-title">Enter the e-mail you would like to change to</small>
+            <form [formGroup]="newEmailFormController.form">
+              <input class="input-box" type="email" formControlName="newEmail">
+            </form>
+            <small class="input-disclaimer">You will be prompted to verify this email after change</small>
+            @if (newEmailFormController.getFirstError(); as errorText) {
+              <small class="gf-text-error">{{ errorText }}</small>
+            }
+          </div>
+        }
+        @case ('confirm') {
+          <div class="body-container" animate.enter="on-enter" animate.leave="on-leave">
+            <small class="input-title">Confirm e-mail</small>
+            <form [formGroup]="confirmEmailFormController.form">
+              <input class="input-box" type="text" appNumbersOnly placeholder="Enter your new email here" formControlName="code">
+            </form>
+            @if (confirmEmailFormController.getFirstError(); as errorText) {
+              <small class="gf-text-error">{{ errorText }}</small>
+            }
+          </div>
+        }}
+      </div>
+    } @else {
+
+    }
+
+    <div class="gf-modal-separator-no-margin"></div>
+
+    <div class="bottom-container">
+      @if (!changeSucceeded()) {
+        <button class="negative-btn" (click)="onNegative()">
+          {{ negativeButtonLabel() }}
+        </button>
+      }
+      @if (securityInfo.hasValue()) {
+        <button
+          class="positive-btn"
+          gfAsyncBtn
+          (click)="onPositive()"
+          [labels]="{ idle: positiveButtonLabel() }"
+          [states]="{ busy: busyState.isBusy(), success: changeSucceeded() }">
+        </button>
+      } @else if (securityInfo.error()) {
+        <button class="positive-btn" (click)="securityInfo.reload()">
+          Try Again Now
+        </button>
+      }
+    </div>
+
+  </div>
+</div>

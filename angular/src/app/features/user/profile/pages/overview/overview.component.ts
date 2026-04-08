@@ -27,6 +27,8 @@ import { ModalService } from '@gofish/shared/services/modal.service';
 import { ProfileShowMoreModalComponent } from '@gofish/features/user/profile/pages/overview/components/profile-show-more-modal/profile-show-more-modal.component';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { InviteToGroupsModalComponent } from '@gofish/shared/components/invite-to-groups-modal/invite-to-groups-modal.component';
+import { PinApi } from '@gofish/shared/api/pin.api';
+import { ProfileCatchPinCardComponent } from "./components/profile-catch-pin-card/profile-catch-pin-card.component";
 
 @Component({
   selector: 'app-overview',
@@ -42,20 +44,22 @@ import { InviteToGroupsModalComponent } from '@gofish/shared/components/invite-t
     UserRankIconComponent,
     UserTitleComponent,
     ProfileShowMoreModalComponent,
-    InviteToGroupsModalComponent
+    InviteToGroupsModalComponent,
+    ProfileCatchPinCardComponent
 ],
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.css',
 })
 export class OverviewComponent {
-  readonly userApi        = inject(UserApi);
+  readonly userApi = inject(UserApi);
+  readonly pinApi = inject(PinApi);
   readonly userProfileApi = inject(UserProfileApi);
   readonly profileContext = inject(ProfileContext);
-  readonly authService    = inject(AuthService);
-  readonly avatarService  = inject(AvatarService);
+  readonly authService = inject(AuthService);
+  readonly avatarService = inject(AvatarService);
   readonly popoverService = inject(PopoverService);
-  readonly modalService   = inject(ModalService);
-  readonly router         = inject(Router);
+  readonly modalService = inject(ModalService);
+  readonly router = inject(Router);
 
   readonly busyState = new BusyState();
   readonly Path = Path;
@@ -68,7 +72,8 @@ export class OverviewComponent {
     params: () => this.profileContext.userProfileId(),
     stream: ({ params: id }) => forkJoin({
       friends: this.userApi.getFriendships({ userId: id, state: FriendshipState.Accepted, maxResults: 8 }),
-      groups: this.userApi.getUserGroups({ userId: id, maxResults: 8 })
+      groups: this.userApi.getUserGroups({ userId: id, maxResults: 8 }),
+      pins: this.pinApi.getPins({ ids: [{ authorId: id }], dataRequest: { includeDetails: true, includeStats: true, includeUgc: true, IncludeInformation: false, IncludeWarning: false }, maxResults: 50 })
   })});
 
   bioTextRef         = viewChild<ElementRef>('bioText');
