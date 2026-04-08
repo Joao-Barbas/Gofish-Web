@@ -46,35 +46,37 @@ public class GroupController : ControllerBase
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
 
         var group = await _db.Groups
-            .Where(g => g.Id == id)
-            .Select(g => new
-            {
-                g.Id,
-                g.Name,
-                g.Description,
-                g.AvatarUrl,
-                g.CreatedAt,
-                MemberCount = g.GroupUsers.Count,
-                PinCount = g.Pins.Count,
-                Owner = g.GroupUsers
-                    .Where(gu => gu.Role == GroupRole.Owner)
-                    .Select(gu => new
-                    {
-                        gu.AppUser.Id,
-                        gu.AppUser.UserName,
-                        gu.AppUser.FirstName,
-                        gu.AppUser.LastName,
-                        gu.AppUser.UserProfile.AvatarUrl,
-                        gu.Role,
-                        gu.JoinedAt
-                    })
-                    .FirstOrDefault()
-            })
-            .FirstOrDefaultAsync();
+        .Where(g => g.Id == id)
+        .Select(g => new
+        {
+            g.Id,
+            g.Name,
+            g.Description,
+            g.AvatarUrl,
+            g.CreatedAt,
+            MemberCount = g.GroupUsers.Count,
+            PinCount = g.Pins.Count,
+            Owner = g.GroupUsers
+                .Where(gu => gu.Role == GroupRole.Owner)
+                .Select(gu => new
+                {
+                    gu.AppUser.Id,
+                    gu.AppUser.UserName,
+                    gu.AppUser.FirstName,
+                    gu.AppUser.LastName,
+                    gu.AppUser.UserProfile.AvatarUrl,
+                    gu.Role,
+                    gu.JoinedAt
+                })
+                .FirstOrDefault()
+        })
+        .FirstOrDefaultAsync();
 
         if (group is null) return NotFound();
 
-        var groupUser = await _db.GroupUsers.FirstOrDefaultAsync(gu => gu.GroupId == id && gu.UserId == userId);
+        var groupUser = await _db.GroupUsers
+        .Include(gu => gu.AppUser)
+        .FirstOrDefaultAsync(gu => gu.GroupId == id && gu.UserId == userId);
 
         var ownerDto = group.Owner is null ? null : new GroupMemberDto(
             group.Owner.Id,
