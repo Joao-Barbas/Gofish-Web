@@ -1,7 +1,7 @@
 import http from 'k6/http';
 import { check } from 'k6';
 
-const BASE_URL = 'https://localhost:7113';
+const BASE_URL = __ENV.BASE_URL || 'https://localhost:7113';
 
 export const users = [
     { username: 'player1', password: '123456@' },

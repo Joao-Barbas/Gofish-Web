@@ -1,0 +1,44 @@
+name: Stress Tests (K6)
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'API base URL to test against'
+        required: true
+        default: 'https://gofish-api-staging.azurewebsites.net'
+  # schedule:
+  #   # Runs every Sunday at 02:00 UTC - Disabled to preserve azure free tier credits
+  #   - cron: '0 2 * * 0'
+
+jobs:
+  stress-tests:
+    name: K6 Stress Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    env:
+      BASE_URL: ${{ github.event.inputs.base_url || 'https://gofish-api-staging.azurewebsites.net' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          sudo gpg --no-default-keyring \
+            --keyring /usr/share/keyrings/k6-archive-keyring.gpg \
+            --keyserver hkp://keyserver.ubuntu.com:80 \
+            --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" \
+            | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
+
+      - name: Run pin-getFeed stress test
+        working-directory: backend/GofishApi.Tests/LoadTests
+        run: k6 run --env BASE_URL=${{ env.BASE_URL }} scenarios/pin-getFeed.js
+
+      - name: Run pin-getPins stress test
+        working-directory: backend/GofishApi.Tests/LoadTests
+        run: k6 run --env BASE_URL=${{ env.BASE_URL }} scenarios/pin-getPins.js

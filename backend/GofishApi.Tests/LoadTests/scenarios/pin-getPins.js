@@ -17,7 +17,7 @@ export const options = {
     },
 };
 
-const BASE_URL = 'https://localhost:7113';
+const BASE_URL = __ENV.BASE_URL || 'https://localhost:7113';
 
 export function setup() {
     const token = signIn();
