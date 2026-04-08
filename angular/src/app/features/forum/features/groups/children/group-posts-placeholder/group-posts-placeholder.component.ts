@@ -42,6 +42,7 @@ export class GroupPostsPlaceholderComponent {
   loadPosts() {
     const id = Number(this.route.parent?.snapshot.paramMap.get('id'));
     if (!id || this.isLoading() || !this.hasMoreResults()) return;
+    this.isLoading.set(true);
     const dto: GetGroupPinsReqDto = {
       groupId: id,
       maxResults: 5,
@@ -55,9 +56,12 @@ export class GroupPostsPlaceholderComponent {
           const lastComment = res.pins[res.pins.length - 1];
           this.lastTimestamp = lastComment.createdAt;
         }
+        this.hasMoreResults.set(res.hasMoreResults);
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.log(err);
+        this.isLoading.set(false);
       }
     });
   }

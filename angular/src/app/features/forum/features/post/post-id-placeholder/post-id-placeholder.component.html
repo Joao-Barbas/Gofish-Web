@@ -45,7 +45,9 @@
       <gf-loading-spinner></gf-loading-spinner>
 
       } @else if (comments()?.comments?.length === 0) {
-      <!-- opcional: empty state -->
+      <div class="end-message">
+        <p>No comments yet. Be the first to start the conversation.</p>
+      </div>
 
       } @else {
 
@@ -57,6 +59,10 @@
         <button type="button" class="show-more-text" (click)="showMore()">
           Show more
         </button>
+      </div>
+      } @else {
+      <div class="end-message">
+        <p>You've reached the end of the conversation.</p>
       </div>
       }
 
