@@ -74,6 +74,8 @@ public class GroupController : ControllerBase
 
         if (group is null) return NotFound();
 
+        var groupUser = await _db.GroupUsers.FirstOrDefaultAsync(gu => gu.GroupId == id && gu.UserId == userId);
+
         var ownerDto = group.Owner is null ? null : new GroupMemberDto(
             group.Owner.Id,
             group.Owner.UserName ?? "",
@@ -93,7 +95,8 @@ public class GroupController : ControllerBase
             MemberCount = group.MemberCount,
             PinCount = group.PinCount,
             Owner = ownerDto!,
-            IsMember = await _db.GroupUsers.AnyAsync(gu => gu.GroupId == id && gu.UserId == userId)
+            IsMember = groupUser is not null,
+            CurrentUserMembership = groupUser is null ? null : GroupMemberDto.FromEntity(groupUser)
         });
     }
 

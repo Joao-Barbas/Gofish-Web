@@ -54,6 +54,7 @@ public record GroupDto
     public required int PinCount { get; init; }
     public required GroupMemberDto Owner { get; init; }
     public required bool IsMember { get; init; }
+    public GroupMemberDto? CurrentUserMembership { get; init; }
     public string? Description { get; init; }
     public string? AvatarUrl { get; init; }
 }
