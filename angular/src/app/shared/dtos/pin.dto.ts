@@ -214,8 +214,10 @@ export interface GetPinsDataRequestDto {
   includeStats?: boolean;
   includeUgc?: boolean;
   includeGroups?: boolean;
+  IncludeCatch?: boolean;
+  IncludeInformation?: boolean;
+  IncludeWarning?: boolean;
 }
-
 
 export interface GetInViewportReqDto {
   minLat: number;

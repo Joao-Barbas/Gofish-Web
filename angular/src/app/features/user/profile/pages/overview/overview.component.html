@@ -13,6 +13,7 @@
 
   @let friends = overviewData.value().friends;
   @let groups  = overviewData.value().groups;
+  @let pins    = overviewData.value().pins;
 
   <!-- Overview -->
   <div class="gf-flow-vertical gf-gap-16">
@@ -128,6 +129,24 @@
       <div #groupsCarousel id="groups-carousel" class="carousel-list gf-mt-8">
         @for (g of groups.groups; track g.id) {
           <gf-small-group-carousel-card [group]="g"></gf-small-group-carousel-card>
+        }
+      </div>
+    </div>
+  }
+  <!-- Pins grid -->
+  @if (pins.pins.length > 0) {
+    <div>
+      <div class="gf-flow-horizontal gf-justify-between">
+        <p class="gf-text-md gf-font-semibold">{{ `${profile.userName}'s catches` }}</p>
+        <a [routerLink]="'pins'" class="gf-d-flex gf-items-center gf-text-sm see-all">
+          See all
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+      </div>
+      <!-- Grid -->
+      <div #pinsGrid id="pins-grid" class="grid-list gf-mt-8">
+        @for (p of pins.pins; track p.id) {
+          <gf-profile-catch-pin-card [pin]="p"></gf-profile-catch-pin-card>
         }
       </div>
     </div>
