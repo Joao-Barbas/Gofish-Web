@@ -1,7 +1,7 @@
-<div class="modal-backdrop-custom d-flex justify-content-center align-items-center">
+<div class="modal-backdrop-custom d-flex justify-content-center align-items-center" data-testid="info-pin-modal">
   <div class="modal-custom gf-card">
 
-    <form id="info-modal" [formGroup]="form" (ngSubmit)="onPublish()">
+    <form id="info-modal" [formGroup]="form" (ngSubmit)="onPublish()" data-testid="info-pin-form">
 
       <!-- Header -->
       <div class="modal-header text-white align-items-center mb-3 justify-content-between">
@@ -28,7 +28,7 @@
         <section class="d-flex flex-column">
 
           <textarea id="description" class="modal-body-description dark-bg-dark dark-text"
-            placeholder="Add a description..." formControlName="body" maxlength="{{ BodyLengthConstraints.MAX }}"></textarea>
+            placeholder="Add a description..." formControlName="body" maxlength="{{ BodyLengthConstraints.MAX }}" data-testid="info-pin-body"></textarea>
           <small class="dark-text-muted text-end">
             {{ form.value.body?.length ?? 0 }}/{{ BodyLengthConstraints.MAX }}
           </small>
@@ -139,19 +139,19 @@
 
         <!-- Error -->
         @if (errorMessage) {
-        <p class="text-danger mt-2 mb-0">{{ errorMessage }}</p>
+        <p class="text-danger mt-2 mb-0" data-testid="info-pin-error">{{ errorMessage }}</p>
         }
 
       </div>
 
       <!-- Footer -->
       <div class="modal-footer mt-2 action-btns">
-        <button type="button" class="btn btn-secondary" (click)="onCancel()">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()" data-testid="info-pin-cancel">
           Cancel
         </button>
 
         <app-async-button type="submit" form="info-modal" labels="Publish"
-          [state]="busyState.isBusy() ? 'busy' : 'idle'" />
+          [state]="busyState.isBusy() ? 'busy' : 'idle'" testId="info-pin-publish"/>
       </div>
 
     </form>

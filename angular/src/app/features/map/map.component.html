@@ -2,7 +2,7 @@
 <main class="position-fixed top-0 start-0 end-0 bottom-0 overflow-hidden">
   <ngx-sonner-toaster position="bottom-center" richColors />
   <!-- Mapbox -->
-  <div id="map" class="w-100 h-100"></div>
+  <div id="map" class="w-100 h-100" data-testid="map-canvas"></div>
   <!-- Overlay -->
   <!-- Everything else on top of the map goes inside this -->
   <div class="position-absolute top-0 start-0 w-100 h-100 gf-no-events">
@@ -28,7 +28,7 @@
       <!-- Create pin & ask location -->
       <div class="d-flex flex-column actions-bundle-container">
         <!-- Show overlay to selecte pin type to create button -->
-        <button class="map-action" (click)="toggleCreatePinOverlay($event)" title="Create new pin">
+        <button class="map-action" (click)="toggleCreatePinOverlay($event)" title="Create new pin" data-testid="open-create-pin">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path
