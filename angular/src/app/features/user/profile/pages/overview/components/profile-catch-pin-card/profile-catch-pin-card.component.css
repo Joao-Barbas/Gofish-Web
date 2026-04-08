@@ -29,7 +29,7 @@
   display: flex;
   justify-content: end;
   gap: 4px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
+  /* background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent); */
   pointer-events: none;
 }
 
@@ -42,7 +42,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  /* background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent); */
   color: white;
 
   .pin-details {
