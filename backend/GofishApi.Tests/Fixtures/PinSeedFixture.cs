@@ -24,7 +24,7 @@ public static class PinSeedFixture
             Latitude = latitude,
             Longitude = longitude,
             CreatedAt = createdAt ?? DateTime.UtcNow,
-            ExpiresAt = expiresAt,
+            ExpiresAt = expiresAt ?? DateTime.UtcNow.AddDays(InfoPin.ExpiresInDays),
             Visibility = visibility,
             Kind = PinKind.Information,
             UserId = userId,

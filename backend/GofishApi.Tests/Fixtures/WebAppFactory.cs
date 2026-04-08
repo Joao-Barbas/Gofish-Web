@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("Development");
+        builder.UseEnvironment("Testing");
 
         builder.ConfigureServices(services =>
         {
@@ -29,8 +30,9 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
             if (descriptor != null)
                 services.Remove(descriptor);
 
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseInMemoryDatabase(_dbName));
+            services.AddDbContext<AppDbContext>(options => options
+                .UseInMemoryDatabase(_dbName)
+                .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
 
             // Registar auteticação fake
             services.AddAuthentication(options =>

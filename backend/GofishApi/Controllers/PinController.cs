@@ -55,7 +55,7 @@ public class PinController : ControllerBase
             && p.Latitude <= dto.MaxLat
             && p.Longitude >= dto.MinLng
             && p.Longitude <= dto.MaxLng);
-        // query = query.Where(p => p.ExpiresAt == null || p.ExpiresAt > DateTime.UtcNow);
+        query = query.Where(p => p.ExpiresAt == null || p.ExpiresAt > DateTime.UtcNow);
         query = _visibility.FilterVisiblePins(query, userId);
 
         var pins = await query.Select(p => PinDto.FromEntity(p).SetGeolocation(p)).ToListAsync();
@@ -474,6 +474,7 @@ public class PinController : ControllerBase
             Latitude = dto.Latitude,
             Longitude = dto.Longitude,
             CreatedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddDays(InfoPin.ExpiresInDays),
             Visibility = dto.Visibility,
             Kind = PinKind.Information,
             UserId = userId,
