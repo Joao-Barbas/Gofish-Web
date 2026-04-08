@@ -116,7 +116,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
         builder.Entity<Comment>()
             .HasOne(p => p.Pin)
-            .WithMany()
+            .WithMany(p => p.Comments)
             .HasForeignKey(p => p.PinId)
             .OnDelete(DeleteBehavior.Cascade);
 
