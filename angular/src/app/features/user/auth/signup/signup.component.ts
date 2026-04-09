@@ -145,7 +145,8 @@ export class SignupComponent implements OnInit {
         setTimeout(() => {
           this.signUpSuccess = false;
           this.signUpForm.reset();
-          this.router.navigate([Path.HOME]);
+          this.authService.insertToken(res.token!);
+          this.router.navigate([Path.FORUM]);
         }, 1000);
       },
       error: (err: HttpErrorResponse) => {
