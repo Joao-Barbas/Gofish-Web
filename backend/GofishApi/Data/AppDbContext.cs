@@ -345,7 +345,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
                 CreatedAt = createdAt,
                 ExpiresAt = expiresAt,
                 Body = "body",
-                ImageUrl = "https://gofishstorage.blob.core.windows.net/post-images/0091b5cc-a77a-4b77-bb6d-c01d23b23ab5.png",
+                ImageUrl = "https://gofishstorageaccount.blob.core.windows.net/post-images/OIP-2684443709.jpg",
                 Species = Species.Achiga,
                 Bait = Bait.Worm
             });
