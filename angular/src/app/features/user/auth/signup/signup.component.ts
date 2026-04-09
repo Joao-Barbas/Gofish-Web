@@ -1,6 +1,6 @@
 // signup.component.ts
 
-import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -23,6 +23,7 @@ import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/auth.dto';
     ReactiveFormsModule,
     CommonModule,
     RouterLink,
+    FormsModule,
     RegexMatchesPipe,
     AsyncButtonComponent,
     LettersOnlyDirective
@@ -67,6 +68,9 @@ export class SignupComponent implements OnInit {
   formErrors: ValidationErrors | null = this.signUpForm.errors;
   signUpSuccess: boolean = false;
   showPwd: boolean = false;
+  ageConcentChecked: boolean = false;
+  policyConcentChecked: boolean = false;
+  invalidSignUpAttempted: boolean = false;
 
   ngOnInit(): void {
     if (!this.authService.isAuthenticated()) return;
@@ -132,6 +136,11 @@ export class SignupComponent implements OnInit {
   // End form errors/validations
 
   onSubmit() {
+    if (!this.ageConcentChecked || !this.policyConcentChecked) {
+      this.invalidSignUpAttempted = false;
+      setTimeout(() => this.invalidSignUpAttempted = true);
+    }
+
     this.signUpForm.markAllAsTouched();
     this.apiProblems = null;
     if (this.signUpForm.invalid) return;

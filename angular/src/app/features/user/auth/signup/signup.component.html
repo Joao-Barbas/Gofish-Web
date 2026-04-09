@@ -121,6 +121,16 @@
       @if (getError(); as errorText) {
         <span class="gf-text-error">{{ errorText }}</span>
       }
+      <div>
+        <div class="concent-checkbox">
+          <input class="checkbox-input" type="checkbox" [(ngModel)]="policyConcentChecked" (change)="invalidSignUpAttempted" [class.jitter]="invalidSignUpAttempted">
+          <span class="checkbox-text">I have read and accept the <a class="privacy-policy-link" [routerLink]="Path.PRIVACY">Privacy Policy</a></span>
+        </div>
+        <div class="concent-checkbox">
+          <input class="checkbox-input" type="checkbox" [(ngModel)]="ageConcentChecked" (change)="invalidSignUpAttempted" [class.jitter]="invalidSignUpAttempted">
+          <span class="checkbox-text">I confirm that I am over 13 years old</span>
+        </div>
+      </div>
       <app-async-button
         type="submit"
         form="signup-form"
