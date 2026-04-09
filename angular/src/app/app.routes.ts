@@ -4,6 +4,7 @@ import { Routes } from '@angular/router';
 import { FooterVariant } from '@gofish/features/footer/footer.component';
 import { HeaderVariant } from '@gofish/features/header/header.component';
 import { PathSegment } from '@gofish/shared/constants';
+import { adminGuard } from '@gofish/shared/guards/admin.guard';
 import { authGuard } from '@gofish/shared/guards/auth.guard';
 import { noTotpGuard } from '@gofish/shared/guards/no-totp.guard';
 
@@ -244,6 +245,7 @@ export const routes: Routes = [
   {
     path: 'statistics',
     loadComponent: () => import('@gofish/features/statistics/statistics.component').then(f => f.StatisticsComponent),
+    canActivate: [adminGuard],
     data: {
       header: 'flat' as HeaderVariant,
       footer: 'small' as FooterVariant

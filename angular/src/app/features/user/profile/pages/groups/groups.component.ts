@@ -9,8 +9,7 @@ import { AuthService } from '@gofish/shared/services/auth.service';
 import { firstValueFrom } from 'rxjs';
 import { GroupsListComponent } from "./components/groups-list/groups-list.component";
 import { GroupInvitesListComponent } from "./components/group-invites-list/group-invites-list.component";
-
-type ProfileGroupListRouteTab = 'groups' | 'invites';
+import { ProfileGroupsTab } from '@gofish/shared/constants';
 
 @Component({
   selector: 'app-groups',
@@ -23,8 +22,8 @@ type ProfileGroupListRouteTab = 'groups' | 'invites';
   styleUrl: './groups.component.css',
 })
 export class GroupsComponent {
-  readonly activeTab = input<ProfileGroupListRouteTab | undefined>(undefined, { alias: 'tab' }); // Signal-based input given from ?tab=
-  readonly activeTabOrDefault = computed<ProfileGroupListRouteTab>(() => this.activeTab() ?? 'groups' )
+  readonly activeTab = input<ProfileGroupsTab | undefined>(undefined, { alias: 'tab' }); // Signal-based input given from ?tab=
+  readonly activeTabOrDefault = computed<ProfileGroupsTab>(() => this.activeTab() ?? 'groups' )
 
   readonly userApi        = inject(UserApi);
   readonly profileContext = inject(ProfileContext);

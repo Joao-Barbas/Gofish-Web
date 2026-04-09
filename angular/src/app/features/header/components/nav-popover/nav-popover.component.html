@@ -1,7 +1,8 @@
 <!-- nav-popover.component.html -->
 
-<nav class="nav-shell">
+<nav class="nav-shell gf-flow-vertical gf-gap-4 gf-p-12">
   <a
+    (click)="popupController.close();"
     [routerLink]="'/'"
     [routerLinkActiveOptions]="{exact: true}"
     routerLinkActive="active"
@@ -13,6 +14,7 @@
     <span>Home</span>
   </a>
   <a
+    (click)="popupController.close();"
     [routerLink]="authService.isAuthenticated() ? '/map' : '/signin'"
     routerLinkActive="active"
     class="nav-anchor">
@@ -24,6 +26,7 @@
     <span>Map</span>
   </a>
   <a
+    (click)="popupController.close();"
     [routerLink]="authService.isAuthenticated() ? '/forum' : '/signin'"
     routerLinkActive="active"
     class="nav-anchor">
@@ -36,6 +39,7 @@
     <span>Forum</span>
   </a>
   <a
+    (click)="popupController.close();"
     [routerLink]="'/about-us'"
     routerLinkActive="active"
     class="nav-anchor">
