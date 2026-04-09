@@ -62,8 +62,7 @@ public class GroupController : ControllerBase
                 {
                     gu.AppUser.Id,
                     gu.AppUser.UserName,
-                    gu.AppUser.FirstName,
-                    gu.AppUser.LastName,
+                    gu.AppUser.DisplayName,
                     gu.AppUser.UserProfile.AvatarUrl,
                     gu.Role,
                     gu.JoinedAt
@@ -81,8 +80,7 @@ public class GroupController : ControllerBase
         var ownerDto = group.Owner is null ? null : new GroupMemberDto(
             group.Owner.Id,
             group.Owner.UserName ?? "",
-            group.Owner.FirstName ?? "",
-            group.Owner.LastName ?? "",
+            group.Owner.DisplayName,
             group.Owner.AvatarUrl,
             group.Owner.Role,
             group.Owner.JoinedAt);

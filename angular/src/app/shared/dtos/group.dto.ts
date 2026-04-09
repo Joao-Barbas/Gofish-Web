@@ -62,8 +62,7 @@ export interface SearchGroupDTO {
 export interface GroupMemberDTO {
   userId: string;
   userName: string;
-  firstName: string;
-  lastName: string;
+  displayName: string;
   avatarUrl?: string;
   role: GroupRole;
   joinedAt: string;

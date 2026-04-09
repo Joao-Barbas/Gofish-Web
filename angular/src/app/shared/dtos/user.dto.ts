@@ -2,14 +2,14 @@
 
 import { GroupInviteDTO } from "@gofish/shared/dtos/group.dto";
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
+import { Gender } from "@gofish/shared/enums/gender.enum";
 import { GroupRole } from "@gofish/shared/enums/group-role.enum";
 
 export interface LeaderboardUserDTO {
   position: number;
   userId: string;
   userName: string;
-  firstName: string;
-  lastName: string;
+  displayName: string;
   catchPoints: number;
   catchPointsDelta: number;
   weeklyStreak: number;
@@ -25,8 +25,7 @@ export interface LeaderboardResDTO {
 export interface SearchUserDTO {
   id: string;
   userName: string;
-  firstName: string;
-  lastName: string;
+  displayName: string;
   catchPoints: number;
   rank: number;
   avatarUrl?: string;
@@ -50,8 +49,7 @@ export interface GetUserReqDTO {
 
 export interface GetUserResDTO {
   userName: string;
-  firstName: string;
-  lastName: string;
+  displayName: string;
   friendshipState?: FriendshipState;
 }
 
@@ -61,20 +59,26 @@ export interface GetUserSettingsReqDTO {
 
 export interface GetUserSettingsResDTO {
   userName: string;
+  displayName: string;
   firstName: string;
   lastName: string;
   email?: string;
   phoneNumber?: string;
   emailConfirmed: boolean;
   phoneNumberConfirmed: boolean;
+  birthDate?: string;
+  gender?: Gender;
 }
 
 export interface PutUserReqDTO {
   userName: string,
+  displayName: string,
   phoneNumber: string,
   firstName: string,
   lastName: string,
-  email: string
+  email: string,
+  birthDate?: string,
+  gender?: Gender
 }
 
 export interface PutUserResDTO {
@@ -83,10 +87,13 @@ export interface PutUserResDTO {
 
 export interface PatchUserReqDTO {
   userName?: string,
+  displayName?: string,
   phoneNumber?: string,
   firstName?: string,
   lastName?: string,
-  email?: string
+  email?: string,
+  birthDate?: string,
+  gender?: Gender
 }
 
 export interface PatchUserResDTO {
@@ -96,8 +103,7 @@ export interface PatchUserResDTO {
 export interface FriendshipUserDTO {
   userId: string;
   userName: string;
-  firstName: string;
-  lastName: string;
+  displayName: string;
   avatarUrl?: string;
   catchPoints?: number,
   rank?: number

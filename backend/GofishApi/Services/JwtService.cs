@@ -35,9 +35,8 @@ namespace GofishApi.Services
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")), // No dashes
                 new(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
                 new(JwtRegisteredClaimNames.UniqueName, user.UserName ?? ""),
-                new(JwtRegisteredClaimNames.GivenName, user.FirstName ?? ""),
-                new(JwtRegisteredClaimNames.FamilyName, user.LastName ?? ""),
                 new(JwtRegisteredClaimNames.Email, user.Email ?? ""),
+                new("display_name", user.DisplayName ?? user.UserName ?? ""),
                 new("login_provider", provider ?? "Local")
             };
             

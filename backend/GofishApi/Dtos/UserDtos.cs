@@ -12,8 +12,7 @@ public record LeaderboardUserDto
     public required int Position { get; init; }
     public required string UserId { get; init; }
     public required string UserName { get; init; }
-    public required string FirstName { get; init; }
-    public required string LastName { get; init; }
+    public required string DisplayName { get; init; }
     public required int CatchPoints { get; init; }
     public required int CatchPointsDelta { get; init; }
     public required int WeeklyStreak { get; init; }
@@ -25,8 +24,7 @@ public record SearchUserDto
 {
     public required string Id { get; init; }
     public required string UserName { get; init; }
-    public required string FirstName { get; init; }
-    public required string LastName { get; init; }
+    public required string DisplayName { get; init; }
     public int? CatchPoints { get; init; }
     public int? Rank { get; init; }
     public string? AvatarUrl { get; init; }
@@ -35,8 +33,7 @@ public record SearchUserDto
 public record FriendshipUserDto(
     string UserId,
     string UserName,
-    string FirstName,
-    string LastName,
+    string DisplayName,
     string? AvatarUrl,
     int? CatchPoints,
     int? Rank
@@ -45,8 +42,7 @@ public record FriendshipUserDto(
     public static FriendshipUserDto FromEntity(AppUser u) => new(
         u.Id,
         u.UserName ?? "",
-        u.FirstName ?? "",
-        u.LastName ?? "",
+        u.DisplayName,
         u.UserProfile.AvatarUrl,
         u.UserProfile.CatchPoints,
         GamificationService.GetRank(u.UserProfile.CatchPoints)
@@ -110,19 +106,25 @@ public record GetUserSettingsReqDto(
 
 public record PutUserReqDto(
     [Required] string UserName,
+    [Required] string DisplayName,
     [Required] string PhoneNumber,
     [Required] string FirstName,
     [Required] string LastName,
-    [Required] string Email
+    [Required] string Email,
+    DateTime? BirthDate,
+    Gender? Gender
 )
 { }
 
 public record PatchUserReqDto(
     string? UserName,
+    string? DisplayName,
     string? PhoneNumber,
     string? FirstName,
     string? LastName,
-    string? Email
+    string? Email,
+    DateTime? BirthDate,
+    Gender? Gender
 )
 { }
 
@@ -183,37 +185,41 @@ public record SearchUsersResDto(
 
 public record GetUserResDto(
     string UserName,
-    string FirstName,
-    string LastName,
+    string DisplayName,
     FriendshipState? FriendshipState
 )
 {
     public static GetUserResDto FromEntity(AppUser u, FriendshipState? friendshipState) => new(
         u.UserName ?? "",
-        u.FirstName ?? "",
-        u.LastName ?? "",
+        u.DisplayName,
         friendshipState
     );
 }
 
 public record GetUserSettingsResDto(
     string UserName,
+    string DisplayName,
     string FirstName,
     string LastName,
     string? Email,
     string? PhoneNumber,
     bool EmailConfirmed,
-    bool PhoneNumberConfirmed
+    bool PhoneNumberConfirmed,
+    DateTime? BirthDate,
+    Gender? Gender
 )
 {
     public static GetUserSettingsResDto FromEntity(AppUser u) => new(
         u.UserName ?? "",
+        u.DisplayName,
         u.FirstName ?? "",
         u.LastName ?? "",
         null,
         null,
         u.EmailConfirmed,
-        u.PhoneNumberConfirmed
+        u.PhoneNumberConfirmed,
+        u.BirthDate,
+        u.Gender
     );
 }
 

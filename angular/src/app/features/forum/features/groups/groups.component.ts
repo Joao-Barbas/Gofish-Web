@@ -14,8 +14,7 @@ import { Path } from '@gofish/shared/constants';
 const MOCK_OWNER: GroupMemberDTO = {
   userId: 'seed-player-1',
   userName: 'player1',
-  firstName: 'player1',
-  lastName: 'player',
+  displayName: 'player1',
   avatarUrl: '',
   role: GroupRole.Owner,
   joinedAt: new Date().toISOString()

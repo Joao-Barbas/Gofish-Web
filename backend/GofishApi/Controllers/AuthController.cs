@@ -167,6 +167,7 @@ public class AuthController : ControllerBase
                 UserName        = userName,
                 FirstName       = firstName,
                 LastName        = lastName,
+                DisplayName     = $"{firstName} {lastName}".Trim(),
                 EmailConfirmed  = true, // We logged with the email right?
                 TwoFactorMethod = TwoFactorMethod.None
             };

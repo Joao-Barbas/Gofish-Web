@@ -102,9 +102,12 @@ public class UserController : ControllerBase
         if (!gamificationResult.Succeeded) throw new GamificationException(gamificationResult);
 
         user.UserName = dto.UserName;
+        user.DisplayName = dto.DisplayName;
         user.PhoneNumber = dto.PhoneNumber;
         user.FirstName = dto.FirstName;
         user.LastName = dto.LastName;
+        if (dto.BirthDate is not null) user.BirthDate = dto.BirthDate;
+        if (dto.Gender is not null) user.Gender = dto.Gender;
 
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded) throw new IdentityException(result);
@@ -134,9 +137,12 @@ public class UserController : ControllerBase
             user.UserName = dto.UserName;
         }
 
+        if (dto.DisplayName is not null) user.DisplayName = dto.DisplayName;
         if (dto.PhoneNumber is not null) user.PhoneNumber = dto.PhoneNumber;
         if (dto.FirstName is not null) user.FirstName = dto.FirstName;
         if (dto.LastName is not null) user.LastName = dto.LastName;
+        if (dto.BirthDate is not null) user.BirthDate = dto.BirthDate;
+        if (dto.Gender is not null) user.Gender = dto.Gender;
 
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded) throw new IdentityException(result);
@@ -178,8 +184,7 @@ public class UserController : ControllerBase
             {
                 u.Id,
                 u.UserName,
-                u.FirstName,
-                u.LastName,
+                u.DisplayName,
                 u.UserProfile.AvatarUrl,
                 u.UserProfile.CatchPoints,
                 u.NormalizedUserName
@@ -193,8 +198,7 @@ public class UserController : ControllerBase
         {
             Id = u.Id,
             UserName = u.UserName ?? "",
-            FirstName = u.FirstName ?? "",
-            LastName = u.LastName ?? "",
+            DisplayName = u.DisplayName,
             AvatarUrl = u.AvatarUrl,
             CatchPoints = u.CatchPoints,
             Rank = GamificationService.GetRank(u.CatchPoints),
@@ -230,8 +234,7 @@ public class UserController : ControllerBase
         .Select(up => new {
             up.UserId,
             up.AppUser.UserName,
-            up.AppUser.FirstName,
-            up.AppUser.LastName,
+            up.AppUser.DisplayName,
             up.AvatarUrl,
             up.CatchPoints,
             up.CatchPointsLastMonth,
@@ -240,12 +243,11 @@ public class UserController : ControllerBase
         .ToListAsync();
 
         var entries = top100.Select((u, i) => new LeaderboardUserDto
-        { 
+        {
             Position         = i + 1,
             UserId           = u.UserId,
             UserName         = u.UserName ?? "",
-            FirstName        = u.FirstName ?? "",
-            LastName         = u.LastName ?? "",
+            DisplayName      = u.DisplayName,
             AvatarUrl        = u.AvatarUrl,
             CatchPoints      = u.CatchPoints,
             CatchPointsDelta = u.CatchPoints - u.CatchPointsLastMonth,
@@ -266,8 +268,7 @@ public class UserController : ControllerBase
             .Select(up => new
             {
                 up.AppUser.UserName,
-                up.AppUser.FirstName,
-                up.AppUser.LastName,
+                up.AppUser.DisplayName,
                 up.AvatarUrl,
                 up.CatchPoints,
                 up.CatchPointsLastMonth,
@@ -286,8 +287,7 @@ public class UserController : ControllerBase
                 Position         = position,
                 UserId           = userId,
                 UserName         = userProfile.UserName ?? "",
-                FirstName        = userProfile.FirstName ?? "",
-                LastName         = userProfile.LastName ?? "",
+                DisplayName      = userProfile.DisplayName,
                 AvatarUrl        = userProfile.AvatarUrl,
                 CatchPoints      = userProfile.CatchPoints,
                 CatchPointsDelta = userProfile.CatchPoints - userProfile.CatchPointsLastMonth,
@@ -318,8 +318,7 @@ public class UserController : ControllerBase
         {
             up.UserId,
             up.AppUser.UserName,
-            up.AppUser.FirstName,
-            up.AppUser.LastName,
+            up.AppUser.DisplayName,
             up.AvatarUrl,
             up.CatchPoints,
             up.CatchPointsLastMonth,
@@ -332,8 +331,7 @@ public class UserController : ControllerBase
             Position         = i + 1,
             UserId           = u.UserId,
             UserName         = u.UserName ?? "",
-            FirstName        = u.FirstName ?? "",
-            LastName         = u.LastName ?? "",
+            DisplayName      = u.DisplayName,
             AvatarUrl        = u.AvatarUrl,
             CatchPoints      = u.CatchPoints,
             CatchPointsDelta = u.CatchPoints - u.CatchPointsLastMonth,
@@ -694,8 +692,7 @@ public class UserController : ControllerBase
             {
                 gi.Requester.Id,
                 gi.Requester.UserName,
-                gi.Requester.FirstName,
-                gi.Requester.LastName,
+                gi.Requester.DisplayName,
                 gi.Requester.UserProfile.AvatarUrl,
                 Membership = gi.Group.GroupUsers
                 .Where(gu => gu.UserId == gi.RequesterUserId)
@@ -718,8 +715,7 @@ public class UserController : ControllerBase
                 {
                     gu.AppUser.Id,
                     gu.AppUser.UserName,
-                    gu.AppUser.FirstName,
-                    gu.AppUser.LastName,
+                    gu.AppUser.DisplayName,
                     gu.AppUser.UserProfile.AvatarUrl,
                     gu.Role,
                     gu.JoinedAt
@@ -742,8 +738,7 @@ public class UserController : ControllerBase
             Requester = new GroupMemberDto(
                 i.Requester.Id,
                 i.Requester.UserName ?? "",
-                i.Requester.FirstName ?? "",
-                i.Requester.LastName ?? "",
+                i.Requester.DisplayName,
                 i.Requester.AvatarUrl,
                 i.Requester.Membership?.Role ?? GroupRole.Member,
                 i.Requester.Membership?.JoinedAt ?? default
@@ -762,8 +757,7 @@ public class UserController : ControllerBase
                 Owner = i.Group.Owner is null ? null! : new GroupMemberDto(
                     i.Group.Owner.Id,
                     i.Group.Owner.UserName ?? "",
-                    i.Group.Owner.FirstName ?? "",
-                    i.Group.Owner.LastName ?? "",
+                    i.Group.Owner.DisplayName,
                     i.Group.Owner.AvatarUrl,
                     i.Group.Owner.Role,
                     i.Group.Owner.JoinedAt)

@@ -29,8 +29,7 @@ export type JwtStdClaims = { // All fields are optional as per 7519
 
 export type JwtUserClaims = {
   unique_name: string;
-  given_name: string;
-  family_name: string;
+  display_name: string;
   email: string;
   role: JwtRoles;
   login_provider: JwtLoginProvider;
