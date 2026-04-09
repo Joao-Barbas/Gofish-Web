@@ -42,7 +42,7 @@ export interface CreateGroupResDTO {
   id: number;
 }
 
-export interface GetUserGroupsResDTO{
+export interface GetUserGroupsResDTO {
   groups: GetGroupDTO[];
 }
 
@@ -69,24 +69,24 @@ export interface GroupMemberDTO {
 }
 
 export interface GroupPostPinDTO {
-    kind: PinKind;
-    visibility: VisibilityLevel;
-    ExpiresAt?: string;
-    Details: PinDetailsDTO;
-    Geolocation: GeoLocationDTO;
+  kind: PinKind;
+  visibility: VisibilityLevel;
+  ExpiresAt?: string;
+  Details: PinDetailsDTO;
+  Geolocation: GeoLocationDTO;
 }
 
 export interface GroupPostDTO {
-    id: number,
-    body?: string,
-    imageUrl?: string,
-    createdAt: string,
-    score: number,
-    commentCount: number,
-    userVote: VoteKind,
-    author: GroupMemberDTO,
-    pin: GroupPostPinDTO
-    kind?: PinKind;
+  id: number,
+  body?: string,
+  imageUrl?: string,
+  createdAt: string,
+  score: number,
+  commentCount: number,
+  userVote: VoteKind,
+  author: GroupMemberDTO,
+  pin: GroupPostPinDTO
+  kind?: PinKind;
 }
 
 export interface GroupDTO {
@@ -96,6 +96,8 @@ export interface GroupDTO {
   memberCount: number;
   pinCount: number;
   owner: GroupMemberDTO;
+  isCurrentUserMember: boolean;
+  currentUserMembership?: GroupMemberDTO | null;
   description?: string;
   avatarUrl?: string;
 }

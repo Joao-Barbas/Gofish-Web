@@ -21,7 +21,7 @@
 
       </div>
 
-      @if (1) { <!-- isMember? -->
+      @if (isMember()) {
       <div class="group-settings-wrapper">
         <button class="gf-badge-group-settings" (click)="onGroupSettingsClick($event)">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -32,7 +32,7 @@
           </svg>
 
           @if (popoverService.isOpen(groupPopoverKey)) {
-          <gf-group-popover [viewerRole]="viewerRole()!" [member]="mockOwner"
+          <gf-group-popover [viewerRole]="viewerRole()!" [member]="currentMember()!"
             (click)="$event.stopPropagation()"></gf-group-popover>
           }
         </button>
@@ -56,7 +56,7 @@
     </div>
 
     <!-- se nao for membro do grupo esta div nao aparece -->
-   <!--  <div class="d-flex align-items-center create-group-wrapper">
+    <!--  <div class="d-flex align-items-center create-group-wrapper">
 
       <button class="gf-badge-create-group-btn">
 
@@ -86,7 +86,7 @@
       }
     </div>
 
-    @if (1) { <!-- isMember? -->
+    @if (isMember()) {
 
     <!-- Group Listing Tabs -->
     <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
@@ -98,6 +98,10 @@
         <span class="listing-tab-text">Members</span>
       </a>
     </div>
+    <div class="group-forum-feed">
+      <router-outlet></router-outlet>
+
+    </div>
     }
     @else {
     <span class="not-member-text">You need to be a member of the crew to see the posts and its members. Why not <a
@@ -106,10 +110,6 @@
 
   </div>
 
-  <div class="group-forum-feed">
-    <router-outlet></router-outlet>
-
-  </div>
   } @else {
   <gf-loading-spinner></gf-loading-spinner>
   }
