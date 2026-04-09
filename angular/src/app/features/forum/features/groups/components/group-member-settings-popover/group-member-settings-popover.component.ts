@@ -7,6 +7,10 @@ import { GroupMemberDTO } from '@gofish/shared/dtos/group.dto';
 import { GroupRole } from '@gofish/shared/enums/group-role.enum';
 import { PopoverService } from '@gofish/shared/services/popover.service';
 import { MouseFollowDirective } from '@gofish/shared/directives/mouse-follow.directive';
+import { ActivatedRoute } from '@angular/router';
+import { GroupsService } from '@gofish/shared/services/groups.service';
+import { toast } from 'ngx-sonner';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'gf-group-member-settings-popover',
@@ -32,7 +36,8 @@ export class GroupMemberSettingsPopoverComponent {
 
   static readonly Key: PopoverKey = 'gf-group-member-settings-popover';
   readonly controller = new PopoverController(GroupMemberSettingsPopoverComponent.Key);
-
+  private readonly groupsService = inject(GroupsService);
+  private readonly route = inject(ActivatedRoute);
 
   member = input.required<GroupMemberDTO>();
 
@@ -43,11 +48,99 @@ export class GroupMemberSettingsPopoverComponent {
   viewerRole = input.required<GroupRole>();
 
   protected readonly Role = GroupRole;
+  isSubmitting: any;
 
   // Métodos de ação (exemplo)
   onAction(action: string) {
     console.log(`${action} member:`, this.member().userId);
     this.controller.close();
   }
+
+  private get groupId(): number {
+    return Number(this.route.parent?.snapshot.paramMap.get('id'));
+  }
+
+  private get memberUserId(): string {
+    return this.member().userId;
+  }
+
+  onKickMember(): void {
+    if (this.isSubmitting) return;
+
+    this.isSubmitting = true;
+    if (!this.groupId || !this.memberUserId) {
+      this.isSubmitting = false;
+      return;
+    }
+
+
+    this.groupsService.removeMember(this.groupId, this.memberUserId)
+      .subscribe({
+        next: () => {
+          this.isSubmitting = false;
+          toast.success('User removed successfully.');
+          this.controller.close();
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          toast.error(err?.error ?? 'Failed to remove user.');
+        }
+      });
+  }
+  onToggleModerator(): void {
+    if (this.isSubmitting) return;
+
+    const request$ = this.member().role === GroupRole.Moderator
+      ? this.groupsService.demoteAdminToMember(this.groupId, this.memberUserId)
+      : this.groupsService.promoteMemberToAdmin(this.groupId, this.memberUserId);
+
+    this.isSubmitting = true;
+
+    if (!this.groupId || !this.memberUserId) {
+      this.isSubmitting = false;
+      return;
+    }
+
+    request$.subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        toast.success(
+          this.member().role === GroupRole.Moderator
+            ? 'User demoted to member.'
+            : 'User promoted to moderator.'
+        );
+        this.controller.close();
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        toast.error(err?.error ?? 'Failed to update role.');
+      }
+    });
+  }
+
+  onPromoteToOwner(): void {
+    if (this.isSubmitting) return;
+
+    this.isSubmitting = true;
+
+    if (!this.groupId || !this.memberUserId) {
+      this.isSubmitting = false;
+      return;
+    }
+
+    this.groupsService.promoteMemberToOwner(this.groupId, this.memberUserId)
+      .subscribe({
+        next: () => {
+          this.isSubmitting = false;
+          toast.success('Ownership transferred successfully.');
+          this.controller.close();
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          toast.error(err?.error ?? 'Failed to transfer ownership.');
+        }
+      });
+  }
+
 
 }
