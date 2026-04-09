@@ -590,6 +590,28 @@ public class GroupController : ControllerBase
         return NoContent();
     }
 
+    [HttpDelete("LeaveGroup{groupId}")]
+    public async Task<IActionResult> LeaveGroup([FromRoute] int groupId)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
+
+        var membership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
+
+        if (membership is null)
+            return NotFound("You are not a member of this group.");
+
+        if (membership.Role == GroupRole.Owner)
+            return BadRequest("The owner cannot leave the group without transferring ownership or deleting the group.");
+
+        _db.GroupUsers.Remove(membership);
+        await _db.SaveChangesAsync();
+
+        return NoContent();
+    }
+
     #endregion
     #region Members
 
