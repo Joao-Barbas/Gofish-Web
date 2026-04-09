@@ -17,17 +17,32 @@ import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinn
 export class GroupPostsPlaceholderComponent {
   private readonly groupsService = inject(GroupsService);
   private readonly route = inject(ActivatedRoute);
-  protected postsData = signal<PinDto[]>([]);
+  protected postsData = signal<PinDto[] | null>(null);
   hasMoreResults = signal(true);
   private lastTimestamp: string = new Date().toISOString();
+  isLoading = signal(false);
+
+  onScroll = () => {
+    const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 200;
+
+    if (nearBottom && this.hasMoreResults() && !this.isLoading()) {
+      this.loadPosts();
+    }
+  };
 
   ngOnInit() {
     this.loadPosts();
+    window.addEventListener('scroll', this.onScroll);
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('scroll', this.onScroll);
   }
 
   loadPosts() {
     const id = Number(this.route.parent?.snapshot.paramMap.get('id'));
-    if (!id) return;
+    if (!id || this.isLoading() || !this.hasMoreResults()) return;
+    this.isLoading.set(true);
     const dto: GetGroupPinsReqDto = {
       groupId: id,
       maxResults: 5,
@@ -35,18 +50,18 @@ export class GroupPostsPlaceholderComponent {
     }
     this.groupsService.getGroupPosts(dto).subscribe({
       next: (res) => {
-        this.postsData.update(current => {
-          this.hasMoreResults.set(res.hasMoreResults);
-          return [...current, ...res.pins];
-        });
+        this.postsData.update(current => [...(current ?? []), ...res.pins]);
 
         if (res.pins.length > 0) {
           const lastComment = res.pins[res.pins.length - 1];
           this.lastTimestamp = lastComment.createdAt;
         }
+        this.hasMoreResults.set(res.hasMoreResults);
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.log(err);
+        this.isLoading.set(false);
       }
     });
   }
@@ -54,4 +69,5 @@ export class GroupPostsPlaceholderComponent {
   showMore() {
     this.loadPosts();
   }
+
 }

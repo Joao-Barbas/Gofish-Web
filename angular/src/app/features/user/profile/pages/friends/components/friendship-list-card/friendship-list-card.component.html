@@ -14,7 +14,7 @@
     <a [routerLink]="['/profile', otherUser.userId]">
       <img [src]="avatarService.resolve(otherUser.avatarUrl)" alt="Avatar">
       <div>
-        <p>{{ otherUser.firstName + ' ' + otherUser.lastName }}</p>
+        <p>{{ otherUser.displayName }}</p>
         <small>@{{ otherUser.userName }}</small>
       </div>
     </a>

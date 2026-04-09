@@ -116,8 +116,7 @@ export interface GeoLocationDTO {
 export interface AuthorDTO {
   id: string;
   userName: string;
-  firstName: string;
-  lastName: string;
+  displayName: string;
   avatarUrl?: string;
 }
 
@@ -153,8 +152,7 @@ export interface PinDetailsDto {
 export interface PinAuthorDto {
   id: string;
   userName: string;
-  firstName: string;
-  lastName: string;
+  displayName: string;
   catchPoint: number;
   rank: number;
   avatarUrl?: string;

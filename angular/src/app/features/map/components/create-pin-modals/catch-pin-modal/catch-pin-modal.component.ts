@@ -50,7 +50,7 @@ export class CatchPinModalComponent {
     visibility: [0],
     species: [0],
     bait: [0],
-    hook: ['', [Validators.maxLength(20)]],
+    hook: ['', [Validators.maxLength(5)]],
     imageUrl: ['', [Validators.required, Validators.pattern(/^.*\.(png|jpeg|jpg)$/i)]],
     groupIds: this.fb.control<number[]>([])
   });
@@ -94,6 +94,7 @@ export class CatchPinModalComponent {
       };
     });
 
+    // Se houver tempo alterar para colocar quando os groups forem selecionados, para evitar chamadas desnecessárias
     this.groupService.getUserGroups().subscribe({
       next: (res) => {
         this.userGroups.set(res.groups);
@@ -128,7 +129,7 @@ export class CatchPinModalComponent {
     const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
 
     if (!allowedTypes.includes(file.type)) {
-      alert('Only PNG or JPEG images are allowed');
+      alert('Only PNG or JPEG or JPG images are allowed');
       this.form.patchValue({ imageUrl: null });
       this.image = null;
       return;

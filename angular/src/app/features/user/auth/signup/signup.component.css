@@ -48,6 +48,59 @@
   transform: translateY(-1px);
 }
 
+.concent-checkbox {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  .checkbox-text {
+    font-size: var(--gf-text-xs);
+    color: var(--gf-dark-text);
+    margin-left: var(--gf-8);
+
+    .privacy-policy-link {
+      text-decoration: none;
+    }
+  }
+
+  .checkbox-input {
+    appearance: none;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--gf-dark-text-muted);
+    border-radius: var(--gf-4);
+    background-color: transparent;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    &:checked {
+      background-color: var(--gf-primary);
+      border-color: var(--gf-primary);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+      background-size: 12px;
+    }
+
+    &:not(:checked).jitter {
+      animation: jitter .4s ease;
+      border-color: var(--gf-danger) !important;
+    }
+  }
+
+  &:not(:last-child) {
+    margin-bottom: var(--gf-2);
+  }
+}
+
+@keyframes jitter {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-4px); }
+  40%  { transform: translateX(2px); }
+  60%  { transform: translateX(-2px); }
+  80%  { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+
 @media (max-width: 36rem) {
   #password::placeholder {
     transform: none;

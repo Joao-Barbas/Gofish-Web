@@ -5,10 +5,15 @@ using GofishApi.Models;
 using GofishApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Drawing;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
+using System.Text;
 
 namespace GofishApi.Controllers;
 
@@ -154,6 +159,67 @@ public class UserSecurityController : ControllerBase
         var code = await _userManager.GenerateTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider);
         var (subject, body) = EmailResources.TwoFactorEmail(code);
         await _emailService.SendAsync(user.Email, subject, body);
+
+        return Ok();
+    }
+
+    // Forgot password
+
+    /// <summary>
+    /// Starts the proccess of a password reset.
+    /// Sends to user's email a 6-digit code.
+    /// </summary>
+    [AllowAnonymous]
+    [HttpPost("ForgotPassoword")]
+    public async Task<IActionResult> ForgotPassoword([FromBody] ForgotPasswordReqDto dto)
+    {
+        var user = await _userManager.FindByEmailAsync(dto.Email);
+
+        if (user is not null && await _userManager.IsEmailConfirmedAsync(user))
+        {
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var (subject, body) = EmailResources.ResetPassword(code);
+            await _emailService.SendAsync(dto.Email, subject, body);
+        }
+
+        // Don't reveal that the user does not exist or is not confirmed, so don't return a 200 if we would have
+        // returned a 400 for an invalid code given a valid user email.
+        return Ok();
+    }
+
+    /// <summary>
+    /// Ends the process of email verification.
+    /// Resets the password using the given values.
+    /// </summary>
+    [AllowAnonymous]
+    [HttpPost("ResetPassword")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordReqDto dto)
+    {
+        var user = await _userManager.FindByEmailAsync(dto.Email);
+
+        if (user is null || !(await _userManager.IsEmailConfirmedAsync(user)))
+        {
+            // Don't reveal that the user does not exist or is not confirmed, so don't return a 200 if we would have
+            // returned a 400 for an invalid code given a valid user email.
+            throw new IdentityException(_userManager.ErrorDescriber.InvalidToken());
+        }
+
+        IdentityResult result;
+
+        try
+        {
+            var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(dto.Code));
+            result = await _userManager.ResetPasswordAsync(user, code, dto.NewPassword);
+        }
+        catch (FormatException)
+        {
+            result = IdentityResult.Failed(_userManager.ErrorDescriber.InvalidToken());
+        }
+        if (!result.Succeeded)
+        {
+            throw new IdentityException(result);
+        }
 
         return Ok();
     }

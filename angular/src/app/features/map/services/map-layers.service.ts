@@ -77,7 +77,7 @@ export class MapLayersService {
       filter: ['!', ['has', 'point_count']],
       layout: {
         'icon-image': icon,
-        'icon-size': 0.05,
+        'icon-size': 24 / 128, // Icons .png resolution at 128px and we want 24px size on mapbox
         'icon-allow-overlap': true,
         'icon-ignore-placement': true
       }

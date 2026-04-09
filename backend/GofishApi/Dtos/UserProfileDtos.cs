@@ -10,8 +10,7 @@ namespace GofishApi.Dtos;
 public record UserProfileDto
 {
     public required string UserId { get; init; }
-    public required string FirstName { get; init; }
-    public required string LastName { get; init; }
+    public required string DisplayName { get; init; }
     public required string UserName { get; init; }
     public required int CatchPoints { get; init; }
     public required int Rank { get; init; }

@@ -1,13 +1,16 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Api } from '@gofish/shared/constants';
+import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateCommentReportReqDTO, CreateCommentReportResDTO, CreatePinReportReqDTO, CreatePinReportResDTO, DeleteReportsReqDTO, GetCommentsReportsByCommentReqDTO, GetPinReportsByPinReqDTO, GetReportReqDTO, GetReportResDTO, GetReportsResDTO } from '@gofish/shared/dtos/report.dto';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReportService {
+
+  private commentReportReasonTypes$?: Observable<EnumDTO[]>;
   constructor(private http: HttpClient) { }
 
 
@@ -79,5 +82,14 @@ export class ReportService {
       params = params.set('maxResults', dto.maxResults.toString());
     }
     return this.http.get<GetReportsResDTO>(Api.Report.action('GetCommentReportsByComment'), { params });
+  }
+
+  enumerateCommentReportReasonType(): Observable<EnumDTO[]> {
+    if (!this.commentReportReasonTypes$) {
+      this.commentReportReasonTypes$ = this.http
+        .get<EnumDTO[]>(Api.Enums.action('CommentReportReason'))
+        .pipe(shareReplay(1));
+    }
+    return this.commentReportReasonTypes$;
   }
 }

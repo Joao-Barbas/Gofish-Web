@@ -3,6 +3,9 @@ import { PinKind } from "@gofish/shared/models/pin.model";
 import { environment } from "environments/environment";
 
 export const DEFAULT_AVATAR = 'assets/vectors/avatar-template-dark.clr.svg';
+export const BUSINESS_EMAIL = 'gofish452@gmail.com';
+export const BUSINESS_PHONE = '+351 265 709 470'; // :)
+export const BUSINEES_ADDRESS = 'Estefanilha, 2910-761 Setúbal, Portugal';
 
 /* Local storage keys */
 
@@ -17,6 +20,7 @@ export const PathSegment = {
   SIGN_UP:                'signup',
   SIGN_IN:                'signin',
   SIGN_IN_VERIFY:         'signin/verify',
+  FORGOT_PASSWORD:        'forgot-password',
   MAP:                    'map',
   CREATE_CATCH_PIN:       'create-catch-pin',
   CREATE_INFO_PIN:        'create-info-pin',
@@ -53,6 +57,7 @@ export const Path = {
   SIGN_UP:                `/${PathSegment.SIGN_UP}`,
   SIGN_IN:                `/${PathSegment.SIGN_IN}`,
   SIGN_IN_VERIFY:         `/${PathSegment.SIGN_IN_VERIFY}`,
+  FORGOT_PASSWORD:        `/${PathSegment.FORGOT_PASSWORD}`,
   MAP:                    `/${PathSegment.MAP}`,
   CREATE_CATCH_PIN:       `/${PathSegment.MAP}/${PathSegment.CREATE_CATCH_PIN}`,
   SETTINGS:               `/${PathSegment.SETTINGS}`,
@@ -111,9 +116,9 @@ export const Api = {
 } as const;
 
 export const PIN_CONFIG = [
-  { kind: PinKind.CATCH,       color: '#0bda0a', iconUrl: 'assets/images/pins-icons/Kind=Catch.png',       icon: 'pin-catch',       kindString: 'Catch' },
-  { kind: PinKind.INFORMATION, color: '#259df4', iconUrl: 'assets/images/pins-icons/Kind=Information.png', icon: 'pin-Information', kindString: 'Information' },
-  { kind: PinKind.WARNING,     color: '#f49d25', iconUrl: 'assets/images/pins-icons/Kind=Warning.png',     icon: 'pin-Warning',     kindString: 'Warning'}
+  { kind: PinKind.CATCH,       color: '#0bda0a', iconUrl: 'assets/images/pins-icons/kind-catch.png',       icon: 'pin-catch',       kindString: 'Catch' },
+  { kind: PinKind.INFORMATION, color: '#259df4', iconUrl: 'assets/images/pins-icons/kind-information.png', icon: 'pin-Information', kindString: 'Information' },
+  { kind: PinKind.WARNING,     color: '#f49d25', iconUrl: 'assets/images/pins-icons/kind-warning.png',     icon: 'pin-Warning',     kindString: 'Warning'}
 ] as const;
 
 export const BodyLengthConstraints = {

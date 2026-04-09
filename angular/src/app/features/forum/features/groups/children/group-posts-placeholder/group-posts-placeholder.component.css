@@ -19,3 +19,12 @@
 
   text-decoration: underline;
 }
+
+.end-message {
+  text-align: center;
+  color: #777777;
+  font-size: var(--gf-14);
+  font-style: italic;
+  padding: var(--gf-16);
+  font-weight: 700;
+}

@@ -62,8 +62,7 @@ public class GroupController : ControllerBase
                 {
                     gu.AppUser.Id,
                     gu.AppUser.UserName,
-                    gu.AppUser.FirstName,
-                    gu.AppUser.LastName,
+                    gu.AppUser.DisplayName,
                     gu.AppUser.UserProfile.AvatarUrl,
                     gu.Role,
                     gu.JoinedAt
@@ -81,8 +80,7 @@ public class GroupController : ControllerBase
         var ownerDto = group.Owner is null ? null : new GroupMemberDto(
             group.Owner.Id,
             group.Owner.UserName ?? "",
-            group.Owner.FirstName ?? "",
-            group.Owner.LastName ?? "",
+            group.Owner.DisplayName,
             group.Owner.AvatarUrl,
             group.Owner.Role,
             group.Owner.JoinedAt);
@@ -568,9 +566,6 @@ public class GroupController : ControllerBase
         if (requesterMembership.Role != GroupRole.Owner && requesterMembership.Role != GroupRole.Moderator)
             return Forbid();
 
-        if(requesterMembership.Role == GroupRole.Moderator && requesterMembership.Role == GroupRole.Moderator)
-            return Forbid();
-
         var targetMembership = await _db.GroupUsers
             .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
 
@@ -580,7 +575,36 @@ public class GroupController : ControllerBase
         if (userId == requesterUserId)
             return BadRequest("You cannot remove yourself from the group using this endpoint.");
 
+        if (targetMembership.Role == GroupRole.Owner)
+            return Forbid();
+
+        if (requesterMembership.Role == GroupRole.Moderator &&
+            targetMembership.Role == GroupRole.Moderator)
+            return Forbid();
+
         _db.GroupUsers.Remove(targetMembership);
+        await _db.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [HttpDelete("LeaveGroup{groupId}")]
+    public async Task<IActionResult> LeaveGroup([FromRoute] int groupId)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
+
+        var membership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
+
+        if (membership is null)
+            return NotFound("You are not a member of this group.");
+
+        if (membership.Role == GroupRole.Owner)
+            return BadRequest("The owner cannot leave the group without transferring ownership or deleting the group.");
+
+        _db.GroupUsers.Remove(membership);
         await _db.SaveChangesAsync();
 
         return NoContent();

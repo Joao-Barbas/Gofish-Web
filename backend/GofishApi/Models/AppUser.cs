@@ -19,6 +19,16 @@ public class AppUser : IdentityUser
     public string? LastName { get; set; }
 
     [PersonalData]
+    [StringLength(50)]
+    public string DisplayName { get; set; } = "";
+
+    [PersonalData]
+    public DateTime? BirthDate { get; set; }
+
+    [PersonalData]
+    public Gender? Gender { get; set; }
+
+    [PersonalData]
     [DefaultValue(TwoFactorMethod.None)]
     public TwoFactorMethod TwoFactorMethod { get; set; } = TwoFactorMethod.None;
 

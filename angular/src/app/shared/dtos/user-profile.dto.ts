@@ -7,8 +7,7 @@ import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 
 export interface UserProfileDTO {
   userId: string;
-  firstName: string;
-  lastName: string;
+  displayName: string;
   userName: string;
   catchPoints: number;
   rank: number;
@@ -35,8 +34,7 @@ export interface GetUserProfileReqDTO {
  */
 export interface GetUserProfileResDTO { // TODO: Remove
   userId: string;
-  firstName?: string;
-  lastName?: string;
+  displayName?: string;
   userName?: string;
   catchPoints: number;
   rank: number;

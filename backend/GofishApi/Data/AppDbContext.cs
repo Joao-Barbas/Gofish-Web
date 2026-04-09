@@ -250,6 +250,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
                 UserName = $"player{i}",
                 FirstName = $"player-{i}",
                 LastName = $"player-last-name-{i}",
+                DisplayName = $"player-dp-{i}",
                 NormalizedUserName = $"PLAYER{i}",
                 Email = $"player{i}@gofish.com",
                 NormalizedEmail = $"PLAYER{i}@GOFISH.COM",
@@ -275,6 +276,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
         {
             Id = "seed-admin-1",
             UserName = "admin1",
+            DisplayName = $"admin-dp-1",
             NormalizedUserName = "ADMIN1",
             Email = "admin@gofish.com",
             NormalizedEmail = "ADMIN@GOFISH.COM",
@@ -325,7 +327,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
         double baseLng = -8.8730;
         var random = new Random(1);
         var createdAt = DateTime.UtcNow.AddDays(-random.Next(0, 30));
-        var expiresAt = createdAt.AddDays(7);
+        var expiresAt = createdAt.AddDays(CatchPin.ExpiresInDays);
         var catchPins = new List<CatchPin>();
 
         for (int i = 0; i < 10; i++)
@@ -360,7 +362,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
         double baseLng = -8.8730;
         var random = new Random(2);
         var createdAt = DateTime.UtcNow.AddDays(-random.Next(0, 7));
-        var expiresAt = createdAt.AddDays(7);
+        var expiresAt = createdAt.AddDays(InfoPin.ExpiresInDays);
 
         var infoPins = new List<InfoPin>();
 
@@ -396,7 +398,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
         double baseLng = -8.8730;
         var random = new Random(3);
         var createdAt = DateTime.UtcNow.AddDays(-random.Next(0, 7));
-        var expiresAt = createdAt.AddDays(7);
+        var expiresAt = createdAt.AddDays(WarnPin.ExpiresInDays);
 
         var warnPins = new List<WarnPin>();
 

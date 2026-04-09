@@ -55,6 +55,7 @@ public class JwtServiceTests
         {
             Id = "user-1",
             UserName = "player1",
+            DisplayName = "player1dp",
             FirstName = "Daniel",
             LastName = "Silva",
             Email = "player1@gofish.com"
@@ -69,9 +70,8 @@ public class JwtServiceTests
 
         jwt.Claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.Sub && c.Value == "user-1");
         jwt.Claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.UniqueName && c.Value == "player1");
-        jwt.Claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.GivenName && c.Value == "Daniel");
-        jwt.Claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.FamilyName && c.Value == "Silva");
         jwt.Claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.Email && c.Value == "player1@gofish.com");
+        jwt.Claims.Should().Contain(c => c.Type == "display_name" && c.Value == "player1dp");
         jwt.Claims.Should().Contain(c => c.Type == "login_provider" && c.Value == "Local");
         jwt.Claims.Should().Contain(c => c.Type == "role" && c.Value == "Admin");
         jwt.Claims.Should().Contain(c => c.Type == "role" && c.Value == "User");

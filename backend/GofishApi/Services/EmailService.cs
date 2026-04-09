@@ -64,4 +64,18 @@ public static class EmailResources
             """;
         return (subject, body);
     }
+
+    public static (string, string) ResetPassword(string code)
+    {
+        var subject = "Reset your Gofish account password";
+        var body = $$"""
+            <p>Please reset your password using the following code:</p>
+            <div style="word-break: break-all; text-align: center; font-size: 0.75rem; font-weight: bold;
+                background-color: #f2f2f2; padding: 12px; margin: 10px 0; border-radius: 6px;">
+                {{code}}
+            </div>
+            <p>This code expires in a few minutes.</p>
+            """;
+        return (subject, body);
+    }
 }

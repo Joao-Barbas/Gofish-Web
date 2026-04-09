@@ -38,14 +38,14 @@
   --gf-font-black:      900;
 
   /*
-   *  Theme Colors
+   * Theme colors
    *
-   *  The app uses --gf-dark-* variables throughout all components.
-   *  Dark mode is the default. In light mode, these values are swapped
-   *  via prefers-color-scheme (see media query).
+   * The app uses --gf-dark-* variables throughout all components.
+   * Dark mode is the default. In light mode, these values are swapped
+   * via prefers-color-scheme (see media query).
    *
-   *  The --gf-light-* variables exist for elements that need inverted
-   *  colors within the current theme (e.g., cancel buttons, badges).
+   * The --gf-light-* variables exist for elements that need inverted
+   * colors within the current theme (e.g., cancel buttons, badges).
    */
   --gf-dark-bg-dark: oklch(0.1504 0.0088 274.27);
   --gf-dark-bg: oklch(0.2581 0.0132 279.01);
@@ -75,6 +75,16 @@
   --gf-dark-text-muted-opacity-50: oklch(0.7668 0 0 / 50%); /* gf-users-chart fill */
   --gf-light-text: oklch(0.1591 0 0);
   --gf-light-text-muted: oklch(0.4202 0 0);
+
+  /*
+   * Static theme colors
+   * Aka. These will not change regardless of theme;
+   */
+  --gf-static-dark-text: oklch(0.9612 0 0);
+  --gf-static-dark-text-muted: oklch(0.7668 0 0);
+  --gf-static-dark-text-muted-opacity-50: oklch(0.7668 0 0 / 50%); /* gf-users-chart fill */
+  --gf-static-light-text: oklch(0.1591 0 0);
+  --gf-static-light-text-muted: oklch(0.4202 0 0);
 
   /* Semantic colors */
   --gf-primary: oklch(0.5998 0.1786 257.69);
@@ -301,6 +311,16 @@
     opacity: 0;
     transform: scale(0);
   }
+}
+
+@keyframes gf-slide-in-from-right {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes gf-slide-out-to-left {
+  from { transform: translateX(0);     opacity: 1; }
+  to   { transform: translateX(-100%); opacity: 0; }
 }
 
 /*
@@ -1076,6 +1096,9 @@ button {
     --gf-dark-bg-warning-pin: var(--gf-light-bg-warning-pin);
     --gf-dark-text: var(--gf-light-text);
     --gf-dark-text-muted: var(--gf-light-text-muted);
+  }
+  .icon-gofish {
+    --icon-url: url("/assets/images/logo-black-256.png");
   }
 }
 

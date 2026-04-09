@@ -10,9 +10,11 @@ import {
   CompleteEmailChangeReqDTO,
   EnableTotpReqDTO,
   EnableTotpResDTO,
+  ForgotPasswordReqDTO,
   GetTotpSetupResDTO,
   InitiateEmailChangeReqDTO,
   InitiateEmailChangeResDTO,
+  ResetPasswordReqDTO,
   SecurityInfoResDTO,
   ValidateTwoFactorCodeReqDTO,
   ValidateTwoFactorCodeResDTO,
@@ -45,6 +47,24 @@ export class UserSecurityApi {
 
   sendTwoFactorEmail(): Observable<void> {
     return this.http.post<void>(Api.UserSecurity.action('SendTwoFactorEmail'), {});
+  }
+
+  // Forgot password
+
+  /**
+   * Starts the proccess of a password reset.
+   * Sends to user's email a 6-digit code.
+   */
+  forgotPassoword(dto: ForgotPasswordReqDTO): Observable<void> {
+    return this.http.post<void>(Api.UserSecurity.action('ForgotPassoword'), dto);
+  }
+
+  /**
+   * Ends the process of email verification.
+   * Resets the password using the given values.
+   */
+  resetPassword(dto: ResetPasswordReqDTO): Observable<void> {
+    return this.http.post<void>(Api.UserSecurity.action('ResetPassword'), dto);
   }
 
   // Change email

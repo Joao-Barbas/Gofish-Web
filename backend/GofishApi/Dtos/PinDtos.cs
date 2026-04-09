@@ -47,8 +47,7 @@ public record PinAuthorDto
 {
     public required string Id { get; init; }
     public required string UserName { get; init; }
-    public required string FirstName { get; init; }
-    public required string LastName { get; init; }
+    public required string DisplayName { get; init; }
     public required int CatchPoints { get; init; }
     public required int Rank { get; init; }
     public string? AvatarUrl { get; init; }
@@ -58,8 +57,7 @@ public record PinAuthorDto
     {
         Id          = u.Id,
         UserName    = u.UserName ?? "",
-        FirstName   = u.FirstName ?? "",
-        LastName    = u.LastName ?? "",
+        DisplayName = u.DisplayName,
         CatchPoints = up.CatchPoints,
         Rank        = GamificationService.GetRank(up.CatchPoints),
         AvatarUrl   = up.AvatarUrl
@@ -69,8 +67,7 @@ public record PinAuthorDto
     {
         Id          = u.Id,
         UserName    = u.UserName ?? "",
-        FirstName   = u.FirstName ?? "",
-        LastName    = u.LastName ?? "",
+        DisplayName = u.DisplayName,
         CatchPoints = up.CatchPoints,
         Rank        = GamificationService.GetRank(up.CatchPoints),
         AvatarUrl   = up.AvatarUrl,

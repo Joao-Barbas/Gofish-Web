@@ -1,106 +1,100 @@
-<div class="d-flex align-items-center justify-content-between gf-card-group-create-search">
+@if (groups() === null) {
+  <gf-loading-spinner></gf-loading-spinner>
+} @else if (groups()!.groups.length === 0) {
+  <div class="empty-groups-state">
+    <div class="end-message">
+      <p>No crews yet. Start your own and gather the crew.</p>
+    </div>
 
-  <!-- Create Group -->
+    <button class="d-flex justify-content-center new-group-btn-wrapper" [routerLink]="Path.FORUM_CREATE_GROUP">
+      <div class="new-group-elements d-flex flex-column align-items-center">
 
-  <div class="d-flex align-items-center create-group-wrapper">
-
-    <button class="gf-badge-create-group-btn" [routerLink]="Path.FORUM_CREATE_GROUP">
-
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="lucide lucide-plus-icon lucide-plus">
-        <path d="M5 12h14" />
-        <path d="M12 5v14" />
-      </svg>
-
-    </button>
-
-    <span class="create-group-text">Create crew</span>
-  </div>
-
-  <!-- Search Group -->
-  <div class="search-group-wrapper justify-content-end">
-    <div class="d-flex align-items-center search-bar">
-
-      <button class="gf-badge-search-group-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-icon lucide-search search-icon">
-          <path d="m21 21-4.34-4.34" />
-          <circle cx="11" cy="11" r="8" />
+          stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-circle-plus-icon lucide-circle-plus new-group-create-icon">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M8 12h8" />
+          <path d="M12 8v8" />
         </svg>
+
+        <span class="new-group-create-text">Create a new crew</span>
+      </div>
+    </button>
+  </div>
+} @else {
+
+  <div class="d-flex align-items-center justify-content-between gf-card-group-create-search">
+
+    <div class="d-flex align-items-center create-group-wrapper">
+      <button class="gf-badge-create-group-btn" [routerLink]="Path.FORUM_CREATE_GROUP">
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-plus-icon lucide-plus">
+          <path d="M5 12h14" />
+          <path d="M12 5v14" />
+        </svg>
+
       </button>
 
-      <input type="text" class="search-input" id="" placeholder="Search for group">
-
+      <span class="create-group-text">Create crew</span>
     </div>
+
   </div>
 
-</div>
-@for(group of groups()?.groups; track group.id) {
+  @for (group of groups()!.groups; track group.id) {
+    <div class="d-flex flex-column group-list-wrapper clickable" [routerLink]="[Path.FORUM_MY_GROUPS, group.id]">
 
-<!-- Group Listing -->
-<div class="d-flex flex-column group-list-wrapper clickable" [routerLink]="[Path.FORUM_MY_GROUPS, group.id]">
+      <div class="gf-card-group-listing d-flex">
 
-  <!-- #Comp my-group-listing-card -->
-  <div class="gf-card-group-listing d-flex">
-
-    <!-- Group-image -->
-    <div class="group-image">
-      <img [src]="group.imageUrl" class="group-image">
-    </div>
-
-    <!-- Name and stats -->
-    <div class="d-flex flex-column group-info-and-stats w-100">
-
-      <div class="group-name-stats d-flex align-items-center justify-content-between ">
-        <span class="group-name">{{group.name}}</span>
-        <div class="d-flex stats-wrapper ms-auto">
-
-          <div class="gf-badge-text">
-            <span>{{group.memberCount == 1 ? `${group.memberCount} Sailor` : `${group.memberCount} Sailors`}} </span>
-          </div>
-
-          <div class="gf-badge-text ms-2">
-            <span>{{group.postCount == 1 ? `${group.postCount} Post` : `${group.postCount} Posts`}}</span>
-          </div>
+        <div class="group-image">
+          <img [src]="group.imageUrl" class="group-image">
         </div>
+
+        <div class="d-flex flex-column group-info-and-stats w-100">
+
+          <div class="group-name-stats d-flex align-items-center justify-content-between">
+            <span class="group-name">{{ group.name }}</span>
+
+            <div class="d-flex stats-wrapper ms-auto">
+              <div class="gf-badge-text">
+                <span>{{ group.memberCount == 1 ? `${group.memberCount} Sailor` : `${group.memberCount} Sailors` }}</span>
+              </div>
+
+              <div class="gf-badge-text ms-2">
+                <span>{{ group.postCount == 1 ? `${group.postCount} Post` : `${group.postCount} Posts` }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="group-description">
+            <p class="mb-2 description">
+              {{ (group.description | slice:0:120) + (group.description!.length > 120 ? '...' : '') }}
+            </p>
+
+            @if (group.description!.length > 120) {
+              <button type="button" class="see-more">See more</button>
+            }
+          </div>
+
+        </div>
+
       </div>
-
-      <!-- Description -->
-      <div class="group-description">
-        <p class="mb-2 description">
-          {{(group.description| slice:0:120) + (group.description!.length > 120 ? '...' : '')}}
-        </p>
-
-        @if (group.description!.length > 120) {
-        <button type="button" class="see-more"> See more </button>
-        }
-      </div>
-
     </div>
+  }
 
-  </div>
-</div>
+  <button class="d-flex justify-content-center new-group-btn-wrapper" [routerLink]="Path.FORUM_CREATE_GROUP">
+    <div class="new-group-elements d-flex flex-column align-items-center">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round"
+        class="lucide lucide-circle-plus-icon lucide-circle-plus new-group-create-icon">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M8 12h8" />
+        <path d="M12 8v8" />
+      </svg>
+
+      <span class="new-group-create-text">Create a new crew</span>
+    </div>
+  </button>
 }
-
-<!-- show-more
-<div class="show-more">
-  <button class="show-more-text">Show more</button>
-</div>
--->
-<!-- New group -->
-
-<button class="d-flex justify-content-center new-group-btn-wrapper" [routerLink]="Path.FORUM_CREATE_GROUP">
-  <div class="new-group-elements d-flex flex-column align-items-center">
-
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round"
-      class="lucide lucide-circle-plus-icon lucide-circle-plus new-group-create-icon">
-      <circle cx="12" cy="12" r="10" />
-      <path d="M8 12h8" />
-      <path d="M12 8v8" />
-    </svg>
-
-    <span class="new-group-create-text">Create a new crew</span>
-  </div>
-</button>

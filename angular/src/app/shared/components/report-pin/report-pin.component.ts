@@ -8,6 +8,7 @@ import { BusyState } from '@gofish/shared/core/busy-state';
 import { PinReportReason, PinReportReasonLabel } from '@gofish/shared/enums/pin-report-reason.enum';
 import { ReportService } from '@gofish/shared/services/report.service';
 import { toast } from 'ngx-sonner';
+import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 
 @Component({
   selector: 'gf-report',
@@ -20,20 +21,11 @@ export class ReportPinComponent {
   private readonly reportService = inject(ReportService);
   private readonly fb = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
-
+  commentReportReasonOptions: EnumDTO[] = [];
   busyState: BusyState = new BusyState();
   errorMessage = '';
   pinId: number | null = null;
 
-  readonly reportReasonOptions = Object.keys(PinReportReasonLabel)
-    .filter(key => !isNaN(Number(key)))
-    .map(key => {
-      const val = Number(key) as PinReportReason;
-      return {
-        value: val,
-        label: PinReportReasonLabel[val]
-      };
-    });
   form = this.fb.group({
     reason: [null as number | null, [Validators.required]],
     description: ['', [Validators.maxLength(200)]]
@@ -48,10 +40,17 @@ export class ReportPinComponent {
       this.errorMessage = "No Pin selected to report.";
       toast.error(this.errorMessage);
     }
+
+    this.reportService.enumerateCommentReportReasonType().subscribe({
+      next: (res) => {
+        this.commentReportReasonOptions = res;
+      }
+    });
+
   }
 
   onCancel(): void {
-    // close modal and go back to previous page
+    // "close" modal and go back to previous page
     window.history.back();
   }
 

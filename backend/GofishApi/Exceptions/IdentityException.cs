@@ -8,6 +8,10 @@ public sealed class IdentityException : AppValidationException
         : base(result.Errors.GroupBy(e => e.Code).ToDictionary(g => g.Key, g => g.Select(e => e.Description).ToArray()))
     { }
 
+    public IdentityException(IdentityError error)
+        : base(error.Code, error.Description)
+    { }
+
     [Obsolete("Use IdentityException(IdentityResult result) instead")]
     public IdentityException(IEnumerable<IdentityError> errors)
         : base(errors.GroupBy(e => e.Code).ToDictionary(g => g.Key, g => g.Select(e => e.Description).ToArray()))

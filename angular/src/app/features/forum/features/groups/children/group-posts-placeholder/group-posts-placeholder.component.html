@@ -1,14 +1,21 @@
-@if(postsData()) {
-@for (post of postsData(); track post.id) {
- <app-forum-post [postData]="post"></app-forum-post>
-}
+@if (postsData() === null) {
+  <gf-loading-spinner></gf-loading-spinner>
+} @else if (postsData()!.length === 0) {
+  <div class="end-message">
+    <p>Nothing here yet. Be the first to drop a pin.</p>
+  </div>
+} @else if (postsData(); as posts) {
+  @for (post of posts; track post.id) {
+    <app-forum-post [postData]="post"></app-forum-post>
+  }
 
-@if (hasMoreResults()) {
-<div class="show-more" (click)="showMore()">
-  <button class="show-more-text">Show more</button>
-</div>
-}
-
-} @else {
-<gf-loading-spinner></gf-loading-spinner>
+  @if (hasMoreResults()) {
+    <div class="show-more" (click)="showMore()">
+      <button class="show-more-text">Show more</button>
+    </div>
+  } @else {
+    <div class="end-message">
+      <p>You've reached the end of the pond.</p>
+    </div>
+  }
 }
