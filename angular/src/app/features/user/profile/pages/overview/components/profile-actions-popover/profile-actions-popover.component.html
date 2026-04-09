@@ -10,11 +10,11 @@
 
 <button (click)="onFriends()">View all friends</button>
 <button (click)="onPins()">View all pins</button>
-<button (click)="onGroups()">View all groups</button>
+<button (click)="onGroups()">View all crews</button>
 
 @if (profileContext.isOwner()) {
-  <button (click)="onFriendRequests()">Go to friend requests</button>
-  <button (click)="onGroupInvites()">Go to group invites</button>
+  <button (click)="onFriendRequests()">Go to friendship requests</button>
+  <button (click)="onGroupInvites()">Go to crew invites</button>
 } @else if (profileContext.isFriend()) {
   <button (click)="onInviteToGroup()">Invite to group...</button>
 }

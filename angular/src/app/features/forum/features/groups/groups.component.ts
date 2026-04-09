@@ -32,7 +32,6 @@ export class GroupsComponent {
   private readonly authService = inject(AuthService);
   protected readonly popoverService = inject(PopoverService);
   private readonly router = inject(Router);
-  protected groupData = signal<GroupDTO | null>(null);
   protected postActive: boolean = true;
   protected isExpanded = false;
   protected readonly Path = Path;
@@ -41,55 +40,21 @@ export class GroupsComponent {
 
   protected readonly GroupRole = GroupRole;
 
-  viewerRole = computed(() => {
-    const group = this.groupData();
-    const myId = this.authService.userId();
 
-    if (!myId) return null;
+  protected groupData = signal<GroupDTO | null>(null);
 
-    // TESTE: Se você for o player1 (Mock), libera como Owner
-    if (this.mockOwner.userId === myId) return GroupRole.Owner;
-
-    if (!group) return null;
-
-    // Lógica real: verifica o dono e membros
-    // Nota: Usei 'any' para aceitar 'Owner' ou 'owner' vindo do backend
-    const owner = (group as any).owner || (group as any).Owner;
-    if (owner && String(owner.userId) === String(myId)) {
-      return GroupRole.Owner;
-    }
-
-    const members = (group as any).members || (group as any).Members;
-    if (members && Array.isArray(members)) {
-      const me = members.find((m: any) => String(m.userId) === String(myId));
-      if (me) return me.role;
-    }
-
-    return null;
-  });
 
   isMember = computed(() => {
-    const role = this.viewerRole();
-    return role !== null && role >= GroupRole.Member;
+    return this.groupData()?.isCurrentUserMember ?? false;
   });
 
-  currentMember = computed(() => {
-    const group = this.groupData();
-    const myId = this.authService.userId();
-    if (!myId) return null;
-    if (this.mockOwner.userId === myId) return this.mockOwner;
-
-    if (!group) return null;
-    const owner = (group as any).owner || (group as any).Owner;
-    if (owner && String(owner.userId) === String(myId)) return owner;
-
-    return null;
+  viewerRole = computed<GroupRole | null>(() => {
+    return this.groupData()?.currentUserMembership?.role ?? null;
   });
 
-  groupPopoverKey = GroupPopoverComponent.Key;
-
-
-
+  currentMember = computed<GroupMemberDTO | null>(() => {
+    return this.groupData()?.currentUserMembership ?? null;
+  });
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -97,13 +62,19 @@ export class GroupsComponent {
 
     this.groupsService.getGroup(Number(id)).subscribe({
       next: (res: any) => {
-        // Se a API retornar { group: {...} }, pegamos o .group, senão o res
+        // Se a API retornar { group: {...} }
         const data = res.group ? res.group : res;
         this.groupData.set(data);
       },
       error: (err) => console.error(err)
     });
   }
+
+
+
+  groupPopoverKey = GroupPopoverComponent.Key;
+
+
 
   // ... (outros métodos toggleExpand, etc)
   onGroupSettingsClick(event: Event) {
@@ -120,6 +91,8 @@ export class GroupsComponent {
     if (!id) return;
     this.router.navigate(['invite'], { relativeTo: this.route });
   }
+
+
 
 
 }

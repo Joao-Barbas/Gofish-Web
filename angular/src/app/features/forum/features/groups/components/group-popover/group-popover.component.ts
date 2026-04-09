@@ -57,6 +57,27 @@ export class GroupPopoverComponent {
     this.router.navigate(['delete'], { relativeTo: this.route });
   }
 
+  leaveGroup() {
+    const groupId = Number(this.route.snapshot.paramMap.get('id'));
+    const userId = this.member().userId; // Este é o ID do utilizador atual
+
+    if (!groupId || !userId) return;
+
+    // Confirmar antes de sair (opcional mas recomendado)
+    if (confirm('Are you sure you want to leave this crew?')) {
+      this.groupsService.removeMember(groupId, userId).subscribe({
+        next: () => {
+          this.controller.close();
+          // Redirecionar para a lista de grupos, já que ele já não tem acesso a este
+          this.router.navigate(['/forum/my-groups']);
+        },
+        error: (err) => {
+          console.error('Error leaving group:', err);
+        }
+      });
+    }
+  }
+
   exit() {
     this.router.navigate(['exit'], { relativeTo: this.route });
   }

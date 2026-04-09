@@ -10,11 +10,12 @@
     <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
   </svg>
 
-  <span>Delete group</span>
+  <span>Delete crew</span>
 
 </button>
 }
 
+@if (viewerRole() >= Role.Moderator) {
 <div class="option-wrapper">
   <button class="group-member-settings-option" (click)="invite()">
 
@@ -24,24 +25,20 @@
       <path d="M12 5v14" />
     </svg>
 
-    <span>Invite to group</span>
+    <span>Invite to crew</span>
 
   </button>
 
 </div>
+}
 
-@if (viewerRole() !== Role.Owner) {
+@if (viewerRole() != Role.Owner) {
 <div class="option-wrapper">
-  <button class="group-member-settings-option" (click)="exit()">
+  <button class="group-member-settings-option" (click)="leaveGroup()">
 
-    <!-- Alterar o svg -->
-    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus">
-      <path d="M5 12h14" />
-      <path d="M12 5v14" />
-    </svg> -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out-icon lucide-log-out"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
 
-    <span>Exit group</span>
+    <span>Jump ship</span>
 
   </button>
 
