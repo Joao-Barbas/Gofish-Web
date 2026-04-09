@@ -23,5 +23,4 @@ public class EnumsController : ControllerBase
     [HttpGet] public IActionResult PinReportReason()     => Ok(EnumDTO.FromEnum<PinReportReason>());
     [HttpGet] public IActionResult CommentReportReason() => Ok(EnumDTO.FromEnum<CommentReportReason>());
     [HttpGet] public IActionResult VoteKind()            => Ok(EnumDTO.FromEnum<VoteKind>());
-
 }

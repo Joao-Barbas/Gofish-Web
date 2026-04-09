@@ -1,102 +1,51 @@
-﻿using GofishApi.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using GofishApi.Enums;
 using GofishApi.Models;
-using System.ComponentModel.DataAnnotations;
+using GofishApi.Services;
 
 namespace GofishApi.Dtos;
 
-#region User
+#region View models
 
-public record GetUserReqDto(
-    // Unused
-)
-{ }
-
-public record GetUserResDto(
-    string UserName,
-    string FirstName,
-    string LastName,
-    FriendshipState? FriendshipState
-)
+public record LeaderboardUserDto
 {
-    public static GetUserResDto FromEntity(AppUser u, FriendshipState? friendshipState) => new(
-        u.UserName  ?? "",
-        u.FirstName ?? "",
-        u.LastName  ?? "",
-        friendshipState
-    );
+    public required int Position { get; init; }
+    public required string UserId { get; init; }
+    public required string UserName { get; init; }
+    public required string DisplayName { get; init; }
+    public required int CatchPoints { get; init; }
+    public required int CatchPointsDelta { get; init; }
+    public required int WeeklyStreak { get; init; }
+    public required int Rank { get; init; }
+    public string? AvatarUrl { get; init; }
 }
 
-public record GetUserSettingsReqDto(
-    // Unused
-)
-{ }
-
-public record GetUserSettingsResDto(
-    string UserName,
-    string FirstName,
-    string LastName,
-    string? Email,
-    string? PhoneNumber,
-    bool EmailConfirmed,
-    bool PhoneNumberConfirmed
-)
+public record SearchUserDto
 {
-    public static GetUserSettingsResDto FromEntity(AppUser u) => new(
-        u.UserName ?? "",
-        u.FirstName ?? "",
-        u.LastName ?? "",
-        null,
-        null,
-        u.EmailConfirmed,
-        u.PhoneNumberConfirmed
-    );
+    public required string Id { get; init; }
+    public required string UserName { get; init; }
+    public required string DisplayName { get; init; }
+    public int? CatchPoints { get; init; }
+    public int? Rank { get; init; }
+    public string? AvatarUrl { get; init; }
 }
-
-public record PutUserReqDto(
-    [Required] string UserName,
-    [Required] string PhoneNumber,
-    [Required] string FirstName,
-    [Required] string LastName,
-    [Required] string Email
-)
-{ }
-
-public record PutUserResDto(
-    // Unused
-)
-{ }
-
-public record PatchUserReqDto(
-    string? UserName,
-    string? PhoneNumber,
-    string? FirstName,
-    string? LastName,
-    string? Email
-)
-{ }
-
-public record PatchUserResDto(
-    // Unused
-)
-{ }
-
-#endregion // User
-#region Friendship
 
 public record FriendshipUserDto(
     string UserId,
     string UserName,
-    string FirstName,
-    string LastName,
-    string? AvatarUrl
+    string DisplayName,
+    string? AvatarUrl,
+    int? CatchPoints,
+    int? Rank
 )
 {
     public static FriendshipUserDto FromEntity(AppUser u) => new(
         u.Id,
-        u.UserName!,
-        u.FirstName ?? "",
-        u.LastName ?? "",
-        u.UserProfile.AvatarUrl
+        u.UserName ?? "",
+        u.DisplayName,
+        u.UserProfile.AvatarUrl,
+        u.UserProfile.CatchPoints,
+        GamificationService.GetRank(u.UserProfile.CatchPoints)
     );
 }
 
@@ -123,18 +72,67 @@ public record FriendshipDto(
     );
 }
 
-public record GetFriendshipsReqDto(
-    string? UserId          = null,
-    FriendshipState? State  = null,
-    int MaxResults          = 20,
-    DateTime? LastTimestamp = null
+public record UserGroupDto
+{
+    public required int Id { get; init; }
+    public required string Name { get; init; }
+    public string? Description { get; init; }
+    public string? AvatarUrl { get; init; }
+    public required DateTime CreatedAt { get; init; }
+    public GroupRole Role { get; init; }
+    public int MemberCount { get; init; }
+    public int PinCount { get; init; }
+}
+
+#endregion
+#region Request wrappers
+
+public record SearchUsersReqDto(
+    string Query,
+    int MaxResults = 20,
+    string? LastUsername = null
 )
 { }
 
-public record GetFriendshipsResDto(
-    IEnumerable<FriendshipDto> Friendships,
-    bool HasMoreResults,
-    DateTime? LastTimestamp
+public record GetUserReqDto(
+// Unused
+)
+{ }
+
+public record GetUserSettingsReqDto(
+// Unused
+)
+{ }
+
+public record PutUserReqDto(
+    [Required] string UserName,
+    [Required] string DisplayName,
+    [Required] string PhoneNumber,
+    [Required] string FirstName,
+    [Required] string LastName,
+    [Required] string Email,
+    DateTime? BirthDate,
+    Gender? Gender
+)
+{ }
+
+public record PatchUserReqDto(
+    string? UserName,
+    string? DisplayName,
+    string? PhoneNumber,
+    string? FirstName,
+    string? LastName,
+    string? Email,
+    DateTime? BirthDate,
+    Gender? Gender
+)
+{ }
+
+public record GetFriendshipsReqDto(
+    string? UserId = null,
+    FriendshipState? State = null,
+    int MaxResults = 20,
+    DateTime? LastTimestamp = null
 )
 { }
 
@@ -149,43 +147,111 @@ public record RequestFriendshipReqDto(
 )
 { }
 
-public record RequestFriendshipResDto(
-    int Id
+public record GetUserGroupReqDto
+{
+    public string? UserId { get; init; } = null;
+    public int MaxResults { get; init; } = 20;
+    public DateTime? LastTimestamp { get; init; } = null;
+}
+
+public record GetInvitableGroupsReqDto(
+    string TargetUserId,
+    int MaxResults = 20,
+    DateTime? LastTimestamp = null
 )
 { }
 
-#endregion // Friendship
-#region Groups
+public record GetGroupInvitesReqDto
+{
+    public FriendshipState? State { get; init; } = null;
+    public int MaxResults { get; init; } = 20;
+    public DateTime? LastTimestamp { get; init; } = null;
+}
 
-public record UserGroupDto(
-    int Id,
-    string Name,
-    string? Description,
-    string? AvatarUrl,
-    DateTime CreatedAt
+#endregion
+#region Response wrappers
+
+public record GetUserPointsResDto
+{
+    public required int Points { get; init; }
+}
+
+public record SearchUsersResDto(
+    IEnumerable<SearchUserDto> Users,
+    bool HasMoreResults,
+    string? LastUsername
+)
+{ }
+
+public record GetUserResDto(
+    string UserName,
+    string DisplayName,
+    FriendshipState? FriendshipState
 )
 {
-    public GroupRole Role { get; init; }
-    public int MemberQty { get; init; }
-    public int PostQty { get; init; }
-
-    public static UserGroupDto FromEntity(Group g) => new(
-        g.Id,
-        g.Name,
-        g.Description,
-        g.AvatarUrl,
-        g.CreatedAt
+    public static GetUserResDto FromEntity(AppUser u, FriendshipState? friendshipState) => new(
+        u.UserName ?? "",
+        u.DisplayName,
+        friendshipState
     );
-
-    public UserGroupDto SetRole(GroupRole role) => new(this) { Role = role };
-    public UserGroupDto SetMemberQty(int memberQty) => new(this) { MemberQty = memberQty };
-    public UserGroupDto SetPostQty(int postQty) => new(this) { PostQty = postQty };
 }
-     
-public record GetUserGroupReqDto(
-    string? UserId = null,
-    int MaxResults = 20,
-    DateTime? LastTimestamp = null
+
+public record GetUserSettingsResDto(
+    string UserName,
+    string DisplayName,
+    string FirstName,
+    string LastName,
+    string? Email,
+    string? PhoneNumber,
+    bool EmailConfirmed,
+    bool PhoneNumberConfirmed,
+    DateTime? BirthDate,
+    Gender? Gender
+)
+{
+    public static GetUserSettingsResDto FromEntity(AppUser u) => new(
+        u.UserName ?? "",
+        u.DisplayName,
+        u.FirstName ?? "",
+        u.LastName ?? "",
+        null,
+        null,
+        u.EmailConfirmed,
+        u.PhoneNumberConfirmed,
+        u.BirthDate,
+        u.Gender
+    );
+}
+
+public record LeaderboardResDto(
+    IReadOnlyCollection<LeaderboardUserDto> Entries,
+    LeaderboardUserDto? CurrentUser
+);
+
+public record PutUserResDto(
+// Unused
+)
+{ }
+
+public record PatchUserResDto(
+// Unused
+)
+{ }
+
+public record GetFriendshipsResDto(
+    IEnumerable<FriendshipDto> Friendships,
+    bool HasMoreResults,
+    DateTime? LastTimestamp
+)
+{ }
+
+public record RequestFriendshipResDto(
+    // Unused
+)
+{ }
+
+public record GetFriendshipBetweenResDto(
+    // Unused
 )
 { }
 
@@ -196,4 +262,16 @@ public record GetUserGroupResDto(
 )
 { }
 
-#endregion // Groups
+public record GetInvitableGroupsResDto(
+    IEnumerable<UserGroupDto> Groups,
+    bool HasMoreResults,
+    DateTime? LastTimestamp
+);
+
+public record GetGroupInvitesResDto(
+    IEnumerable<GroupInviteDto> Invites,
+    bool HasMoreResults,
+    DateTime? LastTimestamp
+);
+
+#endregion

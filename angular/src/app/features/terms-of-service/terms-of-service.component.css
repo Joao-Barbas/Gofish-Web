@@ -51,11 +51,11 @@ is present in text
 .index,
 .index > li > a {
   text-decoration-line: underline;
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
 }
 
 .index > li > a:hover {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 }
 
 html {

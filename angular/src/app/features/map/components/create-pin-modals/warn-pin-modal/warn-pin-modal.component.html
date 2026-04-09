@@ -12,7 +12,7 @@
         </div>
 
         <button class="gf-btn-icon" (click)="onCancel()"
-          style="background: none; border: none; color: var(--dark-text-muted); cursor: pointer;">
+          style="background: none; border: none; color: var(--gf-dark-text-muted); cursor: pointer;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round">
             <path d="M18 6L6 18M6 6l12 12" />
@@ -27,8 +27,10 @@
         <h5 class="text-slim modal-body-section-title mt-3">Content</h5>
         <section class="d-flex flex-column">
           <textarea id="catchPinDescription" class="modal-body-description dark-bg-dark dark-text"
-            placeholder="Add a description..." formControlName="body">
-          </textarea>
+            placeholder="Add a description..." formControlName="body" maxlength="{{ BodyLengthConstraints.MAX }}"></textarea>
+          <small class="dark-text-muted text-end">
+            {{ form.value.body?.length ?? 0 }}/{{ BodyLengthConstraints.MAX }}
+          </small>
 
           @if (form.controls.body.touched) {
           @if (form.controls.body.hasError('required')) {
@@ -37,11 +39,12 @@
           </p>
           } @else if (form.controls.body.hasError('minlength')) {
           <p class="text-danger mt-2 mb-0">
-            Your description is too short!
+            Your description must be at least {{ BodyLengthConstraints.MIN }} characters long.
           </p>
           } @else if (form.controls.body.hasError('maxlength')) {
           <p class="text-danger mt-2 mb-0">
-            Your description must be lower than 100 characters.
+            Your description must be lower than {{ BodyLengthConstraints.MAX }} characters.
+
           </p>
           }
           }
@@ -81,6 +84,21 @@
             </div>
           </div>
 
+          @if (form.controls.visibility.value === 2) {
+          <div class="options-line groups-line d-flex align-items-start justify-content-between dark-text-muted">
+            <h5 class="modal-body-options-text text-slim mb-0 pt-2">Groups</h5>
+            <div class="groups-selector flex-column">
+              @for (group of userGroups(); track group.id) {
+              <label class="group-chip" [class.selected]="selectedGroupIds().includes(group.id)">
+                <input type="checkbox" class="d-none" [checked]="selectedGroupIds().includes(group.id)"
+                  (change)="toggleGroup(group.id)" class="group-chip-image">
+                <img [src]="group.imageUrl" class="group-chip-image">
+                <span>{{ group.name }}</span>
+              </label>
+              }
+            </div>
+          </div>
+          }
           <!-- Warning Type -->
           <div class="options-line d-flex align-items-center justify-content-between dark-text-muted mb-3">
             <h5 class="modal-body-options-text text-slim mb-0">Warning Type</h5>

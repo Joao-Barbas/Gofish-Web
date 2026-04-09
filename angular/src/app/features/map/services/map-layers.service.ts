@@ -1,19 +1,18 @@
 import { Injectable, WritableSignal } from '@angular/core';
-import { ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
+import { PIN_CONFIG } from '@gofish/shared/constants';
+import { GetInViewportResDto, PinDto, ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
 import { PinKind } from '@gofish/shared/models/pin.model';
 
-export const PIN_CONFIG = [
-  { kind: PinKind.CATCH, color: '#f30000' },
-  { kind: PinKind.INFORMATION, color: '#3b82f6' },
-  { kind: PinKind.WARNING, color: '#ff6a00' }
-];
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class MapLayersService {
-  updateLayers(map: mapboxgl.Map, allPins: WritableSignal<ViewportPinDTO[]>): void {
-    PIN_CONFIG.forEach(({ kind, color }) => {
+  protected readonly pinConfigs = PIN_CONFIG;
+  updateLayers(map: mapboxgl.Map, allPins: WritableSignal<PinDto[]>): void {
+    this.loadPinIcons(map);
+    this.pinConfigs.forEach(({ kind, color, icon }) => {
       const pinsOfKind = allPins().filter(pin => pin.kind === kind);
       const sourceId = `pins-${kind}`;
 
@@ -21,7 +20,7 @@ export class MapLayersService {
         type: 'FeatureCollection',
         features: pinsOfKind.map(pin => ({
           type: 'Feature',
-          geometry: { type: 'Point', coordinates: [pin.longitude, pin.latitude] },
+          geometry: { type: 'Point', coordinates: [pin.geolocation!.longitude, pin.geolocation!.latitude] },
           properties: { id: pin.id, kind: pin.kind }
         }))
       };
@@ -38,12 +37,12 @@ export class MapLayersService {
           clusterMaxZoom: 10,
           clusterRadius: 50
         });
-        this.addClusterLayers(map, kind, color);
+        this.addClusterLayers(map, kind, color, icon);
       }
     });
   }
 
-  private addClusterLayers(map: mapboxgl.Map, kind: PinKind, color: string): void {
+  private addClusterLayers(map: mapboxgl.Map, kind: PinKind, color: string, icon: string): void {
     map.addLayer({
       id: `clusters-${kind}`,
       type: 'circle',
@@ -73,16 +72,35 @@ export class MapLayersService {
 
     map.addLayer({
       id: `unclustered-${kind}`,
-      type: 'circle',
+      type: 'symbol',
       source: `pins-${kind}`,
       filter: ['!', ['has', 'point_count']],
-      paint: {
-        'circle-color': color,
-        'circle-radius': 8,
-        'circle-stroke-width': 2,
-        'circle-stroke-color': '#fff',
-        'circle-emissive-strength': 1,
+      layout: {
+        'icon-image': icon,
+        'icon-size': 24 / 128, // Icons .png resolution at 128px and we want 24px size on mapbox
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true
       }
     });
   }
+
+  public loadPinIcons(map: mapboxgl.Map) {
+    this.pinConfigs.forEach(({ icon, iconUrl }) => {
+      if (map.hasImage(icon)) return;
+
+      map.loadImage(iconUrl, (error, image) => {
+        if (error) {
+          console.error(`Error loading icon ${iconUrl}`, error);
+          return;
+        }
+
+        if (!image) return;
+
+        if (!map.hasImage(icon)) {
+          map.addImage(icon, image);
+        }
+      });
+    });
+  }
+
 }

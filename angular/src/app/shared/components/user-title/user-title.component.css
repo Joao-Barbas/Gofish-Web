@@ -1,0 +1,59 @@
+/* user-title.component.css */
+
+span {
+  position: relative;
+  border: none;
+  background: transparent;
+  color: var(--user-title-color, var(--gf-dark-text));
+  font-size: var(--user-title-font-size, var(--gf-text-md));
+  font-weight: var(--user-title-font-weight, var(--gf-font-normal));
+  font-family: var(--user-title-font-family, var(--gf-font-main));
+  line-height: var(--user-title-line-height, normal);
+  text-transform: var(--user-title-text-transform, none);
+  letter-spacing: var(--user-title-letter-spacing, normal);
+  display: var(--user-title-display, inline);
+  text-align: var(--user-title-text-align, left);
+  cursor: var(--user-title-cursor, default);
+  z-index: var(--gf-z-user-title-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+span.effect-none::before {
+  background-clip: unset;
+  background-size: unset;
+  background-position: unset;
+  background-image: unset;
+  background-repeat: unset;
+}
+
+span.effect-rainbow::before {
+  content: "";
+  position: absolute;
+  inset: 0px 6px 0px;
+  background-size: 300% 100%;
+  background-position: 0% 50%;
+  background-image: linear-gradient(90deg, oklch(0.5299 0.2931 293.7740), oklch(0.9054 0.1546 194.7690), oklch(0.8905 0.264583 135.9499), oklch(0.6280 0.2577 29.2300));
+  background-clip: border-box;
+  background-repeat: unset;
+  animation: move-background 4s cubic-bezier(0.7,0.1,0.5,0.9) infinite;
+  filter: blur(12px);
+  transform: scaleY(0.6);
+  z-index: var(--gf-z-user-title-bg);
+}
+
+@keyframes move-background {
+  from { background-position: 300% 50%; }
+  to { background-position: 0% 50%; }
+}
+
+.post-author-name {
+  font-size: var(--gf-14);
+  word-break: break-all;
+  cursor: pointer;
+}
+
+.user-output-no-overflow {
+  max-width: 200px;
+}

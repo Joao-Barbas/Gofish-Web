@@ -1,9 +1,16 @@
 /* overview.component.css */
 
 :host {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: var(--gf-container-lg);
+  width: 90%;
+  gap: var(--gf-24);
+  margin: 0 auto;
+  color: var(--gf-dark-text);
+  padding: var(--gf-32) 0 var(--gf-128);
+  color: var(--gf-dark-text);
 }
-
 
 .action-btn {
   border: none;
@@ -36,6 +43,26 @@
     color: var(--gf-dark-text);
     box-shadow: var(--gf-shadow-lift-md);
   }
+}
+
+.profile-user-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: visible;
+  max-height: var(--gf-text-lg);
+  gap: var(--gf-16);
+
+  gf-user-title {
+    --user-title-color: var(--gf-dark-text);
+    --user-title-font-size: var(--gf-text-lg);
+    --user-title-font-weight: var(--gf-font-bold);
+    --user-title-line-height: 1.0em;
+  }
+}
+
+gf-user-title {
+  --user-title-cursor: pointer;
 }
 
 gf-async-button  {
@@ -94,6 +121,14 @@ gf-async-button  {
   }
 }
 
+.grid-list {
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: var(--gf-8);
+  column-gap: var(--gf-8);
+}
+
 .see-all {
   text-decoration: none;
   color: var(--gf-dark-text-muted);
@@ -138,5 +173,19 @@ gf-async-button  {
     & span {
       font-size: var(--gf-text-md);
     }
+  }
+}
+
+/* media */
+
+@media (max-width: 61rem) {
+  .grid-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 48rem) {
+  .grid-list {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

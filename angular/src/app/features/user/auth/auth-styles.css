@@ -46,7 +46,7 @@
   &::before, &::after {
     content: "";
     flex: 1;
-    border-bottom: 1px solid var(--dark-text-muted);
+    border-bottom: 1px solid var(--gf-dark-text-muted);
   }
 
   &::before {
@@ -58,14 +58,14 @@
   }
 
   & span {
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
   }
 }
 
 .form {
   & small {
     display: block;
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
     font-size: var(--gf-text-xs);
   }
 
@@ -73,8 +73,8 @@
     box-shadow: none;
     border: none;
     outline: none;
-    color: var(--dark-text);
-    background-color: var(--dark-bg-dark);
+    color: var(--gf-dark-text);
+    background-color: var(--gf-dark-bg-dark);
     border-radius: var(--gf-8);
     font-size: var(--gf-text-sm);
     padding: calc(1em / 2) var(--gf-8);
@@ -89,6 +89,10 @@
     &:focus {
       box-shadow: 0 0 0 2px var(--gf-primary);
     }
+  }
+
+  .gf-text-error {
+    color: var(--gf-danger);
   }
 }
 
@@ -130,7 +134,6 @@
 
   & a {
     text-decoration: none;
-    color: var(--gf-primary);
   }
 }
 

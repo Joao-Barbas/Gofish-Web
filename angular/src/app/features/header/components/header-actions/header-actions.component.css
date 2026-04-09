@@ -1,0 +1,44 @@
+/* header-actions.component.css */
+
+.header-actions {
+  background-color: transparent;
+  gap: var(--gf-8);
+}
+
+.nav-menu-toggle {
+  display: none;
+}
+
+.gf-toggle-cilinder {
+  border-radius: 1.125rem;
+  padding: 0 1.125rem 0 0.625rem;
+  height: 2.25rem;
+  gap: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  background-color: var(--gf-dark-bg);
+  box-shadow: var(--gf-shadow-lift-sm);
+  transition: box-shadow 0.15s ease;
+  z-index: var(--gf-z-overlay);
+  color: var(--gf-dark-text-muted);
+  transition: box-shadow .2s ease, color .2s ease;
+
+  & > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:hover {
+    color: var(--gf-dark-text);
+    box-shadow: var(--gf-shadow-lift-md);
+  }
+}
+
+@media (max-width: 48rem) {
+  .nav-menu-toggle {
+    display: inline-flex;
+  }
+}

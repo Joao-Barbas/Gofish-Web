@@ -1,0 +1,252 @@
+/* MODAL TEST */
+
+.modal-backdrop-custom {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 1050;
+}
+
+.modal-custom {
+  width: 100%;
+  max-width: 640px;
+  background: #22232A;
+  border-radius: 16px;
+  box-shadow: var(--gf-shadow-lift-lg);
+  --gofish-card-padding:16px;
+}
+
+.modal-header-title {
+  font-size: 24px;
+}
+
+.icon-size-pin-modal {
+  --size: 18px;
+  background-size: 24px 24px;
+}
+
+
+.icon-box {
+  --icon-box-size: 36px;
+  width: var(--icon-box-size);
+  height: var(--icon-box-size);
+
+  border-radius: 8px;
+  border: none;
+  background-color: var(--gf-dark-bg-light);
+  padding: 0px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.modal-body {
+  border-top: 2px solid var(--gf-dark-bg-light);
+}
+
+.modal-body-section-title {
+  font-size: 20px;
+}
+
+.modal-body-drag-n-drop {
+  padding: 24px;
+  border: 2px dashed var(--gf-dark-bg-dark);
+  border-radius: 16px;
+
+
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.drag-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Hover / drag-over */
+.modal-body-drag-n-drop:hover,
+.modal-body-drag-n-drop.is-dragover {
+  border-color: #fff;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.drag-text {
+  font-size:16px;
+  user-select: none;
+  transition: color 0.2s ease;
+  line-height: 15px;
+}
+
+.drag-icon {
+  width: 36px;
+  height: 36px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+.modal-body-description {
+  min-height: 160px;
+  max-height: 200px;
+  margin-top: 8px;
+
+  border: none;
+  border-radius: 16px;
+
+  padding: 12px;
+
+  outline: none;
+
+  font-size: 16px;
+  resize: none;
+}
+
+.modal-body-options-text {
+  font-size: 16px;
+}
+
+.options-line {
+  padding: 5px 0px;
+}
+
+.modal-info-box {
+  border-radius: 8px;
+  padding: 4px 10px;
+  user-select: none;
+}
+
+.modal-info-box > .selection {
+  background-color: antiquewhite;
+  border-radius: 8px;
+}
+
+.radio-group {
+  display: flex;
+  background-color: var(--gf-dark-bg-dark);
+  padding: 4px;
+  border-radius: 10px;
+}
+
+
+.radio-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.modal-visibility-btn {
+  padding: 6px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #a0a0a0;
+  transition: all 0.2s ease;
+}
+
+.modal-visibility-btn:hover {
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+}
+
+.modal-visibility-btn.active {
+  background: var(--gf-dark-bg-light);
+  color: #fff;
+  font-weight: 500;
+}
+
+.custom-dropdown {
+  background-color: var(--gf-dark-bg-dark);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 30px 4px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3e%3cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 10px) center;
+
+  transition: background-color 0.2s ease;
+  min-width: 140px;
+}
+
+.custom-dropdown:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.1);
+  background-color: var(--gf-dark-bg-light);
+}
+
+.custom-dropdown:hover {
+  background-color: var(--gf-dark-bg-light);
+}
+
+.custom-dropdown option {
+  background-color: #22232A;
+  color: #fff;
+}
+
+
+input.modal-info-box {
+  border: none;
+  color: #fff;
+  text-align: left;
+  width: 200px;
+  outline: none;
+
+  transition: background-color 0.2s ease;
+}
+
+input.modal-info-box:focus {
+  background-color: var(--gf-dark-bg-light) !important;
+}
+
+.options-line {
+  min-height: 40px;
+}
+
+.radio-group-container {
+  flex-wrap: nowrap;
+}
+
+.action-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.action-btns>button,
+.action-btns>app-async-button {
+  flex: 1;
+  max-width: 120px;
+}
+
+.modal-visibility-btn {
+  padding: var(--gf-6) var(--gf-16);
+  border-radius: var(--gf-8);
+  cursor: pointer;
+  color: var(--gf-dark-text-muted);
+  font-size: var(--gf-text-md);
+  transition: all 0.2s ease;
+}
+
+.modal-visibility-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--gf-dark-text);
+}
+
+.modal-visibility-btn.active {
+  background: var(--gf-dark-bg-light);
+  color: var(--gf-dark-text);
+  font-weight: 500;
+  box-shadow: var(--gf-shadow-lift-sm);
+}
+
+.coords-div {
+  cursor: not-allowed;
+}

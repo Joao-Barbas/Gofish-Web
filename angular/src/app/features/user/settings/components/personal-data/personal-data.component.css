@@ -21,7 +21,7 @@ small {
   display: block;
   font-size: var(--gf-12);
   margin: 0;
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   line-height: 1.30em;
 }
 
@@ -38,13 +38,13 @@ button {
   border-radius: var(--gf-10);
 
   &.good {
-    background-color: var(--primary);
-    color: var(--dark-text);
+    background-color: var(--gf-primary);
+    color: var(--gf-dark-text);
   }
 
   &.bad {
-    background-color: var(--danger);
-    color: var(--dark-text);
+    background-color: var(--gf-danger);
+    color: var(--gf-dark-text);
   }
 }
 

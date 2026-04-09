@@ -1,0 +1,22 @@
+:host {
+  display: block;
+  border-radius: 12px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+canvas {
+ 
+}
+
+.chart-container {
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.chart-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}

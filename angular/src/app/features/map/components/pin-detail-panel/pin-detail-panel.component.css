@@ -34,6 +34,10 @@
   height: var(--gf-32);
 }
 
+gf-user-title {
+  --user-title-cursor: pointer;
+}
+
 .post-author-name {
   font-size: var(--gf-14);
   word-break: break-all;
@@ -41,7 +45,7 @@
 
 .separator,
 .time-ago {
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   font-size: 12px;
 }
 
@@ -56,7 +60,7 @@
 [class^="gf-badge-"] {
   width: var(--gf-32);
   height: var(--gf-32);
-  background: var(--dark-bg-light);
+  background: var(--gf-dark-bg-light);
   border: none;
 
   box-shadow:
@@ -68,16 +72,16 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 
   & svg {
     width: var(--gf-16);
     height: var(--gf-16);
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
   }
 
   &:hover svg {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 }
 
@@ -112,7 +116,7 @@
 }
 
 .post-description {
-  font-size: var(--gf-12);
+  font-size: var(--gf-16);
   font-family: var(--gf-font-ugc);
   word-break: break-all;
 }
@@ -120,14 +124,14 @@
 .post-image-wrapper {
   border-radius: var(--gf-12);
   width: 100%;
-  height: 13.5rem;
+  height: 180px;
+  overflow: hidden;
 }
 
 .post-image {
   border-radius: var(--gf-12);
   width: 100%;
-  max-height: 100%;
-
+  height: 100%;
   object-fit: cover;
   cursor: pointer;
 }
@@ -140,7 +144,7 @@
 
 .post-interaction-wrapper {
   width: fit-content;
-  height: fit-content;
+  height: 36px;
 
   padding: var(--gf-6) var(--gf-8);
   gap: var(--gf-8);
@@ -152,24 +156,24 @@
   display: flex;
   align-items: center;
   cursor: text;
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
 
   &:hover span {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 
   & svg {
     width: var(--gf-16);
     height: var(--gf-16);
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
   }
 
   & button svg {
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
   }
 
   & button:hover svg {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 
   padding: var(--gf-6) var(--gf-8);
@@ -184,10 +188,10 @@
 }
 
 .gf-badge-comment {
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
 
   &:hover {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 }
 
@@ -203,7 +207,7 @@
 
 .post-interaction-comment-wrapper {
   cursor: pointer;
-  height: 100%;
+
 }
 
 /* Go To Post */
@@ -239,7 +243,7 @@
 }
 
 .pin-avatar {
-  background-color: var(--dark-text-muted);
+  background-color: var(--gf-dark-text-muted);
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -252,7 +256,7 @@
 }
 
 .author-name {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
   font-weight: 500;
   /* text-medium */
   font-size: 14px;
@@ -261,7 +265,7 @@
 .close-button {
   background: none;
   border: none;
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   cursor: pointer;
   padding: 4px;
   display: flex;
@@ -294,7 +298,7 @@
 }
 
 .pin-text {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
   font-size: 14px;
   margin: 0;
 }
@@ -304,7 +308,7 @@
 }
 
 .bait-info {
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   font-size: 12px;
 }
 
@@ -327,7 +331,7 @@
 }
 
 .badge-text {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
   font-weight: 500;
   font-size: 12px;
 }
@@ -366,3 +370,38 @@
 .active-down .post-icon {
   fill: currentColor;
 }
+
+.clickable {
+  cursor: pointer;
+}
+
+.description-small{
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.see-more {
+  font-family: var(--gf-font-main);
+  font-size: var(--gf-16);
+  color: var(--gf-primary);
+
+  color: var(--gf-primary);
+  --underline-width: 100%;
+
+  background:none;
+  border: none;
+
+  text-decoration: underline;
+}
+
+

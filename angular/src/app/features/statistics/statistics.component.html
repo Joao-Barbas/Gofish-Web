@@ -1,12 +1,10 @@
-<app-flat-header></app-flat-header>
-
 <div class="stat-container">
 
   <div class="container">
     <div class="stats-section-wrapper">
 
-      @if (!currentPath().includes('/statistics/home')) {
-      <button class="quick-access-goto-button" [routerLink]="['/statistics/home']">
+      @if (showBackButton()) {
+      <button class="quick-access-goto-button" (click)="goBack()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round"
           class="lucide lucide-arrow-left-from-line-icon lucide-arrow-left-from-line">
@@ -15,9 +13,7 @@
           <path d="M21 19V5" />
         </svg>
       </button>
-    }
-
-
+      }
 
       <span class="text-bold stats-header-title">Statistics</span>
 
@@ -30,7 +26,3 @@
   </div>
 
 </div>
-
-
-
-<app-footer></app-footer>

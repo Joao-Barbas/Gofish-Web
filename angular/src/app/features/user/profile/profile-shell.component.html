@@ -1,5 +1,13 @@
 <!-- profile-shell.component.html -->
 
-<app-flat-header></app-flat-header>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
+@if (userProfileData.isLoading()) {
+  <gf-loading-spinner></gf-loading-spinner>
+} @else if (userProfileData.error()) {
+  <gf-loading-error-modal
+    [error]="userProfileData.error()!"
+    (negative)="router.navigate([Path.HOME]);"
+    (positive)="window.location.reload();">
+  </gf-loading-error-modal>
+} @else if (userProfileData.hasValue()) {
+  <router-outlet></router-outlet>
+}

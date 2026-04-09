@@ -29,13 +29,15 @@ public class UserProfileController : ControllerBase
     private readonly AppDbContext _context;
     private readonly UserManager<AppUser> _userManager;
     private readonly IVisibilityService _visibility;
+    private readonly IGamificationService _gamification;
 
     public UserProfileController(
         ILogger<UserProfileController> logger,
         IBlobStorageService blobStorage,
         AppDbContext context,
         UserManager<AppUser> userManager,
-        IVisibilityService visibility
+        IVisibilityService visibility,
+        IGamificationService gamification
     )
     {
         _logger = logger;
@@ -43,6 +45,7 @@ public class UserProfileController : ControllerBase
         _context = context;
         _userManager = userManager;
         _visibility = visibility;
+        _gamification = gamification;
     }
 
     [HttpGet("{id}")]
@@ -58,26 +61,54 @@ public class UserProfileController : ControllerBase
             return NotFound();
         }
 
-        var pinsCount = await _visibility
+        var pinCount = await _visibility
         .FilterVisiblePins(_context.Pins.Where(p => p.UserId == id), authUserId)
         .CountAsync();
 
-        var friendsCount = await _context.Friendships
+        var friendCount = await _context.Friendships
         .CountAsync(f => (f.RequesterUserId == id || f.ReceiverUserId == id) && f.State == FriendshipState.Accepted);
 
-        var groupsCount = await _context.GroupUsers
+        var groupCount = await _context.GroupUsers
         .CountAsync(gu => gu.UserId == id);
 
-        var friendship = await _context.Friendships.FirstOrDefaultAsync(f =>
+        var friendship = await _context.Friendships
+        .Include(f => f.Requester).ThenInclude(u => u.UserProfile)
+        .Include(f => f.Receiver).ThenInclude(u => u.UserProfile)
+        .FirstOrDefaultAsync(f =>
             (f.RequesterUserId == authUserId && f.ReceiverUserId == id) ||
             (f.RequesterUserId == id && f.ReceiverUserId == authUserId));
 
-        return Ok(GetUserProfileResDto.FromEntity(thisUserProfile, friendship?.State) with
+        var data = new UserProfileDto
         {
-            PinsCount = pinsCount,
-            FriendsCount = friendsCount,
-            GroupsCount = groupsCount
-        });
+            UserId = thisUserProfile.UserId,
+            DisplayName = thisUserProfile.AppUser.DisplayName,
+            UserName = thisUserProfile.AppUser.UserName ?? "",
+            CatchPoints = thisUserProfile.CatchPoints,
+            Rank = GamificationService.GetRank(thisUserProfile.CatchPoints),
+            Bio = thisUserProfile.Bio,
+            AvatarUrl = thisUserProfile.AvatarUrl,
+            JoinedAt = thisUserProfile.JoinedAt,
+            LastActiveAt = thisUserProfile.LastActiveAt,
+            Friendship = friendship is not null ? FriendshipDto.FromEntity(friendship) : null,
+            WeeklyStreak = thisUserProfile.WeeklyStreak,
+            MaxWeeklySteak = thisUserProfile.MaxWeeklyStreak,
+            PinsCount = pinCount,
+            FriendsCount = friendCount,
+            GroupsCount = groupCount
+        };
+
+        return Ok(data);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUserPoints(string id)
+    {
+        var points = await _gamification.TryGetPoints(id);
+        if (points is not int value)
+        {
+            return NotFound();
+        }
+        return Ok(new GetUserPointsResDto { Points = value });
     }
 
     [HttpGet]

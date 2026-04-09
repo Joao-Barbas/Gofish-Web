@@ -1,0 +1,48 @@
+<!-- O class.nome-da-classe aplica a classe se a condição for verdadeira -->
+<div class="help-box"
+     [class.tooltip-box]="type() === 'tooltip'"
+     [class.alert-box]="type() === 'alert'">
+
+  <div class="top">
+    <div class="icon-title-wrapper">
+
+      <!-- Lógica para o ÍCONE TOOLTIP -->
+      @if (type() === 'tooltip') {
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-message-square-warning-icon">
+          <path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" />
+          <path d="M12 15h.01" /><path d="M12 7v4" />
+        </svg>
+      }
+
+      <!-- Lógica para o ÍCONE ALERT -->
+      @if (type() === 'alert') {
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+          <path d="M12 9v4" /><path d="M12 17h.01" />
+        </svg>
+      }
+
+      <!-- Texto do título: aplica 'text-bold' apenas se for tooltip -->
+      <span class="box-title" [class.text-bold]="type() === 'tooltip'">
+        {{ headerText() }}
+      </span>
+
+    </div>
+
+    <button type="button" class="close-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon">
+        <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+      </svg>
+    </button>
+  </div>
+
+  @if (bodyText()) {
+    <div class="body">
+      <p class="help-body-text">{{ bodyText() }}</p>
+    </div>
+  }
+</div>

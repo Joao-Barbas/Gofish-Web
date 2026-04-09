@@ -1,11 +1,11 @@
 /* styles.css */
 
 /*
- * All custom properties must be prefixed with --gf- to avoid conflicts
+ * All custom properties must be prefixed with --gf-/.gf-/[class="-gf-"] to avoid conflicts
  * with bootstrap and other third-party libraries.
  *
  * Example: --gf-primary, --gf-shadow-lift-sm, --gf-text-muted.
-**/
+ */
 
 /* TODO: Update project wide .css's files to use new variables and updated namings */
 
@@ -38,42 +38,95 @@
   --gf-font-black:      900;
 
   /*
-   *  Theme Colors
+   * Theme colors
    *
-   *  The app uses --gf-dark-* variables throughout all components.
-   *  Dark mode is the default. In light mode, these values are swapped
-   *  via prefers-color-scheme (see media query).
+   * The app uses --gf-dark-* variables throughout all components.
+   * Dark mode is the default. In light mode, these values are swapped
+   * via prefers-color-scheme (see media query).
    *
-   *  The --gf-light-* variables exist for elements that need inverted
-   *  colors within the current theme (e.g., cancel buttons, badges).
+   * The --gf-light-* variables exist for elements that need inverted
+   * colors within the current theme (e.g., cancel buttons, badges).
    */
-  --gf-dark-bg-dark: oklch(0.1509 0.0092 276.35);
-  --gf-dark-bg: oklch(0.2604 0.012 276.58);
-  --gf-dark-bg-light: oklch(0.3037 0.0233 276.07);
-  --gf-dark-text: oklch(0.9619 0 0);
-  --gf-dark-text-muted: oklch(0.7652 0 0);
+  --gf-dark-bg-dark: oklch(0.1504 0.0088 274.27);
+  --gf-dark-bg: oklch(0.2581 0.0132 279.01);
+  --gf-dark-bg-light: oklch(0.3038 0.0239 274.74);
+  --gf-dark-bg-catch-pin: oklch(0.4227 0.1067 143.4);
+  --gf-dark-bg-info-pin: oklch(0.3755 0.0561 240.12);
+  --gf-dark-bg-warning-pin: oklch(0.4072 0.0586 75.58);
+  --gf-success-bg: oklch(0.6109 0.1615 143.75);
+  --gf-success-bg-readable: oklch(0.7166 0.1615 143.75);
+  --gf-success-mild-bg: oklch(0.6231 0.1232 165.5);
+  --gf-success-ocean-bg: oklch(0.7582 0.1365 171.09);
+  --gf-danger-bg: oklch(0.4945 0.1217 25.68);
+  --gf-info-bg: oklch(0.6119 0.1748 262.34);
+  --gf-info-bg-muted: oklch(0.6119 0.1748 262.34 / 30%);
+  --gf-warning-bg: oklch(0.8285 0.1442 90.09 / 60%);
+  --gf-warning-bg-muted: oklch(0.8285 0.1442 90.09 / 30%);
 
-  --gf-light-bg-dark: oklch(0.8266 0.024 276.84);
-  --gf-light-bg: oklch(0.9188 0.0058 277.17);
-  --gf-light-bg-light: oklch(0.3037 0.0233 276.07);
-  --gf-light-text: oklch(0.1579 0 0);
-  --gf-light-text-muted: oklch(0.4184 0 0);
+  --gf-light-bg-dark: oklch(0.8263 0.0239 277.88);
+  --gf-light-bg: oklch(0.9192 0.0055 274.96);
+  --gf-light-bg-light: oklch(0.9582 0.0041 271.37);
+  --gf-light-bg-catch-pin: oklch(0.8405 0.0979 144.64);
+  --gf-light-bg-info-pin: oklch(0.8041 0.0492 239.81);
+  --gf-light-bg-warning-pin: oklch(0.8321 0.0519 75.7);
 
-  --gf-dark-bg-catch-pin: lch(34.29% 39.32 137.83);
-  --gf-dark-bg-info-pin: lch(27.2% 19.32 250.85);
-  --gf-dark-bg-warning-pin: lch(30.94% 25.1 72.47);
+  --gf-dark-text: oklch(0.9612 0 0);
+  --gf-dark-text-muted: oklch(0.7668 0 0);
+  --gf-dark-text-muted-opacity-50: oklch(0.7668 0 0 / 50%); /* gf-users-chart fill */
+  --gf-light-text: oklch(0.1591 0 0);
+  --gf-light-text-muted: oklch(0.4202 0 0);
 
-  --gf-statistics-bg: lch(37.99% 46.9 272.86);
+  /*
+   * Static theme colors
+   * Aka. These will not change regardless of theme;
+   */
+  --gf-static-dark-text: oklch(0.9612 0 0);
+  --gf-static-dark-text-muted: oklch(0.7668 0 0);
+  --gf-static-dark-text-muted-opacity-50: oklch(0.7668 0 0 / 50%); /* gf-users-chart fill */
+  --gf-static-light-text: oklch(0.1591 0 0);
+  --gf-static-light-text-muted: oklch(0.4202 0 0);
 
   /* Semantic colors */
-  --gf-primary: oklch(0.6048 0.2142 262.15);
-  --gf-secondary: oklch(0.7096 0.186513 13.1188);
-  --gf-tertiary: oklch(0.4462 0.0246 276.43);
-  --gf-danger: oklch(0.648 0.1874 28.51);
-  --gf-warning: oklch(0.8829 0.1633 104.07);
-  --gf-success: oklch(0.8359 0.1769 156.76);
-  --gf-info: oklch(0.6114 0.1743 262.46);
-  --gf-selected: oklch(0.6803 0.1178 218.59);
+  --gf-primary: oklch(0.5998 0.1786 257.69);
+  --gf-primary-disabled: oklch(0.5604 0.1526 257.4);
+  --gf-primary-muted: oklch(0.7933 0.0299 254.71);
+  --gf-primary-muted-2: oklch(0.6182 0.0301 254.21); /* user satisfaction index */
+  --gf-accent: oklch(0.7511 0.1465 70.53);
+  --gf-accent-mild: oklch(0.6365 0.1465 70.53);
+  --gf-danger: oklch(0.6486 0.1879 28.63);
+  --gf-warning: oklch(0.8832 0.1636 103.92);
+  --gf-success: oklch(0.8255 0.2433 142.97);
+  --gf-success-mild: oklch(0.6306 0.1365 171.08);
+  --gf-info: oklch(0.6119 0.1748 262.34);
+  --gf-catch-pin: oklab(77.038% -0.20626 0.15811);
+  --gf-info-pin: oklab(67.508% -0.065 -0.14926);
+  --gf-warning-pin: oklab(76.642% 0.05933 0.14687);
+  --gf-btn-disabled: oklch(0.2147 0.0058 285.9);
+
+
+
+  /* ^^^ Ja tiveste a javardar as cores todas meu 02/04/2026 */
+  /* Usa estas se nao tiveres contente com alguma diz - Barbas */
+  --gf-accent:           oklch(0.7511 0.1465 70.53);
+  --gf-accent-disabled:  oklch(0.7511 0.1465 70.53 / 60%);
+  --gf-accent-muted:     oklch(0.7511 0.1465 70.53 / 30%);
+  --gf-danger:           oklch(0.6486 0.1879 28.63);
+  --gf-danger-bg:        oklch(0.6486 0.1879 28.63 / 60%);
+  --gf-danger-bg-muted:  oklch(0.6486 0.1879 28.63 / 30%);
+  --gf-warning:          oklch(0.8285 0.1442 90.09);
+  --gf-warning-bg:       oklch(0.8285 0.1442 90.09 / 60%);
+  --gf-warning-bg-muted: oklch(0.8285 0.1442 90.09 / 30%);
+  --gf-success:          oklch(0.7432 0.2007 147.22);
+  --gf-success-bg:       oklch(0.7432 0.2007 147.22 / 60%);
+  --gf-success-bg-muted: oklch(0.7432 0.2007 147.22 / 30%);
+  --gf-info:             oklch(0.6119 0.1748 262.34);
+  --gf-info-bg:          oklch(0.6119 0.1748 262.34 / 60%);
+  --gf-info-bg-muted:    oklch(0.6119 0.1748 262.34 / 30%);
+  --gf-primary:          oklch(0.5923 0.183 258.03);
+  --gf-primary-disabled: oklch(0.5923 0.183 258.03 / 60%);
+  --gf-primary-muted:    oklch(0.5923 0.183 258.03 / 30%);
+
+
 
   /* Shadows */
   --gf-shadow-lift-sm:
@@ -101,6 +154,10 @@
    * Values start at 1000+ to stay above bootstrap's z-index scale
    * See: https://getbootstrap.com/docs/5.0/layout/z-index/
    */
+  --gf-z-user-title-bg: -1;
+  --gf-z-user-title-fg: 1;
+  --gf-z-flat-header: 10; /* Needed because of about us background trick */
+  --gf-z-overlay: 990;
   --gf-z-dropdown: 1000;
   --gf-z-sticky: 1020;
   --gf-z-fixed: 1030;
@@ -145,6 +202,7 @@
   --gf-72: 4.5rem;
   --gf-80: 5rem;
   --gf-96: 6rem;
+  --gf-128: 8rem;
 
   /* Semantic sizings */
   --gf-space-xs: var(--gf-4);
@@ -154,11 +212,12 @@
   --gf-space-xl: var(--gf-32);
 
   /* Container sizes */
-  --gf-container-xs: 28rem; /* 448px */
-  --gf-container-sm: 37rem; /* 592px */
-  --gf-container-md: 48rem; /* 768px */
-  --gf-container-lg: 61rem; /* 976px */
-  --gf-container-xl: 75rem; /* 1200px */
+  --gf-container-xs:  28rem; /* 448px */
+  --gf-container-sm:  37rem; /* 592px */
+  --gf-container-md:  48rem; /* 768px */
+  --gf-container-lg:  61rem; /* 976px */
+  --gf-container-xl:  75rem; /* 1200px */
+  --gf-container-xxl: 88rem; /* 1408px */
 
   /*
   ** Deprecated below
@@ -167,56 +226,6 @@
   ** Deprecated below
   ** Deprecated below
   */
-
-  --font-main: "Inter", sans-serif; /* use --gf-font-main instead*/
-  --font-heading: "Montserrat", sans-serif; /* use --gf-font-heading instead*/
-
-  /* Layout & text colors */
-
-  --dark-bg-dark: oklch(0.1509 0.0092 276.35);
-  --dark-bg: oklch(0.2604 0.012 276.58);
-  --dark-bg-light: oklch(0.3037 0.0233 276.07);
-  --dark-text: oklch(0.9619 0 0);
-  --dark-text-muted: oklch(0.7652 0 0);
-
-  --light-bg-dark: oklch(0.8266 0.024 276.84);
-  --light-bg: oklch(0.9188 0.0058 277.17);
-  --light-bg-light: oklch(0.3037 0.0233 276.07);
-  --light-text: oklch(0.1579 0 0);
-  --light-text-muted: oklch(0.4184 0 0);
-
-  /* Components colors */
-
-  --primary: oklch(0.6048 0.2142 262.15);
-  --primary-text: oklch(0.6114 0.1743 262.46); /* Use --gf-primary */
-  --secondary: oklch(0.7096 0.186513 13.1188);
-  --tertiary: oklch(0.4462 0.0246 276.43);
-  --danger: oklch(0.648 0.1874 28.51);
-  --warning: oklch(0.8829 0.1633 104.07);
-  --success: oklch(0.8359 0.1769 156.76);
-  --info: oklch(0.6114 0.1743 262.46);
-  --selected: oklch(0.6803 0.1178 218.59);
-
-  /* Shadows */
-
-  --dark-lift-shadow-s:
-    inset 0 1px 2px #ffffff30, inset 0 1px 2px #00000020,
-    inset 0 2px 4px #00000015; /* Deprecated */
-  --dark-lift-shadow-m:
-    inset 0 1px 2px #ffffff50, inset 0 2px 4px #00000020,
-    inset 0 4px 8px #00000010; /* Deprecated */
-  --dark-lift-shadow-l:
-    inset 0 1px 2px #ffffff70, inset 0 4px 6px #00000020,
-    inset 0 6px 10px #00000010; /* Deprecated */
-  --dark-sunk-shadow-s:
-    inset 0 -1px 2px #ffffff20, inset 0 1px 2px #00000030,
-    inset 0 2px 4px #00000025; /* Deprecated */
-  --dark-sunk-shadow-m:
-    inset 0 -1px 2px #ffffff30, inset 0 2px 4px #00000030,
-    inset 0 4px 8px #00000015; /* Deprecated */
-  --dark-sunk-shadow-l:
-    inset 0 -1px 2px #ffffff40, inset 0 4px 6px #00000030,
-    inset 0 6px 10px #00000015; /* Deprecated */
 
   --filter-white: invert(100%) sepia(100%) saturate(1%) hue-rotate(266deg)
     brightness(103%) contrast(101%); /* TODO: Remove */
@@ -245,6 +254,7 @@
     transform: scale(1);
   }
 }
+
 @keyframes gf-popover-fade-in {
   from {
     opacity: 0;
@@ -262,6 +272,7 @@
     transform: scale(1);
   }
 }
+
 @keyframes gf-modal-fade-in {
   from {
     opacity: 0;
@@ -302,49 +313,14 @@
   }
 }
 
-@keyframes overlay-popup-scale {
-  /* TODO: Change to "gf-popover-scale-in" project wide */
-  from {
-    transform: scale(0.8);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-@keyframes overlay-popup-fade {
-  /* TODO: Change to "gf-popover-fade-in" project wide */
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+@keyframes gf-slide-in-from-right {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
 }
 
-@keyframes modal-scale {
-  /* TODO: Change to "gf-modal-scale-in" project wide */
-  from {
-    transform: scale(0.8);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-@keyframes modal-fade {
-  /* TODO: Change to "gf-modal-fade-in" project wide */
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes spin {
-  /* TODO: Change to "gf-basic-spin" project wide */
-  to {
-    transform: rotate(360deg);
-  }
+@keyframes gf-slide-out-to-left {
+  from { transform: translateX(0);     opacity: 1; }
+  to   { transform: translateX(-100%); opacity: 0; }
 }
 
 /*
@@ -366,9 +342,9 @@ body {
 }
 
 body {
-  font-family: var(--font-main);
-  background-color: var(--dark-bg-dark);
-  color: var(--dark-text);
+  font-family: var(--gf-font-main);
+  background-color: var(--gf-dark-bg-dark);
+  color: var(--gf-dark-text);
 }
 
 p,
@@ -390,20 +366,42 @@ h6 {
 */
 
 /* Typography */
+
 .gf-text-error {
   margin: 0;
   font-size: 0.75rem;
-  color: var(--danger);
+  color: var(--gf-danger);
   display: inline-block;
 }
 
 .gf-text-logo {
-  color: var(--dark-text);
-  font-family: var(--font-heading);
+  color: var(--gf-dark-text);
+  font-family: var(--gf-font-heading);
   font-size: var(--gf-32);
   font-weight: 900;
   letter-spacing: -0.125rem;
   user-select: none;
+}
+
+
+/*
+ * Prevents user generated text from
+ * overflowing Post cards or Post comments if they are too big
+ *
+ * Testing required
+ */
+
+.gf-ugc-username {
+  /* Define max-width according to your needs */
+  /*max-width: 200px;*/
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.gf-ugc-text {
+  word-break: break-word;
+  overflow: hidden;
 }
 
 .user-output-no-overflow {
@@ -413,25 +411,8 @@ h6 {
   text-overflow: ellipsis;
 }
 
-/*
- * Retroactively preventing user generated text from
- * overflowing Post cards or Post comments
-
-*/
-
-[class$="-text"],
-[class$="-name"],
-[class$="-description"] {
-  word-break: normal;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 250px;
-  /*white-space: nowrap;*/
-
-}
-
 /* Layouts */
+
 .gf-flow-vertical {
   display: flex;
   flex-direction: column;
@@ -459,6 +440,7 @@ h6 {
 }
 
 /* Cards */
+
 .gf-card,
 [class*="gf-card-"] {
   font: var(--gf-font-main);
@@ -471,21 +453,46 @@ h6 {
   border-width: 0px;
 }
 
+.gf-tag,
+[class*="gf-tag-"] {
+  border-radius: 16px;
+  background-color: var(--gf-dark-bg-dark);
+  width: fit-content;
 
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  gap: 4px;
+
+  padding: 6px 16px;
+
+  & svg {
+    width: 20px;
+    height: 20px;
+    color: var(--gf-dark-text);
+  }
+
+  & span {
+    font-size: 12px;
+    color: var(--gf-dark-text);
+  }
+}
 
 /* Popovers */
+
 .gf-popover,
 [class*="gf-popover-"] {
   /* TODO: styles for .gf-card.gf-popover */
 }
 
 /* Spinners */
+
 .gf-basic-spinner {
   display: block;
   width: 20px;
   height: 20px;
-  border: 2px solid var(--dark-bg-dark);
-  border-top-color: var(--primary);
+  border: 2px solid var(--gf-dark-bg-dark);
+  border-top-color: var(--gf-primary);
   border-radius: 50%;
   animation: gf-basic-spin 1s linear infinite;
 }
@@ -502,11 +509,12 @@ h6 {
   justify-content: center;
   border: none;
   cursor: pointer;
-  background-color: var(--dark-bg);
-  box-shadow: var(--dark-lift-shadow-s);
+  background-color: var(--gf-dark-bg);
+  box-shadow: var(--gf-shadow-lift-sm);
   transition: box-shadow 0.15s ease;
-  z-index: var(--z-opens-overlay);
-  color: var(--dark-text-muted);
+  z-index: var(--gf-z-overlay);
+  color: var(--gf-dark-text-muted);
+  transition: box-shadow .2s ease, color .2s ease;
 
   & > svg {
     width: 1.25rem;
@@ -514,9 +522,22 @@ h6 {
   }
 
   &:hover {
-    color: var(--dark-text);
-    box-shadow: var(--dark-lift-shadow-m);
+    color: var(--gf-dark-text);
+    box-shadow: var(--gf-shadow-lift-md);
   }
+}
+
+button {
+  background: none;
+  color: var(--gf-dark-text);
+  width: fit-content;
+  height: fit-content;
+  border: none;
+}
+
+/* Used in user-satisfaction-index */
+.not-allowed {
+  cursor: not-allowed;
 }
 
 /* Navigation Links */
@@ -574,25 +595,29 @@ h6 {
 }
 
 .gf-modal-shell {
-  background-color: var(--dark-bg);
-  box-shadow: var(--gf-shadow-lift-sm);
+  background-color: var(--gf-dark-bg);
+  box-shadow: var(--gf-shadow-lift-lg);
   width: 90%;
   padding: var(--gf-16);
 }
 
 .gf-modal-close-button {
-  background: var(--dark-bg-light);
+  background: var(--gf-dark-bg-light);
   box-shadow: var(--gf-shadow-lift-sm);
   border-radius: 50%;
   border: none;
   cursor: pointer;
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   width: 36px;
+  max-width: 36px;
+  min-width: 36px;
   height: 36px;
+  max-height: 36px;
+  min-height: 36px;
   transition: box-shadow .2s ease, color .2s ease;
 
   &:hover {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
     box-shadow: var(--gf-shadow-lift-md);
   }
 
@@ -606,17 +631,17 @@ h6 {
   & label {
     display: block;
     margin-bottom: var(--gf-4);
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
     font-size: var(--gf-12);
   }
 
   & input {
     width: 100%;
     height: var(--gf-32);
-    background-color: var(--dark-bg-dark);
+    background-color: var(--gf-dark-bg-dark);
     box-shadow: none;
     font-size: var(--gf-text-sm);
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
     border: none;
     outline: none;
     border-radius: var(--gf-8);
@@ -639,7 +664,7 @@ h6 {
 [class^="gf-badge-"] {
   width: var(--gf-32);
   height: var(--gf-32);
-  background: var(--dark-bg-light);
+  background: var(--gf-dark-bg-light);
   border: none;
 
   box-shadow:
@@ -651,16 +676,16 @@ h6 {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 
   & svg {
     width: var(--gf-16);
     height: var(--gf-16);
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
   }
 
   &:hover svg {
-    color: var(--dark-text);
+    color: var(--gf-dark-text);
   }
 }
 
@@ -668,14 +693,14 @@ h6 {
   width: fit-content;
   padding: var(--gf-6) var(--gf-16);
   border-radius: var(--gf-16);
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 
   box-shadow:
     0px 1px 2px rgba(0, 0, 0, 0.18),
     0px 2px 4px rgba(0, 0, 0, 0.15),
     inset 0px 1px 2px rgba(255, 255, 255, 0.18);
   cursor: default;
-  background: var(--dark-bg-light);
+  background: var(--gf-dark-bg-light);
 
   & > span {
     cursor: text;
@@ -685,18 +710,47 @@ h6 {
 }
 
 /* Avatars */
+.gf-big-avatar {
+  width: var(--gf-42);
+  height: var(--gf-42);
+}
+
+.gf-small-avatar {
+  width: var(--gf-32);
+  height: var(--gf-32);
+}
+
+
 /* Tooltips */
 /* Loaders */
 /* Alerts / Toasts */
 /* Separators */
 
-.gf-modal-separator {
-  border-top: calc(1rem / 16) solid var(--dark-bg-light);
+.gf-separator {
   margin: 0 16px;
+}
+.gf-separator,
+.gf-separator-no-margin {
+  border-top: 2px solid var(--gf-dark-bg-light);
+}
+
+.gf-popover-separator {
+  margin: 0 16px;
+}
+.gf-popover-separator,
+.gf-popover-separator-no-margin {
+  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
+}
+
+.gf-modal-separator {
+  margin: 0 16px;
+}
+.gf-modal-separator,
+.gf-modal-separator-no-margin {
+  border-top: 2px solid var(--gf-dark-bg-light);
 }
 
 /* Icons / Svgs */
-
 /* Backgrounds */
 
 .gf-background-map-fixed {
@@ -715,36 +769,16 @@ h6 {
 */
 
 /* Texts */
-.gf-text-3xs {
-  font-size: var(--gf-text-3xs);
-}
-.gf-text-2xs {
-  font-size: var(--gf-text-2xs);
-}
-.gf-text-xs {
-  font-size: var(--gf-text-xs);
-}
-.gf-text-sm {
-  font-size: var(--gf-text-sm);
-}
-.gf-text-md {
-  font-size: var(--gf-text-md);
-}
-.gf-text-lg {
-  font-size: var(--gf-text-lg);
-}
-.gf-text-xl {
-  font-size: var(--gf-text-xl);
-}
-.gf-text-2xl {
-  font-size: var(--gf-text-2xl);
-}
-.gf-text-3xl {
-  font-size: var(--gf-text-3xl);
-}
-.gf-text-4xl {
-  font-size: var(--gf-text-4xl);
-}
+.gf-text-3xs { font-size: var(--gf-text-3xs); }
+.gf-text-2xs { font-size: var(--gf-text-2xs); }
+.gf-text-xs  { font-size: var(--gf-text-xs); }
+.gf-text-sm  { font-size: var(--gf-text-sm); }
+.gf-text-md  { font-size: var(--gf-text-md); }
+.gf-text-lg  { font-size: var(--gf-text-lg); }
+.gf-text-xl  { font-size: var(--gf-text-xl); }
+.gf-text-2xl { font-size: var(--gf-text-2xl); }
+.gf-text-3xl { font-size: var(--gf-text-3xl); }
+.gf-text-4xl { font-size: var(--gf-text-4xl); }
 
 .gf-font-thin       { font-weight: var(--gf-font-thin); }
 .gf-font-extralight { font-weight: var(--gf-font-extralight); }
@@ -780,35 +814,17 @@ h6 {
 .gf-pos-sticky   { position: sticky; }
 
 /* Container max-widths */
-.gf-container-xs {
-  max-width: var(--gf-container-xs);
-}
-.gf-container-sm {
-  max-width: var(--gf-container-sm);
-}
-.gf-container-md {
-  max-width: var(--gf-container-md);
-}
-.gf-container-lg {
-  max-width: var(--gf-container-lg);
-}
-.gf-container-xl {
-  max-width: var(--gf-container-xl);
-}
+.gf-container-xs { max-width: var(--gf-container-xs); }
+.gf-container-sm { max-width: var(--gf-container-sm); }
+.gf-container-md { max-width: var(--gf-container-md); }
+.gf-container-lg { max-width: var(--gf-container-lg); }
+.gf-container-xl { max-width: var(--gf-container-xl); }
 
 /* width percentages */
-.gf-w-50 {
-  width: 50%;
-}
-.gf-w-80 {
-  width: 80%;
-}
-.gf-w-90 {
-  width: 90%;
-}
-.gf-w-100 {
-  width: 100%;
-}
+.gf-w-50  { width: 50%; }
+.gf-w-80  { width: 80%; }
+.gf-w-90  { width: 90%; }
+.gf-w-100 { width: 100%; }
 
 /* Gaps */
 .gf-gap-0  { gap: 0; }
@@ -889,6 +905,7 @@ h6 {
 .gf-my-20   { margin-top: var(--gf-20); margin-bottom: var(--gf-20); }
 .gf-my-24   { margin-top: var(--gf-24); margin-bottom: var(--gf-24); }
 .gf-my-32   { margin-top: var(--gf-32); margin-bottom: var(--gf-32); }
+.gf-my-64   { margin-top: var(--gf-64); margin-bottom: var(--gf-64); }
 .gf-my-auto { margin-top: auto; margin-bottom: auto; }
 
 .gf-ml-0    { margin-left: 0; }
@@ -1018,13 +1035,34 @@ h6 {
 .gf-pb-20 { padding-bottom: var(--gf-20); }
 .gf-pb-24 { padding-bottom: var(--gf-24); }
 .gf-pb-32 { padding-bottom: var(--gf-32); }
+.gf-pb-64 { padding-bottom: var(--gf-64); }
+.gf-pb-96 { padding-bottom: var(--gf-96); }
 
 /* Pointer events */
-.gf-no-events {
-  pointer-events: none !important;
+.gf-no-events { pointer-events: none !important; }
+.gf-do-events { pointer-events: auto; }
+
+/* Cursor */
+
+.gf-generic-clickable-wrapper {
+  cursor: pointer;
 }
-.gf-do-events {
-  pointer-events: auto;
+
+.gf-mouse-tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: var(--gf-dark-bg);
+  color: var(--gf-dark-text-muted);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 10000;
+  box-shadow: var(--gf-shadow-lift-s);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  white-space: pre-line;
 }
 
 /*
@@ -1033,24 +1071,34 @@ h6 {
 
 */
 
-@media (max-width: 36rem) {
+@media (max-width: 61rem) {
+  /* Nothing to see here */
+}
+
+@media (max-width: 48rem) {
+  /* Nothing to see here */
+}
+
+@media (max-width: 37rem) {
   .gf-background-map-fixed {
     background-image: none;
     background-color: var(--gf-dark-bg-dark);
   }
 }
 
-@media (max-width: 62rem) {
-  /* Nothing to see here */
-}
-
 @media (prefers-color-scheme: light) {
   :root {
-    --dark-bg-dark: oklch(0.8266 0.024 276.84);
-    --dark-bg: oklch(0.9188 0.0058 277.17);
-    --dark-bg-light: oklch(0.3037 0.0233 276.07);
-    --dark-text: oklch(0.1579 0 0);
-    --dark-text-muted: oklch(0.4184 0 0);
+    --gf-dark-bg-dark: var(--gf-light-bg-light);
+    --gf-dark-bg: var(--gf-light-bg);
+    --gf-dark-bg-light: var(--gf-light-bg-dark);
+    --gf-dark-bg-catch-pin: var(--gf-light-bg-catch-pin);
+    --gf-dark-bg-info-pin: var(--gf-light-bg-info-pin);
+    --gf-dark-bg-warning-pin: var(--gf-light-bg-warning-pin);
+    --gf-dark-text: var(--gf-light-text);
+    --gf-dark-text-muted: var(--gf-light-text-muted);
+  }
+  .icon-gofish {
+    --icon-url: url("/assets/images/logo-black-256.png");
   }
 }
 
@@ -1080,13 +1128,13 @@ h6 {
 
 .font-main li > a,
 .font-main {
-  font-family: var(--font-main);
+  font-family: var(--gf-font-main);
 }
 
 .font-heading span,
 .font-heading li > a,
 .font-heading {
-  font-family: var(--font-heading);
+  font-family: var(--gf-font-heading);
 }
 
 /*
@@ -1094,13 +1142,13 @@ h6 {
 */
 
 .dark-bg-dark {
-  background-color: var(--dark-bg-dark);
+  background-color: var(--gf-dark-bg-dark);
 }
 .dark-bg {
-  background-color: var(--dark-bg);
+  background-color: var(--gf-dark-bg);
 }
 .dark-bg-light {
-  background-color: var(--dark-bg-light);
+  background-color: var(--gf-dark-bg-light);
 }
 
 /*
@@ -1108,10 +1156,10 @@ h6 {
 */
 
 .dark-text {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 }
 .dark-text-muted {
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
 }
 
 /*
@@ -1318,7 +1366,7 @@ h6 {
 [class^="gofish-btn-"],
 .gf-btn,
 .gofish-btn {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
   font-size: 14px;
   border-width: 0px;
 
@@ -1330,8 +1378,8 @@ h6 {
   --gf-btn-padding: var(--gf-btn-padding-default);
   padding: var(--gf-btn-padding);
 
-  --gf-btn-bg-default: #333;
-  --gf-btn-bg: var(--gf-btn-bg-default);
+
+  --gf-btn-bg: var(--gf-dark-bg);
 
   background-color: var(--gf-btn-bg);
 
@@ -1339,7 +1387,7 @@ h6 {
    * O box-shadow pode ser definido ao modificar o --gf-btn-box-shadow
   */
 
-  --gf-btn-box-shadow-default: var(--dark-lift-shadow-s);
+  --gf-btn-box-shadow-default: var(--gf-shadow-lift-sm);
   --gf-btn-box-shadow: var(--gf-btn-box-shadow-default);
 
   box-shadow: var(--gf-btn-box-shadow);
@@ -1358,7 +1406,7 @@ h6 {
 [class^="gofish-btn"]:active,
 .gf-btn:active,
 .gofish-btn:active {
-  box-shadow: var(--dark-sunk-shadow-l);
+  box-shadow: var(--gf-shadow-sink-lg);
   transform: translateY(1px);
 }
 
@@ -1414,7 +1462,7 @@ h6 {
 }
 
 .button-wrapper-clickable:active {
-  box-shadow: var(--dark-sunk-shadow-l);
+  box-shadow: var(--gf-shadow-sink-lg);
 }
 
 /*
@@ -1435,11 +1483,11 @@ h6 {
 
 .generic-select-wrapper-text > p,
 .generic-select-wrapper-text > a {
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
 }
 
 .generic-select-wrapper-text:hover > p {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 }
 
 /* ================/
@@ -1454,9 +1502,9 @@ h6 {
 [class*="gofish-card-"],
 /* .gf-card, */
 .gofish-card {
-  font: var(--font-main);
+  font: var(--gf-font-main);
   color: white; /* Cor do texto em branco*/
-  box-shadow: var(--dark-lift-shadow-m);
+  box-shadow: var(--gf-shadow-lift-md);
 
   border-radius: 12px;
   border-width: 0px;
@@ -1517,8 +1565,8 @@ h6 {
 /* ====== */
 
 .logo-text /* Deprecated - Use "gf-text-logo" instead */ {
-  color: var(--dark-text);
-  font-family: var(--font-heading);
+  color: var(--gf-dark-text);
+  font-family: var(--gf-font-heading);
 
   font-size: 2rem;
   font-weight: 900;
@@ -1546,29 +1594,29 @@ h6 {
 
 /* TESTE POP UPS PINS */
 .mapboxgl-popup-content {
-  background-color: var(--dark-bg) !important;
-  color: var(--dark-text);
+  background-color: var(--gf-dark-bg) !important;
+  color: var(--gf-dark-text);
   border-radius: 1.25rem !important;
   padding: 0 !important; /* Importante: o card preenche tudo */
   overflow: hidden;
-  box-shadow: var(--dark-lift-shadow-m) !important;
+  box-shadow: var(--gf-shadow-lift-md) !important;
   border: none;
 }
 
 .mapboxgl-popup-tip {
-  border-top-color: var(--dark-bg) !important;
-  border-bottom-color: var(--dark-bg) !important;
+  border-top-color: var(--gf-dark-bg) !important;
+  border-bottom-color: var(--gf-dark-bg) !important;
 }
 
 .mapboxgl-popup-close-button {
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   font-size: 1.2rem;
   padding: 5px 10px;
   outline: none;
 }
 .mapboxgl-popup-close-button:hover {
   background-color: transparent;
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 }
 
 .popup-is-tip .mapboxgl-popup-content {
@@ -1578,7 +1626,7 @@ h6 {
 
 .pin-hover-tip {
   padding: 0.75rem 1rem;
-  font-family: var(--font-main);
+  font-family: var(--gf-font-main);
   font-weight: 700;
   font-size: 0.875rem;
   text-align: center;
@@ -1598,8 +1646,8 @@ h6 {
 .pin-card__image-wrapper {
   width: 100%;
   height: 120px;
-  background-color: var(--dark-bg-dark);
-  box-shadow: var(--dark-sunk-shadow-s); /* Efeito de profundidade */
+  background-color: var(--gf-dark-bg-dark);
+  box-shadow: var(--gf-shadow-sink-sm); /* Efeito de profundidade */
   overflow: hidden;
 }
 
@@ -1618,7 +1666,7 @@ h6 {
 }
 
 .pin-card__title {
-  font-family: var(--font-heading);
+  font-family: var(--gf-font-heading);
   font-weight: 900;
   font-size: 1.1rem;
   margin: 0;
@@ -1626,14 +1674,14 @@ h6 {
 }
 
 .pin-card__coords {
-  font-family: var(--font-main);
-  color: var(--dark-text-muted);
+  font-family: var(--gf-font-main);
+  color: var(--gf-dark-text-muted);
   font-size: 0.75rem;
   letter-spacing: 0.025em;
 }
 .pin-card__description {
-  font-family: var(--font-main); /* Fonte principal Inter */
-  color: var(--dark-text); /* Cor clara para leitura */
+  font-family: var(--gf-font-main); /* Fonte principal Inter */
+  color: var(--gf-dark-text); /* Cor clara para leitura */
   font-size: 0.875rem; /* Tamanho equilibrado (14px) */
   font-weight: 400; /* Peso normal para contraste com o h3 bold */
   margin: 0; /* Reset de margens padrão do h2 */
@@ -1646,22 +1694,22 @@ h6 {
   overflow: hidden;
 }
 .pin-card--catching .pin-card__title {
-  color: var(--success);
+  color: var(--gf-success);
 }
 .pin-card--warning .pin-card__title {
-  color: var(--warning);
+  color: var(--gf-warning);
 }
 .pin-card--info .pin-card__title {
-  color: var(--info);
+  color: var(--gf-info);
 }
 .pin-card--information .pin-card__title {
-  color: var(--info);
+  color: var(--gf-info);
 }
 
 /* Container principal ajustado para Mapbox */
 .popup-is-card .mapboxgl-popup-content {
   width: 408px !important; /* Largura exata do Figma */
-  background-color: var(--dark-bg) !important;
+  background-color: var(--gf-dark-bg) !important;
   border-radius: 12px !important;
   padding: 0 !important;
   overflow: hidden;
@@ -1688,7 +1736,7 @@ h6 {
 .pin-preview-click__avatar {
   width: 32px;
   height: 32px;
-  background-color: var(--dark-text-muted);
+  background-color: var(--gf-dark-text-muted);
   border-radius: 50%;
 }
 
@@ -1697,8 +1745,8 @@ h6 {
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
-  background-color: var(--dark-bg-dark);
-  box-shadow: var(--dark-sunk-shadow-s);
+  background-color: var(--gf-dark-bg-dark);
+  box-shadow: var(--gf-shadow-sink-sm);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -1716,8 +1764,8 @@ h6 {
 }
 
 .pin-preview-click__badge {
-  background-color: var(--dark-bg-light);
-  box-shadow: var(--dark-lift-shadow-s);
+  background-color: var(--gf-dark-bg-light);
+  box-shadow: var(--gf-shadow-lift-sm);
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 12px;
@@ -1728,7 +1776,7 @@ h6 {
 .pin-preview-click__share-btn {
   background: transparent;
   border: none;
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1738,7 +1786,7 @@ h6 {
 
 .pin-preview-click__close-btn:hover,
 .pin-preview-click__share-btn:hover {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 }
 
 /* Esconder o botão X nativo do Mapbox para usar o do design */

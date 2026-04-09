@@ -12,62 +12,38 @@ import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
 import { firstValueFrom } from 'rxjs';
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
 import { FriendshipListCardComponent } from '@gofish/features/user/profile/pages/friends/components/friendship-list-card/friendship-list-card.component';
+import { Path } from '@gofish/shared/constants';
+import { Router } from '@angular/router';
+import { LoadingErrorModalComponent } from "@gofish/shared/components/loading-error-modal/loading-error-modal.component";
 
 @Component({
   selector: 'app-friends-list',
   imports: [
     FriendshipListCardComponent,
     AsyncButtonComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    LoadingErrorModalComponent
 ],
-  template: `
-    @if (friends.isLoading()) {
-      <gf-loading-spinner></gf-loading-spinner>
-    }
-    @if (friends.hasValue()) {
-      <div class="list">
-        @for (friend of friendsList(); track friend.id) {
-          <gf-friendship-list-card
-            [friendship]="friend"
-            [small]="false"
-            [actions]="false"
-          ></gf-friendship-list-card>
-        } @empty {
-          @if (!friends.isLoading() && !loadingState.isLoading()) {
-            <p>{{ 'No friends yet. :(' }}</p>
-          }
-        }
-      </div>
-      @if (friendsHasMore()) {
-        <gf-async-button
-          [labels]="{ idle: 'Load more', busy: 'Loading...' }"
-          [states]="{ busy: busyState.isBusy() }"
-          (click)="loadMoreFriends()"
-        ></gf-async-button>
-      }
-    }
-    @if (friends.error()) {
-      <div class="failed-container gf-flow-vertical gf-center-axes">
-        <span>{{ friends.error() }}</span>
-        <button (click)="friends.reload()">Try Again</button>
-      </div>
-    }
-  `,
-  styleUrl: '../../friends.component.css',
+  templateUrl: './friends-list.component.html',
+  styleUrl: './friends-list.component.css',
 })
 export class FriendsListComponent {
   readonly profileContext = inject(ProfileContext);
   readonly userApi        = inject(UserApi);
+  readonly router         = inject(Router);
 
   readonly loadingState = new LoadingState();
   readonly busyState    = new BusyState();
+
+  readonly Path = Path;
+  readonly window = window;
 
   friendsCursor  = signal<string | undefined>(undefined);
   friendsHasMore = signal(true);
   friendsList    = signal<FriendshipDTO[]>([]);
 
   friends = resource({
-    params: () => this.profileContext.profileId(),
+    params: () => this.profileContext.userProfileId(),
     loader: ({ params: id }) => firstValueFrom(this.userApi.getFriendships({ userId: id, state: FriendshipState.Accepted, maxResults: 1, lastTimestamp: undefined }))
   });
 
@@ -81,7 +57,7 @@ export class FriendsListComponent {
   }
 
   loadMoreFriends() {
-    let profileId = this.profileContext.profileId();
+    let profileId = this.profileContext.userProfileId();
     this.loadingState.start();
     this.busyState.setBusy(true);
     this.userApi.getFriendships({

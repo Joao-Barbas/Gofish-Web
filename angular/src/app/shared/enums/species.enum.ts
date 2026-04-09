@@ -1,3 +1,5 @@
+// species.enum.ts
+
 export enum Species {
   Unknown = 0,
   Achiga = 1,
@@ -22,3 +24,28 @@ export enum Species {
   Ray = 20,
   Eel = 21
 }
+
+export const SpeciesLabel: Record<Species, string> = {
+  [Species.Unknown]: 'Unknown',
+  [Species.Achiga]: 'Achiga',
+  [Species.Carp]: 'Carp',
+  [Species.Catfish]: 'Catfish',
+  [Species.Pike]: 'Pike',
+  [Species.Perch]: 'Perch',
+  [Species.Trout]: 'Trout',
+  [Species.Salmon]: 'Salmon',
+  [Species.Tilapia]: 'Tilapia',
+  [Species.Tuna]: 'Tuna',
+  [Species.Cod]: 'Cod',
+  [Species.Mackerel]: 'Mackerel',
+  [Species.Sardine]: 'Sardine',
+  [Species.Anchovy]: 'Anchovy',
+  [Species.Snook]: 'Snook',
+  [Species.Grouper]: 'Grouper',
+  [Species.Swordfish]: 'Swordfish',
+  [Species.Flounder]: 'Flounder',
+  [Species.Herring]: 'Herring',
+  [Species.Shark]: 'Shark',
+  [Species.Ray]: 'Ray',
+  [Species.Eel]: 'Eel',
+};

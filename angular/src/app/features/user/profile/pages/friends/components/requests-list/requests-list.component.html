@@ -1,0 +1,32 @@
+<!-- requests-list.component.html -->
+
+@if (requests.isLoading()) {
+  <gf-loading-spinner></gf-loading-spinner>
+} @else if (requests.error()) {
+  <gf-loading-error-modal
+    [error]="requests.error()!"
+    (negative)="router.navigate([Path.HOME]);"
+    (positive)="window.location.reload();">
+  </gf-loading-error-modal>
+} @else if (requests.hasValue()) {
+  <div class="list">
+    @for (requests of requestsList(); track requests.id) {
+      <gf-friendship-list-card
+        [friendship]="requests"
+        [small]="false"
+        [actions]="true"
+      ></gf-friendship-list-card>
+    } @empty {
+      @if (!requests.isLoading() && !loadingState.isLoading()) {
+        <p>{{ 'No bites yet... :(' }}</p>
+      }
+    }
+  </div>
+  @if (requestsHasMore()) {
+    <gf-async-button
+      [labels]="{ idle: 'Load more', busy: 'Loading...' }"
+      [states]="{ busy: busyState.isBusy() }"
+      (click)="loadMoreFriends()"
+    ></gf-async-button>
+  }
+}

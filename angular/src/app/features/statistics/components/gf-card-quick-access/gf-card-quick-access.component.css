@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  width: 550px;
+  width: 100%;
 }
 
 .quick-access-icon-text-extra-wrapper {
@@ -45,7 +45,7 @@
     background-color: #477eeb;
   }
 
-  &.pin-density {
+  &.pin-density-by-location {
     background-color: #07b7bd;
   }
 

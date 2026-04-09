@@ -9,8 +9,8 @@ public class GroupInvite
     [Key]
     public int Id { get; set; }
 
-    public DateTime CreatedAt { get; set; }
-    public FriendshipState State { get; set; }
+    [ForeignKey(nameof(Group))]
+    public required int GroupId { get; set; }
 
     [ForeignKey(nameof(Requester))]
     public required string RequesterUserId { get; set; }
@@ -18,8 +18,9 @@ public class GroupInvite
     [ForeignKey(nameof(Receiver))]
     public required string ReceiverUserId { get; set; }
 
-    [ForeignKey(nameof(Group))]
-    public required int GroupId { get; set; }
+    public required DateTime CreatedAt { get; set; }
+
+    public required FriendshipState State { get; set; }
 
     // Navigation
 

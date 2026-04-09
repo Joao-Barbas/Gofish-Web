@@ -58,33 +58,33 @@ app-cluster-details{
 }
 
 .actions-bundle-container {
-  background-color: var(--dark-bg);
+  background-color: var(--gf-dark-bg);
   border: none;
   border-radius: 12px;
-  box-shadow: var(--dark-lift-shadow-s);
+  box-shadow: var(--gf-shadow-lift-sm);
 
   & > .map-action {
     border: none;
     padding: 0;
     background-color: transparent;
-    height: 36px;
-    width: 36px;
+    height: 45px;
+    width: 45px;
     min-height: 36px;
     min-width: 36px;
-    color: var(--dark-text-muted);
+    color: var(--gf-dark-text-muted);
 
     display: flex;
     align-items: center;
     justify-content: center;
 
     & > svg {
-      height: 18px;
-      width: 18px;
+      height: 20px;
+      width: 20px;
       display: block;
     }
 
     &:hover:not(:disabled) {
-      color: var(--dark-text);
+      color: var(--gf-dark-text);
     }
 
     &:disabled {
@@ -98,12 +98,12 @@ app-cluster-details{
 /* End actions overlay */
 /* Begin popup overlay */
 
-@keyframes overlay-popup-scale { /* TODO: This is already repeated in header component. Maybe deduplicate to styles.css? */
+@keyframes gf-popover-scale-in { /* TODO: This is already repeated in header component. Maybe deduplicate to styles.css? */
   from { transform: scale(0.8); }
   to { transform: scale(1); }
 }
 
-@keyframes overlay-popup-fade {
+@keyframes gf-popover-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
@@ -115,8 +115,8 @@ app-cluster-details{
   z-index: var(--z-overlay);
 
   &.on-enter {
-    animation: overlay-popup-scale 150ms cubic-bezier(0.34, 1.8, 0.64, 1),
-               overlay-popup-fade 150ms linear;
+    animation: gf-popover-scale-in 150ms cubic-bezier(0.34, 1.8, 0.64, 1),
+               gf-popover-fade-in 150ms linear;
   }
 
   &.on-leave {

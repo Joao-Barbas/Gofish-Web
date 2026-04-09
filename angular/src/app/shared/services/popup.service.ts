@@ -1,6 +1,13 @@
 import { Injectable, signal } from '@angular/core';
 import { PopupKey } from '@gofish/shared/models/popup.model';
+import { PopoverService } from '@gofish/shared/services/popover.service';
+import { PopoverKey } from '@gofish/shared/core/popover-controller';
 
+/**
+ * @deprecated This service is deprecated. Use {@link PopoverService} instead.
+ * @see {@link PopoverService}
+ * @see {@link PopoverKey}
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -30,3 +37,5 @@ export class PopupService {
     return this._activePopup() === key;
   }
 }
+
+// TODO: Remove this file

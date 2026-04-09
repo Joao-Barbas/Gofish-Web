@@ -38,7 +38,7 @@ button {
   }
 
   &.busy {
-    background-color: var(--async-btn-busy-bg, var(--gf-tertiary));
+    background-color: var(--async-btn-busy-bg, var(--gf-primary-disabled));
     box-shadow: var(--async-btn-busy-box-shadow, none);
     color: var(--async-btn-busy-color, var(--gf-dark-text));
   }
@@ -47,6 +47,12 @@ button {
     background-color: var(--async-btn-success-bg, var(--gf-success));
     box-shadow: var(--async-btn-success-box-shadow, none);
     color: var(--async-btn-success-color, var(--gf-light-text));
+  }
+
+  &.disabled {
+    background-color: var(--async-btn-disabled-bg, var(--gf-primary-disabled));
+    box-shadow: var(--async-btn-disabled-box-shadow, none);
+    color: var(--async-btn-disabled-color, var(--gf-dark-text-muted));
   }
 }
 

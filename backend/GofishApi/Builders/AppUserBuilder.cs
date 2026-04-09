@@ -36,7 +36,8 @@ public class AppUserBuilder : IAppUserBuilder
             Email = dto.Email,
             UserName = dto.UserName,
             FirstName = dto.FirstName,
-            LastName = dto.LastName
+            LastName = dto.LastName,
+            DisplayName = dto.UserName
         };
         _password = dto.Password;
         return this;

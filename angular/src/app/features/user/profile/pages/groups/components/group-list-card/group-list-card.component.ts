@@ -2,7 +2,7 @@ import { Component, inject, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProfileContext } from '@gofish/features/user/profile/services/profile-context.service';
 import { UserApi } from '@gofish/shared/api/user.api';
-import { AsyncButtonComponent } from '@gofish/shared/components/async-button-2/async-button-2.component';
+//import { AsyncButtonComponent } from '@gofish/shared/components/async-button-2/async-button-2.component';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { UserGroupDTO } from '@gofish/shared/dtos/user.dto';
@@ -12,7 +12,7 @@ import { AvatarService } from '@gofish/shared/services/avatar.service';
 @Component({
   selector: 'gf-group-list-card',
   imports: [
-    AsyncButtonComponent,
+    //AsyncButtonComponent,
     RouterLink,
   ],
   templateUrl: './group-list-card.component.html',

@@ -16,17 +16,18 @@ using Group = GofishApi.Models.Group;
 
 namespace GofishApi.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class GroupController : ControllerBase
 {
-    private readonly ILogger<PostController> _logger;
+    private readonly ILogger<GroupController> _logger;
     private readonly AppDbContext _db;
     private readonly UserManager<AppUser> _userManager;
     private readonly IBlobStorageService _blobStorage;
 
     public GroupController(
-        ILogger<PostController> logger,
+        ILogger<GroupController> logger,
         AppDbContext db,
         UserManager<AppUser> userManager,
         IBlobStorageService blobStorage
@@ -39,44 +40,64 @@ public class GroupController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("GetGroup")]
-    public async Task<IActionResult> GetGroup([FromBody] GetGroupReqDTO dto)
+    [HttpGet("GetGroup/{id}")]
+    public async Task<IActionResult> GetGroup([FromRoute] int id)
     {
-        // TODO: Visibility level is not being accounted for yet
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
 
-        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
-        if (user is null) return Unauthorized();
-
-        var query = _db.Groups.AsQueryable();
-
-        if (dto.DataRequest?.IncludeMembers ?? true)
+        var group = await _db.Groups
+        .Where(g => g.Id == id)
+        .Select(g => new
         {
-            query = query
-                .Include(g => g.GroupUsers)
-                    .ThenInclude(gu => gu.AppUser)
-                        .ThenInclude(u => u.UserProfile)
-                .Include(g => g.GroupUsers);
-                    // .ThenInclude(gu => gu.Role);
-        }
+            g.Id,
+            g.Name,
+            g.Description,
+            g.AvatarUrl,
+            g.CreatedAt,
+            MemberCount = g.GroupUsers.Count,
+            PinCount = g.Pins.Count,
+            Owner = g.GroupUsers
+                .Where(gu => gu.Role == GroupRole.Owner)
+                .Select(gu => new
+                {
+                    gu.AppUser.Id,
+                    gu.AppUser.UserName,
+                    gu.AppUser.DisplayName,
+                    gu.AppUser.UserProfile.AvatarUrl,
+                    gu.Role,
+                    gu.JoinedAt
+                })
+                .FirstOrDefault()
+        })
+        .FirstOrDefaultAsync();
 
-        if (dto.DataRequest?.IncludePosts ?? true)
+        if (group is null) return NotFound();
+
+        var groupUser = await _db.GroupUsers
+        .Include(gu => gu.AppUser)
+        .FirstOrDefaultAsync(gu => gu.GroupId == id && gu.UserId == userId);
+
+        var ownerDto = group.Owner is null ? null : new GroupMemberDto(
+            group.Owner.Id,
+            group.Owner.UserName ?? "",
+            group.Owner.DisplayName,
+            group.Owner.AvatarUrl,
+            group.Owner.Role,
+            group.Owner.JoinedAt);
+
+        return Ok(new GroupDto()
         {
-            query = query
-                .Include(g => g.Posts)
-                    .ThenInclude(p => p.Pin)
-                .Include(g => g.Posts)
-                    .ThenInclude(p => p.PostVotes);
-        }
-        var group = await query.FirstOrDefaultAsync(g => g.Id == dto.GroupId);
-
-        if (group is null)
-        {
-            return NotFound();
-        }
-
-        var data = GetGroupDTO.FromGroup(group, dto.DataRequest);
-        return Ok(new GetGroupResDTO(data));
+            Id = group.Id,
+            Name = group.Name,
+            Description = group.Description,
+            AvatarUrl = group.AvatarUrl,
+            CreatedAt = group.CreatedAt,
+            MemberCount = group.MemberCount,
+            PinCount = group.PinCount,
+            Owner = ownerDto!,
+            IsCurrentUserMember = groupUser is not null,
+            CurrentUserMembership = groupUser is null ? null : GroupMemberDto.FromEntity(groupUser)
+        });
     }
 
     [Authorize]
@@ -173,34 +194,31 @@ public class GroupController : ControllerBase
                 .Where(gi => gi.GroupId == groupId)
                 .ToListAsync();
 
-            var groupPosts = await _db.GroupPosts
+            var groupPins = await _db.GroupPins
                 .Where(gp => gp.GroupId == groupId)
                 .ToListAsync();
 
-            var postIds = groupPosts
-                .Select(gp => gp.PostId)
+            var pinIds = groupPins
+                .Select(gp => gp.PinId)
                 .Distinct()
                 .ToList();
 
-            var posts = await _db.Posts
-                .Include(p => p.Pin)
-                .Where(p => postIds.Contains(p.Id))
+            var pins = await _db.Pins
+                .Where(p => pinIds.Contains(p.Id))
                 .ToListAsync();
 
-            foreach (var post in posts)
+            foreach (var pin in pins)
             {
-                var groupCount = await _db.GroupPosts
-                    .CountAsync(gp => gp.PostId == post.Id);
-
+                var groupCount = await _db.GroupPins.CountAsync(gp => gp.PinId == pin.Id);
                 if (groupCount == 1)
                 {
-                    post.Pin.Visibility = VisibilityLevel.Private;
+                    pin.Visibility = VisibilityLevel.Private;
                 }
             }
 
             _db.GroupUsers.RemoveRange(memberships);
             _db.GroupInvites.RemoveRange(invites);
-            _db.GroupPosts.RemoveRange(groupPosts);
+            _db.GroupPins.RemoveRange(groupPins);
             _db.Groups.Remove(group);
 
             await _db.SaveChangesAsync();
@@ -230,12 +248,10 @@ public class GroupController : ControllerBase
         var groups = await _db.Groups
             .Where(g => g.GroupUsers.Any(gu => gu.UserId == userId))
             .Include(g => g.GroupUsers)
-                .ThenInclude(gu => gu.AppUser)
-                    .ThenInclude(u => u.UserProfile)
-            .Include(g => g.Posts)
-                .ThenInclude(p => p.Pin)
-            .Include(g => g.Posts)
-                .ThenInclude(p => p.PostVotes)
+            .ThenInclude(gu => gu.AppUser)
+            .ThenInclude(u => u.UserProfile)
+            .Include(g => g.Pins)
+            .ThenInclude(p => p.Votes)
             .ToListAsync();
 
         var data = groups
@@ -251,11 +267,43 @@ public class GroupController : ControllerBase
         return Ok(new GetUserGroupsResDTO(data));
     }
 
+    [HttpGet("SearchGroups")]
+    public async Task<IActionResult> SearchGroups([FromQuery] SearchGroupsReqDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(dto.Query) || dto.Query.Length < 2)
+        {
+            return Ok(new SearchGroupsResDto([], false, null));
+        }
+
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 50);
+        var normalizedQuery = dto.Query.ToUpper();
+
+        var query = _db.Groups.Where(g => g.NormalizedName.Contains(normalizedQuery));
+
+        if (dto.LastGroupName is not null)
+        {
+            query = query.Where(g => g.NormalizedName.CompareTo(dto.LastGroupName.ToUpper()) > 0);
+        }
+
+        var results = await query
+            .Include(g => g.GroupUsers)
+            .Include(g => g.GroupPins)
+            .OrderBy(g => g.NormalizedName)
+            .Take(maxResults + 1)
+            .ToListAsync();
+
+        var hasMore = results.Count > maxResults;
+        var page = results.Take(maxResults).ToList();
+        var data = page.Select(SearchGroupDto.FromEntity);
+        var lastGroupName = hasMore ? page[^1].NormalizedName : null;
+
+        return Ok(new SearchGroupsResDto(data, hasMore, lastGroupName));
+    }
+
     #region ManageMembers
 
-    [Authorize]
-    [HttpPost("SendInvite/{groupId}")]
-    public async Task<IActionResult> SendInvite(int groupId, [FromBody] SendGroupInviteReqDTO dto)
+    [HttpPost("CreateGroupInvite")]
+    public async Task<IActionResult> CreateGroupInvite([FromBody] SendGroupInviteReqDTO dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
@@ -264,11 +312,11 @@ public class GroupController : ControllerBase
         if (dto.ReceiverUserId == userId)
             return BadRequest("You cannot invite yourself.");
 
-        var group = await _db.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
+        var group = await _db.Groups.FirstOrDefaultAsync(g => g.Id == dto.GroupId);
         if (group is null) return NotFound();
 
         var isAllowed = await _db.GroupUsers.AnyAsync(gu =>
-            gu.GroupId == groupId &&
+            gu.GroupId == dto.GroupId &&
             gu.UserId == userId &&
             (gu.Role == GroupRole.Owner || gu.Role == GroupRole.Moderator));
 
@@ -280,14 +328,14 @@ public class GroupController : ControllerBase
             return BadRequest("Receiver user does not exist.");
 
         var alreadyMember = await _db.GroupUsers.AnyAsync(gu =>
-            gu.GroupId == groupId &&
+            gu.GroupId == dto.GroupId &&
             gu.UserId == dto.ReceiverUserId);
 
         if (alreadyMember)
             return BadRequest("This user is already a member of the group.");
 
         var pendingInviteExists = await _db.GroupInvites.AnyAsync(gi =>
-            gi.GroupId == groupId &&
+            gi.GroupId == dto.GroupId &&
             gi.ReceiverUserId == dto.ReceiverUserId &&
             gi.State == FriendshipState.Pending);
 
@@ -296,7 +344,7 @@ public class GroupController : ControllerBase
 
         var invite = new GroupInvite
         {
-            GroupId = groupId,
+            GroupId = dto.GroupId,
             RequesterUserId = userId,
             ReceiverUserId = dto.ReceiverUserId,
             CreatedAt = DateTime.UtcNow,
@@ -308,9 +356,8 @@ public class GroupController : ControllerBase
         return Ok(new SendGroupInviteResDTO(invite.Id));
     }
 
-    [Authorize]
-    [HttpPost("AcceptInvite/{inviteId}")]
-    public async Task<IActionResult> AcceptInvite([FromRoute] int inviteId)
+    [HttpPatch("AcceptGroupInvite/{inviteId}")]
+    public async Task<IActionResult> AcceptGroupInvite([FromRoute] int inviteId)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         if (string.IsNullOrEmpty(userId))
@@ -346,14 +393,161 @@ public class GroupController : ControllerBase
         _db.GroupUsers.Add(membership);
         await _db.SaveChangesAsync();
 
-        return Ok("Invite accepted successfully.");
+        return Ok();
     }
 
-    [Authorize]
+    [HttpPatch("PromoteMemberToAdmin/{groupId}/{userId}")]
+    public async Task<IActionResult> PromoteMemberToAdmin([FromRoute] int groupId, [FromRoute] string userId)
+    {
+        var requesterUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(requesterUserId)) return Unauthorized();
+        var groupExists = await _db.Groups.AnyAsync(g => g.Id == groupId);
+        if (!groupExists) return NotFound("Group not found.");
+
+        var requesterMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == requesterUserId);
+
+        if(requesterMembership is null || requesterMembership.Role != GroupRole.Owner) return Forbid();
+
+        var targetMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
+
+        if (targetMembership is null)
+            return NotFound("User is not a member of this group.");
+
+        if (targetMembership.UserId == requesterUserId) return BadRequest("You cannot promote yourself.");
+
+        if (targetMembership.Role == GroupRole.Owner) return BadRequest("The owner cannot be promoted.");
+
+        if (targetMembership.Role == GroupRole.Moderator) return BadRequest("This user is already an admin.");
+        targetMembership.Role = GroupRole.Moderator;
+
+        await _db.SaveChangesAsync();
+
+        return Ok(new UpdateGroupMemberRoleResDto(
+            groupId,
+            userId,
+            targetMembership.Role.ToString(),
+            "User promoted successfully."
+        ));
+    }
+
+    [HttpPatch("PromoteMemberToOwner/{groupId}/{userId}")]
+    public async Task<IActionResult> PromoteMemberToOwner([FromRoute] int groupId, [FromRoute] string userId)
+    {
+        var requesterUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(requesterUserId))
+            return Unauthorized();
+
+        var groupExists = await _db.Groups.AnyAsync(g => g.Id == groupId);
+        if (!groupExists)
+            return NotFound("Group not found.");
+
+        var currentOwnerMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == requesterUserId);
+
+        if (currentOwnerMembership is null || currentOwnerMembership.Role != GroupRole.Owner)
+            return Forbid();
+
+        var targetMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
+
+        if (targetMembership is null)
+            return NotFound("User is not a member of this group.");
+
+        if (targetMembership.UserId == requesterUserId)
+            return BadRequest("You are already the owner.");
+
+        if (targetMembership.Role == GroupRole.Owner)
+            return BadRequest("This user is already the owner.");
+
+        currentOwnerMembership.Role = GroupRole.Moderator;
+        targetMembership.Role = GroupRole.Owner;
+
+        await _db.SaveChangesAsync();
+
+        return Ok(new UpdateGroupMemberRoleResDto(
+            groupId,
+            userId,
+            targetMembership.Role.ToString(),
+            "Ownership transferred successfully."
+        ));
+    }
+
+    [HttpPatch("DemoteAdminToMember/{groupId}/{userId}")]
+    public async Task<IActionResult> DemoteAdminToMember([FromRoute] int groupId, [FromRoute] string userId)
+    {
+        var requesterUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(requesterUserId))
+            return Unauthorized();
+
+        var groupExists = await _db.Groups.AnyAsync(g => g.Id == groupId);
+        if (!groupExists)
+            return NotFound("Group not found.");
+
+        var requesterMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == requesterUserId);
+
+        if (requesterMembership is null || requesterMembership.Role != GroupRole.Owner)
+            return Forbid();
+
+        var targetMembership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
+
+        if (targetMembership is null)
+            return NotFound("User is not a member of this group.");
+
+        if (targetMembership.UserId == requesterUserId)
+            return BadRequest("You cannot demote yourself.");
+
+        if (targetMembership.Role == GroupRole.Owner)
+            return BadRequest("The owner cannot be demoted.");
+
+        if (targetMembership.Role == GroupRole.Member)
+            return BadRequest("This user is already a member.");
+
+        targetMembership.Role = GroupRole.Member;
+
+        await _db.SaveChangesAsync();
+
+        return Ok(new UpdateGroupMemberRoleResDto(
+            groupId,
+            userId,
+            targetMembership.Role.ToString(),
+            "User demoted successfully."
+        ));
+    }
+
+    [HttpDelete("DeleteGroupInvite/{inviteId}")]
+    public async Task<IActionResult> DeleteGroupInvite([FromRoute] int inviteId)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var invite = await _db.GroupInvites.FindAsync(inviteId);
+        if (invite is null) return NotFound();
+
+        // Only receiver or requester can delete
+        var isParticipant = invite.ReceiverUserId == userId || invite.RequesterUserId == userId;
+        if (!isParticipant) return NotFound();
+
+        // Can only delete pending invites
+        if (invite.State != FriendshipState.Pending)
+        {
+            throw new AppValidationException("State", "Only pending invites can be deleted.");
+        }
+
+        _db.GroupInvites.Remove(invite);
+        await _db.SaveChangesAsync();
+        return NoContent();
+    }
+
+    [HttpDelete("IgnoreGroupInvite/{inviteId}")]
+    public async Task<IActionResult> IgnoreGroupInvite([FromRoute] int inviteId)
+    {
+        return await DeleteGroupInvite(inviteId);
+    }
+
     [HttpDelete("RemoveMember/{groupId}/{userId}")]
-    public async Task<IActionResult> RemoveMember(
-    [FromRoute] int groupId,
-    [FromRoute] string userId)
+    public async Task<IActionResult> RemoveMember([FromRoute] int groupId, [FromRoute] string userId)
     {
         var requesterUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         if (string.IsNullOrEmpty(requesterUserId))
@@ -381,11 +575,137 @@ public class GroupController : ControllerBase
         if (userId == requesterUserId)
             return BadRequest("You cannot remove yourself from the group using this endpoint.");
 
+        if (targetMembership.Role == GroupRole.Owner)
+            return Forbid();
+
+        if (requesterMembership.Role == GroupRole.Moderator &&
+            targetMembership.Role == GroupRole.Moderator)
+            return Forbid();
+
         _db.GroupUsers.Remove(targetMembership);
         await _db.SaveChangesAsync();
 
         return NoContent();
     }
 
+    [HttpDelete("LeaveGroup/{groupId}")]
+    public async Task<IActionResult> LeaveGroup([FromRoute] int groupId)
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
+
+        var membership = await _db.GroupUsers
+            .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
+
+        if (membership is null)
+            return NotFound("You are not a member of this group.");
+
+        if (membership.Role == GroupRole.Owner)
+            return BadRequest("The owner cannot leave the group without transferring ownership or deleting the group.");
+
+        _db.GroupUsers.Remove(membership);
+        await _db.SaveChangesAsync();
+
+        return NoContent();
+    }
+
     #endregion
-}
+    #region Members
+
+    [HttpGet("GetGroupMembers")]
+    public async Task<IActionResult> GetGroupMembers([FromQuery] GetGroupMembersReqDto dto)
+    {
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+        var groupExists = await _db.Groups.AnyAsync(g => g.Id == dto.GroupId);
+
+        if (!groupExists)
+        {
+            return NotFound();
+        }
+
+        var query = _db.GroupUsers.Where(gu => gu.GroupId == dto.GroupId);
+
+        if (dto.Role is not null)
+        {
+            query = query.Where(gu => gu.Role == dto.Role);
+        }
+        if (dto.LastTimestamp is not null)
+        {
+            query = query.Where(gu => gu.JoinedAt < dto.LastTimestamp.Value);
+        }
+
+        var results = await query
+        .Include(gu => gu.AppUser).ThenInclude(u => u.UserProfile)
+        .OrderByDescending(gu => gu.JoinedAt)
+        .ThenByDescending(gu => gu.UserId)
+        .Take(maxResults + 1)
+        .ToListAsync();
+
+        var hasMore = results.Count > maxResults;
+        var page = results.Take(maxResults).ToList();
+        var data = page.Select(GroupMemberDto.FromEntity);
+        var lastTime = hasMore ? page[^1].JoinedAt : (DateTime?)null;
+
+        return Ok(new GetGroupMembersResDto(data, hasMore, lastTime));
+    }
+
+    #endregion // Members
+    #region Pins
+
+    [HttpGet("GetGroupPins")]
+    public async Task<IActionResult> GetGroupPins([FromQuery] GetGroupPinsReqDto dto)
+    {
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var isMember = await _db.GroupUsers.AnyAsync(gu => gu.GroupId == dto.GroupId &&gu.UserId == userId);
+
+        if (!isMember)
+        {
+            return NotFound();
+        }
+
+        var query = _db.Pins.Where(p => p.Groups.Any(g => g.Id == dto.GroupId));
+
+        if (dto.Kind is not null)
+        {
+            query = query.Where(p => p.Kind == dto.Kind);
+        }
+        if (dto.LastTimestamp is not null)
+        {
+            query = query.Where(p => p.CreatedAt < dto.LastTimestamp.Value);
+        }
+
+        query = query.Include(p => p.Votes);
+        query = query.Include(p => p.AppUser)
+            .ThenInclude(u => u.UserProfile);
+        query = query.Include(p => p.Comments)
+            .ThenInclude(c => c.AppUser)      // TODO: Are these necessary?
+            .ThenInclude(u => u.UserProfile); // TODO: Are these necessary?
+        query = query.Include(p => p.Groups);
+
+        query = query
+            .OrderByDescending(p => p.CreatedAt)
+            .ThenByDescending(p => p.Id)
+            .Take(maxResults + 1);
+
+        var pins = await query.Select(p => PinDto.FromEntity(p)
+            .SetGeolocation(p)
+            .SetAuthor(p.AppUser, p.AppUser.UserProfile)
+            .SetDetails(p)
+            .SetUgc(p)
+            .SetStats(new(
+                p.Votes.Where(v => v.UserId == userId).Select(v => (VoteKind?)v.Value).FirstOrDefault(),
+                p.Votes.Sum(v => (int)v.Value),
+                p.Comments.Count)))
+            .ToListAsync();
+
+        var hasMore = pins.Count > maxResults;
+        var paginatedPins = pins.Take(maxResults).ToList();
+        var lastTimestamp = hasMore ? paginatedPins[^1].CreatedAt : (DateTime?)null;
+
+        return Ok(new GetGroupPinsResDto(paginatedPins, hasMore, lastTimestamp));
+    }
+
+    #endregion // Posts
+} 

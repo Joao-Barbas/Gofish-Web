@@ -1,14 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { toast } from 'ngx-sonner';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
+import { GroupsService } from '@gofish/shared/services/groups.service';
+import { GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
+import { BodyLengthConstraints } from '@gofish/shared/constants';
+import { V } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-catch-pin-modal',
@@ -22,6 +26,8 @@ export class CatchPinModalComponent {
   private readonly fb = inject(FormBuilder);
   private readonly urlService = inject(UrlService);
   private readonly route = inject(ActivatedRoute);
+  private readonly groupService = inject(GroupsService);
+  protected readonly BodyLengthConstraints = BodyLengthConstraints;
   values: UrlQuery | null = null;
   busyState: BusyState = new BusyState();
 
@@ -36,14 +42,17 @@ export class CatchPinModalComponent {
   image: File | null = null;
 
   errorMessage: string = '';
+  userGroups = signal<GetUserGroupsResDTO['groups']>([]);
+  selectedGroupIds = signal<number[]>([]);
 
   form = this.fb.group({
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
+    body: ['', [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
     visibility: [0],
     species: [0],
     bait: [0],
-    hook: [''],
-    imageUrl: [null, [Validators.required]]
+    hook: ['', [Validators.maxLength(5)]],
+    imageUrl: ['', [Validators.required, Validators.pattern(/^.*\.(png|jpeg|jpg)$/i)]],
+    groupIds: this.fb.control<number[]>([])
   });
 
   ngOnInit(): void {
@@ -84,6 +93,31 @@ export class CatchPinModalComponent {
         latitude: lat
       };
     });
+
+    // Se houver tempo alterar para colocar quando os groups forem selecionados, para evitar chamadas desnecessárias
+    this.groupService.getUserGroups().subscribe({
+      next: (res) => {
+        this.userGroups.set(res.groups);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+    this.form.controls.visibility.valueChanges.subscribe(value => {
+      if (Number(value) !== 2) {
+        this.selectedGroupIds.set([]);
+        this.form.controls.groupIds.setValue([]);
+      }
+    });
+  }
+
+  toggleGroup(groupId: number) {
+    const current = this.selectedGroupIds();
+
+    const updated = current.includes(groupId) ? current.filter(id => id !== groupId) : [...current, groupId]
+
+    this.selectedGroupIds.set(updated);
+    this.form.controls.groupIds.setValue(updated);
   }
 
   onImageSelected(event: Event): void {
@@ -92,14 +126,18 @@ export class CatchPinModalComponent {
 
     const file = input.files[0];
 
-    const allowedTypes = ['image/png', 'image/jpeg'];
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
 
     if (!allowedTypes.includes(file.type)) {
-      alert('Only PNG or JPEG images are allowed');
+      alert('Only PNG or JPEG or JPG images are allowed');
+      this.form.patchValue({ imageUrl: null });
+      this.image = null;
       return;
     }
 
+    this.errorMessage = '';
     this.image = file;
+    this.form.patchValue({ imageUrl: file.name });
   }
 
 
@@ -126,19 +164,26 @@ export class CatchPinModalComponent {
       this.errorMessage = 'Please upload an image.';
       return;
     }
-
+    const visibility = Number(this.form.value.visibility);
+    const groupIds = this.form.value.groupIds ?? [];
+    if (visibility === 2 && groupIds.length === 0) {
+      this.errorMessage = 'Select at least one group.';
+      return;
+    }
     this.busyState.setBusy(true);
 
     const formData = new FormData();
     formData.append('Latitude', this.selectedCoords.latitude.toString());
     formData.append('Longitude', this.selectedCoords.longitude.toString());
     formData.append('Image', this.image);
-    formData.append('body', this.form.value.body!);
-    formData.append('image', this.image);
-    formData.append('visibility', String(this.form.value.visibility));
-    formData.append('species', String(this.form.value.species));
-    formData.append('bait', String(this.form.value.bait));
-    formData.append('hook', this.form.value.hook ?? '');
+    formData.append('Body', this.form.value.body!);
+    formData.append('Visibility', String(this.form.value.visibility));
+    formData.append('Species', String(this.form.value.species));
+    formData.append('Bait', String(this.form.value.bait));
+    formData.append('HookSize', this.form.value.hook ?? '');
+    groupIds.forEach(id => {
+      formData.append('GroupIds', id.toString());
+    });
 
     const toastId = toast.loading('Publishing your pin!');
     console.log(formData);

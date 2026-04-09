@@ -23,7 +23,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       break;
     }
     case 403: {
-      router.navigate([Path.HOME]);
+      // router.navigate([Path.HOME]);
       break;
     }}
     return throwError(() => err);

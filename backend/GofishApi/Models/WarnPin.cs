@@ -4,14 +4,9 @@ namespace GofishApi.Models;
 
 public class WarnPin : Pin
 {
-    #region Constant Properties
+    public const int ExpiresInDays = 3;
 
-    public const int ExpiresInDays = 1;
-
-    #endregion
-    #region Scalar Properties
+    // Scalar properties
 
     public required WarningKind WarningKind { get; set; }
-
-    #endregion
 }

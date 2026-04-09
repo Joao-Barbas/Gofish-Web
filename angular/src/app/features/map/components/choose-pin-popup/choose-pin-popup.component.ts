@@ -13,6 +13,8 @@ import { GeolocationService } from '@gofish/shared/services/geolocation.service'
 import { LngLat } from 'mapbox-gl';
 import { isArrayLike } from 'rxjs/internal/util/isArrayLike';
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
+import { PIN_CONFIG } from '@gofish/shared/constants';
+import { K } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-choose-pin-popup',
@@ -24,6 +26,7 @@ export class ChoosePinPopupComponent implements SimplePopup {
   readonly popupController = new PopupController('choose-pin-popup');
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  protected readonly pinConfigs = PIN_CONFIG;
   public readonly geoService = inject(GeolocationService);
   public readonly urlService = inject(UrlService);
   protected isGettingLocation = false;
@@ -99,7 +102,27 @@ export class ChoosePinPopupComponent implements SimplePopup {
     this.popupController.close();
   }
 
-  public createWarnPin() {
+  createPin(kind: string) {
+    if (!this.coords) {
+      this.errorMessage = 'Coordinates not selected.';
+      return;
+    }
+    switch (kind) {
+      case 'catch': {
+        this.createCatchPin();
+        break;
+      }
+      case 'information': { this.createInfoPin();
+        break;
+      }
+      case 'warning': { this.createWarnPin();
+        break;
+      }
+      default: console.log('Unkown type');
+    }
+  }
+
+  private createWarnPin() {
     if (!this.coords) {
       this.errorMessage = 'Coordinates not selected.';
       return;
@@ -114,12 +137,12 @@ export class ChoosePinPopupComponent implements SimplePopup {
     });
   }
 
-  public createInfoPin() {
+  private createInfoPin() {
     if (!this.coords) {
       this.errorMessage = 'Coordinates not selected.';
       return;
     }
-    this.router.navigate(['create-info-pin'],{
+    this.router.navigate(['create-info-pin'], {
       relativeTo: this.route,
       queryParams: {
         sLat: this.coords.latitude,
@@ -128,7 +151,7 @@ export class ChoosePinPopupComponent implements SimplePopup {
     });
   }
 
-  public createCatchPin() {
+  private createCatchPin() {
     if (!this.coords) {
       this.errorMessage = 'Coordinates not selected.';
       return;
@@ -141,4 +164,6 @@ export class ChoosePinPopupComponent implements SimplePopup {
       }
     });
   }
+
+
 }

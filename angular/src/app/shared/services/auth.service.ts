@@ -64,12 +64,11 @@ export class AuthService {
   // End token storage
   // Jwt claim getters
 
-  readonly userId        = computed<JwtPayload["sub"]>(() => this.decodedToken()?.sub ?? '');
-  readonly userName      = computed<JwtPayload["unique_name"]>(() => this.decodedToken()?.unique_name ?? '');
-  readonly userFirstName = computed<JwtPayload["given_name"]>(() => this.decodedToken()?.given_name ?? '');
-  readonly userLastName  = computed<JwtPayload["family_name"]>(() => this.decodedToken()?.family_name ?? '');
-  readonly userEmail     = computed<JwtPayload["email"]>(() => this.decodedToken()?.email ?? '');
-  readonly loginProvider = computed<JwtPayload["login_provider"]>(() => this.decodedToken()?.login_provider ?? 'Local');
+  readonly userId          = computed<JwtPayload["sub"]>(() => this.decodedToken()?.sub ?? null);
+  readonly userName        = computed<JwtPayload["unique_name"]>(() => this.decodedToken()?.unique_name ?? '');
+  readonly userDisplayName = computed<JwtPayload["display_name"]>(() => this.decodedToken()?.display_name ?? '');
+  readonly userEmail       = computed<JwtPayload["email"]>(() => this.decodedToken()?.email ?? '');
+  readonly loginProvider   = computed<JwtPayload["login_provider"]>(() => this.decodedToken()?.login_provider ?? 'Local');
 
   // End jwt claim getters
   // Jwt roles getters

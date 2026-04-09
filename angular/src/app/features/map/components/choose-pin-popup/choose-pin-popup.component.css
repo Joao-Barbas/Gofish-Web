@@ -1,48 +1,32 @@
 .choose-pin-popup-container {
-  background-color: var(--dark-bg);
-  box-shadow: var(--dark-lift-shadow-s);
+  background-color: var(--gf-dark-bg);
+  box-shadow: var(--gf-shadow-lift-sm);
   z-index: var(--z-overlay);
   border-radius: 0.75rem;
   padding: 0.75rem;
 }
 
 .enable-location-select {
-  & > label {
-    color: var(--dark-text);
+  &>label {
+    color: var(--gf-dark-text);
     font-size: 10pt;
   }
 }
 
 .show-location-field {
-  background-color: var(--dark-bg-dark);
-  color: var(--dark-text-muted);
+  background-color: var(--gf-dark-bg-dark);
+  color: var(--gf-dark-text-muted);
   font-size: 9pt;
   padding: 2px 8px;
   border-radius: 6px;
 }
 
 .pin-types-showcase {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 }
 
 .pin-types-showcase .pin-type-item {
   font-size: 10pt;
-
-  & > .pin-img-btn {
-    border-style: none;
-    min-height: 48px;
-    min-width: 72px;
-    max-height: 48px;
-    max-width: 72px;
-    border-radius: 8px;
-
-    border: 2px solid transparent;
-    box-sizing: border-box;
-
-    &:hover {
-      border-color: white;
-    }
-  }
 }
 
 .animate-fade-in {
@@ -50,8 +34,15 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .modal-info-box {
@@ -62,32 +53,50 @@
 .location-toggle-btn {
   background-color: transparent;
   border: 1px solid transparent;
-  color: var(--dark-text-muted);
+  color: var(--gf-dark-text-muted);
   transition: all 0.2s ease;
   min-width: 140px;
 }
 
 .location-toggle-btn:hover {
-  color: var(--dark-text);
+  color: var(--gf-dark-text);
 }
 
 .location-toggle-btn.active {
-  background-color: var(--dark-bg-dark);
-  color: var(--dark-text);
-  border: 1px solid var(--primary);
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.05) inset;
+  background-color: var(--gf-dark-bg-dark);
+  color: var(--gf-dark-text);
+  border: 1px solid var(--gf-primary);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
 }
 
 .coords-div {
   cursor: not-allowed;
 }
 
-.warn {
-  background-color: #ff6a00;
+.pin-img-btn:hover {
+  transform: scale(1.1);
 }
-.info {
-  background-color: #3b82f6;
+
+
+.pin-img-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  border: 2px solid;
+  cursor: pointer;
+
+  background-image:
+    var(--pin-icon),
+    url('/assets/images/backgroung-map.png');
+
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+
+  background-size: 60%, cover;
+
+  transition: transform 0.2s ease;
 }
-.catch {
-  background-color: #f30000;
+
+.pin-img-btn:hover {
+  transform: scale(1.05);
 }

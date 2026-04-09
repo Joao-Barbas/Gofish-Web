@@ -5,18 +5,14 @@ namespace GofishApi.Models;
 
 public class CatchPin : Pin
 {
-    #region Constant Properties
+    public const int ExpiresInDays = 30;
 
-    public const int ExpiresInDays = 7;
-
-    #endregion
-    #region Scalar Properties
+    // Scalar properties
 
     [MaxLength(5)]
     public string? HookSize { get; set; } // European standard
 
     public Species? Species { get; set; }
-    public Bait? Bait { get; set; }
 
-    #endregion
+    public Bait? Bait { get; set; }
 }

@@ -1,0 +1,72 @@
+<!-- change-birthdate-modal.component.html -->
+
+<div class="gf-modal-backdrop" (click)="$event.stopPropagation()">
+  <div class="gf-flow-vertical gf-modal-shell gf-gap-16" (click)="$event.stopPropagation()">
+    <div class="gf-flow-horizontal gf-justify-between gf-items-center">
+      <h5>Change birth date</h5>
+      <button class="gf-modal-close-button" (click)="onNegative()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"/>
+          <path d="m6 6 12 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="gf-modal-separator"></div>
+    <div>
+      <div class="birthdate-selects">
+        <!-- Day -->
+        <div class="select-group">
+          <label>Day</label>
+          <select [ngModel]="selectedDay()" (ngModelChange)="selectedDay.set($event)">
+            <option [ngValue]="null" disabled>Day</option>
+            @for (d of days(); track d) {
+              <option [ngValue]="d">{{ d }}</option>
+            }
+          </select>
+        </div>
+        <!-- Month -->
+        <div class="select-group">
+          <label>Month</label>
+          <select [ngModel]="selectedMonth()" (ngModelChange)="selectedMonth.set($event)">
+            <option [ngValue]="null" disabled>Month</option>
+            @for (m of months; track m.value) {
+              <option [ngValue]="m.value">{{ m.label }}</option>
+            }
+          </select>
+        </div>
+        <!-- Year -->
+        <div class="select-group">
+          <label>Year</label>
+          <select [ngModel]="selectedYear()" (ngModelChange)="selectedYear.set($event)">
+            <option [ngValue]="null" disabled>Year</option>
+            @for (y of years; track y) {
+              <option [ngValue]="y">{{ y }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      @if (error(); as error) {
+        <span class="gf-text-error">{{ error }}</span>
+      }
+    </div>
+    <div class="gf-modal-separator"></div>
+    <div>
+      <div class="gf-flow-horizontal gf-gap-10">
+        <gf-async-button
+          class="btn-negative"
+          type=button
+          [labels]="{ idle: 'Cancel' }"
+          [states]="{ disabled: this.busyState.busy() }"
+          (click)="onNegative()">
+        </gf-async-button>
+        <gf-async-button
+          class="btn-positive"
+          type=button
+          [labels]="{ idle: 'Save' }"
+          [states]="{ busy: this.busyState.busy(), success: success() }"
+          (click)="onPositive()">
+        </gf-async-button>
+      </div>
+    </div>
+  </div>
+</div>

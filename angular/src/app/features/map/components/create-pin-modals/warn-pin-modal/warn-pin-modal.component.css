@@ -10,7 +10,7 @@
   max-width: 640px;
   background: #22232A;
   border-radius: 16px;
-  box-shadow: var(--dark-lift-shadow-l);
+  box-shadow: var(--gf-shadow-lift-lg);
   padding: 16px;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .modal-body {
-  border-top: 2px solid var(--dark-bg-light);
+  border-top: 2px solid var(--gf-dark-bg-light);
 }
 
 .modal-body-section-title {
@@ -58,7 +58,7 @@
 }
 
 .custom-dropdown {
-  background-color: var(--dark-bg-dark);
+  background-color: var(--gf-dark-bg-dark);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -105,4 +105,55 @@
   color: var(--gf-dark-text);
   font-weight: 500;
   box-shadow: var(--gf-shadow-lift-sm);
+}
+
+.groups-selector {
+  display: flex;
+  flex-wrap: column;
+  gap: 8px;
+  max-height: 100px;
+  overflow-y: auto;
+  padding: 4px 2px;
+
+
+  scrollbar-width: thin;
+  scrollbar-color: #444 transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 10px;
+  }
+}
+
+.group-chip {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background-color: var(--gf-dark-bg-light);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s;
+
+  &.selected {
+    background-color: var(--gf-primary);
+    color: white;
+  }
+
+  &:hover:not(.selected) {
+    background-color: var(--gf-dark-bg-dark);
+  }
+}
+
+.group-chip-image {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
 }

@@ -1,69 +1,100 @@
-<footer class="w-100 dark-bg pt-5 pb-5">
+<!-- footer.component.html -->
 
-  <div class="container-lg">
-    <div class="row">
+@if (variant() === 'big') {
+  <!-- Social banner -->
+  <div class="social-banner">
+    <p>Get connected with us on our social networks!</p>
+    <div class="social-icons big">
+      <a href="#" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor" ><path d="M232,128a104.16,104.16,0,0,1-91.55,103.26,4,4,0,0,1-4.45-4V152h24a8,8,0,0,0,8-8.53,8.17,8.17,0,0,0-8.25-7.47H136V112a16,16,0,0,1,16-16h16a8,8,0,0,0,8-8.53A8.17,8.17,0,0,0,167.73,80H152a32,32,0,0,0-32,32v24H96a8,8,0,0,0-8,8.53A8.17,8.17,0,0,0,96.27,152H120v75.28a4,4,0,0,1-4.44,4A104.15,104.15,0,0,1,24.07,124.09c2-54,45.74-97.9,99.78-100A104.12,104.12,0,0,1,232,128Z"></path></svg></a>
+      <a href="#" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24ZM128,176a48,48,0,1,1,48-48A48.05,48.05,0,0,1,128,176Zm60-96a12,12,0,1,1,12-12A12,12,0,0,1,188,80Zm-28,48a32,32,0,1,1-32-32A32,32,0,0,1,160,128Z"></path></svg></a>
+      <a href="#" aria-label="YouTube"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M234.33,69.52a24,24,0,0,0-14.49-16.4C185.56,39.88,131,40,128,40s-57.56-.12-91.84,13.12a24,24,0,0,0-14.49,16.4C19.08,79.5,16,97.74,16,128s3.08,48.5,5.67,58.48a24,24,0,0,0,14.49,16.41C69,215.56,120.4,216,127.34,216h1.32c6.94,0,58.37-.44,91.18-13.11a24,24,0,0,0,14.49-16.41c2.59-10,5.67-28.22,5.67-58.48S236.92,79.5,234.33,69.52Zm-73.74,65-40,28A8,8,0,0,1,108,156V100a8,8,0,0,1,12.59-6.55l40,28a8,8,0,0,1,0,13.1Z"></path></svg></a>
+      <a href="#" aria-label="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M245.66,77.66l-29.9,29.9C209.72,177.58,150.67,232,80,232c-14.52,0-26.49-2.3-35.58-6.84-7.33-3.67-10.33-7.6-11.08-8.72a8,8,0,0,1,3.85-11.93c.26-.1,24.24-9.31,39.47-26.84a110.93,110.93,0,0,1-21.88-24.2c-12.4-18.41-26.28-50.39-22-98.18a8,8,0,0,1,13.65-4.92c.35.35,33.28,33.1,73.54,43.72V88a47.87,47.87,0,0,1,14.36-34.3A46.87,46.87,0,0,1,168.1,40a48.66,48.66,0,0,1,41.47,24H240a8,8,0,0,1,5.66,13.66Z"></path></svg></a>
+      <a href="#" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24ZM96,176a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0ZM88,96a12,12,0,1,1,12-12A12,12,0,0,1,88,96Zm96,80a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140Z"></path></svg></a>
+    </div>
+  </div>
 
-      <!-- Elementos da esquerda -->
-      <div class="col-12 col-sm-6">
+  <!-- Main footer content -->
+  <div class="footer-body">
+    <div class="footer-content">
 
-        <!-- # Logo and Gofish -->
-        <div class="gofish d-flex align-items-center gf-gap-4 gap-lg-2 mb-4">
-          <div class="icon-gofish icon-size-gofish-logo"></div>
-          <span class="dark-text logo-text">GOFISH</span>
+      <!-- Brand -->
+      <div class="footer-brand">
+        <div class="brand-logo">
+          <!-- Replace with your actual logo -->
+          <a routerLink="/" class="logo">
+            <picture>
+              <source srcset="assets/images/logo-black-256.png" media="(prefers-color-scheme: light)">
+              <img src="assets/images/logo-white-256.png" alt="Logo">
+            </picture>
+            <span class="gf-text-logo">GOFISH</span>
+          </a>
         </div>
-
-
-        <!-- # Footer Links -->
-
-        <ul class="footer-links list-unstyled font-main mb-1">
-          <li>
-            <a routerLink="/about-us" class="gf-text-selection">
-              <span>About</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/Joao-Barbas/Gofish-Web/tree/main" class="gf-text-selection">
-              <span>GitHub</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/" class="gf-text-selection">
-              <span>Changelog</span>
-
-            </a>
-          </li>
-          <li>
-            <a routerLink="/terms-of-service" class="gf-text-selection">
-              <span >Terms of Service</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/privacy-policy" class="gf-text-selection">
-              <span>Privacy Policy</span>
-            </a>
-          </li>
-        </ul>
-
+        <p class="brand-description">
+          Welcome to GOFISH — the Gather Online Fishing Information Sharing Hub. Drop a pin, share your story, and help fellow anglers find their next big catch. Tight lines!
+        </p>
       </div>
 
-      <!-- # Social Icons -->
-
-      <div class="col-12 col-sm-6 d-flex align-items-end mt-3 mt-sm-0 justify-content-start justify-content-sm-end">
-
-        <div class="d-flex gap-3 icon-white socials icon-size-socials generic-button-wrapper-all">
-
-          <a href="" class="icon-atsign"></a>
-          <a href="" class="icon-facebook"></a>
-          <a href="" class="icon-instagram"></a>
-          <a href="" class="icon-youtube"></a>
-          <a href="" class="icon-twitter"></a>
-
-        </div>
-
+      <!-- Useful Links -->
+      <div class="footer-links">
+        <h4 class="footer-heading">USEFUL LINKS</h4>
+        <nav>
+          <a routerLink="/about">About</a>
+          <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+          <a routerLink="/changelog">Changelog</a>
+          <a routerLink="/terms">Terms of Service</a>
+          <a routerLink="/privacy">Privacy Policy</a>
+        </nav>
       </div>
 
+      <!-- Contact -->
+      <div class="footer-contact">
+        <h4 class="footer-heading">CONTACT</h4>
+        <div class="contact-items">
+          <div class="contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
+            <span>{{ BUSINESS_PHONE }}</span>
+          </div>
+          <div class="contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+            <span>{{ BUSINESS_EMAIL }}</span>
+          </div>
+          <div class="contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            <span>{{ BUSINEES_ADDRESS }}</span>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
 
-</footer>
+  <!-- Copyright -->
+  <div class="footer-copyright">
+    <p>&copy; {{ year }} Gofish. All rights reserved</p>
+  </div>
+}
+
+@if (variant() === 'small') {
+  <div class="small-footer">
+    <div class="small-footer-top">
+      <nav class="small-footer-links">
+        <a routerLink="/about">About</a>
+        <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+        <a routerLink="/changelog">Changelog</a>
+        <a routerLink="/privacy">Privacy Policy</a>
+        <a routerLink="/terms">Terms of Service</a>
+      </nav>
+      <div class="social-icons small">
+        <a href="#" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor" ><path d="M232,128a104.16,104.16,0,0,1-91.55,103.26,4,4,0,0,1-4.45-4V152h24a8,8,0,0,0,8-8.53,8.17,8.17,0,0,0-8.25-7.47H136V112a16,16,0,0,1,16-16h16a8,8,0,0,0,8-8.53A8.17,8.17,0,0,0,167.73,80H152a32,32,0,0,0-32,32v24H96a8,8,0,0,0-8,8.53A8.17,8.17,0,0,0,96.27,152H120v75.28a4,4,0,0,1-4.44,4A104.15,104.15,0,0,1,24.07,124.09c2-54,45.74-97.9,99.78-100A104.12,104.12,0,0,1,232,128Z"></path></svg></a>
+        <a href="#" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24ZM128,176a48,48,0,1,1,48-48A48.05,48.05,0,0,1,128,176Zm60-96a12,12,0,1,1,12-12A12,12,0,0,1,188,80Zm-28,48a32,32,0,1,1-32-32A32,32,0,0,1,160,128Z"></path></svg></a>
+        <a href="#" aria-label="YouTube"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M234.33,69.52a24,24,0,0,0-14.49-16.4C185.56,39.88,131,40,128,40s-57.56-.12-91.84,13.12a24,24,0,0,0-14.49,16.4C19.08,79.5,16,97.74,16,128s3.08,48.5,5.67,58.48a24,24,0,0,0,14.49,16.41C69,215.56,120.4,216,127.34,216h1.32c6.94,0,58.37-.44,91.18-13.11a24,24,0,0,0,14.49-16.41c2.59-10,5.67-28.22,5.67-58.48S236.92,79.5,234.33,69.52Zm-73.74,65-40,28A8,8,0,0,1,108,156V100a8,8,0,0,1,12.59-6.55l40,28a8,8,0,0,1,0,13.1Z"></path></svg></a>
+        <a href="#" aria-label="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M245.66,77.66l-29.9,29.9C209.72,177.58,150.67,232,80,232c-14.52,0-26.49-2.3-35.58-6.84-7.33-3.67-10.33-7.6-11.08-8.72a8,8,0,0,1,3.85-11.93c.26-.1,24.24-9.31,39.47-26.84a110.93,110.93,0,0,1-21.88-24.2c-12.4-18.41-26.28-50.39-22-98.18a8,8,0,0,1,13.65-4.92c.35.35,33.28,33.1,73.54,43.72V88a47.87,47.87,0,0,1,14.36-34.3A46.87,46.87,0,0,1,168.1,40a48.66,48.66,0,0,1,41.47,24H240a8,8,0,0,1,5.66,13.66Z"></path></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24ZM96,176a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0ZM88,96a12,12,0,1,1,12-12A12,12,0,0,1,88,96Zm96,80a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140Z"></path></svg></a>
+      </div>
+    </div>
+    <hr class="small-footer-divider">
+    <div class="small-footer-bottom">
+      <p>&copy; {{ year }} Gofish. All rights reserved</p>
+    </div>
+  </div>
+}

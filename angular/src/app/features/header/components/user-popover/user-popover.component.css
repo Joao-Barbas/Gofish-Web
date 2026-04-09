@@ -1,0 +1,124 @@
+/* user-popover.component.css */
+
+:host {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  min-width: calc(256rem / 16);
+  top: calc(100% + var(--gf-8));
+  right: 0;
+  border-radius: var(--gf-12);
+  box-shadow: var(--gf-shadow-lift-md);
+  background-color: var(--gf-dark-bg);
+  z-index: var(--gf-z-popover);
+}
+:host(.on-enter) {
+  animation:
+    gf-popover-scale-in 150ms cubic-bezier(0.34, 1.8, 0.64, 1),
+    gf-popover-fade-in 150ms linear;
+}
+:host(.on-leave) {
+  opacity: 0;
+  transition: opacity 150ms ease-out
+}
+
+.gf-text-normal {
+  color: var(--gf-dark-text);
+  font-size: 16px;
+  line-height: 1.20;
+}
+
+.gf-text-small {
+  color: var(--gf-dark-text-muted);
+  font-size: 14px;
+  line-height: 1.20;
+}
+
+.gf-nobg-btn-close { /* TODO: standardize style in styles.css */
+  color: var(--gf-dark-text-muted);
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+  height: 1.5rem;
+  width: 1.5rem;
+  border: none;
+  background-color: transparent;
+
+  & > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:hover {
+    color: var(--gf-dark-text);
+  }
+}
+
+.gf-hollow-btn { /* TODO: standardize style in styles.css */
+  color: var(--gf-dark-text-muted);
+  border: 0.125rem solid var(--gf-danger);
+  background-color: transparent;
+  line-height: 1;
+  padding: 0 1rem 0 0.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  transition: color 0.15s, background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+
+  & > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:hover {
+    background-color: var(--gf-danger);
+    color: var(--gf-dark-text)
+  }
+}
+
+.button-fix-icon { /* TODO: This is half-assed */
+  padding: 0 1rem 0 0.5rem;
+  & > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+.separator {
+  border-top: 1px solid var(--gf-dark-bg-light);
+  margin: 0 1rem;
+}
+
+.popup-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  gap: 8px;
+  padding: var(--gf-8) var(--gf-18);
+  background-color: transparent;
+  color: var(--gf-dark-text);
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+  margin: 0 calc(var(--gf-12) * -1);
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background-color: var(--gf-dark-bg-light);
+  }
+}
+
+@media (max-width: 36rem) {
+  :host {
+    position: fixed;
+    top: calc(calc(80rem / 16) + var(--gf-4)); /* below header */
+    left: 5%;
+    right: 5%;
+    min-width: unset;
+    width: 90%;
+  }
+}

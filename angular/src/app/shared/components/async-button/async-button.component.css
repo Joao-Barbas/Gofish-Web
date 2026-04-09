@@ -1,5 +1,10 @@
 /* async-button.component.css */
 
+:host {
+  display: flex;
+  align-self: stretch; /* ocupa a altura do flex container pai */
+}
+
 button {
   display: inline-flex;
   align-items: center;
@@ -15,13 +20,13 @@ button {
   font-size: var(--async-btn-font-size, var(--gf-text-sm));
   border-radius: var(--async-btn-radius, var(--gf-8));
   background-color: var(--async-btn-bg, var(--gf-primary));
-  color: var(--async-btn-color, var(--gf-dark-text));
+  color: var(--async-btn-color, var(--gf-static-dark-text));
 
   /* Hover shadow */
   --async-btn-hover-shadow: var(--gf-shadow-lift-md);
 
   /* State colors */
-  --async-btn-busy-bg: var(--gf-tertiary);
+  --async-btn-busy-bg: var(--gf-primary-disabled);
   --async-btn-busy-color: var(--gf-dark-text);
   --async-btn-success-bg: var(--gf-success);
   --async-btn-success-color: var(--gf-light-text);
@@ -54,7 +59,7 @@ button {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  height: 18px;
+  height: 100%;
   width: 0;
   transition: width 0.2s ease;
 

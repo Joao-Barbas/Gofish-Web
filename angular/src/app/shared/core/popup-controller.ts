@@ -2,6 +2,11 @@ import { computed, inject } from "@angular/core";
 import { PopupService } from "@gofish/shared/services/popup.service";
 import { PopupKey } from "@gofish/shared/models/popup.model";
 
+/**
+ * @deprecated This service is deprecated. Use {@link PopoverController} instead.
+ * @see {@link PopoverController}
+ * @see {@link PopoverKey}
+ */
 export class PopupController {
   private readonly popupService = inject(PopupService);
 
@@ -13,3 +18,5 @@ export class PopupController {
   open(): void { this.popupService.open(this.key); }
   close(): void { this.popupService.close(); }
 }
+
+// TODO: Remove this file

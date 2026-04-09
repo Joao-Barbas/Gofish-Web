@@ -1,9 +1,9 @@
 import { Injectable, Signal, inject } from '@angular/core';
-import { ViewportPinDTO, GetPinsReqDTO, GetPinsResDTO, PinDataReqDTO, PinDataResDTO, PinIdDTO } from '@gofish/shared/dtos/pin.dto';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { ViewportPinDTO, GetPinsReqDto, GetPinsResDTO, PinDataReqDTO, PinDataResDTO, PinIdDTO, PinDto } from '@gofish/shared/dtos/pin.dto';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { PinHoverPreviewService } from '@gofish/features/map/services/pin-hover-preview.service';
 import { PopupService } from '@gofish/shared/services/popup.service';
-import { PIN_CONFIG } from './map-layers.service';
+import { PIN_CONFIG } from '@gofish/shared/constants/index';
 import { WritableSignal } from '@angular/core';
 
 @Injectable({
@@ -16,9 +16,9 @@ export class MapInteractionsService {
 
   setup(
     map: mapboxgl.Map,
-    allPins: WritableSignal<ViewportPinDTO[]>,
-    selectedPin: WritableSignal<PinDataResDTO | null>,
-    selectedPins: WritableSignal<PinDataResDTO[]>,
+    allPins: WritableSignal<PinDto[]>,
+    selectedPin: WritableSignal<PinDto | null>,
+    selectedPins: WritableSignal<PinDto[]>,
     isPickingOnMap: () => boolean
   ): void {
     PIN_CONFIG.forEach(({ kind }) => {
@@ -35,7 +35,7 @@ export class MapInteractionsService {
     this.registerMapClick(map, selectedPin, isPickingOnMap);
   }
 
-  private registerClusterClick(map: mapboxgl.Map, clusterId: string, sourceId: string, selectedPins: WritableSignal<PinDataResDTO[]>, allPins: WritableSignal<ViewportPinDTO[]>): void {
+  private registerClusterClick(map: mapboxgl.Map, clusterId: string, sourceId: string, selectedPins: WritableSignal<PinDto[]>, allPins: WritableSignal<PinDto[]>): void {
     map.on('click', clusterId, (e) => {
       if (!map.getLayer(clusterId)) return;
       const features = map.queryRenderedFeatures(e.point, { layers: [clusterId] });
@@ -50,7 +50,7 @@ export class MapInteractionsService {
         if (err) return;
         map.easeTo({
           center: (features[0].geometry as GeoJSON.Point).coordinates as [number, number],
-          zoom: zoom as number
+          //zoom: zoom as number
         });
       });
 
@@ -63,18 +63,19 @@ export class MapInteractionsService {
           };
         });
 
-        const request: GetPinsReqDTO = {
+        const request: GetPinsReqDto = {
           ids: pinIds,
           dataRequest: {
             includeGeolocation: true,
             includeAuthor: true,
-            includePost: true,
             includeDetails: true,
+            includeStats: true,
+            includeUgc: true,
             includeGroups: true,
           }
         };
 
-        this.pinService.getPinPreview(request).subscribe({
+        this.pinService.getPins(request).subscribe({
           next: (res) => {
             selectedPins.set(res.pins);
             this.popupService.open('cluster-preview');
@@ -89,7 +90,7 @@ export class MapInteractionsService {
     });
   }
 
-  private registerPinHover(map: mapboxgl.Map, unclusteredId: string, allPins: WritableSignal<ViewportPinDTO[]>): void {
+  private registerPinHover(map: mapboxgl.Map, unclusteredId: string, allPins: WritableSignal<PinDto[]>): void {
     map.on('mouseenter', unclusteredId, (e) => {
       if (!map.getLayer(unclusteredId)) return;
       map.getCanvas().style.cursor = 'pointer';
@@ -111,9 +112,9 @@ export class MapInteractionsService {
   private registerPinClick(
     map: mapboxgl.Map,
     unclusteredId: string,
-    allPins: WritableSignal<ViewportPinDTO[]>,
-    selectedPin: WritableSignal<PinDataResDTO | null>,
-    selectedPins: WritableSignal<PinDataResDTO[]>
+    allPins: WritableSignal<PinDto[]>,
+    selectedPin: WritableSignal<PinDto | null>,
+    selectedPins: WritableSignal<PinDto[]>
   ): void {
     map.on('click', unclusteredId, (e) => {
       if (!map.getLayer(unclusteredId)) return;
@@ -125,7 +126,7 @@ export class MapInteractionsService {
       const [lng, lat] = (feature.geometry as GeoJSON.Point).coordinates;
 
       const pinsAtLocation = allPins().filter(pin => {
-        this.sameCoordinates(pin!.latitude, pin!.longitude, lat, lng)
+        this.sameCoordinates(pin!.geolocation!.latitude, pin!.geolocation!.longitude, lat, lng)
       });
 
       if (!pinsAtLocation) return;
@@ -150,19 +151,20 @@ export class MapInteractionsService {
     return Math.abs(lat1 - lat2) < EPSILON && Math.abs(lng1 - lng2) < EPSILON;
   }
 
-  private openPinsList(pins: ViewportPinDTO[], selectedPins: WritableSignal<PinDataResDTO[]>) {
-    const request: GetPinsReqDTO = {
+  private openPinsList(pins: PinDto[], selectedPins: WritableSignal<PinDto[]>) {
+    const request: GetPinsReqDto = {
       ids: pins.map(pin => ({ pinId: pin.id })),
       dataRequest: {
         includeGeolocation: true,
         includeAuthor: true,
-        includePost: true,
         includeDetails: true,
+        includeStats: true,
+        includeUgc: true,
         includeGroups: true,
       }
     };
 
-    this.pinService.getPinPreview(request).subscribe({
+    this.pinService.getPins(request).subscribe({
       next: (res) => {
         selectedPins.set(res.pins);
         this.popupService.open('cluster-preview');
@@ -175,21 +177,22 @@ export class MapInteractionsService {
 
   private openSinglePin(
     pinId: number,
-    selectedPin: WritableSignal<PinDataResDTO | null>,
+    selectedPin: WritableSignal<PinDto | null>,
     map: mapboxgl.Map
   ): void {
-    const request: GetPinsReqDTO = {
+    const request: GetPinsReqDto = {
       ids: [{ pinId }],
       dataRequest: {
         includeGeolocation: true,
         includeAuthor: true,
-        includePost: true,
         includeDetails: true,
+        includeStats: true,
+        includeUgc: true,
         includeGroups: true,
       }
     };
 
-    this.pinService.getPinPreview(request).subscribe({
+    this.pinService.getPins(request).subscribe({
       next: (res) => {
         const pin = res.pins[0];
         if (!pin) return;
@@ -222,7 +225,7 @@ export class MapInteractionsService {
 
   private registerMapClick(
     map: mapboxgl.Map,
-    selectedPin: WritableSignal<PinDataResDTO | null>,
+    selectedPin: WritableSignal<PinDto | null>,
     isPickingOnMap: () => boolean
   ): void {
     map.on('click', (e) => {

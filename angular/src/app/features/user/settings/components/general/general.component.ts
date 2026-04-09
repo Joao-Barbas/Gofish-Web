@@ -18,9 +18,15 @@ import { LoadingState } from '@gofish/shared/core/loading-state';
 import { HttpErrorResponse } from '@angular/common/http';
 import { toast } from 'ngx-sonner';
 import { ModalService } from '@gofish/shared/services/modal.service';
-import { ChangeUsernameModalComponent } from "./components/change-username-modal.component";
-import { ChangeFirstnameModalComponent } from "./components/change-firstname-modal.component";
-import { ChangeLastnameModalComponent } from "./components/change-lastname-modal.component";
+import { ChangeUsernameModalComponent } from "./components/change-username-modal/change-username-modal.component";
+import { ChangeFirstnameModalComponent } from "./components/change-firstname-modal/change-firstname-modal.component";
+import { ChangeLastnameModalComponent } from "./components/change-lastname-modal/change-lastname-modal.component";
+import { ChangeDisplaynameModalComponent } from "./components/change-displayname-modal/change-displayname-modal.component";
+import { ChangeBirthdateModalComponent } from "./components/change-birthdate-modal/change-birthdate-modal.component";
+import { ChangeEmailModalComponent } from '@gofish/features/user/settings/components/general/components/change-email-modal/change-email-modal.component';
+import { VerifyEmailModalComponent } from '@gofish/features/user/settings/components/general/components/verify-email-modal/verify-email-modal.component';
+import { ChangePhoneModalComponent } from '@gofish/features/user/settings/components/general/components/change-phone-modal/change-phone-modal.component';
+import { Gender } from '@gofish/shared/enums/gender.enum';
 
 @Component({
   selector: 'app-general',
@@ -34,7 +40,12 @@ import { ChangeLastnameModalComponent } from "./components/change-lastname-modal
     AsyncButtonComponent,
     ChangeUsernameModalComponent,
     ChangeLastnameModalComponent,
-    ChangeFirstnameModalComponent
+    ChangeFirstnameModalComponent,
+    ChangeEmailModalComponent,
+    VerifyEmailModalComponent,
+    ChangePhoneModalComponent,
+    ChangeDisplaynameModalComponent,
+    ChangeBirthdateModalComponent
 ],
   templateUrl: './general.component.html',
   styleUrl: './general.component.css',
@@ -50,7 +61,12 @@ export class GeneralComponent {
   readonly loadingState = new LoadingState();
   readonly busyState    = new BusyState();
 
-  protected readonly toast = toast;
+  readonly ChangeEmailModalComponent = ChangeEmailModalComponent;
+  readonly VerifyEmailModalComponent = VerifyEmailModalComponent;
+  readonly ChangeDisplaynameModalComponent = ChangeDisplaynameModalComponent;
+  readonly ChangeBirthdateModalComponent = ChangeBirthdateModalComponent;
+  readonly Gender = Gender;
+  readonly toast = toast;
 
   Path = Path;
   PathSegment = PathSegment;
@@ -83,9 +99,10 @@ export class GeneralComponent {
     this.saveSuccess = false;
     this.busyState.setBusy(true);
     this.userProfileApi.patchUserProfile({
-      bio: this.savedBio
+      bio: this.currentBio
     }).subscribe({
       next: () => {
+        this.busyState.setBusy(false);
         this.saveSuccess = true;
         setTimeout(() => {
           this.saveSuccess = false;
@@ -93,10 +110,8 @@ export class GeneralComponent {
         }, 2000);
       },
       error: () => {
-        this.toast.error('Something went saving biography');
-      },
-      complete: () => {
         this.busyState.setBusy(false);
+        this.toast.error('Something went saving biography');
       }
     });
   }
@@ -162,6 +177,60 @@ export class GeneralComponent {
   onLastnameChange(lastname: string) {
     if (!this.userSettings.hasValue()) return;
     this.userSettings.value().lastName = lastname;
+  }
+
+  onPhoneNumberChange(phoneNumber: string) {
+    if (!this.userSettings.hasValue()) return;
+    this.userSettings.value().phoneNumber = phoneNumber;
+  }
+
+  onEmailChange(email: string) {
+    if (!this.userSettings.hasValue()) return;
+    this.userSettings.value().email = email;
+  }
+
+  onEmailVerified() {
+    this.userSettings.reload();
+  }
+
+  onDisplayNameChange(displayName: string) {
+    if (!this.userSettings.hasValue()) return;
+    this.userSettings.value().displayName = displayName;
+  }
+
+  onBirthDateChange(birthDate: string) {
+    if (!this.userSettings.hasValue()) return;
+    this.userSettings.value().birthDate = birthDate;
+  }
+
+  // Gender
+
+  genderBusy = signal(false);
+
+  onGenderChange(gender: Gender) {
+    if (!this.userSettings.hasValue()) return;
+    if (this.userSettings.value().gender === gender) return;
+
+    this.genderBusy.set(true);
+    this.userApi.patchUser({ gender }).subscribe({
+      next: () => {
+        this.genderBusy.set(false);
+        this.userSettings.value()!.gender = gender;
+        this.toast.success('Gender updated');
+      },
+      error: () => {
+        this.genderBusy.set(false);
+        this.toast.error('Failed to update gender');
+      },
+    });
+  }
+
+  // Birth date formatting
+
+  formatBirthDate(date: string | null | undefined): string {
+    if (!date) return '-';
+    const d = new Date(date);
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
   // End modals events

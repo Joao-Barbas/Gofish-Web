@@ -1,0 +1,23 @@
+<div class="modal-backdrop-custom" data-testid="delete-post-modal">
+  <div class="modal-custom">
+
+    <h2 class="modal-header-title">Delete Post</h2>
+
+    <div class="modal-body">
+      <p class="modal-text">
+        Are you sure you want to delete this Post?
+      </p>
+    </div>
+
+    <div class="action-btns">
+      <button class="cancel-btn" (click)="cancel()" data-testid="delete-post-cancel">
+        Cancel
+      </button>
+
+      <button class="delete-btn" (click)="confirmDelete()" data-testid="delete-post-confirm">
+        Yes, delete
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,95 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Api } from '@gofish/shared/constants';
+import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
+import { CreateCommentReportReqDTO, CreateCommentReportResDTO, CreatePinReportReqDTO, CreatePinReportResDTO, DeleteReportsReqDTO, GetCommentsReportsByCommentReqDTO, GetPinReportsByPinReqDTO, GetReportReqDTO, GetReportResDTO, GetReportsResDTO } from '@gofish/shared/dtos/report.dto';
+import { Observable, shareReplay } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ReportService {
+
+  private commentReportReasonTypes$?: Observable<EnumDTO[]>;
+  constructor(private http: HttpClient) { }
+
+
+  createPinReport(dto: CreatePinReportReqDTO): Observable<CreatePinReportResDTO> {
+    return this.http.post<CreatePinReportResDTO>(Api.Report.action('CreatePinReport'), dto);
+  }
+
+  createCommentReport(dto: CreateCommentReportReqDTO): Observable<CreateCommentReportResDTO> {
+    return this.http.post<CreateCommentReportResDTO>(Api.Report.action('CreateCommentReport'), dto);
+  }
+
+  getPinReports(dto: GetReportReqDTO): Observable<GetReportsResDTO> {
+    let params = new HttpParams().set('maxResults', dto.maxResults.toString());
+    if (dto.lastCreatedAt) {
+      params = params.set('lastCreatedAt', dto.lastCreatedAt);
+    }
+    return this.http.get<GetReportsResDTO>(Api.Report.action('GetPinReports'), { params });
+  }
+
+  getPinReportById(id: number): Observable<GetReportResDTO> {
+    return this.http.get<GetReportResDTO>(Api.Report.action(`GetPinReport/${id}`));
+  }
+
+  getCommentReports(dto: GetReportReqDTO): Observable<GetReportsResDTO> {
+    let params = new HttpParams().set('maxResults', dto.maxResults.toString());
+    if (dto.lastCreatedAt) {
+      params = params.set('lastCreatedAt', dto.lastCreatedAt);
+    }
+    return this.http.get<GetReportsResDTO>(Api.Report.action('GetCommentReports'), { params });
+  }
+
+  getPinReportsByPin(dto: GetPinReportsByPinReqDTO): Observable<GetReportsResDTO> {
+    let params = new HttpParams().set('pinId', dto.pinId.toString())
+      .set('maxResults', dto.maxResults.toString());
+    if (dto.lastCreatedAt) {
+      params = params.set('lastCreatedAt', dto.lastCreatedAt);
+    }
+    return this.http.get<GetReportsResDTO>(Api.Report.action('GetPinReportsByPin'), { params });
+  }
+
+  getCommentReportById(id: number): Observable<GetReportResDTO> {
+    return this.http.get<GetReportResDTO>(Api.Report.action(`GetCommentReport/${id}`));
+  }
+
+
+  deletePinReports(dto: DeleteReportsReqDTO): Observable<void> {
+    return this.http.delete<void>(Api.Report.action(`DeletePinReports`), { body: dto });
+  }
+
+  deleteCommentReport(id: number): Observable<void> {
+    return this.http.delete<void>(Api.Report.action(`DeleteCommentReport/${id}`));
+  }
+
+  deleteCommentReports(dto: DeleteReportsReqDTO): Observable<void> {
+    return this.http.delete<void>(Api.Report.action('DeleteCommentReports'), { body: dto });
+  }
+
+  resolvePinReport(id: number): Observable<void> {
+    return this.http.delete<void>(Api.Report.action(`ResolvePinReport/${id}`));
+  }
+
+  getCommentReportsByComment(dto: GetCommentsReportsByCommentReqDTO): Observable<GetReportsResDTO> {
+    let params = new HttpParams().set('commentId', dto.commentId.toString());
+
+    if (dto.lastCreatedAt) {
+      params = params.set('lastCreatedAt', dto.lastCreatedAt);
+    }
+    if (dto.maxResults) {
+      params = params.set('maxResults', dto.maxResults.toString());
+    }
+    return this.http.get<GetReportsResDTO>(Api.Report.action('GetCommentReportsByComment'), { params });
+  }
+
+  enumerateCommentReportReasonType(): Observable<EnumDTO[]> {
+    if (!this.commentReportReasonTypes$) {
+      this.commentReportReasonTypes$ = this.http
+        .get<EnumDTO[]>(Api.Enums.action('CommentReportReason'))
+        .pipe(shareReplay(1));
+    }
+    return this.commentReportReasonTypes$;
+  }
+}

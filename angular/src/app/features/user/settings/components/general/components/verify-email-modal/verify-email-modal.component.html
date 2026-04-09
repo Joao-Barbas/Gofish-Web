@@ -1,0 +1,55 @@
+<!-- verify-email-modal.component.html -->
+
+<div class="gf-modal-backdrop" (click)="$event.stopPropagation()">
+  <div class="gf-modal-shell" (click)="$event.stopPropagation()">
+
+    <div class="title-container">
+      <h5 class="title">Verify email</h5>
+      <button class="gf-modal-close-button" (click)="onNegative()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="gf-modal-separator-no-margin"></div>
+
+    @if (sendEmail.isLoading()) {
+      <div class="body-container">
+        <gf-loading-spinner class="gf-loading-spinner-icon"></gf-loading-spinner>
+      </div>
+    } @else if (sendEmail.error()) {
+      <!-- @let error = securityInfo.error()!; -->
+      <div class="error-container">
+        <p>An error occured while loading necessary information. Please try again later.</p>
+      </div>
+    } @else if (sendEmail.hasValue()) {
+      <div class="body-container">
+        <small class="input-title">Confirm e-mail</small>
+        <form [formGroup]="confirmEmailFormController.form">
+          <input class="input-box" type="text" appNumbersOnly placeholder="Enter your new email here" formControlName="code">
+        </form>
+        @if (confirmEmailFormController.getFirstError(); as errorText) {
+          <small class="gf-text-error">{{ errorText }}</small>
+        }
+      </div>
+    } @else {
+
+    }
+
+    <div class="gf-modal-separator-no-margin"></div>
+
+    <div class="bottom-container">
+      <button class="negative-btn" (click)="onNegative()">
+        Cancel
+      </button>
+      <button
+        class="positive-btn"
+        gfAsyncBtn
+        (click)="onVerifyEmail()"
+        [disabled]="sendEmail.isLoading()"
+        [labels]="{ idle: 'Verify' }"
+        [states]="{ busy: busyState.isBusy() }">
+      </button>
+    </div>
+
+  </div>
+</div>

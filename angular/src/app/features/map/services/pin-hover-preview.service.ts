@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
-import { ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
+import { PinDto, ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
 import { PinKind } from '@gofish/shared/models/pin.model';
 
 @Injectable({ providedIn: 'root' })
@@ -13,11 +13,11 @@ export class PinHoverPreviewService {
     maxWidth: '300px',
   });
 
-  public showHover(map: mapboxgl.Map, pin: ViewportPinDTO): void {
+  public showHover(map: mapboxgl.Map, pin: PinDto): void {
     if (this.isLocked) return;
 
     this.popup
-      .setLngLat([pin.longitude, pin.latitude])
+      .setLngLat([pin.geolocation!.longitude, pin.geolocation!.latitude])
       .setHTML(this.buildHtmlEnter(pin))
       .addTo(map);
   }
@@ -32,7 +32,7 @@ export class PinHoverPreviewService {
     this.popup.remove();
   }
 
-  private buildHtmlEnter(pin: ViewportPinDTO): string {
+  private buildHtmlEnter(pin: PinDto): string {
     const typeClass = `pin-card--${pin.kind}`;
     const title = this.getFriendlyTitle(pin.kind);
 
@@ -41,7 +41,7 @@ export class PinHoverPreviewService {
         <div class="pin-card__content">
           <h3 class="pin-card__title">${title}</h3>
           <div class="pin-card__coords">
-            Geolocation: ${pin.latitude.toFixed(5)}, ${pin.longitude.toFixed(5)}
+            Geolocation: ${pin.geolocation?.latitude.toFixed(5)}, ${pin.geolocation?.longitude.toFixed(5)}
           </div>
         </div>
       </div>

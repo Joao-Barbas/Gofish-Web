@@ -3,7 +3,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Api } from "@gofish/shared/constants";
-import { FriendshipDTO, GetFriendshipBetweenReqDTO, GetFriendshipsResDTO, GetUserGroupReqDTO, GetUserGroupResDTO, GetUserResDTO, GetUserSettingsResDTO, PatchUserReqDTO, PutUserReqDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO } from "@gofish/shared/dtos/user.dto";
+import { FriendshipDTO, GetFriendshipBetweenReqDTO, GetFriendshipsResDTO, GetGroupInvitesReqDTO, GetGroupInvitesResDTO, GetInvitableGroupsReqDTO, GetInvitableGroupsResDTO, GetUserGroupReqDTO, GetUserGroupResDTO, GetUserResDTO, GetUserSettingsResDTO, LeaderboardResDTO, PatchUserReqDTO, PutUserReqDTO, RequestFriendshipReqDTO, RequestFriendshipResDTO, SearchUsersReqDTO, SearchUsersResDTO } from "@gofish/shared/dtos/user.dto";
 import { FriendshipState } from "@gofish/shared/enums/friendship-state.enum";
 import { map, Observable } from "rxjs";
 
@@ -29,6 +29,22 @@ export class UserApi {
 
   public patchUser(dto: PatchUserReqDTO): Observable<void> {
     return this.http.patch<void>(Api.User.action('PatchUser'), dto);
+  }
+
+  public searchUsers(dto: SearchUsersReqDTO): Observable<SearchUsersResDTO> {
+    let p = new HttpParams();
+    if (dto.query)        p = p.set('query', dto.query);
+    if (dto.maxResults)   p = p.set('maxResults', dto.maxResults);
+    if (dto.lastUsername) p = p.set('lastUsername', dto.lastUsername);
+    return this.http.get<SearchUsersResDTO>(Api.User.action('SearchUsers'), { params: p });
+  }
+
+  public getGlobalLeaderboard(): Observable<LeaderboardResDTO> {
+    return this.http.get<LeaderboardResDTO>(Api.User.action('GetGlobalLeaderboard'));
+  }
+
+  public getFriendsLeaderboard(): Observable<LeaderboardResDTO> {
+    return this.http.get<LeaderboardResDTO>(Api.User.action('GetFriendsLeaderboard'));
   }
 
   // Friendships
@@ -63,8 +79,8 @@ export class UserApi {
     );
   }
 
-  public requestFriendship(dto: RequestFriendshipReqDTO): Observable<RequestFriendshipResDTO> {
-    return this.http.post<RequestFriendshipResDTO>(Api.User.action('RequestFriendship'), dto);
+  public requestFriendship(dto: RequestFriendshipReqDTO): Observable<FriendshipDTO> {
+    return this.http.post<FriendshipDTO>(Api.User.action('RequestFriendship'), dto);
   }
 
   public acceptFriendship(id: number): Observable<void> {
@@ -87,5 +103,21 @@ export class UserApi {
     if (dto.maxResults)    p = p.set('maxResults', dto.maxResults);
     if (dto.lastTimestamp) p = p.set('lastTimestamp', dto.lastTimestamp);
     return this.http.get<GetUserGroupResDTO>(Api.User.action('GetUserGroups'), { params: p });
+  }
+
+  public getInvitableGroups(dto: GetInvitableGroupsReqDTO): Observable<GetInvitableGroupsResDTO> {
+    let p = new HttpParams()
+    if (dto.targetUserId)  p = p.set('targetUserId', dto.targetUserId);
+    if (dto.maxResults)    p = p.set('maxResults', dto.maxResults);
+    if (dto.lastTimestamp) p = p.set('lastTimestamp', dto.lastTimestamp);
+    return this.http.get<GetInvitableGroupsResDTO>(Api.User.action('GetInvitableGroups'), { params: p });
+  }
+
+  public getGroupInvites(dto: GetGroupInvitesReqDTO): Observable<GetGroupInvitesResDTO> {
+    let p = new HttpParams();
+    if (dto.state != null) p = p.set('state', dto.state);
+    if (dto.maxResults)    p = p.set('maxResults', dto.maxResults);
+    if (dto.lastTimestamp) p = p.set('lastTimestamp', dto.lastTimestamp);
+    return this.http.get<GetGroupInvitesResDTO>(Api.User.action('GetGroupInvites'), { params: p });
   }
 }

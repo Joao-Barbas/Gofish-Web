@@ -1,17 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PinService } from '@gofish/features/map/services/pin.service';
+import { PinService } from '@gofish/shared/services/pin.service';
 import { UrlQuery, UrlService } from '@gofish/features/map/services/url.service';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
 import { CreateInfoPinReqDTO } from '@gofish/shared/dtos/pin.dto';
 import { Coords } from '@gofish/shared/models/coords.model';
 import { toast } from 'ngx-sonner';
-import { Subscription } from 'rxjs';
+import { groupBy, Subscription } from 'rxjs';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
+import { GroupsService } from '@gofish/shared/services/groups.service';
+import { GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
+import { BodyLengthConstraints } from '@gofish/shared/constants';
 
 @Component({
   selector: 'app-info-pin-modal',
@@ -25,6 +28,8 @@ export class InfoPinModalComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly urlService = inject(UrlService);
   private readonly fb = inject(FormBuilder);
+  private readonly groupsService = inject(GroupsService);
+  protected readonly BodyLengthConstraints = BodyLengthConstraints;
   values: UrlQuery | null = null;
   busyState: BusyState = new BusyState();
 
@@ -35,12 +40,15 @@ export class InfoPinModalComponent implements OnInit {
   seaBedOptions: EnumDTO[] = [];
 
   errorMessage: string = '';
+  userGroups = signal<GetUserGroupsResDTO['groups']>([]);
+  selectedGroupIds = signal<number[]>([]);
 
   form = this.fb.group({
-    body: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
+    body: ['', [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
     visibility: [0, [Validators.required]],
     accessDifficulty: [0, [Validators.required]],
-    seaBed: [0, [Validators.required]]
+    seaBed: [0, [Validators.required]],
+    groupIds: this.fb.control<number[]>([])
   });
 
 
@@ -93,6 +101,31 @@ export class InfoPinModalComponent implements OnInit {
       }
     });
 
+    this.groupsService.getUserGroups().subscribe({
+      next: (res) => {
+        this.userGroups.set(res.groups);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+    this.form.controls.visibility.valueChanges.subscribe(value => {
+      if (Number(value) !== 2) {
+        this.selectedGroupIds.set([]);
+        this.form.controls.groupIds.setValue([]);
+      }
+    });
+
+  }
+
+  toggleGroup(groupId: number) {
+    const current = this.selectedGroupIds();
+
+    const updated = current.includes(groupId) ? current.filter(id => id !== groupId) : [...current, groupId]
+
+    this.selectedGroupIds.set(updated);
+    this.form.controls.groupIds.setValue(updated);
   }
 
   onCancel(): void {
@@ -118,7 +151,12 @@ export class InfoPinModalComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
-
+    const visibility = Number(this.form.value.visibility);
+    const groupIds = this.form.value.groupIds ?? [];
+    if (visibility === 2 && groupIds.length === 0) {
+      this.errorMessage = 'Select at least one group.';
+      return;
+    }
     this.busyState.setBusy(true);
 
     const dto: CreateInfoPinReqDTO = {
@@ -127,7 +165,8 @@ export class InfoPinModalComponent implements OnInit {
       visibility: Number(this.form.value.visibility!),
       body: this.form.value.body ?? '',
       accessDifficulty: Number(this.form.value.accessDifficulty!),
-      seaBedType: Number(this.form.value.seaBed!)
+      seaBedType: Number(this.form.value.seaBed!),
+      groupIds: groupIds
     };
     console.log(dto);
 

@@ -1,0 +1,23 @@
+<!-- profile-show-more-modal.component.html -->
+
+<div class="gf-modal-backdrop" (click)="$event.stopPropagation()">
+  <div class="gf-flow-vertical gf-modal-shell gf-gap-24" (click)="$event.stopPropagation()">
+
+    <button class="gf-modal-close-button" (click)="onNegative()" title="Return home">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+
+    <div>
+      <h5>{{ `About @${userProfile().userName}` }}</h5>
+      <p>{{ userProfile().bio ?? 'No bio yet.' }}</p>
+    </div>
+
+    <div>
+      <h6>More statistics</h6>
+      <p><span>Weekly streak:</span> {{ userProfile().weeklyStreak }}</p>
+      <p><span>Maximum weekly streak achieved:</span> {{ userProfile().maxWeeklySteak }}</p>
+      <p><span>Join date:</span> {{ userProfile().joinedAt | date:'dd/MM/yyyy' }}</p>
+      <p><span>Last active at:</span> {{ userProfile().lastActiveAt | date:'dd/MM/yyyy' }}</p>
+    </div>
+  </div>
+</div>

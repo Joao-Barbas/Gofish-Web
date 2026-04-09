@@ -1,75 +1,63 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using GofishApi.Enums;
 using GofishApi.Models;
+using GofishApi.Services;
 
 namespace GofishApi.Dtos;
 
-public record GetUserProfileReqDTO(
-    // Unused
-)
-{ }
+#region View Models
 
-public record GetUserProfileResDto(
-    string UserId,
-    string FirstName,
-    string LastName,
-    string UserName,
-    int FishingScore,
-    string? Bio,
-    string? AvatarUrl,
-    DateTime JoinedAt,
-    DateTime LastActiveAt,
-    FriendshipState? FriendshipState,
-    int WeeklyStreak,
-    int MaxWeeklySteak,
-    int PinsCount,
-    int FriendsCount,
-    int GroupsCount
-)
+public record UserProfileDto
 {
-    public static GetUserProfileResDto FromEntity(UserProfile e, FriendshipState? friendshipState) => new(
-        e.UserId,
-        e.AppUser.FirstName ?? "",
-        e.AppUser.LastName ?? "",
-        e.AppUser.UserName ?? "",
-        e.FishingScore,
-        e.Bio,
-        e.AvatarUrl,
-        e.JoinedAt,
-        e.LastActiveAt,
-        friendshipState,
-        e.WeeklyStreak,
-        e.MaxWeeklyStreak,
-        0,
-        0,
-        0
-    );
+    public required string UserId { get; init; }
+    public required string DisplayName { get; init; }
+    public required string UserName { get; init; }
+    public required int CatchPoints { get; init; }
+    public required int Rank { get; init; }
+    public string? Bio { get; init; }
+    public string? AvatarUrl { get; init; }
+    public required DateTime JoinedAt { get; init; }
+    public required DateTime LastActiveAt { get; init; }
+    public FriendshipDto? Friendship { get; init; }
+    public required int WeeklyStreak { get; init; }
+    public required int MaxWeeklySteak { get; init; }
+    public int PinsCount { get; init; }
+    public int FriendsCount { get; init; }
+    public int GroupsCount { get; init; }
 }
 
-public record GetUserProfileSettingsReqDto(
-// Unused
-)
-{ }
+#endregion // View Models
+#region Request Wrappers
 
-public record GetUserProfileSettingsResDto(
-    string? Bio,
-    string? AvatarUrl
-)
+public record GetUserProfileReqDTO { } // Unused
+
+public record GetUserProfileSettingsReqDto { } // Unused
+
+public record PutUserProfileReqDto
 {
-    public static GetUserProfileSettingsResDto FromEntity(UserProfile e) => new(
-        e.Bio,
-        e.AvatarUrl
-    );
+    [Required] public required string Bio { get; init; }
+    [Required] public required IFormFile Avatar { get; init; }
 }
 
-public record PutUserProfileReqDto(
-    [Required] string Bio,
-    [Required] IFormFile Avatar
-)
-{ }
+public record PatchUserProfileReqDto
+{
+    public string? Bio { get; init; }
+    public IFormFile? Avatar { get; init; }
+}
 
-public record PatchUserProfileReqDto(
-    string? Bio,
-    IFormFile? Avatar
-)
-{ }
+#endregion // Request Wrappers
+#region Response Wrappers
+
+public record GetUserProfileSettingsResDto
+{
+    public string? Bio { get; init; }
+    public string? AvatarUrl { get; init; }
+
+    public static GetUserProfileSettingsResDto FromEntity(UserProfile e) => new()
+    {
+        Bio = e.Bio,
+        AvatarUrl = e.AvatarUrl
+    };
+}
+
+#endregion // Response Wrappers

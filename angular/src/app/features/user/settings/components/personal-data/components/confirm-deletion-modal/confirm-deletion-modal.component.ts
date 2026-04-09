@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UserSecurityApi } from '@gofish/shared/api/user-security.api';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { ModalController } from '@gofish/shared/core/modal-controller';
 import { SecurityInfoResDTO } from '@gofish/shared/dtos/user-security.dto';
 import { SimpleModal } from '@gofish/shared/models/modal.model';
 import { AuthService } from '@gofish/shared/services/auth.service';
-import { UserSecurityService } from '@gofish/shared/services/user-security.service';
 
 @Component({
   selector: 'app-confirm-deletion-modal',
@@ -36,12 +36,12 @@ export class ConfirmDeletionModalComponent implements SimpleModal, OnInit {
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly userSecurityService: UserSecurityService
+    private readonly userSecurityApi: UserSecurityApi
   ){}
 
   ngOnInit() {
     this.loadingState.start();
-    this.userSecurityService.getSecurityInfo().subscribe({
+    this.userSecurityApi.getSecurityInfo().subscribe({
       next: (res: SecurityInfoResDTO) => {
         console.log(res)
         this.requireTwoFactorApp = res.twoFactorEnabled;

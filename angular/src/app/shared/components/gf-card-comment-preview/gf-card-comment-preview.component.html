@@ -1,0 +1,57 @@
+@if (currentComment(); as comment) {
+<div class="gf-card-comment-preview">
+
+  <!-- TOP -->
+  <div class="top-wrapper">
+    <div class="comment-user-wrapper">
+      <img
+        [src]="avatarService.resolve(comment.author?.avatarUrl)"
+        class="rounded-circle comment-author-profile-photo">
+
+      @if (comment.author; as author) {
+        <gf-user-title [text]="author.userName" [rank]="author.rank"></gf-user-title>
+      }
+
+      <span class="separator">•</span>
+      <span class="comment-time-ago">{{ comment.createdAt | timeAgo }}</span>
+    </div>
+
+    <div class="badge-wrapper">
+
+      <!-- Número de reports -->
+      <div class="gf-badge-comment-preview">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path
+            d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />
+        </svg>
+        <span>{{ reportNumber() }}</span>
+      </div>
+
+      <!-- Botão de ações -->
+      <button class="gf-badge-comment-preview" [routerLink]="commentLink()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12A10 10 0 1 1 12 2" />
+          <path d="M22 2 12 12" />
+          <path d="M16 2h6v6" />
+        </svg>
+        <span>Reports</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="bottom-wrapper">
+    <p class="comment-body mb-0">
+      {{ comment.body }}
+    </p>
+
+    @if (reportIndex()) {
+      <span class="text-bold report-number"># {{ reportIndex() }}</span>
+    }
+  </div>
+
+</div>
+}

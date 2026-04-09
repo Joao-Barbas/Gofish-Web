@@ -1,0 +1,11 @@
+<!-- users-list-card.component.html -->
+
+<div>
+  <a [routerLink]="['/profile', user().id]">
+    <img [src]="avatar.resolve(user().avatarUrl)" alt="Avatar">
+    <div>
+      <gf-user-title [text]="user().displayName" [rank]="user().rank"></gf-user-title>
+      <small>@{{ user().userName }}</small>
+    </div>
+  </a>
+</div>

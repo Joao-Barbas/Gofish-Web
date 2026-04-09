@@ -1,0 +1,45 @@
+<!-- user-popover.component.html -->
+
+<div class="d-flex justify-content-between align-items-start gf-p-12">
+  <div class="d-flex align-items-center gf-gap-12 flex-grow-1">
+    <img [src]="avatarService.resolve(avatarUrl.value())" alt="Avatar" style="width: 48px; height: 48px; border-radius: 100%; object-fit: cover;">
+    <div class="flex-grow-1">
+      <div class="gf-text-normal text-truncate">{{ authService.userDisplayName() }}</div>
+      <div class="gf-text-small text-truncate">&#64;{{ authService.userName() }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="gf-separator-no-margin"></div>
+
+<div class="gf-flow-vertical gf-gap-4 gf-p-12">
+  <a class="popup-link" [routerLink]="`/profile/${this.authService.userId()!}`" (click)="popupController.close()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+    <span>Profile</span>
+  </a>
+  <a class="popup-link" [routerLink]="[Path.PROFILE_FRIENDS(this.authService.userId()!)]" (click)="popupController.close()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
+    <span>Crewmates</span>
+  </a>
+  <a class="popup-link" [routerLink]="[Path.PROFILE_GROUPS(this.authService.userId()!)]" (click)="popupController.close()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg>
+    <span>My Crews</span>
+  </a>
+  <a class="popup-link" [routerLink]="`/leaderboard`" (click)="popupController.close()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5V3"/><path d="M14 5V3"/><path d="M15 21v-3a3 3 0 0 0-6 0v3"/><path d="M18 3v8"/><path d="M18 5H6"/><path d="M22 11H2"/><path d="M22 9v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9"/><path d="M6 3v8"/></svg>
+    <span>Leaderboard</span>
+  </a>
+  <a class="popup-link" [routerLink]="[Path.SETTINGS]" (click)="popupController.close()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+    <span>Settings</span>
+  </a>
+</div>
+
+<div class="gf-separator-no-margin"></div>
+
+<div class="gf-p-12">
+  <button class="gf-hollow-btn d-flex align-items-center justify-content-between w-100" (click)="onSignOutClick()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+    <span>Sign Out</span>
+  </button>
+</div>

@@ -1,26 +1,267 @@
-.footer-links,
-.footer-links li{
-  width: fit-content;
+/* footer.component.css */
+
+/* ------ HOST ------ */
+
+:host {
+  display: block;
 }
 
-.footer-links li:not(:last-child) {
-  padding-bottom: 10px;
+:host(.none) {
+  display: none;
 }
 
-.icon-size-socials > [class^="icon-"] {
-  --size: 24px;
-}
-
-.gf-text-selection > span{
-  font-size: 16px;
+/* ------ SHARED ------ */
+a {
+  color: inherit;
   text-decoration: none;
+}
+
+.social-icons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: opacity 150ms ease;
+
+  .big {
+    color: var(--gf-dark-text);
+  }
+
+  .small {
+    color: var(--gf-dark-text);
+  }
+}
+
+.social-icons a:hover {
+  opacity: 0.75;
+}
+
+/*
+--------------------------
+BIG VARIANT
+--------------------------
+*/
+
+/* Social banner */
+.social-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 16px 48px;
+  background-color: var(--gf-primary);
+  color: oklch(0.9612 0 0);
+  font-size: 0.95rem;
+}
+
+/* Body */
+.footer-body {
+  background-color: transparent;
+  padding: 48px;
   color: var(--gf-dark-text);
 }
 
-@media (max-width: 576px) {
-  .icon-size-gofish-logo {
-    --size: 40px;
+.footer-content {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
+/* Brand */
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  color: var(--gf-dark-text);
 
+  .logo {
+    display: inline-flex;
+    text-decoration: none;
+    gap: var(--gf-8);
+    align-items: center;
+
+    span {
+      display: inline;
+    }
+
+    img {
+      width: 48px;
+      height: 48px;
+    }
+  }
+}
+
+.brand-description {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--gf-dark-text);
+}
+
+/* Headings */
+.footer-heading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gf-dark-text);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--gf-primary);
+  display: inline-block;
+}
+
+/* Links column */
+.footer-links nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links nav a {
+  font-size: 0.875rem;
+  color: var(--gf-dark-text-muted);
+  transition: color 150ms ease;
+  width: fit-content;
+}
+
+.footer-links nav a:hover {
+  color: var(--gf-dark-text);
+}
+
+/* Contact column */
+.contact-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-item {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.875rem;
+  color: var(--gf-dark-text);
+}
+
+.contact-item svg {
+  flex-shrink: 0;
+  color: var(--gf-dark-text);
+}
+
+/* Copyright */
+.footer-copyright {
+  background-color: var(--gf-dark-bg-light);
+  text-align: center;
+  padding: 16px;
+  color: var(--gf-dark-text-muted);
+  font-size: 0.8rem;
+}
+
+/*
+--------------------------
+SMALL VARIANT
+--------------------------
+*/
+
+.small-footer {
+  max-width: var(--gf-container-xxl);
+  margin: auto;
+  color: var(--gf-dark-text);
+  padding: 20px 32px;
+}
+
+.small-footer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.small-footer-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.small-footer-links a {
+  font-size: 0.875rem;
+  color: var(--gf-dark-text-muted);
+  transition: color 150ms ease;
+}
+
+.small-footer-links a:hover {
+  color: var(--gf-dark-text);
+}
+
+.small-footer-divider {
+  border: none;
+  border-top: 2px solid var(--gf-dark-bg-light);
+  margin: 16px 0;
+}
+
+.small-footer-bottom p {
+  font-size: 0.8rem;
+  color: var(--gf-dark-text-muted);
+}
+
+/* ------ BREAKPOINTS ------ */
+
+@media (max-width: 48rem) {
+  .social-banner {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 16px 24px;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 32px;
+
+    .footer-brand {
+      display: none;
+    }
+  }
+
+  .footer-body {
+    padding: 32px 24px;
+  }
+
+  .small-footer-top {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .small-footer-links {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-links {
+    text-align: center;
+
+    nav a {
+      margin: auto;
+      width: auto;
+    }
+  }
+
+  .footer-contact {
+    text-align: center;
+
+    .contact-items,
+    .contact-item {
+      margin: auto;
+      text-align: center;
+    }
   }
 }

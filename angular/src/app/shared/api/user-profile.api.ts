@@ -3,7 +3,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Api } from "@gofish/shared/constants";
-import { GetUserProfileResDTO, GetUserProfileSettingsResDTO, PatchUserProfileReqDTO, PutUserProfileReqDTO } from "@gofish/shared/dtos/user-profile.dto";
+import { GetUserProfileSettingsResDTO, PatchUserProfileReqDTO, PutUserProfileReqDTO, UserProfileDTO } from "@gofish/shared/dtos/user-profile.dto";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -12,8 +12,8 @@ import { Observable } from "rxjs";
 export class UserProfileApi {
   private readonly http = inject(HttpClient);
 
-  public getUserProfile(id: string): Observable<GetUserProfileResDTO> {
-    return this.http.get<GetUserProfileResDTO>(Api.UserProfile.action(`GetUserProfile/${id}`));
+  public getUserProfile(id: string): Observable<UserProfileDTO> {
+    return this.http.get<UserProfileDTO>(Api.UserProfile.action(`GetUserProfile/${id}`));
   }
 
   public getUserProfileSettings(): Observable<GetUserProfileSettingsResDTO> {
@@ -35,6 +35,7 @@ export class UserProfileApi {
   }
 
   public getUserAvatar(id: string): Observable<string> {
-    return this.http.get<string>(Api.UserProfile.action(`GetUserAvatar/${id}`));
+    const url = Api.UserProfile.action(`GetUserAvatar/${id}`);
+    return this.http.get(url, { responseType: 'text' });
   }
 }

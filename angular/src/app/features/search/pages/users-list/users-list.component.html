@@ -1,0 +1,32 @@
+<!-- users-list.component.html -->
+
+<h4>User results for <span>{{ query() }}</span></h4>
+@if (users.isLoading()) {
+  <gf-loading-spinner></gf-loading-spinner>
+}
+@if (users.hasValue()) {
+  <div class="list">
+    @for (user of usersList(); track user.id) {
+      <gf-users-list-card
+        [user]="user"
+      ></gf-users-list-card>
+    } @empty {
+      @if (!users.isLoading() && !loadingState.isLoading()) {
+        <p>{{ 'No results found. :(' }}</p>
+      }
+    }
+  </div>
+  @if (usersHasMore()) {
+    <gf-async-button
+      [labels]="{ idle: 'Load more', busy: 'Loading...' }"
+      [states]="{ busy: busyState.isBusy() }"
+      (click)="loadMoreUsers()"
+    ></gf-async-button>
+  }
+}
+@if (users.error()) {
+  <div class="failed-container gf-flow-vertical gf-center-axes">
+    <span>{{ users.error() }}</span>
+    <button (click)="users.reload()">Try Again</button>
+  </div>
+}

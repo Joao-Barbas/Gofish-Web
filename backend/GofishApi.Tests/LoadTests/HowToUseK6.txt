@@ -1,0 +1,139 @@
+﻿Guia rápido: como testar a API com k6
+
+Este guia explica de forma simples como executar testes de carga na API usando k6.
+
+---
+
+1. Objetivo
+
+Usamos o k6 para:
+
+* testar a performance dos endpoints
+* simular vários utilizadores
+* identificar limites (breakpoints)
+* detetar erros sob carga
+
+---
+
+2. Pré-requisitos
+
+* Ter o k6 instalado: https://k6.io/docs/get-started/installation/
+* API a correr localmente (ex: https://localhost:7113)
+* Ter os scripts de teste (ex: pin-getFeed.js, pin-getPins.js)
+
+---
+
+3. Estrutura dos testes
+
+Os testes estão organizados em scripts JavaScript.
+
+Cada script:
+
+* define carga (options)
+* faz pedidos HTTP
+* valida respostas (check)
+
+---
+
+4. Executar um teste
+
+No terminal, ir para a pasta dos testes:
+
+cd backend/GofishApi.Tests/LoadTests/scenarios
+
+Executar:
+
+k6 run --insecure-skip-tls-verify nome-do-script.js
+
+Exemplo:
+
+k6 run --insecure-skip-tls-verify pin-getFeed.js
+
+---
+
+5. Autenticação
+
+Os testes usam um utilizador de teste (ex: player1) para já.
+
+O login é feito uma vez no setup() e o token é reutilizado:
+
+export function setup() {
+return { token: signIn() };
+}
+
+---
+
+6. Como funciona o teste
+
+Cada utilizador virtual (VU):
+
+* usa o token
+* faz pedidos ao endpoint
+* repete durante o tempo definido
+
+---
+
+7. Configuração de carga
+
+Exemplo com stages:
+
+export const options = {
+stages: [
+{ duration: '30s', target: 20 },
+{ duration: '30s', target: 50 },
+{ duration: '30s', target: 100 },
+{ duration: '30s', target: 0 },
+],
+};
+
+Isto significa:
+
+* aumenta utilizadores gradualmente
+* mantém carga
+* reduz no final
+
+---
+
+8. Validação (checks)
+
+Usamos checks para garantir que os pedidos são válidos:
+
+check(res, {
+'status 200': (r) => r.status === 200,
+});
+
+---
+
+9. O que analisar nos resultados
+
+Depois de correr o teste, observar:
+
+* http_req_duration → tempo das respostas
+* p(95) → latência dos piores 5% (muito importante)
+* http_req_failed → erros
+* checks_failed → validações falhadas
+
+---
+
+10. Boas práticas
+
+* Não fazer login em todas as iterações
+* Usar setup() para autenticação
+* Testar endpoints isoladamente
+* Começar com pouca carga e aumentar gradualmente
+* Validar sempre as respostas
+
+---
+
+11. Objetivo final
+
+Encontrar o ponto onde:
+
+* a latência aumenta muito
+* começam a surgir erros
+
+Esse ponto é o limite do sistema (breakpoint).
+
+---
+
+Qualquer dúvida sobre os scripts, ver exemplos existentes na pasta LoadTests.

@@ -1,0 +1,72 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.comment-list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gf-card-post-comment {
+  padding: 12px;
+  background: var(--gf-dark-bg);
+  border-radius: var(--gf-12);
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.comment-list-section>.gf-card-post-comment:not(:last-child) {
+  border-bottom: 1px solid var(--gf-dark-bg-light);
+}
+
+.top-of-post {
+  min-width: 0;
+}
+
+.post-author-profile-photo {
+  width: var(--gf-32);
+  height: var(--gf-32);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+gf-user-title {
+  --user-title-cursor: pointer;
+}
+
+.post-author-name {
+  font-size: var(--gf-14);
+  font-family: var(--gf-font-main);
+  word-break: break-word;
+}
+
+.post-date {
+  font-size: var(--gf-12);
+  font-family: var(--gf-font-date);
+  color: var(--gf-dark-text-muted);
+  word-break: break-word;
+}
+
+
+.post-content {
+  min-width: 0;
+}
+
+.post-comment-textarea {
+  padding-left: 40px;
+}
+
+.post-comment-text {
+  margin: 0;
+  font-size: var(--gf-14);
+  font-family: var(--gf-font-ugc);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}

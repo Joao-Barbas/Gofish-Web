@@ -26,7 +26,7 @@
           <label>{{ 'Phone number:' }}</label>
           <span class="gf-ml-8">{{ userSettings.value().phoneNumber | fallback }}</span>
         </div>
-        <button type="button" class="gf-d-inline">
+        <button type="button" class="gf-d-inline" (click)="this.modalService.open('app-change-phone-modal')">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
         </button>
       </div>
@@ -37,9 +37,23 @@
           <label>{{ 'E-mail:' }}</label>
           <span class="gf-ml-8">{{ userSettings.value().email | fallback }}</span>
         </div>
-        <button type="button" class="gf-d-inline">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
-        </button>
+        <div class="gf-d-flex gf-items-center">
+          @if (userSettings.value().emailConfirmed) {
+            <div class="setting-verified-status verified">
+              Verified
+            </div>
+          } @else {
+            <div
+              class="setting-verified-status unverified"
+              title="Click to begin email verification"
+              (click)="this.modalService.open(VerifyEmailModalComponent.Key)">
+              Unverified
+            </div>
+          }
+          <button type="button" class="gf-d-inline" (click)="this.modalService.open(ChangeEmailModalComponent.Key)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+          </button>
+        </div>
       </div>
 
       <!-- Password -->
@@ -61,6 +75,17 @@
     <h4>Personal information</h4>
     <div class="setting-section-shell gf-flow-vertical gf-gap-6">
 
+      <!-- Display name -->
+      <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
+        <div class="gf-d-inline">
+          <label>{{ 'Display name:' }}</label>
+          <span class="gf-ml-8">{{ userSettings.value().displayName | fallback }}</span>
+        </div>
+        <button type="button" class="gf-d-inline" (click)="this.modalService.open(ChangeDisplaynameModalComponent.Key)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+        </button>
+      </div>
+
       <!-- First name -->
       <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
         <div class="gf-d-inline">
@@ -72,7 +97,7 @@
         </button>
       </div>
 
-      <!-- Last number -->
+      <!-- Last name -->
       <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
         <div class="gf-d-inline">
           <label>{{ 'Last name:' }}</label>
@@ -84,26 +109,51 @@
       </div>
 
       <!-- Birth date -->
-      <!-- <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
+      <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
         <div class="gf-d-inline">
           <label>{{ 'Birth date:' }}</label>
-          <input class="gf-ml-8" [readOnly]="true" [value]="userSettings.value()." [defaultValue]="'-'"/>
+          <span class="gf-ml-8">{{ formatBirthDate(userSettings.value().birthDate) }}</span>
         </div>
-        <button class="gf-d-inline">
+        <button type="button" class="gf-d-inline" (click)="this.modalService.open(ChangeBirthdateModalComponent.Key)">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
         </button>
-      </div> -->
+      </div>
 
       <!-- Gender -->
-      <!-- <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
+      <div class="setting-field-shell gf-d-flex gf-items-center gf-justify-between">
         <div class="gf-d-inline">
           <label>{{ 'Gender (Optional):' }}</label>
-          <input class="gf-ml-8" [readOnly]="true" [value]="userSettings.value()." [defaultValue]="'-'"/>
         </div>
-        <button class="gf-d-inline">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
-        </button>
-      </div> -->
+        <div class="gender-selector gf-d-flex gf-gap-6">
+          <button
+            type="button"
+            class="gender-btn"
+            [class.active]="userSettings.value().gender === Gender.Male"
+            [disabled]="genderBusy()"
+            title="Male"
+            (click)="onGenderChange(Gender.Male)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="5"/><path d="M19 5 13.6 10.4"/><path d="M19 5h-5"/><path d="M19 5v5"/></svg>
+          </button>
+          <button
+            type="button"
+            class="gender-btn"
+            [class.active]="userSettings.value().gender === Gender.Female"
+            [disabled]="genderBusy()"
+            title="Female"
+            (click)="onGenderChange(Gender.Female)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M12 14v7"/><path d="M9 18h6"/></svg>
+          </button>
+          <button
+            type="button"
+            class="gender-btn"
+            [class.active]="userSettings.value().gender === Gender.Other"
+            [disabled]="genderBusy()"
+            title="Other"
+            (click)="onGenderChange(Gender.Other)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M12 2v4"/><path d="M12 18v4"/></svg>
+          </button>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -163,25 +213,28 @@
   <!-- Modals -->
   @switch (this.modalService.activeModal()) {
   @case ('app-change-username-modal') {
-    <app-change-username-modal
-      animate.enter="on-enter"
-      animate.leave="on-leave"
-      (positive)="onUsernameChange($event)"
-    ></app-change-username-modal>
+    <app-change-username-modal (positive)="onUsernameChange($event)"></app-change-username-modal>
+  }
+  @case ('app-change-phone-modal') {
+    <app-change-phone-modal (positive)="onPhoneNumberChange($event)"></app-change-phone-modal>
+  }
+  @case (ChangeDisplaynameModalComponent.Key) {
+    <app-change-displayname-modal (positive)="onDisplayNameChange($event)"></app-change-displayname-modal>
   }
   @case ('app-change-firstname-modal') {
-    <app-change-firstname-modal
-      animate.enter="on-enter"
-      animate.leave="on-leave"
-      (positive)="onFirstnameChange($event)"
-    ></app-change-firstname-modal>
+    <app-change-firstname-modal (positive)="onFirstnameChange($event)"></app-change-firstname-modal>
   }
   @case ('app-change-lastname-modal') {
-    <app-change-lastname-modal
-      animate.enter="on-enter"
-      animate.leave="on-leave"
-      (positive)="onLastnameChange($event)"
-    ></app-change-lastname-modal>
+    <app-change-lastname-modal (positive)="onLastnameChange($event)"></app-change-lastname-modal>
+  }
+  @case (ChangeBirthdateModalComponent.Key) {
+    <app-change-birthdate-modal (positive)="onBirthDateChange($event)"></app-change-birthdate-modal>
+  }
+  @case (ChangeEmailModalComponent.Key) {
+    <gf-change-email-modal></gf-change-email-modal>
+  }
+  @case (VerifyEmailModalComponent.Key) {
+    <gf-verify-email-modal (positive)="onEmailVerified()"></gf-verify-email-modal>
   }}
 }
 @else if (userSettings.error() || userProfileSettings.error()) {

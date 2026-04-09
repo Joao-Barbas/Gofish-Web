@@ -1,0 +1,32 @@
+<!-- friends-list.component.html -->
+
+@if (friends.isLoading()) {
+  <gf-loading-spinner></gf-loading-spinner>
+} @else if (friends.error()) {
+  <gf-loading-error-modal
+    [error]="friends.error()!"
+    (negative)="router.navigate([Path.HOME]);"
+    (positive)="window.location.reload();">
+  </gf-loading-error-modal>
+} @else if (friends.hasValue()) {
+  <div class="list">
+    @for (friend of friendsList(); track friend.id) {
+      <gf-friendship-list-card
+        [friendship]="friend"
+        [small]="false"
+        [actions]="false"
+      ></gf-friendship-list-card>
+    } @empty {
+      @if (!friends.isLoading() && !loadingState.isLoading()) {
+        <p>{{ 'The waters are calm... :(' }}</p>
+      }
+    }
+  </div>
+  @if (friendsHasMore()) {
+    <gf-async-button
+      [labels]="{ idle: 'Load more', busy: 'Loading...' }"
+      [states]="{ busy: busyState.isBusy() }"
+      (click)="loadMoreFriends()"
+    ></gf-async-button>
+  }
+}

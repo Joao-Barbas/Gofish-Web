@@ -1,56 +1,50 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, computed, inject, input, Input, OnInit, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { PinService } from '@gofish/features/map/services/pin.service';
-import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 
-import { Species } from '../../enums/species.enum';
-import { Bait } from '../../enums/bait.enums';
-import { AccessDifficulty } from '../../enums/access-difficulty.enums';
-import { Seabed } from '../../enums/seabed.enum';
-import { WarningKind } from '../../enums/warning-kind.enum';
-import { TimeAgoPipe } from "../../pipes/time-ago.pipe";
+import { PinService } from '@gofish/shared/services/pin.service';
+import { EnumDTO } from '@gofish/shared/dtos/enum.dto';
+import { PinDataResDTO, PinDto } from '@gofish/shared/dtos/pin.dto';
+import { TimeAgoPipe } from '@gofish/shared/pipes/time-ago.pipe';
+import { AvatarService } from '@gofish/shared/services/avatar.service';
+import { PinKind } from '@gofish/shared/models/pin.model';
+import { GetReportResDTO } from '@gofish/shared/dtos/report.dto';
+import { UserTitleComponent } from "../user-title/user-title.component";
+
 
 export type PinType = 'catch' | 'info' | 'warning';
 
 @Component({
   selector: 'app-gf-card-pin-preview',
-  imports: [NgClass, TimeAgoPipe],
+  imports: [NgClass, TimeAgoPipe, RouterLink, UserTitleComponent],
   templateUrl: './gf-card-pin-preview.component.html',
   styleUrl: './gf-card-pin-preview.component.css',
 })
 export class GfCardPinPreviewComponent implements OnInit {
   private readonly pinService = inject(PinService);
+  readonly avatarService = inject(AvatarService);
 
-  @Input() pinType: PinType = 'catch';
-  @Input() isReportedPin: boolean = false;
+  pinId = input<number>();
+  pinData = input<PinDto>();
+  pinInfo = signal<PinDto | null>(null);
+  isReportedPin = input<boolean>(false);
+  reportNumber = input<number>();
+  reportIndex = input<number>();
 
-  @Input() authorProfilePhoto: string = 'assets/images/placeholder_profile_pic.png';
-  @Input() authorName: string = '';
-  @Input() timeAgo: string = '';
-  @Input() votes: number = 0;
-  @Input() comments: number = 0;
-  @Input() reportNumber?: number;
+  pinKind = PinKind;
 
-  // Catch
-  @Input() species?: Species;
-  @Input() bait?: Bait;
-  @Input() hookSize?: string;
+  pinLink = computed(() => `${this.pinId()}`);
+  currentPin = computed(() => this.pinData() ?? this.pinInfo());
 
-  // Info
-  @Input() accessDifficulty?: AccessDifficulty;
-  @Input() seabed?: Seabed;
-
-  // Warning
-  @Input() warningKind?: WarningKind;
-
-  // Enum options (vindas do backend)
+  // Enum options
   speciesOptions: EnumDTO[] = [];
   baitOptions: EnumDTO[] = [];
   accessDifficultyOptions: EnumDTO[] = [];
   seabedOptions: EnumDTO[] = [];
   warningKindOptions: EnumDTO[] = [];
+
 
   ngOnInit() {
     this.pinService.enumerateSpeciesType().subscribe({
@@ -73,10 +67,26 @@ export class GfCardPinPreviewComponent implements OnInit {
       next: (res) => this.warningKindOptions = res,
       error: (err: HttpErrorResponse) => console.error(err)
     });
+    if (!this.pinData() && this.pinId()) {
+      const request = {
+        ids: [{ pinId: this.pinId() }],
+        dataRequest: {
+          includeAuthor: true,
+          includeDetails: true,
+          includeGeolocation: true,
+          includeStats: true,
+        }
+      };
+      this.pinService.getPins(request).subscribe({
+        next: (res) => {
+          this.pinInfo.set(res.pins[0]);
+          },
+        error: (err: HttpErrorResponse) => console.error(err)
+      });
+    }
   }
 
   getEnumDisplayName(options: EnumDTO[], value: number): string {
-    console.log('options:', options, 'value:', value);
     if (value === null) return '';
     const option = options.find(opt => opt.value === value);
     return option ? option.display : '';

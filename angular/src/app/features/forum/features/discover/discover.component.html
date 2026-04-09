@@ -1,0 +1,21 @@
+@if (allFeedPosts() === null) {
+  <gf-loading-spinner></gf-loading-spinner>
+} @else if (allFeedPosts()!.pins.length === 0) {
+  <div class="end-message">
+    <p>Nothing here yet. Be the first to drop a pin.</p>
+  </div>
+} @else if (allFeedPosts(); as feed) {
+  @for (post of feed.pins; track post.id) {
+    <app-forum-post [postData]="post"></app-forum-post>
+  }
+
+  @if (hasMoreResults()) {
+    <div class="show-more" (click)="showMore()">
+      <button class="show-more-text">Show more</button>
+    </div>
+  } @else {
+    <div class="end-message">
+      <p>You've reached the end of the pond.</p>
+    </div>
+  }
+}

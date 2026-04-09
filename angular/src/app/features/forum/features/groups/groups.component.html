@@ -1,0 +1,116 @@
+<div class="d-flex flex-column group">
+  @if (groupData(); as group) {
+  <!-- Group Header Info -->
+  <div class="d-flex flex-column group-header-info">
+
+    <!-- Group Header -->
+    <div class="d-flex align-items-center justify-content-between group-header">
+
+
+      <div class="d-flex align-items-center justify-content-start group-image-name-creator-wrapper">
+
+        <div class="group-image-wrapper">
+          <img [src]="group.avatarUrl" class="group-image">
+        </div>
+
+        <div class="d-flex flex-column group-name-creator">
+          <span class="group-name-text">{{group.name}}</span>
+          <span class="group-creator-text">By @{{ (group.owner?.userName) || (group.owner?.userName) || 'Unknown'
+            }}</span>
+        </div>
+
+      </div>
+
+      @if (isMember()) {
+      <div class="group-settings-wrapper">
+        <button class="gf-badge-group-settings" (click)="onGroupSettingsClick($event)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis">
+            <circle cx="12" cy="12" r="1" />
+            <circle cx="19" cy="12" r="1" />
+            <circle cx="5" cy="12" r="1" />
+          </svg>
+
+          @if (popoverService.isOpen(groupPopoverKey)) {
+          <gf-group-popover [viewerRole]="viewerRole()!" [member]="currentMember()!"
+            (click)="$event.stopPropagation()"></gf-group-popover>
+          }
+        </button>
+      </div>
+      }
+    </div>
+
+    <!-- Group Stats -->
+
+    <div class="group-stats">
+
+      <div class="gf-badge-text">
+        <span>{{group.memberCount == 1 ? `${group.memberCount} Sailor` : `${group.memberCount} Sailors`}} </span>
+      </div>
+
+      <div class="gf-badge-text">
+        @let qty = group.pinCount;
+        <span>{{ `${qty} Post${qty === 1 ? '' : 's'}` }}</span>
+      </div>
+
+    </div>
+
+    <!-- se nao for membro do grupo esta div nao aparece -->
+    <!--  <div class="d-flex align-items-center create-group-wrapper">
+
+      <button class="gf-badge-create-group-btn">
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-plus-icon lucide-plus">
+          <path d="M5 12h14" />
+          <path d="M12 5v14" />
+        </svg>
+
+      </button>
+
+      <span class="create-group-text">Invite to crew</span>
+    </div>
+ -->
+    <!-- Group Description -->
+
+    <div class="group-description">
+      <p class="mb-2 group-description-box" [class.expanded]="isExpanded">
+        {{ group.description }}
+      </p>
+
+      @if (group.description?.length! > 250) {
+      <button type="button" class="see-more" (click)="toggleExpand()">
+        {{ isExpanded ? 'See less' : 'See more' }}
+      </button>
+      }
+    </div>
+
+    @if (isMember()) {
+
+    <!-- Group Listing Tabs -->
+    <div class="d-flex justify-content-center align-items-center gf-card-listing-tabs">
+      <a [routerLink]="['posts']" [routerLinkActive]="['active']" class="d-flex justify-content-center listing-tabs">
+        <span class="listing-tab-text">Posts</span>
+      </a>
+
+      <a [routerLink]="['members']" [routerLinkActive]="['active']" class="d-flex justify-content-center listing-tabs">
+        <span class="listing-tab-text">Members</span>
+      </a>
+    </div>
+    <div class="group-forum-feed">
+      <router-outlet></router-outlet>
+
+    </div>
+    }
+    @else {
+    <span class="not-member-text">You need to be a member of the crew to see the posts and its members. Why not <a
+        [routerLink]="Path.FORUM_CREATE_GROUP">create your own crew?</a></span>
+    }
+
+  </div>
+
+  } @else {
+  <gf-loading-spinner></gf-loading-spinner>
+  }
+</div>
