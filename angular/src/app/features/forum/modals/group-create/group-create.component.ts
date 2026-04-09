@@ -32,7 +32,7 @@ export class GroupCreateComponent {
   form = this.fb.group({
     body: ['', [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
     groupName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    imageUrl: [null, [Validators.required]]
+    imageUrl: ['', [Validators.required]]
   });
 
   onImageSelected(event: Event): void {
@@ -49,6 +49,7 @@ export class GroupCreateComponent {
     }
 
     this.image = file;
+    this.form.patchValue({ imageUrl: file.name });
   }
 
 
