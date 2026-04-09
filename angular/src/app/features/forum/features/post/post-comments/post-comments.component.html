@@ -1,7 +1,7 @@
 @if (comments(); as comments) {
-<div class="comment-list-section">
+<div class="comment-list-section" data-testid="comments-list">
   @for (c of comments; track c.id) {
-  <div class="gf-card-post-comment">
+  <div class="gf-card-post-comment" [attr.data-testid]="'comment-item-' + c.id">
     <div class="top-of-post d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center gap-2">
         <img [src]="avatarService.resolve(c.author.avatarUrl)" class="rounded-circle post-author-profile-photo">
@@ -15,7 +15,7 @@
 
       <div class="d-flex gap-1 post-action-buttons">
         @if (c.author.userName == this.userName || isAdmin) {
-        <button class="gf-badge-post-comment-btn" (click)="deleteComment(c.id)">
+        <button class="gf-badge-post-comment-btn" (click)="deleteComment(c.id)" [attr.data-testid]="'comment-delete-' + c.id">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2">
             <path d="M10 11v6" />
@@ -27,7 +27,7 @@
         </button>
         }
         @if(c.author.userName != this.userName) {
-        <button class="gf-badge-post-comment-btn" (click)="report(c.id)">
+        <button class="gf-badge-post-comment-btn" (click)="report(c.id)" [attr.data-testid]="'comment-report-' + c.id">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flag-icon lucide-flag">
             <path
@@ -39,7 +39,7 @@
     </div>
 
     <div class="post-content">
-      <div class="post-comment-textarea">
+      <div class="post-comment-textarea" [attr.data-testid]="'comment-body-' + c.id">
         <p class="post-comment-text">
           {{ c.body }}
         </p>

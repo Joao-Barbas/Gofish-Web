@@ -13,7 +13,7 @@
 
       <div class="gf-card-comment-area d-flex flex-column">
         <textarea class="comment-area" maxlength="{{ BodyLengthConstraints.MAX }}" placeholder="Join the conversation"
-          formControlName="body" rows="3"> </textarea>
+          formControlName="body" rows="3" data-testid="comment-body"> </textarea>
 
         <div class="text-end mt-1">
           <small class="dark-text-muted">
@@ -33,13 +33,13 @@
 
       </div>
 
-      <app-async-button type="submit" labels="Publish" [state]="busyState.isBusy() ? 'busy' : 'idle'">
+      <app-async-button type="submit" labels="Publish" [state]="busyState.isBusy() ? 'busy' : 'idle'" testId="comment-publish">
       </app-async-button>
 
     </form>
 
     <!-- Comments -->
-    <div class="comment-list-section">
+    <div class="comment-list-section" data-testid="comments-list">
 
       @if (!comments()) {
       <gf-loading-spinner></gf-loading-spinner>

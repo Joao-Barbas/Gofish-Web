@@ -50,7 +50,7 @@ export class CatchPinModalComponent {
     visibility: [0],
     species: [0],
     bait: [0],
-    hook: ['', [Validators.maxLength(20)]],
+    hook: ['', [Validators.maxLength(5)]],
     imageUrl: ['', [Validators.required, Validators.pattern(/^.*\.(png|jpeg|jpg)$/i)]],
     groupIds: this.fb.control<number[]>([])
   });

@@ -123,4 +123,8 @@ export class ForumPostComponent {
     toast.success('Post link copied to clipboard!');
   }
 
+  openGoogleMaps() {
+    const url = `https://www.google.com/maps/search/?api=1&query=${this.postData()?.geolocation?.latitude},${this.postData()?.geolocation?.longitude}`;
+    window.open(url, '_blank');
+  }
 }
