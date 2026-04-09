@@ -568,9 +568,6 @@ public class GroupController : ControllerBase
         if (requesterMembership.Role != GroupRole.Owner && requesterMembership.Role != GroupRole.Moderator)
             return Forbid();
 
-        if(requesterMembership.Role == GroupRole.Moderator && requesterMembership.Role == GroupRole.Moderator)
-            return Forbid();
-
         var targetMembership = await _db.GroupUsers
             .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
 
@@ -579,6 +576,13 @@ public class GroupController : ControllerBase
 
         if (userId == requesterUserId)
             return BadRequest("You cannot remove yourself from the group using this endpoint.");
+
+        if (targetMembership.Role == GroupRole.Owner)
+            return Forbid();
+
+        if (requesterMembership.Role == GroupRole.Moderator &&
+            targetMembership.Role == GroupRole.Moderator)
+            return Forbid();
 
         _db.GroupUsers.Remove(targetMembership);
         await _db.SaveChangesAsync();

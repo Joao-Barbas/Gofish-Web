@@ -91,7 +91,7 @@ export class SigninComponent implements OnInit {
             this.router.navigate([Path.SIGN_IN_VERIFY], { queryParams: { token: res.twoFactorToken } });
           } else {
             this.authService.insertToken(res.token!);
-            this.router.navigate([Path.MAP]);
+            this.router.navigate([Path.FORUM]);
           }
         }, 1000);
       },
