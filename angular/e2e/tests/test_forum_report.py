@@ -3,7 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 
 
-POST_URL = "/forum/post/218"
+POST_URL = "/forum/post/106"
 
 
 def test_report_forum_post(driver_player2, base_url):

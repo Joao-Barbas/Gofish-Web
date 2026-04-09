@@ -3,7 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-POST_URL = "/forum/post/218"
+POST_URL = "/forum/post/106"
 
 
 def test_author_can_see_delete_button(driver_player1, base_url):

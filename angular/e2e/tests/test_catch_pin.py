@@ -1,5 +1,4 @@
 from pathlib import Path
-
 from e2e.pages.map_page import MapPage
 
 
@@ -8,12 +7,11 @@ VALID_IMAGE = ASSETS_DIR / "fish-valid.jpg"
 INVALID_FILE = ASSETS_DIR / "invalid-file.txt"
 
 
-def test_create_catch_pin_with_valid_image(logged_driver, base_url):
-    page = MapPage(logged_driver, base_url)
+def test_create_catch_pin_with_valid_image(map_driver, base_url):
+    page = MapPage(map_driver, base_url)
 
-    page.open()
     page.wait_until_loaded()
-    assert "/map" in logged_driver.current_url
+    assert "/map" in map_driver.current_url
 
     page.open_create_pin_popup()
     assert page.is_create_pin_popup_visible()
@@ -38,11 +36,11 @@ def test_create_catch_pin_with_valid_image(logged_driver, base_url):
     assert page.is_catch_modal_closed()
 
 
-def test_create_catch_pin_with_invalid_file_shows_alert(logged_driver, base_url):
-    page = MapPage(logged_driver, base_url)
+def test_create_catch_pin_with_invalid_file_shows_alert(map_driver, base_url):
+    page = MapPage(map_driver, base_url)
 
-    page.open()
     page.wait_until_loaded()
+    assert "/map" in map_driver.current_url
 
     page.open_create_pin_popup()
     page.select_on_map_mode()
