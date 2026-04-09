@@ -2,6 +2,7 @@
 
 import { Component, input } from '@angular/core';
 import { RouterLink } from "@angular/router";
+import { BUSINEES_ADDRESS, BUSINESS_EMAIL, BUSINESS_PHONE } from '@gofish/shared/constants';
 
 export type FooterVariant = 'big' | 'small' | 'none';
 
@@ -21,4 +22,8 @@ export type FooterVariant = 'big' | 'small' | 'none';
 export class FooterComponent {
   readonly variant = input.required<FooterVariant>();
   readonly year    = new Date().getFullYear();
+
+  readonly BUSINESS_EMAIL   = BUSINESS_EMAIL;
+  readonly BUSINESS_PHONE   = BUSINESS_PHONE;
+  readonly BUSINEES_ADDRESS = BUSINEES_ADDRESS;
 }

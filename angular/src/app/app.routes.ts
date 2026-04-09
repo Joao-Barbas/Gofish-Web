@@ -13,7 +13,7 @@ export const routes: Routes = [
     loadComponent: () => import('@gofish/features/home/home.component').then(m => m.HomeComponent),
     data: {
       header: 'flat' as HeaderVariant,
-      footer: 'big' as FooterVariant
+      footer: 'small' as FooterVariant
     }
   },
   {

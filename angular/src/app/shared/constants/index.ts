@@ -3,6 +3,9 @@ import { PinKind } from "@gofish/shared/models/pin.model";
 import { environment } from "environments/environment";
 
 export const DEFAULT_AVATAR = 'assets/vectors/avatar-template-dark.clr.svg';
+export const BUSINESS_EMAIL = 'gofish452@gmail.com';
+export const BUSINESS_PHONE = '+351 265 709 470'; // :)
+export const BUSINEES_ADDRESS = 'Estefanilha, 2910-761 Setúbal, Portugal';
 
 /* Local storage keys */
 
