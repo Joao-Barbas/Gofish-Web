@@ -7,6 +7,7 @@ import { ClickOutsideDirective } from '@gofish/shared/directives/click-outside.d
 import { MouseFollowDirective } from '@gofish/shared/directives/mouse-follow.directive';
 import { GroupMemberDTO } from '@gofish/shared/dtos/group.dto';
 import { GroupRole } from '@gofish/shared/enums/group-role.enum';
+import { GroupsService } from '@gofish/shared/services/groups.service';
 
 @Component({
   selector: 'gf-group-popover',
@@ -31,6 +32,7 @@ export class GroupPopoverComponent {
   readonly controller = new PopoverController(GroupPopoverComponent.Key);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly groupsService = inject(GroupsService);
 
 
   viewerRole = input.required<GroupRole>();
@@ -50,4 +52,18 @@ export class GroupPopoverComponent {
     if (!id) return;
     this.router.navigate(['invite'], { relativeTo: this.route });
   }
+
+  deleteGroup() {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    if (!id) return;
+    this.groupsService.deleteGroup(id).subscribe({
+      next: () => {
+        this.router.navigate(['/forum/my-groups']);
+      },
+      error: (err) => {
+        console.error('Failed to delete group:', err);
+      }
+    });
+  }
+
 }
