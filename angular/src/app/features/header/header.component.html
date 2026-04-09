@@ -6,7 +6,10 @@
       <!-- Logo -->
       <div class="logo-holder">
         <a routerLink="/" class="logo">
-          <img src="/assets/images/logo-white-256.png">
+          <picture>
+            <source srcset="assets/images/logo-black-256.png" media="(prefers-color-scheme: light)">
+            <img src="assets/images/logo-white-256.png" alt="Logo">
+          </picture>
           <span class="gf-text-logo">GOFISH</span>
         </a>
       </div>

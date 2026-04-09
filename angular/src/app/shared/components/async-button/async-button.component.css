@@ -21,7 +21,7 @@ button {
   font-size: var(--async-btn-font-size, var(--gf-text-sm));
   border-radius: var(--async-btn-radius, var(--gf-8));
   background-color: var(--async-btn-bg, var(--gf-primary));
-  color: var(--async-btn-color, var(--gf-dark-text));
+  color: var(--async-btn-color, var(--gf-static-dark-text));
 
   /* Hover shadow */
   --async-btn-hover-shadow: var(--gf-shadow-lift-md);

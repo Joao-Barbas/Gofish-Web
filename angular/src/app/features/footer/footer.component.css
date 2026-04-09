@@ -29,8 +29,15 @@ a {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  color: white;
   transition: opacity 150ms ease;
+
+  .big {
+    color: var(--gf-dark-text);
+  }
+
+  .small {
+    color: var(--gf-dark-text);
+  }
 }
 
 .social-icons a:hover {
@@ -49,8 +56,8 @@ BIG VARIANT
   align-items: center;
   justify-content: space-around;
   padding: 16px 48px;
-  background-color: #3b82f6;
-  color: white;
+  background-color: var(--gf-primary);
+  color: oklch(0.9612 0 0);
   font-size: 0.95rem;
 }
 
@@ -58,7 +65,7 @@ BIG VARIANT
 .footer-body {
   background-color: transparent;
   padding: 48px;
-  color: #e0e0e0;
+  color: var(--gf-dark-text);
 }
 
 .footer-content {
@@ -75,7 +82,7 @@ BIG VARIANT
   align-items: center;
   gap: 12px;
   margin-bottom: 16px;
-  color: white;
+  color: var(--gf-dark-text);
 
   .logo {
     display: inline-flex;
@@ -97,17 +104,17 @@ BIG VARIANT
 .brand-description {
   font-size: 0.875rem;
   line-height: 1.6;
-  color: #b0b0b0;
+  color: var(--gf-dark-text);
 }
 
 /* Headings */
 .footer-heading {
   font-size: 0.95rem;
   font-weight: 700;
-  color: white;
+  color: var(--gf-dark-text);
   margin-bottom: 16px;
   padding-bottom: 8px;
-  border-bottom: 2px solid #3b82f6;
+  border-bottom: 2px solid var(--gf-primary);
   display: inline-block;
 }
 
@@ -120,13 +127,13 @@ BIG VARIANT
 
 .footer-links nav a {
   font-size: 0.875rem;
-  color: #c0c0c0;
+  color: var(--gf-dark-text-muted);
   transition: color 150ms ease;
   width: fit-content;
 }
 
 .footer-links nav a:hover {
-  color: white;
+  color: var(--gf-dark-text);
 }
 
 /* Contact column */
@@ -142,20 +149,20 @@ BIG VARIANT
   align-items: center;
   gap: 12px;
   font-size: 0.875rem;
-  color: #c0c0c0;
+  color: var(--gf-dark-text);
 }
 
 .contact-item svg {
   flex-shrink: 0;
-  color: white;
+  color: var(--gf-dark-text);
 }
 
 /* Copyright */
 .footer-copyright {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--gf-dark-bg-light);
   text-align: center;
   padding: 16px;
-  color: #999;
+  color: var(--gf-dark-text-muted);
   font-size: 0.8rem;
 }
 
@@ -168,7 +175,7 @@ SMALL VARIANT
 .small-footer {
   max-width: var(--gf-container-xxl);
   margin: auto;
-  color: #e0e0e0;
+  color: var(--gf-dark-text);
   padding: 20px 32px;
 }
 
@@ -186,23 +193,23 @@ SMALL VARIANT
 
 .small-footer-links a {
   font-size: 0.875rem;
-  color: #d0d0d0;
+  color: var(--gf-dark-text-muted);
   transition: color 150ms ease;
 }
 
 .small-footer-links a:hover {
-  color: white;
+  color: var(--gf-dark-text);
 }
 
 .small-footer-divider {
   border: none;
-  border-top: 1px solid #444;
+  border-top: 2px solid var(--gf-dark-bg-light);
   margin: 16px 0;
 }
 
 .small-footer-bottom p {
   font-size: 0.8rem;
-  color: #999;
+  color: var(--gf-dark-text-muted);
 }
 
 /* ------ BREAKPOINTS ------ */
