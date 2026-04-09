@@ -18,7 +18,7 @@ export type HeaderVariant = 'flat' | 'overlay' | 'none';
     RouterLink,
     RouterLinkActive,
     HeaderActionsComponent
-  ],
+],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })

@@ -29,8 +29,15 @@ a {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  color: var(--gf-dark-text);
   transition: opacity 150ms ease;
+
+  .big {
+    color: var(--gf-dark-text);
+  }
+
+  .small {
+    color: var(--gf-dark-text);
+  }
 }
 
 .social-icons a:hover {
@@ -50,7 +57,7 @@ BIG VARIANT
   justify-content: space-around;
   padding: 16px 48px;
   background-color: var(--gf-primary);
-  color: var(--gf-dark-text);
+  color: oklch(0.9612 0 0);
   font-size: 0.95rem;
 }
 
