@@ -12,7 +12,7 @@
 
       <img [src]="this.avatarService.resolve(post.author!.avatarUrl)" class="rounded-circle gf-big-avatar">
 
-      <gf-user-title class="post-author-name text-bold" [text]="post.author!.userName"
+      <gf-user-title class="post-author-name text-bold" [text]="post.author!.displayName"
         [rank]="post.author!.rank"></gf-user-title>
 
       <!-- <span >{{ post.author?.userName }}</span> -->

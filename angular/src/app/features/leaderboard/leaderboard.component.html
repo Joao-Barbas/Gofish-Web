@@ -36,7 +36,7 @@
           <div class="podium-card-top">
             <img class="avatar avatar-lg" [src]="avatarService.resolve(entry.avatarUrl)" alt="Avatar">
             <div class="podium-user-info">
-              <gf-user-title [text]="`${entry.firstName} ${entry.lastName} ${entry.userId === authService.userId() ? '(You)' : ''}`" [rank]="entry.rank"></gf-user-title>
+              <gf-user-title [text]="`${entry.displayName} ${entry.userId === authService.userId() ? '(You)' : ''}`" [rank]="entry.rank"></gf-user-title>
               <span class="user-handle">&#64;{{ entry.userName }}</span>
             </div>
           </div>
@@ -88,7 +88,7 @@
           <td class="col-user">
             <img class="avatar avatar-sm" [src]="avatarService.resolve(entry.avatarUrl)" alt="Avatar">
             <div class="">
-              <gf-user-title [text]="`${entry.firstName} ${entry.lastName} ${entry.userId === authService.userId() ? '(You)' : ''}`" [rank]="entry.rank"></gf-user-title>
+              <gf-user-title [text]="`${entry.displayName} ${entry.userId === authService.userId() ? '(You)' : ''}`" [rank]="entry.rank"></gf-user-title>
               <span class="user-handle">&#64;{{ entry.userName }}</span>
             </div>
           </td>
@@ -130,7 +130,7 @@
             <td class="col-user">
               <img class="avatar avatar-sm" [src]="avatarService.resolve(entry.avatarUrl)" alt="Avatar">
               <div class="">
-                <gf-user-title [text]="`${entry.firstName} ${entry.lastName} ${entry.userId === authService.userId() ? '(You)' : ''}`" [rank]="entry.rank"></gf-user-title>
+                <gf-user-title [text]="`${entry.displayName} ${entry.userId === authService.userId() ? '(You)' : ''}`" [rank]="entry.rank"></gf-user-title>
                 <span class="user-handle">&#64;{{ entry.userName }}</span>
               </div>
             </td>

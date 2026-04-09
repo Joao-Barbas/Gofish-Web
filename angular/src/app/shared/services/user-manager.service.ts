@@ -6,9 +6,11 @@ import { UserApi } from '@gofish/shared/api/user.api';
 import { UserProfileApi } from '@gofish/shared/api/user-profile.api';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { Gender } from '@gofish/shared/enums/gender.enum';
 
 interface UserState {
   userName: string;
+  displayName: string;
   firstName: string;
   lastName: string;
   email: string | undefined;
@@ -17,6 +19,8 @@ interface UserState {
   phoneNumberConfirmed: boolean;
   bio: string | undefined;
   avatarUrl: string | undefined;
+  birthDate: string | undefined;
+  gender: Gender | undefined;
 }
 
 @Injectable({
@@ -38,6 +42,7 @@ export class UserManagerService {
     }).pipe(
       map(({ settings, profileSettings }) => ({
         userName:             settings.userName,
+        displayName:          settings.displayName,
         firstName:            settings.firstName,
         lastName:             settings.lastName,
         email:                settings.email,
@@ -46,6 +51,8 @@ export class UserManagerService {
         phoneNumberConfirmed: settings.phoneNumberConfirmed,
         bio:                  profileSettings.bio,
         avatarUrl:            profileSettings.avatarUrl,
+        birthDate:            settings.birthDate,
+        gender:               settings.gender,
       } as UserState))
     ),
   });
@@ -54,6 +61,7 @@ export class UserManagerService {
   readonly state = this._state.asReadonly();
 
   readonly userName             = computed(() => this._state()?.userName);
+  readonly displayName          = computed(() => this._state()?.displayName);
   readonly firstName            = computed(() => this._state()?.firstName);
   readonly lastName             = computed(() => this._state()?.lastName);
   readonly email                = computed(() => this._state()?.email);
@@ -62,6 +70,8 @@ export class UserManagerService {
   readonly phoneNumberConfirmed = computed(() => this._state()?.phoneNumberConfirmed ?? false);
   readonly bio                  = computed(() => this._state()?.bio);
   readonly avatarUrl            = computed(() => this._state()?.avatarUrl);
+  readonly birthDate            = computed(() => this._state()?.birthDate);
+  readonly gender               = computed(() => this._state()?.gender);
 
   // Reload everything from backend
 
@@ -72,6 +82,7 @@ export class UserManagerService {
     }));
     this.userResource.set({
       userName:             data.settings.userName,
+      displayName:          data.settings.displayName,
       firstName:            data.settings.firstName,
       lastName:             data.settings.lastName,
       email:                data.settings.email,
@@ -80,11 +91,19 @@ export class UserManagerService {
       phoneNumberConfirmed: data.settings.phoneNumberConfirmed,
       bio:                  data.profileSettings.bio,
       avatarUrl:            data.profileSettings.avatarUrl,
+      birthDate:            data.settings.birthDate,
+      gender:               data.settings.gender,
     } as UserState);
   }
 
   // User mutations
   // Each calls the api and updates state on success.
+
+  updateDisplayName(displayName: string): Observable<void> {
+    return this.userApi.patchUser({ displayName }).pipe(
+      tap(() => this._state.update(s => s && ({ ...s, displayName })))
+    );
+  }
 
   updateFirstName(firstName: string): Observable<void> {
     return this.userApi.patchUser({ firstName }).pipe(
@@ -104,17 +123,17 @@ export class UserManagerService {
     );
   }
 
-  // updateEmail(email: string): {
-  //   // return this.userApi.patchUser({ email }).pipe(
-  //   //   tap(() => this._state.update(s => s && ({ ...s, email })))
-  //   // );
-  // }
+  updateBirthDate(birthDate: string): Observable<void> {
+    return this.userApi.patchUser({ birthDate }).pipe(
+      tap(() => this._state.update(s => s && ({ ...s, birthDate })))
+    );
+  }
 
-  // updatePhoneNumber(phoneNumber: string): Observable<void> {
-  //   return this.userApi.patchUser({ phoneNumber }).pipe(
-  //     tap(() => this._state.update(s => s && ({ ...s, phoneNumber })))
-  //   );
-  // }
+  updateGender(gender: Gender): Observable<void> {
+    return this.userApi.patchUser({ gender }).pipe(
+      tap(() => this._state.update(s => s && ({ ...s, gender })))
+    );
+  }
 
   // Profile mutations
 

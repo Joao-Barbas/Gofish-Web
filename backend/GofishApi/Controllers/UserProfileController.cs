@@ -81,8 +81,7 @@ public class UserProfileController : ControllerBase
         var data = new UserProfileDto
         {
             UserId = thisUserProfile.UserId,
-            FirstName = thisUserProfile.AppUser.FirstName ?? "",
-            LastName = thisUserProfile.AppUser.LastName ?? "",
+            DisplayName = thisUserProfile.AppUser.DisplayName,
             UserName = thisUserProfile.AppUser.UserName ?? "",
             CatchPoints = thisUserProfile.CatchPoints,
             Rank = GamificationService.GetRank(thisUserProfile.CatchPoints),

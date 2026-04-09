@@ -250,6 +250,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
                 UserName = $"player{i}",
                 FirstName = $"player-{i}",
                 LastName = $"player-last-name-{i}",
+                DisplayName = $"player-dp-{i}",
                 NormalizedUserName = $"PLAYER{i}",
                 Email = $"player{i}@gofish.com",
                 NormalizedEmail = $"PLAYER{i}@GOFISH.COM",
@@ -275,6 +276,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
         {
             Id = "seed-admin-1",
             UserName = "admin1",
+            DisplayName = $"admin-dp-1",
             NormalizedUserName = "ADMIN1",
             Email = "admin@gofish.com",
             NormalizedEmail = "ADMIN@GOFISH.COM",

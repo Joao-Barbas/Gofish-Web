@@ -21,9 +21,12 @@ import { ModalService } from '@gofish/shared/services/modal.service';
 import { ChangeUsernameModalComponent } from "./components/change-username-modal/change-username-modal.component";
 import { ChangeFirstnameModalComponent } from "./components/change-firstname-modal/change-firstname-modal.component";
 import { ChangeLastnameModalComponent } from "./components/change-lastname-modal/change-lastname-modal.component";
+import { ChangeDisplaynameModalComponent } from "./components/change-displayname-modal/change-displayname-modal.component";
+import { ChangeBirthdateModalComponent } from "./components/change-birthdate-modal/change-birthdate-modal.component";
 import { ChangeEmailModalComponent } from '@gofish/features/user/settings/components/general/components/change-email-modal/change-email-modal.component';
 import { VerifyEmailModalComponent } from '@gofish/features/user/settings/components/general/components/verify-email-modal/verify-email-modal.component';
 import { ChangePhoneModalComponent } from '@gofish/features/user/settings/components/general/components/change-phone-modal/change-phone-modal.component';
+import { Gender } from '@gofish/shared/enums/gender.enum';
 
 @Component({
   selector: 'app-general',
@@ -40,7 +43,9 @@ import { ChangePhoneModalComponent } from '@gofish/features/user/settings/compon
     ChangeFirstnameModalComponent,
     ChangeEmailModalComponent,
     VerifyEmailModalComponent,
-    ChangePhoneModalComponent
+    ChangePhoneModalComponent,
+    ChangeDisplaynameModalComponent,
+    ChangeBirthdateModalComponent
 ],
   templateUrl: './general.component.html',
   styleUrl: './general.component.css',
@@ -58,6 +63,9 @@ export class GeneralComponent {
 
   readonly ChangeEmailModalComponent = ChangeEmailModalComponent;
   readonly VerifyEmailModalComponent = VerifyEmailModalComponent;
+  readonly ChangeDisplaynameModalComponent = ChangeDisplaynameModalComponent;
+  readonly ChangeBirthdateModalComponent = ChangeBirthdateModalComponent;
+  readonly Gender = Gender;
   readonly toast = toast;
 
   Path = Path;
@@ -183,6 +191,46 @@ export class GeneralComponent {
 
   onEmailVerified() {
     this.userSettings.reload();
+  }
+
+  onDisplayNameChange(displayName: string) {
+    if (!this.userSettings.hasValue()) return;
+    this.userSettings.value().displayName = displayName;
+  }
+
+  onBirthDateChange(birthDate: string) {
+    if (!this.userSettings.hasValue()) return;
+    this.userSettings.value().birthDate = birthDate;
+  }
+
+  // Gender
+
+  genderBusy = signal(false);
+
+  onGenderChange(gender: Gender) {
+    if (!this.userSettings.hasValue()) return;
+    if (this.userSettings.value().gender === gender) return;
+
+    this.genderBusy.set(true);
+    this.userApi.patchUser({ gender }).subscribe({
+      next: () => {
+        this.genderBusy.set(false);
+        this.userSettings.value()!.gender = gender;
+        this.toast.success('Gender updated');
+      },
+      error: () => {
+        this.genderBusy.set(false);
+        this.toast.error('Failed to update gender');
+      },
+    });
+  }
+
+  // Birth date formatting
+
+  formatBirthDate(date: string | null | undefined): string {
+    if (!date) return '-';
+    const d = new Date(date);
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
   // End modals events

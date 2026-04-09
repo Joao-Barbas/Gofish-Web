@@ -8,8 +8,7 @@ namespace GofishApi.Dtos;
 public record GroupMemberDto(
     string UserId,
     string UserName,
-    string FirstName,
-    string LastName,
+    string DisplayName,
     string? AvatarUrl,
     GroupRole Role,
     DateTime JoinedAt
@@ -18,8 +17,7 @@ public record GroupMemberDto(
     public static GroupMemberDto FromEntity(GroupUser gu) => new(
         gu.AppUser.Id,
         gu.AppUser.UserName ?? "",
-        gu.AppUser.FirstName ?? "",
-        gu.AppUser.LastName ?? "",
+        gu.AppUser.DisplayName,
         gu.AppUser.UserProfile?.AvatarUrl,
         gu.Role,
         gu.JoinedAt

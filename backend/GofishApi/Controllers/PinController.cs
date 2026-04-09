@@ -98,8 +98,7 @@ public class PinController : ControllerBase
                 {
                     Id = p.AppUser.Id,
                     UserName = p.AppUser.UserName ?? "",
-                    FirstName = p.AppUser.FirstName ?? "",
-                    LastName = p.AppUser.LastName ?? "",
+                    DisplayName = p.AppUser.DisplayName,
                     CatchPoints = p.AppUser.UserProfile.CatchPoints,
                     Rank = GamificationService.GetRank(p.AppUser.UserProfile.CatchPoints),
                     AvatarUrl = p.AppUser.UserProfile.AvatarUrl
@@ -187,8 +186,7 @@ public class PinController : ControllerBase
                 {
                     Id = p.AppUser.Id,
                     UserName = p.AppUser.UserName ?? "",
-                    FirstName = p.AppUser.FirstName ?? "",
-                    LastName = p.AppUser.LastName ?? "",
+                    DisplayName = p.AppUser.DisplayName,
                     CatchPoints = p.AppUser.UserProfile.CatchPoints,
                     Rank = GamificationService.GetRank(p.AppUser.UserProfile.CatchPoints),
                     AvatarUrl = p.AppUser.UserProfile.AvatarUrl

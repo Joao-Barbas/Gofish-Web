@@ -4,8 +4,8 @@
   <div class="d-flex align-items-center gf-gap-12 flex-grow-1">
     <img [src]="avatarService.resolve(avatarUrl.value())" alt="Avatar" width="40" height="40" style="width: 40px; height: 40px; border-radius: 100%; object-fit: cover;">
     <div class="flex-grow-1">
-      @if (!authService.userFirstName() && !authService.userLastName()) {
-        <div class="gf-text-normal text-truncate">{{ `${authService.userFirstName()} ${authService.userLastName()}` }}</div>
+      @if (authService.userDisplayName()) {
+        <div class="gf-text-normal text-truncate">{{ authService.userDisplayName() }}</div>
       }
       <div class="gf-text-small text-truncate">&#64;{{ authService.userName() }}</div>
     </div>

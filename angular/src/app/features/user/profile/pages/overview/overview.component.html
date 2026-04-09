@@ -23,9 +23,9 @@
       <div class="gf-flow-horizontal gf-items-center gf-gap-16">
         <img [src]="avatarService.resolve(profile.avatarUrl)" alt="Avatar" style="width: 96px; height: 96px; border-radius: 100%; object-fit: cover;">
         <div>
-          @if (profile.firstName !== '' && profile.lastName !== '') {
+          @if (profile.displayName) {
             <div class="profile-user-title">
-              <gf-user-title [text]="`${profile.firstName} ${profile.lastName}`" [rank]="profile.rank"></gf-user-title>
+              <gf-user-title [text]="profile.displayName" [rank]="profile.rank"></gf-user-title>
               <gf-user-rank-icon [rank]="profile.rank"></gf-user-rank-icon>
             </div>
           }

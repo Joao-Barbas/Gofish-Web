@@ -144,6 +144,36 @@ gf-async-button {
   --async-btn-width: 100%;
 }
 
+/* Gender selector */
+
+.gender-selector {
+  .gender-btn {
+    background: none;
+    border: 2px solid var(--gf-border);
+    border-radius: var(--gf-6);
+    padding: 6px 10px;
+    color: var(--gf-dark-text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover:not(:disabled) {
+      border-color: var(--gf-primary);
+      color: var(--gf-dark-text);
+    }
+
+    &.active {
+      border-color: var(--gf-primary);
+      background-color: var(--gf-primary);
+      color: white;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
 /* Failed state */
 
 .failed-container {
