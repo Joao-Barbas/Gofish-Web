@@ -78,4 +78,17 @@ export interface ChangePasswordResDTO {
   // Unused
 }
 
+export interface ForgotPasswordReqDTO {
+  email: string;
+}
+export interface ForgotPasswordResDTO { } // Unused
+
+export interface ResetPasswordReqDTO {
+  email: string;
+  code: string;
+  newPassword: string;
+}
+export interface ResetPasswordResDTO { } // Unused
+
+
 // End request-response wrappers
