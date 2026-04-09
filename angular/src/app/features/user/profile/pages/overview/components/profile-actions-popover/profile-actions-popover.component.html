@@ -7,9 +7,9 @@
   <button (click)="onFriendshipCancel()">Cancel friend request</button>
 }
 <button (click)="onUnfriend()">View all friends</button>
-<button (click)="onPins()">View all pins</button>
-<button (click)="onGroups()">View all groups</button>
+<button (click)="onPins()">View all Pins</button>
+<button (click)="onGroups()">View all crews</button>
 @if (!profileContext.isOwner()) {
-  <button (click)="onInviteToGroup()">Invite to group...</button>
+  <button (click)="onInviteToGroup()">Invite to crew...</button>
 }
 <button (click)="onShowMore()">See more...</button>
