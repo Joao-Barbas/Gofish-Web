@@ -157,6 +157,16 @@
     }
   }
 
+  :host(.overlay) {
+    header {
+      padding: 22px 22px;
+
+      .left {
+        display: none;
+      }
+    }
+  }
+
   .nav-container {
     display: none;
   }

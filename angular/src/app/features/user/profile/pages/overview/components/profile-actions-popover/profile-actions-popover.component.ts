@@ -6,7 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ProfileShowMoreModalComponent } from '@gofish/features/user/profile/pages/overview/components/profile-show-more-modal/profile-show-more-modal.component';
 import { ProfileContext } from '@gofish/features/user/profile/services/profile-context.service';
 import { UserApi } from '@gofish/shared/api/user.api';
-import { Path } from '@gofish/shared/constants';
+import { Path, ProfileFriendsTab, ProfileGroupsTab } from '@gofish/shared/constants';
 import { toast } from 'ngx-sonner';
 import { PopoverController, PopoverKey } from '@gofish/shared/core/popover-controller';
 import { ClickOutsideDirective } from '@gofish/shared/directives/click-outside.directive';
@@ -48,8 +48,8 @@ export class ProfileActionsPopoverComponent {
   readonly toast = toast;
 
   onUnfriend() {
-    let friendship = this.profileContext.userProfile().friendship;
     this.controller.close();
+    let friendship = this.profileContext.userProfile().friendship;
     if (!friendship) return;
     this.userApi.deleteFriendship(friendship.id).subscribe({
       next: () => {
@@ -63,8 +63,8 @@ export class ProfileActionsPopoverComponent {
   }
 
   onFriendshipCancel() {
-    let friendship = this.profileContext.userProfile().friendship;
     this.controller.close();
+    let friendship = this.profileContext.userProfile().friendship;
     if (!friendship) return;
     this.userApi.deleteFriendship(friendship.id).subscribe({
       next: () => {
@@ -78,16 +78,18 @@ export class ProfileActionsPopoverComponent {
   }
 
   onFriends() {
-    this.controller.close()
-    this.router.navigate([Path.PROFILE_FRIENDS(this.profileContext.userProfileId())])
+    this.controller.close();
+    this.router.navigate([Path.PROFILE_FRIENDS(this.profileContext.userProfileId())]);
   }
+
   onPins() {
-    this.controller.close()
-    this.router.navigate([Path.PROFILE_PINS(this.profileContext.userProfileId())])
+    this.controller.close();
+    this.router.navigate([Path.PROFILE_PINS(this.profileContext.userProfileId())]);
   }
+
   onGroups() {
-    this.controller.close()
-    this.router.navigate([Path.PROFILE_GROUPS(this.profileContext.userProfileId())])
+    this.controller.close();
+    this.router.navigate([Path.PROFILE_GROUPS(this.profileContext.userProfileId())]);
   }
 
   onShowMore() {
@@ -97,6 +99,22 @@ export class ProfileActionsPopoverComponent {
 
   onInviteToGroup() {
     this.controller.close();
-    this.modalService.open(InviteToGroupsModalComponent.Key)
+    this.modalService.open(InviteToGroupsModalComponent.Key);
+  }
+
+  onFriendRequests() {
+    this.controller.close();
+    this.router.navigate(
+      [Path.PROFILE_FRIENDS(this.profileContext.userProfileId())],
+      { queryParams: { tab: ProfileFriendsTab.REQUESTS } }
+    );
+  }
+
+  onGroupInvites() {
+    this.controller.close();
+    this.router.navigate(
+      [Path.PROFILE_GROUPS(this.profileContext.userProfileId())],
+      { queryParams: { tab: ProfileGroupsTab.INVITES } }
+    );
   }
 }

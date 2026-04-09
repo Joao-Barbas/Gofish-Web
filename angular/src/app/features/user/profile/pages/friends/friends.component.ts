@@ -14,8 +14,7 @@ import { firstValueFrom } from 'rxjs';
 import { FriendsListComponent } from "./components/friends-list/friends-list.component";
 import { RequestsListComponent } from "./components/requests-list/requests-list.component";
 import { LoadingSpinnerComponent } from "@gofish/shared/components/loading-spinner/loading-spinner.component";
-
-type ProfileFriendsListRouteTab = 'friends' | 'requests';
+import { ProfileFriendsTab } from '@gofish/shared/constants';
 
 @Component({
   selector: 'app-friends',
@@ -28,8 +27,8 @@ type ProfileFriendsListRouteTab = 'friends' | 'requests';
   styleUrl: './friends.component.css',
 })
 export class FriendsComponent {
-  readonly activeTab = input<ProfileFriendsListRouteTab | undefined>(undefined, { alias: 'tab' }); // Signal-based input given from ?tab=
-  readonly activeTabOrDefault = computed<ProfileFriendsListRouteTab>(() => this.activeTab() ?? 'friends' )
+  readonly activeTab = input<ProfileFriendsTab | undefined>(undefined, { alias: 'tab' }); // Signal-based input given from ?tab=
+  readonly activeTabOrDefault = computed<ProfileFriendsTab>(() => this.activeTab() ?? 'friends' )
 
   readonly userApi        = inject(UserApi);
   readonly profileContext = inject(ProfileContext);

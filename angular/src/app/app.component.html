@@ -1,6 +1,6 @@
 <!-- app.component.html -->
 
-<gf-header [variant]="headerVariant()"></gf-header>
-<ngx-sonner-toaster [position]="'bottom-center'" richColors></ngx-sonner-toaster>
+@if (headerVariant() !== 'none') { <gf-header [variant]="headerVariant()"></gf-header> }
+<ngx-sonner-toaster [position]="'bottom-center'" [richColors]="true"></ngx-sonner-toaster>
 <router-outlet></router-outlet>
-<gf-footer [variant]="footerVariant()"></gf-footer>
+@if (footerVariant() !== 'none') { <gf-footer [variant]="footerVariant()"></gf-footer> }

@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   max-width: var(--gf-container-lg);
+  width: 90%;
   gap: var(--gf-24);
   margin: 0 auto;
   color: var(--gf-dark-text);
@@ -123,8 +124,7 @@ gf-async-button  {
 .grid-list {
   display: grid;
   overflow: hidden;
-  grid-template-rows: auto;
-  grid-template-columns: repeat(auto-fill, calc((var(--gf-container-lg) - 3 * var(--gf-8)) / 4));
+  grid-template-columns: repeat(4, 1fr);
   row-gap: var(--gf-8);
   column-gap: var(--gf-8);
 }
@@ -178,8 +178,14 @@ gf-async-button  {
 
 /* media */
 
-@media (max-width: 37rem) {
+@media (max-width: 61rem) {
   .grid-list {
-    grid-template-columns: repeat(auto-fill, calc((var(--gf-container-lg) - 2 * var(--gf-8)) / 3));
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 48rem) {
+  .grid-list {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
