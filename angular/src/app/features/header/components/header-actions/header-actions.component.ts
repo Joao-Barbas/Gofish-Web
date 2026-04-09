@@ -7,13 +7,15 @@ import { AuthService } from '@gofish/shared/services/auth.service';
 import { PopupService } from '@gofish/shared/services/popup.service';
 import { UserPopoverComponent } from "../user-popover/user-popover.component";
 import { NavPopoverComponent } from '@gofish/features/header/components/nav-popover/nav-popover.component';
+import { AdminPopoverComponent } from "@gofish/features/header/components/admin-popover/admin-popover.component";
 
 @Component({
   selector: 'gf-header-actions',
   imports: [
     UserPopoverComponent,
-    NavPopoverComponent
-  ],
+    NavPopoverComponent,
+    AdminPopoverComponent
+],
   templateUrl: './header-actions.component.html',
   styleUrl: './header-actions.component.css',
 })
@@ -24,6 +26,7 @@ export class HeaderActionsComponent {
 
   UserPopoverComponent = UserPopoverComponent;
   NavPopoverComponent = NavPopoverComponent;
+  AdminPopoverComponent = AdminPopoverComponent;
 
   Path        = Path;
   PathSegment = PathSegment;
@@ -43,7 +46,7 @@ export class HeaderActionsComponent {
   }
 
   onAdminClick(event: Event): void {
-    this.popupService.toggle('header-admin-popup');
+    this.popupService.toggle(AdminPopoverComponent.Key);
     event.stopPropagation();
   }
 

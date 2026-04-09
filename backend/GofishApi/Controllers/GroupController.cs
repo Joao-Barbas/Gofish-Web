@@ -588,7 +588,7 @@ public class GroupController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("LeaveGroup{groupId}")]
+    [HttpDelete("LeaveGroup/{groupId}")]
     public async Task<IActionResult> LeaveGroup([FromRoute] int groupId)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);

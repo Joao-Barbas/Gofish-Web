@@ -7,13 +7,14 @@ export const BUSINESS_EMAIL = 'gofish452@gmail.com';
 export const BUSINESS_PHONE = '+351 265 709 470'; // :)
 export const BUSINEES_ADDRESS = 'Estefanilha, 2910-761 Setúbal, Portugal';
 
-/* Local storage keys */
+// #region Local storage keys
 
 export const LocalStorageKey = {
   TOKEN: 'token',
 } as const;
 
-/* Angular route paths */
+// #endregion Local storage keys
+// #region Route paths & url stuff
 
 export const PathSegment = {
   HOME:                   '/',
@@ -92,7 +93,21 @@ export const Path = {
   STATISTICS_AVG_PUBLISHED: `/${PathSegment.STATISTICS}/${PathSegment.STATISTICS_AVG_PUBLISHED}`,
 } as const;
 
-/* Backend endpoints */
+export const ProfileFriendsTab = {
+  FRIENDS:  'friends',
+  REQUESTS: 'requests',
+} as const;
+
+export const ProfileGroupsTab = {
+  GROUPS:  'groups',
+  INVITES: 'invites',
+} as const;
+
+export type ProfileFriendsTab = typeof ProfileFriendsTab[keyof typeof ProfileFriendsTab];
+export type ProfileGroupsTab = typeof ProfileGroupsTab[keyof typeof ProfileGroupsTab];
+
+// #endregion Route paths & url stuff
+// #region Backend endpoints
 
 function buildApi(controller: string) {
   return {
@@ -115,6 +130,9 @@ export const Api = {
   Stats:        buildApi('Stats'),
 } as const;
 
+// #endregion Backend endpoints
+// #region Uncategorized
+
 export const PIN_CONFIG = [
   { kind: PinKind.CATCH,       color: '#0bda0a', iconUrl: 'assets/images/pins-icons/kind-catch.png',       icon: 'pin-catch',       kindString: 'Catch' },
   { kind: PinKind.INFORMATION, color: '#259df4', iconUrl: 'assets/images/pins-icons/kind-information.png', icon: 'pin-Information', kindString: 'Information' },
@@ -133,3 +151,5 @@ export const Rank = [
   "Old Hook",
   "King of the Sea",
 ]
+
+// #endregion Uncategorized

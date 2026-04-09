@@ -731,7 +731,7 @@ button {
 }
 .gf-separator,
 .gf-separator-no-margin {
-  border-top: calc(1rem / 16) solid var(--gf-dark-bg-light);
+  border-top: 2px solid var(--gf-dark-bg-light);
 }
 
 .gf-popover-separator {
@@ -1071,19 +1071,19 @@ button {
 
 */
 
-@media (max-width: 37rem) {
-  .gf-background-map-fixed {
-    background-image: none;
-    background-color: var(--gf-dark-bg-dark);
-  }
+@media (max-width: 61rem) {
+  /* Nothing to see here */
 }
 
 @media (max-width: 48rem) {
   /* Nothing to see here */
 }
 
-@media (max-width: 61rem) {
-  /* Nothing to see here */
+@media (max-width: 37rem) {
+  .gf-background-map-fixed {
+    background-image: none;
+    background-color: var(--gf-dark-bg-dark);
+  }
 }
 
 @media (prefers-color-scheme: light) {

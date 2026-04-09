@@ -38,7 +38,7 @@ export class UsersChartComponent {
     this.statsService.getRegisteredUsersWeeklyStats(this.currentYear).subscribe({
       next: (res) => {
         this.users.set(res);
-         this.buildChart();
+        this.buildChart();
       },
       error: (err) => {
         console.error(err);
@@ -50,6 +50,7 @@ export class UsersChartComponent {
 
   private buildChart(): void {
     const usersData = this.users();
+    console.log('Users Data:', usersData);
 
     if (!usersData || usersData.length === 0) return;
 
@@ -72,8 +73,9 @@ export class UsersChartComponent {
 
     this.chartOptions = {
       responsive: true,
-      maintainAspectRatio: false,
-      devicePixelRatio: window.devicePixelRatio,
+      /* maintainAspectRatio: false, */
+      devicePixelRatio: window.devicePixelRatio || 1,
+      resizeDelay: 0,
       plugins: {
         title: {
           display: true,
@@ -83,7 +85,7 @@ export class UsersChartComponent {
         },
         legend: {
           display: true,
-          onClick: () => {},
+          onClick: () => { },
           labels: {
             color: textColor,
             font: { size: 13 }
@@ -92,9 +94,10 @@ export class UsersChartComponent {
       },
       scales: {
         x: { ticks: { color: textColor }, grid: { color: gridColor } },
-        y: { ticks: { color: textColor }, grid: { color: gridColor }, beginAtZero: true }}
+        y: { ticks: { color: textColor }, grid: { color: gridColor }, beginAtZero: true }
       }
-    };
-  }
+    }
+  };
+}
 
 

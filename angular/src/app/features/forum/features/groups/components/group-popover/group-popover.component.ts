@@ -54,16 +54,7 @@ export class GroupPopoverComponent {
   }
 
   deleteGroup() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!id) return;
-    this.groupsService.deleteGroup(id).subscribe({
-      next: () => {
-        this.router.navigate(['/forum/my-groups']);
-      },
-      error: (err) => {
-        console.error('Failed to delete group:', err);
-      }
-    });
+    this.router.navigate(['delete'], { relativeTo: this.route });
   }
 
   leaveGroup() {
@@ -87,4 +78,7 @@ export class GroupPopoverComponent {
     }
   }
 
+  exit() {
+    this.router.navigate(['exit'], { relativeTo: this.route });
+  }
 }

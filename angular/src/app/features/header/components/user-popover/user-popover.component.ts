@@ -26,6 +26,7 @@ import { firstValueFrom } from 'rxjs';
   },
   imports: [
     CommonModule,
+    ClickOutsideDirective,
     RouterLink
   ],
   templateUrl: './user-popover.component.html',

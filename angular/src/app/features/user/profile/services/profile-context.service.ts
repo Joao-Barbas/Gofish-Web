@@ -28,6 +28,7 @@ export class ProfileContext {
 
   readonly isOwner = computed<boolean>(() => this._userProfileId() === this.authService.userId())
   readonly isFriend = computed<boolean>(() => this._userProfile().friendship?.state === FriendshipState.Accepted);
+  readonly isFriendshipPending = computed<boolean>(() => this._userProfile().friendship?.state === FriendshipState.Pending);
 
   // Mutations
 

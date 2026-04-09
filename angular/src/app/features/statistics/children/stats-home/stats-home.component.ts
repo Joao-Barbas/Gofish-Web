@@ -105,7 +105,7 @@ export class StatsHomeComponent {
 
     this.statsService.getWeeklyApiSuccessRate().subscribe({
       next: (res) => {
-        this.weeklyApiSuccessRate.set(res.successRateOfRequests);
+        this.weeklyApiSuccessRate.set(res.successRateOfRequests > 100 ? 100 : res.successRateOfRequests);
       }
     });
 

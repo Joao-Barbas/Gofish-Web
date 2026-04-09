@@ -54,5 +54,5 @@ def test_create_catch_pin_with_invalid_file_shows_alert(map_driver, base_url):
 
     alert_text = page.wait_for_alert_and_accept()
 
-    assert "Only PNG or JPEG images are allowed" in alert_text
+    assert "Only PNG or JPEG or JPG images are allowed" in alert_text
     assert page.is_catch_modal_visible()

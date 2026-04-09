@@ -27,3 +27,7 @@
 .comparison-section {
   margin: calc(256rem / 16) auto;
 }
+
+.about-team-section {
+  border-top: 1px solid rgba(255,255,255,0.1);
+}

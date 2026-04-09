@@ -4,6 +4,7 @@ import { Routes } from '@angular/router';
 import { FooterVariant } from '@gofish/features/footer/footer.component';
 import { HeaderVariant } from '@gofish/features/header/header.component';
 import { PathSegment } from '@gofish/shared/constants';
+import { adminGuard } from '@gofish/shared/guards/admin.guard';
 import { authGuard } from '@gofish/shared/guards/auth.guard';
 import { noTotpGuard } from '@gofish/shared/guards/no-totp.guard';
 
@@ -216,6 +217,8 @@ export const routes: Routes = [
           { path: 'posts', loadComponent: () => import('@gofish/features/forum/features/groups/children/group-posts-placeholder/group-posts-placeholder.component').then(c => c.GroupPostsPlaceholderComponent) },
           { path: 'members', loadComponent: () => import('@gofish/features/forum/features/groups/children/members-group/members-group.component').then(c => c.MembersGroupComponent) },
           { path: 'invite', loadComponent: () => import('@gofish/features/forum/modals/group-invite/group-invite.component').then(m => m.GroupInviteComponent) },
+          { path: 'delete', loadComponent: () => import('@gofish/features/forum/modals/delete-group/delete-group.component').then(m => m.DeleteGroupComponent) },
+          { path: 'exit',   loadComponent: () => import('@gofish/features/forum/modals/exit-group/exit-group.component').then(m => m.ExitGroupComponent) },
         ]
       },
 
@@ -242,6 +245,7 @@ export const routes: Routes = [
   {
     path: 'statistics',
     loadComponent: () => import('@gofish/features/statistics/statistics.component').then(f => f.StatisticsComponent),
+    canActivate: [adminGuard],
     data: {
       header: 'flat' as HeaderVariant,
       footer: 'small' as FooterVariant

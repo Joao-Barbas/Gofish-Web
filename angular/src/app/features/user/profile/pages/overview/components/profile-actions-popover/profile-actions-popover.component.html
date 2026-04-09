@@ -1,15 +1,22 @@
 <!-- profile-actions-popover.component.html -->
 
-@if (profileContext.isFriend()) {
-  <button (click)="onUnfriend()">Unfriend</button>
+@if (!profileContext.isOwner()) {
+  @if (profileContext.isFriend()) {
+    <button (click)="onUnfriend()">Unfriend</button>
+  } @else if (profileContext.isFriendshipPending()) {
+    <button (click)="onFriendshipCancel()">Cancel friend request</button>
+  }
 }
-@if (profileContext.userProfile().friendship?.state === FriendshipState.Pending) {
-  <button (click)="onFriendshipCancel()">Cancel friend request</button>
-}
-<button (click)="onUnfriend()">View all friends</button>
+
+<button (click)="onFriends()">View all friends</button>
 <button (click)="onPins()">View all pins</button>
 <button (click)="onGroups()">View all crews</button>
-@if (!profileContext.isOwner()) {
-  <button (click)="onInviteToGroup()">Invite to crew...</button>
+
+@if (profileContext.isOwner()) {
+  <button (click)="onFriendRequests()">Go to friendship requests</button>
+  <button (click)="onGroupInvites()">Go to crew invites</button>
+} @else if (profileContext.isFriend()) {
+  <button (click)="onInviteToGroup()">Invite to group...</button>
 }
+
 <button (click)="onShowMore()">See more...</button>
