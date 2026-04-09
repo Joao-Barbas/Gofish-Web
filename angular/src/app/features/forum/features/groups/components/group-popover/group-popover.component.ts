@@ -57,4 +57,7 @@ export class GroupPopoverComponent {
     this.router.navigate(['delete'], { relativeTo: this.route });
   }
 
+  exit() {
+    this.router.navigate(['exit'], { relativeTo: this.route });
+  }
 }

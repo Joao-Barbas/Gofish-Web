@@ -216,7 +216,8 @@ export const routes: Routes = [
           { path: 'posts', loadComponent: () => import('@gofish/features/forum/features/groups/children/group-posts-placeholder/group-posts-placeholder.component').then(c => c.GroupPostsPlaceholderComponent) },
           { path: 'members', loadComponent: () => import('@gofish/features/forum/features/groups/children/members-group/members-group.component').then(c => c.MembersGroupComponent) },
           { path: 'invite', loadComponent: () => import('@gofish/features/forum/modals/group-invite/group-invite.component').then(m => m.GroupInviteComponent) },
-          { path: 'delete', loadComponent: () => import('@gofish/features/forum/modals/delete-group/delete-group.component').then(m => m.DeleteGroupComponent) }
+          { path: 'delete', loadComponent: () => import('@gofish/features/forum/modals/delete-group/delete-group.component').then(m => m.DeleteGroupComponent) },
+          { path: 'exit',   loadComponent: () => import('@gofish/features/forum/modals/exit-group/exit-group.component').then(m => m.ExitGroupComponent) },
         ]
       },
 

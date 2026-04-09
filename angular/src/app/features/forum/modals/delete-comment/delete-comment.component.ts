@@ -35,7 +35,7 @@ export class DeleteCommentComponent {
       next: () => {
         toast.success('Deleted comment succesfully');
       }, error: (err) => {
-        alert('You dont have permissions to delete this comment');
+        toast.error('You dont have permissions to delete this comment' + err);
       }
     });
     this.router.navigate(['forum']);

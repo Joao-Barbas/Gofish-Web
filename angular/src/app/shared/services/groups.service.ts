@@ -66,5 +66,8 @@ export class GroupsService {
     );
   }
 
+  leaveGroup(groupId: number): Observable<void> {
+    return this.http.delete<void>(Api.Group.action(`LeaveGroup/${groupId}`));
+  }
 
 }
