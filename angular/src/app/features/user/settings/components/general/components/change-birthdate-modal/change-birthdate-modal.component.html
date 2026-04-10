@@ -11,62 +11,37 @@
         </svg>
       </button>
     </div>
-    <div class="gf-modal-separator"></div>
+
+    <div class="gf-modal-separator-no-margin"></div>
+
     <div>
-      <div class="birthdate-selects">
-        <!-- Day -->
-        <div class="select-group">
-          <label>Day</label>
-          <select [ngModel]="selectedDay()" (ngModelChange)="selectedDay.set($event)">
-            <option [ngValue]="null" disabled>Day</option>
-            @for (d of days(); track d) {
-              <option [ngValue]="d">{{ d }}</option>
-            }
-          </select>
+      <form id="form" class="gf-flow-vertical gf-modal-inputs-form" [formGroup]="birthDateForm.form" (ngSubmit)="onPositive()">
+        <div class="vertical-flow">
+          <label>Display name</label>
+          <input class="date-input" type="date" formControlName="birthDate" id="birthDate">
         </div>
-        <!-- Month -->
-        <div class="select-group">
-          <label>Month</label>
-          <select [ngModel]="selectedMonth()" (ngModelChange)="selectedMonth.set($event)">
-            <option [ngValue]="null" disabled>Month</option>
-            @for (m of months; track m.value) {
-              <option [ngValue]="m.value">{{ m.label }}</option>
-            }
-          </select>
-        </div>
-        <!-- Year -->
-        <div class="select-group">
-          <label>Year</label>
-          <select [ngModel]="selectedYear()" (ngModelChange)="selectedYear.set($event)">
-            <option [ngValue]="null" disabled>Year</option>
-            @for (y of years; track y) {
-              <option [ngValue]="y">{{ y }}</option>
-            }
-          </select>
-        </div>
-      </div>
-      @if (error(); as error) {
-        <span class="gf-text-error">{{ error }}</span>
+      </form>
+      @if (birthDateForm.getFirstError(); as errorText) {
+        <span class="gf-text-error">{{ errorText }}</span>
       }
     </div>
-    <div class="gf-modal-separator"></div>
-    <div>
-      <div class="gf-flow-horizontal gf-gap-10">
-        <gf-async-button
-          class="btn-negative"
-          type=button
-          [labels]="{ idle: 'Cancel' }"
-          [states]="{ disabled: this.busyState.busy() }"
-          (click)="onNegative()">
-        </gf-async-button>
-        <gf-async-button
-          class="btn-positive"
-          type=button
-          [labels]="{ idle: 'Save' }"
-          [states]="{ busy: this.busyState.busy(), success: success() }"
-          (click)="onPositive()">
-        </gf-async-button>
-      </div>
+
+    <div class="gf-modal-separator-no-margin"></div>
+
+    <div class="bottom-container gf-flow-horizontal gf-gap-10">
+      <button
+        class="gf-2btn-secondary-stroked"
+        [disabled]="busyState.busy()"
+        (click)="onNegative()">
+        Cancel
+      </button>
+      <button
+        class="gf-async-btn-primary-filled"
+        gfAsyncBtn
+        [labels]="{ idle: 'Change' }"
+        [states]="{ busy: busyState.busy(), success: success() }"
+        (click)="onPositive()">
+      </button>
     </div>
   </div>
 </div>

@@ -4,11 +4,13 @@ import { Component, inject, output, signal, computed } from '@angular/core';
 import { UserApi } from '@gofish/shared/api/user.api';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { ModalController } from '@gofish/shared/core/modal-controller';
-import { AsyncButtonComponent } from "@gofish/shared/components/async-button-2/async-button-2.component";
 import { SimpleModal } from '@gofish/shared/models/modal.model';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidationProblemDetails } from '@gofish/shared/core/problem-details';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AsyncButtonComponent } from "@gofish/shared/components/async-button-3/async-button-3.component";
+import { ReactiveFormsController, FormErrorMessages } from '@gofish/shared/core/reactive-forms-controller';
+import { GofishValidators } from '@gofish/shared/core/gofish-validators';
 
 @Component({
   selector: 'app-change-birthdate-modal',
@@ -17,9 +19,10 @@ import { HttpErrorResponse } from '@angular/common/http';
     'animate.leave': 'on-leave',
   },
   imports: [
-    AsyncButtonComponent,
-    FormsModule
-  ],
+    FormsModule,
+    ReactiveFormsModule,
+    AsyncButtonComponent
+],
   templateUrl: './change-birthdate-modal.component.html',
   styleUrl: './change-birthdate-modal.component.css',
 })
@@ -34,80 +37,50 @@ export class ChangeBirthdateModalComponent implements SimpleModal {
   negative = output<void>();
   positive = output<string>();
 
-  error   = signal<string | null>(null);
   success = signal<boolean>(false);
 
-  selectedDay   = signal<number | null>(null);
-  selectedMonth = signal<number | null>(null);
-  selectedYear  = signal<number | null>(null);
-
-  readonly currentYear = new Date().getFullYear();
-  readonly minYear = this.currentYear - 100;
-  readonly maxYear = this.currentYear - 13;
-
-  readonly years = Array.from({ length: this.maxYear - this.minYear + 1 }, (_, i) => this.maxYear - i);
-
-  readonly months = [
-    { value: 1, label: 'January' },
-    { value: 2, label: 'February' },
-    { value: 3, label: 'March' },
-    { value: 4, label: 'April' },
-    { value: 5, label: 'May' },
-    { value: 6, label: 'June' },
-    { value: 7, label: 'July' },
-    { value: 8, label: 'August' },
-    { value: 9, label: 'September' },
-    { value: 10, label: 'October' },
-    { value: 11, label: 'November' },
-    { value: 12, label: 'December' },
-  ];
-
-  readonly daysInMonth = computed(() => {
-    const month = this.selectedMonth();
-    const year = this.selectedYear();
-    if (!month || !year) return 31;
-    return new Date(year, month, 0).getDate();
-  });
-
-  readonly days = computed(() =>
-    Array.from({ length: this.daysInMonth() }, (_, i) => i + 1)
+  birthDateForm = new ReactiveFormsController(
+    new FormGroup({
+      birthDate: new FormControl('', {
+        nonNullable: true,
+        validators: [ Validators.required, GofishValidators.minimumAge(13) ]
+      })
+    }),
+    new FormErrorMessages({
+      controls: { birthDate: {
+        required: 'Please enter your birth date.',
+        minimumage: 'You must be at least 13 years old to continue.'
+      }}
+    })
   );
 
   onPositive(): void {
-    const day = this.selectedDay();
-    const month = this.selectedMonth();
-    const year = this.selectedYear();
+    const form = this.birthDateForm.form;
+    form.markAllAsTouched();
+    if (form.invalid) return;
 
-    if (!day || !month || !year) {
-      this.error.set('Please select day, month and year');
-      return;
-    }
-
-    // Clamp day if it exceeds days in selected month
-    const maxDay = this.daysInMonth();
-    const clampedDay = Math.min(day, maxDay);
-
-    const date = new Date(Date.UTC(year, month - 1, clampedDay));
-    const isoString = date.toISOString();
-
+    this.birthDateForm.setProblemDetails(null);
     this.success.set(false);
     this.busyState.setBusy(true);
+
+    let { birthDate } = form.getRawValue();
+
     this.userApi.patchUser({
-      birthDate: isoString
+      birthDate: new Date(birthDate).toISOString()
     }).subscribe({
       next: () => {
-        this.busyState.setBusy(false);
         this.success.set(true);
-        this.positive.emit(isoString);
+        this.positive.emit(birthDate);
         setTimeout(() => {
           this.success.set(false);
           this.modalController.close();
         }, 2000);
+        this.busyState.setBusy(false);
       },
       error: (err: HttpErrorResponse) => {
-        this.busyState.setBusy(false);
         let problem = err.error as ValidationProblemDetails;
-        this.error.set(problem.detail ?? 'Server Error. Try again later.')
+        this.birthDateForm.setProblemDetails(problem);
+        this.busyState.setBusy(false);
       },
     });
   }
