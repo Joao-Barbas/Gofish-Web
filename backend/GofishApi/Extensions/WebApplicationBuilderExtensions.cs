@@ -39,7 +39,7 @@ public static class WebApplicationBuilderExtensions
         {
             options.AddPolicy("angular", (policy) =>
             {
-                policy.WithOrigins("http://localhost:4200", "https://purple-sea-059c7c603.4.azurestaticapps.net")
+                policy.WithOrigins("http://localhost:4200", "https://icy-bay-00e186a03.2.azurestaticapps.net")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
