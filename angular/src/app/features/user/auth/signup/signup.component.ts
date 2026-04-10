@@ -16,6 +16,7 @@ import { AsyncButtonComponent } from "@gofish/shared/components/async-button/asy
 import { LettersOnlyDirective } from '@gofish/shared/directives/letters-only.directive';
 import { AuthApi } from '@gofish/shared/api/auth.api';
 import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/auth.dto';
+import { GofishValidators } from '@gofish/shared/core/gofish-validators';
 
 @Component({
   selector: 'app-signup',
@@ -57,7 +58,10 @@ export class SignupComponent implements OnInit {
     ]],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    userName: ['', Validators.required],
+    userName: ['', [
+      Validators.required,
+      GofishValidators.alphanumeric
+    ]],
     confirmPassword: [''],
   }, { validators: [
     (control: AbstractControl) => this.passwordMatch(control),
@@ -121,6 +125,7 @@ export class SignupComponent implements OnInit {
     if (e('firstName')?.['required']) return 'First name is required.';
     if (e('lastName')?.['required']) return 'Last name is required.';
     if (e('userName')?.['required']) return 'Unique user name is required.';
+    if (e('userName')?.['alphanumeric']) return 'Username can not contain special characters or spaces.';
     if (e('password')?.['required']) return 'Password is required.';
     if (e('password')?.['minlength']) return 'Password needs atleast six characters.';
     if (e('password')?.['nonumber']) return 'Password needs at least one number.';
@@ -139,6 +144,7 @@ export class SignupComponent implements OnInit {
     if (!this.ageConcentChecked || !this.policyConcentChecked) {
       this.invalidSignUpAttempted = false;
       setTimeout(() => this.invalidSignUpAttempted = true);
+      return;
     }
 
     this.signUpForm.markAllAsTouched();

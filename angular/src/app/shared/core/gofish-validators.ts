@@ -15,6 +15,11 @@ export class GofishValidators {
     return /[^a-zA-Z0-9 ]/.test(control.value ?? '') ? null : { hasspecialchar: true };
   }
 
+  static alphanumeric(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+    return /^[a-zA-Z0-9]+$/.test(control.value) ? null : { alphanumeric: true };
+  }
+
   // static businessEmail(control: AbstractControl): ValidationErrors | null {
   //   return control.value?.endsWith('@company.com')
   //     ? null
@@ -34,6 +39,17 @@ export class GofishValidators {
       const password = group.get(passwordField1)?.value;
       const confirm  = group.get(passwordField2)?.value;
       return password === confirm ? null : { passwordsmatch: true };
+    };
+  }
+
+  static minimumAge(minAge: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return null;
+      const birth = new Date(control.value);
+      const today = new Date();
+      const age = today.getFullYear() - birth.getFullYear();
+      const hadBirthday = today.getMonth() > birth.getMonth() || (today.getMonth() === birth.getMonth() && today.getDate() >= birth.getDate());
+      return (hadBirthday ? age : age - 1) >= minAge ? null : { minimumage: true };
     };
   }
 

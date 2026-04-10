@@ -9,12 +9,9 @@
     <app-forum-post [postData]="post"></app-forum-post>
 
     <!-- Comment Form -->
-    <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
-
+    <form id="comment-form" [formGroup]="commentForm" (ngSubmit)="submitComment()">
       <div class="gf-card-comment-area d-flex flex-column">
-        <textarea class="comment-area" maxlength="{{ BodyLengthConstraints.MAX }}" placeholder="Join the conversation"
-          formControlName="body" rows="3" data-testid="comment-body"> </textarea>
-
+        <textarea class="comment-area" placeholder="Join the conversation" formControlName="body" data-testid="comment-body"></textarea>
         <div class="text-end mt-1">
           <small class="dark-text-muted">
             {{ commentForm.value.body?.length ?? 0 }}/{{ BodyLengthConstraints.MAX }}
@@ -29,14 +26,23 @@
           </p>
           }
         </div>
-
-
       </div>
-
-      <app-async-button type="submit" labels="Publish" [state]="busyState.isBusy() ? 'busy' : 'idle'" testId="comment-publish">
-      </app-async-button>
-
     </form>
+
+    @if (commentForm.valid) {
+      <button
+        form="comment-form"
+        type="submit"
+        class="gf-async-btn-primary-filled"
+        gfAsyncBtn
+        [labels]="{ idle: 'Publish' }"
+        [states]="{ busy: busyState.isBusy() }"
+        testId="comment-publish">
+
+      </button>
+      <!-- <app-async-button class="publish-btn" form="comment-form" type="submit" labels="Publish" [state]="busyState.isBusy() ? 'busy' : 'idle'" testId="comment-publish"> -->
+      <!-- </app-async-button> -->
+    }
 
     <!-- Comments -->
     <div class="comment-list-section" data-testid="comments-list">
@@ -46,7 +52,7 @@
 
       } @else if (comments()?.comments?.length === 0) {
       <div class="end-message">
-        <p>No comments yet. Be the first to start the conversation.</p>
+        <p>Quiet seas... be the first to cast a line.</p>
       </div>
 
       } @else {
@@ -56,13 +62,21 @@
 
       @if (hasMoreResults()) {
       <div class="show-more">
-        <button type="button" class="show-more-text" (click)="showMore()">
+        <!-- <button type="button" class="show-more-text" (click)="showMore()">
           Show more
+        </button> -->
+        <button
+          class="gf-async-btn-primary-stroked"
+          gfAsyncBtn
+          (click)="showMore()"
+          [labels]="{ idle: 'Load More' }"
+          [states]="{ busy: showMoreBusyState.isBusy() }">
         </button>
+
       </div>
       } @else {
       <div class="end-message">
-        <p>You've reached the end of the conversation.</p>
+        <p>No more tales to tell.</p>
       </div>
       }
 

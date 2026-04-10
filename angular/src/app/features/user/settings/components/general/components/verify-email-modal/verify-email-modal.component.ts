@@ -73,8 +73,13 @@ export class VerifyEmailModalComponent implements SimpleModal {
 
   // Modal events
 
-  onPositive(): void { }
-  onNegative(): void { }
+  onPositive(): void {
+
+  }
+
+  onNegative(): void {
+    this.controller.close();
+  }
 
   // End modal events
   // Events

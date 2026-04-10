@@ -22,10 +22,17 @@
   max-width: calc(416rem / 16);
 }
 
+.bottom-container {
+  .gf-2btn-secondary-stroked,
+  .gf-async-btn-primary-filled {
+    flex: 1;
+  }
+}
+
 .warning-box {
   background: var(--gf-warning-bg-muted);
   border: 2px solid var(--gf-warning);
-  border-radius: var(--gf-4);
+  border-radius: var(--gf-6);
   padding: var(--gf-8);
   font-size: var(--gf-text-sm);
   overflow-wrap: break-word; /* modern, preferred */
@@ -34,16 +41,6 @@
   .email {
     text-decoration: underline;
     color: #0000EE;
-  }
-}
-
-gf-async-button {
-  width: 100%;
-  --async-btn-width: 100%;
-
-  &.btn-negative {
-    --async-btn-bg: var(--gf-light-bg-dark);
-    --async-btn-color: var(--gf-light-text);
   }
 }
 

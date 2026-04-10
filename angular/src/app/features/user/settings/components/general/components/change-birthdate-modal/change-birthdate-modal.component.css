@@ -48,16 +48,25 @@
   font-size: 0.9rem;
 }
 
-gf-async-button {
-  width: 100%;
-  --async-btn-width: 100%;
-
-  &.btn-negative {
-    --async-btn-bg: var(--gf-light-bg-dark);
-    --async-btn-color: var(--gf-light-text);
+.bottom-container {
+  .gf-2btn-secondary-stroked,
+  .gf-async-btn-primary-filled {
+    flex: 1;
   }
+}
+
+.date-input[type="date"] {
+  color-scheme: dark;
 }
 
 h5 {
   color: var(--gf-dark-text);
+}
+
+/* Media */
+
+@media (prefers-color-scheme: light) {
+  .date-input[type="date"] {
+    color-scheme: light;
+  }
 }

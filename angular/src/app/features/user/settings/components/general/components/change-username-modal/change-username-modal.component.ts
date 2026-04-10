@@ -5,7 +5,7 @@ import { UserApi } from '@gofish/shared/api/user.api';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { ModalController } from '@gofish/shared/core/modal-controller';
-import { AsyncButtonComponent } from "@gofish/shared/components/async-button-2/async-button-2.component";
+import { AsyncButtonComponent } from "@gofish/shared/components/async-button-3/async-button-3.component";
 import { SimpleModal } from '@gofish/shared/models/modal.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ValidationProblemDetails } from '@gofish/shared/core/problem-details';

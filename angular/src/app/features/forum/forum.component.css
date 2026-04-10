@@ -1,3 +1,8 @@
+:host {
+  flex: 1;
+  padding-bottom: var(--gf-128);
+}
+
 .forum-container {
   display:grid;
   grid-template-columns: 1fr 37rem 1fr;
@@ -31,6 +36,5 @@
   align-items: center;
   gap: 0.5rem;
   font-family: var(--gf-font-ugc);
-  font-size: var(--gf-22);
-
+  font-size: var(--gf-18);
 }

@@ -21,10 +21,6 @@
   overflow: hidden;
 }
 
-.comment-list-section>.gf-card-post-comment:not(:last-child) {
-  border-bottom: 1px solid var(--gf-dark-bg-light);
-}
-
 .top-of-post {
   min-width: 0;
 }

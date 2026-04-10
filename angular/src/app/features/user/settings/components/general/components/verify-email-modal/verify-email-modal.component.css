@@ -50,32 +50,10 @@
 .body-container {
   display: block;
   padding: var(--gf-16);
-}
 
-.input-box {
-  display: block;
-  box-shadow: none;
-  border: none;
-  outline: none;
-  color: var(--gf-dark-text);
-  background-color: var(--gf-dark-bg-dark);
-  font-size: var(--gf-text-sm);
-  border-radius: var(--gf-8);
-  width: 100%;
-  padding: var(--gf-10) 1rem;
-  transition: box-shadow 0.2s ease;
-
-  &::placeholder {
-    color: var(--gf-dark-text-muted);
-    font-size: var(--gf-text-xs);
-  }
-
-  &:hover {
-    box-shadow: 0 0 0 2px var(--gf-primary);
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 2px var(--gf-primary);
+  .email-highlight {
+    color: var(--gf-primary);
+    font-weight: var(--gf-font-medium);
   }
 }
 
@@ -85,12 +63,22 @@
 }
 
 .bottom-container {
+  padding: var(--gf-16);
+
+  .gf-2btn-secondary-stroked,
+  .gf-async-btn-primary-filled {
+    flex: 1;
+  }
+
+  /*
   display: flex;
   flex-direction: row;
   justify-content: end;
   padding: var(--gf-16);
   gap: 6px;
+  */
 
+  /*
   .positive-btn,
   .negative-btn {
     border-radius: var(--gf-8);
@@ -128,6 +116,7 @@
       background-color: var(--gf-accent-muted);
     }
   }
+  */
 }
 
 .error-container {

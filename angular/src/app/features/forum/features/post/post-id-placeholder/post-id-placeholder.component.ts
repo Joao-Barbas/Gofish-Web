@@ -8,14 +8,20 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { toast } from 'ngx-sonner';
 import { PinService } from '@gofish/shared/services/pin.service';
 import { CommentDto, CreateCommentReqDto, GetCommentsReqDto, GetCommentsResDto, GetPinsReqDto, PinDto } from '@gofish/shared/dtos/pin.dto';
-import { AsyncButtonComponent } from "@gofish/shared/components/async-button/async-button.component";
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { BodyLengthConstraints } from '@gofish/shared/constants';
 import { PostCommentsComponent } from '@gofish/features/forum/features/post/post-comments/post-comments.component';
+import { AsyncButtonComponent } from "@gofish/shared/components/async-button-3/async-button-3.component";
 
 @Component({
   selector: 'app-post-id-placeholder',
-  imports: [ForumPostComponent, PostCommentsComponent, LoadingSpinnerComponent, ReactiveFormsModule, AsyncButtonComponent],
+  imports: [
+    ForumPostComponent,
+    PostCommentsComponent,
+    LoadingSpinnerComponent,
+    ReactiveFormsModule,
+    AsyncButtonComponent
+],
   templateUrl: './post-id-placeholder.component.html',
   styleUrl: './post-id-placeholder.component.css',
 })
@@ -31,7 +37,8 @@ export class PostIdPlaceholderComponent {
   post = signal<PinDto | null>(null);
   comments = signal<GetCommentsResDto | null>(null);
   busyState: BusyState = new BusyState();
-  hasMoreResults = signal(true);
+  showMoreBusyState: BusyState = new BusyState();
+  hasMoreResults = signal(false);
   private lastTimestamp: string = new Date().toISOString();
 
   commentForm = this.fb.group({
@@ -78,6 +85,7 @@ export class PostIdPlaceholderComponent {
       lastTimestamp: this.lastTimestamp
     };
 
+    this.showMoreBusyState.setBusy(true);
     this.pinService.getComments(req).subscribe({
       next: (res) => {
         this.comments.update(current => {
@@ -97,6 +105,8 @@ export class PostIdPlaceholderComponent {
         } else {
           this.hasMoreResults.set(false);
         }
+
+        this.showMoreBusyState.setBusy(false);
       },
       error: (err) => {
         console.log(err);
@@ -138,4 +148,3 @@ export class PostIdPlaceholderComponent {
     });
   }
 }
-
