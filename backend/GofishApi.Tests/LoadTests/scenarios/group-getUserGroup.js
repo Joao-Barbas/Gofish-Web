@@ -1,4 +1,4 @@
-﻿import http from 'k6/http';
+import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { signIn } from '../auth.js';
 
@@ -25,34 +25,32 @@ export function setup() {
 }
 
 export default function (data) {
-    const res = http.post(`${BASE_URL}/api/Pin/GetPins`, JSON.stringify({
-        ids: [
-            { id: 1 },
-            { id: 2 }
-        ],
-        dataRequest: {
-            includeGeolocation: false,
-            includeAuthor: true,
-            includeDetails: true,
-            includeStats: true,
-            includeUgc: false,
-            includeGroups: false
-        },
-        maxResults: 20,
-        lastTimestamp: null
-    }), {
+    const res = http.get(`${BASE_URL}/api/Group/GetUserGroups`, {
         headers: {
-            'Content-Type': 'application/json',
             'Authorization': `Bearer ${data.token}`,
         },
     });
 
+    let body = null;
+
+    try {
+        body = res.json();
+    } catch (e) {
+        body = null;
+    }
+
     check(res, {
-        'getPins 200': (r) => r.status === 200,
-        'tem body': (r) => r.body && r.body.length > 0,
+        'getUserGroups status 200': (r) => r.status === 200,
+        'response has body': (r) => r.body && r.body.length > 0,
+        'content-type is json': (r) =>
+            r.headers['Content-Type'] &&
+            r.headers['Content-Type'].includes('application/json'),
+        'body parsed': () => body !== null,
+        'body has data property': () => body !== null && body.data !== undefined,
+        'data is array': () => body !== null && Array.isArray(body.data),
     });
 
     sleep(1);
 }
 
-//k6 run --insecure-skip-tls-verify pin-getPins.js
+//k6 run --insecure-skip-tls-verify group-getUserGroup.js
