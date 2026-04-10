@@ -1,119 +1,109 @@
-<div class="modal-backdrop-custom d-flex justify-content-center align-items-center">
-  <div class="modal-custom gf-card">
+<div class="gf-modal-backdrop" (click)="$event.stopPropagation()">
+  <div class="gf-modal-shell" (click)="$event.stopPropagation()">
 
-    <form id="group-modal" [formGroup]="form" (ngSubmit)="onPublish()">
-
-      <!-- Header -->
-      <div class="modal-header text-white align-items-center mb-3 justify-content-between">
-        <div>
-          <h5 class="mb-0 text-bold modal-header-title">Crew Create</h5>
-          <p class="mb-0 dark-text-muted modal-header-subtitle">
-            Add details about your crew!
-          </p>
-        </div>
-
-        <button type="button" class="gf-btn-icon" (click)="onCancel()"
-          style="background: none; border: none; color: var(--gf-dark-text-muted); cursor: pointer;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
-        </button>
+    <!-- Header -->
+    <div class="modal-header text-white align-items-center justify-content-between gf-p-16">
+      <div>
+        <h5 class="mb-0 text-bold modal-header-title">Assemble Your Crew</h5>
+        <small class="mb-0 dark-text-muted modal-header-subtitle">Chart the details before setting sail!</small>
       </div>
+      <button type="button" class="gf-toggle-circle" (click)="onCancel()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
 
-      <!-- Body -->
-      <div class="modal-body">
+    <div class="gf-modal-separator-no-margin"></div>
 
-        <!-- Content -->
-        <h5 class="text-slim modal-body-section-title mt-3">Content</h5>
-        <section class="d-flex flex-column">
-
-          <!-- Upload -->
-          <div
-            class="modal-body-drag-n-drop d-flex flex-column justify-content-center align-items-center generic-select-wrapper-text"
-            (click)="fileInput.click()">
-            @if (image) {
-            <p class="drag-text mb-0">{{ image.name }}</p>
-            } @else {
-            <div class="drag-icon mb-3 mt-1"></div>
-            <p class="drag-text mb-0">Drag And Drop</p>
-            }
-          </div>
-
+    <!-- Body -->
+    <form id="create-group-form" class="gf-modal-inputs-form gf-p-16" [formGroup]="form" (ngSubmit)="onPublish()">
+      <!-- Upload -->
+      <div class="vertical-flow gf-mb-16">
+        <label>{{ 'Crew emblem' }}</label>
+        <label>{{ 'Allowed formats: JPG, JPEG, PNG. Max size: 3mb. Recommended dimensions: 96x96)' }}</label>
+        <div class="modal-body-drag-n-drop d-flex flex-column justify-content-center align-items-center generic-select-wrapper-text" (click)="fileInput.click()">
+          @if (image) {
+          <p class="drag-text mb-0">{{ image.name }}</p>
+          } @else {
+          <svg class="drag-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19.5 3-3 3 3"/><path d="M17 22v-5.5"/><circle cx="9" cy="9" r="2"/></svg>
+          <p class="drag-text mb-0">Click here to upload an image</p>
+          <p class="drag-text mb-0">Drag and drop</p>
+          }
           <input #fileInput type="file" accept="image/png,image/jpeg" hidden (change)="onImageSelected($event)" />
-
-          @if (form.controls.imageUrl.touched && form.controls.imageUrl.invalid) {
-          <p class="text-danger mt-2 mb-0">
-            Image is required.
-          </p>
+        </div>
+      </div>
+      @if (form.controls.imageUrl.touched && form.controls.imageUrl.invalid) {
+      <p class="text-danger mt-2 mb-0">
+        Image is required.
+      </p>
+      }
+      @if (form.controls.imageUrl.errors?.['invalidType']) {
+      <p class="text-danger mt-2 mb-0">
+        Only PNG or JPEG or JPG images are allowed.
+      </p>
+      }
+      <div class="vertical-flow gf-mb-16">
+        <label>Crew name</label>
+        <input type="text" minlength="3" maxlength="50" placeholder="Enter crew name..." formControlName="groupName" formControlName="groupName">
+        <div class="gf-d-flex gf-justify-between gf-mt-2">
+          @if (form.controls.groupName.touched && form.controls.groupName.invalid) {
+            <p class="gf-text-error gf-d-inline">
+              @if (form.controls.groupName.errors?.['required']) {
+                Every crew needs a name, captain.
+              }
+              @if (form.controls.groupName.errors?.['minlength']) {
+                Crew name must have at least 3 characters.
+              }
+              @if (form.controls.groupName.errors?.['maxlength']) {
+                Crew name cannot exceed 50 characters.
+              }
+            </p>
           }
-          @if (form.controls.imageUrl.errors?.['invalidType']) {
-          <p class="text-danger mt-2 mb-0">
-            Only PNG or JPEG or JPG images are allowed.
-          </p>
-          }
-          <div class="options-line d-flex align-items-center justify-content-between">
-            <h5 class="modal-body-options-text text-slim mb-0">Crew Name</h5>
-            <input type="text" minlength="3" maxlength="50" class="dark-bg-dark dark-text modal-info-box"
-              placeholder="Enter crew name..." formControlName="groupName" />
-          </div>
-          <small class="dark-text-muted text-end">
+          <small class="char-count">
             {{ form.value.groupName?.length ?? 0 }}/{{ 50 }}
           </small>
-          @if (form.controls.groupName.touched && form.controls.groupName.invalid) {
-          <p class="text-danger mt-2 mb-0">
-            @if (form.controls.groupName.errors?.['required']) {
-            Group name is required.
-            }
-            @if (form.controls.groupName.errors?.['minlength']) {
-            Group name must have at least 3 characters.
-            }
-            @if (form.controls.groupName.errors?.['maxlength']) {
-            Group name cannot exceed 50 characters.
-            }
-          </p>
-          }
-          <!-- Description -->
-          <textarea id="Description" class="modal-body-description dark-bg-dark dark-text"
-            maxlength="{{ BodyLengthConstraints.MAX }}" placeholder="Add a description..." formControlName="body">
-          </textarea>
-          <small class="dark-text-muted text-end">
-            {{ form.value.body?.length ?? 0 }}/{{ BodyLengthConstraints.MAX }}
-          </small>
+        </div>
+      </div>
+      <!-- Description -->
+      <div class="vertical-flow">
+        <label>Tell more about your crew</label>
+        <textarea id="Description" class="modal-body-description dark-bg-dark dark-text" maxlength="{{ BodyLengthConstraints.MAX }}" placeholder="Add a description..." formControlName="body"></textarea>
+        <div class="gf-d-flex gf-justify-between gf-mt-2">
           @if (form.controls.body.touched && form.controls.body.invalid) {
-          <p class="text-danger mt-2 mb-0">
-            @if (form.controls.body.errors?.['required']) {
-            Description is required.
-            }
-            @if (form.controls.body.errors?.['minlength']) {
-            Description must have at least {{BodyLengthConstraints.MIN}} characters.
-            }
-            @if (form.controls.body.errors?.['maxlength']) {
-            Description cannot exceed {{BodyLengthConstraints.MAX}} characters.
-            }
-          </p>
+            <p class="gf-text-error gf-d-inline">
+              @if (form.controls.body.errors?.['required']) {
+                Drop a few lines about your crew. What's the catch?
+              }
+              @if (form.controls.body.errors?.['minlength']) {
+                At least {{BodyLengthConstraints.MIN}} characters.
+              }
+              @if (form.controls.body.errors?.['maxlength']) {
+                That's a tall tale. Keep it under {{ BodyLengthConstraints.MAX }} characters.
+              }
+            </p>
           }
-
-        </section>
-
-        <!-- Error -->
-        @if (errorMessage) {
-        <p class="text-danger mt-2 mb-0">{{ errorMessage }}</p>
-        }
-
+          <small class="char-count">{{ form.value.body?.length ?? 0 }}/{{ BodyLengthConstraints.MAX }}</small>
+        </div>
       </div>
-
-      <!-- Footer -->
-      <div class="modal-footer mt-2 action-btns">
-        <button type="button" class="btn btn-secondary" (click)="onCancel()">
-          Cancel
-        </button>
-
-        <app-async-button type="submit" form="group-modal" labels="Publish"
-          [state]="busyState.isBusy() ? 'busy' : 'idle'" />
-      </div>
-
+      @if (errorMessage) { <p class="gf-text-error">{{ errorMessage }}</p> }
     </form>
+
+    <div class="gf-modal-separator-no-margin"></div>
+
+    <!-- Footer -->
+    <div class="action-buttons">
+      <button type="button" class="gf-2btn-secondary-stroked" [disabled]="busyState.isBusy()" (click)="onCancel()">
+        Cancel
+      </button>
+      <button
+        type="submit"
+        form="group-modal"
+        class="gf-async-btn-primary-filled"
+        gfAsyncBtn
+        [labels]="{ idle: 'Publish' }"
+        [states]="{ busy: busyState.isBusy() }"
+        (click)="onPublish()">
+      </button>
+    </div>
 
   </div>
 </div>

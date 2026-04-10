@@ -69,7 +69,7 @@ export class GroupPopoverComponent {
         next: () => {
           this.controller.close();
           // Redirecionar para a lista de grupos, já que ele já não tem acesso a este
-          this.router.navigate(['/forum/my-groups']);
+          this.router.navigate(['/forum/my-crews']);
         },
         error: (err) => {
           console.error('Error leaving group:', err);

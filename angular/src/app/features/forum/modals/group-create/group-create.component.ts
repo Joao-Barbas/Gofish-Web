@@ -4,15 +4,23 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PinService } from '@gofish/shared/services/pin.service';
 import { UrlService } from '@gofish/features/map/services/url.service';
-import { AsyncButtonComponent } from '@gofish/shared/components/async-button/async-button.component';
 import { BusyState } from '@gofish/shared/core/busy-state';
 import { GroupsService } from '@gofish/shared/services/groups.service';
 import { toast } from 'ngx-sonner';
 import { BodyLengthConstraints } from '@gofish/shared/constants';
+import { AsyncButtonComponent } from "@gofish/shared/components/async-button-3/async-button-3.component";
 
 @Component({
   selector: 'app-group-create',
-  imports: [CommonModule, ReactiveFormsModule, AsyncButtonComponent],
+  host: {
+    'animate.enter': 'on-enter',
+    'animate.leave': 'on-leave',
+  },
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    AsyncButtonComponent
+  ],
   templateUrl: './group-create.component.html',
   styleUrl: './group-create.component.css',
 })
@@ -55,7 +63,7 @@ export class GroupCreateComponent {
 
   onCancel(): void {
     toast.info('You cancel the creation');
-    this.router.navigate(['/forum/my-groups']);
+    this.router.navigate(['/forum/my-crews']);
   }
 
   onPublish(): void {
@@ -83,7 +91,7 @@ export class GroupCreateComponent {
         this.busyState.setBusy(false);
         toast.dismiss(toastId);
         toast.success('Group created successfully.');
-        this.router.navigate(['/forum/my-groups']);
+        this.router.navigate(['/forum/my-crews']);
       },
       error: (err) => {
         this.busyState.setBusy(false);
