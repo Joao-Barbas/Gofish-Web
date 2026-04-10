@@ -2,8 +2,7 @@
 
 @if (userSettings.isLoading() || userProfileSettings.isLoading()) {
   <gf-loading-spinner></gf-loading-spinner>
-}
-@else if (userSettings.hasValue() && userProfileSettings.hasValue()) {
+} @else if (userSettings.hasValue() && userProfileSettings.hasValue()) {
   <!-- Account information -->
   <div class="account-container">
     <h4>Account information</h4>
@@ -212,7 +211,6 @@
 
   <!-- Modals -->
 
-  <app-change-displayname-modal (positive)="onDisplayNameChange($event)"></app-change-displayname-modal>
   @switch (this.modalService.activeModal()) {
   @case ('app-change-username-modal') {
     <app-change-username-modal (positive)="onUsernameChange($event)"></app-change-username-modal>
@@ -221,7 +219,7 @@
     <app-change-phone-modal (positive)="onPhoneNumberChange($event)"></app-change-phone-modal>
   }
   @case (ChangeDisplaynameModalComponent.Key) {
-
+    <app-change-displayname-modal (positive)="onDisplayNameChange($event)"></app-change-displayname-modal>
   }
   @case ('app-change-firstname-modal') {
     <app-change-firstname-modal (positive)="onFirstnameChange($event)"></app-change-firstname-modal>
@@ -233,13 +231,12 @@
     <app-change-birthdate-modal (positive)="onBirthDateChange($event)"></app-change-birthdate-modal>
   }
   @case (ChangeEmailModalComponent.Key) {
-    <gf-change-email-modal></gf-change-email-modal>
+    <gf-change-email-modal (positive)="onEmailChange($event)"></gf-change-email-modal>
   }
   @case (VerifyEmailModalComponent.Key) {
     <gf-verify-email-modal (positive)="onEmailVerified()"></gf-verify-email-modal>
   }}
-}
-@else if (userSettings.error() || userProfileSettings.error()) {
+} @else if (userSettings.error() || userProfileSettings.error()) {
   <div class="failed-container gf-flow-vertical gf-center-axes">
     <span>{{ userSettings.error() ?? userProfileSettings.isLoading() }}</span>
     <button (click)="userSettings.reload(); userProfileSettings.reload()">Try Again</button>

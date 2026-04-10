@@ -701,8 +701,13 @@ h6 {
     color: var(--gf-dark-text);
     border-radius: var(--gf-8);
     padding: var(--gf-10) var(--gf-16);
-    max-height: var(--gf-36);
+    max-height: var(--gf-38);
     transition: box-shadow 0.2s ease;
+
+    &::placeholder {
+      color: var(--gf-dark-text-muted);
+      font-size: var(--gf-text-xs);
+    }
 
     &:hover {
       box-shadow: 0 0 0 2px var(--gf-primary);

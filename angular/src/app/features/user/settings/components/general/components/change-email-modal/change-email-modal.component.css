@@ -56,6 +56,11 @@
   display: block;
   padding: var(--gf-16);
 
+  .email-highlight {
+    color: var(--gf-primary);
+    font-weight: var(--gf-font-medium);
+  }
+
   &.on-enter {
     animation: gf-slide-in-from-right 0.25s ease;
   }
@@ -107,12 +112,22 @@
 }
 
 .bottom-container {
+  padding: var(--gf-16);
+
+  /*
   display: flex;
   flex-direction: row;
   justify-content: end;
   padding: var(--gf-16);
   gap: 6px;
+  */
 
+  .gf-2btn-secondary-stroked,
+  .gf-async-btn-primary-filled {
+    flex: 1;
+  }
+
+  /*
   .positive-btn,
   .negative-btn {
     border-radius: var(--gf-8);
@@ -150,6 +165,7 @@
       background-color: var(--gf-accent-muted);
     }
   }
+  */
 }
 
 .error-container {

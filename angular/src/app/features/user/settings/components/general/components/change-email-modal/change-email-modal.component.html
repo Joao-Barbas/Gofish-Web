@@ -47,9 +47,13 @@
         }
         @case ('confirm') {
           <div class="body-container" animate.enter="on-enter" animate.leave="on-leave">
-            <small class="input-title">Confirm e-mail</small>
-            <form [formGroup]="confirmEmailFormController.form">
-              <input class="input-box" type="text" appNumbersOnly placeholder="Enter your new email here" formControlName="code">
+            <small class="information">We have sent you an email to <span class="email-highlight">{{newEmailFormController.form.value.newEmail}}</span> to confirm the validity of your e-mail address. After receiving the e-mail with a special code, enter it on the box below.</small>
+            <br><br>
+            <form id="form" class="gf-flow-vertical gf-modal-inputs-form" [formGroup]="confirmEmailFormController.form" (ngSubmit)="onPositive()">
+              <div class="vertical-flow">
+                <label>Code</label>
+                <input class="input-box" type="text" appNumbersOnly placeholder="Enter the code here" formControlName="code">
+              </div>
             </form>
             @if (confirmEmailFormController.getFirstError(); as errorText) {
               <small class="gf-text-error">{{ errorText }}</small>
@@ -63,22 +67,22 @@
 
     <div class="gf-modal-separator-no-margin-legacy"></div>
 
-    <div class="bottom-container">
+    <div class="bottom-container gf-flow-horizontal gf-gap-8">
       @if (!changeSucceeded()) {
-        <button class="negative-btn" (click)="onNegative()">
+        <button class="gf-2btn-secondary-stroked" (click)="onNegative()">
           {{ negativeButtonLabel() }}
         </button>
       }
       @if (securityInfo.hasValue()) {
         <button
-          class="positive-btn"
+          class="gf-async-btn-primary-filled"
           gfAsyncBtn
           (click)="onPositive()"
           [labels]="{ idle: positiveButtonLabel() }"
           [states]="{ busy: busyState.isBusy(), success: changeSucceeded() }">
         </button>
       } @else if (securityInfo.error()) {
-        <button class="positive-btn" (click)="securityInfo.reload()">
+        <button class="gf-async-btn-primary-filled" (click)="securityInfo.reload()">
           Try Again Now
         </button>
       }

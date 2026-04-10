@@ -187,6 +187,7 @@ export class GeneralComponent {
   onEmailChange(email: string) {
     if (!this.userSettings.hasValue()) return;
     this.userSettings.value().email = email;
+    this.userSettings.value().emailConfirmed = true;
   }
 
   onEmailVerified() {
