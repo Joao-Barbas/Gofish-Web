@@ -40,3 +40,6 @@ export default function (data) {
 
     sleep(1);
 }
+
+//k6 run --insecure-skip-tls-verify pin-getFeed.js
+

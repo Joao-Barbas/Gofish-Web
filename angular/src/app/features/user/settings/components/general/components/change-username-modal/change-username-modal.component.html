@@ -13,7 +13,7 @@
       </button>
     </div>
 
-    <div class="gf-modal-separator"></div>
+    <div class="gf-modal-separator-negative-margin"></div>
 
     <div>
       <div class="warning-box">
@@ -32,25 +32,22 @@
       }
     </div>
 
-    <div class="gf-modal-separator"></div>
+    <div class="gf-modal-separator-negative-margin"></div>
 
-    <div>
-      <div class="gf-flow-horizontal gf-gap-10">
-        <gf-async-button
-          class="btn-negative"
-          type=button
-          [labels]="{ idle: 'Cancel' }"
-          [states]="{ disabled: this.busyState.busy() }"
-          (click)="onNegative()">
-        </gf-async-button>
-        <gf-async-button
-          class="btn-positive"
-          type=button
-          [labels]="{ idle: 'Change' }"
-          [states]="{ busy: this.busyState.busy(), success: success() }"
-          (click)="onPositive()">
-        </gf-async-button>
-      </div>
+    <div class="bottom-container gf-flow-horizontal gf-gap-8">
+      <button
+        class="gf-2btn-secondary-stroked"
+        [disabled]="busyState.busy()"
+        (click)="onNegative()">
+        Cancel
+      </button>
+      <button
+        class="gf-async-btn-primary-filled"
+        gfAsyncBtn
+        [labels]="{ idle: 'Change' }"
+        [states]="{ busy: busyState.busy(), success: success() }"
+        (click)="onPositive()">
+      </button>
     </div>
 
   </div>

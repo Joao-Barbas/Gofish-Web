@@ -1,74 +1,87 @@
-<div class="choose-pin-popup-container d-flex flex-column gf-gap-16" data-testid="choose-pin-popup">
+<div class="choose-pin-popup-container" data-testid="choose-pin-popup">
 
   <!-- Seção de seleção de localização -->
-  <div class="d-flex flex-column align-items-center gf-gap-12">
-    <p>1. First select your coordinates</p>
-    <!-- Botões de escolha de localização -->
-    <div class="d-flex flex-row gf-gap-16 pin-types-showcase justify-content-center">
-      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="onCreateByGeolocation()"
+  <!-- Botões de escolha de localização -->
+  <div class="gf-p-16">
+    <p class="gf-text-sm gf-mb-6">First select how you want to place you pin</p>
+    <div class="map-placement-strategy-container d-flex flex-row gf-gap-8 pin-types-showcase gf-justify-between">
+      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item gf-w-100" (click)="onCreateByGeolocation()"
         title="Create pin at current location" data-testid="choose-location-geo">
-        <button class="modal-info-box location-toggle-btn" [class.active]="selectedLocationMode === 'geo'">Current
-          Location</button>
+        <button class="modal-info-box location-toggle-btn" [class.active]="selectedLocationMode === 'geo'">
+          Geocation
+        </button>
       </div>
-      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item" (click)="chooseOnMap()"
+      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item gf-w-100" (click)="chooseOnMap()"
         title="Click anywhere on the map to set coordinates" data-testid="choose-location-map">
-        <button class="modal-info-box location-toggle-btn" [class.active]="selectedLocationMode === 'pick'">On
-          Map</button>
+        <button class="modal-info-box location-toggle-btn" [class.active]="selectedLocationMode === 'pick'">
+          Pick
+        </button>
       </div>
     </div>
+    <div class="inline-placement-info-container">
+      <div class="inline-placement-info">
+        <span title="Uses your device's current GPS location to automatically determine the coordinates for your pin. Make sure location services are enabled on your device.">
+          <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <small class="info-text">
+          <span class="info-key">{{ 'Geolocation:' }}</span>
+          {{ 'Uses you device current location' }}
+        </small>
+      </div>
+      <div class="inline-placement-info">
+        <span title="After selecting this option, click anywhere on the map to choose exactly where you want to place your pin. You can click again to reposition it before confirming.">
+          <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <small class="info-text">
+          <span class="info-key">{{ 'Pick:' }}</span>
+          {{ 'Tap the map to place your pin' }}
+        </small>
+      </div>
+    </div>
+  </div>
 
-    @if (isGettingLocation) {
-    <gf-loading-spinner></gf-loading-spinner>
-    }
-    <!-- Coordenadas selecionadas -->
-    @if (coords) {
-    <div class="text-center mt-2 animate-fade-in d-flex flex-column align-items-center gap-2 coords-div" data-testid="selected-coords">
-
-      <span class="small text-light">Geolocation</span>
-
-      <div class="d-flex align-items-center gap-2">
-        <div class="d-flex align-items-center gap-1">
-          <span class="small text-light">Lat</span>
-          <p class="mb-0 dark-bg-dark modal-info-box">
+  @if ( errorMessage.length > 0 ) {
+    <div class="gf-p-16 gf-pt-0">
+      <div class="error-container">
+        {{ errorMessage }}
+      </div>
+    </div>
+  } @else if (isGettingLocation) {
+    <div class="gf-p-16 gf-pt-0">
+      <gf-loading-spinner></gf-loading-spinner>
+    </div>
+  } @else if (coords) {
+    <div class="d-flex flex-column gf-p-16 gf-pt-0" data-testid="selected-coords">
+      <small class="gf-m-0">Geolocation</small>
+      <div class="d-flex gf-items-stretch gf-gap-4 coords-div">
+        <div class="modal-info-box">
+          <small class="coordinates-title">Latitude</small>
+          <p class="coordinates-text">
             {{ coords.latitude | number:'1.5' }}
           </p>
         </div>
-
-        <div class="d-flex align-items-center gap-1">
-          <span class="small text-light">Lng</span>
-          <p class="mb-0 dark-bg-dark modal-info-box">
+        <div class="modal-info-box">
+          <small class="coordinates-title">Longitude</small>
+          <p class="coordinates-text">
             {{ coords.longitude | number:'1.5' }}
           </p>
         </div>
       </div>
-
     </div>
-    }
-    <!-- Mensagem de erro -->
-    @if(errorMessage.length > 0) {
-    <p class="text-danger small mt-1">{{ errorMessage }}</p>
-    }
 
-  </div>
-
-  @if (coords) {
-  <hr>
-  <!-- Seção de tipos de pin -->
-  <p class="d-flex flex-column align-items-center">2. Then choose your pin kind</p>
-  <div class="d-flex flex-row gf-gap-8 pin-types-showcase justify-content-center">
-
-    @for (config of pinConfigs; track config.kind) {
-    <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item"
-      (click)="createPin(config.kindString.toLowerCase())" [attr.data-testid]="'pin-kind-' + config.kindString.toLowerCase()">
-
-      <button class="pin-img-btn" [style.--pin-icon]="'url(' + config.iconUrl + ')'"
-        [style.border-color]="config.color">
-      </button>
-
-      <label class="pin-name">{{ config.kindString }}</label>
+    <div class="gf-modal-separator-no-margin"></div>
+    <!-- Seção de tipos de pin -->
+    <div class="gf-p-16">
+      <p class="gf-text-sm gf-mb-6">Now choose your pin kind</p>
+      <div class="d-flex flex-row gf-gap-8 pin-types-showcase gf-justify-stretch gf-w-100">
+        @for (config of pinConfigs; track config.kind) {
+          <div class="d-flex flex-column align-items-center gf-gap-4 gf-w-100 pin-type-item" (click)="createPin(config.kindString.toLowerCase())" [attr.data-testid]="'pin-kind-' + config.kindString.toLowerCase()">
+            <button class="pin-img-btn" [style.--pin-icon]="'url(' + config.iconUrl + ')'" [style.border-color]="config.color"></button>
+            <label class="pin-name">{{ config.kindString }}</label>
+          </div>
+        }
+      </div>
     </div>
-    }
-
-  </div>
   }
+
 </div>

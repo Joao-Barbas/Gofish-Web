@@ -22,6 +22,11 @@
   gap: 12px;
 }
 
+.app-forum-post {
+  background-color: red;
+  box-shadow: var(--gf-shadow-lift-lg);
+}
+
 .post-author-profile-photo {
   width: var(--gf-32);
   height: var(--gf-32);
@@ -177,20 +182,46 @@
 }
 
 .comment-area {
+  width: 100%;
   border: none;
   background: none;
   color: var(--gf-dark-text);
   font-family: var(--gf-font-ugc);
-  flex: 1;
+  line-height: 1em;
+  min-height: calc(1em * 4);
+  resize: vertical;
+  overflow-x: hidden;
+  overflow-y: visible;
   resize: none;
-  max-height: 300px;
-  min-height: 38px;
-  width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gf-light-bg-dark) transparent;
+  field-sizing: content;
+  min-height: calc(1em);
+  max-height: calc(1em * 12);
   overflow-y: auto;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.publish-btn {
+
 }
 
 .comment-area:focus {
   outline: none;
+}
+
+.comment-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.comment-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.comment-area::-webkit-scrollbar-thumb {
+  background: var(--gf-dark-bg-light);
+  border-radius: 999px;
 }
 
 

@@ -85,7 +85,7 @@ export class ChoosePinPopupComponent implements SimplePopup {
         this.isGettingLocation = false;
       },
       () => {
-        this.errorMessage = 'Not possible to get location.';
+        this.errorMessage = 'Unable to get your current location.';
         this.isGettingLocation = false;
       },
       { enableHighAccuracy: true, timeout: 10000 }

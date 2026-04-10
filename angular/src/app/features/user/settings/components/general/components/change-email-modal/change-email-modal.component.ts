@@ -62,6 +62,9 @@ export class ChangeEmailModalComponent implements SimpleModal {
     stream: ({ params: id }) => this.userSecurityApi.getSecurityInfo()
   });
 
+  negative = output<void>();
+  positive = output<string>();
+
   twoFactorEnabled = computed(() => this.securityInfo.value()?.twoFactorEnabled)
   twoFactorMethod = computed(() => this.securityInfo.value()?.twoFactorMethod)
 
@@ -216,6 +219,7 @@ export class ChangeEmailModalComponent implements SimpleModal {
       next: (res) => {
         this.changeSucceeded.set(true);
         this.userManagerService.refetchData();
+        this.positive.emit(this.newEmailFormController.form.value.newEmail || '');
       },
       error: (err: HttpErrorResponse) => {
         let problem = err.error as ValidationProblemDetails;

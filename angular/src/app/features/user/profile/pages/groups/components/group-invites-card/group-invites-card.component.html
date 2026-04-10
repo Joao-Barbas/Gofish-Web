@@ -3,14 +3,14 @@
 @let group = groupInvite().group;
 @let requester = groupInvite().requester;
 
-<a [routerLink]="['/forum/my-groups', group.id]">
+<a [routerLink]="['/forum/my-crews', group.id]">
   <img class="group-avatar" [src]="avatarService.resolve(group.avatarUrl)" alt="Avatar">
 </a>
 
 <div class="group-info-container">
   <div>
     <div class="group-name-wrapper">
-      <a class="group-name" [routerLink]="['/forum/my-groups', group.id]">{{ group.name }}</a>
+      <a class="group-name" [routerLink]="['/forum/my-crews', group.id]">{{ group.name }}</a>
       <small class="invited-by">Invited by <a [routerLink]="['/profile', requester.userId]">&#64;{{ requester.userName }}</a></small>
     </div>
     <p class="group-desc">{{ group.description }}</p>
@@ -22,7 +22,7 @@
 </div>
 
 <div class="quick-actions-container">
-  <a class="quick-actions-btn gf-modal-close-button" title="Check out group" [routerLink]="['/forum/my-groups', group.id]">
+  <a class="quick-actions-btn gf-modal-close-button" title="Check out group" [routerLink]="['/forum/my-crews', group.id]">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
   </a>
   <button class="quick-actions-btn gf-modal-close-button" title="Ignore" (click)="onDecline()">

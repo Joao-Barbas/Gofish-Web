@@ -1,5 +1,29 @@
 /* MODAL TEST */
 
+:host {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: var(--gf-z-modal);
+}
+:host(.on-enter) {
+  animation: gf-modal-fade-in .2s ease-in-out;
+}
+:host(.on-enter) .gf-modal-shell {
+  animation: gf-modal-scale-in .2s cubic-bezier(0.34, 1.8, 0.64, 1);
+}
+:host(.on-leave) {
+  opacity: 0;
+  transition: opacity .2s ease-out;
+}
+
+.gf-modal-shell {
+  width: var(--gf-container-sm);
+  border-radius: var(--gf-12);
+  padding: 0;
+  overflow: hidden;
+}
+
 .modal-backdrop-custom {
   position: fixed;
   inset: 0;
@@ -9,15 +33,15 @@
 
 .modal-custom {
   width: 100%;
-  max-width: 640px;
-  background: #22232A;
+  max-width: var(--gf-container-sm);
+  background: var(--gf-dark-bg);
   border-radius: 16px;
   box-shadow: var(--gf-shadow-lift-lg);
-  --gofish-card-padding:16px;
+  padding: 0;
 }
 
 .modal-header-title {
-  font-size: 24px;
+  font-size: var(--gf-text-lg);
 }
 
 .icon-size-pin-modal {
@@ -39,11 +63,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-
-.modal-body {
-  border-top: 2px solid var(--gf-dark-bg-light);
 }
 
 .modal-body-section-title {
@@ -69,38 +88,65 @@
 /* Hover / drag-over */
 .modal-body-drag-n-drop:hover,
 .modal-body-drag-n-drop.is-dragover {
-  border-color: #fff;
-  background-color: rgba(255, 255, 255, 0.02);
+  border-color: var(--gf-primary);
+  background-color: var(--gf-primary-muted);
 }
 
 .drag-text {
-  font-size:16px;
+  font-size: var(--gf-text-sm);
   user-select: none;
   transition: color 0.2s ease;
   line-height: 15px;
 }
 
 .drag-icon {
-  width: 36px;
-  height: 36px;
-  background-color: #fff;
-  border-radius: 50%;
+  width: 48px;
+  height: 48px;
 }
 
 .modal-body-description {
+  box-shadow: none;
+  border: none;
+  outline: none;
+  resize: none;
+  width: 100%;
+  background-color: var(--gf-dark-bg-dark);
+  font-size: var(--gf-text-sm);
+  color: var(--gf-dark-text);
+  border-radius: var(--gf-8);
+  padding: var(--gf-16);
+  transition: box-shadow 0.2s ease;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gf-light-bg-dark) transparent;
+
+  &::placeholder {
+    color: var(--gf-dark-text-muted);
+    font-size: var(--gf-text-xs);
+  }
+
+  &:hover {
+    box-shadow: 0 0 0 2px var(--gf-primary);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px var(--gf-primary);
+  }
+
   min-height: 160px;
   max-height: 200px;
-  margin-top: 8px;
+}
 
-  border: none;
-  border-radius: 16px;
+.modal-body-description::-webkit-scrollbar {
+  width: 6px;
+}
 
-  padding: 12px;
+.modal-body-description::-webkit-scrollbar-track {
+  background: transparent;
+}
 
-  outline: none;
-
-  font-size: 16px;
-  resize: none;
+.modal-body-description::-webkit-scrollbar-thumb {
+  background: var(--gf-dark-bg-light);
+  border-radius: 999px;
 }
 
 .modal-body-options-text {
@@ -213,17 +259,16 @@ input.modal-info-box:focus {
   flex-wrap: nowrap;
 }
 
-.action-btns {
+.action-buttons {
   display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-  height: 100%;
-}
+  justify-content: end;
+  gap: var(--gf-8);
+  padding: var(--gf-16);
 
-.action-btns>button,
-.action-btns>app-async-button {
-  flex: 1;
-  max-width: 120px;
+  .gf-async-btn-primary-filled,
+  .gf-2btn-secondary-stroked {
+    padding: calc(1em / 2) var(--gf-32);
+  }
 }
 
 .modal-visibility-btn {
@@ -249,4 +294,36 @@ input.modal-info-box:focus {
 
 .coords-div {
   cursor: not-allowed;
+}
+
+.char-count {
+  display: inline;
+  flex: 1;
+  text-align: end;
+  font-size: var(--gf-text-xs);
+  color: var(--gf-dark-text-muted);
+}
+
+/* Media */
+
+@media (max-width: 62rem) {
+  .gf-modal-shell {
+    width: 70%;
+  }
+}
+
+@media (max-width: 36rem) {
+  .gf-modal-shell {
+    width: 90%;
+  }
+
+  .action-buttons {
+    flex-direction: column-reverse;
+    gap: 6px;
+
+    .gf-2btn-secondary-stroked,
+    .gf-async-btn-primary-filled {
+      width: 100%;
+    }
+  }
 }
