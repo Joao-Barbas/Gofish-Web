@@ -26,20 +26,20 @@
     <div class="gf-modal-separator"></div>
     <div>
       <div class="gf-flow-horizontal gf-gap-10">
-        <gf-async-button
-          class="btn-negative"
-          type=button
+        <button
+          class="gf-btn-primary-filled"
+          gfAsyncBtn
           [labels]="{ idle: 'Cancel' }"
           [states]="{ disabled: this.busyState.busy() }"
           (click)="onNegative()">
-        </gf-async-button>
-        <gf-async-button
-          class="btn-positive"
-          type=button
+        </button>
+        <button
+          class="gf-btn-primary-filled"
+          gfAsyncBtn
           [labels]="{ idle: 'Change' }"
           [states]="{ busy: this.busyState.busy(), success: success() }"
           (click)="onPositive()">
-        </gf-async-button>
+        </button>
       </div>
     </div>
   </div>
