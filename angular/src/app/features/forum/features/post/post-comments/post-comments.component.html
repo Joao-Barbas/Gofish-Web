@@ -4,11 +4,12 @@
   <div class="gf-card-post-comment" [attr.data-testid]="'comment-item-' + c.id">
     <div class="top-of-post d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center gap-2">
-        <img [src]="avatarService.resolve(c.author.avatarUrl)" class="rounded-circle post-author-profile-photo">
-
+        <a [routerLink]="Path.PROFILE(c.author.id)">
+          <img [src]="avatarService.resolve(c.author.avatarUrl)" class="rounded-circle post-author-profile-photo">
+        </a>
         <!-- <span class="post-author-name text-bold">{{ c.author.userName }}</span>-->
 
-        <gf-user-title class="post-author-name text-bold" [text]="c.author!.userName" [rank]="c.author!.rank"></gf-user-title>
+        <gf-user-title class="post-author-name text-bold" [text]="c.author!.userName" [rank]="c.author!.rank" [routerLink]="Path.PROFILE(c.author.id)"></gf-user-title>
 
         <span class="post-date">{{ c.createdAt | timeAgo }}</span>
       </div>
