@@ -19,7 +19,7 @@ export const options = {
 const BASE_URL = __ENV.BASE_URL || 'https://localhost:7113';
 
 export default function () {
-    const res = http.get(`${BASE_URL}/api/Pin/GetTotalPinsCreated`);
+    const res = http.get(`${BASE_URL}/api/Stats/GetTotalPinsCreated`);
 
     let body = null;
 
