@@ -211,15 +211,17 @@
   </div>
 
   <!-- Modals -->
-  <app-change-username-modal (positive)="onUsernameChange($event)"></app-change-username-modal>
+
+  <app-change-displayname-modal (positive)="onDisplayNameChange($event)"></app-change-displayname-modal>
   @switch (this.modalService.activeModal()) {
   @case ('app-change-username-modal') {
+    <app-change-username-modal (positive)="onUsernameChange($event)"></app-change-username-modal>
   }
   @case ('app-change-phone-modal') {
     <app-change-phone-modal (positive)="onPhoneNumberChange($event)"></app-change-phone-modal>
   }
   @case (ChangeDisplaynameModalComponent.Key) {
-    <app-change-displayname-modal (positive)="onDisplayNameChange($event)"></app-change-displayname-modal>
+
   }
   @case ('app-change-firstname-modal') {
     <app-change-firstname-modal (positive)="onFirstnameChange($event)"></app-change-firstname-modal>

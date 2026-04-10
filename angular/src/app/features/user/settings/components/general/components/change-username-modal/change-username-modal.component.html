@@ -37,16 +37,16 @@
     <div class="bottom-container gf-flow-horizontal gf-gap-8">
       <button
         class="gf-2btn-secondary-stroked"
-        gfAsyncBtn
-        [labels]="{ idle: 'Cancel' }"
-        [states]="{ disabled: this.busyState.busy() }"
+        [disabled]="busyState.busy()"
         (click)="onNegative()">
+        Cancel
       </button>
       <button
         class="gf-async-btn-primary-filled"
-        [disabled]="busyState.busy()"
+        gfAsyncBtn
+        [labels]="{ idle: 'Change' }"
+        [states]="{ busy: busyState.busy(), success: success() }"
         (click)="onPositive()">
-        Change
       </button>
     </div>
 

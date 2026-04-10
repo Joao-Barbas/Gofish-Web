@@ -44,16 +44,6 @@
   }
 }
 
-gf-async-button {
-  width: 100%;
-  --async-btn-width: 100%;
-
-  &.btn-negative {
-    --async-btn-bg: var(--gf-light-bg-dark);
-    --async-btn-color: var(--gf-light-text);
-  }
-}
-
 h5 {
   color: var(--gf-dark-text);
 }
