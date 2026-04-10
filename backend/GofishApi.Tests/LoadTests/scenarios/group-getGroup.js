@@ -1,4 +1,4 @@
-﻿import http from 'k6/http';
+import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { signIn } from '../auth.js';
 
@@ -18,6 +18,7 @@ export const options = {
 };
 
 const BASE_URL = __ENV.BASE_URL || 'https://localhost:7113';
+const GROUP_ID = __ENV.GROUP_ID || '1';
 
 export function setup() {
     const token = signIn();
@@ -25,34 +26,30 @@ export function setup() {
 }
 
 export default function (data) {
-    const res = http.post(`${BASE_URL}/api/Pin/GetPins`, JSON.stringify({
-        ids: [
-            { id: 1 },
-            { id: 2 }
-        ],
-        dataRequest: {
-            includeGeolocation: false,
-            includeAuthor: true,
-            includeDetails: true,
-            includeStats: true,
-            includeUgc: false,
-            includeGroups: false
-        },
-        maxResults: 20,
-        lastTimestamp: null
-    }), {
+    const res = http.get(`${BASE_URL}/api/Group/GetGroup/${GROUP_ID}`, {
         headers: {
-            'Content-Type': 'application/json',
             'Authorization': `Bearer ${data.token}`,
         },
     });
 
+    let body = null;
+
+    try {
+        body = res.json();
+    } catch (e) {
+        body = null;
+    }
+
     check(res, {
-        'getPins 200': (r) => r.status === 200,
-        'tem body': (r) => r.body && r.body.length > 0,
+        'getGroup status 200': (r) => r.status === 200,
+        'response has body': (r) => r.body && r.body.length > 0,
+        'body has id': () => body !== null && body.id !== undefined,
+        'body has name': () => body !== null && body.name !== undefined,
+        'body has memberCount': () => body !== null && body.memberCount !== undefined,
+        'body has pinCount': () => body !== null && body.pinCount !== undefined,
     });
 
     sleep(1);
 }
 
-//k6 run --insecure-skip-tls-verify pin-getPins.js
+//k6 run --insecure-skip-tls-verify group-getGroup.js
