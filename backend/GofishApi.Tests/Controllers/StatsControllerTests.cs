@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GofishApi.Models;
 using GofishApi.Enums;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace GofishApi.Tests.Controllers;
 
@@ -35,9 +36,12 @@ public class StatsControllerTests : IClassFixture<WebAppFactory>
         using var scope = _factory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        await PinSeedFixture.CreateInfoPinAsync(db, createdAt: DateTime.UtcNow.AddHours(-1));
-        await PinSeedFixture.CreateWarnPinAsync(db, createdAt: DateTime.UtcNow.AddHours(-2));
-        await PinSeedFixture.CreateCatchPinAsync(db, createdAt: DateTime.UtcNow.AddDays(-1));
+        var now = DateTime.UtcNow;
+        var midToday = now.Date.AddHours(12); // Noon UTC today, safely inside the day
+
+        await PinSeedFixture.CreateInfoPinAsync(db, createdAt: midToday);
+        await PinSeedFixture.CreateWarnPinAsync(db, createdAt: midToday.AddMinutes(-30));
+        await PinSeedFixture.CreateCatchPinAsync(db, createdAt: now.Date.AddDays(-1).AddHours(12));
 
         var response = await _client.GetAsync("/api/Stats/GetPinsCreatedToday");
 
@@ -331,6 +335,9 @@ public class StatsControllerTests : IClassFixture<WebAppFactory>
         using var scope = _factory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
+        var now = DateTime.UtcNow;
+        var midToday = now.Date.AddHours(12);
+
         db.Users.AddRange(
             new AppUser
             {
@@ -340,7 +347,7 @@ public class StatsControllerTests : IClassFixture<WebAppFactory>
                 FirstName = "New",
                 LastName = "User1",
                 EmailConfirmed = true,
-                CreatedAt = DateTime.UtcNow.AddHours(-1)
+                CreatedAt = midToday
             },
             new AppUser
             {
@@ -350,7 +357,7 @@ public class StatsControllerTests : IClassFixture<WebAppFactory>
                 FirstName = "New",
                 LastName = "User2",
                 EmailConfirmed = true,
-                CreatedAt = DateTime.UtcNow.AddHours(-2)
+                CreatedAt = midToday.AddMinutes(-30)
             });
 
         db.Users.Add(
@@ -362,7 +369,7 @@ public class StatsControllerTests : IClassFixture<WebAppFactory>
                 FirstName = "Old",
                 LastName = "User",
                 EmailConfirmed = true,
-                CreatedAt = DateTime.UtcNow.AddDays(-1)
+                CreatedAt = DateTime.UtcNow.Date.AddDays(-1).AddHours(12)
             });
 
         await db.SaveChangesAsync();
