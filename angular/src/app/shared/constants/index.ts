@@ -140,7 +140,7 @@ export const PIN_CONFIG = [
 ] as const;
 
 export const BodyLengthConstraints = {
-  MIN: 10,
+  MIN: 3,
   MAX: 1000,
 } as const;
 
