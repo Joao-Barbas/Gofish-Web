@@ -52,4 +52,4 @@ export default function (data) {
     sleep(1);
 }
 
-//k6 run -e BASE_URL=https://localhost:7113 -e GROUP_ID=1 group/get-group.js
+//k6 run --insecure-skip-tls-verify group-getGroup.js

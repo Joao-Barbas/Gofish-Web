@@ -53,4 +53,4 @@ export default function (data) {
     sleep(1);
 }
 
-// k6 run -e BASE_URL=https://localhost:7113 group/get-user-groups.js
+//k6 run --insecure-skip-tls-verify group-getUserGroup.js

@@ -40,3 +40,5 @@ export default function () {
 
     sleep(1);
 }
+
+//k6 run --insecure-skip-tls-verify stats-getTotalUsers.js
