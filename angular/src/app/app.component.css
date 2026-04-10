@@ -1,18 +1,7 @@
 /* app.component.css */
 
-/*
-:host {
-  display: block;
-  min-height: inherit;
-}
-*/
-
 :host {
   display: flex;
   flex-direction: column;
-  min-height: inherit;
-}
-
-router-outlet + * {
-  flex: 1;
+  min-height: 100vh;
 }

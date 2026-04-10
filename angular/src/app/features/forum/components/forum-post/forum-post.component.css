@@ -101,7 +101,7 @@ gf-user-title {
   width: fit-content;
   height: fit-content;
 
-  padding: var(--gf-6) var(--gf-8);
+  padding: var(--gf-6) var(--gf-12);
   gap: var(--gf-8);
 
   border-radius: var(--gf-30);
@@ -118,8 +118,8 @@ gf-user-title {
   }
 
   & svg {
-    width: var(--gf-16);
-    height: var(--gf-16);
+    width: var(--gf-18);
+    height: var(--gf-18);
     color: var(--gf-dark-text-muted);
   }
 
@@ -160,6 +160,10 @@ gf-user-title {
 
 .post-interact-comment-wrapper {
   cursor: pointer;
+  svg {
+    width: var(--gf-18);
+    height: var(--gf-18);
+  }
 }
 
 /*Funciona como se fosse && quando esta sem virgula*/
@@ -187,4 +191,18 @@ gf-user-title {
 .see-more:hover {
   color: #1d4ed8;
   text-decoration: underline;
+}
+
+app-enum {
+  gap: var(--gf-4);;
+}
+
+.bottom-container {
+  app-enum {
+    margin-bottom: var(--gf-4);
+  }
+}
+
+.post-stats {
+  font-size: var(--gf-text-sm);
 }
