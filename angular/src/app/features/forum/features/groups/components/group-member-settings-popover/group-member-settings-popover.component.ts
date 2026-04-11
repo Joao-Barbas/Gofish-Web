@@ -12,6 +12,15 @@ import { GroupsService } from '@gofish/shared/services/groups.service';
 import { toast } from 'ngx-sonner';
 import { finalize } from 'rxjs';
 
+/**
+ * Popover component that exposes management actions for a group member.
+ *
+ * Responsibilities:
+ * - Display contextual actions for a selected group member
+ * - Allow privileged users to remove members or change roles
+ * - Handle ownership transfer actions
+ * - Close automatically when clicking outside the popover
+ */
 @Component({
   selector: 'gf-group-member-settings-popover',
   hostDirectives: [
@@ -34,36 +43,67 @@ import { finalize } from 'rxjs';
 })
 export class GroupMemberSettingsPopoverComponent {
 
+  /** Unique popover key used to identify this popover instance. */
   static readonly Key: PopoverKey = 'gf-group-member-settings-popover';
+
+  /** Controller used to manage the open and close state of the popover. */
   readonly controller = new PopoverController(GroupMemberSettingsPopoverComponent.Key);
+
   private readonly groupsService = inject(GroupsService);
   private readonly route = inject(ActivatedRoute);
 
+  /** Selected group member for whom actions are displayed. */
   member = input.required<GroupMemberDTO>();
 
+  /**
+   * Tooltip shown before ownership transfer.
+   * Explains that the selected member will replace the current owner.
+   */
   promoteToOwnerTooltip = computed(() => {
     return `This replaces you with ${this.member().userName} as owner of the group.\nThis action is permanent!`;
   });
 
+  /** Role of the currently authenticated user within the group. */
   viewerRole = input.required<GroupRole>();
 
+  /** Group role enum exposed to the template. */
   protected readonly Role = GroupRole;
-  isSubmitting: any;
 
-  // Métodos de ação (exemplo)
+  /** Indicates whether an action request is currently in progress. */
+  isSubmitting: boolean = false;
+
+  /**
+   * Handles a generic popover action.
+   *
+   * @param action Name of the selected action
+   */
   onAction(action: string) {
     console.log(`${action} member:`, this.member().userId);
     this.controller.close();
   }
 
+  /**
+   * Returns the current group identifier from the parent route.
+   */
   private get groupId(): number {
     return Number(this.route.parent?.snapshot.paramMap.get('id'));
   }
 
+  /**
+   * Returns the identifier of the selected group member.
+   */
   private get memberUserId(): string {
     return this.member().userId;
   }
 
+  /**
+   * Removes the selected member from the group.
+   *
+   * Behavior:
+   * - Prevents duplicate submissions
+   * - Validates required identifiers
+   * - Displays success or error feedback
+   */
   onKickMember(): void {
     if (this.isSubmitting) return;
 
@@ -72,7 +112,6 @@ export class GroupMemberSettingsPopoverComponent {
       this.isSubmitting = false;
       return;
     }
-
 
     this.groupsService.removeMember(this.groupId, this.memberUserId)
       .subscribe({
@@ -87,19 +126,29 @@ export class GroupMemberSettingsPopoverComponent {
         }
       });
   }
+
+  /**
+   * Promotes a member to moderator or demotes a moderator to member,
+   * depending on the current role of the selected user.
+   *
+   * Behavior:
+   * - Prevents duplicate submissions
+   * - Chooses the appropriate request based on current member role
+   * - Displays success or error feedback
+   */
   onToggleModerator(): void {
     if (this.isSubmitting) return;
+
+    if (!this.groupId || !this.memberUserId) {
+      this.isSubmitting = false;
+      return;
+    }
 
     const request$ = this.member().role === GroupRole.Moderator
       ? this.groupsService.demoteAdminToMember(this.groupId, this.memberUserId)
       : this.groupsService.promoteMemberToAdmin(this.groupId, this.memberUserId);
 
     this.isSubmitting = true;
-
-    if (!this.groupId || !this.memberUserId) {
-      this.isSubmitting = false;
-      return;
-    }
 
     request$.subscribe({
       next: () => {
@@ -118,6 +167,14 @@ export class GroupMemberSettingsPopoverComponent {
     });
   }
 
+  /**
+   * Transfers group ownership to the selected member.
+   *
+   * Behavior:
+   * - Prevents duplicate submissions
+   * - Validates required identifiers
+   * - Displays success or error feedback
+   */
   onPromoteToOwner(): void {
     if (this.isSubmitting) return;
 
@@ -141,6 +198,4 @@ export class GroupMemberSettingsPopoverComponent {
         }
       });
   }
-
-
 }

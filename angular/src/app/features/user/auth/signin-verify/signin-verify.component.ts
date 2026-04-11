@@ -14,6 +14,15 @@ import { AsyncButtonComponent } from "@gofish/shared/components/async-button/asy
 import { LoadingState } from '@gofish/shared/core/loading-state';
 import { AuthApi } from '@gofish/shared/api/auth.api';
 
+/**
+ * Two-factor verification page component used after the initial sign-in step.
+ *
+ * Responsibilities:
+ * - Validate the two-factor verification code
+ * - Read the temporary two-factor token from the query string
+ * - Submit the verification request to the backend
+ * - Authenticate the user after successful verification
+ */
 @Component({
   selector: 'app-signin-verify',
   imports: [ReactiveFormsModule, RouterLink, NumbersOnlyDirective, AsyncButtonComponent],
@@ -21,30 +30,50 @@ import { AuthApi } from '@gofish/shared/api/auth.api';
   styleUrl: './signin-verify.component.css',
 })
 export class SigninVerifyComponent implements OnInit {
-  private readonly router      = inject(Router);
+  private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
-  private readonly authApi     = inject(AuthApi);
-  private readonly route       = inject(ActivatedRoute);
+  private readonly authApi = inject(AuthApi);
+  private readonly route = inject(ActivatedRoute);
   private readonly formBuilder = inject(FormBuilder);
 
+  /** Loading state used for UI feedback. */
   readonly loadingState: LoadingState = new LoadingState();
-  readonly busyState: BusyState       = new BusyState();
 
+  /** Busy state used to prevent duplicate submissions. */
+  readonly busyState: BusyState = new BusyState();
+
+  /** Shared route path constants used in templates. */
   readonly Path = Path;
-  readonly Api  = Api;
 
+  /** Shared API constants used in templates and actions. */
+  readonly Api = Api;
+
+  /**
+   * Reactive form used to collect the two-factor verification code.
+   */
   verifyForm: FormGroup = this.formBuilder.group({
-    code: [ '', [
+    code: ['', [
       Validators.required,
       Validators.pattern('^[0-9]*$')
     ]]
   });
 
+  /** API validation or authentication problems returned by the backend. */
   apiProblems: ValidationProblemDetails | null = null;
+
+  /** Current form-level validation errors. */
   formErrors: ValidationErrors | null = this.verifyForm.errors;
+
+  /** Indicates whether verification completed successfully. */
   verifySuccess: boolean = false;
+
+  /** Temporary token required to complete two-factor sign-in. */
   twoFactorToken: string = '';
 
+  /**
+   * Redirects authenticated users away from the page and reads
+   * the temporary two-factor token from the query parameters.
+   */
   ngOnInit(): void {
     if (this.authService.isAuthenticated()) {
       this.router.navigate([Path.MAP]);
@@ -61,6 +90,13 @@ export class SigninVerifyComponent implements OnInit {
     this.twoFactorToken = token;
   }
 
+  /**
+   * Returns the current validation errors for a specific form control,
+   * only when the control is invalid and has been interacted with.
+   *
+   * @param name Control name
+   * @returns Validation errors for the specified control or null
+   */
   private controlError(name: string): ValidationErrors | null {
     let control = this.verifyForm.get(name);
     if (!control) return null;
@@ -68,32 +104,52 @@ export class SigninVerifyComponent implements OnInit {
     return control.errors;
   }
 
+  /**
+   * Returns the most relevant validation or API error message
+   * to display to the user.
+   *
+   * @returns Error message or null when no error should be shown
+   */
   getError(): string | null {
     const e = (field: string) => this.controlError(field);
     const g = this.verifyForm.errors;
     const s = this.apiProblems;
+
     // Field-level
     if (e('code')?.['required']) return 'Enter a code provided by your authenticator app.';
+
     // Api errors
     return s?.detail ?? null;
   }
 
+  /**
+   * Validates the verification form and submits the two-factor sign-in request.
+   *
+   * Behavior:
+   * - Marks the form as touched
+   * - Clears previous API errors
+   * - Stops when the form is invalid
+   * - Stores the returned token and redirects on success
+   */
   onSubmit(): void {
     this.verifyForm.markAllAsTouched();
     this.apiProblems = null;
+
     if (this.verifyForm.invalid) return;
+
     this.busyState.setBusy(true);
     this.verifySuccess = false;
 
     const dto: TwoFactorSignInReqDTO = {
       twoFactorToken: this.twoFactorToken,
-      twoFactorCode:  this.verifyForm.value.code,
+      twoFactorCode: this.verifyForm.value.code,
     };
 
     this.authApi.twoFactorSignIn(dto).subscribe({
       next: (res) => {
         this.busyState.setBusy(false);
         this.verifySuccess = true;
+
         setTimeout(() => {
           this.authService.insertToken(res.token);
           this.router.navigate([Path.MAP]);

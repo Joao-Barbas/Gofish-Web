@@ -10,15 +10,35 @@ import { PinWeekStats, PinsPerWeekComponent } from '@gofish/shared/components/pi
 import { GetActiveUsersResDTO, GetPinsCreatedTodayResDTO, GetPinsWith15PositiveVotesResDTO, GetRegisteredUsersWeeklyStatsResDTO, GetReportsWaitingReviewResDTO } from '@gofish/shared/dtos/stats.dto';
 import { StatsService } from '@gofish/shared/services/stats.service';
 
+/**
+ * Aggregated monthly statistics for pin creation.
+ */
 export interface PinMonthStats {
+  /** Display name of the month. */
   monthName: string;
+
+  /** Year associated with the month. */
   year: number;
+
+  /** Total number of catch pins created in the month. */
   catchCount: number;
+
+  /** Total number of info pins created in the month. */
   infoCount: number;
+
+  /** Total number of warning pins created in the month. */
   warningCount: number;
 }
 
-
+/**
+ * Statistics dashboard home component.
+ *
+ * Responsibilities:
+ * - Load high-level administrative statistics from the backend
+ * - Load weekly pin creation statistics for the current and previous month
+ * - Aggregate weekly pin data into monthly totals
+ * - Expose dashboard metrics and chart data to the template
+ */
 @Component({
   selector: 'app-home',
   imports: [/*RouterLink, */ GfCardQuickViewComponent, GfCardQuickAccessComponent, UsersChartComponent, PinsAvgPublishedChart, PinsPerWeekComponent],
@@ -28,22 +48,44 @@ export interface PinMonthStats {
 export class StatsHomeComponent {
   private readonly router = inject(Router);
   private readonly statsService = inject(StatsService);
+
+  /** Number of reports currently waiting for review. */
   protected reportsWaitingReview = signal<GetReportsWaitingReviewResDTO | null>(null);
+
+  /** Number of active users. */
   protected activeUsers = signal<GetActiveUsersResDTO | null>(null);
+
+  /** Number of pins created today. */
   protected pinsCreatedToday = signal<GetPinsCreatedTodayResDTO | null>(null);
+
+  /** Number of pins with at least 15 positive votes. */
   protected pinsWith15PositiveVotes = signal<GetPinsWith15PositiveVotesResDTO | null>(null);
+
+  /** Weekly API success rate percentage. */
   protected weeklyApiSuccessRate = signal<number | null>(null);
+
+  /** Weekly registered user statistics. */
   protected usersWeeklyStats = signal<GetRegisteredUsersWeeklyStatsResDTO[]>([]);
+
+  /** Current calendar year. */
   protected currentYear = new Date().getFullYear();
+
+  /** Weekly pin statistics for the current month. */
   protected pinWeeksCurrentMonth = signal<PinWeekStats[]>([]);
+
+  /** Weekly pin statistics for the previous month. */
   protected pinWeeksLastMonth = signal<PinWeekStats[]>([]);
 
+  /** Indicates whether the UI is currently focused on last month data. */
   isLastMonth: boolean = false;
 
-
-
+  /**
+   * Aggregates weekly pin statistics into monthly totals.
+   *
+   * @param weeks Weekly pin statistics for the target month
+   * @param monthStats Monthly stats object to update
+   */
   private calcTotals(weeks: PinWeekStats[], monthStats: PinMonthStats): void {
-
     let catchTotal: number = 0;
     let infoTotal: number = 0;
     let warningTotal: number = 0;
@@ -57,11 +99,13 @@ export class StatsHomeComponent {
     monthStats.catchCount = catchTotal;
     monthStats.infoCount = infoTotal;
     monthStats.warningCount = warningTotal;
+
     if (weeks.length > 0) {
       monthStats.year = weeks[0].year;
     }
   }
 
+  /** Aggregated statistics for the previous month. */
   public lastMonthStats: PinMonthStats = {
     monthName: '',
     year: 0,
@@ -70,6 +114,7 @@ export class StatsHomeComponent {
     warningCount: 0
   };
 
+  /** Aggregated statistics for the current month. */
   public currentMonthStats: PinMonthStats = {
     monthName: '',
     year: 0,
@@ -78,6 +123,10 @@ export class StatsHomeComponent {
     warningCount: 0
   };
 
+  /**
+   * Loads dashboard statistics and weekly pin metrics for
+   * the current and previous month.
+   */
   ngOnInit() {
     this.statsService.getReportsWaitingReview().subscribe({
       next: (res) => {
@@ -138,6 +187,12 @@ export class StatsHomeComponent {
       }
     });
   }
+
+  /**
+   * Returns the current month and year.
+   *
+   * @returns Object containing current month and year
+   */
   private getCurrentMonthAndYear(): { month: number; year: number } {
     const now = new Date();
     return {
@@ -146,19 +201,29 @@ export class StatsHomeComponent {
     };
   }
 
+  /**
+   * Returns the previous month and its associated year.
+   *
+   * @returns Object containing previous month and year
+   */
   private getLastMonthAndYear(): { month: number; year: number } {
     const now = new Date();
     const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
 
     return {
-      month: lastMonthDate.getMonth() + 1, // January is 0
+      month: lastMonthDate.getMonth() + 1,
       year: lastMonthDate.getFullYear()
     };
   }
 
+  /**
+   * Returns the localized month name for the provided month and year.
+   *
+   * @param month Month number in the range 1-12
+   * @param year Year associated with the month
+   * @returns Localized month name
+   */
   private getMonthName(month: number, year: number): string {
     return new Date(year, month - 1, 1).toLocaleString('en-US', { month: 'long' });
   }
-
 }
-

@@ -15,7 +15,15 @@ import { GetUserGroupsResDTO } from '@gofish/shared/dtos/group.dto';
 import { GroupsService } from '@gofish/shared/services/groups.service';
 import { BodyLengthConstraints } from '@gofish/shared/constants';
 
-
+/**
+ * Modal component responsible for creating a warning pin.
+ *
+ * Responsibilities:
+ * - Load enum options required by the form
+ * - Restore selected coordinates from the URL
+ * - Allow optional group-restricted visibility selection
+ * - Validate and submit warning pin data to the backend
+ */
 @Component({
   selector: 'app-warn-pin-modal',
   imports: [CommonModule, ReactiveFormsModule, AsyncButtonComponent],
@@ -29,19 +37,37 @@ export class WarnPinModalComponent {
   private readonly urlService = inject(UrlService);
   private readonly route = inject(ActivatedRoute);
   private readonly groupsService = inject(GroupsService);
+
+  /** Shared body length validation constraints exposed to the template. */
   protected readonly BodyLengthConstraints = BodyLengthConstraints;
+
+  /** Parsed URL values used to restore map-related state. */
   values: UrlQuery | null = null;
+
+  /** Busy state used while the create pin request is in progress. */
   busyState: BusyState = new BusyState();
 
+  /** Coordinates selected for the new warning pin. */
   selectedCoords: Coords | null = null;
 
+  /** Available warning type options loaded from the backend. */
   warnTypeOptions: EnumDTO[] = [];
+
+  /** Available visibility options loaded from the backend. */
   visibilityOptions: EnumDTO[] = [];
 
+  /** Error message displayed when validation or submission fails. */
   errorMessage = '';
+
+  /** Groups available to the current user for restricted visibility selection. */
   userGroups = signal<GetUserGroupsResDTO['groups']>([]);
+
+  /** Identifiers of the currently selected groups. */
   selectedGroupIds = signal<number[]>([]);
 
+  /**
+   * Reactive form used to validate warning pin input data.
+   */
   form = this.fb.group({
     body: ['', [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
     visibility: [0, Validators.required],
@@ -49,6 +75,10 @@ export class WarnPinModalComponent {
     groupIds: this.fb.control<number[]>([])
   });
 
+  /**
+   * Loads enum values, restores selected coordinates from the URL,
+   * fetches the user's groups, and reacts to visibility changes.
+   */
   ngOnInit(): void {
     this.pinService.enumerateWarnType().subscribe({
       next: (res: EnumDTO[]) => {
@@ -79,7 +109,7 @@ export class WarnPinModalComponent {
       const lng = this.values.sLng;
       const lat = this.values.sLat;
 
-      if (!lng || !lat) return;
+      if (lng === null || lat === null) return;
 
       if (!this.urlService.isLngLatValid(lng, lat)) {
         this.selectedCoords = null;
@@ -90,8 +120,8 @@ export class WarnPinModalComponent {
         longitude: lng,
         latitude: lat
       };
-
     });
+
     this.groupsService.getUserGroups().subscribe({
       next: (res) => {
         this.userGroups.set(res.groups);
@@ -109,15 +139,23 @@ export class WarnPinModalComponent {
     });
   }
 
+  /**
+   * Toggles a group identifier in the selected group list.
+   *
+   * @param groupId Identifier of the group to add or remove
+   */
   toggleGroup(groupId: number) {
     const current = this.selectedGroupIds();
 
-    const updated = current.includes(groupId) ? current.filter(id => id !== groupId) : [...current, groupId]
+    const updated = current.includes(groupId) ? current.filter(id => id !== groupId) : [...current, groupId];
 
     this.selectedGroupIds.set(updated);
     this.form.controls.groupIds.setValue(updated);
   }
 
+  /**
+   * Cancels warning pin creation and navigates back to the map view.
+   */
   onCancel(): void {
     toast.info('You cancel the creation');
     this.router.navigate(['/map'], {
@@ -129,6 +167,10 @@ export class WarnPinModalComponent {
     });
   }
 
+  /**
+   * Validates the form, builds the request payload, and submits
+   * the warning pin creation request to the backend.
+   */
   onPublish(): void {
     this.errorMessage = '';
 
@@ -141,12 +183,15 @@ export class WarnPinModalComponent {
       this.form.markAllAsTouched();
       return;
     }
+
     const visibility = Number(this.form.value.visibility);
     const groupIds = this.form.value.groupIds ?? [];
+
     if (visibility === 2 && groupIds.length === 0) {
       this.errorMessage = 'Select at least one group.';
       return;
     }
+
     this.busyState.setBusy(true);
 
     const dto: CreateWarnPinReqDTO = {
@@ -157,6 +202,7 @@ export class WarnPinModalComponent {
       warningKind: Number(this.form.value.warningKind!),
       groupIds: groupIds
     };
+
     console.log('DTO to be sent:', dto);
     const toastId = toast.loading('Publishing your pin!');
 

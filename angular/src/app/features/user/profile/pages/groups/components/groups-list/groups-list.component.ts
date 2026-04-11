@@ -15,6 +15,15 @@ import { LoadingErrorModalComponent } from "@gofish/shared/components/loading-er
 import { Path } from '@gofish/shared/constants';
 import { Router } from '@angular/router';
 
+/**
+ * Displays the list of groups associated with the current profile.
+ *
+ * Responsibilities:
+ * - Load the initial list of user groups
+ * - Maintain pagination state for additional groups
+ * - Expose group data to the template
+ * - Track loading and busy states during pagination
+ */
 @Component({
   selector: 'gf-groups-list',
   imports: [
@@ -22,30 +31,54 @@ import { Router } from '@angular/router';
     LoadingSpinnerComponent,
     AsyncButtonComponent,
     LoadingErrorModalComponent
-],
+  ],
   templateUrl: './groups-list.component.html',
   styleUrl: './groups-list.component.css',
 })
 export class GroupsListComponent {
+  /** Profile context used to identify the current profile. */
   readonly profileContext = inject(ProfileContext);
-  readonly userApi        = inject(UserApi);
-  readonly router         = inject(Router);
 
+  /** API used to retrieve user-related data such as groups. */
+  readonly userApi = inject(UserApi);
+
+  /** Router instance used for navigation actions. */
+  readonly router = inject(Router);
+
+  /** Loading state used for UI feedback during pagination. */
   readonly loadingState = new LoadingState();
-  readonly busyState    = new BusyState();
 
+  /** Busy state used to prevent overlapping load operations. */
+  readonly busyState = new BusyState();
+
+  /** Shared route path constants used in templates. */
   readonly Path = Path;
+
+  /** Exposes the global window object to the template if needed. */
   readonly window = window;
 
-  groupsCursor  = signal<string | undefined>(undefined);
-  groupsHasMore = signal(true);
-  groupsList    = signal<UserGroupDTO[]>([]);
+  /** Cursor used to paginate groups by timestamp. */
+  groupsCursor = signal<string | undefined>(undefined);
 
+  /** Indicates whether more groups are available to load. */
+  groupsHasMore = signal(true);
+
+  /** Stores the currently loaded list of groups. */
+  groupsList = signal<UserGroupDTO[]>([]);
+
+  /**
+   * Reactive resource used to load the initial batch of groups
+   * for the current profile.
+   */
   groups = resource({
     params: () => this.profileContext.userProfileId(),
     loader: ({ params: id }) => firstValueFrom(this.userApi.getUserGroups({ userId: id, maxResults: 20, lastTimestamp: undefined }))
   });
 
+  /**
+   * Synchronizes the loaded resource data into local signals
+   * used by the template and pagination flow.
+   */
   constructor() {
     effect(() => {
       if (!this.groups.hasValue()) return;
@@ -55,6 +88,9 @@ export class GroupsListComponent {
     })
   }
 
+  /**
+   * Loads the next batch of groups for the current profile.
+   */
   loadMoreGroups() {
     let profileId = this.profileContext.userProfileId();
     this.loadingState.start();

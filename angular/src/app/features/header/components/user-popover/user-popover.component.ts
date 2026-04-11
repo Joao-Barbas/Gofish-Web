@@ -11,6 +11,15 @@ import { AuthService } from '@gofish/shared/services/auth.service';
 import { AvatarService } from '@gofish/shared/services/avatar.service';
 import { firstValueFrom } from 'rxjs';
 
+/**
+ * Popover component displayed for authenticated user actions in the header.
+ *
+ * Responsibilities:
+ * - Display user-related navigation options
+ * - Fetch and display the user's avatar
+ * - Provide sign-out functionality
+ * - Close automatically when clicking outside the popover
+ */
 @Component({
   selector: 'gf-user-popover',
   hostDirectives: [
@@ -22,7 +31,7 @@ import { firstValueFrom } from 'rxjs';
   host: {
     'animate.enter': "on-enter",
     'animate.leave': "on-leave",
-    '(clickOutside)':"popupController.close()"
+    '(clickOutside)': "popupController.close()"
   },
   imports: [
     CommonModule,
@@ -33,23 +42,42 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './user-popover.component.css',
 })
 export class UserPopoverComponent {
+  /** Unique key used to identify this popup instance. */
   static readonly Key = 'header-user-popover';
 
-  readonly authService    = inject(AuthService);
-  readonly userProfileApi = inject(UserProfileApi);
-  readonly avatarService  = inject(AvatarService);
-  readonly router         = inject(Router);
+  /** Service used to access authentication state and user data. */
+  readonly authService = inject(AuthService);
 
+  /** API used to retrieve user profile data. */
+  readonly userProfileApi = inject(UserProfileApi);
+
+  /** Service used to resolve avatar image URLs. */
+  readonly avatarService = inject(AvatarService);
+
+  /** Router instance used for navigation actions. */
+  readonly router = inject(Router);
+
+  /** Controller used to manage the popup open and close state. */
   readonly popupController = new PopupController(UserPopoverComponent.Key);
 
-  readonly Path        = Path;
+  /** Shared route path constants used in templates. */
+  readonly Path = Path;
+
+  /** Shared route path segment constants used in templates. */
   readonly PathSegment = PathSegment;
 
+  /**
+   * Reactive resource used to fetch the user's avatar URL.
+   * Automatically reloads when the authenticated user changes.
+   */
   avatarUrl = resource({
     params: () => this.authService.userId()!,
     loader: ({ params: id }) => firstValueFrom(this.userProfileApi.getUserAvatar(id))
-  })
+  });
 
+  /**
+   * Signs out the current user and closes the popover.
+   */
   onSignOutClick() {
     this.authService.signOut();
     this.popupController.close();

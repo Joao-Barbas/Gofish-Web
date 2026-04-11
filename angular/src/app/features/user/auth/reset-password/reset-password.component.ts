@@ -16,8 +16,21 @@ import { NumbersOnlyDirective } from '@gofish/shared/directives/numbers-only.dir
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { toast } from 'ngx-sonner';
 
+/**
+ * Supported body states for the reset password flow.
+ */
 type BodyView = 'enter-email' | 'new-password';
 
+/**
+ * Component responsible for the password reset workflow.
+ *
+ * Responsibilities:
+ * - Collect the user's email address for password reset
+ * - Collect the reset code and new password
+ * - Validate both forms using reactive form rules
+ * - Submit forgot-password and reset-password requests to the backend
+ * - Track busy state and success state during the flow
+ */
 @Component({
   selector: 'gf-reset-password',
   imports: [
@@ -28,41 +41,63 @@ type BodyView = 'enter-email' | 'new-password';
   styleUrl: './reset-password.component.css',
 })
 export class ResetPasswordComponent {
+  /** Service used to access authentication-related state and actions. */
   readonly authService = inject(AuthService);
+
+  /** API used to perform forgot-password and reset-password operations. */
   readonly userSecurityApi = inject(UserSecurityApi);
+
+  /** Router instance used for navigation actions. */
   readonly router = inject(Router);
 
+  /** Busy state used while password reset requests are in progress. */
   readonly busyState: BusyState = new BusyState();
 
+  /** Shared route path constants used in templates. */
   readonly Path = Path;
+
+  /** Toast API exposed to the template if needed. */
   readonly toast = toast;
 
+  /** Current step of the password reset flow. */
   bodyView = signal<BodyView>('enter-email');
+
+  /** Indicates whether the password reset operation completed successfully. */
   resetSucceeded = signal<boolean>(false);
+
+  /** Stores the email address used in the reset flow. */
   sentEmail = signal<string>(null!);
 
-  // Forms
-
+  /**
+   * Form controller for the first step of the flow,
+   * where the user provides their email address.
+   */
   enterEmailForm = new ReactiveFormsController(
     new FormGroup({
       email: new FormControl('', {
         nonNullable: true,
-        validators: [ Validators.required, Validators.email ]
+        validators: [Validators.required, Validators.email]
       })
     }),
     new FormErrorMessages({
-      controls: { email: {
-        required: 'Enter an e-mail address.',
-        email: 'Enter a valid e-mail address.'
-      }}
+      controls: {
+        email: {
+          required: 'Enter an e-mail address.',
+          email: 'Enter a valid e-mail address.'
+        }
+      }
     })
   );
 
+  /**
+   * Form controller for the second step of the flow,
+   * where the user provides the reset code and new password.
+   */
   newPasswordForm = new ReactiveFormsController(
     new FormGroup({
       code: new FormControl('', {
         nonNullable: true,
-        validators: [ Validators.required ]
+        validators: [Validators.required]
       }),
       newPassword: new FormControl('', {
         nonNullable: true,
@@ -74,11 +109,13 @@ export class ResetPasswordComponent {
       }),
       confirmPassword: new FormControl('', {
         nonNullable: true,
-        validators: [ Validators.required ]
+        validators: [Validators.required]
       })
-    }, { validators: [
-      GofishValidators.passwordsMatch('newPassword', 'confirmPassword')
-    ]}),
+    }, {
+      validators: [
+        GofishValidators.passwordsMatch('newPassword', 'confirmPassword')
+      ]
+    }),
     new FormErrorMessages({
       controls: {
         code: {
@@ -100,16 +137,30 @@ export class ResetPasswordComponent {
     })
   );
 
-  // End forms
-  // Events
-
+  /**
+   * Routes the primary action to the correct step handler
+   * according to the current body view.
+   */
   onPositive() {
     switch (this.bodyView()) {
-    case ('enter-email'): this.onForgotPassword(); return;
-    case ('new-password'): this.onResetPassword(); return;
+      case 'enter-email':
+        this.onForgotPassword();
+        return;
+      case 'new-password':
+        this.onResetPassword();
+        return;
     }
   }
 
+  /**
+   * Validates the email form and sends the forgot-password request.
+   *
+   * Behavior:
+   * - Marks the form as touched
+   * - Stops when the form is invalid
+   * - Clears previous problem details
+   * - Stores the email and advances the flow on success
+   */
   onForgotPassword() {
     const form = this.enterEmailForm.form;
     form.markAllAsTouched();
@@ -135,6 +186,15 @@ export class ResetPasswordComponent {
     });
   }
 
+  /**
+   * Validates the reset form and sends the reset-password request.
+   *
+   * Behavior:
+   * - Marks the form as touched
+   * - Stops when the form is invalid
+   * - Clears previous problem details
+   * - Marks the reset flow as successful on success
+   */
   onResetPassword() {
     const form = this.newPasswordForm.form;
     form.markAllAsTouched();
@@ -151,7 +211,7 @@ export class ResetPasswordComponent {
       newPassword: newPassword
     }).subscribe({
       next: () => {
-        console.log('Reset succeed')
+        console.log('Reset succeed');
         this.resetSucceeded.set(true);
         this.busyState.setBusy(false);
       },
@@ -161,6 +221,4 @@ export class ResetPasswordComponent {
       }
     });
   }
-
-  // End events
 }

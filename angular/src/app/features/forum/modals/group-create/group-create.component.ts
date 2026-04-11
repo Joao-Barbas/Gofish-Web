@@ -10,6 +10,15 @@ import { toast } from 'ngx-sonner';
 import { BodyLengthConstraints } from '@gofish/shared/constants';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button-3/async-button-3.component";
 
+/**
+ * Component responsible for creating a new group.
+ *
+ * Responsibilities:
+ * - Collect group name, description, and image from the user
+ * - Validate form input before submission
+ * - Build multipart form data for backend submission
+ * - Handle success and error feedback during group creation
+ */
 @Component({
   selector: 'app-group-create',
   host: {
@@ -28,21 +37,33 @@ export class GroupCreateComponent {
   private readonly groupsService = inject(GroupsService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+
+  /** Shared body length validation constraints exposed to the template. */
   protected readonly BodyLengthConstraints = BodyLengthConstraints;
+
+  /** Busy state used while the create group request is in progress. */
   busyState: BusyState = new BusyState();
 
-  groupName: string = '';
-  body: string = '';
+  /** Selected image file for the group. */
   image: File | null = null;
 
+  /** Error message displayed when validation or submission fails. */
   errorMessage: string = '';
 
+  /**
+   * Reactive form used to validate group creation input.
+   */
   form = this.fb.group({
     body: ['', [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
     groupName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
     imageUrl: ['', [Validators.required]]
   });
 
+  /**
+   * Handles image file selection and validates the selected file type.
+   *
+   * @param event File input change event
+   */
   onImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
@@ -60,12 +81,18 @@ export class GroupCreateComponent {
     this.form.patchValue({ imageUrl: file.name });
   }
 
-
+  /**
+   * Cancels group creation and navigates back to the user's groups page.
+   */
   onCancel(): void {
     toast.info('You cancel the creation');
     this.router.navigate(['/forum/my-crews']);
   }
 
+  /**
+   * Validates the form, builds the request payload, and submits
+   * the group creation request to the backend.
+   */
   onPublish(): void {
     this.form.markAllAsTouched();
     this.errorMessage = '';
@@ -83,9 +110,9 @@ export class GroupCreateComponent {
     formData.append('Name', this.form.value.groupName!);
     formData.append('Description', this.form.value.body!);
 
-
     const toastId = toast.loading('Creating your group!');
     console.log(formData);
+
     this.groupsService.createGroup(formData).subscribe({
       next: () => {
         this.busyState.setBusy(false);

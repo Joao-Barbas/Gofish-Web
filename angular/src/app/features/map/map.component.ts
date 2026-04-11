@@ -43,6 +43,16 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21uY2NtZjdrMHpsYjJwcXl
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
 })
+
+/**
+ * Main interactive map component using Mapbox.
+ *
+ * Responsibilities:
+ * - Initialize and configure the map
+ * - Sync map state with URL query parameters
+ * - Handle user interactions (click, zoom, pick mode)
+ * - Load and render pins dynamically based on viewport
+ */
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly popupService = inject(PopupService);
   private readonly geoService = inject(GeolocationService);
@@ -68,9 +78,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   public get getGeolocationState() { return this.geoService.state(); }
   public get isGeolocationDenied() { return this.geoService.isBad(); }
 
-  // =========================
-  // Lifecycle
-  // =========================
+  /**
+   * Subscribes to query parameters and validates URL state.
+   * Applies URL-driven state when map is ready.
+   */
   ngOnInit(): void {
     this.querySubscription = this.route.queryParamMap.subscribe(paramMap => {
       if (!this.urlService.isUrlValuesValid(paramMap)) {
@@ -85,10 +96,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+ * Initializes the map after the view is rendered.
+ */
   ngAfterViewInit(): void {
     this.initMap();
   }
 
+  /**
+ * Cleans up subscriptions, markers, and map instance.
+ */
   ngOnDestroy(): void {
     this.querySubscription?.unsubscribe();
     this.previewMarkerService.clear();
@@ -96,7 +113,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.map?.remove();
   }
 
-
+  /**
+  * Initializes Mapbox map instance with initial view and configuration.
+  *
+  * Side effects:
+  * - Creates map instance
+  * - Registers map layers and interactions
+  * - Applies URL state
+  */
   private initMap(): void {
     const view = this.getInitialView();
     console.log('Initial view:', view);
@@ -127,6 +151,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+ * Registers map event listeners (move, zoom, click).
+ *
+ * Side effects:
+ * - Updates URL on movement
+ * - Triggers pin loading based on zoom level
+ */
   private registerMapEvents(): void {
     this.map.on('moveend', () => {
       this.updateUrl();
@@ -141,6 +172,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.map.on('click', (e) => this.onMapClick(e));
   }
 
+  /**
+ * Determines initial map center and zoom based on URL parameters.
+ *
+ * @returns Object containing center coordinates and zoom level
+ */
   private getInitialView() {
     const q = this.route.snapshot.queryParamMap;
     const vLat = this.urlService.getNumber(q, 'vLat');
@@ -154,6 +190,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  /**
+ * Applies application state based on current URL query parameters.
+ * Handles selected coordinates and interaction modes.
+ */
   private applyUrlState(): void {
     if (!this.queryValues) return;
 
@@ -173,6 +213,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.applyModeFromUrl();
   }
 
+  /**
+ * Applies interaction mode based on URL (pick, picked, geo).
+ *
+ * Side effects:
+ * - Opens popups
+ * - Updates preview marker
+ * - Enables/disables pick mode
+ */
   private applyModeFromUrl(): void {
     switch (this.queryValues?.mode) {
       case 'pick':
@@ -200,6 +248,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+ * Updates URL query parameters with current map position and zoom.
+ *
+ * Side effects:
+ * - Triggers router navigation (replaceUrl)
+ */
   private updateUrl(): void {
     const center = this.map.getCenter();
     this.router.navigate([], {
@@ -214,6 +268,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.geoService.requestGeolocation();
   }
 
+  /**
+ * Handles map click events when pick mode is enabled.
+ *
+ * @param e Mapbox mouse event
+ *
+ * Side effects:
+ * - Updates selected coordinates
+ * - Updates URL
+ * - Disables pick mode
+ */
   onMapClick(e: mapboxgl.MapMouseEvent): void {
     if (!this.pickingOnMap) return;
 
@@ -229,6 +293,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.disablePickMode();
   }
 
+  /**
+ * Handles geolocation result and updates selected coordinates.
+ *
+ * @param coords User geolocation coordinates
+ */
   onGeo(coords: Coords): void {
     if (!coords) return;
     this.setSelectedCoords(coords);
@@ -244,14 +313,19 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   zoomIn(): void { this.map.zoomIn({ duration: 300 }); }
   zoomOut(): void { this.map.zoomOut({ duration: 300 }); }
 
+  /**
+ * Moves map to specified coordinates with animation.
+ *
+ * @param coords Target coordinates
+ */
   goToCoords(coords: Coords) {
     this.map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 16 });
     console.log("aqui");
   }
 
-  // =========================
-  // Pick mode
-  // =========================
+  /**
+ * Enables map picking mode and updates URL state.
+ */
   onRequestPickOnMap(): void {
     this.enablePickMode();
     this.router.navigate([], {
@@ -262,19 +336,28 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+ * Activates pick mode (crosshair cursor).
+ */
   enablePickMode(): void {
     this.pickingOnMap = true;
     this.map.getCanvas().style.cursor = 'crosshair';
   }
 
+  /**
+ * Disables pick mode and resets cursor.
+ */
   private disablePickMode(): void {
     this.pickingOnMap = false;
     this.map.getCanvas().style.cursor = 'default';
   }
 
-  // =========================
-  // Popups
-  // =========================
+  /**
+   * Toggles a popup and optionally clears URL state when closing.
+   *
+   * @param key Popup identifier
+   * @param event Optional DOM event
+   */
   private togglePopup(key: PopupKey, event?: Event): void {
     const wasOpen = this.popupService.isOpen(key);
     this.popupService.toggle(key);
@@ -292,7 +375,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public toggleCreatePinOverlay(event: Event): void { this.togglePopup('choose-pin-popup', event); }
   public togglePinPreview(event: Event): void { this.togglePopup('pin-preview', event); }
-
+  /**
+   * Handles popup cancellation and resets selection state.
+   *
+   * @param key Popup identifier
+   */
   onPopupCancel(key: PopupKey): void {
     this.clearPreviewAndSelection();
     this.popupService.toggle(key);
@@ -307,9 +394,15 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   onPopupCancelPinOverlay(): void { this.onPopupCancel('choose-pin-popup'); }
   onPopupCancelPinPreview(): void { this.onPopupCancel('pin-preview'); }
 
-  // =========================
-  //  Preview marker
-  // =========================
+  /**
+   * Sets selected coordinates and displays preview marker on map.
+   *
+   * @param coords Selected coordinates
+   *
+   * Side effects:
+   * - Updates marker
+   * - Moves map center
+   */
   private setSelectedCoords(coords: Coords): void {
     if (!coords) return;
     this.selectedCoords.set(coords);
@@ -318,14 +411,21 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.map.jumpTo({ center: [coords.longitude, coords.latitude], zoom: 14 });
   }
 
+  /**
+* Clears preview marker and selected coordinates.
+*/
   private clearPreviewAndSelection(): void {
     this.previewMarkerService.clear();
     this.selectedCoords.set(null);
   }
 
-  // =========================
-  // Pins viewport
-  // =========================
+  /**
+   * Loads pins within current map viewport.
+   *
+   * Side effects:
+   * - Updates pins state
+   * - Refreshes map layers
+   */
   private loadPinsInViewport(): void {
     if (!this.map) return;
     const bounds = this.map.getBounds();

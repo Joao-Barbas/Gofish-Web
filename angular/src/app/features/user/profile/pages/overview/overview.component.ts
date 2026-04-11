@@ -30,6 +30,16 @@ import { InviteToGroupsModalComponent } from '@gofish/shared/components/invite-t
 import { PinApi } from '@gofish/shared/api/pin.api';
 import { ProfileCatchPinCardComponent } from "./components/profile-catch-pin-card/profile-catch-pin-card.component";
 
+/**
+ * Profile overview page component.
+ *
+ * Responsibilities:
+ * - Load aggregated overview data for the selected profile
+ * - Expose friends, groups, and pins to the template
+ * - Manage UI state for bio collapsing and overflow detection
+ * - Handle friendship and profile action interactions
+ * - Open related popovers and modals
+ */
 @Component({
   selector: 'app-overview',
   imports: [
@@ -46,46 +56,97 @@ import { ProfileCatchPinCardComponent } from "./components/profile-catch-pin-car
     ProfileShowMoreModalComponent,
     InviteToGroupsModalComponent,
     ProfileCatchPinCardComponent
-],
+  ],
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.css',
 })
 export class OverviewComponent {
+  /** API used to retrieve user-related data. */
   readonly userApi = inject(UserApi);
+
+  /** API used to retrieve pin-related data. */
   readonly pinApi = inject(PinApi);
+
+  /** API used to retrieve profile-specific data. */
   readonly userProfileApi = inject(UserProfileApi);
+
+  /** Profile context used to access the currently viewed profile. */
   readonly profileContext = inject(ProfileContext);
+
+  /** Service used to access authentication state. */
   readonly authService = inject(AuthService);
+
+  /** Service used to resolve avatar image URLs. */
   readonly avatarService = inject(AvatarService);
+
+  /** Service used to control popover visibility. */
   readonly popoverService = inject(PopoverService);
+
+  /** Service used to control modal visibility. */
   readonly modalService = inject(ModalService);
+
+  /** Router instance used for navigation actions. */
   readonly router = inject(Router);
 
+  /** Busy state used while async actions are in progress. */
   readonly busyState = new BusyState();
+
+  /** Shared route path constants used in templates and navigation. */
   readonly Path = Path;
+
+  /** Friendship state enum exposed to the template. */
   readonly FriendshipState = FriendshipState;
+
+  /** Exposes the invite-to-group modal component to the template. */
   readonly InviteToGroupModalComponent = InviteToGroupsModalComponent;
+
+  /** Exposes the profile actions popover component to the template. */
   readonly ProfileActionsPopoverComponent = ProfileActionsPopoverComponent;
+
+  /** Exposes the profile show-more modal component to the template. */
   readonly ProfileShowMoreModalComponent = ProfileShowMoreModalComponent;
 
+  /**
+   * Reactive resource used to load the profile overview data.
+   *
+   * Loaded data:
+   * - Accepted friendships
+   * - User groups
+   * - User pins
+   */
   overviewData = rxResource({
     params: () => this.profileContext.userProfileId(),
     stream: ({ params: id }) => forkJoin({
       friends: this.userApi.getFriendships({ userId: id, state: FriendshipState.Accepted, maxResults: 8 }),
       groups: this.userApi.getUserGroups({ userId: id, maxResults: 8 }),
       pins: this.pinApi.getPins({ ids: [{ authorId: id }], dataRequest: { includeDetails: true, includeStats: true, includeUgc: true, IncludeInformation: false, IncludeWarning: false }, maxResults: 50 })
-  })});
+    })
+  });
 
-  bioTextRef         = viewChild<ElementRef>('bioText');
-  bioToggleRef       = viewChild<ElementRef>('bioToggle');
+  /** Reference to the bio text container element. */
+  bioTextRef = viewChild<ElementRef>('bioText');
+
+  /** Reference to the bio toggle element. */
+  bioToggleRef = viewChild<ElementRef>('bioToggle');
+
+  /** Reference to the friends carousel container. */
   friendsCarouselRef = viewChild<ElementRef>('friendsCarousel');
-  groupsCarouselRef  = viewChild<ElementRef>('groupsCarousel');
 
+  /** Reference to the groups carousel container. */
+  groupsCarouselRef = viewChild<ElementRef>('groupsCarousel');
+
+  /** Indicates whether the bio is currently collapsed. */
   bioCollapsed = signal(true);
+
+  /** Indicates whether the bio content overflows its container. */
   bioOverflows = signal(false);
 
+  /** Stores friendship entries used in the overview UI. */
   friendshipList = signal<FriendshipDTO[]>([]);
 
+  /**
+   * Initializes reactive UI behavior for bio overflow detection.
+   */
   constructor() {
     effect(() => {
       const el = this.bioTextRef();
@@ -95,6 +156,9 @@ export class OverviewComponent {
 
   // Events
 
+  /**
+   * Sends a friendship request to the currently viewed profile.
+   */
   onSendFriendshipRequest(): void {
     this.busyState.setBusy(true);
     this.userApi.requestFriendship({
@@ -111,15 +175,26 @@ export class OverviewComponent {
     });
   }
 
+  /**
+   * Toggles the profile actions popover.
+   *
+   * @param event DOM event that triggered the action
+   */
   onProfilePopoverClick(event: Event): void {
     this.popoverService.toggle(ProfileActionsPopoverComponent.Key);
     event.stopPropagation();
   }
 
+  /**
+   * Reloads the page after confirming the error modal.
+   */
   onErrorModalPositive() {
     window.location.reload();
   }
 
+  /**
+   * Navigates back to the home page after declining the error modal.
+   */
   onErrorModalNegative() {
     this.router.navigate([Path.HOME]);
   }

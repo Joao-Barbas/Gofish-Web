@@ -266,10 +266,10 @@ export const routes: Routes = [
     ]
   },
 
-  // Test Components - Do not delete
+  /* // Test Components - Do not delete
   {
     path: 'test',
     loadComponent: () => import('@gofish/features/test-delete-after/test-delete-after.component').then(f => f.TestDELETEAFTERComponent),
-  },
+  }, */
 
 ];

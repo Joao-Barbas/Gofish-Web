@@ -18,6 +18,16 @@ import { AuthApi } from '@gofish/shared/api/auth.api';
 import { SignUpReqDTO, SignUpResDTO } from '@gofish/shared/dtos/auth.dto';
 import { GofishValidators } from '@gofish/shared/core/gofish-validators';
 
+/**
+ * Sign-up page component responsible for user registration.
+ *
+ * Responsibilities:
+ * - Collect and validate registration form data
+ * - Enforce password and consent requirements
+ * - Submit sign-up requests to the backend
+ * - Handle API validation errors and successful authentication
+ * - Trigger external authentication flows
+ */
 @Component({
   selector: 'app-signup',
   imports: [
@@ -37,15 +47,27 @@ export class SignupComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly authApi     = inject(AuthApi);
 
+  /** Form builder used to create the sign-up form. */
   readonly formBuilder = inject(FormBuilder);
+
+  /** Pipe instance used to access the first key of validation error objects. */
   readonly firstKey    = inject(FirstKeyPipe);
 
+  /** Loading state used for UI feedback. */
   readonly loadingState: LoadingState = new LoadingState();
+
+  /** Busy state used to prevent duplicate submissions. */
   readonly busyState: BusyState       = new BusyState();
 
+  /** Shared route path constants used in templates. */
   readonly Path = Path;
+
+  /** Shared API constants used in templates and actions. */
   readonly Api  = Api;
 
+  /**
+   * Reactive form used to collect user registration data.
+   */
   signUpForm = this.formBuilder.group({
     email: ['', [
       Validators.required,
@@ -68,14 +90,30 @@ export class SignupComponent implements OnInit {
     (control: AbstractControl) => this.passwordNotEmail(control)
   ]});
 
+  /** API validation or registration problems returned by the backend. */
   apiProblems: ValidationProblemDetails | null = null;
+
+  /** Current form-level validation errors. */
   formErrors: ValidationErrors | null = this.signUpForm.errors;
+
+  /** Indicates whether registration completed successfully. */
   signUpSuccess: boolean = false;
+
+  /** Controls password visibility in the UI. */
   showPwd: boolean = false;
+
+  /** Indicates whether the age consent checkbox is checked. */
   ageConcentChecked: boolean = false;
+
+  /** Indicates whether the policy consent checkbox is checked. */
   policyConcentChecked: boolean = false;
+
+  /** Indicates whether an invalid registration attempt was made without required consent. */
   invalidSignUpAttempted: boolean = false;
 
+  /**
+   * Redirects the user if already authenticated.
+   */
   ngOnInit(): void {
     if (!this.authService.isAuthenticated()) return;
     this.router.navigate([Path.HOME]);
@@ -83,6 +121,12 @@ export class SignupComponent implements OnInit {
 
   // Form errors/validations
 
+  /**
+   * Validates that the password is not equal to the email.
+   *
+   * @param control Form group control
+   * @returns Validation error when password matches email, otherwise null
+   */
   private passwordNotEmail(control: AbstractControl): ValidationErrors | null {
     let email = control.get('email')?.value;
     let password = control.get('password')?.value;
@@ -90,6 +134,12 @@ export class SignupComponent implements OnInit {
     return null;
   }
 
+  /**
+   * Validates that password and confirm password match.
+   *
+   * @param control Form group control
+   * @returns Validation error when passwords do not match, otherwise null
+   */
   private passwordMatch(control: AbstractControl): ValidationErrors | null {
     let password = control.get('password')?.value;
     let confirm = control.get('confirmPassword')?.value;
@@ -97,6 +147,17 @@ export class SignupComponent implements OnInit {
     return null;
   }
 
+  /**
+   * Validates password strength requirements.
+   *
+   * Rules:
+   * - Must contain at least one number
+   * - Must contain at least one uppercase character
+   * - Must contain at least one special character
+   *
+   * @param control Password control
+   * @returns Validation errors for failed strength rules, otherwise null
+   */
   private passwordStrong(control: AbstractControl): ValidationErrors | null {
     const value = control.value || '';
     const errors: ValidationErrors = {};
@@ -108,6 +169,13 @@ export class SignupComponent implements OnInit {
     return Object.keys(errors).length ? errors : null;
   }
 
+  /**
+   * Returns validation errors for a given control only when
+   * the control is invalid and has been interacted with.
+   *
+   * @param name Control name
+   * @returns Validation errors for the specified control or null
+   */
   private controlError(name: string): ValidationErrors | null {
     let control = this.signUpForm.get(name);
     if (!control) return null;
@@ -115,6 +183,12 @@ export class SignupComponent implements OnInit {
     return control.errors;
   }
 
+  /**
+   * Returns the most relevant validation or API error message
+   * to display to the user.
+   *
+   * @returns Error message or null when no error should be shown
+   */
   getError(): string | null {
     const e = (field: string) => this.controlError(field);
     const g = this.signUpForm.errors;
@@ -140,6 +214,16 @@ export class SignupComponent implements OnInit {
 
   // End form errors/validations
 
+  /**
+   * Validates consent and form state, then submits the sign-up request.
+   *
+   * Behavior:
+   * - Requires age and policy consent
+   * - Marks form controls as touched
+   * - Clears previous API problems
+   * - Stops when the form is invalid
+   * - Authenticates the user and redirects on success
+   */
   onSubmit() {
     if (!this.ageConcentChecked || !this.policyConcentChecked) {
       this.invalidSignUpAttempted = false;
@@ -173,6 +257,9 @@ export class SignupComponent implements OnInit {
     })
   }
 
+  /**
+   * Starts the Google external authentication flow.
+   */
   onGoogle() {
     window.location.href = Api.Auth.action('ExternalLogin?provider=Google');
   }

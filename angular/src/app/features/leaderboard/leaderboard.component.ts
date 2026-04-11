@@ -15,8 +15,20 @@ import { AbsPipe } from "../../shared/pipes/absolute.pipe";
 import { UserTitleComponent } from "@gofish/shared/components/user-title/user-title.component";
 import { LeaderboardUserDTO } from '@gofish/shared/dtos/user.dto';
 
+/**
+ * Supported leaderboard tabs.
+ */
 type LeaderboardTab = 'global' | 'friends';
 
+/**
+ * Leaderboard page component.
+ *
+ * Responsibilities:
+ * - Resolve the active leaderboard tab from component input
+ * - Load leaderboard data from the backend
+ * - Expose derived leaderboard sections for the template
+ * - Provide access to shared constants and helper services
+ */
 @Component({
   selector: 'gf-leaderboard',
   imports: [RouterLink, LoadingErrorModalComponent, LoadingSpinnerComponent, AbsPipe, UserTitleComponent],
@@ -24,38 +36,73 @@ type LeaderboardTab = 'global' | 'friends';
   styleUrl: './leaderboard.component.css',
 })
 export class LeaderboardComponent {
-  readonly activeTab = input<LeaderboardTab | undefined>(undefined, { alias: 'tab' }); // Signal-based input given from ?tab=
-  readonly activeTabOrDefault = computed<LeaderboardTab>(() => this.activeTab() ?? 'global' )
+  /**
+   * Active leaderboard tab provided through component input.
+   * The input is aliased as "tab".
+   */
+  readonly activeTab = input<LeaderboardTab | undefined>(undefined, { alias: 'tab' });
 
-  readonly userApi       = inject(UserApi);
-  readonly authService   = inject(AuthService);
-  readonly router        = inject(Router);
-  readonly route         = inject(ActivatedRoute);
-  readonly avatarService = inject(AvatarService)
+  /**
+   * Returns the active tab or falls back to the global leaderboard.
+   */
+  readonly activeTabOrDefault = computed<LeaderboardTab>(() => this.activeTab() ?? 'global');
 
+  /** API used to retrieve leaderboard data. */
+  readonly userApi = inject(UserApi);
+
+  /** Service used to access authentication state. */
+  readonly authService = inject(AuthService);
+
+  /** Router instance used for navigation actions. */
+  readonly router = inject(Router);
+
+  /** Current activated route. */
+  readonly route = inject(ActivatedRoute);
+
+  /** Service used to resolve avatar image URLs. */
+  readonly avatarService = inject(AvatarService);
+
+  /** Exposes the global window object to the template. */
   window = window;
+
+  /** Shared route path constants used in templates. */
   Path = Path;
+
+  /** Shared rank constants used in templates. */
   Rank = Rank;
 
+  /**
+   * Reactive resource used to load leaderboard data according to
+   * the currently selected tab.
+   *
+   * Behavior:
+   * - Loads the global leaderboard when the active tab is "global"
+   * - Loads the friends leaderboard when the active tab is "friends"
+   * - Automatically reloads when the active tab changes
+   */
   leaderboard = resource({
     params: () => this.activeTabOrDefault(),
-    loader: ({ params: tab }) => firstValueFrom(tab === 'global'
-      ? this.userApi.getGlobalLeaderboard()
-      : this.userApi.getFriendsLeaderboard()
-  )});
+    loader: ({ params: tab }) => firstValueFrom(
+      tab === 'global'
+        ? this.userApi.getGlobalLeaderboard()
+        : this.userApi.getFriendsLeaderboard()
+    )
+  });
 
-  readonly topThree   = computed(() => this.leaderboard.value()?.entries.slice(0, 3) ?? []);
-  readonly rest       = computed(() => this.leaderboard.value()?.entries.slice(3)    ?? []);
-  readonly allEntries = computed(() => this.leaderboard.value()?.entries             ?? []);
+  /**
+   * Returns the first three leaderboard entries.
+   */
+  readonly topThree = computed(() => this.leaderboard.value()?.entries.slice(0, 3) ?? []);
 
+  /**
+   * Returns the leaderboard entries after the top three.
+   */
+  readonly rest = computed(() => this.leaderboard.value()?.entries.slice(3) ?? []);
 
-
-
-
-
-
-
-
+  /**
+   * Returns all leaderboard entries.
+   */
+  readonly allEntries = computed(() => this.leaderboard.value()?.entries ?? []);
 
   // private readonly avatarService = inject(AvatarService);
   // private readonly leaderboardApi = inject(LeaderboardApi);

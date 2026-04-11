@@ -13,6 +13,15 @@ import { BodyLengthConstraints } from '@gofish/shared/constants';
 import { PostCommentsComponent } from '@gofish/features/forum/features/post/post-comments/post-comments.component';
 import { AsyncButtonComponent } from "@gofish/shared/components/async-button-3/async-button-3.component";
 
+/**
+ * Displays a single forum post and its associated comments.
+ *
+ * Responsibilities:
+ * - Load the selected post using the route identifier
+ * - Load and paginate post comments
+ * - Expose comment submission form state
+ * - Submit new comments to the backend
+ */
 @Component({
   selector: 'app-post-id-placeholder',
   imports: [
@@ -21,7 +30,7 @@ import { AsyncButtonComponent } from "@gofish/shared/components/async-button-3/a
     LoadingSpinnerComponent,
     ReactiveFormsModule,
     AsyncButtonComponent
-],
+  ],
   templateUrl: './post-id-placeholder.component.html',
   styleUrl: './post-id-placeholder.component.css',
 })
@@ -30,27 +39,57 @@ export class PostIdPlaceholderComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
   private readonly fb = inject(FormBuilder);
+
+  /** Shared body length validation constraints exposed to the template. */
   protected readonly BodyLengthConstraints = BodyLengthConstraints;
+
+  /** Username of the currently authenticated user. */
   userName = this.authService.getUserName();
+
+  /** Indicates whether the current user has administrator privileges. */
   isAdmin = this.authService.isAdmin();
+
+  /** Route identifier of the currently displayed post. */
   id: string | null = null;
+
+  /** Stores the loaded post data. */
   post = signal<PinDto | null>(null);
+
+  /** Stores the loaded post comments response. */
   comments = signal<GetCommentsResDto | null>(null);
+
+  /** Busy state used while submitting a new comment. */
   busyState: BusyState = new BusyState();
+
+  /** Busy state used while loading additional comments. */
   showMoreBusyState: BusyState = new BusyState();
+
+  /** Indicates whether more comments are available to load. */
   hasMoreResults = signal(false);
+
+  /**
+   * Timestamp cursor used for comment pagination.
+   * Each request uses the timestamp of the last loaded comment.
+   */
   private lastTimestamp: string = new Date().toISOString();
 
+  /**
+   * Reactive form used to submit a new comment.
+   */
   commentForm = this.fb.group({
     body: ['', [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
   });
 
+  /**
+   * Loads the post identifier from the route, fetches the post data,
+   * and loads the initial batch of comments.
+   */
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
     if (!this.id) {
       alert("Null id");
       return;
-    };
+    }
 
     const dto: GetPinsReqDto = {
       ids: [{ pinId: Number(this.id) }],
@@ -62,7 +101,7 @@ export class PostIdPlaceholderComponent {
         includeUgc: true
       },
       maxResults: 1,
-    }
+    };
 
     this.pinService.getPins(dto).subscribe({
       next: (res) => {
@@ -76,6 +115,11 @@ export class PostIdPlaceholderComponent {
     this.loadComments(5);
   }
 
+  /**
+   * Loads a batch of comments for the current post.
+   *
+   * @param results Maximum number of comments to request
+   */
   loadComments(results: number) {
     if (!this.id) return;
 
@@ -86,6 +130,7 @@ export class PostIdPlaceholderComponent {
     };
 
     this.showMoreBusyState.setBusy(true);
+
     this.pinService.getComments(req).subscribe({
       next: (res) => {
         this.comments.update(current => {
@@ -113,10 +158,18 @@ export class PostIdPlaceholderComponent {
       }
     });
   }
+
+  /**
+   * Loads the next batch of comments.
+   */
   showMore() {
     this.loadComments(5);
   }
 
+  /**
+   * Validates and submits a new comment for the current post.
+   * On success, resets the form and reloads the comment list.
+   */
   submitComment() {
     if (this.commentForm.invalid) {
       this.commentForm.markAllAsTouched();
@@ -127,10 +180,12 @@ export class PostIdPlaceholderComponent {
     if (!body) return;
 
     this.busyState.setBusy(true);
+
     const dto: CreateCommentReqDto = {
       pinId: Number(this.id),
       body: body
     };
+
     this.pinService.createComment(dto).subscribe({
       next: () => {
         this.commentForm.reset();

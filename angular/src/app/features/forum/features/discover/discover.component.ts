@@ -7,6 +7,16 @@ import { PinService } from '@gofish/shared/services/pin.service';
 import { GetFeedReqDto, GetFeedResDto } from '@gofish/shared/dtos/pin.dto';
 import { FeedKind } from '@gofish/shared/enums/feed-kind.enum';
 
+/**
+ * Displays the discovery feed and progressively loads posts using
+ * infinite scroll pagination.
+ *
+ * Responsibilities:
+ * - Load discovery feed posts from the backend
+ * - Maintain pagination state using the last retrieved timestamp
+ * - Detect scroll position and load additional results when needed
+ * - Expose loading and pagination state to the template
+ */
 @Component({
   selector: 'app-discover',
   imports: [ForumPostComponent, LoadingSpinnerComponent],
@@ -21,6 +31,13 @@ export class DiscoverComponent {
   private lastTimestamp: string = new Date().toISOString();
   isLoading = signal(false);
 
+  /**
+   * Scroll event handler used to trigger lazy loading when the user
+   * gets close to the bottom of the page.
+   *
+   * Side effects:
+   * - Calls loadPosts when pagination conditions are met
+   */
   onScroll = () => {
     const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 200;
     if (nearBottom && this.hasMoreResults() && !this.isLoading()) {
@@ -28,17 +45,42 @@ export class DiscoverComponent {
     }
   }
 
+  /**
+   * Loads the initial discovery feed data and registers the global
+   * scroll event listener.
+   *
+   * Side effects:
+   * - Fetches posts from backend
+   * - Registers window scroll listener
+   */
   ngOnInit() {
     this.loadPosts();
     window.addEventListener('scroll', this.onScroll);
   }
 
-   ngOnDestroy() {
+  /**
+   * Removes the registered scroll event listener to prevent memory leaks.
+   */
+  ngOnDestroy() {
     window.removeEventListener('scroll', this.onScroll);
   }
 
 
+  /**
+   * Loads the next batch of discovery feed posts.
+   *
+   * Behavior:
+   * - Sends a paginated request using the current timestamp cursor
+   * - Appends new posts to the existing feed state
+   * - Updates pagination metadata and loading state
+   *
+   * Side effects:
+   * - Updates allFeedPosts signal
+   * - Updates hasMoreResults signal
+   * - Updates lastTimestamp cursor
+   */
   loadPosts() {
+    if (this.isLoading() || !this.hasMoreResults()) return;
     this.isLoading.set(true);
     const request: GetFeedReqDto = {
       kind: FeedKind.Discovery,
@@ -71,6 +113,13 @@ export class DiscoverComponent {
       }
     });
   }
+
+  /**
+   * Loads additional feed posts on explicit user request.
+   *
+   * Side effects:
+   * - Calls loadPosts
+   */
   showMore() {
     this.loadPosts();
   }

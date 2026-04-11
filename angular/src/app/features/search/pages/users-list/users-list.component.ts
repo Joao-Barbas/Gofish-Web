@@ -15,6 +15,15 @@ import { FriendshipListCardComponent } from '@gofish/features/user/profile/pages
 import { UsersListCardComponent } from "@gofish/features/search/components/users-list-card/users-list-card.component";
 import { AuthService } from '@gofish/shared/services/auth.service';
 
+/**
+ * Displays a searchable list of users and supports incremental loading.
+ *
+ * Responsibilities:
+ * - Load users matching the provided search query
+ * - Expose search results to the template
+ * - Maintain pagination state for additional results
+ * - Track loading and busy states during search operations
+ */
 @Component({
   selector: 'gf-users-list',
   imports: [
@@ -26,17 +35,34 @@ import { AuthService } from '@gofish/shared/services/auth.service';
   styleUrl: './users-list.component.css',
 })
 export class UsersListComponent {
+  /**
+   * Search query provided to the component.
+   * The input is aliased as "query".
+   */
   readonly query = input<string | undefined>(undefined, { alias: 'query' });
 
+  /** API used to search users. */
   readonly userApi = inject(UserApi);
 
+  /** Loading state used for UI feedback during search operations. */
   readonly loadingState = new LoadingState();
-  readonly busyState    = new BusyState();
 
-  usersList    = signal<SearchUserDTO[]>([]);
+  /** Busy state used to prevent overlapping load operations. */
+  readonly busyState = new BusyState();
+
+  /** Stores the currently loaded user search results. */
+  usersList = signal<SearchUserDTO[]>([]);
+
+  /** Indicates whether more search results are available. */
   usersHasMore = signal(true);
-  usersCursor  = signal<string | undefined>(undefined);
 
+  /** Cursor used to request the next page of results. */
+  usersCursor = signal<string | undefined>(undefined);
+
+  /**
+   * Reactive resource used to load the initial user search results
+   * whenever the query changes.
+   */
   users = resource({
     params: () => this.query(),
     loader: () => firstValueFrom(
@@ -50,10 +76,15 @@ export class UsersListComponent {
     )
   });
 
+  /**
+   * Initializes reactive effects for query validation and synchronization
+   * of loaded resource data into local signals.
+   */
   constructor() {
     effect(() => {
       if (!this.query()) throw new Error('Profile requires a route :id param.');
     });
+
     effect(() => {
       if (!this.users.hasValue()) return;
       this.usersList.set(this.users.value()?.users ?? []);
@@ -62,9 +93,13 @@ export class UsersListComponent {
     });
   }
 
+  /**
+   * Loads the next batch of users using the current pagination cursor.
+   */
   loadMoreUsers() {
     this.loadingState.start();
     this.busyState.setBusy(true);
+
     this.userApi.searchUsers({
       query: this.query()!,
       maxResults: 20,
@@ -81,6 +116,6 @@ export class UsersListComponent {
         this.loadingState.fail('Something went wrong while searching.');
         this.busyState.setBusy(false);
       }
-    })
+    });
   }
 }

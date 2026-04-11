@@ -3,15 +3,37 @@ import { PIN_CONFIG } from '@gofish/shared/constants';
 import { GetInViewportResDto, PinDto, ViewportPinDTO } from '@gofish/shared/dtos/pin.dto';
 import { PinKind } from '@gofish/shared/models/pin.model';
 
-
-
+/**
+ * Service responsible for creating and updating Mapbox sources,
+ * layers, and marker icons for map pins.
+ *
+ * Responsibilities:
+ * - Convert loaded pins into GeoJSON sources
+ * - Create clustered and unclustered layers per pin kind
+ * - Update existing map sources when pin data changes
+ * - Load pin icons into the Mapbox style
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class MapLayersService {
+  /** Pin configuration metadata used to build sources and layers. */
   protected readonly pinConfigs = PIN_CONFIG;
+
+  /**
+   * Updates map sources and layers for all configured pin kinds.
+   *
+   * Behavior:
+   * - Filters pins by kind
+   * - Builds GeoJSON feature collections for each kind
+   * - Updates existing sources or creates new clustered sources and layers
+   *
+   * @param map Mapbox map instance
+   * @param allPins Signal containing all currently loaded pins
+   */
   updateLayers(map: mapboxgl.Map, allPins: WritableSignal<PinDto[]>): void {
     this.loadPinIcons(map);
+
     this.pinConfigs.forEach(({ kind, color, icon }) => {
       const pinsOfKind = allPins().filter(pin => pin.kind === kind);
       const sourceId = `pins-${kind}`;
@@ -37,11 +59,25 @@ export class MapLayersService {
           clusterMaxZoom: 10,
           clusterRadius: 50
         });
+
         this.addClusterLayers(map, kind, color, icon);
       }
     });
   }
 
+  /**
+   * Adds clustered and unclustered layers for a specific pin kind.
+   *
+   * Layers created:
+   * - Cluster circle layer
+   * - Cluster count label layer
+   * - Unclustered symbol layer
+   *
+   * @param map Mapbox map instance
+   * @param kind Pin kind associated with the layers
+   * @param color Cluster color for the pin kind
+   * @param icon Icon name used for unclustered pins
+   */
   private addClusterLayers(map: mapboxgl.Map, kind: PinKind, color: string, icon: string): void {
     map.addLayer({
       id: `clusters-${kind}`,
@@ -84,6 +120,12 @@ export class MapLayersService {
     });
   }
 
+  /**
+   * Loads configured pin icons into the Mapbox style if they are not
+   * already available.
+   *
+   * @param map Mapbox map instance
+   */
   public loadPinIcons(map: mapboxgl.Map) {
     this.pinConfigs.forEach(({ icon, iconUrl }) => {
       if (map.hasImage(icon)) return;
@@ -102,5 +144,4 @@ export class MapLayersService {
       });
     });
   }
-
 }

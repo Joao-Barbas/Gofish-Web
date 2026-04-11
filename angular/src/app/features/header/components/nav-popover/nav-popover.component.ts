@@ -9,6 +9,14 @@ import { PopupController } from '@gofish/shared/core/popup-controller';
 import { ClickOutsideDirective } from '@gofish/shared/directives/click-outside.directive';
 import { AuthService } from '@gofish/shared/services/auth.service';
 
+/**
+ * Popover component used for main navigation in the header.
+ *
+ * Responsibilities:
+ * - Display navigation links for different application sections
+ * - Provide access to authentication and profile-related data
+ * - Close automatically when clicking outside the popover
+ */
 @Component({
   selector: 'gf-nav-popover',
   hostDirectives: [
@@ -20,7 +28,7 @@ import { AuthService } from '@gofish/shared/services/auth.service';
   host: {
     'animate.enter': "on-enter",
     'animate.leave': "on-leave",
-    '(clickOutside)':"popupController.close()"
+    '(clickOutside)': "popupController.close()"
   },
   imports: [
     CommonModule,
@@ -31,14 +39,24 @@ import { AuthService } from '@gofish/shared/services/auth.service';
   styleUrl: './nav-popover.component.css',
 })
 export class NavPopoverComponent {
+  /** Unique key used to identify this popup instance. */
   static readonly Key = 'header-nav-popover';
 
-  readonly authService    = inject(AuthService);
-  readonly userProfileApi = inject(UserProfileApi);
-  readonly router         = inject(Router);
+  /** Service used to access authentication state and user data. */
+  readonly authService = inject(AuthService);
 
+  /** API used to retrieve or interact with user profile data. */
+  readonly userProfileApi = inject(UserProfileApi);
+
+  /** Router instance used for navigation actions. */
+  readonly router = inject(Router);
+
+  /** Controller used to manage the popup open and close state. */
   readonly popupController = new PopupController(NavPopoverComponent.Key);
 
-  readonly Path        = Path;
+  /** Shared route path constants used in templates. */
+  readonly Path = Path;
+
+  /** Shared route path segment constants used in templates. */
   readonly PathSegment = PathSegment;
 }
