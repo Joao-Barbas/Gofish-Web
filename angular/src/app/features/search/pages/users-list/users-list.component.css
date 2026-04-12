@@ -3,7 +3,8 @@
 :host {
   display: block;
   width: var(--gf-container-lg);
-  margin: auto;
+  flex: 1;
+  margin: 0 auto;
 }
 
 h4 {

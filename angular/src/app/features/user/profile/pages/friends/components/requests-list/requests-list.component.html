@@ -10,7 +10,7 @@
   </gf-loading-error-modal>
 } @else if (requests.hasValue()) {
   <div class="list">
-    @for (requests of requestsList(); track requests.id) {
+    @for (requests of requestsListReceived(); track requests.id) {
       <gf-friendship-list-card
         [friendship]="requests"
         [small]="false"

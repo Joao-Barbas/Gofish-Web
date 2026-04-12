@@ -111,6 +111,24 @@ export class OverviewComponent {
     });
   }
 
+  onAcceptFriendRequest() {
+    if (!this.profileContext.userProfile().friendship) return;
+    if (!this.profileContext.isFriendshipAcceptable()) return;
+
+    this.busyState.setBusy(true);
+
+    this.userApi.acceptFriendship(this.profileContext.userProfile().friendship?.id!).subscribe({
+      next: () => {
+        this.profileContext.befriends(this.profileContext.userProfile().friendship!);
+        this.busyState.setBusy(false);
+      },
+      error: () => {
+        this.busyState.setBusy(false);
+        toast.warning('Couldn\'t accept friend request. It\'s possible that this user has canceled the friend request');
+      }
+    });
+  }
+
   onProfilePopoverClick(event: Event): void {
     this.popoverService.toggle(ProfileActionsPopoverComponent.Key);
     event.stopPropagation();

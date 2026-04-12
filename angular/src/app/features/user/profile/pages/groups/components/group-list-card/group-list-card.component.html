@@ -4,13 +4,13 @@
   <img [src]="avatarService.resolve(group().avatarUrl)" alt="Avatar">
   <div>
     <div class="gf-flow-horizontal gf-items-center gf-justify-between">
-      <p>{{ 'Here\'s some text to feast your eyes opon' }}</p>
+      <p>{{ group().name }}</p>
       <div class="gf-flow-horizontal gf-gap-6">
-        <div class="gf-center-axes gf-py-0 gf-px-16 gf-text-xs user-stat">{{ "27 Members" }}</div>
-        <div class="gf-center-axes gf-py-0 gf-px-16 gf-text-xs user-stat">{{ "30 Posts" }}</div>
+        <div class="gf-center-axes gf-py-0 gf-px-16 gf-text-xs user-stat">{{ `${group().memberCount} Sailors` }}</div>
+        <div class="gf-center-axes gf-py-0 gf-px-16 gf-text-xs user-stat">{{ `${group().pinCount} Pins` }}</div>
       </div>
     </div>
-    <small class="gf-mt-6">{{ 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut erat dui, sagittis in ex sit amet, tempus porttitor turpis. Etiam scelerisque porttitor egestas. Integer nunc ligula, vehicula at justo vel, pellentesque fermentum est. Quisque et augue maximus, pellentesque quam vel, gravida augue. Etiam placerat ultrices velit, quis vulputate diam. Morbi convallis nunc erat, sed laoreet libero finibus in. Quisque ultrices elit non velit tincidunt gravida vel in nisl. Donec rutrum dui vitae eros convallis, in pellentesque lorem vehicula. Donec faucibus auctor fermentum. Phasellus ultrices urna vel tincidunt facilisis. Sed gravida condimentum condimentum. Morbi id faucibus nunc, sit amet efficitur leo.' }}</small>
+    <small class="gf-mt-6">{{ group().description }}</small>
   </div>
 </a>
 @if (actions()) {
@@ -18,19 +18,4 @@
     <button (click)="accepted.emit(group())">Accept</button>
     <button (click)="declined.emit(group())">Decline</button>
   </div>
-
-  <!--
-    <div class="gf-flow-horizontal gf-gap-12">
-      <button
-        [disabled]="isAccepted()"
-        (click)="onDecline()">
-        Decline
-      </button>
-      <gf-async-button
-        [labels]="{ idle: 'Accept' }"
-        [states]="{ busy: busyState.busy(), success: isAccepted() }"
-        (click)="onAccept()"
-      ></gf-async-button>
-    </div>
-  -->
 }

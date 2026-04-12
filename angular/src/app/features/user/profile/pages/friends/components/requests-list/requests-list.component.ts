@@ -1,7 +1,7 @@
 // requests-list.component.ts
 
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, effect, inject, resource, signal } from '@angular/core';
+import { Component, computed, effect, inject, resource, signal } from '@angular/core';
 import { ProfileContext } from '@gofish/features/user/profile/services/profile-context.service';
 import { UserApi } from '@gofish/shared/api/user.api';
 import { AsyncButtonComponent } from '@gofish/shared/components/async-button-2/async-button-2.component';
@@ -15,6 +15,7 @@ import { FriendshipListCardComponent } from '@gofish/features/user/profile/pages
 import { LoadingErrorModalComponent } from "@gofish/shared/components/loading-error-modal/loading-error-modal.component";
 import { Path } from '@gofish/shared/constants';
 import { Router } from '@angular/router';
+import { AuthService } from '@gofish/shared/services/auth.service';
 
 @Component({
   selector: 'app-requests-list',
@@ -31,6 +32,7 @@ export class RequestsListComponent {
   readonly profileContext = inject(ProfileContext);
   readonly userApi        = inject(UserApi);
   readonly router         = inject(Router);
+  readonly authService    = inject(AuthService);
 
   readonly loadingState = new LoadingState();
   readonly busyState    = new BusyState();
@@ -42,9 +44,11 @@ export class RequestsListComponent {
   requestsHasMore = signal(true);
   requestsList    = signal<FriendshipDTO[]>([]);
 
+  requestsListReceived = computed(() => this.requestsList().filter((a) => a.receiverUserId === this.authService.userId()!));
+
   requests = resource({
     params: () => this.profileContext.userProfileId(),
-    loader: ({ params: id }) => firstValueFrom(this.userApi.getFriendships({ userId: id, state: FriendshipState.Pending, maxResults: 1, lastTimestamp: undefined }))
+    loader: ({ params: id }) => firstValueFrom(this.userApi.getFriendships({ userId: id, state: FriendshipState.Pending, maxResults: 20, lastTimestamp: undefined }))
   });
 
   constructor() {
@@ -63,7 +67,7 @@ export class RequestsListComponent {
     this.userApi.getFriendships({
       userId: profileId,
       state: FriendshipState.Pending,
-      maxResults: 1,
+      maxResults: 20,
       lastTimestamp: this.requestsCursor()
     }).subscribe({
       next: (res: GetFriendshipsResDTO) => {
