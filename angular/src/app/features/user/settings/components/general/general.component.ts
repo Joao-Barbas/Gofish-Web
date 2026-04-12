@@ -111,7 +111,7 @@ export class GeneralComponent {
       },
       error: () => {
         this.busyState.setBusy(false);
-        this.toast.error('Something went saving biography');
+        this.toast.error('Something went wrong while trying to save biography.');
       }
     });
   }

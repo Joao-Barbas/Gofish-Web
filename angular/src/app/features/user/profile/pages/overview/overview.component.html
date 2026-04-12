@@ -49,18 +49,20 @@
           }
         </div>
         @if (profile.userId !== authService.userId()) {
-          @if (profileContext.isFriendshipAcceptable()) {
-            <gf-async-button
-              [labels]="{ idle: 'Accept Friend Request' }"
-              [states]="{ busy: busyState.isBusy() }"
-              (click)="onAcceptFriendRequest()"
-            ></gf-async-button>
-          } @else if (!profileContext.isFriend()) {
-            <gf-async-button
-              [labels]="{ idle: 'Send Friend Request', disabled: 'Pending' }"
-              [states]="{ busy: busyState.isBusy(), disabled: profileContext.userProfile().friendship?.state === FriendshipState.Pending }"
-              (click)="onSendFriendshipRequest()"
-            ></gf-async-button>
+          @if (!profileContext.isFriend()) {
+            @if (profileContext.isFriendshipAcceptable()) {
+              <gf-async-button
+                [labels]="{ idle: 'Accept Friend Request' }"
+                [states]="{ busy: busyState.isBusy() }"
+                (click)="onAcceptFriendRequest()"
+              ></gf-async-button>
+            } @else {
+              <gf-async-button
+                [labels]="{ idle: 'Send Friend Request', disabled: 'Pending' }"
+                [states]="{ busy: busyState.isBusy(), disabled: profileContext.userProfile().friendship?.state === FriendshipState.Pending }"
+                (click)="onSendFriendshipRequest()"
+              ></gf-async-button>
+            }
           }
         } @else {
           <a class="gf-center-axes gf-px-32 action-btn btn-edit" [routerLink]="'/settings'">

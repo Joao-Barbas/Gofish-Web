@@ -8,7 +8,7 @@ public class UserProfile
     [ForeignKey(nameof(AppUser))]
     public required string UserId { get; set; }
 
-    [MaxLength(500)]
+    [MaxLength(2000)]
     public string? Bio { get; set; }
 
     [Url]
