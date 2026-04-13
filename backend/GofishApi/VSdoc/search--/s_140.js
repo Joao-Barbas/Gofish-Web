@@ -1,0 +1,1 @@
+search_result['140']=["topic_000000000000005E.html","StatsController.GetWeeklyApiSuccessRate Method","/// Obtém a taxa de sucesso semanal dos pedidos à API,\r\n    /// considerando como sucesso os códigos HTTP 2xx.\r\n    ///"];

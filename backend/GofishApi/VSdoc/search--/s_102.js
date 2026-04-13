@@ -1,0 +1,1 @@
+search_result['102']=["topic_0000000000000042.html","RatingsController.CreateRating Method","/// Cria uma nova avaliação associada ao utilizador autenticado.\r\n    ///"];

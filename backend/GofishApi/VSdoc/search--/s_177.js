@@ -1,0 +1,1 @@
+search_result['177']=["topic_0000000000000079.html","UserController.DeleteFriendship Method","Remove uma amizade ou pedido de amizade.\r\nApenas os participantes o podem fazer."];

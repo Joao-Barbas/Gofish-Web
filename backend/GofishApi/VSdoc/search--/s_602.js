@@ -1,0 +1,1 @@
+search_result['602']=["topic_00000000000001DD.html","UserProfile.JoinedAt Property","/// Data de registo do utilizador na plataforma.\r\n    ///"];

@@ -1,0 +1,1 @@
+search_result['700']=["topic_0000000000000212.html","EmailChangeTokenService.CreateToken Method","Encodes userId + newEmail + a generated 6-digit code into a time-limited\r\nprotected token. The code is sent to the user; the token is returned to\r\nthe frontend to be presented alongside the code on co..."];

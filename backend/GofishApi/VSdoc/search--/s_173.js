@@ -1,0 +1,1 @@
+search_result['173']=["topic_0000000000000075.html","UserController.GetFriendship Method","Obtém uma amizade específica pelo seu identificador.\r\nUtilizadores não participantes só podem vê-la se estiver aceite."];

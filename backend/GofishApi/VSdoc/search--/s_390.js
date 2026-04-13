@@ -1,0 +1,1 @@
+search_result['390']=["topic_0000000000000156.html","AppUser.TwoFactorMethod Property","/// Método de autenticação de dois fatores atualmente configurado.\r\n    ///"];

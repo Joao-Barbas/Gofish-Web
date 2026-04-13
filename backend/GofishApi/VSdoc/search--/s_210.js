@@ -1,0 +1,1 @@
+search_result['210']=["topic_0000000000000090.html","UserSecurityController.SendVerificationEmail Method","/// Inicia o processo de verificação do email atual do utilizador,\r\n    /// enviando um código para esse endereço.\r\n    ///"];

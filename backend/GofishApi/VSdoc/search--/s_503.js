@@ -1,0 +1,1 @@
+search_result['503']=["topic_000000000000019D.html","Pin Class","/// Representa a entidade base abstrata para todos os tipos de pins da aplicação.\r\n/// Define atributos comuns como autor, localização, visibilidade, datas, conteúdo e relações.\r\n///"];

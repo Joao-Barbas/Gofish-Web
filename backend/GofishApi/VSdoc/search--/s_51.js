@@ -1,0 +1,1 @@
+search_result['51']=["topic_000000000000001E.html","GroupController Class","/// Controlador responsável pela gestão de grupos.\r\n/// Disponibiliza operações de consulta, criação, eliminação, gestão de membros,\r\n/// convites e listagem de pins associados a grupos.\r\n///"];

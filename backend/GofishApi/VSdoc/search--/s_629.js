@@ -1,0 +1,1 @@
+search_result['629']=["topic_00000000000001EE.html","ExpiresInDays Field","/// Número de dias até o pin expirar automaticamente.\r\n    /// Pins de aviso têm curta duração devido à natureza temporária dos riscos.\r\n    ///"];

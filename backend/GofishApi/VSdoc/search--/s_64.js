@@ -1,0 +1,1 @@
+search_result['64']=["topic_0000000000000026.html","GroupController.AcceptGroupInvite Method","/// Aceita um convite pendente para entrar num grupo.\r\n    /// O utilizador autenticado tem de ser o destinatário do convite.\r\n    ///"];

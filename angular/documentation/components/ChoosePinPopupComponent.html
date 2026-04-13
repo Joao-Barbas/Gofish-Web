@@ -1,0 +1,1655 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ChoosePinPopupComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Popup component used to choose how a new pin location should be selected
+and which pin type should be created.</p>
+<p>Responsibilities:</p>
+<ul>
+<li>Read current map selection mode from the URL</li>
+<li>Allow location selection by map click or geolocation</li>
+<li>Emit events to the parent component for coordinate selection</li>
+<li>Navigate to the appropriate pin creation flow</li>
+</ul>
+
+    </p>
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="../interfaces/SimplePopup.html" target="_self" >SimplePopup</a></code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-choose-pin-popup</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/common/CommonModule" target="_blank" >CommonModule</a></code>
+                                <code><a href="../components/LoadingSpinnerComponent.html" target="_self" >LoadingSpinnerComponent</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./choose-pin-popup.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./choose-pin-popup.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#errorMessage" >errorMessage</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#geoService" >geoService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#isGettingLocation" >isGettingLocation</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#pinConfigs" >pinConfigs</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#popupController" >popupController</a>
+                            </li>
+                            <li>
+                                <a href="#query" >query</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#route" >route</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                <a href="#selectedLocationMode" >selectedLocationMode</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#urlService" >urlService</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#cancelCreatingPin" >cancelCreatingPin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#chooseOnMap" >chooseOnMap</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#createCatchPin" >createCatchPin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#createInfoPin" >createInfoPin</a>
+                            </li>
+                            <li>
+                                <a href="#createPin" >createPin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#createWarnPin" >createWarnPin</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onCreateByGeolocation" >onCreateByGeolocation</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#coords" >coords</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#requestGeoOnMap" >requestGeoOnMap</a>
+                            </li>
+                            <li>
+                                <a href="#requestPickOnMap" >requestPickOnMap</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="coords"></a>
+                        <b>coords</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#Coords" target="_self" >Coords | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:64</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Coordinates currently selected for pin creation.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="requestGeoOnMap"></a>
+                        <b>requestGeoOnMap</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:70</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Event emitted when the user chooses geolocation and coordinates are resolved.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="requestPickOnMap"></a>
+                        <b>requestPickOnMap</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:67</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Event emitted when the user chooses to pick coordinates directly on the map.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelCreatingPin"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>cancelCreatingPin</b></span>
+                        <a href="#cancelCreatingPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>cancelCreatingPin()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="151"
+                                    class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:151</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Closes the popup without creating a pin.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="chooseOnMap"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>chooseOnMap</b></span>
+                        <a href="#chooseOnMap"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>chooseOnMap()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="142"
+                                    class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:142</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Enables map-based coordinate selection.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createCatchPin"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>createCatchPin</b></span>
+                        <a href="#createCatchPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createCatchPin()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="225"
+                                    class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:225</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigates to the catch pin creation flow using the selected coordinates.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createInfoPin"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>createInfoPin</b></span>
+                        <a href="#createInfoPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createInfoPin()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="207"
+                                    class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:207</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigates to the information pin creation flow using the selected coordinates.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createPin"></a>
+                    <span class="name">
+                        <span ><b>createPin</b></span>
+                        <a href="#createPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createPin(kind: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="160"
+                                    class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:160</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Routes the creation request to the correct pin type flow.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>kind</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Pin type identifier</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createWarnPin"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>createWarnPin</b></span>
+                        <a href="#createWarnPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createWarnPin()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="187"
+                                    class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:187</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigates to the warning pin creation flow using the selected coordinates.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="75"
+                                    class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initializes the popup state based on the current URL mode.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCreateByGeolocation"></a>
+                    <span class="name">
+                        <span ><b>onCreateByGeolocation</b></span>
+                        <a href="#onCreateByGeolocation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onCreateByGeolocation()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="96"
+                                    class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:96</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Requests the user&#39;s current geolocation and updates the map state.</p>
+<p>Behavior:</p>
+<ul>
+<li>Verifies browser geolocation support</li>
+<li>Requests the current position</li>
+<li>Updates query parameters</li>
+<li>Emits resolved coordinates to the parent component</li>
+</ul>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorMessage"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>errorMessage</b></span>
+                        <a href="#errorMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Error message displayed when location or pin selection fails.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="geoService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>geoService</b></span>
+                        <a href="#geoService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(GeolocationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Service used to access geolocation state.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isGettingLocation"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>isGettingLocation</b></span>
+                        <a href="#isGettingLocation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indicates whether a geolocation request is currently in progress.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinConfigs"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>pinConfigs</b></span>
+                        <a href="#pinConfigs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>PIN_CONFIG</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Pin configuration metadata exposed to the template.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupController"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>popupController</b></span>
+                        <a href="#popupController"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new PopupController(&#x27;choose-pin-popup&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Controller used to manage the popup open and close state.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="query"></a>
+                    <span class="name">
+                        <span ><b>query</b></span>
+                        <a href="#query"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.route.snapshot.queryParamMap</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Snapshot of the current query parameter map.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="route"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>route</b></span>
+                        <a href="#route"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ActivatedRoute)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(Router)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedLocationMode"></a>
+                    <span class="name">
+                        <span ><b>selectedLocationMode</b></span>
+                        <a href="#selectedLocationMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Stores the currently selected location selection mode.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="urlService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>urlService</b></span>
+                        <a href="#urlService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(UrlService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/features/map/components/choose-pin-popup/choose-pin-popup.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Service used to parse and validate URL query values.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Component, ElementRef, EventEmitter, inject, Input, Output, signal } from &#x27;@angular/core&#x27;;
+import { ActivatedRoute, RouteConfigLoadEnd, Router, RouterLinkActive } from &#x27;@angular/router&#x27;;
+import { UrlService } from &#x27;@gofish/features/map/services/url.service&#x27;;
+import { PopupController } from &#x27;@gofish/shared/core/popup-controller&#x27;;
+import { ClickOutsideDirective } from &#x27;@gofish/shared/directives/click-outside.directive&#x27;;
+import { Coords } from &#x27;@gofish/shared/models/coords.model&#x27;;
+import { PinKind } from &#x27;@gofish/shared/models/pin.model&#x27;;
+import { SimplePopup } from &#x27;@gofish/shared/models/popup.model&#x27;;
+import { GeolocationService } from &#x27;@gofish/shared/services/geolocation.service&#x27;;
+import { LngLat } from &#x27;mapbox-gl&#x27;;
+import { isArrayLike } from &#x27;rxjs/internal/util/isArrayLike&#x27;;
+import { LoadingSpinnerComponent } from &quot;@gofish/shared/components/loading-spinner/loading-spinner.component&quot;;
+import { PIN_CONFIG } from &#x27;@gofish/shared/constants&#x27;;
+import { K } from &#x27;@angular/cdk/keycodes&#x27;;
+
+/**
+ * Popup component used to choose how a new pin location should be selected
+ * and which pin type should be created.
+ *
+ * Responsibilities:
+ * - Read current map selection mode from the URL
+ * - Allow location selection by map click or geolocation
+ * - Emit events to the parent component for coordinate selection
+ * - Navigate to the appropriate pin creation flow
+ */
+@Component({
+  selector: &#x27;app-choose-pin-popup&#x27;,
+  imports: [CommonModule, LoadingSpinnerComponent],
+  templateUrl: &#x27;./choose-pin-popup.component.html&#x27;,
+  styleUrl: &#x27;./choose-pin-popup.component.css&#x27;,
+})
+export class ChoosePinPopupComponent implements SimplePopup {
+  /** Controller used to manage the popup open and close state. */
+  readonly popupController &#x3D; new PopupController(&#x27;choose-pin-popup&#x27;);
+
+  private readonly router &#x3D; inject(Router);
+  private readonly route &#x3D; inject(ActivatedRoute);
+
+  /** Pin configuration metadata exposed to the template. */
+  protected readonly pinConfigs &#x3D; PIN_CONFIG;
+
+  /** Service used to access geolocation state. */
+  public readonly geoService &#x3D; inject(GeolocationService);
+
+  /** Service used to parse and validate URL query values. */
+  public readonly urlService &#x3D; inject(UrlService);
+
+  /** Indicates whether a geolocation request is currently in progress. */
+  protected isGettingLocation &#x3D; false;
+
+  /** Stores the currently selected location selection mode. */
+  selectedLocationMode &#x3D; &#x27;&#x27;;
+
+  /** Snapshot of the current query parameter map. */
+  query &#x3D; this.route.snapshot.queryParamMap;
+
+  /** Error message displayed when location or pin selection fails. */
+  public errorMessage &#x3D; &#x27;&#x27;;
+
+  /** Coordinates currently selected for pin creation. */
+  @Input() coords: Coords | null &#x3D; null;
+
+  /** Event emitted when the user chooses to pick coordinates directly on the map. */
+  @Output() requestPickOnMap &#x3D; new EventEmitter&lt;void&gt;();
+
+  /** Event emitted when the user chooses geolocation and coordinates are resolved. */
+  @Output() requestGeoOnMap &#x3D; new EventEmitter&lt;Coords&gt;();
+
+  /**
+   * Initializes the popup state based on the current URL mode.
+   */
+  ngOnInit() {
+    const urlValues &#x3D; this.urlService.getUrlValues(this.query);
+
+    if (urlValues?.mode &#x3D;&#x3D;&#x3D; &#x27;pick&#x27;) {
+      this.selectedLocationMode &#x3D; &#x27;pick&#x27;;
+    }
+
+    if (urlValues?.mode &#x3D;&#x3D;&#x3D; &#x27;geo&#x27;) {
+      this.selectedLocationMode &#x3D; &#x27;geo&#x27;;
+    }
+  }
+
+  /**
+   * Requests the user&#x27;s current geolocation and updates the map state.
+   *
+   * Behavior:
+   * - Verifies browser geolocation support
+   * - Requests the current position
+   * - Updates query parameters
+   * - Emits resolved coordinates to the parent component
+   */
+  onCreateByGeolocation() {
+    this.selectedLocationMode &#x3D; &#x27;geo&#x27;;
+    this.errorMessage &#x3D; &#x27;&#x27;;
+
+    if (!navigator.geolocation) {
+      this.errorMessage &#x3D; &#x27;Geolocation not supported.&#x27;;
+      return;
+    }
+
+    this.isGettingLocation &#x3D; true;
+
+    navigator.geolocation.getCurrentPosition(
+      (position) &#x3D;&gt; {
+        const lat &#x3D; position.coords.latitude;
+        const lng &#x3D; position.coords.longitude;
+        const zoom &#x3D; Number(this.query.get(&#x27;z&#x27;));
+
+        this.router.navigate([&#x27;/map&#x27;], {
+          queryParams: {
+            lat,
+            lng,
+            z: zoom,
+            mode: &#x27;geo&#x27;
+          },
+          queryParamsHandling: &#x27;merge&#x27;,
+          replaceUrl: true
+        });
+
+        this.requestGeoOnMap.emit({
+          longitude: lng,
+          latitude: lat
+        });
+
+        this.isGettingLocation &#x3D; false;
+      },
+      () &#x3D;&gt; {
+        this.errorMessage &#x3D; &#x27;Unable to get your current location.&#x27;;
+        this.isGettingLocation &#x3D; false;
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }
+
+  /**
+   * Enables map-based coordinate selection.
+   */
+  public chooseOnMap() {
+    this.errorMessage &#x3D; &#x27;&#x27;;
+    this.selectedLocationMode &#x3D; &#x27;pick&#x27;;
+    this.requestPickOnMap.emit();
+  }
+
+  /**
+   * Closes the popup without creating a pin.
+   */
+  public cancelCreatingPin() {
+    this.popupController.close();
+  }
+
+  /**
+   * Routes the creation request to the correct pin type flow.
+   *
+   * @param kind Pin type identifier
+   */
+  createPin(kind: string) {
+    if (!this.coords) {
+      this.errorMessage &#x3D; &#x27;Coordinates not selected.&#x27;;
+      return;
+    }
+
+    switch (kind) {
+      case &#x27;catch&#x27;: {
+        this.createCatchPin();
+        break;
+      }
+      case &#x27;information&#x27;: {
+        this.createInfoPin();
+        break;
+      }
+      case &#x27;warning&#x27;: {
+        this.createWarnPin();
+        break;
+      }
+      default:
+        console.log(&#x27;Unknown type&#x27;);
+    }
+  }
+
+  /**
+   * Navigates to the warning pin creation flow using the selected coordinates.
+   */
+  private createWarnPin() {
+    if (!this.coords) {
+      this.errorMessage &#x3D; &#x27;Coordinates not selected.&#x27;;
+      return;
+    }
+
+    console.log(this.coords);
+
+    this.router.navigate([&#x27;create-warn-pin&#x27;], {
+      relativeTo: this.route, // pra mostrar apartir do url atual
+      queryParams: {
+        sLat: this.coords.latitude,
+        sLng: this.coords.longitude
+      }
+    });
+  }
+
+  /**
+   * Navigates to the information pin creation flow using the selected coordinates.
+   */
+  private createInfoPin() {
+    if (!this.coords) {
+      this.errorMessage &#x3D; &#x27;Coordinates not selected.&#x27;;
+      return;
+    }
+
+    this.router.navigate([&#x27;create-info-pin&#x27;], {
+      relativeTo: this.route,
+      queryParams: {
+        sLat: this.coords.latitude,
+        sLng: this.coords.longitude
+      }
+    });
+  }
+
+  /**
+   * Navigates to the catch pin creation flow using the selected coordinates.
+   */
+  private createCatchPin() {
+    if (!this.coords) {
+      this.errorMessage &#x3D; &#x27;Coordinates not selected.&#x27;;
+      return;
+    }
+
+    this.router.navigate([&#x27;create-catch-pin&#x27;], {
+      relativeTo: this.route,
+      queryParams: {
+        sLat: this.coords.latitude,
+        sLng: this.coords.longitude
+      }
+    });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;choose-pin-popup-container&quot; data-testid&#x3D;&quot;choose-pin-popup&quot;&gt;
+
+  &lt;!-- Seção de seleção de localização --&gt;
+  &lt;!-- Botões de escolha de localização --&gt;
+  &lt;div class&#x3D;&quot;gf-p-16&quot;&gt;
+    &lt;p class&#x3D;&quot;gf-text-sm gf-mb-6&quot;&gt;First select how you want to place you pin&lt;/p&gt;
+    &lt;div class&#x3D;&quot;map-placement-strategy-container d-flex flex-row gf-gap-8 pin-types-showcase gf-justify-between&quot;&gt;
+      &lt;div class&#x3D;&quot;d-flex flex-column align-items-center gf-gap-4 pin-type-item gf-w-100&quot; (click)&#x3D;&quot;onCreateByGeolocation()&quot;
+        title&#x3D;&quot;Create pin at current location&quot; data-testid&#x3D;&quot;choose-location-geo&quot;&gt;
+        &lt;button class&#x3D;&quot;modal-info-box location-toggle-btn&quot; [class.active]&#x3D;&quot;selectedLocationMode &#x3D;&#x3D;&#x3D; &#x27;geo&#x27;&quot;&gt;
+          Geocation
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;d-flex flex-column align-items-center gf-gap-4 pin-type-item gf-w-100&quot; (click)&#x3D;&quot;chooseOnMap()&quot;
+        title&#x3D;&quot;Click anywhere on the map to set coordinates&quot; data-testid&#x3D;&quot;choose-location-map&quot;&gt;
+        &lt;button class&#x3D;&quot;modal-info-box location-toggle-btn&quot; [class.active]&#x3D;&quot;selectedLocationMode &#x3D;&#x3D;&#x3D; &#x27;pick&#x27;&quot;&gt;
+          Pick
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;inline-placement-info-container&quot;&gt;
+      &lt;div class&#x3D;&quot;inline-placement-info&quot;&gt;
+        &lt;span title&#x3D;&quot;Uses your device&#x27;s current GPS location to automatically determine the coordinates for your pin. Make sure location services are enabled on your device.&quot;&gt;
+          &lt;svg class&#x3D;&quot;info-icon&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot;/&gt;&lt;path d&#x3D;&quot;M12 16v-4&quot;/&gt;&lt;path d&#x3D;&quot;M12 8h.01&quot;/&gt;&lt;/svg&gt;
+        &lt;/span&gt;
+        &lt;small class&#x3D;&quot;info-text&quot;&gt;
+          &lt;span class&#x3D;&quot;info-key&quot;&gt;{{ &#x27;Geolocation:&#x27; }}&lt;/span&gt;
+          {{ &#x27;Uses you device current location&#x27; }}
+        &lt;/small&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;inline-placement-info&quot;&gt;
+        &lt;span title&#x3D;&quot;After selecting this option, click anywhere on the map to choose exactly where you want to place your pin. You can click again to reposition it before confirming.&quot;&gt;
+          &lt;svg class&#x3D;&quot;info-icon&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot;/&gt;&lt;path d&#x3D;&quot;M12 16v-4&quot;/&gt;&lt;path d&#x3D;&quot;M12 8h.01&quot;/&gt;&lt;/svg&gt;
+        &lt;/span&gt;
+        &lt;small class&#x3D;&quot;info-text&quot;&gt;
+          &lt;span class&#x3D;&quot;info-key&quot;&gt;{{ &#x27;Pick:&#x27; }}&lt;/span&gt;
+          {{ &#x27;Tap the map to place your pin&#x27; }}
+        &lt;/small&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  @if ( errorMessage.length &gt; 0 ) {
+    &lt;div class&#x3D;&quot;gf-p-16 gf-pt-0&quot;&gt;
+      &lt;div class&#x3D;&quot;error-container&quot;&gt;
+        {{ errorMessage }}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  } @else if (isGettingLocation) {
+    &lt;div class&#x3D;&quot;gf-p-16 gf-pt-0&quot;&gt;
+      &lt;gf-loading-spinner&gt;&lt;/gf-loading-spinner&gt;
+    &lt;/div&gt;
+  } @else if (coords) {
+    &lt;div class&#x3D;&quot;d-flex flex-column gf-p-16 gf-pt-0&quot; data-testid&#x3D;&quot;selected-coords&quot;&gt;
+      &lt;small class&#x3D;&quot;gf-m-0&quot;&gt;Geolocation&lt;/small&gt;
+      &lt;div class&#x3D;&quot;d-flex gf-items-stretch gf-gap-4 coords-div&quot;&gt;
+        &lt;div class&#x3D;&quot;modal-info-box&quot;&gt;
+          &lt;small class&#x3D;&quot;coordinates-title&quot;&gt;Latitude&lt;/small&gt;
+          &lt;p class&#x3D;&quot;coordinates-text&quot;&gt;
+            {{ coords.latitude | number:&#x27;1.5&#x27; }}
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;modal-info-box&quot;&gt;
+          &lt;small class&#x3D;&quot;coordinates-title&quot;&gt;Longitude&lt;/small&gt;
+          &lt;p class&#x3D;&quot;coordinates-text&quot;&gt;
+            {{ coords.longitude | number:&#x27;1.5&#x27; }}
+          &lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;gf-modal-separator-no-margin&quot;&gt;&lt;/div&gt;
+    &lt;!-- Seção de tipos de pin --&gt;
+    &lt;div class&#x3D;&quot;gf-p-16&quot;&gt;
+      &lt;p class&#x3D;&quot;gf-text-sm gf-mb-6&quot;&gt;Now choose your pin kind&lt;/p&gt;
+      &lt;div class&#x3D;&quot;d-flex flex-row gf-gap-8 pin-types-showcase gf-justify-stretch gf-w-100&quot;&gt;
+        @for (config of pinConfigs; track config.kind) {
+          &lt;div class&#x3D;&quot;d-flex flex-column align-items-center gf-gap-4 gf-w-100 pin-type-item&quot; (click)&#x3D;&quot;createPin(config.kindString.toLowerCase())&quot; [attr.data-testid]&#x3D;&quot;&#x27;pin-kind-&#x27; + config.kindString.toLowerCase()&quot;&gt;
+            &lt;button class&#x3D;&quot;pin-img-btn&quot; [style.--pin-icon]&#x3D;&quot;&#x27;url(&#x27; + config.iconUrl + &#x27;)&#x27;&quot; [style.border-color]&#x3D;&quot;config.color&quot;&gt;&lt;/button&gt;
+            &lt;label class&#x3D;&quot;pin-name&quot;&gt;{{ config.kindString }}&lt;/label&gt;
+          &lt;/div&gt;
+        }
+      &lt;/div&gt;
+    &lt;/div&gt;
+  }
+
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="choose-pin-popup-container" data-testid="choose-pin-popup">  <!-- Seção de seleção de localização -->  <!-- Botões de escolha de localização -->  <div class="gf-p-16">    <p class="gf-text-sm gf-mb-6">First select how you want to place you pin</p>    <div class="map-placement-strategy-container d-flex flex-row gf-gap-8 pin-types-showcase gf-justify-between">      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item gf-w-100" (click)="onCreateByGeolocation()"        title="Create pin at current location" data-testid="choose-location-geo">        <button class="modal-info-box location-toggle-btn" [class.active]="selectedLocationMode === \'geo\'">          Geocation        </button>      </div>      <div class="d-flex flex-column align-items-center gf-gap-4 pin-type-item gf-w-100" (click)="chooseOnMap()"        title="Click anywhere on the map to set coordinates" data-testid="choose-location-map">        <button class="modal-info-box location-toggle-btn" [class.active]="selectedLocationMode === \'pick\'">          Pick        </button>      </div>    </div>    <div class="inline-placement-info-container">      <div class="inline-placement-info">        <span title="Uses your device\'s current GPS location to automatically determine the coordinates for your pin. Make sure location services are enabled on your device.">          <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>        </span>        <small class="info-text">          <span class="info-key">{{ \'Geolocation:\' }}</span>          {{ \'Uses you device current location\' }}        </small>      </div>      <div class="inline-placement-info">        <span title="After selecting this option, click anywhere on the map to choose exactly where you want to place your pin. You can click again to reposition it before confirming.">          <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>        </span>        <small class="info-text">          <span class="info-key">{{ \'Pick:\' }}</span>          {{ \'Tap the map to place your pin\' }}        </small>      </div>    </div>  </div>  @if ( errorMessage.length > 0 ) {    <div class="gf-p-16 gf-pt-0">      <div class="error-container">        {{ errorMessage }}      </div>    </div>  } @else if (isGettingLocation) {    <div class="gf-p-16 gf-pt-0">      <gf-loading-spinner></gf-loading-spinner>    </div>  } @else if (coords) {    <div class="d-flex flex-column gf-p-16 gf-pt-0" data-testid="selected-coords">      <small class="gf-m-0">Geolocation</small>      <div class="d-flex gf-items-stretch gf-gap-4 coords-div">        <div class="modal-info-box">          <small class="coordinates-title">Latitude</small>          <p class="coordinates-text">            {{ coords.latitude | number:\'1.5\' }}          </p>        </div>        <div class="modal-info-box">          <small class="coordinates-title">Longitude</small>          <p class="coordinates-text">            {{ coords.longitude | number:\'1.5\' }}          </p>        </div>      </div>    </div>    <div class="gf-modal-separator-no-margin"></div>    <!-- Seção de tipos de pin -->    <div class="gf-p-16">      <p class="gf-text-sm gf-mb-6">Now choose your pin kind</p>      <div class="d-flex flex-row gf-gap-8 pin-types-showcase gf-justify-stretch gf-w-100">        @for (config of pinConfigs; track config.kind) {          <div class="d-flex flex-column align-items-center gf-gap-4 gf-w-100 pin-type-item" (click)="createPin(config.kindString.toLowerCase())" [attr.data-testid]="\'pin-kind-\' + config.kindString.toLowerCase()">            <button class="pin-img-btn" [style.--pin-icon]="\'url(\' + config.iconUrl + \')\'" [style.border-color]="config.color"></button>            <label class="pin-name">{{ config.kindString }}</label>          </div>        }      </div>    </div>  }</div></div>'
+    var COMPONENTS = [{'name': 'AboutComponent', 'selector': 'app-about'},{'name': 'AdminPopoverComponent', 'selector': 'gf-admin-popover'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AsyncButtonComponent', 'selector': 'app-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'gf-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'button[gfAsyncBtn]'},{'name': 'AuthCallbackComponent', 'selector': 'app-auth-callback'},{'name': 'CatchPinModalComponent', 'selector': 'app-catch-pin-modal'},{'name': 'ChangeBirthdateModalComponent', 'selector': 'app-change-birthdate-modal'},{'name': 'ChangeDisplaynameModalComponent', 'selector': 'app-change-displayname-modal'},{'name': 'ChangeEmailModalComponent', 'selector': 'gf-change-email-modal'},{'name': 'ChangeFirstnameModalComponent', 'selector': 'app-change-firstname-modal'},{'name': 'ChangeLastnameModalComponent', 'selector': 'app-change-lastname-modal'},{'name': 'ChangePhoneModalComponent', 'selector': 'app-change-phone-modal'},{'name': 'ChangeUsernameModalComponent', 'selector': 'app-change-username-modal'},{'name': 'ChoosePinPopupComponent', 'selector': 'app-choose-pin-popup'},{'name': 'ClusterDetailsComponent', 'selector': 'app-cluster-details'},{'name': 'ConfirmDeletionModalComponent', 'selector': 'app-confirm-deletion-modal'},{'name': 'DeleteCommentComponent', 'selector': 'gf-delete-comment'},{'name': 'DeleteGroupComponent', 'selector': 'gf-delete-group'},{'name': 'DeletePinComponent', 'selector': 'app-delete-pin'},{'name': 'DeletePostComponent', 'selector': 'gf-delete-post'},{'name': 'DiscoverComponent', 'selector': 'app-discover'},{'name': 'EnumComponent', 'selector': 'app-enum'},{'name': 'ExitGroupComponent', 'selector': 'gf-exit-group'},{'name': 'FooterComponent', 'selector': 'gf-footer'},{'name': 'ForumComponent', 'selector': 'app-forum'},{'name': 'ForumPostComponent', 'selector': 'app-forum-post'},{'name': 'FriendsComponent', 'selector': 'app-friends'},{'name': 'FriendshipListCardComponent', 'selector': 'gf-friendship-list-card'},{'name': 'FriendsListComponent', 'selector': 'app-friends-list'},{'name': 'FromFriendsComponent', 'selector': 'app-from-friends'},{'name': 'GeneralComponent', 'selector': 'app-general'},{'name': 'GfCardCommentPreviewComponent', 'selector': 'gf-gf-card-comment-preview'},{'name': 'GfCardPinPreviewComponent', 'selector': 'app-gf-card-pin-preview'},{'name': 'GfCardQuickAccessComponent', 'selector': 'app-gf-card-quick-access'},{'name': 'GfCardQuickViewComponent', 'selector': 'app-gf-card-quick-view'},{'name': 'GroupCreateComponent', 'selector': 'app-group-create'},{'name': 'GroupInviteComponent', 'selector': 'gf-group-invite'},{'name': 'GroupInvitesCardComponent', 'selector': 'gf-group-invites-card'},{'name': 'GroupInvitesListComponent', 'selector': 'gf-group-invites-list'},{'name': 'GroupListCardComponent', 'selector': 'gf-group-list-card'},{'name': 'GroupMemberSettingsPopoverComponent', 'selector': 'gf-group-member-settings-popover'},{'name': 'GroupPopoverComponent', 'selector': 'gf-group-popover'},{'name': 'GroupPostsPlaceholderComponent', 'selector': 'app-group-posts-placeholder'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsListCardComponent', 'selector': 'gf-groups-list-card'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'HeaderActionsComponent', 'selector': 'gf-header-actions'},{'name': 'HeaderComponent', 'selector': 'gf-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'InfoPinModalComponent', 'selector': 'app-info-pin-modal'},{'name': 'InviteToGroupsModalComponent', 'selector': 'gf-invite-to-groups-modal'},{'name': 'LeaderboardComponent', 'selector': 'gf-leaderboard'},{'name': 'LoadingErrorModalComponent', 'selector': 'gf-loading-error-modal'},{'name': 'LoadingSpinnerComponent', 'selector': 'gf-loading-spinner'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MembersGroupComponent', 'selector': 'gf-members-group'},{'name': 'MyGroupsComponent', 'selector': 'app-my-groups'},{'name': 'NavPopoverComponent', 'selector': 'gf-nav-popover'},{'name': 'OverviewComponent', 'selector': 'app-overview'},{'name': 'PersonalDataComponent', 'selector': 'app-personal-data'},{'name': 'PinDetailPanelComponent', 'selector': 'app-pin-detail-panel'},{'name': 'PinsAvgPublishedChart', 'selector': 'gf-pins-average-published-chart'},{'name': 'PinsComponent', 'selector': 'app-pins'},{'name': 'PinsPerWeekComponent', 'selector': 'gf-pins-per-week'},{'name': 'PostCommentsComponent', 'selector': 'app-post-comments'},{'name': 'PostIdPlaceholderComponent', 'selector': 'app-post-id-placeholder'},{'name': 'PrivacyPolicyComponent', 'selector': 'app-privacy-policy'},{'name': 'ProfileActionsPopoverComponent', 'selector': 'gf-profile-actions-popover'},{'name': 'ProfileCatchPinCardComponent', 'selector': 'gf-profile-catch-pin-card'},{'name': 'ProfileShellComponent', 'selector': 'app-profile'},{'name': 'ProfileShowMoreModalComponent', 'selector': 'gf-profile-show-more-modal'},{'name': 'ReportCommentComponent', 'selector': 'gf-report-comment'},{'name': 'ReportedCommentPageComponent', 'selector': 'gf-reported-comment-page'},{'name': 'ReportedCommentsComponent', 'selector': 'gf-reported-comments'},{'name': 'ReportedPinPageComponent', 'selector': 'gf-reported-pin-page'},{'name': 'ReportedPinsComponent', 'selector': 'gf-reported-pins'},{'name': 'ReportPinComponent', 'selector': 'gf-report'},{'name': 'RequestsListComponent', 'selector': 'app-requests-list'},{'name': 'ResetPasswordComponent', 'selector': 'gf-reset-password'},{'name': 'SearchComponent', 'selector': 'gf-search'},{'name': 'SecurityComponent', 'selector': 'app-security'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SetupTotpComponent', 'selector': 'app-setup-totp'},{'name': 'SigninComponent', 'selector': 'app-signin'},{'name': 'SigninVerifyComponent', 'selector': 'app-signin-verify'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'SmallFriendshipCarouselCardComponent', 'selector': 'gf-small-friendship-carousel-card'},{'name': 'SmallGroupCarouselCardComponent', 'selector': 'gf-small-group-carousel-card'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'StatsHomeComponent', 'selector': 'app-home'},{'name': 'StatsReportsComponent', 'selector': 'app-stats-reports'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'TermsOfServiceComponent', 'selector': 'app-terms-of-service'},{'name': 'TotpValidationModalComponent', 'selector': 'app-totp-validation-modal'},{'name': 'UserCardComponent', 'selector': 'app-user-card'},{'name': 'UserHelpBoxComponent', 'selector': 'gf-user-help-box'},{'name': 'UserPopoverComponent', 'selector': 'gf-user-popover'},{'name': 'UserRankIconComponent', 'selector': 'gf-user-rank-icon'},{'name': 'UserSatisfactionIndexComponent', 'selector': 'gf-user-satisfaction-index'},{'name': 'UsersChartComponent', 'selector': 'gf-users-chart'},{'name': 'UsersListCardComponent', 'selector': 'gf-users-list-card'},{'name': 'UsersListComponent', 'selector': 'gf-users-list'},{'name': 'UserTitleComponent', 'selector': 'gf-user-title'},{'name': 'VerifyEmailModalComponent', 'selector': 'gf-verify-email-modal'},{'name': 'VerifyTwofaContainerComponent', 'selector': 'gf-verify-twofa-container'},{'name': 'WarnPinModalComponent', 'selector': 'app-warn-pin-modal'}];
+    var DIRECTIVES = [{'name': 'ClickOutsideDirective', 'selector': '[clickOutside]'},{'name': 'LettersOnlyDirective', 'selector': '[appLettersOnly]'},{'name': 'MouseFollowDirective', 'selector': '[gfTooltip]'},{'name': 'NumbersOnlyDirective', 'selector': '[appNumbersOnly]'}];
+    var ACTUAL_COMPONENT = {'name': 'ChoosePinPopupComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ChoosePinPopupComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

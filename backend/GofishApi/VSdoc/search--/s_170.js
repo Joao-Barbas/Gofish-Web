@@ -1,0 +1,1 @@
+search_result['170']=["topic_0000000000000072.html","UserController.GetGlobalLeaderboard Method","Obtém o leaderboard global dos 100 utilizadores com mais catch points,\r\nincluindo a posição do utilizador autenticado mesmo que esteja fora do top 100."];

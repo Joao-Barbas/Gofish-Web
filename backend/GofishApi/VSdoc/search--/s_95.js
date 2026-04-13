@@ -1,0 +1,1 @@
+search_result['95']=["topic_0000000000000040.html","RatingsController Class","/// Controlador responsável pela gestão de ratings submetidos pelos utilizadores.\r\n/// Permite criar, atualizar, consultar e remover avaliações.\r\n///"];

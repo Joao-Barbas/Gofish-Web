@@ -1,0 +1,1 @@
+search_result['534']=["topic_00000000000001B2.html","Rating.Stars Property","/// Classificação atribuída pelo utilizador (entre 1 e 5).\r\n    ///"];

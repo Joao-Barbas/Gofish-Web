@@ -1,0 +1,1 @@
+search_result['201']=["topic_0000000000000087.html","UserSecurityController Constructor","/// Inicializa uma nova instância do controlador de segurança do utilizador.\r\n    ///"];

@@ -1,0 +1,1 @@
+search_result['502']=["topic_000000000000019C.html","InfoPin.Seabed Property","/// Tipo de fundo (ex: rochoso, arenoso, etc.).\r\n    ///"];

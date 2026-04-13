@@ -1,0 +1,3207 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  MapComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/map/map.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/AfterViewInit" target="_blank" >AfterViewInit</a></code>
+                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-map</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/common/CommonModule" target="_blank" >CommonModule</a></code>
+                                <code><a href="https://angular.io/api/forms/FormsModule" target="_blank" >FormsModule</a></code>
+                                <code><a href="../components/PinDetailPanelComponent.html" target="_self" >PinDetailPanelComponent</a></code>
+                                <code><a href="../components/ChoosePinPopupComponent.html" target="_self" >ChoosePinPopupComponent</a></code>
+                                <code><a href="https://angular.io/api/router/RouterOutlet" target="_blank" >RouterOutlet</a></code>
+                            <code>NgxSonnerToaster</code>
+                                <code><a href="../components/ClusterDetailsComponent.html" target="_self" >ClusterDetailsComponent</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./map.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./map.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#allPins" >allPins</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#geoService" >geoService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#map" >map</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#mapInteractions" >mapInteractions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#mapLayers" >mapLayers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#markerRegistry" >markerRegistry</a>
+                            </li>
+                            <li>
+                                <a href="#move" >move</a>
+                            </li>
+                            <li>
+                                <a href="#pickingOnMap" >pickingOnMap</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#pinService" >pinService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#popupService" >popupService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#previewMarkerService" >previewMarkerService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#querySubscription" >querySubscription</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#queryValues" >queryValues</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#route" >route</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                <a href="#selectedCoords" >selectedCoords</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#selectedPin" >selectedPin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#selectedPins" >selectedPins</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#urlService" >urlService</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#applyModeFromUrl" >applyModeFromUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#applyUrlState" >applyUrlState</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#clearPreviewAndSelection" >clearPreviewAndSelection</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#disablePickMode" >disablePickMode</a>
+                            </li>
+                            <li>
+                                <a href="#enablePickMode" >enablePickMode</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getInitialView" >getInitialView</a>
+                            </li>
+                            <li>
+                                <a href="#goToCoords" >goToCoords</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initMap" >initMap</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#loadPinsInViewport" >loadPinsInViewport</a>
+                            </li>
+                            <li>
+                                <a href="#ngAfterViewInit" >ngAfterViewInit</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onGeo" >onGeo</a>
+                            </li>
+                            <li>
+                                <a href="#onMapClick" >onMapClick</a>
+                            </li>
+                            <li>
+                                <a href="#onPopupCancel" >onPopupCancel</a>
+                            </li>
+                            <li>
+                                <a href="#onPopupCancelPinOverlay" >onPopupCancelPinOverlay</a>
+                            </li>
+                            <li>
+                                <a href="#onPopupCancelPinPreview" >onPopupCancelPinPreview</a>
+                            </li>
+                            <li>
+                                <a href="#onRequestPickOnMap" >onRequestPickOnMap</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#registerMapEvents" >registerMapEvents</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#requestGeolocation" >requestGeolocation</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#setSelectedCoords" >setSelectedCoords</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#toggleCreatePinOverlay" >toggleCreatePinOverlay</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#togglePinPreview" >togglePinPreview</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#togglePopup" >togglePopup</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updateUrl" >updateUrl</a>
+                            </li>
+                            <li>
+                                <a href="#zoomIn" >zoomIn</a>
+                            </li>
+                            <li>
+                                <a href="#zoomOut" >zoomOut</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#getGeolocationState" >getGeolocationState</a>
+                                </li>
+                                <li>
+                                    <a href="#isGeolocationDenied" >isGeolocationDenied</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="applyModeFromUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>applyModeFromUrl</b></span>
+                        <a href="#applyModeFromUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>applyModeFromUrl()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="224"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:224</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Applies interaction mode based on URL (pick, picked, geo).</p>
+<p>Side effects:</p>
+<ul>
+<li>Opens popups</li>
+<li>Updates preview marker</li>
+<li>Enables/disables pick mode</li>
+</ul>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="applyUrlState"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>applyUrlState</b></span>
+                        <a href="#applyUrlState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>applyUrlState()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="197"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:197</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Applies application state based on current URL query parameters.
+Handles selected coordinates and interaction modes.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearPreviewAndSelection"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>clearPreviewAndSelection</b></span>
+                        <a href="#clearPreviewAndSelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>clearPreviewAndSelection()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="417"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:417</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Clears preview marker and selected coordinates.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="disablePickMode"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>disablePickMode</b></span>
+                        <a href="#disablePickMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>disablePickMode()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="350"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:350</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Disables pick mode and resets cursor.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="enablePickMode"></a>
+                    <span class="name">
+                        <span ><b>enablePickMode</b></span>
+                        <a href="#enablePickMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>enablePickMode()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="342"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:342</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Activates pick mode (crosshair cursor).</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getInitialView"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getInitialView</b></span>
+                        <a href="#getInitialView"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getInitialView()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="180"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:180</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Determines initial map center and zoom based on URL parameters.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>{ center: {}; zoom: any; }</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Object containing center coordinates and zoom level</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToCoords"></a>
+                    <span class="name">
+                        <span ><b>goToCoords</b></span>
+                        <a href="#goToCoords"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goToCoords(coords: <a href="../miscellaneous/typealiases.html#Coords" target="_self">Coords</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="321"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:321</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Moves map to specified coordinates with animation.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>coords</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#Coords" target="_self" >Coords</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Target coordinates</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initMap"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>initMap</b></span>
+                        <a href="#initMap"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initMap()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="124"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:124</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initializes Mapbox map instance with initial view and configuration.</p>
+<p>Side effects:</p>
+<ul>
+<li>Creates map instance</li>
+<li>Registers map layers and interactions</li>
+<li>Applies URL state</li>
+</ul>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadPinsInViewport"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>loadPinsInViewport</b></span>
+                        <a href="#loadPinsInViewport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadPinsInViewport()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="429"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:429</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Loads pins within current map viewport.</p>
+<p>Side effects:</p>
+<ul>
+<li>Updates pins state</li>
+<li>Refreshes map layers</li>
+</ul>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewInit"></a>
+                    <span class="name">
+                        <span ><b>ngAfterViewInit</b></span>
+                        <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initializes the map after the view is rendered.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="109"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:109</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Cleans up subscriptions, markers, and map instance.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="85"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:85</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Subscribes to query parameters and validates URL state.
+Applies URL-driven state when map is ready.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onGeo"></a>
+                    <span class="name">
+                        <span ><b>onGeo</b></span>
+                        <a href="#onGeo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onGeo(coords: <a href="../miscellaneous/typealiases.html#Coords" target="_self">Coords</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="301"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:301</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles geolocation result and updates selected coordinates.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>coords</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#Coords" target="_self" >Coords</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>User geolocation coordinates</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onMapClick"></a>
+                    <span class="name">
+                        <span ><b>onMapClick</b></span>
+                        <a href="#onMapClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onMapClick(e: mapboxgl.MapMouseEvent)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="281"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:281</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles map click events when pick mode is enabled.</p>
+<p>Side effects:</p>
+<ul>
+<li>Updates selected coordinates</li>
+<li>Updates URL</li>
+<li>Disables pick mode</li>
+</ul>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>e</td>
+                                            <td>
+                                                        <code>mapboxgl.MapMouseEvent</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Mapbox mouse event</p>
+<p>Side effects:</p>
+<ul>
+<li>Updates selected coordinates</li>
+<li>Updates URL</li>
+<li>Disables pick mode</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onPopupCancel"></a>
+                    <span class="name">
+                        <span ><b>onPopupCancel</b></span>
+                        <a href="#onPopupCancel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onPopupCancel(key: <a href="../miscellaneous/typealiases.html#PopupKey" target="_self">PopupKey</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="383"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:383</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles popup cancellation and resets selection state.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#PopupKey" target="_self" >PopupKey</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Popup identifier</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onPopupCancelPinOverlay"></a>
+                    <span class="name">
+                        <span ><b>onPopupCancelPinOverlay</b></span>
+                        <a href="#onPopupCancelPinOverlay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onPopupCancelPinOverlay()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="394"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:394</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onPopupCancelPinPreview"></a>
+                    <span class="name">
+                        <span ><b>onPopupCancelPinPreview</b></span>
+                        <a href="#onPopupCancelPinPreview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onPopupCancelPinPreview()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="395"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:395</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onRequestPickOnMap"></a>
+                    <span class="name">
+                        <span ><b>onRequestPickOnMap</b></span>
+                        <a href="#onRequestPickOnMap"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onRequestPickOnMap()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="329"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:329</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Enables map picking mode and updates URL state.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="registerMapEvents"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>registerMapEvents</b></span>
+                        <a href="#registerMapEvents"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>registerMapEvents()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="161"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:161</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Registers map event listeners (move, zoom, click).</p>
+<p>Side effects:</p>
+<ul>
+<li>Updates URL on movement</li>
+<li>Triggers pin loading based on zoom level</li>
+</ul>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="requestGeolocation"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>requestGeolocation</b></span>
+                        <a href="#requestGeolocation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>requestGeolocation()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="267"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:267</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setSelectedCoords"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>setSelectedCoords</b></span>
+                        <a href="#setSelectedCoords"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setSelectedCoords(coords: <a href="../miscellaneous/typealiases.html#Coords" target="_self">Coords</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="406"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:406</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Sets selected coordinates and displays preview marker on map.</p>
+<p>Side effects:</p>
+<ul>
+<li>Updates marker</li>
+<li>Moves map center</li>
+</ul>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>coords</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#Coords" target="_self" >Coords</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Selected coordinates</p>
+<p>Side effects:</p>
+<ul>
+<li>Updates marker</li>
+<li>Moves map center</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleCreatePinOverlay"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>toggleCreatePinOverlay</b></span>
+                        <a href="#toggleCreatePinOverlay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>toggleCreatePinOverlay(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="376"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:376</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="togglePinPreview"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>togglePinPreview</b></span>
+                        <a href="#togglePinPreview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>togglePinPreview(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="377"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:377</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="togglePopup"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>togglePopup</b></span>
+                        <a href="#togglePopup"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>togglePopup(key: <a href="../miscellaneous/typealiases.html#PopupKey" target="_self">PopupKey</a>, event?: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="361"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:361</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Toggles a popup and optionally clears URL state when closing.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#PopupKey" target="_self" >PopupKey</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Popup identifier</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Optional DOM event</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>updateUrl</b></span>
+                        <a href="#updateUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateUrl()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="257"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:257</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Updates URL query parameters with current map position and zoom.</p>
+<p>Side effects:</p>
+<ul>
+<li>Triggers router navigation (replaceUrl)</li>
+</ul>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="zoomIn"></a>
+                    <span class="name">
+                        <span ><b>zoomIn</b></span>
+                        <a href="#zoomIn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>zoomIn()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="313"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:313</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="zoomOut"></a>
+                    <span class="name">
+                        <span ><b>zoomOut</b></span>
+                        <a href="#zoomOut"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>zoomOut()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="314"
+                                    class="link-to-prism">src/app/features/map/map.component.ts:314</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="allPins"></a>
+                    <span class="name">
+                        <span ><b>allPins</b></span>
+                        <a href="#allPins"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;PinDto[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/app/features/map/map.component.ts:74</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="geoService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>geoService</b></span>
+                        <a href="#geoService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(GeolocationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/features/map/map.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="map"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>map</b></span>
+                        <a href="#map"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>mapboxgl.Map</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/features/map/map.component.ts:73</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mapInteractions"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>mapInteractions</b></span>
+                        <a href="#mapInteractions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(MapInteractionsService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/features/map/map.component.ts:66</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mapLayers"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>mapLayers</b></span>
+                        <a href="#mapLayers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(MapLayersService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/features/map/map.component.ts:65</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="markerRegistry"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>markerRegistry</b></span>
+                        <a href="#markerRegistry"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(MarkerRegistryService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/features/map/map.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="move"></a>
+                    <span class="name">
+                        <span ><b>move</b></span>
+                        <a href="#move"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">src/app/features/map/map.component.ts:77</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pickingOnMap"></a>
+                    <span class="name">
+                        <span ><b>pickingOnMap</b></span>
+                        <a href="#pickingOnMap"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/features/map/map.component.ts:68</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>pinService</b></span>
+                        <a href="#pinService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(PinService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/features/map/map.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupService"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>popupService</b></span>
+                        <a href="#popupService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(PopupService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/features/map/map.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="previewMarkerService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>previewMarkerService</b></span>
+                        <a href="#previewMarkerService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(PreviewMarkerService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/features/map/map.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="querySubscription"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>querySubscription</b></span>
+                        <a href="#querySubscription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Subscription</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/app/features/map/map.component.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="queryValues"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>queryValues</b></span>
+                        <a href="#queryValues"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/UrlQuery.html" target="_self" >UrlQuery | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/app/features/map/map.component.ts:76</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="route"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>route</b></span>
+                        <a href="#route"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ActivatedRoute)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/features/map/map.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(Router)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/features/map/map.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedCoords"></a>
+                    <span class="name">
+                        <span ><b>selectedCoords</b></span>
+                        <a href="#selectedCoords"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Coords | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/features/map/map.component.ts:69</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedPin"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>selectedPin</b></span>
+                        <a href="#selectedPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;PinDto | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/app/features/map/map.component.ts:70</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedPins"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>selectedPins</b></span>
+                        <a href="#selectedPins"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;PinDto[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/app/features/map/map.component.ts:71</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="urlService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>urlService</b></span>
+                        <a href="#urlService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(UrlService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/features/map/map.component.ts:64</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getGeolocationState"></a>
+                        <span class="name"><b>getGeolocationState</b><a href="#getGeolocationState"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>getGeolocationState()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/features/map/map.component.ts:78</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isGeolocationDenied"></a>
+                        <span class="name"><b>isGeolocationDenied</b><a href="#isGeolocationDenied"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>isGeolocationDenied()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/app/features/map/map.component.ts:79</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import mapboxgl from &#x27;mapbox-gl&#x27;;
+import { AfterViewInit, Component, inject, OnDestroy, OnInit, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { ActivatedRoute, ParamMap, Router } from &#x27;@angular/router&#x27;;
+import { Subscription } from &#x27;rxjs&#x27;;
+
+import { PinService } from &#x27;@gofish/shared/services/pin.service&#x27;;
+import { PreviewMarkerService } from &#x27;@gofish/features/map/services/preview-marker.service&#x27;;
+import { MarkerRegistryService } from &#x27;@gofish/features/map/services/marker-registry.service&#x27;;
+import { PinDetailPanelComponent } from &#x27;./components/pin-detail-panel/pin-detail-panel.component&#x27;;
+import { PinDto } from &#x27;@gofish/shared/dtos/pin.dto&#x27;;
+import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { Coords } from &#x27;@gofish/shared/models/coords.model&#x27;;
+import { PopupService } from &#x27;@gofish/shared/services/popup.service&#x27;;
+import { ChoosePinPopupComponent } from &#x27;@gofish/features/map/components/choose-pin-popup/choose-pin-popup.component&#x27;;
+import { GeolocationService } from &#x27;@gofish/shared/services/geolocation.service&#x27;;
+import { UrlQuery, UrlService } from &#x27;@gofish/features/map/services/url.service&#x27;;
+import { PopupKey } from &#x27;@gofish/shared/models/popup.model&#x27;;
+import { NgxSonnerToaster } from &#x27;ngx-sonner&#x27;;
+import { RouterOutlet } from &#x27;@angular/router&#x27;;
+
+import { MapLayersService } from &#x27;@gofish/features/map/services/map-layers.service&#x27;;
+import { MapInteractionsService } from &#x27;@gofish/features/map/services/map-interactions.service&#x27;;
+import { ClusterDetailsComponent } from &#x27;@gofish/features/map/components/cluster-details/cluster-details.component&#x27;;
+
+
+const MAPBOX_TOKEN &#x3D; &#x27;pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21uY2NtZjdrMHpsYjJwcXlsNWdpM2pzaSJ9.M0UieuxBdBlA67zriIvU4w&#x27;;
+
+@Component({
+  selector: &#x27;app-map&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    PinDetailPanelComponent,
+    ChoosePinPopupComponent,
+    RouterOutlet,
+    NgxSonnerToaster,
+    ClusterDetailsComponent,
+  ],
+  templateUrl: &#x27;./map.component.html&#x27;,
+  styleUrl: &#x27;./map.component.css&#x27;,
+})
+
+/**
+ * Main interactive map component using Mapbox.
+ *
+ * Responsibilities:
+ * - Initialize and configure the map
+ * - Sync map state with URL query parameters
+ * - Handle user interactions (click, zoom, pick mode)
+ * - Load and render pins dynamically based on viewport
+ */
+export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
+  readonly popupService &#x3D; inject(PopupService);
+  private readonly geoService &#x3D; inject(GeolocationService);
+  private readonly pinService &#x3D; inject(PinService);
+  private readonly previewMarkerService &#x3D; inject(PreviewMarkerService);
+  private readonly markerRegistry &#x3D; inject(MarkerRegistryService);
+  private readonly route &#x3D; inject(ActivatedRoute);
+  private readonly router &#x3D; inject(Router);
+  private readonly urlService &#x3D; inject(UrlService);
+  private readonly mapLayers &#x3D; inject(MapLayersService);
+  private readonly mapInteractions &#x3D; inject(MapInteractionsService);
+
+  pickingOnMap &#x3D; false;
+  selectedCoords &#x3D; signal&lt;Coords | null&gt;(null);
+  protected selectedPin &#x3D; signal&lt;PinDto | null&gt;(null);
+  protected selectedPins &#x3D; signal&lt;PinDto[]&gt;([]);
+
+  private map!: mapboxgl.Map;
+  allPins &#x3D; signal&lt;PinDto[]&gt;([]);
+  private querySubscription?: Subscription;
+  private queryValues: UrlQuery | null &#x3D; null;
+  move: boolean &#x3D; false;
+  public get getGeolocationState() { return this.geoService.state(); }
+  public get isGeolocationDenied() { return this.geoService.isBad(); }
+
+  /**
+   * Subscribes to query parameters and validates URL state.
+   * Applies URL-driven state when map is ready.
+   */
+  ngOnInit(): void {
+    this.querySubscription &#x3D; this.route.queryParamMap.subscribe(paramMap &#x3D;&gt; {
+      if (!this.urlService.isUrlValuesValid(paramMap)) {
+        alert(&#x27;Alerta engracadinho!&#x27;);
+        return;
+      }
+      this.queryValues &#x3D; this.urlService.getUrlValues(paramMap);
+
+      if (this.map &amp;&amp; this.queryValues) {
+        this.applyUrlState();
+      }
+    });
+  }
+
+  /**
+ * Initializes the map after the view is rendered.
+ */
+  ngAfterViewInit(): void {
+    this.initMap();
+  }
+
+  /**
+ * Cleans up subscriptions, markers, and map instance.
+ */
+  ngOnDestroy(): void {
+    this.querySubscription?.unsubscribe();
+    this.previewMarkerService.clear();
+    this.markerRegistry.clear();
+    this.map?.remove();
+  }
+
+  /**
+  * Initializes Mapbox map instance with initial view and configuration.
+  *
+  * Side effects:
+  * - Creates map instance
+  * - Registers map layers and interactions
+  * - Applies URL state
+  */
+  private initMap(): void {
+    const view &#x3D; this.getInitialView();
+    console.log(&#x27;Initial view:&#x27;, view);
+    mapboxgl.accessToken &#x3D; MAPBOX_TOKEN;
+
+    this.map &#x3D; new mapboxgl.Map({
+      container: &#x27;map&#x27;,
+      style: &#x27;mapbox://styles/goncalopro2/cmm4ybep5002p01s2eexw84v1&#x27;,
+      center: [view.center[0], view.center[1]], //[-8.8909328, 38.5260437]
+      zoom: view.zoom,
+      maxZoom: 16,
+      minZoom: 4.5,
+      pitch: 0,
+      bearing: 0,
+    });
+
+    this.map.dragRotate.disable();
+    this.map.touchZoomRotate.disableRotation();
+    this.map.keyboard.disableRotation();
+    this.map.getCanvas().style.cursor &#x3D; &#x27;default&#x27;;
+
+    this.map.on(&#x27;load&#x27;, () &#x3D;&gt; {
+      this.mapLayers.loadPinIcons(this.map);
+      this.mapLayers.updateLayers(this.map, this.allPins);
+      this.mapInteractions.setup(this.map, this.allPins, this.selectedPin, this.selectedPins, () &#x3D;&gt; this.pickingOnMap);
+      this.applyUrlState();
+      this.registerMapEvents();
+    });
+  }
+
+  /**
+ * Registers map event listeners (move, zoom, click).
+ *
+ * Side effects:
+ * - Updates URL on movement
+ * - Triggers pin loading based on zoom level
+ */
+  private registerMapEvents(): void {
+    this.map.on(&#x27;moveend&#x27;, () &#x3D;&gt; {
+      this.updateUrl();
+      if (this.map.getZoom() &gt;&#x3D; 10) this.loadPinsInViewport();
+    });
+
+    this.map.on(&#x27;zoomend&#x27;, () &#x3D;&gt; {
+      this.updateUrl();
+      if (this.map.getZoom() &gt;&#x3D; 10) this.loadPinsInViewport();
+    });
+
+    this.map.on(&#x27;click&#x27;, (e) &#x3D;&gt; this.onMapClick(e));
+  }
+
+  /**
+ * Determines initial map center and zoom based on URL parameters.
+ *
+ * @returns Object containing center coordinates and zoom level
+ */
+  private getInitialView() {
+    const q &#x3D; this.route.snapshot.queryParamMap;
+    const vLat &#x3D; this.urlService.getNumber(q, &#x27;vLat&#x27;);
+    const vLng &#x3D; this.urlService.getNumber(q, &#x27;vLng&#x27;);
+    const z &#x3D; this.urlService.getNumber(q, &#x27;z&#x27;);
+
+
+    return {
+      center: vLat !&#x3D;&#x3D; null &amp;&amp; vLng !&#x3D;&#x3D; null ? [vLng, vLat] as [number, number] : [-8.8909328, 38.5260437],
+      zoom: z ?? 5
+    };
+  }
+
+  /**
+ * Applies application state based on current URL query parameters.
+ * Handles selected coordinates and interaction modes.
+ */
+  private applyUrlState(): void {
+    if (!this.queryValues) return;
+
+    const selectedLng &#x3D; this.route.snapshot.queryParamMap.get(&#x27;sLng&#x27;);
+    const selectedLat &#x3D; this.route.snapshot.queryParamMap.get(&#x27;sLat&#x27;);
+    const hasSelectedCoords &#x3D; selectedLng !&#x3D;&#x3D; null &amp;&amp; selectedLat !&#x3D;&#x3D; null;
+
+    if (hasSelectedCoords) {
+      const lng &#x3D; Number(selectedLng);
+      const lat &#x3D; Number(selectedLat);
+      if (this.urlService.isLngLatValid(lng, lat)) {
+        this.selectedCoords.set({ longitude: lng, latitude: lat });
+      }
+      return;
+    }
+
+    this.applyModeFromUrl();
+  }
+
+  /**
+ * Applies interaction mode based on URL (pick, picked, geo).
+ *
+ * Side effects:
+ * - Opens popups
+ * - Updates preview marker
+ * - Enables/disables pick mode
+ */
+  private applyModeFromUrl(): void {
+    switch (this.queryValues?.mode) {
+      case &#x27;pick&#x27;:
+        this.enablePickMode();
+        this.popupService.open(&#x27;choose-pin-popup&#x27;);
+        this.previewMarkerService.clear();
+        this.selectedCoords.set(null);
+        break;
+      case &#x27;picked&#x27;:
+        this.disablePickMode();
+        this.popupService.open(&#x27;choose-pin-popup&#x27;);
+        this.previewMarkerService.clear();
+        this.previewMarkerService.set(this.map, this.selectedCoords()!.longitude, this.selectedCoords()!.latitude);
+        break;
+      case &#x27;geo&#x27;:
+        this.popupService.open(&#x27;choose-pin-popup&#x27;);
+        this.previewMarkerService.clear();
+        this.previewMarkerService.set(this.map, this.selectedCoords()!.longitude, this.selectedCoords()!.latitude);
+        break;
+      default:
+        this.disablePickMode();
+        this.previewMarkerService.clear();
+        this.selectedCoords.set(null);
+        break;
+    }
+  }
+
+  /**
+ * Updates URL query parameters with current map position and zoom.
+ *
+ * Side effects:
+ * - Triggers router navigation (replaceUrl)
+ */
+  private updateUrl(): void {
+    const center &#x3D; this.map.getCenter();
+    this.router.navigate([], {
+      queryParams: { vLat: center.lat, vLng: center.lng, sLat: null, sLng: null, z: this.map.getZoom() },
+      queryParamsHandling: &#x27;merge&#x27;,
+      replaceUrl: true
+    });
+  }
+
+
+  public requestGeolocation(): void {
+    this.geoService.requestGeolocation();
+  }
+
+  /**
+ * Handles map click events when pick mode is enabled.
+ *
+ * @param e Mapbox mouse event
+ *
+ * Side effects:
+ * - Updates selected coordinates
+ * - Updates URL
+ * - Disables pick mode
+ */
+  onMapClick(e: mapboxgl.MapMouseEvent): void {
+    if (!this.pickingOnMap) return;
+
+    const { lng, lat } &#x3D; e.lngLat;
+    this.setSelectedCoords({ latitude: lat, longitude: lng });
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { sLat: lat, sLng: lng, z: this.map.getZoom(), mode: &#x27;picked&#x27; },
+      queryParamsHandling: &#x27;merge&#x27;,
+      replaceUrl: true
+    });
+    this.disablePickMode();
+  }
+
+  /**
+ * Handles geolocation result and updates selected coordinates.
+ *
+ * @param coords User geolocation coordinates
+ */
+  onGeo(coords: Coords): void {
+    if (!coords) return;
+    this.setSelectedCoords(coords);
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { sLat: coords.latitude, sLng: coords.longitude, z: this.map.getZoom(), mode: &#x27;picked&#x27; },
+      queryParamsHandling: &#x27;merge&#x27;,
+      replaceUrl: true
+    });
+  }
+
+  zoomIn(): void { this.map.zoomIn({ duration: 300 }); }
+  zoomOut(): void { this.map.zoomOut({ duration: 300 }); }
+
+  /**
+ * Moves map to specified coordinates with animation.
+ *
+ * @param coords Target coordinates
+ */
+  goToCoords(coords: Coords) {
+    this.map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 16 });
+    console.log(&quot;aqui&quot;);
+  }
+
+  /**
+ * Enables map picking mode and updates URL state.
+ */
+  onRequestPickOnMap(): void {
+    this.enablePickMode();
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { mode: &#x27;pick&#x27; },
+      queryParamsHandling: &#x27;merge&#x27;,
+      replaceUrl: true
+    });
+  }
+
+  /**
+ * Activates pick mode (crosshair cursor).
+ */
+  enablePickMode(): void {
+    this.pickingOnMap &#x3D; true;
+    this.map.getCanvas().style.cursor &#x3D; &#x27;crosshair&#x27;;
+  }
+
+  /**
+ * Disables pick mode and resets cursor.
+ */
+  private disablePickMode(): void {
+    this.pickingOnMap &#x3D; false;
+    this.map.getCanvas().style.cursor &#x3D; &#x27;default&#x27;;
+  }
+
+  /**
+   * Toggles a popup and optionally clears URL state when closing.
+   *
+   * @param key Popup identifier
+   * @param event Optional DOM event
+   */
+  private togglePopup(key: PopupKey, event?: Event): void {
+    const wasOpen &#x3D; this.popupService.isOpen(key);
+    this.popupService.toggle(key);
+
+    if (wasOpen) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { sLat: null, sLng: null, mode: null },
+        queryParamsHandling: &#x27;merge&#x27;,
+        replaceUrl: true
+      });
+    }
+    event?.stopPropagation();
+  }
+
+  public toggleCreatePinOverlay(event: Event): void { this.togglePopup(&#x27;choose-pin-popup&#x27;, event); }
+  public togglePinPreview(event: Event): void { this.togglePopup(&#x27;pin-preview&#x27;, event); }
+  /**
+   * Handles popup cancellation and resets selection state.
+   *
+   * @param key Popup identifier
+   */
+  onPopupCancel(key: PopupKey): void {
+    this.clearPreviewAndSelection();
+    this.popupService.toggle(key);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { mode: null, sLat: null, sLng: null },
+      queryParamsHandling: &#x27;merge&#x27;,
+      replaceUrl: true
+    });
+  }
+
+  onPopupCancelPinOverlay(): void { this.onPopupCancel(&#x27;choose-pin-popup&#x27;); }
+  onPopupCancelPinPreview(): void { this.onPopupCancel(&#x27;pin-preview&#x27;); }
+
+  /**
+   * Sets selected coordinates and displays preview marker on map.
+   *
+   * @param coords Selected coordinates
+   *
+   * Side effects:
+   * - Updates marker
+   * - Moves map center
+   */
+  private setSelectedCoords(coords: Coords): void {
+    if (!coords) return;
+    this.selectedCoords.set(coords);
+    this.previewMarkerService.clear();
+    this.previewMarkerService.set(this.map, coords.longitude, coords.latitude);
+    this.map.jumpTo({ center: [coords.longitude, coords.latitude], zoom: 14 });
+  }
+
+  /**
+* Clears preview marker and selected coordinates.
+*/
+  private clearPreviewAndSelection(): void {
+    this.previewMarkerService.clear();
+    this.selectedCoords.set(null);
+  }
+
+  /**
+   * Loads pins within current map viewport.
+   *
+   * Side effects:
+   * - Updates pins state
+   * - Refreshes map layers
+   */
+  private loadPinsInViewport(): void {
+    if (!this.map) return;
+    const bounds &#x3D; this.map.getBounds();
+    if (!bounds) return;
+
+    this.pinService.getInViewport(bounds.getSouth(), bounds.getWest(), bounds.getNorth(), bounds.getEast())
+      .subscribe({
+        next: (res) &#x3D;&gt; {
+          this.allPins.set(res.pins);
+          this.mapLayers.updateLayers(this.map, this.allPins);
+        },
+        error: (err: HttpErrorResponse) &#x3D;&gt; console.error(&#x27;Error loading pins in viewport:&#x27;, err)
+      });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!-- map.component.html --&gt;
+&lt;main class&#x3D;&quot;position-fixed top-0 start-0 end-0 bottom-0 overflow-hidden&quot;&gt;
+  &lt;ngx-sonner-toaster position&#x3D;&quot;bottom-center&quot; richColors /&gt;
+  &lt;!-- Mapbox --&gt;
+  &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;w-100 h-100&quot; data-testid&#x3D;&quot;map-canvas&quot;&gt;&lt;/div&gt;
+  &lt;!-- Overlay --&gt;
+  &lt;!-- Everything else on top of the map goes inside this --&gt;
+  &lt;div class&#x3D;&quot;position-absolute top-0 start-0 w-100 h-100 gf-no-events&quot;&gt;
+    &lt;!-- &lt;app-overlay-header&gt;&lt;/app-overlay-header&gt; --&gt;
+    @if (this.popupService.isOpen(&#x27;pin-preview&#x27;)) {
+    &lt;div class&#x3D;&quot;pin-detail-panel fade show gf-do-events&quot;&gt;
+      &lt;app-pin-detail-panel [pinData]&#x3D;&quot;selectedPin()&quot; (cancel)&#x3D;&quot;onPopupCancelPinPreview()&quot;
+        (coords)&#x3D;&quot;goToCoords($event)&quot;&gt;
+      &lt;/app-pin-detail-panel&gt;
+    &lt;/div&gt;
+    }
+
+    @if (this.popupService.isOpen(&#x27;cluster-preview&#x27;)) {
+    &lt;div class&#x3D;&quot;cluster-detail-panel fade show gf-do-events&quot;&gt;
+      &lt;app-cluster-details [pinsData]&#x3D;&quot;selectedPins()&quot; (cancel)&#x3D;&quot;onPopupCancelPinPreview()&quot;
+        (coords)&#x3D;&quot;goToCoords($event)&quot;&gt;
+      &lt;/app-cluster-details&gt;
+    &lt;/div&gt;
+    }
+
+    &lt;!-- Actions overlay --&gt;
+    &lt;div class&#x3D;&quot;actions-container position-absolute d-flex flex-row gf-do-events gf-gap-12&quot;&gt;
+      &lt;!-- Create pin &amp; ask location --&gt;
+      &lt;div class&#x3D;&quot;d-flex flex-column actions-bundle-container&quot;&gt;
+        &lt;!-- Show overlay to selecte pin type to create button --&gt;
+        &lt;button class&#x3D;&quot;map-action&quot; (click)&#x3D;&quot;toggleCreatePinOverlay($event)&quot; title&#x3D;&quot;Create new pin&quot; data-testid&#x3D;&quot;open-create-pin&quot;&gt;
+          &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;
+            stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+            &lt;path
+              d&#x3D;&quot;M19.914 11.105A7.298 7.298 0 0 0 20 10a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 1.202 0 32 32 0 0 0 .824-.738&quot; /&gt;
+            &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;10&quot; r&#x3D;&quot;3&quot; /&gt;
+            &lt;path d&#x3D;&quot;M16 18h6&quot; /&gt;
+            &lt;path d&#x3D;&quot;M19 15v6&quot; /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+
+        @if (this.popupService.isOpen(&#x27;choose-pin-popup&#x27;)) {
+        &lt;app-choose-pin-popup class&#x3D;&quot;position-action-overlay&quot; animate.enter&#x3D;&quot;on-enter&quot; animate.leave&#x3D;&quot;on-leave&quot;
+          [coords]&#x3D;&quot;selectedCoords()&quot; (requestPickOnMap)&#x3D;&quot;onRequestPickOnMap()&quot; (requestGeoOnMap)&#x3D;&quot;onGeo($event)&quot;
+          (cancel)&#x3D;&quot;onPopupCancelPinOverlay()&quot;&gt;
+        &lt;/app-choose-pin-popup&gt;
+        }
+
+        &lt;!-- Get location permissions button --&gt;
+        &lt;button id&#x3D;&quot;map-action-ask-location&quot; class&#x3D;&quot;map-action&quot; [disabled]&#x3D;&quot;isGeolocationDenied&quot;
+          (click)&#x3D;&quot;requestGeolocation()&quot; title&#x3D;&quot;Ask for location permission&quot;&gt;
+          @switch (getGeolocationState) {
+          @case (&#x27;prompt&#x27;) {
+          &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;
+            stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+            &lt;line x1&#x3D;&quot;2&quot; x2&#x3D;&quot;5&quot; y1&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot; /&gt;
+            &lt;line x1&#x3D;&quot;19&quot; x2&#x3D;&quot;22&quot; y1&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot; /&gt;
+            &lt;line x1&#x3D;&quot;12&quot; x2&#x3D;&quot;12&quot; y1&#x3D;&quot;2&quot; y2&#x3D;&quot;5&quot; /&gt;
+            &lt;line x1&#x3D;&quot;12&quot; x2&#x3D;&quot;12&quot; y1&#x3D;&quot;19&quot; y2&#x3D;&quot;22&quot; /&gt;
+            &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;7&quot; /&gt;
+          &lt;/svg&gt;
+          }
+          @case (&#x27;granted&#x27;) {
+          &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;
+            stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+            &lt;line x1&#x3D;&quot;2&quot; x2&#x3D;&quot;5&quot; y1&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot; /&gt;
+            &lt;line x1&#x3D;&quot;19&quot; x2&#x3D;&quot;22&quot; y1&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot; /&gt;
+            &lt;line x1&#x3D;&quot;12&quot; x2&#x3D;&quot;12&quot; y1&#x3D;&quot;2&quot; y2&#x3D;&quot;5&quot; /&gt;
+            &lt;line x1&#x3D;&quot;12&quot; x2&#x3D;&quot;12&quot; y1&#x3D;&quot;19&quot; y2&#x3D;&quot;22&quot; /&gt;
+            &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;7&quot; /&gt;
+            &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;3&quot; /&gt;
+          &lt;/svg&gt;
+          }
+          @default {
+          &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;
+            stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+            &lt;path d&#x3D;&quot;M12 19v3&quot; /&gt;
+            &lt;path d&#x3D;&quot;M12 2v3&quot; /&gt;
+            &lt;path d&#x3D;&quot;M18.89 13.24a7 7 0 0 0-8.13-8.13&quot; /&gt;
+            &lt;path d&#x3D;&quot;M19 12h3&quot; /&gt;
+            &lt;path d&#x3D;&quot;M2 12h3&quot; /&gt;
+            &lt;path d&#x3D;&quot;m2 2 20 20&quot; /&gt;
+            &lt;path d&#x3D;&quot;M7.05 7.05a7 7 0 0 0 9.9 9.9&quot; /&gt;
+          &lt;/svg&gt;
+          }}
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;!-- Zoom --&gt;
+      &lt;div class&#x3D;&quot;d-flex flex-column actions-bundle-container&quot;&gt;
+        &lt;button class&#x3D;&quot;map-action&quot; (click)&#x3D;&quot;zoomIn()&quot; title&#x3D;&quot;Zoom in&quot;&gt;
+          &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;
+            stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+            &lt;path d&#x3D;&quot;M5 12h14&quot; /&gt;
+            &lt;path d&#x3D;&quot;M12 5v14&quot; /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+        &lt;button class&#x3D;&quot;map-action&quot; (click)&#x3D;&quot;zoomOut()&quot; title&#x3D;&quot;Zoom out&quot;&gt;
+          &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;
+            stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+            &lt;path d&#x3D;&quot;M5 12h14&quot; /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;!-- popup overlays  --&gt;
+
+      &lt;!-- End popup overlays  --&gt;
+    &lt;/div&gt;
+    &lt;!-- End actions overlay --&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+
+&lt;router-outlet&gt;&lt;/router-outlet&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!-- map.component.html --><main class="position-fixed top-0 start-0 end-0 bottom-0 overflow-hidden">  <ngx-sonner-toaster position="bottom-center" richColors />  <!-- Mapbox -->  <div id="map" class="w-100 h-100" data-testid="map-canvas"></div>  <!-- Overlay -->  <!-- Everything else on top of the map goes inside this -->  <div class="position-absolute top-0 start-0 w-100 h-100 gf-no-events">    <!-- <app-overlay-header></app-overlay-header> -->    @if (this.popupService.isOpen(\'pin-preview\')) {    <div class="pin-detail-panel fade show gf-do-events">      <app-pin-detail-panel [pinData]="selectedPin()" (cancel)="onPopupCancelPinPreview()"        (coords)="goToCoords($event)">      </app-pin-detail-panel>    </div>    }    @if (this.popupService.isOpen(\'cluster-preview\')) {    <div class="cluster-detail-panel fade show gf-do-events">      <app-cluster-details [pinsData]="selectedPins()" (cancel)="onPopupCancelPinPreview()"        (coords)="goToCoords($event)">      </app-cluster-details>    </div>    }    <!-- Actions overlay -->    <div class="actions-container position-absolute d-flex flex-row gf-do-events gf-gap-12">      <!-- Create pin & ask location -->      <div class="d-flex flex-column actions-bundle-container">        <!-- Show overlay to selecte pin type to create button -->        <button class="map-action" (click)="toggleCreatePinOverlay($event)" title="Create new pin" data-testid="open-create-pin">          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"            stroke-linecap="round" stroke-linejoin="round">            <path              d="M19.914 11.105A7.298 7.298 0 0 0 20 10a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 1.202 0 32 32 0 0 0 .824-.738" />            <circle cx="12" cy="10" r="3" />            <path d="M16 18h6" />            <path d="M19 15v6" />          </svg>        </button>        @if (this.popupService.isOpen(\'choose-pin-popup\')) {        <app-choose-pin-popup class="position-action-overlay" animate.enter="on-enter" animate.leave="on-leave"          [coords]="selectedCoords()" (requestPickOnMap)="onRequestPickOnMap()" (requestGeoOnMap)="onGeo($event)"          (cancel)="onPopupCancelPinOverlay()">        </app-choose-pin-popup>        }        <!-- Get location permissions button -->        <button id="map-action-ask-location" class="map-action" [disabled]="isGeolocationDenied"          (click)="requestGeolocation()" title="Ask for location permission">          @switch (getGeolocationState) {          @case (\'prompt\') {          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"            stroke-linecap="round" stroke-linejoin="round">            <line x1="2" x2="5" y1="12" y2="12" />            <line x1="19" x2="22" y1="12" y2="12" />            <line x1="12" x2="12" y1="2" y2="5" />            <line x1="12" x2="12" y1="19" y2="22" />            <circle cx="12" cy="12" r="7" />          </svg>          }          @case (\'granted\') {          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"            stroke-linecap="round" stroke-linejoin="round">            <line x1="2" x2="5" y1="12" y2="12" />            <line x1="19" x2="22" y1="12" y2="12" />            <line x1="12" x2="12" y1="2" y2="5" />            <line x1="12" x2="12" y1="19" y2="22" />            <circle cx="12" cy="12" r="7" />            <circle cx="12" cy="12" r="3" />          </svg>          }          @default {          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"            stroke-linecap="round" stroke-linejoin="round">            <path d="M12 19v3" />            <path d="M12 2v3" />            <path d="M18.89 13.24a7 7 0 0 0-8.13-8.13" />            <path d="M19 12h3" />            <path d="M2 12h3" />            <path d="m2 2 20 20" />            <path d="M7.05 7.05a7 7 0 0 0 9.9 9.9" />          </svg>          }}        </button>      </div>      <!-- Zoom -->      <div class="d-flex flex-column actions-bundle-container">        <button class="map-action" (click)="zoomIn()" title="Zoom in">          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"            stroke-linecap="round" stroke-linejoin="round">            <path d="M5 12h14" />            <path d="M12 5v14" />          </svg>        </button>        <button class="map-action" (click)="zoomOut()" title="Zoom out">          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"            stroke-linecap="round" stroke-linejoin="round">            <path d="M5 12h14" />          </svg>        </button>      </div>      <!-- popup overlays  -->      <!-- End popup overlays  -->    </div>    <!-- End actions overlay -->  </div></main><router-outlet></router-outlet></div>'
+    var COMPONENTS = [{'name': 'AboutComponent', 'selector': 'app-about'},{'name': 'AdminPopoverComponent', 'selector': 'gf-admin-popover'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AsyncButtonComponent', 'selector': 'app-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'gf-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'button[gfAsyncBtn]'},{'name': 'AuthCallbackComponent', 'selector': 'app-auth-callback'},{'name': 'CatchPinModalComponent', 'selector': 'app-catch-pin-modal'},{'name': 'ChangeBirthdateModalComponent', 'selector': 'app-change-birthdate-modal'},{'name': 'ChangeDisplaynameModalComponent', 'selector': 'app-change-displayname-modal'},{'name': 'ChangeEmailModalComponent', 'selector': 'gf-change-email-modal'},{'name': 'ChangeFirstnameModalComponent', 'selector': 'app-change-firstname-modal'},{'name': 'ChangeLastnameModalComponent', 'selector': 'app-change-lastname-modal'},{'name': 'ChangePhoneModalComponent', 'selector': 'app-change-phone-modal'},{'name': 'ChangeUsernameModalComponent', 'selector': 'app-change-username-modal'},{'name': 'ChoosePinPopupComponent', 'selector': 'app-choose-pin-popup'},{'name': 'ClusterDetailsComponent', 'selector': 'app-cluster-details'},{'name': 'ConfirmDeletionModalComponent', 'selector': 'app-confirm-deletion-modal'},{'name': 'DeleteCommentComponent', 'selector': 'gf-delete-comment'},{'name': 'DeleteGroupComponent', 'selector': 'gf-delete-group'},{'name': 'DeletePinComponent', 'selector': 'app-delete-pin'},{'name': 'DeletePostComponent', 'selector': 'gf-delete-post'},{'name': 'DiscoverComponent', 'selector': 'app-discover'},{'name': 'EnumComponent', 'selector': 'app-enum'},{'name': 'ExitGroupComponent', 'selector': 'gf-exit-group'},{'name': 'FooterComponent', 'selector': 'gf-footer'},{'name': 'ForumComponent', 'selector': 'app-forum'},{'name': 'ForumPostComponent', 'selector': 'app-forum-post'},{'name': 'FriendsComponent', 'selector': 'app-friends'},{'name': 'FriendshipListCardComponent', 'selector': 'gf-friendship-list-card'},{'name': 'FriendsListComponent', 'selector': 'app-friends-list'},{'name': 'FromFriendsComponent', 'selector': 'app-from-friends'},{'name': 'GeneralComponent', 'selector': 'app-general'},{'name': 'GfCardCommentPreviewComponent', 'selector': 'gf-gf-card-comment-preview'},{'name': 'GfCardPinPreviewComponent', 'selector': 'app-gf-card-pin-preview'},{'name': 'GfCardQuickAccessComponent', 'selector': 'app-gf-card-quick-access'},{'name': 'GfCardQuickViewComponent', 'selector': 'app-gf-card-quick-view'},{'name': 'GroupCreateComponent', 'selector': 'app-group-create'},{'name': 'GroupInviteComponent', 'selector': 'gf-group-invite'},{'name': 'GroupInvitesCardComponent', 'selector': 'gf-group-invites-card'},{'name': 'GroupInvitesListComponent', 'selector': 'gf-group-invites-list'},{'name': 'GroupListCardComponent', 'selector': 'gf-group-list-card'},{'name': 'GroupMemberSettingsPopoverComponent', 'selector': 'gf-group-member-settings-popover'},{'name': 'GroupPopoverComponent', 'selector': 'gf-group-popover'},{'name': 'GroupPostsPlaceholderComponent', 'selector': 'app-group-posts-placeholder'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsListCardComponent', 'selector': 'gf-groups-list-card'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'HeaderActionsComponent', 'selector': 'gf-header-actions'},{'name': 'HeaderComponent', 'selector': 'gf-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'InfoPinModalComponent', 'selector': 'app-info-pin-modal'},{'name': 'InviteToGroupsModalComponent', 'selector': 'gf-invite-to-groups-modal'},{'name': 'LeaderboardComponent', 'selector': 'gf-leaderboard'},{'name': 'LoadingErrorModalComponent', 'selector': 'gf-loading-error-modal'},{'name': 'LoadingSpinnerComponent', 'selector': 'gf-loading-spinner'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MembersGroupComponent', 'selector': 'gf-members-group'},{'name': 'MyGroupsComponent', 'selector': 'app-my-groups'},{'name': 'NavPopoverComponent', 'selector': 'gf-nav-popover'},{'name': 'OverviewComponent', 'selector': 'app-overview'},{'name': 'PersonalDataComponent', 'selector': 'app-personal-data'},{'name': 'PinDetailPanelComponent', 'selector': 'app-pin-detail-panel'},{'name': 'PinsAvgPublishedChart', 'selector': 'gf-pins-average-published-chart'},{'name': 'PinsComponent', 'selector': 'app-pins'},{'name': 'PinsPerWeekComponent', 'selector': 'gf-pins-per-week'},{'name': 'PostCommentsComponent', 'selector': 'app-post-comments'},{'name': 'PostIdPlaceholderComponent', 'selector': 'app-post-id-placeholder'},{'name': 'PrivacyPolicyComponent', 'selector': 'app-privacy-policy'},{'name': 'ProfileActionsPopoverComponent', 'selector': 'gf-profile-actions-popover'},{'name': 'ProfileCatchPinCardComponent', 'selector': 'gf-profile-catch-pin-card'},{'name': 'ProfileShellComponent', 'selector': 'app-profile'},{'name': 'ProfileShowMoreModalComponent', 'selector': 'gf-profile-show-more-modal'},{'name': 'ReportCommentComponent', 'selector': 'gf-report-comment'},{'name': 'ReportedCommentPageComponent', 'selector': 'gf-reported-comment-page'},{'name': 'ReportedCommentsComponent', 'selector': 'gf-reported-comments'},{'name': 'ReportedPinPageComponent', 'selector': 'gf-reported-pin-page'},{'name': 'ReportedPinsComponent', 'selector': 'gf-reported-pins'},{'name': 'ReportPinComponent', 'selector': 'gf-report'},{'name': 'RequestsListComponent', 'selector': 'app-requests-list'},{'name': 'ResetPasswordComponent', 'selector': 'gf-reset-password'},{'name': 'SearchComponent', 'selector': 'gf-search'},{'name': 'SecurityComponent', 'selector': 'app-security'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SetupTotpComponent', 'selector': 'app-setup-totp'},{'name': 'SigninComponent', 'selector': 'app-signin'},{'name': 'SigninVerifyComponent', 'selector': 'app-signin-verify'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'SmallFriendshipCarouselCardComponent', 'selector': 'gf-small-friendship-carousel-card'},{'name': 'SmallGroupCarouselCardComponent', 'selector': 'gf-small-group-carousel-card'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'StatsHomeComponent', 'selector': 'app-home'},{'name': 'StatsReportsComponent', 'selector': 'app-stats-reports'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'TermsOfServiceComponent', 'selector': 'app-terms-of-service'},{'name': 'TotpValidationModalComponent', 'selector': 'app-totp-validation-modal'},{'name': 'UserCardComponent', 'selector': 'app-user-card'},{'name': 'UserHelpBoxComponent', 'selector': 'gf-user-help-box'},{'name': 'UserPopoverComponent', 'selector': 'gf-user-popover'},{'name': 'UserRankIconComponent', 'selector': 'gf-user-rank-icon'},{'name': 'UserSatisfactionIndexComponent', 'selector': 'gf-user-satisfaction-index'},{'name': 'UsersChartComponent', 'selector': 'gf-users-chart'},{'name': 'UsersListCardComponent', 'selector': 'gf-users-list-card'},{'name': 'UsersListComponent', 'selector': 'gf-users-list'},{'name': 'UserTitleComponent', 'selector': 'gf-user-title'},{'name': 'VerifyEmailModalComponent', 'selector': 'gf-verify-email-modal'},{'name': 'VerifyTwofaContainerComponent', 'selector': 'gf-verify-twofa-container'},{'name': 'WarnPinModalComponent', 'selector': 'app-warn-pin-modal'}];
+    var DIRECTIVES = [{'name': 'ClickOutsideDirective', 'selector': '[clickOutside]'},{'name': 'LettersOnlyDirective', 'selector': '[appLettersOnly]'},{'name': 'MouseFollowDirective', 'selector': '[gfTooltip]'},{'name': 'NumbersOnlyDirective', 'selector': '[appNumbersOnly]'}];
+    var ACTUAL_COMPONENT = {'name': 'MapComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MapComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,1 @@
+search_result['441']=["topic_0000000000000178.html","Group Class","/// Representa um grupo de utilizadores.\r\n/// Permite organizar utilizadores e pins em comunidades.\r\n///"];

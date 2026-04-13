@@ -1,0 +1,1 @@
+search_result['731']=["topic_0000000000000222.html","GamificationService.ApplyVoteAsync Method","Applies a new vote or switches an existing one, updating the pin score and both users\u0027 points.\r\nThe caller is responsible for ensuring newVote != existingVote.Value before calling."];

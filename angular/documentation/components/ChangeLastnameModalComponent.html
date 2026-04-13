@@ -1,0 +1,944 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ChangeLastnameModalComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/user/settings/components/general/components/change-lastname-modal/change-lastname-modal.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="../interfaces/SimpleModal.html" target="_self" >SimpleModal</a></code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">host</td>
+                <td class="col-md-9"><code>{<br>}</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-change-lastname-modal</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/forms/ReactiveFormsModule" target="_blank" >ReactiveFormsModule</a></code>
+                                <code><a href="../components/AsyncButtonComponent.html" target="_self" >AsyncButtonComponent</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./change-lastname-modal.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./change-lastname-modal.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#busyState" >busyState</a>
+                            </li>
+                            <li>
+                                <a href="#error" >error</a>
+                            </li>
+                            <li>
+                                <a href="#form" >form</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#formBuilder" >formBuilder</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#loadingState" >loadingState</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#modalController" >modalController</a>
+                            </li>
+                            <li>
+                                <a href="#success" >success</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#userApi" >userApi</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#onNegative" >onNegative</a>
+                            </li>
+                            <li>
+                                <a href="#onPositive" >onPositive</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#negative" >negative</a>
+                            </li>
+                            <li>
+                                <a href="#positive" >positive</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="negative"></a>
+                        <b>negative</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/features/user/settings/components/general/components/change-lastname-modal/change-lastname-modal.component.ts:35</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="positive"></a>
+                        <b>positive</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/features/user/settings/components/general/components/change-lastname-modal/change-lastname-modal.component.ts:36</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onNegative"></a>
+                    <span class="name">
+                        <span ><b>onNegative</b></span>
+                        <a href="#onNegative"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onNegative()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="74"
+                                    class="link-to-prism">src/app/features/user/settings/components/general/components/change-lastname-modal/change-lastname-modal.component.ts:74</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onPositive"></a>
+                    <span class="name">
+                        <span ><b>onPositive</b></span>
+                        <a href="#onPositive"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onPositive()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/app/features/user/settings/components/general/components/change-lastname-modal/change-lastname-modal.component.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="busyState"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>busyState</b></span>
+                        <a href="#busyState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new BusyState()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/features/user/settings/components/general/components/change-lastname-modal/change-lastname-modal.component.ts:32</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="error"></a>
+                    <span class="name">
+                        <span ><b>error</b></span>
+                        <a href="#error"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;string | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/features/user/settings/components/general/components/change-lastname-modal/change-lastname-modal.component.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="form"></a>
+                    <span class="name">
+                        <span ><b>form</b></span>
+                        <a href="#form"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/FormGroup" target="_blank" >FormGroup</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.formBuilder.group({
+    lastName: [&#x27;&#x27;, [ Validators.required ]]
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/features/user/settings/components/general/components/change-lastname-modal/change-lastname-modal.component.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formBuilder"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>formBuilder</b></span>
+                        <a href="#formBuilder"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(FormBuilder)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/features/user/settings/components/general/components/change-lastname-modal/change-lastname-modal.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadingState"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>loadingState</b></span>
+                        <a href="#loadingState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new LoadingState()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/features/user/settings/components/general/components/change-lastname-modal/change-lastname-modal.component.ts:33</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalController"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>modalController</b></span>
+                        <a href="#modalController"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new ModalController(&#x27;app-change-lastname-modal&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/features/user/settings/components/general/components/change-lastname-modal/change-lastname-modal.component.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="success"></a>
+                    <span class="name">
+                        <span ><b>success</b></span>
+                        <a href="#success"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;boolean&gt;(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/features/user/settings/components/general/components/change-lastname-modal/change-lastname-modal.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userApi"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>userApi</b></span>
+                        <a href="#userApi"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(UserApi)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/features/user/settings/components/general/components/change-lastname-modal/change-lastname-modal.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, output, signal } from &#x27;@angular/core&#x27;;
+import { UserApi } from &#x27;@gofish/shared/api/user.api&#x27;;
+import { BusyState } from &#x27;@gofish/shared/core/busy-state&#x27;;
+import { LoadingState } from &#x27;@gofish/shared/core/loading-state&#x27;;
+import { ModalController } from &#x27;@gofish/shared/core/modal-controller&#x27;;
+import { SimpleModal } from &#x27;@gofish/shared/models/modal.model&#x27;;
+import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from &#x27;@angular/forms&#x27;;
+import { ValidationProblemDetails } from &#x27;@gofish/shared/core/problem-details&#x27;;
+import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { AsyncButtonComponent } from &quot;@gofish/shared/components/async-button-3/async-button-3.component&quot;;
+
+@Component({
+  selector: &#x27;app-change-lastname-modal&#x27;,
+  host: {
+    &#x27;animate.enter&#x27;: &#x27;on-enter&#x27;,
+    &#x27;animate.leave&#x27;: &#x27;on-leave&#x27;,
+  },
+  imports: [
+    ReactiveFormsModule,
+    AsyncButtonComponent
+],
+  templateUrl: &#x27;./change-lastname-modal.component.html&#x27;,
+  styleUrl: &#x27;./change-lastname-modal.component.css&#x27;,
+})
+export class ChangeLastnameModalComponent implements SimpleModal {
+  private readonly userApi     &#x3D; inject(UserApi);
+  private readonly formBuilder &#x3D; inject(FormBuilder);
+
+  readonly modalController &#x3D; new ModalController(&#x27;app-change-lastname-modal&#x27;);
+  readonly busyState       &#x3D; new BusyState();
+  readonly loadingState    &#x3D; new LoadingState();
+
+  negative &#x3D; output&lt;void&gt;();
+  positive &#x3D; output&lt;string&gt;();
+
+  form: FormGroup &#x3D; this.formBuilder.group({
+    lastName: [&#x27;&#x27;, [ Validators.required ]]
+  });
+
+  error   &#x3D; signal&lt;string | null&gt;(null);
+  success &#x3D; signal&lt;boolean&gt;(false);
+
+  onPositive(): void {
+    this.form.markAllAsTouched();
+    if (this.form.invalid) {
+      this.error.set(&#x27;Enter a valid last name&#x27;);
+      return;
+    };
+
+    this.success.set(false);
+    this.busyState.setBusy(true);
+    this.userApi.patchUser({
+      lastName: this.form.value.lastName
+    }).subscribe({
+      next: () &#x3D;&gt; {
+        this.busyState.setBusy(false);
+        this.success.set(true);
+        this.positive.emit(this.form.value.lastName);
+        setTimeout(() &#x3D;&gt; {
+          this.success.set(false);
+          this.modalController.close();
+        }, 2000);
+      },
+      error: (err: HttpErrorResponse) &#x3D;&gt; {
+        this.busyState.setBusy(false);
+        let problem &#x3D; err.error as ValidationProblemDetails;
+        this.error.set(problem.detail ?? &#x27;Server Error. Try again later.&#x27;)
+      },
+    })
+  };
+
+  onNegative(): void {
+    this.modalController.close();
+    this.negative.emit();
+  };
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!-- change-lastname-modal.component.html --&gt;
+
+&lt;div class&#x3D;&quot;gf-modal-backdrop&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+  &lt;div class&#x3D;&quot;gf-flow-vertical gf-modal-shell gf-gap-16&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+    &lt;div class&#x3D;&quot;gf-flow-horizontal gf-justify-between gf-items-center&quot;&gt;
+      &lt;h5&gt;Change last name&lt;/h5&gt;
+      &lt;button class&#x3D;&quot;gf-modal-close-button&quot; (click)&#x3D;&quot;onNegative()&quot;&gt;
+        &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+          &lt;path d&#x3D;&quot;M18 6 6 18&quot;/&gt;
+          &lt;path d&#x3D;&quot;m6 6 12 12&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;gf-modal-separator-negative-margin&quot;&gt;&lt;/div&gt;
+
+    &lt;div&gt;
+      &lt;form id&#x3D;&quot;form&quot; class&#x3D;&quot;gf-flow-vertical gf-modal-inputs-form&quot; [formGroup]&#x3D;&quot;form&quot; (ngSubmit)&#x3D;&quot;onPositive()&quot;&gt;
+        &lt;div class&#x3D;&quot;vertical-flow&quot;&gt;
+          &lt;label&gt;Last name&lt;/label&gt;
+          &lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;lastname&quot; formControlName&#x3D;&quot;lastName&quot;&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+      @if (error(); as error) {
+        &lt;span class&#x3D;&quot;gf-text-error&quot;&gt;{{ error }}&lt;/span&gt;
+      }
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;gf-modal-separator-negative-margin&quot;&gt;&lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;bottom-container gf-flow-horizontal gf-gap-10&quot;&gt;
+      &lt;button
+        class&#x3D;&quot;gf-2btn-secondary-stroked&quot;
+        [disabled]&#x3D;&quot;busyState.busy()&quot;
+        (click)&#x3D;&quot;onNegative()&quot;&gt;
+        Cancel
+      &lt;/button&gt;
+      &lt;button
+        class&#x3D;&quot;gf-async-btn-primary-filled&quot;
+        gfAsyncBtn
+        [labels]&#x3D;&quot;{ idle: &#x27;Change&#x27; }&quot;
+        [states]&#x3D;&quot;{ busy: busyState.busy(), success: success() }&quot;
+        (click)&#x3D;&quot;onPositive()&quot;&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!-- change-lastname-modal.component.html --><div class="gf-modal-backdrop" (click)="$event.stopPropagation()">  <div class="gf-flow-vertical gf-modal-shell gf-gap-16" (click)="$event.stopPropagation()">    <div class="gf-flow-horizontal gf-justify-between gf-items-center">      <h5>Change last name</h5>      <button class="gf-modal-close-button" (click)="onNegative()">        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">          <path d="M18 6 6 18"/>          <path d="m6 6 12 12"/>        </svg>      </button>    </div>    <div class="gf-modal-separator-negative-margin"></div>    <div>      <form id="form" class="gf-flow-vertical gf-modal-inputs-form" [formGroup]="form" (ngSubmit)="onPositive()">        <div class="vertical-flow">          <label>Last name</label>          <input type="text" id="lastname" formControlName="lastName">        </div>      </form>      @if (error(); as error) {        <span class="gf-text-error">{{ error }}</span>      }    </div>    <div class="gf-modal-separator-negative-margin"></div>    <div class="bottom-container gf-flow-horizontal gf-gap-10">      <button        class="gf-2btn-secondary-stroked"        [disabled]="busyState.busy()"        (click)="onNegative()">        Cancel      </button>      <button        class="gf-async-btn-primary-filled"        gfAsyncBtn        [labels]="{ idle: \'Change\' }"        [states]="{ busy: busyState.busy(), success: success() }"        (click)="onPositive()">      </button>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AboutComponent', 'selector': 'app-about'},{'name': 'AdminPopoverComponent', 'selector': 'gf-admin-popover'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AsyncButtonComponent', 'selector': 'app-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'gf-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'button[gfAsyncBtn]'},{'name': 'AuthCallbackComponent', 'selector': 'app-auth-callback'},{'name': 'CatchPinModalComponent', 'selector': 'app-catch-pin-modal'},{'name': 'ChangeBirthdateModalComponent', 'selector': 'app-change-birthdate-modal'},{'name': 'ChangeDisplaynameModalComponent', 'selector': 'app-change-displayname-modal'},{'name': 'ChangeEmailModalComponent', 'selector': 'gf-change-email-modal'},{'name': 'ChangeFirstnameModalComponent', 'selector': 'app-change-firstname-modal'},{'name': 'ChangeLastnameModalComponent', 'selector': 'app-change-lastname-modal'},{'name': 'ChangePhoneModalComponent', 'selector': 'app-change-phone-modal'},{'name': 'ChangeUsernameModalComponent', 'selector': 'app-change-username-modal'},{'name': 'ChoosePinPopupComponent', 'selector': 'app-choose-pin-popup'},{'name': 'ClusterDetailsComponent', 'selector': 'app-cluster-details'},{'name': 'ConfirmDeletionModalComponent', 'selector': 'app-confirm-deletion-modal'},{'name': 'DeleteCommentComponent', 'selector': 'gf-delete-comment'},{'name': 'DeleteGroupComponent', 'selector': 'gf-delete-group'},{'name': 'DeletePinComponent', 'selector': 'app-delete-pin'},{'name': 'DeletePostComponent', 'selector': 'gf-delete-post'},{'name': 'DiscoverComponent', 'selector': 'app-discover'},{'name': 'EnumComponent', 'selector': 'app-enum'},{'name': 'ExitGroupComponent', 'selector': 'gf-exit-group'},{'name': 'FooterComponent', 'selector': 'gf-footer'},{'name': 'ForumComponent', 'selector': 'app-forum'},{'name': 'ForumPostComponent', 'selector': 'app-forum-post'},{'name': 'FriendsComponent', 'selector': 'app-friends'},{'name': 'FriendshipListCardComponent', 'selector': 'gf-friendship-list-card'},{'name': 'FriendsListComponent', 'selector': 'app-friends-list'},{'name': 'FromFriendsComponent', 'selector': 'app-from-friends'},{'name': 'GeneralComponent', 'selector': 'app-general'},{'name': 'GfCardCommentPreviewComponent', 'selector': 'gf-gf-card-comment-preview'},{'name': 'GfCardPinPreviewComponent', 'selector': 'app-gf-card-pin-preview'},{'name': 'GfCardQuickAccessComponent', 'selector': 'app-gf-card-quick-access'},{'name': 'GfCardQuickViewComponent', 'selector': 'app-gf-card-quick-view'},{'name': 'GroupCreateComponent', 'selector': 'app-group-create'},{'name': 'GroupInviteComponent', 'selector': 'gf-group-invite'},{'name': 'GroupInvitesCardComponent', 'selector': 'gf-group-invites-card'},{'name': 'GroupInvitesListComponent', 'selector': 'gf-group-invites-list'},{'name': 'GroupListCardComponent', 'selector': 'gf-group-list-card'},{'name': 'GroupMemberSettingsPopoverComponent', 'selector': 'gf-group-member-settings-popover'},{'name': 'GroupPopoverComponent', 'selector': 'gf-group-popover'},{'name': 'GroupPostsPlaceholderComponent', 'selector': 'app-group-posts-placeholder'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsListCardComponent', 'selector': 'gf-groups-list-card'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'HeaderActionsComponent', 'selector': 'gf-header-actions'},{'name': 'HeaderComponent', 'selector': 'gf-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'InfoPinModalComponent', 'selector': 'app-info-pin-modal'},{'name': 'InviteToGroupsModalComponent', 'selector': 'gf-invite-to-groups-modal'},{'name': 'LeaderboardComponent', 'selector': 'gf-leaderboard'},{'name': 'LoadingErrorModalComponent', 'selector': 'gf-loading-error-modal'},{'name': 'LoadingSpinnerComponent', 'selector': 'gf-loading-spinner'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MembersGroupComponent', 'selector': 'gf-members-group'},{'name': 'MyGroupsComponent', 'selector': 'app-my-groups'},{'name': 'NavPopoverComponent', 'selector': 'gf-nav-popover'},{'name': 'OverviewComponent', 'selector': 'app-overview'},{'name': 'PersonalDataComponent', 'selector': 'app-personal-data'},{'name': 'PinDetailPanelComponent', 'selector': 'app-pin-detail-panel'},{'name': 'PinsAvgPublishedChart', 'selector': 'gf-pins-average-published-chart'},{'name': 'PinsComponent', 'selector': 'app-pins'},{'name': 'PinsPerWeekComponent', 'selector': 'gf-pins-per-week'},{'name': 'PostCommentsComponent', 'selector': 'app-post-comments'},{'name': 'PostIdPlaceholderComponent', 'selector': 'app-post-id-placeholder'},{'name': 'PrivacyPolicyComponent', 'selector': 'app-privacy-policy'},{'name': 'ProfileActionsPopoverComponent', 'selector': 'gf-profile-actions-popover'},{'name': 'ProfileCatchPinCardComponent', 'selector': 'gf-profile-catch-pin-card'},{'name': 'ProfileShellComponent', 'selector': 'app-profile'},{'name': 'ProfileShowMoreModalComponent', 'selector': 'gf-profile-show-more-modal'},{'name': 'ReportCommentComponent', 'selector': 'gf-report-comment'},{'name': 'ReportedCommentPageComponent', 'selector': 'gf-reported-comment-page'},{'name': 'ReportedCommentsComponent', 'selector': 'gf-reported-comments'},{'name': 'ReportedPinPageComponent', 'selector': 'gf-reported-pin-page'},{'name': 'ReportedPinsComponent', 'selector': 'gf-reported-pins'},{'name': 'ReportPinComponent', 'selector': 'gf-report'},{'name': 'RequestsListComponent', 'selector': 'app-requests-list'},{'name': 'ResetPasswordComponent', 'selector': 'gf-reset-password'},{'name': 'SearchComponent', 'selector': 'gf-search'},{'name': 'SecurityComponent', 'selector': 'app-security'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SetupTotpComponent', 'selector': 'app-setup-totp'},{'name': 'SigninComponent', 'selector': 'app-signin'},{'name': 'SigninVerifyComponent', 'selector': 'app-signin-verify'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'SmallFriendshipCarouselCardComponent', 'selector': 'gf-small-friendship-carousel-card'},{'name': 'SmallGroupCarouselCardComponent', 'selector': 'gf-small-group-carousel-card'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'StatsHomeComponent', 'selector': 'app-home'},{'name': 'StatsReportsComponent', 'selector': 'app-stats-reports'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'TermsOfServiceComponent', 'selector': 'app-terms-of-service'},{'name': 'TotpValidationModalComponent', 'selector': 'app-totp-validation-modal'},{'name': 'UserCardComponent', 'selector': 'app-user-card'},{'name': 'UserHelpBoxComponent', 'selector': 'gf-user-help-box'},{'name': 'UserPopoverComponent', 'selector': 'gf-user-popover'},{'name': 'UserRankIconComponent', 'selector': 'gf-user-rank-icon'},{'name': 'UserSatisfactionIndexComponent', 'selector': 'gf-user-satisfaction-index'},{'name': 'UsersChartComponent', 'selector': 'gf-users-chart'},{'name': 'UsersListCardComponent', 'selector': 'gf-users-list-card'},{'name': 'UsersListComponent', 'selector': 'gf-users-list'},{'name': 'UserTitleComponent', 'selector': 'gf-user-title'},{'name': 'VerifyEmailModalComponent', 'selector': 'gf-verify-email-modal'},{'name': 'VerifyTwofaContainerComponent', 'selector': 'gf-verify-twofa-container'},{'name': 'WarnPinModalComponent', 'selector': 'app-warn-pin-modal'}];
+    var DIRECTIVES = [{'name': 'ClickOutsideDirective', 'selector': '[clickOutside]'},{'name': 'LettersOnlyDirective', 'selector': '[appLettersOnly]'},{'name': 'MouseFollowDirective', 'selector': '[gfTooltip]'},{'name': 'NumbersOnlyDirective', 'selector': '[appNumbersOnly]'}];
+    var ACTUAL_COMPONENT = {'name': 'ChangeLastnameModalComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ChangeLastnameModalComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

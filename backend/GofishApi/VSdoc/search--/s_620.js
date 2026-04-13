@@ -1,0 +1,1 @@
+search_result['620']=["topic_00000000000001EA.html","Vote.CreatedAt Property","/// Data de criação do voto.\r\n    ///"];

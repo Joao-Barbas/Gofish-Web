@@ -11,25 +11,44 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GofishApi.Controllers;
 
+/// <summary>
+/// Controlador responsável pela disponibilização de métricas e estatísticas
+/// sobre pins, utilizadores, reports e pedidos à API.
+/// </summary>
 [Route("api/[controller]/[action]")]
 [ApiController]
-public class StatsController : ControllerBase 
+public class StatsController : ControllerBase
 {
+    /// <summary>Logger para registo de eventos e erros.</summary>
     private readonly ILogger<StatsController> _logger;
+
+    /// <summary>Contexto de acesso à base de dados da aplicação.</summary>
     private readonly AppDbContext _db;
+
+    /// <summary>Gestor de utilizadores do ASP.NET Identity.</summary>
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Inicializa uma nova instância do controlador de estatísticas.
+    /// </summary>
+    /// <param name="logger">Logger da aplicação.</param>
+    /// <param name="db">Contexto da base de dados.</param>
+    /// <param name="userManager">Gestor de utilizadores.</param>
     public StatsController(
-    ILogger<StatsController> logger,
-    AppDbContext db,
-    UserManager<AppUser> userManager
-)
+        ILogger<StatsController> logger,
+        AppDbContext db,
+        UserManager<AppUser> userManager
+    )
     {
         _logger = logger;
         _db = db;
         _userManager = userManager;
     }
 
+    /// <summary>
+    /// Obtém o número de pins criados no dia atual em UTC.
+    /// </summary>
+    /// <returns>Total de pins criados hoje.</returns>
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetPinsCreatedToday()
@@ -43,6 +62,11 @@ public class StatsController : ControllerBase
         return Ok(new GetPinsCreatedTodayResDTO(value));
     }
 
+    /// <summary>
+    /// Obtém o número total de reports pendentes de revisão.
+    /// Soma reports de pins e de comentários.
+    /// </summary>
+    /// <returns>Total de reports pendentes.</returns>
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetReportsWaitingReview()
@@ -55,11 +79,17 @@ public class StatsController : ControllerBase
         return Ok(new GetReportsWaitingReviewResDTO(total));
     }
 
+    /// <summary>
+    /// Obtém a média diária de pins publicados num determinado mês.
+    /// </summary>
+    /// <param name="month">Mês pretendido.</param>
+    /// <param name="year">Ano pretendido.</param>
+    /// <returns>Média diária de pins publicados no mês indicado.</returns>
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAverageVotesPerPin(
-    [FromQuery] int month,
-    [FromQuery] int year)
+        [FromQuery] int month,
+        [FromQuery] int year)
     {
         if (month < 1 || month > 12)
             return BadRequest("Invalid month");
@@ -70,7 +100,6 @@ public class StatsController : ControllerBase
         var totalPublishedPins = await _db.Pins
             .CountAsync(p => p.CreatedAt >= start && p.CreatedAt < end);
 
-        // número de dias no mês
         var daysInMonth = DateTime.DaysInMonth(year, month);
 
         var average = Math.Round((double)totalPublishedPins / daysInMonth, 2);
@@ -78,6 +107,12 @@ public class StatsController : ControllerBase
         return Ok(new GetAverageVotesPerPinResDTO(average));
     }
 
+    /// <summary>
+    /// Obtém a média diária de pins publicados num determinado mês.
+    /// </summary>
+    /// <param name="month">Mês pretendido.</param>
+    /// <param name="year">Ano pretendido.</param>
+    /// <returns>Média diária de pins publicados no mês indicado.</returns>
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAveragePublishedPins(
@@ -100,6 +135,11 @@ public class StatsController : ControllerBase
         return Ok(new GetAveragePublishedPinsResDTO(value));
     }
 
+    /// <summary>
+    /// Obtém o número de utilizadores ativos nos últimos 30 dias,
+    /// considerando como ativo quem criou pelo menos um pin nesse período.
+    /// </summary>
+    /// <returns>Total de utilizadores ativos.</returns>
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetActiveUsers()
@@ -115,6 +155,10 @@ public class StatsController : ControllerBase
         return Ok(new GetActiveUsersResDTO(value));
     }
 
+    /// <summary>
+    /// Obtém o número de pins com pelo menos 15 votos positivos.
+    /// </summary>
+    /// <returns>Total de pins com 15 ou mais upvotes.</returns>
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetPinsWith15PositiveVotes()
@@ -125,6 +169,11 @@ public class StatsController : ControllerBase
         return Ok(new GetPinsWith15PositiveVotesResDTO(value));
     }
 
+    /// <summary>
+    /// Obtém a taxa de sucesso semanal dos pedidos à API,
+    /// considerando como sucesso os códigos HTTP 2xx.
+    /// </summary>
+    /// <returns>Percentagem de sucesso dos pedidos nos últimos 7 dias.</returns>
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetWeeklyApiSuccessRate()
@@ -148,6 +197,10 @@ public class StatsController : ControllerBase
         return Ok(new GetSuccessRateOfRequestsDTO(successRate));
     }
 
+    /// <summary>
+    /// Obtém o número de novos utilizadores registados no dia atual em UTC.
+    /// </summary>
+    /// <returns>Total de utilizadores registados hoje.</returns>
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetNewUsersToday()
@@ -161,6 +214,10 @@ public class StatsController : ControllerBase
         return Ok(new GetNewUsersTodayResDTO(value));
     }
 
+    /// <summary>
+    /// Obtém o número total de pins criados.
+    /// </summary>
+    /// <returns>Total de pins existentes.</returns>
     [HttpGet]
     public async Task<IActionResult> GetTotalPinsCreated()
     {
@@ -169,6 +226,10 @@ public class StatsController : ControllerBase
         return Ok(new GetTotalPinsCreatedResDTO(value));
     }
 
+    /// <summary>
+    /// Obtém o número total de catch pins criados.
+    /// </summary>
+    /// <returns>Total de pins do tipo Catch.</returns>
     [HttpGet]
     public async Task<IActionResult> GetTotalCatchPinsCreated()
     {
@@ -178,6 +239,10 @@ public class StatsController : ControllerBase
         return Ok(new GetTotalCatchPinsCreatedResDTO(value));
     }
 
+    /// <summary>
+    /// Obtém o número total de utilizadores registados.
+    /// </summary>
+    /// <returns>Total de utilizadores.</returns>
     [HttpGet]
     public async Task<IActionResult> GetTotalUsers()
     {
@@ -186,6 +251,10 @@ public class StatsController : ControllerBase
         return Ok(new GetTotalUsersResDTO(value));
     }
 
+    /// <summary>
+    /// Obtém o número total de warning pins criados.
+    /// </summary>
+    /// <returns>Total de pins do tipo Warning.</returns>
     [HttpGet]
     public async Task<IActionResult> GetTotalWarningPinsCreated()
     {
@@ -195,6 +264,12 @@ public class StatsController : ControllerBase
         return Ok(new GetTotalWarningPinsCreatedResDTO(value));
     }
 
+    /// <summary>
+    /// Obtém estatísticas semanais de criação de pins num determinado mês,
+    /// segmentadas por tipo de pin.
+    /// </summary>
+    /// <param name="dto">Ano e mês para cálculo das estatísticas.</param>
+    /// <returns>Lista de intervalos semanais com totais por tipo de pin.</returns>
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetPinsWeeklyStats([FromQuery] GetPinsWeeklyStatsReqDTO dto)
@@ -261,6 +336,11 @@ public class StatsController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Obtém estatísticas semanais de registo de utilizadores para um determinado ano.
+    /// </summary>
+    /// <param name="dto">Ano para cálculo das estatísticas.</param>
+    /// <returns>Lista de intervalos semanais com número de utilizadores registados.</returns>
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetRegisteredUsersWeeklyStats([FromQuery] GetRegisteredUsersWeeklyStatsReqDTO dto)
@@ -302,5 +382,3 @@ public class StatsController : ControllerBase
         return Ok(result);
     }
 }
-
-

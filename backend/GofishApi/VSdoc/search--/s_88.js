@@ -1,0 +1,1 @@
+search_result['88']=["topic_0000000000000039.html","PinController.GetComments Method","/// Obtém a lista paginada de comentários de um pin.\r\n    ///"];

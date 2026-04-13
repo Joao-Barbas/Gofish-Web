@@ -1,0 +1,1 @@
+search_result['787']=["topic_000000000000023C.html","IGamificationService.RemoveVoteAsync Method","Removes an existing vote, reversing its effects on pin score and user points."];

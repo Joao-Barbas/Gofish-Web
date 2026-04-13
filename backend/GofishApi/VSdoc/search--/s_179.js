@@ -1,0 +1,1 @@
+search_result['179']=["topic_000000000000007B.html","UserController.GetUserGroups Method","Obtém a lista paginada de grupos de um utilizador.\r\nSe não for indicado utilizador, usa o utilizador autenticado."];

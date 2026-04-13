@@ -1,0 +1,1 @@
+search_result['609']=["topic_00000000000001E4.html","UserProfile.MonthlyPointsDelta Property","/// Diferença de pontos entre o valor atual e o mês anterior.\r\n    ///"];

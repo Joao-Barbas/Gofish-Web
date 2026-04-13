@@ -1,0 +1,1 @@
+search_result['60']=["topic_0000000000000022.html","GroupController.DeleteGroup Method","/// Elimina um grupo existente.\r\n    /// Apenas o owner pode executar esta operação.\r\n    /// Remove membros, convites e associações de pins, ajustando a visibilidade dos pins quando necessário.\r\n    ..."];

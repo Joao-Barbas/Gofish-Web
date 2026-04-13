@@ -1,0 +1,1 @@
+search_result['85']=["topic_0000000000000036.html","PinController.PutVote Method","/// Regista ou atualiza o voto do utilizador autenticado num pin.\r\n    ///"];

@@ -1,0 +1,1 @@
+search_result['402']=["topic_0000000000000161.html","AppUser(String) Constructor","/// Inicializa uma nova instância de AppUser com username.\r\n    ///"];

@@ -1,0 +1,1 @@
+search_result['117']=["topic_000000000000004C.html","ReportController.GetPinsReports Method","/// Obtém a lista paginada de reports de pins.\r\n    /// Apenas administradores podem consultar esta informação.\r\n    ///"];

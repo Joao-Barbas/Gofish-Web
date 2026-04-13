@@ -1,0 +1,1 @@
+search_result['394']=["topic_000000000000015A.html","AppUser.RequestedFriendships Property","/// Pedidos de amizade enviados pelo utilizador.\r\n    ///"];

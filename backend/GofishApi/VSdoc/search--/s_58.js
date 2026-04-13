@@ -1,0 +1,1 @@
+search_result['58']=["topic_0000000000000020.html","GroupController.GetGroup Method","/// Obtém os detalhes de um grupo pelo seu identificador.\r\n    /// Inclui informação base, contagem de membros, contagem de pins,\r\n    /// owner do grupo e estado de pertença do utilizador autenticado..."];

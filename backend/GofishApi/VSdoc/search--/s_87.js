@@ -1,0 +1,1 @@
+search_result['87']=["topic_0000000000000038.html","PinController.GetUserVote Method","/// Obtém o voto do utilizador autenticado e o score atual de um pin.\r\n    ///"];

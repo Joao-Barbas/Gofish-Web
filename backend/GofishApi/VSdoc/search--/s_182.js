@@ -1,0 +1,1 @@
+search_result['182']=["topic_000000000000007E.html","UserProfileController Class","/// Controlador responsável pela gestão de perfis de utilizador.\r\n/// Permite consultar dados públicos do perfil, pontos, definições do perfil\r\n/// e atualizar bio e avatar do utilizador autenticado.\r..."];

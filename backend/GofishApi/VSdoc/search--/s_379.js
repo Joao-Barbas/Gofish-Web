@@ -1,0 +1,1 @@
+search_result['379']=["topic_0000000000000150.html","AppUser Class","/// Representa o utilizador da aplicação.\r\n/// Estende IdentityUser com dados pessoais, preferências de segurança\r\n/// e navegações para entidades relacionadas do domínio.\r\n///"];

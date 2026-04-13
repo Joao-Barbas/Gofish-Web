@@ -1,0 +1,1 @@
+search_result['256']=["topic_000000000000011B.html","AppException Class","Base exception for application-level errors with settable HTTP status codes.\r\nThis is intended to follow the machine-readable format for specifying errors in HTTP API responses based on https://tools...."];

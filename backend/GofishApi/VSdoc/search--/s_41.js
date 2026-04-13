@@ -1,0 +1,1 @@
+search_result['41']=["topic_0000000000000014.html","EnumsController.PinKind Method","/// Obtém os tipos de pins disponíveis.\r\n    ///"];

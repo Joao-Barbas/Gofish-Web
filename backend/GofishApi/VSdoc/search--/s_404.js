@@ -1,0 +1,1 @@
+search_result['404']=["topic_0000000000000162.html","CatchPin Class","/// Representa um pin do tipo \"captura\", associado a uma atividade de pesca.\r\n/// Contém informação específica sobre o peixe capturado e o equipamento utilizado.\r\n///"];

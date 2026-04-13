@@ -1,0 +1,1 @@
+search_result['178']=["topic_000000000000007A.html","UserController.IgnoreFriendship Method","Ignora um pedido de amizade reutilizando a lógica de remoção da amizade."];

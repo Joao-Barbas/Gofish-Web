@@ -1,0 +1,1 @@
+search_result['166']=["topic_000000000000006E.html","UserController.GetUserSettings Method","Obtém as definições e dados configuráveis do utilizador autenticado.\r\nO email e o número de telefone são devolvidos mascarados."];

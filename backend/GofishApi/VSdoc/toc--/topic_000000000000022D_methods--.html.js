@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"GofishApi Reference","topic_000000000000026E.html"],['480',"GofishApi.Services Namespace","topic_0000000000000206.html"],['562',"IBlobStorageService Interface","topic_000000000000022D.html"],['563',"Methods","topic_000000000000022D_methods--.html"]];

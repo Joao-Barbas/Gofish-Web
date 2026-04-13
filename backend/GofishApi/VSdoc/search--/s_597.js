@@ -1,0 +1,1 @@
+search_result['597']=["topic_00000000000001D8.html","UserProfile.UserId Property","/// Identificador do utilizador associado ao perfil.\r\n    /// Funciona como chave estrangeira e relação 1:1 com AppUser.\r\n    ///"];

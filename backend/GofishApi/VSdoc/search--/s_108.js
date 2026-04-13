@@ -1,0 +1,1 @@
+search_result['108']=["topic_0000000000000048.html","ReportController Class","/// Controlador responsável pela criação, consulta, resolução e remoção de reports\r\n/// sobre pins e comentários.\r\n///"];

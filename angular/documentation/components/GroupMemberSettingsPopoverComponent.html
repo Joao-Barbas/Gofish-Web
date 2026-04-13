@@ -1,0 +1,1363 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  GroupMemberSettingsPopoverComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Popover component that exposes management actions for a group member.</p>
+<p>Responsibilities:</p>
+<ul>
+<li>Display contextual actions for a selected group member</li>
+<li>Allow privileged users to remove members or change roles</li>
+<li>Handle ownership transfer actions</li>
+<li>Close automatically when clicking outside the popover</li>
+</ul>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+                <tr>
+                    <td class="col-md-3">HostDirectives</td>
+                    <td class="col-md-9">
+                                    <code><a href="../directives/ClickOutsideDirective.html" target="_self" >ClickOutsideDirective</a></code>
+<br/>
+                                    <div><i>&nbsp;Outputs</i> : clickOutside&nbsp;</div>
+                    </td>
+                </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">host</td>
+                <td class="col-md-9"><code>{<br>}</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>gf-group-member-settings-popover</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/common/CommonModule" target="_blank" >CommonModule</a></code>
+                                <code><a href="../directives/MouseFollowDirective.html" target="_self" >MouseFollowDirective</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./group-member-settings-popover.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./group-member-settings-popover.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#controller" >controller</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#groupsService" >groupsService</a>
+                            </li>
+                            <li>
+                                <a href="#isSubmitting" >isSubmitting</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Static</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#Key" >Key</a>
+                            </li>
+                            <li>
+                                <a href="#promoteToOwnerTooltip" >promoteToOwnerTooltip</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#Role" >Role</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#route" >route</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#onAction" >onAction</a>
+                            </li>
+                            <li>
+                                <a href="#onKickMember" >onKickMember</a>
+                            </li>
+                            <li>
+                                <a href="#onPromoteToOwner" >onPromoteToOwner</a>
+                            </li>
+                            <li>
+                                <a href="#onToggleModerator" >onToggleModerator</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#member" >member</a>
+                            </li>
+                            <li>
+                                <a href="#viewerRole" >viewerRole</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#groupId" >groupId</a>
+                                </li>
+                                <li>
+                                    <a href="#memberUserId" >memberUserId</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="member"></a>
+                        <b>member</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/GroupMemberDTO.html" target="_self" >GroupMemberDTO</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Required : </i>&nbsp;<b>true</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:56</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Selected group member for whom actions are displayed.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="viewerRole"></a>
+                        <b>viewerRole</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#GroupRole" target="_self" >GroupRole</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Required : </i>&nbsp;<b>true</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:67</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Role of the currently authenticated user within the group.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onAction"></a>
+                    <span class="name">
+                        <span ><b>onAction</b></span>
+                        <a href="#onAction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onAction(action: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:80</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles a generic popover action.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>action</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Name of the selected action</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onKickMember"></a>
+                    <span class="name">
+                        <span ><b>onKickMember</b></span>
+                        <a href="#onKickMember"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onKickMember()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="107"
+                                    class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:107</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Removes the selected member from the group.</p>
+<p>Behavior:</p>
+<ul>
+<li>Prevents duplicate submissions</li>
+<li>Validates required identifiers</li>
+<li>Displays success or error feedback</li>
+</ul>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onPromoteToOwner"></a>
+                    <span class="name">
+                        <span ><b>onPromoteToOwner</b></span>
+                        <a href="#onPromoteToOwner"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onPromoteToOwner()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="178"
+                                    class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:178</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Transfers group ownership to the selected member.</p>
+<p>Behavior:</p>
+<ul>
+<li>Prevents duplicate submissions</li>
+<li>Validates required identifiers</li>
+<li>Displays success or error feedback</li>
+</ul>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onToggleModerator"></a>
+                    <span class="name">
+                        <span ><b>onToggleModerator</b></span>
+                        <a href="#onToggleModerator"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onToggleModerator()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="139"
+                                    class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:139</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Promotes a member to moderator or demotes a moderator to member,
+depending on the current role of the selected user.</p>
+<p>Behavior:</p>
+<ul>
+<li>Prevents duplicate submissions</li>
+<li>Chooses the appropriate request based on current member role</li>
+<li>Displays success or error feedback</li>
+</ul>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="controller"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>controller</b></span>
+                        <a href="#controller"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new PopoverController(GroupMemberSettingsPopoverComponent.Key)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:50</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Controller used to manage the open and close state of the popover.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="groupsService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>groupsService</b></span>
+                        <a href="#groupsService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(GroupsService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isSubmitting"></a>
+                    <span class="name">
+                        <span ><b>isSubmitting</b></span>
+                        <a href="#isSubmitting"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:73</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indicates whether an action request is currently in progress.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Key"></a>
+                    <span class="name">
+                            <span class="modifier">Static</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>Key</b></span>
+                        <a href="#Key"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#PopoverKey" target="_self" >PopoverKey</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;gf-group-member-settings-popover&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:47</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Unique popover key used to identify this popover instance.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="promoteToOwnerTooltip"></a>
+                    <span class="name">
+                        <span ><b>promoteToOwnerTooltip</b></span>
+                        <a href="#promoteToOwnerTooltip"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; {
+    return &#x60;This replaces you with ${this.member().userName} as owner of the group.\nThis action is permanent!&#x60;;
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Tooltip shown before ownership transfer.
+Explains that the selected member will replace the current owner.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Role"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>Role</b></span>
+                        <a href="#Role"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>GroupRole</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:70</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Group role enum exposed to the template.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="route"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>route</b></span>
+                        <a href="#route"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ActivatedRoute)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="groupId"></a>
+                        <span class="name"><b>groupId</b><a href="#groupId"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>groupId()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:88</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Returns the current group identifier from the parent route.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="memberUserId"></a>
+                        <span class="name"><b>memberUserId</b><a href="#memberUserId"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>memberUserId()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/features/forum/features/groups/components/group-member-settings-popover/group-member-settings-popover.component.ts:95</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Returns the identifier of the selected group member.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Component, input, inject, HostListener, ElementRef, effect, computed } from &#x27;@angular/core&#x27;;
+import { ProfileActionsPopoverComponent } from &#x27;@gofish/features/user/profile/pages/overview/components/profile-actions-popover/profile-actions-popover.component&#x27;;
+import { PopoverKey, PopoverController } from &#x27;@gofish/shared/core/popover-controller&#x27;;
+import { ClickOutsideDirective } from &#x27;@gofish/shared/directives/click-outside.directive&#x27;;
+import { GroupMemberDTO } from &#x27;@gofish/shared/dtos/group.dto&#x27;;
+import { GroupRole } from &#x27;@gofish/shared/enums/group-role.enum&#x27;;
+import { PopoverService } from &#x27;@gofish/shared/services/popover.service&#x27;;
+import { MouseFollowDirective } from &#x27;@gofish/shared/directives/mouse-follow.directive&#x27;;
+import { ActivatedRoute } from &#x27;@angular/router&#x27;;
+import { GroupsService } from &#x27;@gofish/shared/services/groups.service&#x27;;
+import { toast } from &#x27;ngx-sonner&#x27;;
+import { finalize } from &#x27;rxjs&#x27;;
+
+/**
+ * Popover component that exposes management actions for a group member.
+ *
+ * Responsibilities:
+ * - Display contextual actions for a selected group member
+ * - Allow privileged users to remove members or change roles
+ * - Handle ownership transfer actions
+ * - Close automatically when clicking outside the popover
+ */
+@Component({
+  selector: &#x27;gf-group-member-settings-popover&#x27;,
+  hostDirectives: [
+    {
+      directive: ClickOutsideDirective,
+      outputs: [&#x27;clickOutside&#x27;],
+    }
+  ],
+  host: {
+    &#x27;animate.enter&#x27;: &quot;on-enter&quot;,
+    &#x27;animate.leave&#x27;: &quot;on-leave&quot;,
+    &#x27;(clickOutside)&#x27;: &quot;controller.close()&quot;
+  },
+  imports: [
+    CommonModule,
+    MouseFollowDirective,
+  ],
+  templateUrl: &#x27;./group-member-settings-popover.component.html&#x27;,
+  styleUrl: &#x27;./group-member-settings-popover.component.css&#x27;,
+})
+export class GroupMemberSettingsPopoverComponent {
+
+  /** Unique popover key used to identify this popover instance. */
+  static readonly Key: PopoverKey &#x3D; &#x27;gf-group-member-settings-popover&#x27;;
+
+  /** Controller used to manage the open and close state of the popover. */
+  readonly controller &#x3D; new PopoverController(GroupMemberSettingsPopoverComponent.Key);
+
+  private readonly groupsService &#x3D; inject(GroupsService);
+  private readonly route &#x3D; inject(ActivatedRoute);
+
+  /** Selected group member for whom actions are displayed. */
+  member &#x3D; input.required&lt;GroupMemberDTO&gt;();
+
+  /**
+   * Tooltip shown before ownership transfer.
+   * Explains that the selected member will replace the current owner.
+   */
+  promoteToOwnerTooltip &#x3D; computed(() &#x3D;&gt; {
+    return &#x60;This replaces you with ${this.member().userName} as owner of the group.\nThis action is permanent!&#x60;;
+  });
+
+  /** Role of the currently authenticated user within the group. */
+  viewerRole &#x3D; input.required&lt;GroupRole&gt;();
+
+  /** Group role enum exposed to the template. */
+  protected readonly Role &#x3D; GroupRole;
+
+  /** Indicates whether an action request is currently in progress. */
+  isSubmitting: boolean &#x3D; false;
+
+  /**
+   * Handles a generic popover action.
+   *
+   * @param action Name of the selected action
+   */
+  onAction(action: string) {
+    console.log(&#x60;${action} member:&#x60;, this.member().userId);
+    this.controller.close();
+  }
+
+  /**
+   * Returns the current group identifier from the parent route.
+   */
+  private get groupId(): number {
+    return Number(this.route.parent?.snapshot.paramMap.get(&#x27;id&#x27;));
+  }
+
+  /**
+   * Returns the identifier of the selected group member.
+   */
+  private get memberUserId(): string {
+    return this.member().userId;
+  }
+
+  /**
+   * Removes the selected member from the group.
+   *
+   * Behavior:
+   * - Prevents duplicate submissions
+   * - Validates required identifiers
+   * - Displays success or error feedback
+   */
+  onKickMember(): void {
+    if (this.isSubmitting) return;
+
+    this.isSubmitting &#x3D; true;
+    if (!this.groupId || !this.memberUserId) {
+      this.isSubmitting &#x3D; false;
+      return;
+    }
+
+    this.groupsService.removeMember(this.groupId, this.memberUserId)
+      .subscribe({
+        next: () &#x3D;&gt; {
+          this.isSubmitting &#x3D; false;
+          toast.success(&#x27;User removed successfully.&#x27;);
+          this.controller.close();
+        },
+        error: (err) &#x3D;&gt; {
+          this.isSubmitting &#x3D; false;
+          toast.error(err?.error ?? &#x27;Failed to remove user.&#x27;);
+        }
+      });
+  }
+
+  /**
+   * Promotes a member to moderator or demotes a moderator to member,
+   * depending on the current role of the selected user.
+   *
+   * Behavior:
+   * - Prevents duplicate submissions
+   * - Chooses the appropriate request based on current member role
+   * - Displays success or error feedback
+   */
+  onToggleModerator(): void {
+    if (this.isSubmitting) return;
+
+    if (!this.groupId || !this.memberUserId) {
+      this.isSubmitting &#x3D; false;
+      return;
+    }
+
+    const request$ &#x3D; this.member().role &#x3D;&#x3D;&#x3D; GroupRole.Moderator
+      ? this.groupsService.demoteAdminToMember(this.groupId, this.memberUserId)
+      : this.groupsService.promoteMemberToAdmin(this.groupId, this.memberUserId);
+
+    this.isSubmitting &#x3D; true;
+
+    request$.subscribe({
+      next: () &#x3D;&gt; {
+        this.isSubmitting &#x3D; false;
+        toast.success(
+          this.member().role &#x3D;&#x3D;&#x3D; GroupRole.Moderator
+            ? &#x27;User demoted to member.&#x27;
+            : &#x27;User promoted to moderator.&#x27;
+        );
+        this.controller.close();
+      },
+      error: (err) &#x3D;&gt; {
+        this.isSubmitting &#x3D; false;
+        toast.error(err?.error ?? &#x27;Failed to update role.&#x27;);
+      }
+    });
+  }
+
+  /**
+   * Transfers group ownership to the selected member.
+   *
+   * Behavior:
+   * - Prevents duplicate submissions
+   * - Validates required identifiers
+   * - Displays success or error feedback
+   */
+  onPromoteToOwner(): void {
+    if (this.isSubmitting) return;
+
+    this.isSubmitting &#x3D; true;
+
+    if (!this.groupId || !this.memberUserId) {
+      this.isSubmitting &#x3D; false;
+      return;
+    }
+
+    this.groupsService.promoteMemberToOwner(this.groupId, this.memberUserId)
+      .subscribe({
+        next: () &#x3D;&gt; {
+          this.isSubmitting &#x3D; false;
+          toast.success(&#x27;Ownership transferred successfully.&#x27;);
+          this.controller.close();
+        },
+        error: (err) &#x3D;&gt; {
+          this.isSubmitting &#x3D; false;
+          toast.error(err?.error ?? &#x27;Failed to transfer ownership.&#x27;);
+        }
+      });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;button class&#x3D;&quot;group-member-settings-option first-option&quot; (click)&#x3D;&quot;onKickMember()&quot;&gt;
+
+  &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot;
+    stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; class&#x3D;&quot;lucide lucide-ban-icon lucide-ban&quot;&gt;
+    &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; /&gt;
+    &lt;path d&#x3D;&quot;M4.929 4.929 19.07 19.071&quot; /&gt;
+  &lt;/svg&gt;
+
+  &lt;span&gt;Kick user&lt;/span&gt;
+
+&lt;/button&gt;
+
+
+
+@if (viewerRole() &#x3D;&#x3D;&#x3D; Role.Owner) {
+&lt;div class&#x3D;&quot;separator&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;option-wrapper&quot;&gt;
+
+  &lt;button class&#x3D;&quot;group-member-settings-option&quot; (click)&#x3D;&quot;onToggleModerator()&quot;&gt;
+    @switch (member().role) {
+    @case (Role.Member) {
+    &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;
+      stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; class&#x3D;&quot;lucide lucide-award-icon lucide-award&quot;&gt;
+      &lt;path
+        d&#x3D;&quot;m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526&quot; /&gt;
+      &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;8&quot; r&#x3D;&quot;6&quot; /&gt;
+    &lt;/svg&gt;
+    }
+
+    @case (Role.Moderator) {
+    &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot;
+      stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; class&#x3D;&quot;lucide lucide-minus-icon lucide-minus&quot;&gt;
+      &lt;path d&#x3D;&quot;M5 12h14&quot; /&gt;
+    &lt;/svg&gt;
+    }
+    }
+
+    &lt;span&gt;{{ member().role &#x3D;&#x3D;&#x3D; Role.Moderator ? &#x27;Demote to member&#x27; : &#x27;Promote to moderator&#x27; }}&lt;/span&gt;
+  &lt;/button&gt;
+
+&lt;/div&gt;
+}
+
+@if (member().role !&#x3D;&#x3D; Role.Owner &amp;&amp; viewerRole() &#x3D;&#x3D; Role.Owner) {
+&lt;div class&#x3D;&quot;option-wrapper&quot;&gt;
+
+  &lt;button class&#x3D;&quot;group-member-settings-option&quot; (click)&#x3D;&quot;onPromoteToOwner()&quot;&gt;
+
+    &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot; fill&#x3D;&quot;none&quot; stroke-width&#x3D;&quot;2&quot;
+      stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+      &lt;path
+        d&#x3D;&quot;M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z&quot; /&gt;
+      &lt;path d&#x3D;&quot;M5 21h14&quot; /&gt;
+    &lt;/svg&gt;
+
+    &lt;span&gt;Promote to owner&lt;/span&gt;
+
+  &lt;/button&gt;
+
+  &lt;button class&#x3D;&quot;group-member-settings-option option-wrapper-warning-btn&quot; [gfTooltip]&#x3D;&quot;promoteToOwnerTooltip()&quot;&gt;
+
+    &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;
+      stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; class&#x3D;&quot;lucide lucide-triangle-alert-icon lucide-triangle-alert&quot;&gt;
+      &lt;path d&#x3D;&quot;m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3&quot; /&gt;
+      &lt;path d&#x3D;&quot;M12 9v4&quot; /&gt;
+      &lt;path d&#x3D;&quot;M12 17h.01&quot; /&gt;
+    &lt;/svg&gt;
+
+  &lt;/button&gt;
+
+&lt;/div&gt;
+}
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><button class="group-member-settings-option first-option" (click)="onKickMember()">  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ban-icon lucide-ban">    <circle cx="12" cy="12" r="10" />    <path d="M4.929 4.929 19.07 19.071" />  </svg>  <span>Kick user</span></button>@if (viewerRole() === Role.Owner) {<div class="separator"></div><div class="option-wrapper">  <button class="group-member-settings-option" (click)="onToggleModerator()">    @switch (member().role) {    @case (Role.Member) {    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"      stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award-icon lucide-award">      <path        d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526" />      <circle cx="12" cy="8" r="6" />    </svg>    }    @case (Role.Moderator) {    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus-icon lucide-minus">      <path d="M5 12h14" />    </svg>    }    }    <span>{{ member().role === Role.Moderator ? \'Demote to member\' : \'Promote to moderator\' }}</span>  </button></div>}@if (member().role !== Role.Owner && viewerRole() == Role.Owner) {<div class="option-wrapper">  <button class="group-member-settings-option" (click)="onPromoteToOwner()">    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"      stroke-linecap="round" stroke-linejoin="round">      <path        d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" />      <path d="M5 21h14" />    </svg>    <span>Promote to owner</span>  </button>  <button class="group-member-settings-option option-wrapper-warning-btn" [gfTooltip]="promoteToOwnerTooltip()">    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"      stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert">      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />      <path d="M12 9v4" />      <path d="M12 17h.01" />    </svg>  </button></div>}</div>'
+    var COMPONENTS = [{'name': 'AboutComponent', 'selector': 'app-about'},{'name': 'AdminPopoverComponent', 'selector': 'gf-admin-popover'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AsyncButtonComponent', 'selector': 'app-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'gf-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'button[gfAsyncBtn]'},{'name': 'AuthCallbackComponent', 'selector': 'app-auth-callback'},{'name': 'CatchPinModalComponent', 'selector': 'app-catch-pin-modal'},{'name': 'ChangeBirthdateModalComponent', 'selector': 'app-change-birthdate-modal'},{'name': 'ChangeDisplaynameModalComponent', 'selector': 'app-change-displayname-modal'},{'name': 'ChangeEmailModalComponent', 'selector': 'gf-change-email-modal'},{'name': 'ChangeFirstnameModalComponent', 'selector': 'app-change-firstname-modal'},{'name': 'ChangeLastnameModalComponent', 'selector': 'app-change-lastname-modal'},{'name': 'ChangePhoneModalComponent', 'selector': 'app-change-phone-modal'},{'name': 'ChangeUsernameModalComponent', 'selector': 'app-change-username-modal'},{'name': 'ChoosePinPopupComponent', 'selector': 'app-choose-pin-popup'},{'name': 'ClusterDetailsComponent', 'selector': 'app-cluster-details'},{'name': 'ConfirmDeletionModalComponent', 'selector': 'app-confirm-deletion-modal'},{'name': 'DeleteCommentComponent', 'selector': 'gf-delete-comment'},{'name': 'DeleteGroupComponent', 'selector': 'gf-delete-group'},{'name': 'DeletePinComponent', 'selector': 'app-delete-pin'},{'name': 'DeletePostComponent', 'selector': 'gf-delete-post'},{'name': 'DiscoverComponent', 'selector': 'app-discover'},{'name': 'EnumComponent', 'selector': 'app-enum'},{'name': 'ExitGroupComponent', 'selector': 'gf-exit-group'},{'name': 'FooterComponent', 'selector': 'gf-footer'},{'name': 'ForumComponent', 'selector': 'app-forum'},{'name': 'ForumPostComponent', 'selector': 'app-forum-post'},{'name': 'FriendsComponent', 'selector': 'app-friends'},{'name': 'FriendshipListCardComponent', 'selector': 'gf-friendship-list-card'},{'name': 'FriendsListComponent', 'selector': 'app-friends-list'},{'name': 'FromFriendsComponent', 'selector': 'app-from-friends'},{'name': 'GeneralComponent', 'selector': 'app-general'},{'name': 'GfCardCommentPreviewComponent', 'selector': 'gf-gf-card-comment-preview'},{'name': 'GfCardPinPreviewComponent', 'selector': 'app-gf-card-pin-preview'},{'name': 'GfCardQuickAccessComponent', 'selector': 'app-gf-card-quick-access'},{'name': 'GfCardQuickViewComponent', 'selector': 'app-gf-card-quick-view'},{'name': 'GroupCreateComponent', 'selector': 'app-group-create'},{'name': 'GroupInviteComponent', 'selector': 'gf-group-invite'},{'name': 'GroupInvitesCardComponent', 'selector': 'gf-group-invites-card'},{'name': 'GroupInvitesListComponent', 'selector': 'gf-group-invites-list'},{'name': 'GroupListCardComponent', 'selector': 'gf-group-list-card'},{'name': 'GroupMemberSettingsPopoverComponent', 'selector': 'gf-group-member-settings-popover'},{'name': 'GroupPopoverComponent', 'selector': 'gf-group-popover'},{'name': 'GroupPostsPlaceholderComponent', 'selector': 'app-group-posts-placeholder'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsListCardComponent', 'selector': 'gf-groups-list-card'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'HeaderActionsComponent', 'selector': 'gf-header-actions'},{'name': 'HeaderComponent', 'selector': 'gf-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'InfoPinModalComponent', 'selector': 'app-info-pin-modal'},{'name': 'InviteToGroupsModalComponent', 'selector': 'gf-invite-to-groups-modal'},{'name': 'LeaderboardComponent', 'selector': 'gf-leaderboard'},{'name': 'LoadingErrorModalComponent', 'selector': 'gf-loading-error-modal'},{'name': 'LoadingSpinnerComponent', 'selector': 'gf-loading-spinner'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MembersGroupComponent', 'selector': 'gf-members-group'},{'name': 'MyGroupsComponent', 'selector': 'app-my-groups'},{'name': 'NavPopoverComponent', 'selector': 'gf-nav-popover'},{'name': 'OverviewComponent', 'selector': 'app-overview'},{'name': 'PersonalDataComponent', 'selector': 'app-personal-data'},{'name': 'PinDetailPanelComponent', 'selector': 'app-pin-detail-panel'},{'name': 'PinsAvgPublishedChart', 'selector': 'gf-pins-average-published-chart'},{'name': 'PinsComponent', 'selector': 'app-pins'},{'name': 'PinsPerWeekComponent', 'selector': 'gf-pins-per-week'},{'name': 'PostCommentsComponent', 'selector': 'app-post-comments'},{'name': 'PostIdPlaceholderComponent', 'selector': 'app-post-id-placeholder'},{'name': 'PrivacyPolicyComponent', 'selector': 'app-privacy-policy'},{'name': 'ProfileActionsPopoverComponent', 'selector': 'gf-profile-actions-popover'},{'name': 'ProfileCatchPinCardComponent', 'selector': 'gf-profile-catch-pin-card'},{'name': 'ProfileShellComponent', 'selector': 'app-profile'},{'name': 'ProfileShowMoreModalComponent', 'selector': 'gf-profile-show-more-modal'},{'name': 'ReportCommentComponent', 'selector': 'gf-report-comment'},{'name': 'ReportedCommentPageComponent', 'selector': 'gf-reported-comment-page'},{'name': 'ReportedCommentsComponent', 'selector': 'gf-reported-comments'},{'name': 'ReportedPinPageComponent', 'selector': 'gf-reported-pin-page'},{'name': 'ReportedPinsComponent', 'selector': 'gf-reported-pins'},{'name': 'ReportPinComponent', 'selector': 'gf-report'},{'name': 'RequestsListComponent', 'selector': 'app-requests-list'},{'name': 'ResetPasswordComponent', 'selector': 'gf-reset-password'},{'name': 'SearchComponent', 'selector': 'gf-search'},{'name': 'SecurityComponent', 'selector': 'app-security'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SetupTotpComponent', 'selector': 'app-setup-totp'},{'name': 'SigninComponent', 'selector': 'app-signin'},{'name': 'SigninVerifyComponent', 'selector': 'app-signin-verify'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'SmallFriendshipCarouselCardComponent', 'selector': 'gf-small-friendship-carousel-card'},{'name': 'SmallGroupCarouselCardComponent', 'selector': 'gf-small-group-carousel-card'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'StatsHomeComponent', 'selector': 'app-home'},{'name': 'StatsReportsComponent', 'selector': 'app-stats-reports'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'TermsOfServiceComponent', 'selector': 'app-terms-of-service'},{'name': 'TotpValidationModalComponent', 'selector': 'app-totp-validation-modal'},{'name': 'UserCardComponent', 'selector': 'app-user-card'},{'name': 'UserHelpBoxComponent', 'selector': 'gf-user-help-box'},{'name': 'UserPopoverComponent', 'selector': 'gf-user-popover'},{'name': 'UserRankIconComponent', 'selector': 'gf-user-rank-icon'},{'name': 'UserSatisfactionIndexComponent', 'selector': 'gf-user-satisfaction-index'},{'name': 'UsersChartComponent', 'selector': 'gf-users-chart'},{'name': 'UsersListCardComponent', 'selector': 'gf-users-list-card'},{'name': 'UsersListComponent', 'selector': 'gf-users-list'},{'name': 'UserTitleComponent', 'selector': 'gf-user-title'},{'name': 'VerifyEmailModalComponent', 'selector': 'gf-verify-email-modal'},{'name': 'VerifyTwofaContainerComponent', 'selector': 'gf-verify-twofa-container'},{'name': 'WarnPinModalComponent', 'selector': 'app-warn-pin-modal'}];
+    var DIRECTIVES = [{'name': 'ClickOutsideDirective', 'selector': '[clickOutside]'},{'name': 'LettersOnlyDirective', 'selector': '[appLettersOnly]'},{'name': 'MouseFollowDirective', 'selector': '[gfTooltip]'},{'name': 'NumbersOnlyDirective', 'selector': '[appNumbersOnly]'}];
+    var ACTUAL_COMPONENT = {'name': 'GroupMemberSettingsPopoverComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'GroupMemberSettingsPopoverComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,1 @@
+search_result['619']=["topic_00000000000001E9.html","Vote.Value Property","/// Valor do voto (ex: upvote ou downvote).\r\n    ///"];

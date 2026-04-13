@@ -1,0 +1,1 @@
+search_result['74']=["topic_0000000000000030.html","PinController Class","/// Controlador responsável pela gestão de pins geográficos da aplicação.\r\n/// Disponibiliza operações de consulta, criação, remoção, votos e comentários.\r\n///"];

@@ -1,0 +1,1 @@
+search_result['427']=["topic_000000000000016F.html","Friendship Class","/// Representa uma relação de amizade entre dois utilizadores.\r\n/// Pode estar em diferentes estados ao longo do seu ciclo de vida.\r\n///"];

@@ -1,0 +1,1 @@
+search_result['538']=["topic_00000000000001B6.html","IReport Interface","/// Define o contrato comum para entidades de reporte/moderação.\r\n/// Expõe a informação base necessária para tratamento e apresentação de reports.\r\n///"];

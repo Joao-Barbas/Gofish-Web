@@ -1,0 +1,1 @@
+search_result['138']=["topic_000000000000005C.html","StatsController.GetActiveUsers Method","/// Obtém o número de utilizadores ativos nos últimos 30 dias,\r\n    /// considerando como ativo quem criou pelo menos um pin nesse período.\r\n    ///"];

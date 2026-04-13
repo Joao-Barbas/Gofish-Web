@@ -1,0 +1,2178 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  SecurityComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/user/settings/components/security/security.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-security</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/forms/ReactiveFormsModule" target="_blank" >ReactiveFormsModule</a></code>
+                                <code><a href="https://angular.io/api/router/RouterOutlet" target="_blank" >RouterOutlet</a></code>
+                                <code><a href="../components/TotpValidationModalComponent.html" target="_self" >TotpValidationModalComponent</a></code>
+                                <code><a href="../components/AsyncButtonComponent.html" target="_self" >AsyncButtonComponent</a></code>
+                                <code><a href="https://angular.io/api/router/RouterLinkWithHref" target="_blank" >RouterLinkWithHref</a></code>
+                                <code><a href="https://angular.io/api/router/RouterLink" target="_blank" >RouterLink</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./security.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./security.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#Api" >Api</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#authService" >authService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#busyState" >busyState</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#formBuilder" >formBuilder</a>
+                            </li>
+                            <li>
+                                <a href="#hasTwoFactor" >hasTwoFactor</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#loadingState" >loadingState</a>
+                            </li>
+                            <li>
+                                <a href="#modalAction" >modalAction</a>
+                            </li>
+                            <li>
+                                <a href="#modalError" >modalError</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#modalService" >modalService</a>
+                            </li>
+                            <li>
+                                <a href="#newPassApiErrors" >newPassApiErrors</a>
+                            </li>
+                            <li>
+                                <a href="#newPassErrors" >newPassErrors</a>
+                            </li>
+                            <li>
+                                <a href="#newPassForm" >newPassForm</a>
+                            </li>
+                            <li>
+                                <a href="#newPassSuccess" >newPassSuccess</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#Path" >Path</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#toast" >toast</a>
+                            </li>
+                            <li>
+                                <a href="#twoFactorMethod" >twoFactorMethod</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#TwoFactorMethod" >TwoFactorMethod</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#userSecurityApi" >userSecurityApi</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#controlError" >controlError</a>
+                            </li>
+                            <li>
+                                <a href="#doChangePassword" >doChangePassword</a>
+                            </li>
+                            <li>
+                                <a href="#doGetSecurityInfo" >doGetSecurityInfo</a>
+                            </li>
+                            <li>
+                                <a href="#getError" >getError</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#notDuplicatePassword" >notDuplicatePassword</a>
+                            </li>
+                            <li>
+                                <a href="#onModalCancel" >onModalCancel</a>
+                            </li>
+                            <li>
+                                <a href="#onModalConfirm" >onModalConfirm</a>
+                            </li>
+                            <li>
+                                <a href="#onNewPass" >onNewPass</a>
+                            </li>
+                            <li>
+                                <a href="#onTwoFactorToEmail" >onTwoFactorToEmail</a>
+                            </li>
+                            <li>
+                                <a href="#onTwoFactorToNone" >onTwoFactorToNone</a>
+                            </li>
+                            <li>
+                                <a href="#onTwoFactorToTotp" >onTwoFactorToTotp</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#passwordsMatch" >passwordsMatch</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:74</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="controlError"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>controlError</b></span>
+                        <a href="#controlError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>controlError(name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="142"
+                                    class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:142</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>name</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>ValidationErrors | null</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="doChangePassword"></a>
+                    <span class="name">
+                        <span ><b>doChangePassword</b></span>
+                        <a href="#doChangePassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>doChangePassword()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="106"
+                                    class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:106</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="doGetSecurityInfo"></a>
+                    <span class="name">
+                        <span ><b>doGetSecurityInfo</b></span>
+                        <a href="#doGetSecurityInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>doGetSecurityInfo()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="90"
+                                    class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:90</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getError"></a>
+                    <span class="name">
+                        <span ><b>getError</b></span>
+                        <a href="#getError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getError()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="149"
+                                    class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:149</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string | null</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="86"
+                                    class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:86</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notDuplicatePassword"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>notDuplicatePassword</b></span>
+                        <a href="#notDuplicatePassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>notDuplicatePassword(control: <a href="https://angular.io/api/forms/AbstractControl" target="_blank">AbstractControl</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="135"
+                                    class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:135</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>control</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/forms/AbstractControl" target="_blank" >AbstractControl</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>ValidationErrors | null</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onModalCancel"></a>
+                    <span class="name">
+                        <span ><b>onModalCancel</b></span>
+                        <a href="#onModalCancel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onModalCancel()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="275"
+                                    class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:275</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onModalConfirm"></a>
+                    <span class="name">
+                        <span ><b>onModalConfirm</b></span>
+                        <a href="#onModalConfirm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onModalConfirm(totp: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="230"
+                                    class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:230</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>totp</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onNewPass"></a>
+                    <span class="name">
+                        <span ><b>onNewPass</b></span>
+                        <a href="#onNewPass"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onNewPass()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="172"
+                                    class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:172</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onTwoFactorToEmail"></a>
+                    <span class="name">
+                        <span ><b>onTwoFactorToEmail</b></span>
+                        <a href="#onTwoFactorToEmail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onTwoFactorToEmail()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="206"
+                                    class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:206</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onTwoFactorToNone"></a>
+                    <span class="name">
+                        <span ><b>onTwoFactorToNone</b></span>
+                        <a href="#onTwoFactorToNone"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onTwoFactorToNone()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="196"
+                                    class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:196</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onTwoFactorToTotp"></a>
+                    <span class="name">
+                        <span ><b>onTwoFactorToTotp</b></span>
+                        <a href="#onTwoFactorToTotp"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onTwoFactorToTotp()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="222"
+                                    class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:222</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="passwordsMatch"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>passwordsMatch</b></span>
+                        <a href="#passwordsMatch"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>passwordsMatch(control: <a href="https://angular.io/api/forms/AbstractControl" target="_blank">AbstractControl</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="128"
+                                    class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:128</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>control</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/forms/AbstractControl" target="_blank" >AbstractControl</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>ValidationErrors | null</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Api"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>Api</b></span>
+                        <a href="#Api"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>Api</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authService"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>authService</b></span>
+                        <a href="#authService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(AuthService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="busyState"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>busyState</b></span>
+                        <a href="#busyState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/BusyState.html" target="_self" >BusyState</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new BusyState</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formBuilder"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>formBuilder</b></span>
+                        <a href="#formBuilder"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(FormBuilder)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="hasTwoFactor"></a>
+                    <span class="name">
+                        <span ><b>hasTwoFactor</b></span>
+                        <a href="#hasTwoFactor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadingState"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>loadingState</b></span>
+                        <a href="#loadingState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/LoadingState.html" target="_self" >LoadingState</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new LoadingState()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalAction"></a>
+                    <span class="name">
+                        <span ><b>modalAction</b></span>
+                        <a href="#modalAction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;change-password&quot; | &quot;disable-totp&quot; | &quot;disable-email&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;change-password&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalError"></a>
+                    <span class="name">
+                        <span ><b>modalError</b></span>
+                        <a href="#modalError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalService"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>modalService</b></span>
+                        <a href="#modalService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ModalService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newPassApiErrors"></a>
+                    <span class="name">
+                        <span ><b>newPassApiErrors</b></span>
+                        <a href="#newPassApiErrors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ProblemDetails.html" target="_self" >ProblemDetails | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newPassErrors"></a>
+                    <span class="name">
+                        <span ><b>newPassErrors</b></span>
+                        <a href="#newPassErrors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ValidationErrors | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newPassForm"></a>
+                    <span class="name">
+                        <span ><b>newPassForm</b></span>
+                        <a href="#newPassForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/FormGroup" target="_blank" >FormGroup</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.formBuilder.group({
+    currentPassword: [ &#x27;&#x27;, [ Validators.required ]],
+    newPassword: [ &#x27;&#x27;, [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.pattern(/(?&#x3D;.*[^a-zA-Z0-9 ])/)
+    ]],
+    confirmPassword: [ &#x27;&#x27;, [ Validators.required ]],
+    twoFactorCode: [ &#x27;&#x27;, []]
+  }, { validators: [
+    (control: AbstractControl) &#x3D;&gt; this.passwordsMatch(control),
+    (control: AbstractControl) &#x3D;&gt; this.notDuplicatePassword(control)
+  ]})</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newPassSuccess"></a>
+                    <span class="name">
+                        <span ><b>newPassSuccess</b></span>
+                        <a href="#newPassSuccess"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Path"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>Path</b></span>
+                        <a href="#Path"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>Path</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:47</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(Router)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toast"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>toast</b></span>
+                        <a href="#toast"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>toast</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="twoFactorMethod"></a>
+                    <span class="name">
+                        <span ><b>twoFactorMethod</b></span>
+                        <a href="#twoFactorMethod"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#TwoFactorMethod" target="_self" >TwoFactorMethod</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>TwoFactorMethod.None</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="TwoFactorMethod"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>TwoFactorMethod</b></span>
+                        <a href="#TwoFactorMethod"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>TwoFactorMethod</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userSecurityApi"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>userSecurityApi</b></span>
+                        <a href="#userSecurityApi"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(UserSecurityApi)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/features/user/settings/components/security/security.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from &#x27;@angular/forms&#x27;;
+import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { Component, inject, OnDestroy, OnInit } from &#x27;@angular/core&#x27;;
+import { Subscription } from &#x27;rxjs&#x27;;
+import { BusyState } from &#x27;@gofish/shared/core/busy-state&#x27;;
+import { ModalService } from &#x27;@gofish/shared/services/modal.service&#x27;;
+import { TotpValidationModalComponent } from &#x27;@gofish/features/user/settings/components/security/components/totp-validation-modal/totp-validation-modal.component&#x27;;
+import { LoadingState } from &#x27;@gofish/shared/core/loading-state&#x27;;
+import { TwoFactorMethod } from &#x27;@gofish/shared/models/user-security.models&#x27;;
+import { ChangePasswordReqDTO, SecurityInfoResDTO } from &#x27;@gofish/shared/dtos/user-security.dto&#x27;;
+import { getFirstError, isProblemDetails, isValidationProblemDetails, ProblemDetails } from &#x27;@gofish/shared/core/problem-details&#x27;;
+import { Api, Path, PathSegment } from &#x27;@gofish/shared/constants&#x27;;
+import { AsyncButtonComponent } from &quot;@gofish/shared/components/async-button/async-button.component&quot;;
+import { Event, NavigationEnd, NavigationStart, Router, RouterOutlet, RouterLinkWithHref, RouterLink } from &#x27;@angular/router&#x27;;
+import { filter } from &#x27;rxjs/operators&#x27;;
+import { takeUntilDestroyed } from &#x27;@angular/core/rxjs-interop&#x27;;
+import { AuthService } from &#x27;@gofish/shared/services/auth.service&#x27;;
+import { UserSecurityApi } from &#x27;@gofish/shared/api/user-security.api&#x27;;
+import { toast } from &#x27;ngx-sonner&#x27;;
+
+@Component({
+  selector: &#x27;app-security&#x27;,
+  imports: [
+    ReactiveFormsModule,
+    RouterOutlet,
+    TotpValidationModalComponent,
+    AsyncButtonComponent,
+    RouterLinkWithHref,
+    RouterLink
+],
+  templateUrl: &#x27;./security.component.html&#x27;,
+  styleUrl: &#x27;./security.component.css&#x27;,
+})
+export class SecurityComponent implements OnInit {
+  private readonly formBuilder &#x3D; inject(FormBuilder);
+  private readonly router &#x3D; inject(Router);
+  private readonly userSecurityApi &#x3D; inject(UserSecurityApi);
+
+  readonly authService &#x3D; inject(AuthService);
+  readonly modalService &#x3D; inject(ModalService);
+
+  readonly busyState: BusyState &#x3D; new BusyState;
+  readonly loadingState: LoadingState &#x3D; new LoadingState();
+
+  readonly Path &#x3D; Path;
+  readonly Api &#x3D; Api;
+  readonly TwoFactorMethod &#x3D; TwoFactorMethod;
+  readonly toast &#x3D; toast;
+
+  modalAction: &#x27;change-password&#x27; | &#x27;disable-totp&#x27; | &#x27;disable-email&#x27; &#x3D; &#x27;change-password&#x27;;
+  modalError: string | null &#x3D; null;
+
+  hasTwoFactor: boolean &#x3D; false;
+  twoFactorMethod: TwoFactorMethod &#x3D; TwoFactorMethod.None;
+
+  newPassSuccess: boolean &#x3D; false;
+  newPassApiErrors: ProblemDetails | null &#x3D; null;
+  newPassErrors: ValidationErrors | null &#x3D; () &#x3D;&gt; this.newPassForm.errors;
+
+  newPassForm: FormGroup &#x3D; this.formBuilder.group({
+    currentPassword: [ &#x27;&#x27;, [ Validators.required ]],
+    newPassword: [ &#x27;&#x27;, [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.pattern(/(?&#x3D;.*[^a-zA-Z0-9 ])/)
+    ]],
+    confirmPassword: [ &#x27;&#x27;, [ Validators.required ]],
+    twoFactorCode: [ &#x27;&#x27;, []]
+  }, { validators: [
+    (control: AbstractControl) &#x3D;&gt; this.passwordsMatch(control),
+    (control: AbstractControl) &#x3D;&gt; this.notDuplicatePassword(control)
+  ]});
+
+  constructor() {
+    this.router.events.pipe(
+      filter((event) &#x3D;&gt; event instanceof NavigationEnd),
+      filter((event) &#x3D;&gt; event.urlAfterRedirects.endsWith(&#x60;/${PathSegment.SECURITY_SETTINGS}&#x60;)),
+      takeUntilDestroyed()
+    ).subscribe(() &#x3D;&gt; {
+      this.doGetSecurityInfo();
+    });
+  }
+
+  ngOnInit() {
+    this.doGetSecurityInfo();
+  }
+
+  doGetSecurityInfo() {
+    if (this.authService.isExternalUser()) return;
+    this.loadingState.start();
+    this.userSecurityApi.getSecurityInfo().subscribe({
+      next: (res: SecurityInfoResDTO) &#x3D;&gt; {
+        this.hasTwoFactor    &#x3D; res.twoFactorEnabled;
+        this.twoFactorMethod &#x3D; res.twoFactorMethod;
+        this.loadingState.success();
+      },
+      error: (err: HttpErrorResponse) &#x3D;&gt; {
+        let res &#x3D; err.error as ProblemDetails;
+        this.loadingState.fail(&#x27;Something went wrong while trying to load security information.&#x27;);
+      }
+    });
+  }
+
+  doChangePassword(): void {
+    this.busyState.setBusy(true);
+    this.newPassSuccess &#x3D; false;
+    this.userSecurityApi.changePassword(this.newPassForm.value as ChangePasswordReqDTO).subscribe({
+      next: () &#x3D;&gt; {
+        this.busyState.setBusy(false);
+        this.newPassSuccess &#x3D; true;
+        this.newPassForm.reset();
+        setTimeout(() &#x3D;&gt; {
+          this.newPassSuccess &#x3D; false;
+        }, 3000);
+      },
+      error: (err: HttpErrorResponse) &#x3D;&gt; {
+        this.busyState.setBusy(false);
+        if (!isProblemDetails(err.error)) return;
+        this.newPassApiErrors &#x3D; err.error;
+      }
+    });
+  }
+
+  // Form errors/validations
+
+  private passwordsMatch(control: AbstractControl): ValidationErrors | null {
+    let np &#x3D; control.get(&#x27;newPassword&#x27;)?.value;
+    let cp &#x3D; control.get(&#x27;confirmPassword&#x27;)?.value;
+    if (np &amp;&amp; cp &amp;&amp; np !&#x3D;&#x3D; cp) return { &#x27;passwordmismatch&#x27;: true };
+    return null;
+  }
+
+  private notDuplicatePassword(control: AbstractControl): ValidationErrors | null {
+    let c &#x3D; control.get(&#x27;currentPassword&#x27;)?.value;
+    let n &#x3D; control.get(&#x27;newPassword&#x27;)?.value;
+    if (c &amp;&amp; n &amp;&amp; c &#x3D;&#x3D;&#x3D; n) return { &#x27;duplicatepassword&#x27;: true };
+    return null;
+  }
+
+  private controlError(name: string): ValidationErrors | null {
+    let control &#x3D; this.newPassForm.get(name);
+    if (!control) return null;
+    if (!control.invalid || (!control.touched &amp;&amp; !control.dirty)) return null;
+    return control.errors;
+  }
+
+  getError(): string | null {
+    const e &#x3D; (field: string) &#x3D;&gt; this.controlError(field);
+    const g &#x3D; this.newPassErrors;
+    const s &#x3D; this.newPassApiErrors;
+    // Field-level
+    if (e(&#x27;currentPassword&#x27;)?.[&#x27;required&#x27;]) return &#x27;Current password is required.&#x27;;
+    if (e(&#x27;newPassword&#x27;)?.[&#x27;required&#x27;]) return &#x27;New password is required.&#x27;;
+    if (e(&#x27;newPassword&#x27;)?.[&#x27;minlength&#x27;]) return &#x27;New Password needs atleast 6 characters.&#x27;;
+    if (e(&#x27;newPassword&#x27;)?.[&#x27;pattern&#x27;]) return &#x27;New Password required one or more special character(s).&#x27;;
+    if (e(&#x27;confirmPassword&#x27;)?.[&#x27;required&#x27;]) return &#x27;Please confirm your new password.&#x27;;
+    // Group-level
+    if (g?.[&#x27;passwordmismatch&#x27;]) return &#x27;Passwords don\&#x27;t match.&#x27;;
+    if (g?.[&#x27;duplicatepassword&#x27;]) return &#x27;New password must differ from current password.&#x27;;
+    // Server-level
+    if (s &amp;&amp; isValidationProblemDetails(s)) {
+      return getFirstError(s) ?? null;
+    }
+    return s?.detail ?? null;
+  }
+
+  // End form errors/validation
+  // Template events
+
+  onNewPass(): void {
+    this.newPassForm.markAllAsTouched();
+    if (this.newPassForm.invalid) return;
+    this.newPassApiErrors &#x3D; null;
+
+    if (!this.hasTwoFactor) {
+      this.doChangePassword();
+      return;
+    }
+
+    this.modalAction &#x3D; &#x27;change-password&#x27;;
+    this.modalError  &#x3D; null;
+
+    if (this.twoFactorMethod &#x3D;&#x3D;&#x3D; TwoFactorMethod.Email) {
+      this.userSecurityApi.sendTwoFactorEmail().subscribe({
+        next: () &#x3D;&gt; this.modalService.open(&#x27;totp-validation-modal&#x27;),
+        error: () &#x3D;&gt; this.toast.error(&#x27;Failed to send verification email. Try again.&#x27;)
+      });
+      return;
+    }
+
+    this.modalService.open(&#x27;totp-validation-modal&#x27;);
+  }
+
+  onTwoFactorToNone(): void {
+    if (!this.hasTwoFactor) return;
+    this.modalError &#x3D; null;
+    switch (this.twoFactorMethod) {
+    case (TwoFactorMethod.Email): { this.modalAction &#x3D; &#x27;disable-email&#x27;; break; }
+    case (TwoFactorMethod.Totp): { this.modalAction &#x3D; &#x27;disable-totp&#x27;; break; }
+    }
+    this.modalService.open(&#x27;totp-validation-modal&#x27;);
+  }
+
+  onTwoFactorToEmail(): void {
+    if (this.hasTwoFactor &amp;&amp; this.twoFactorMethod &#x3D;&#x3D;&#x3D; TwoFactorMethod.Email) return;
+    this.userSecurityApi.enableEmailTwoFactor().subscribe({
+      next: () &#x3D;&gt; {
+        this.hasTwoFactor    &#x3D; true;
+        this.twoFactorMethod &#x3D; TwoFactorMethod.Email;
+        this.toast.success(&#x27;E-mail two factor authentication enabled successfully!&#x27;);
+      },
+      error: (err: HttpErrorResponse) &#x3D;&gt; {
+        var problem &#x3D; err.error as ProblemDetails;
+        if (!problem.detail) return;
+        this.toast.warning(problem.detail);
+      }
+    })
+  }
+
+  onTwoFactorToTotp(): void {
+    if (this.hasTwoFactor &amp;&amp; this.twoFactorMethod &#x3D;&#x3D;&#x3D; TwoFactorMethod.Totp) return;
+    this.router.navigate([Path.TWOFA_SETUP_TOTP]);
+  }
+
+  // End template events
+  // Modal events
+
+  onModalConfirm(totp: string): void {
+    switch (this.modalAction) {
+    case (&#x27;change-password&#x27;): {
+      this.modalService.close();
+      this.newPassForm.controls[&#x27;twoFactorCode&#x27;].setValue(totp);
+      this.doChangePassword();
+      return;
+    }
+    case (&#x27;disable-totp&#x27;): {
+      this.busyState.setBusy(true);
+      this.userSecurityApi.disableTotp({ totpCode: totp }).subscribe({
+        next: () &#x3D;&gt; {
+          this.busyState.setBusy(false);
+          this.hasTwoFactor    &#x3D; false;
+          this.twoFactorMethod &#x3D; TwoFactorMethod.None;
+          this.modalService.close();
+        },
+        error: (err: HttpErrorResponse) &#x3D;&gt; {
+          this.busyState.setBusy(false);
+          if (!isProblemDetails(err.error)) return;
+          this.modalError &#x3D; getFirstError(err.error) ?? &#x27;Server error. Try again later.&#x27;;
+        }
+      });
+      return;
+    }
+    case (&#x27;disable-email&#x27;): {
+      this.busyState.setBusy(true);
+      this.userSecurityApi.disableEmailTwoFactor().subscribe({
+        next: () &#x3D;&gt; {
+          this.busyState.setBusy(false);
+          this.hasTwoFactor    &#x3D; false;
+          this.twoFactorMethod &#x3D; TwoFactorMethod.None;
+          this.toast.info(&#x27;E-mail two factor authentication was disabled.&#x27;);
+        },
+        error: (err: HttpErrorResponse) &#x3D;&gt; {
+          this.busyState.setBusy(false);
+          var problem &#x3D; err.error as ProblemDetails;
+          if (!problem.detail) return;
+          this.toast.warning(problem.detail);
+        }
+      });
+      return;
+    }}
+  }
+
+  onModalCancel(): void {
+    // Nothing
+  }
+
+  // End modal events
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!-- security.component.html --&gt;
+
+@if (authService.isExternalUser()) {
+  &lt;div class&#x3D;&quot;failed-container gf-flow-vertical align-items-center justify-content-center&quot;&gt;
+    &lt;span&gt;Security settings are not available for external accounts&lt;/span&gt;
+    &lt;span&gt;To manage your security settings, please visit your identity provider&#x27;s dashboard.&lt;/span&gt;
+    &lt;a [routerLink]&#x3D;&quot;Path.GENERAL_SETTINGS&quot;&gt;Go Back&lt;/a&gt;
+  &lt;/div&gt;
+} @else {
+  @switch (loadingState.status()) {
+  @case(&#x27;loading&#x27;) {
+    &lt;div class&#x3D;&quot;loading-container gf-flow-vertical align-items-center justify-content-center&quot;&gt;
+      &lt;svg animate.enter&#x3D;&quot;spinner-enter&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot;
+          width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot;
+          stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+        &lt;path d&#x3D;&quot;M12 2v4&quot;/&gt;&lt;path d&#x3D;&quot;m16.2 7.8 2.9-2.9&quot;/&gt;
+        &lt;path d&#x3D;&quot;M18 12h4&quot;/&gt;&lt;path d&#x3D;&quot;m16.2 16.2 2.9 2.9&quot;/&gt;
+        &lt;path d&#x3D;&quot;M12 18v4&quot;/&gt;&lt;path d&#x3D;&quot;m4.9 19.1 2.9-2.9&quot;/&gt;
+        &lt;path d&#x3D;&quot;M2 12h4&quot;/&gt;&lt;path d&#x3D;&quot;m4.9 4.9 2.9 2.9&quot;/&gt;
+      &lt;/svg&gt;
+      &lt;span&gt;Loading...&lt;/span&gt;
+    &lt;/div&gt;
+  }
+  @case(&#x27;error&#x27;) {
+    &lt;div class&#x3D;&quot;failed-container gf-flow-vertical align-items-center justify-content-center&quot;&gt;
+      &lt;span&gt;{{ loadingState.error() }}&lt;/span&gt;
+      &lt;button (click)&#x3D;&quot;doGetSecurityInfo()&quot;&gt;Try Again&lt;/button&gt;
+    &lt;/div&gt;
+  }
+  @case(&#x27;success&#x27;) {
+    &lt;!-- Change password --&gt;
+    &lt;div class&#x3D;&quot;change-password-container&quot;&gt;
+      &lt;h4&gt;Change password&lt;/h4&gt;
+      &lt;form id&#x3D;&quot;change-password-form&quot; class&#x3D;&quot;change-password-form vertical-flow gf-gap-8&quot; [formGroup]&#x3D;&quot;newPassForm&quot; (ngSubmit)&#x3D;&quot;onNewPass()&quot;&gt;
+        &lt;div class&#x3D;&quot;vertical-flow&quot;&gt;
+          &lt;label&gt;Current Password&lt;/label&gt;
+          &lt;input type&#x3D;&quot;password&quot; id&#x3D;&quot;current-password&quot; formControlName&#x3D;&quot;currentPassword&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;vertical-flow&quot;&gt;
+          &lt;label&gt;New Password&lt;/label&gt;
+          &lt;input type&#x3D;&quot;password&quot; id&#x3D;&quot;new-password&quot; formControlName&#x3D;&quot;newPassword&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;vertical-flow&quot;&gt;
+          &lt;label&gt;Confirm Password&lt;/label&gt;
+          &lt;input type&#x3D;&quot;password&quot; id&#x3D;&quot;confirm-password&quot; formControlName&#x3D;&quot;confirmPassword&quot;&gt;
+        &lt;/div&gt;
+        @if (getError(); as errorText) {
+          &lt;div class&#x3D;&quot;gf-text-error d-inline&quot;&gt;{{ errorText }}&lt;/div&gt;
+        }
+      &lt;/form&gt;
+      &lt;div class&#x3D;&quot;actions&quot;&gt;
+        &lt;app-async-button
+          type&#x3D;&quot;submit&quot;
+          form&#x3D;&quot;change-password-form&quot;
+          labels&#x3D;&quot;Change Password&quot;
+          [state]&#x3D;&quot;busyState.isBusy() ? &#x27;busy&#x27; : newPassSuccess ? &#x27;success&#x27; : &#x27;idle&#x27;&quot;/&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- End change password --&gt;
+    &lt;!-- Two-step verification methods --&gt;
+    &lt;div class&#x3D;&quot;two-step-container&quot;&gt;
+      &lt;h4&gt;Two-step verification&lt;/h4&gt;
+      &lt;p&gt;
+        Add an extra layer of protection to your account with 2-Step Verification at login, account recovery, and high-value transactions.
+        You can only enable one of the following options at a time.
+      &lt;/p&gt;
+      &lt;small&gt;
+        IMPORTANT: Don&#x27;t share your security codes with anyone.
+        This can include things like texting your code, screen sharing, etc.
+        Do not change security settings at someone else&#x27;s request.
+        GOFISH will never ask you for your codes or to change settings to prove account ownership.
+      &lt;/small&gt;
+      &lt;!-- Options --&gt;
+      &lt;div class&#x3D;&quot;gf-my-16&quot; role&#x3D;&quot;radiogroup&quot; aria-label&#x3D;&quot;Two-step verification method&quot;&gt;
+        &lt;!-- None --&gt;
+        &lt;label class&#x3D;&quot;two-step-option gf-card gf-flow-horizontal gf-p-12 gf-my-8 justify-content-start&quot; [class.active]&#x3D;&quot;!hasTwoFactor&quot;&gt;
+          &lt;div&gt;
+            &lt;p&gt;None&lt;/p&gt;
+            &lt;small&gt;Do not protect my account with any of the 2-Factor verification methods&lt;/small&gt;
+          &lt;/div&gt;
+          &lt;input type&#x3D;&quot;radio&quot; name&#x3D;&quot;twoFactorMethod&quot; value&#x3D;&quot;none&quot;
+                [checked]&#x3D;&quot;!hasTwoFactor&quot;
+                (click)&#x3D;&quot;$event.preventDefault(); onTwoFactorToNone()&quot;&gt;
+          &lt;svg class&#x3D;&quot;icon-checked&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot;
+              width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot;
+              stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+            &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; fill&#x3D;&quot;none&quot;/&gt;
+            &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;6&quot; fill&#x3D;&quot;currentColor&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;svg class&#x3D;&quot;icon-unchecked&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot;
+              width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot;
+              fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+            &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/label&gt;
+        &lt;!-- Email one time password --&gt;
+        &lt;label class&#x3D;&quot;two-step-option gf-card gf-flow-horizontal gf-p-12 gf-my-8 justify-content-start&quot; [class.active]&#x3D;&quot;hasTwoFactor &amp;&amp; twoFactorMethod &#x3D;&#x3D;&#x3D; TwoFactorMethod.Email&quot;&gt;
+          &lt;div&gt;
+            &lt;p&gt;Email&lt;/p&gt;
+            &lt;small&gt;Use your email to receive unique security codes for sensitive actions. You need to have a validated email address to enable this mode&lt;/small&gt;
+          &lt;/div&gt;
+          &lt;input type&#x3D;&quot;radio&quot; name&#x3D;&quot;twoFactorMethod&quot; value&#x3D;&quot;email&quot;
+                [checked]&#x3D;&quot;hasTwoFactor &amp;&amp; twoFactorMethod &#x3D;&#x3D;&#x3D; TwoFactorMethod.Email&quot;
+                (click)&#x3D;&quot;$event.preventDefault(); onTwoFactorToEmail()&quot;&gt;
+          &lt;svg class&#x3D;&quot;icon-checked&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot;
+              width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot;
+              stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+            &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; fill&#x3D;&quot;none&quot;/&gt;
+            &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;6&quot; fill&#x3D;&quot;currentColor&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;svg class&#x3D;&quot;icon-unchecked&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot;
+              width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot;
+              fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+            &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/label&gt;
+        &lt;!-- Time-based one time password --&gt;
+        &lt;label class&#x3D;&quot;two-step-option gf-card gf-flow-horizontal gf-p-12 gf-my-8 justify-content-start&quot; [class.active]&#x3D;&quot;hasTwoFactor &amp;&amp; twoFactorMethod &#x3D;&#x3D;&#x3D; TwoFactorMethod.Totp&quot;&gt;
+          &lt;div&gt;
+            &lt;p&gt;Authenticator App&lt;/p&gt;
+            &lt;small&gt;Download an app on your phone to generate unique security codes. Suggested apps include Google Authenticator and Microsoft Authenticator&lt;/small&gt;
+          &lt;/div&gt;
+          &lt;input type&#x3D;&quot;radio&quot; name&#x3D;&quot;twoFactorMethod&quot; value&#x3D;&quot;totp&quot;
+                [checked]&#x3D;&quot;hasTwoFactor &amp;&amp; twoFactorMethod &#x3D;&#x3D;&#x3D; TwoFactorMethod.Totp&quot;
+                (click)&#x3D;&quot;$event.preventDefault(); onTwoFactorToTotp()&quot;&gt;
+          &lt;svg class&#x3D;&quot;icon-checked&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot;
+              width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot;
+              stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+            &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; fill&#x3D;&quot;none&quot;/&gt;
+            &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;6&quot; fill&#x3D;&quot;currentColor&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;svg class&#x3D;&quot;icon-unchecked&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot;
+              width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot;
+              fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+            &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/label&gt;
+      &lt;/div&gt;
+      &lt;!-- Two factor setups --&gt;
+      &lt;router-outlet&gt;&lt;/router-outlet&gt;
+    &lt;/div&gt;
+    &lt;!-- End Two-step verification methods --&gt;
+    &lt;!-- 2fa validation modal --&gt;
+    @if (modalService.activeModal() &#x3D;&#x3D;&#x3D; &#x27;totp-validation-modal&#x27;) {
+      &lt;app-totp-validation-modal
+        key&#x3D;&quot;totp-validation-modal&quot;
+        animate.enter&#x3D;&quot;on-enter&quot;
+        animate.leave&#x3D;&quot;on-leave&quot;
+        [errorText]&#x3D;&quot;modalError&quot;
+        (positive)&#x3D;&quot;onModalConfirm($event)&quot;
+        (negative)&#x3D;&quot;onModalCancel()&quot;&gt;
+      &lt;/app-totp-validation-modal&gt;
+    }
+  }}
+}
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!-- security.component.html -->@if (authService.isExternalUser()) {  <div class="failed-container gf-flow-vertical align-items-center justify-content-center">    <span>Security settings are not available for external accounts</span>    <span>To manage your security settings, please visit your identity provider\'s dashboard.</span>    <a [routerLink]="Path.GENERAL_SETTINGS">Go Back</a>  </div>} @else {  @switch (loadingState.status()) {  @case(\'loading\') {    <div class="loading-container gf-flow-vertical align-items-center justify-content-center">      <svg animate.enter="spinner-enter" xmlns="http://www.w3.org/2000/svg"          width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">        <path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/>        <path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/>        <path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/>        <path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/>      </svg>      <span>Loading...</span>    </div>  }  @case(\'error\') {    <div class="failed-container gf-flow-vertical align-items-center justify-content-center">      <span>{{ loadingState.error() }}</span>      <button (click)="doGetSecurityInfo()">Try Again</button>    </div>  }  @case(\'success\') {    <!-- Change password -->    <div class="change-password-container">      <h4>Change password</h4>      <form id="change-password-form" class="change-password-form vertical-flow gf-gap-8" [formGroup]="newPassForm" (ngSubmit)="onNewPass()">        <div class="vertical-flow">          <label>Current Password</label>          <input type="password" id="current-password" formControlName="currentPassword">        </div>        <div class="vertical-flow">          <label>New Password</label>          <input type="password" id="new-password" formControlName="newPassword">        </div>        <div class="vertical-flow">          <label>Confirm Password</label>          <input type="password" id="confirm-password" formControlName="confirmPassword">        </div>        @if (getError(); as errorText) {          <div class="gf-text-error d-inline">{{ errorText }}</div>        }      </form>      <div class="actions">        <app-async-button          type="submit"          form="change-password-form"          labels="Change Password"          [state]="busyState.isBusy() ? \'busy\' : newPassSuccess ? \'success\' : \'idle\'"/>      </div>    </div>    <!-- End change password -->    <!-- Two-step verification methods -->    <div class="two-step-container">      <h4>Two-step verification</h4>      <p>        Add an extra layer of protection to your account with 2-Step Verification at login, account recovery, and high-value transactions.        You can only enable one of the following options at a time.      </p>      <small>        IMPORTANT: Don\'t share your security codes with anyone.        This can include things like texting your code, screen sharing, etc.        Do not change security settings at someone else\'s request.        GOFISH will never ask you for your codes or to change settings to prove account ownership.      </small>      <!-- Options -->      <div class="gf-my-16" role="radiogroup" aria-label="Two-step verification method">        <!-- None -->        <label class="two-step-option gf-card gf-flow-horizontal gf-p-12 gf-my-8 justify-content-start" [class.active]="!hasTwoFactor">          <div>            <p>None</p>            <small>Do not protect my account with any of the 2-Factor verification methods</small>          </div>          <input type="radio" name="twoFactorMethod" value="none"                [checked]="!hasTwoFactor"                (click)="$event.preventDefault(); onTwoFactorToNone()">          <svg class="icon-checked" xmlns="http://www.w3.org/2000/svg"              width="24" height="24" viewBox="0 0 24 24"              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">            <circle cx="12" cy="12" r="10" fill="none"/>            <circle cx="12" cy="12" r="6" fill="currentColor"/>          </svg>          <svg class="icon-unchecked" xmlns="http://www.w3.org/2000/svg"              width="24" height="24" viewBox="0 0 24 24"              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">            <circle cx="12" cy="12" r="10"/>          </svg>        </label>        <!-- Email one time password -->        <label class="two-step-option gf-card gf-flow-horizontal gf-p-12 gf-my-8 justify-content-start" [class.active]="hasTwoFactor && twoFactorMethod === TwoFactorMethod.Email">          <div>            <p>Email</p>            <small>Use your email to receive unique security codes for sensitive actions. You need to have a validated email address to enable this mode</small>          </div>          <input type="radio" name="twoFactorMethod" value="email"                [checked]="hasTwoFactor && twoFactorMethod === TwoFactorMethod.Email"                (click)="$event.preventDefault(); onTwoFactorToEmail()">          <svg class="icon-checked" xmlns="http://www.w3.org/2000/svg"              width="24" height="24" viewBox="0 0 24 24"              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">            <circle cx="12" cy="12" r="10" fill="none"/>            <circle cx="12" cy="12" r="6" fill="currentColor"/>          </svg>          <svg class="icon-unchecked" xmlns="http://www.w3.org/2000/svg"              width="24" height="24" viewBox="0 0 24 24"              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">            <circle cx="12" cy="12" r="10"/>          </svg>        </label>        <!-- Time-based one time password -->        <label class="two-step-option gf-card gf-flow-horizontal gf-p-12 gf-my-8 justify-content-start" [class.active]="hasTwoFactor && twoFactorMethod === TwoFactorMethod.Totp">          <div>            <p>Authenticator App</p>            <small>Download an app on your phone to generate unique security codes. Suggested apps include Google Authenticator and Microsoft Authenticator</small>          </div>          <input type="radio" name="twoFactorMethod" value="totp"                [checked]="hasTwoFactor && twoFactorMethod === TwoFactorMethod.Totp"                (click)="$event.preventDefault(); onTwoFactorToTotp()">          <svg class="icon-checked" xmlns="http://www.w3.org/2000/svg"              width="24" height="24" viewBox="0 0 24 24"              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">            <circle cx="12" cy="12" r="10" fill="none"/>            <circle cx="12" cy="12" r="6" fill="currentColor"/>          </svg>          <svg class="icon-unchecked" xmlns="http://www.w3.org/2000/svg"              width="24" height="24" viewBox="0 0 24 24"              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">            <circle cx="12" cy="12" r="10"/>          </svg>        </label>      </div>      <!-- Two factor setups -->      <router-outlet></router-outlet>    </div>    <!-- End Two-step verification methods -->    <!-- 2fa validation modal -->    @if (modalService.activeModal() === \'totp-validation-modal\') {      <app-totp-validation-modal        key="totp-validation-modal"        animate.enter="on-enter"        animate.leave="on-leave"        [errorText]="modalError"        (positive)="onModalConfirm($event)"        (negative)="onModalCancel()">      </app-totp-validation-modal>    }  }}}</div>'
+    var COMPONENTS = [{'name': 'AboutComponent', 'selector': 'app-about'},{'name': 'AdminPopoverComponent', 'selector': 'gf-admin-popover'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AsyncButtonComponent', 'selector': 'app-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'gf-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'button[gfAsyncBtn]'},{'name': 'AuthCallbackComponent', 'selector': 'app-auth-callback'},{'name': 'CatchPinModalComponent', 'selector': 'app-catch-pin-modal'},{'name': 'ChangeBirthdateModalComponent', 'selector': 'app-change-birthdate-modal'},{'name': 'ChangeDisplaynameModalComponent', 'selector': 'app-change-displayname-modal'},{'name': 'ChangeEmailModalComponent', 'selector': 'gf-change-email-modal'},{'name': 'ChangeFirstnameModalComponent', 'selector': 'app-change-firstname-modal'},{'name': 'ChangeLastnameModalComponent', 'selector': 'app-change-lastname-modal'},{'name': 'ChangePhoneModalComponent', 'selector': 'app-change-phone-modal'},{'name': 'ChangeUsernameModalComponent', 'selector': 'app-change-username-modal'},{'name': 'ChoosePinPopupComponent', 'selector': 'app-choose-pin-popup'},{'name': 'ClusterDetailsComponent', 'selector': 'app-cluster-details'},{'name': 'ConfirmDeletionModalComponent', 'selector': 'app-confirm-deletion-modal'},{'name': 'DeleteCommentComponent', 'selector': 'gf-delete-comment'},{'name': 'DeleteGroupComponent', 'selector': 'gf-delete-group'},{'name': 'DeletePinComponent', 'selector': 'app-delete-pin'},{'name': 'DeletePostComponent', 'selector': 'gf-delete-post'},{'name': 'DiscoverComponent', 'selector': 'app-discover'},{'name': 'EnumComponent', 'selector': 'app-enum'},{'name': 'ExitGroupComponent', 'selector': 'gf-exit-group'},{'name': 'FooterComponent', 'selector': 'gf-footer'},{'name': 'ForumComponent', 'selector': 'app-forum'},{'name': 'ForumPostComponent', 'selector': 'app-forum-post'},{'name': 'FriendsComponent', 'selector': 'app-friends'},{'name': 'FriendshipListCardComponent', 'selector': 'gf-friendship-list-card'},{'name': 'FriendsListComponent', 'selector': 'app-friends-list'},{'name': 'FromFriendsComponent', 'selector': 'app-from-friends'},{'name': 'GeneralComponent', 'selector': 'app-general'},{'name': 'GfCardCommentPreviewComponent', 'selector': 'gf-gf-card-comment-preview'},{'name': 'GfCardPinPreviewComponent', 'selector': 'app-gf-card-pin-preview'},{'name': 'GfCardQuickAccessComponent', 'selector': 'app-gf-card-quick-access'},{'name': 'GfCardQuickViewComponent', 'selector': 'app-gf-card-quick-view'},{'name': 'GroupCreateComponent', 'selector': 'app-group-create'},{'name': 'GroupInviteComponent', 'selector': 'gf-group-invite'},{'name': 'GroupInvitesCardComponent', 'selector': 'gf-group-invites-card'},{'name': 'GroupInvitesListComponent', 'selector': 'gf-group-invites-list'},{'name': 'GroupListCardComponent', 'selector': 'gf-group-list-card'},{'name': 'GroupMemberSettingsPopoverComponent', 'selector': 'gf-group-member-settings-popover'},{'name': 'GroupPopoverComponent', 'selector': 'gf-group-popover'},{'name': 'GroupPostsPlaceholderComponent', 'selector': 'app-group-posts-placeholder'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsListCardComponent', 'selector': 'gf-groups-list-card'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'HeaderActionsComponent', 'selector': 'gf-header-actions'},{'name': 'HeaderComponent', 'selector': 'gf-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'InfoPinModalComponent', 'selector': 'app-info-pin-modal'},{'name': 'InviteToGroupsModalComponent', 'selector': 'gf-invite-to-groups-modal'},{'name': 'LeaderboardComponent', 'selector': 'gf-leaderboard'},{'name': 'LoadingErrorModalComponent', 'selector': 'gf-loading-error-modal'},{'name': 'LoadingSpinnerComponent', 'selector': 'gf-loading-spinner'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MembersGroupComponent', 'selector': 'gf-members-group'},{'name': 'MyGroupsComponent', 'selector': 'app-my-groups'},{'name': 'NavPopoverComponent', 'selector': 'gf-nav-popover'},{'name': 'OverviewComponent', 'selector': 'app-overview'},{'name': 'PersonalDataComponent', 'selector': 'app-personal-data'},{'name': 'PinDetailPanelComponent', 'selector': 'app-pin-detail-panel'},{'name': 'PinsAvgPublishedChart', 'selector': 'gf-pins-average-published-chart'},{'name': 'PinsComponent', 'selector': 'app-pins'},{'name': 'PinsPerWeekComponent', 'selector': 'gf-pins-per-week'},{'name': 'PostCommentsComponent', 'selector': 'app-post-comments'},{'name': 'PostIdPlaceholderComponent', 'selector': 'app-post-id-placeholder'},{'name': 'PrivacyPolicyComponent', 'selector': 'app-privacy-policy'},{'name': 'ProfileActionsPopoverComponent', 'selector': 'gf-profile-actions-popover'},{'name': 'ProfileCatchPinCardComponent', 'selector': 'gf-profile-catch-pin-card'},{'name': 'ProfileShellComponent', 'selector': 'app-profile'},{'name': 'ProfileShowMoreModalComponent', 'selector': 'gf-profile-show-more-modal'},{'name': 'ReportCommentComponent', 'selector': 'gf-report-comment'},{'name': 'ReportedCommentPageComponent', 'selector': 'gf-reported-comment-page'},{'name': 'ReportedCommentsComponent', 'selector': 'gf-reported-comments'},{'name': 'ReportedPinPageComponent', 'selector': 'gf-reported-pin-page'},{'name': 'ReportedPinsComponent', 'selector': 'gf-reported-pins'},{'name': 'ReportPinComponent', 'selector': 'gf-report'},{'name': 'RequestsListComponent', 'selector': 'app-requests-list'},{'name': 'ResetPasswordComponent', 'selector': 'gf-reset-password'},{'name': 'SearchComponent', 'selector': 'gf-search'},{'name': 'SecurityComponent', 'selector': 'app-security'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SetupTotpComponent', 'selector': 'app-setup-totp'},{'name': 'SigninComponent', 'selector': 'app-signin'},{'name': 'SigninVerifyComponent', 'selector': 'app-signin-verify'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'SmallFriendshipCarouselCardComponent', 'selector': 'gf-small-friendship-carousel-card'},{'name': 'SmallGroupCarouselCardComponent', 'selector': 'gf-small-group-carousel-card'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'StatsHomeComponent', 'selector': 'app-home'},{'name': 'StatsReportsComponent', 'selector': 'app-stats-reports'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'TermsOfServiceComponent', 'selector': 'app-terms-of-service'},{'name': 'TotpValidationModalComponent', 'selector': 'app-totp-validation-modal'},{'name': 'UserCardComponent', 'selector': 'app-user-card'},{'name': 'UserHelpBoxComponent', 'selector': 'gf-user-help-box'},{'name': 'UserPopoverComponent', 'selector': 'gf-user-popover'},{'name': 'UserRankIconComponent', 'selector': 'gf-user-rank-icon'},{'name': 'UserSatisfactionIndexComponent', 'selector': 'gf-user-satisfaction-index'},{'name': 'UsersChartComponent', 'selector': 'gf-users-chart'},{'name': 'UsersListCardComponent', 'selector': 'gf-users-list-card'},{'name': 'UsersListComponent', 'selector': 'gf-users-list'},{'name': 'UserTitleComponent', 'selector': 'gf-user-title'},{'name': 'VerifyEmailModalComponent', 'selector': 'gf-verify-email-modal'},{'name': 'VerifyTwofaContainerComponent', 'selector': 'gf-verify-twofa-container'},{'name': 'WarnPinModalComponent', 'selector': 'app-warn-pin-modal'}];
+    var DIRECTIVES = [{'name': 'ClickOutsideDirective', 'selector': '[clickOutside]'},{'name': 'LettersOnlyDirective', 'selector': '[appLettersOnly]'},{'name': 'MouseFollowDirective', 'selector': '[gfTooltip]'},{'name': 'NumbersOnlyDirective', 'selector': '[appNumbersOnly]'}];
+    var ACTUAL_COMPONENT = {'name': 'SecurityComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'SecurityComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,1 @@
+search_result['849']=["topic_0000000000000258.html","MonthlySnapshotService.ExecuteAsync Method","This method is called when the IHostedService starts. The implementation should return a task that represents\r\n            the lifetime of the long running operation(s) being performed."];

@@ -1,0 +1,1 @@
+search_result['180']=["topic_000000000000007C.html","UserController.GetInvitableGroups Method","Obtém a lista de grupos em que o utilizador autenticado pode convidar\r\no utilizador alvo, considerando permissões, pertença e convites pendentes."];

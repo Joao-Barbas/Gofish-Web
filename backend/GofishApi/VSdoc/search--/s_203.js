@@ -1,0 +1,1 @@
+search_result['203']=["topic_0000000000000089.html","UserSecurityController.ValidateTwoFactorCode Method","/// Valida o código de autenticação de dois fatores ativo do utilizador\r\n    /// e devolve um token temporário para ações sensíveis.\r\n    ///"];

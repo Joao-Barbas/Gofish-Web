@@ -1,0 +1,1 @@
+search_result['630']=["topic_00000000000001EF.html","WarnPin.WarningKind Property","/// Tipo de aviso associado ao pin (ex: perigo, corrente forte, zona proibida).\r\n    ///"];

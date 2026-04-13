@@ -1,0 +1,1 @@
+search_result['155']=["topic_0000000000000068.html","UserAccountController.DeleteAccount Method","/// Elimina definitivamente a conta do utilizador autenticado.\r\n        /// Se a conta tiver password local, é necessária validação da password.\r\n        ///"];

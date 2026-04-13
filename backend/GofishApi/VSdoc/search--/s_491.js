@@ -1,0 +1,1 @@
+search_result['491']=["topic_0000000000000196.html","GroupUser.Role Property","/// Papel do utilizador dentro do grupo (Owner, Moderator, Member).\r\n    ///"];

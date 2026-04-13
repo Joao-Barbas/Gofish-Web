@@ -1,0 +1,1 @@
+search_result['105']=["topic_0000000000000045.html","RatingsController.GetRating Method","/// Obtém a avaliação de um utilizador específico.\r\n    /// Apenas administradores podem consultar esta informação.\r\n    ///"];

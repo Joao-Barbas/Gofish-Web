@@ -1,0 +1,1 @@
+search_result['202']=["topic_0000000000000088.html","UserSecurityController.GetSecurityInfo Method","/// Obtém informação de segurança da conta do utilizador autenticado,\r\n    /// incluindo provider de autenticação, estado de 2FA e verificação de email.\r\n    ///"];

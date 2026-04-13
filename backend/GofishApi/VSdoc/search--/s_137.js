@@ -1,0 +1,1 @@
+search_result['137']=["topic_000000000000005B.html","StatsController.GetAveragePublishedPins Method","/// Obtém a média diária de pins publicados num determinado mês.\r\n    ///"];

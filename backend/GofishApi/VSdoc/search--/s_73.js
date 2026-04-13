@@ -1,0 +1,1 @@
+search_result['73']=["topic_000000000000002F.html","GroupController.GetGroupPins Method","/// Obtém a lista paginada de pins associados a um grupo.\r\n    /// Apenas membros do grupo podem consultar estes pins.\r\n    ///"];

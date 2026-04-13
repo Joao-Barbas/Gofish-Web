@@ -1,0 +1,1 @@
+search_result['172']=["topic_0000000000000074.html","UserController.GetFriendships Method","Obtém a lista paginada de amizades de um utilizador.\r\nSe o utilizador alvo não for o autenticado, apenas permite consultar amizades aceites."];

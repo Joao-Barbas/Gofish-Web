@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"GofishApi Reference","topic_000000000000026E.html"],['81',"GofishApi.Controllers Namespace","topic_0000000000000047.html"],['120',"UserController Class","topic_000000000000006B.html"],['122',"Methods","topic_000000000000006B_methods--.html"],['128',"GetFriendships Method","topic_0000000000000074.html"]];

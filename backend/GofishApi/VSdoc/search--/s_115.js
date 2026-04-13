@@ -1,0 +1,1 @@
+search_result['115']=["topic_000000000000004A.html","ReportController.CreatePinReport Method","/// Cria um novo report sobre um pin.\r\n    /// O utilizador autenticado só pode reportar o mesmo pin uma vez.\r\n    ///"];

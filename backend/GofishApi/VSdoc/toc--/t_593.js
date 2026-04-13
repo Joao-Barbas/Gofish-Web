@@ -1,0 +1,1 @@
+c['593']=[['594',"CreateTwoFactorToken Method","topic_0000000000000245.html",0],['595',"VerifyTwoFactorToken Method","topic_0000000000000246.html",0]];

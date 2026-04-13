@@ -1,0 +1,1 @@
+search_result['92']=["topic_000000000000003D.html","PinController.CreateCatchPin Method","/// Cria um novo pin do tipo Catch com imagem.\r\n    /// Valida visibilidade, pertença a grupos e tipo de ficheiro.\r\n    ///"];

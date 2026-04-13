@@ -1,0 +1,1 @@
+search_result['148']=["topic_0000000000000066.html","UserAccountController Class","/// Controlador responsável por operações sobre a conta do utilizador autenticado,\r\n    /// incluindo eliminação de conta e exportação de dados pessoais.\r\n    ///"];

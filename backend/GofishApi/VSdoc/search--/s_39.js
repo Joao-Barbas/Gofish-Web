@@ -1,0 +1,1 @@
+search_result['39']=["topic_0000000000000012.html","EnumsController.AccessDifficulty Method","/// Obtém os níveis de dificuldade de acesso.\r\n    ///"];

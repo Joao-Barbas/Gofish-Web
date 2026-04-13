@@ -1,0 +1,1 @@
+search_result['181']=["topic_000000000000007D.html","UserController.GetGroupInvites Method","Obtém a lista paginada de convites de grupo recebidos pelo utilizador autenticado."];

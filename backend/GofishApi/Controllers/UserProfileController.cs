@@ -19,18 +19,43 @@ using GofishApi.Enums;
 
 namespace GofishApi.Controllers;
 
+/// <summary>
+/// Controlador responsável pela gestão de perfis de utilizador.
+/// Permite consultar dados públicos do perfil, pontos, definições do perfil
+/// e atualizar bio e avatar do utilizador autenticado.
+/// </summary>
 [Authorize]
 [Route("api/[controller]/[action]")]
 [ApiController]
 public class UserProfileController : ControllerBase
 {
+    /// <summary>Logger para registo de eventos e erros.</summary>
     private readonly ILogger<UserProfileController> _logger;
+
+    /// <summary>Serviço de armazenamento de imagens em blob storage.</summary>
     private readonly IBlobStorageService _blobStorage;
+
+    /// <summary>Contexto de acesso à base de dados da aplicação.</summary>
     private readonly AppDbContext _context;
+
+    /// <summary>Gestor de utilizadores do ASP.NET Identity.</summary>
     private readonly UserManager<AppUser> _userManager;
+
+    /// <summary>Serviço responsável pelas regras de visibilidade.</summary>
     private readonly IVisibilityService _visibility;
+
+    /// <summary>Serviço responsável pelas regras de gamificação.</summary>
     private readonly IGamificationService _gamification;
 
+    /// <summary>
+    /// Inicializa uma nova instância do controlador de perfil de utilizador.
+    /// </summary>
+    /// <param name="logger">Logger da aplicação.</param>
+    /// <param name="blobStorage">Serviço de armazenamento de imagens.</param>
+    /// <param name="context">Contexto da base de dados.</param>
+    /// <param name="userManager">Gestor de utilizadores.</param>
+    /// <param name="visibility">Serviço de visibilidade.</param>
+    /// <param name="gamification">Serviço de gamificação.</param>
     public UserProfileController(
         ILogger<UserProfileController> logger,
         IBlobStorageService blobStorage,
@@ -48,6 +73,12 @@ public class UserProfileController : ControllerBase
         _gamification = gamification;
     }
 
+    /// <summary>
+    /// Obtém o perfil público de um utilizador, incluindo estatísticas agregadas
+    /// e eventual relação de amizade com o utilizador autenticado.
+    /// </summary>
+    /// <param name="id">Identificador do utilizador.</param>
+    /// <returns>Dados públicos do perfil do utilizador.</returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserProfile(string id)
     {
@@ -100,6 +131,11 @@ public class UserProfileController : ControllerBase
         return Ok(data);
     }
 
+    /// <summary>
+    /// Obtém os pontos de gamificação de um utilizador.
+    /// </summary>
+    /// <param name="id">Identificador do utilizador.</param>
+    /// <returns>Total de pontos do utilizador.</returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserPoints(string id)
     {
@@ -111,6 +147,10 @@ public class UserProfileController : ControllerBase
         return Ok(new GetUserPointsResDto { Points = value });
     }
 
+    /// <summary>
+    /// Obtém as definições editáveis do perfil do utilizador autenticado.
+    /// </summary>
+    /// <returns>Dados de configuração do perfil.</returns>
     [HttpGet]
     public async Task<IActionResult> GetUserProfileSettings()
     {
@@ -120,6 +160,12 @@ public class UserProfileController : ControllerBase
         return Ok(GetUserProfileSettingsResDto.FromEntity(userProfile));
     }
 
+    /// <summary>
+    /// Atualiza integralmente o perfil do utilizador autenticado,
+    /// incluindo bio e avatar.
+    /// </summary>
+    /// <param name="dto">Dados do perfil a atualizar.</param>
+    /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
     [HttpPut]
     [RequestSizeLimit(5_000_000)]
     public async Task<IActionResult> PutUserProfile([FromForm] PutUserProfileReqDto dto)
@@ -163,6 +209,12 @@ public class UserProfileController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Atualiza parcialmente o perfil do utilizador autenticado.
+    /// Permite alterar bio e/ou avatar.
+    /// </summary>
+    /// <param name="dto">Dados parciais do perfil a atualizar.</param>
+    /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
     [HttpPatch]
     [RequestSizeLimit(5_000_000)]
     public async Task<IActionResult> PatchUserProfile([FromForm] PatchUserProfileReqDto dto)
@@ -213,6 +265,11 @@ public class UserProfileController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Obtém o URL do avatar de um utilizador.
+    /// </summary>
+    /// <param name="id">Identificador do utilizador.</param>
+    /// <returns>URL do avatar do utilizador.</returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserAvatar([FromRoute] string id)
     {

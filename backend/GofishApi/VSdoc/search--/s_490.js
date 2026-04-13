@@ -1,0 +1,1 @@
+search_result['490']=["topic_0000000000000195.html","GroupUser.JoinedAt Property","/// Data em que o utilizador entrou no grupo.\r\n    ///"];

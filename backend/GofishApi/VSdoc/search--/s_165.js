@@ -1,0 +1,1 @@
+search_result['165']=["topic_000000000000006D.html","UserController.GetUser Method","Obtém os dados públicos de um utilizador, incluindo o estado de amizade\r\nentre o utilizador autenticado e o utilizador pedido."];

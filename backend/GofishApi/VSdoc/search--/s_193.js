@@ -1,0 +1,1 @@
+search_result['193']=["topic_0000000000000084.html","UserProfileController.PatchUserProfile Method","/// Atualiza parcialmente o perfil do utilizador autenticado.\r\n    /// Permite alterar bio e/ou avatar.\r\n    ///"];

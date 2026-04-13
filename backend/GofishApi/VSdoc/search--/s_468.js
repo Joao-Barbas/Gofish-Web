@@ -1,0 +1,1 @@
+search_result['468']=["topic_0000000000000189.html","GroupInvite.State Property","/// Estado atual do convite (ex: Pending, Accepted, Rejected).\r\n    ///"];

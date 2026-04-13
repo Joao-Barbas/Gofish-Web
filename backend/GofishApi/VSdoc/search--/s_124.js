@@ -1,0 +1,1 @@
+search_result['124']=["topic_0000000000000053.html","ReportController.DeleteCommentReport Method","/// Remove um report de comentário específico.\r\n    /// Apenas administradores podem executar esta operação.\r\n    ///"];

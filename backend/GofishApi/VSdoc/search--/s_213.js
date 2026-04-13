@@ -1,0 +1,1 @@
+search_result['213']=["topic_0000000000000093.html","UserSecurityController.EnableTotp Method","/// Ativa autenticação de dois fatores por TOTP após validação do código gerado.\r\n    /// Também gera códigos de recuperação.\r\n    ///"];

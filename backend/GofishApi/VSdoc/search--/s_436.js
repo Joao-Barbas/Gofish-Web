@@ -1,0 +1,1 @@
+search_result['436']=["topic_0000000000000173.html","Friendship.State Property","/// Estado atual da amizade (ex: Pending, Accepted, Rejected).\r\n    ///"];

@@ -1,0 +1,1 @@
+search_result['63']=["topic_0000000000000025.html","GroupController.CreateGroupInvite Method","/// Cria um convite para um utilizador entrar num grupo.\r\n    /// Apenas owner ou moderator podem convidar novos membros.\r\n    ///"];

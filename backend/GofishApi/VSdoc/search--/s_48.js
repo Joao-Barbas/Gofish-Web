@@ -1,0 +1,1 @@
+search_result['48']=["topic_000000000000001B.html","EnumsController.PinReportReason Method","/// Obtém os motivos de reporte de pins.\r\n    ///"];

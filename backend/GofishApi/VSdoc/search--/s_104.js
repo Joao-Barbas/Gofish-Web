@@ -1,0 +1,1 @@
+search_result['104']=["topic_0000000000000044.html","RatingsController.GetRatings Method","/// Obtém a lista paginada de ratings.\r\n    /// Apenas administradores podem consultar todas as avaliações.\r\n    ///"];

@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"GofishApi Reference","topic_000000000000026E.html"],['4',"\u003cdefault\u003e Namespace","topic_0000000000000270.html"],['13',"EnumsController Class","topic_0000000000000011.html"],['14',"Methods","topic_0000000000000011_methods--.html"],['16',"Bait Method","topic_0000000000000013.html"]];

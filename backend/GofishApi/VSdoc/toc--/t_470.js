@@ -1,0 +1,1 @@
+c['470']=[['471',"DownvotePointLoss Property","topic_0000000000000200.html",0],['472',"UpvotePointGain Property","topic_00000000000001FF.html",0],['473',"UsernameChangeCost Property","topic_00000000000001FE.html",0]];

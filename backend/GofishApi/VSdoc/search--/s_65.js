@@ -1,0 +1,1 @@
+search_result['65']=["topic_0000000000000027.html","GroupController.PromoteMemberToAdmin Method","/// Promove um membro para moderator/admin.\r\n    /// Apenas o owner pode executar esta operação.\r\n    ///"];

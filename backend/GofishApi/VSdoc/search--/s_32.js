@@ -1,0 +1,1 @@
+search_result['32']=["topic_0000000000000010.html","AuthController.ExternalLoginCallback Method","Callback após autenticação externa.\r\nCria utilizador caso não exista."];

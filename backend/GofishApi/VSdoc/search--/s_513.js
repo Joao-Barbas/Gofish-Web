@@ -1,0 +1,1 @@
+search_result['513']=["topic_00000000000001A2.html","Pin.Kind Property","/// Tipo do pin.\r\n    /// Permite distinguir entre diferentes subclasses e comportamentos.\r\n    ///"];

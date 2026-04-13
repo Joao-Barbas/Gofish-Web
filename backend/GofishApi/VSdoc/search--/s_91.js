@@ -1,0 +1,1 @@
+search_result['91']=["topic_000000000000003C.html","PinController.DeleteComment Method","/// Remove um comentário existente.\r\n    /// Apenas o autor do comentário ou um administrador o pode eliminar.\r\n    ///"];

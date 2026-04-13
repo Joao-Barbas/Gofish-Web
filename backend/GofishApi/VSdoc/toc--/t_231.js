@@ -1,0 +1,1 @@
+c['231']=[['232',"EnumExtensions Class","topic_0000000000000132.html",1],['239',"ProblemDetailsFactoryExtensions Class","topic_0000000000000138.html",1],['245',"WebApplicationBuilderExtensions Class","topic_000000000000013C.html",1],['253',"WebApplicationExtensions Class","topic_0000000000000143.html",1]];

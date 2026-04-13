@@ -1,0 +1,1 @@
+search_result['70']=["topic_000000000000002C.html","GroupController.RemoveMember Method","/// Remove um membro de um grupo.\r\n    /// Owner pode remover moderators e members; moderator apenas members.\r\n    ///"];

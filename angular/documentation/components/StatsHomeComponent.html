@@ -1,0 +1,1672 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  StatsHomeComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/statistics/children/stats-home/stats-home.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Statistics dashboard home component.</p>
+<p>Responsibilities:</p>
+<ul>
+<li>Load high-level administrative statistics from the backend</li>
+<li>Load weekly pin creation statistics for the current and previous month</li>
+<li>Aggregate weekly pin data into monthly totals</li>
+<li>Expose dashboard metrics and chart data to the template</li>
+</ul>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-home</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../components/GfCardQuickViewComponent.html" target="_self" >GfCardQuickViewComponent</a></code>
+                                <code><a href="../components/GfCardQuickAccessComponent.html" target="_self" >GfCardQuickAccessComponent</a></code>
+                                <code><a href="../components/UsersChartComponent.html" target="_self" >UsersChartComponent</a></code>
+                                <code><a href="../components/PinsAvgPublishedChart.html" target="_self" >PinsAvgPublishedChart</a></code>
+                                <code><a href="../components/PinsPerWeekComponent.html" target="_self" >PinsPerWeekComponent</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./stats-home.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./stats-home.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#activeUsers" >activeUsers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#currentMonthStats" >currentMonthStats</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#currentYear" >currentYear</a>
+                            </li>
+                            <li>
+                                <a href="#isLastMonth" >isLastMonth</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#lastMonthStats" >lastMonthStats</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#pinsCreatedToday" >pinsCreatedToday</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#pinsWith15PositiveVotes" >pinsWith15PositiveVotes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#pinWeeksCurrentMonth" >pinWeeksCurrentMonth</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#pinWeeksLastMonth" >pinWeeksLastMonth</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#reportsWaitingReview" >reportsWaitingReview</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#statsService" >statsService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#usersWeeklyStats" >usersWeeklyStats</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#weeklyApiSuccessRate" >weeklyApiSuccessRate</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calcTotals" >calcTotals</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getCurrentMonthAndYear" >getCurrentMonthAndYear</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getLastMonthAndYear" >getLastMonthAndYear</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getMonthName" >getMonthName</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calcTotals"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calcTotals</b></span>
+                        <a href="#calcTotals"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calcTotals(weeks: PinWeekStats[], monthStats: <a href="../interfaces/PinMonthStats.html" target="_self">PinMonthStats</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="88"
+                                    class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:88</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Aggregates weekly pin statistics into monthly totals.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>weeks</td>
+                                            <td>
+                                                        <code>PinWeekStats[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Weekly pin statistics for the target month</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>monthStats</td>
+                                            <td>
+                                                            <code><a href="../interfaces/PinMonthStats.html" target="_self" >PinMonthStats</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Monthly stats object to update</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCurrentMonthAndYear"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getCurrentMonthAndYear</b></span>
+                        <a href="#getCurrentMonthAndYear"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCurrentMonthAndYear()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="196"
+                                    class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:196</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Returns the current month and year.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Object containing current month and year</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getLastMonthAndYear"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getLastMonthAndYear</b></span>
+                        <a href="#getLastMonthAndYear"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getLastMonthAndYear()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="209"
+                                    class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:209</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Returns the previous month and its associated year.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Object containing previous month and year</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMonthName"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getMonthName</b></span>
+                        <a href="#getMonthName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getMonthName(month: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, year: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="226"
+                                    class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:226</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Returns the localized month name for the provided month and year.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>month</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Month number in the range 1-12</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>year</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Year associated with the month</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Localized month name</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="130"
+                                    class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:130</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Loads dashboard statistics and weekly pin metrics for
+the current and previous month.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activeUsers"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>activeUsers</b></span>
+                        <a href="#activeUsers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;GetActiveUsersResDTO | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Number of active users.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentMonthStats"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>currentMonthStats</b></span>
+                        <a href="#currentMonthStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/PinMonthStats.html" target="_self" >PinMonthStats</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    monthName: &#x27;&#x27;,
+    year: 0,
+    catchCount: 0,
+    infoCount: 0,
+    warningCount: 0
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="118" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:118</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Aggregated statistics for the current month.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentYear"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>currentYear</b></span>
+                        <a href="#currentYear"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Date().getFullYear()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:71</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Current calendar year.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isLastMonth"></a>
+                    <span class="name">
+                        <span ><b>isLastMonth</b></span>
+                        <a href="#isLastMonth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:80</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indicates whether the UI is currently focused on last month data.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lastMonthStats"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>lastMonthStats</b></span>
+                        <a href="#lastMonthStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/PinMonthStats.html" target="_self" >PinMonthStats</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    monthName: &#x27;&#x27;,
+    year: 0,
+    catchCount: 0,
+    infoCount: 0,
+    warningCount: 0
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="109" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:109</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Aggregated statistics for the previous month.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinsCreatedToday"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>pinsCreatedToday</b></span>
+                        <a href="#pinsCreatedToday"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;GetPinsCreatedTodayResDTO | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Number of pins created today.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinsWith15PositiveVotes"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>pinsWith15PositiveVotes</b></span>
+                        <a href="#pinsWith15PositiveVotes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;GetPinsWith15PositiveVotesResDTO | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Number of pins with at least 15 positive votes.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinWeeksCurrentMonth"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>pinWeeksCurrentMonth</b></span>
+                        <a href="#pinWeeksCurrentMonth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;PinWeekStats[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:74</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Weekly pin statistics for the current month.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinWeeksLastMonth"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>pinWeeksLastMonth</b></span>
+                        <a href="#pinWeeksLastMonth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;PinWeekStats[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:77</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Weekly pin statistics for the previous month.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reportsWaitingReview"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>reportsWaitingReview</b></span>
+                        <a href="#reportsWaitingReview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;GetReportsWaitingReviewResDTO | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Number of reports currently waiting for review.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(Router)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="statsService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>statsService</b></span>
+                        <a href="#statsService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(StatsService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="usersWeeklyStats"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>usersWeeklyStats</b></span>
+                        <a href="#usersWeeklyStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;GetRegisteredUsersWeeklyStatsResDTO[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:68</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Weekly registered user statistics.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="weeklyApiSuccessRate"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>weeklyApiSuccessRate</b></span>
+                        <a href="#weeklyApiSuccessRate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;number | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/features/statistics/children/stats-home/stats-home.component.ts:65</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Weekly API success rate percentage.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, signal } from &#x27;@angular/core&#x27;;
+import { Router, /*RouterLink */ } from &quot;@angular/router&quot;;
+import { GfCardQuickViewComponent } from &quot;../../components/gf-card-quick-view/gf-card-quick-view.component&quot;;
+
+import { UsersChartComponent } from &quot;@gofish/shared/components/users-chart/users-chart.component&quot;;
+import { GetUserProfileResDTO } from &#x27;@gofish/shared/dtos/user-profile.dto&#x27;;
+import { GfCardQuickAccessComponent } from &#x27;@gofish/features/statistics/components/gf-card-quick-access/gf-card-quick-access.component&#x27;;
+import { PinsAvgPublishedChart } from &quot;@gofish/shared/components/pins-avg-published-chart/pins-avg-published-chart.component&quot;;
+import { PinWeekStats, PinsPerWeekComponent } from &#x27;@gofish/shared/components/pins-per-week/pins-per-week.component&#x27;;
+import { GetActiveUsersResDTO, GetPinsCreatedTodayResDTO, GetPinsWith15PositiveVotesResDTO, GetRegisteredUsersWeeklyStatsResDTO, GetReportsWaitingReviewResDTO } from &#x27;@gofish/shared/dtos/stats.dto&#x27;;
+import { StatsService } from &#x27;@gofish/shared/services/stats.service&#x27;;
+
+/**
+ * Aggregated monthly statistics for pin creation.
+ */
+export interface PinMonthStats {
+  /** Display name of the month. */
+  monthName: string;
+
+  /** Year associated with the month. */
+  year: number;
+
+  /** Total number of catch pins created in the month. */
+  catchCount: number;
+
+  /** Total number of info pins created in the month. */
+  infoCount: number;
+
+  /** Total number of warning pins created in the month. */
+  warningCount: number;
+}
+
+/**
+ * Statistics dashboard home component.
+ *
+ * Responsibilities:
+ * - Load high-level administrative statistics from the backend
+ * - Load weekly pin creation statistics for the current and previous month
+ * - Aggregate weekly pin data into monthly totals
+ * - Expose dashboard metrics and chart data to the template
+ */
+@Component({
+  selector: &#x27;app-home&#x27;,
+  imports: [/*RouterLink, */ GfCardQuickViewComponent, GfCardQuickAccessComponent, UsersChartComponent, PinsAvgPublishedChart, PinsPerWeekComponent],
+  templateUrl: &#x27;./stats-home.component.html&#x27;,
+  styleUrl: &#x27;./stats-home.component.css&#x27;,
+})
+export class StatsHomeComponent {
+  private readonly router &#x3D; inject(Router);
+  private readonly statsService &#x3D; inject(StatsService);
+
+  /** Number of reports currently waiting for review. */
+  protected reportsWaitingReview &#x3D; signal&lt;GetReportsWaitingReviewResDTO | null&gt;(null);
+
+  /** Number of active users. */
+  protected activeUsers &#x3D; signal&lt;GetActiveUsersResDTO | null&gt;(null);
+
+  /** Number of pins created today. */
+  protected pinsCreatedToday &#x3D; signal&lt;GetPinsCreatedTodayResDTO | null&gt;(null);
+
+  /** Number of pins with at least 15 positive votes. */
+  protected pinsWith15PositiveVotes &#x3D; signal&lt;GetPinsWith15PositiveVotesResDTO | null&gt;(null);
+
+  /** Weekly API success rate percentage. */
+  protected weeklyApiSuccessRate &#x3D; signal&lt;number | null&gt;(null);
+
+  /** Weekly registered user statistics. */
+  protected usersWeeklyStats &#x3D; signal&lt;GetRegisteredUsersWeeklyStatsResDTO[]&gt;([]);
+
+  /** Current calendar year. */
+  protected currentYear &#x3D; new Date().getFullYear();
+
+  /** Weekly pin statistics for the current month. */
+  protected pinWeeksCurrentMonth &#x3D; signal&lt;PinWeekStats[]&gt;([]);
+
+  /** Weekly pin statistics for the previous month. */
+  protected pinWeeksLastMonth &#x3D; signal&lt;PinWeekStats[]&gt;([]);
+
+  /** Indicates whether the UI is currently focused on last month data. */
+  isLastMonth: boolean &#x3D; false;
+
+  /**
+   * Aggregates weekly pin statistics into monthly totals.
+   *
+   * @param weeks Weekly pin statistics for the target month
+   * @param monthStats Monthly stats object to update
+   */
+  private calcTotals(weeks: PinWeekStats[], monthStats: PinMonthStats): void {
+    let catchTotal: number &#x3D; 0;
+    let infoTotal: number &#x3D; 0;
+    let warningTotal: number &#x3D; 0;
+
+    for (const week of weeks) {
+      catchTotal +&#x3D; week.catchCount;
+      infoTotal +&#x3D; week.infoCount;
+      warningTotal +&#x3D; week.warningCount;
+    }
+
+    monthStats.catchCount &#x3D; catchTotal;
+    monthStats.infoCount &#x3D; infoTotal;
+    monthStats.warningCount &#x3D; warningTotal;
+
+    if (weeks.length &gt; 0) {
+      monthStats.year &#x3D; weeks[0].year;
+    }
+  }
+
+  /** Aggregated statistics for the previous month. */
+  public lastMonthStats: PinMonthStats &#x3D; {
+    monthName: &#x27;&#x27;,
+    year: 0,
+    catchCount: 0,
+    infoCount: 0,
+    warningCount: 0
+  };
+
+  /** Aggregated statistics for the current month. */
+  public currentMonthStats: PinMonthStats &#x3D; {
+    monthName: &#x27;&#x27;,
+    year: 0,
+    catchCount: 0,
+    infoCount: 0,
+    warningCount: 0
+  };
+
+  /**
+   * Loads dashboard statistics and weekly pin metrics for
+   * the current and previous month.
+   */
+  ngOnInit() {
+    this.statsService.getReportsWaitingReview().subscribe({
+      next: (res) &#x3D;&gt; {
+        this.reportsWaitingReview.set(res);
+      }
+    });
+
+    this.statsService.getActiveUsers().subscribe({
+      next: (res) &#x3D;&gt; {
+        this.activeUsers.set(res);
+      }
+    });
+
+    this.statsService.getPinsCreatedToday().subscribe({
+      next: (res) &#x3D;&gt; {
+        this.pinsCreatedToday.set(res);
+      }
+    });
+
+    this.statsService.getPinsWith15PositiveVotes().subscribe({
+      next: (res) &#x3D;&gt; {
+        this.pinsWith15PositiveVotes.set(res);
+      }
+    });
+
+    this.statsService.getWeeklyApiSuccessRate().subscribe({
+      next: (res) &#x3D;&gt; {
+        this.weeklyApiSuccessRate.set(res.successRateOfRequests &gt; 100 ? 100 : res.successRateOfRequests);
+      }
+    });
+
+    const current &#x3D; this.getCurrentMonthAndYear();
+    const last &#x3D; this.getLastMonthAndYear();
+
+    this.currentMonthStats.monthName &#x3D; this.getMonthName(current.month, current.year);
+    this.currentMonthStats.year &#x3D; current.year;
+
+    this.lastMonthStats.monthName &#x3D; this.getMonthName(last.month, last.year);
+    this.lastMonthStats.year &#x3D; last.year;
+
+    this.statsService.getPinsWeeklyStats(last.month, last.year).subscribe({
+      next: (res) &#x3D;&gt; {
+        this.pinWeeksLastMonth.set(res);
+        const stats &#x3D; { ...this.lastMonthStats };
+        this.calcTotals(res, stats);
+        this.lastMonthStats &#x3D; stats;
+        console.log(&#x27;Last Month Stats:&#x27;, this.lastMonthStats);
+      }
+    });
+
+    this.statsService.getPinsWeeklyStats(current.month, current.year).subscribe({
+      next: (res) &#x3D;&gt; {
+        this.pinWeeksCurrentMonth.set(res);
+        const stats &#x3D; { ...this.currentMonthStats };
+        this.calcTotals(res, stats);
+        this.currentMonthStats &#x3D; stats;
+        console.log(&#x27;Current Month Stats:&#x27;, this.currentMonthStats);
+      }
+    });
+  }
+
+  /**
+   * Returns the current month and year.
+   *
+   * @returns Object containing current month and year
+   */
+  private getCurrentMonthAndYear(): { month: number; year: number } {
+    const now &#x3D; new Date();
+    return {
+      month: now.getMonth() + 1,
+      year: now.getFullYear()
+    };
+  }
+
+  /**
+   * Returns the previous month and its associated year.
+   *
+   * @returns Object containing previous month and year
+   */
+  private getLastMonthAndYear(): { month: number; year: number } {
+    const now &#x3D; new Date();
+    const lastMonthDate &#x3D; new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+    return {
+      month: lastMonthDate.getMonth() + 1,
+      year: lastMonthDate.getFullYear()
+    };
+  }
+
+  /**
+   * Returns the localized month name for the provided month and year.
+   *
+   * @param month Month number in the range 1-12
+   * @param year Year associated with the month
+   * @returns Localized month name
+   */
+  private getMonthName(month: number, year: number): string {
+    return new Date(year, month - 1, 1).toLocaleString(&#x27;en-US&#x27;, { month: &#x27;long&#x27; });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;container stats-section-wrapper&quot;&gt;
+
+  &lt;!-- #region Quick View --&gt;
+  &lt;div class&#x3D;&quot;quick-header-wrapper&quot;&gt;
+
+    &lt;div class&#x3D;&quot;icon-quick-view-wrapper&quot;&gt;
+
+      &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;#ffffff&quot; stroke-width&#x3D;&quot;2&quot;
+        stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; class&#x3D;&quot;lucide lucide-eye-icon lucide-eye&quot;&gt;
+        &lt;path
+          d&#x3D;&quot;M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0&quot; /&gt;
+        &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;3&quot; /&gt;
+      &lt;/svg&gt;
+
+      &lt;span class&#x3D;&quot;text-bold&quot;&gt;Quick View&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;segmented-control&quot;&gt;
+      &lt;div class&#x3D;&quot;radio-btn&quot;&gt;
+
+        &lt;input type&#x3D;&quot;radio&quot; name&#x3D;&quot;month&quot; id&#x3D;&quot;current&quot; [checked]&#x3D;&quot;!isLastMonth&quot; (change)&#x3D;&quot;isLastMonth &#x3D; false&quot; checked&gt;
+        &lt;label for&#x3D;&quot;current&quot;&gt;Current Month&lt;/label&gt;
+
+        &lt;input type&#x3D;&quot;radio&quot; name&#x3D;&quot;month&quot; id&#x3D;&quot;last&quot; [checked]&#x3D;&quot;isLastMonth&quot; (change)&#x3D;&quot;isLastMonth &#x3D; true&quot;&gt;
+        &lt;label  for&#x3D;&quot;last&quot;&gt;Last Month&lt;/label&gt;
+
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+
+
+
+  &lt;/div&gt;
+  &lt;!-- #endregion --&gt;
+
+  &lt;div class&#x3D;&quot;new-grid&quot;&gt;
+    @if (!isLastMonth) {
+
+      &lt;gf-pins-average-published-chart class&#x3D;&quot;gf-card&quot; [pinStats]&#x3D;&quot;currentMonthStats&quot;&gt;&lt;/gf-pins-average-published-chart&gt;
+      &lt;gf-pins-per-week class&#x3D;&quot;gf-card&quot; [pins]&#x3D;&quot;pinWeeksCurrentMonth()&quot;&gt;&lt;/gf-pins-per-week&gt;
+    }
+    @else {
+      &lt;gf-pins-average-published-chart class&#x3D;&quot;gf-card&quot; [pinStats]&#x3D;&quot;lastMonthStats&quot;&gt;&lt;/gf-pins-average-published-chart&gt;
+      &lt;gf-pins-per-week class&#x3D;&quot;gf-card&quot; [pins]&#x3D;&quot;pinWeeksLastMonth()&quot;&gt;&lt;/gf-pins-per-week&gt;
+    }
+  &lt;/div&gt;
+
+  &lt;!-- #region Created Users Chart --&gt;
+
+  &lt;div class&#x3D;&quot;quick-view-grid&quot;&gt;
+
+    &lt;div class&#x3D;&quot;chart-grid-item&quot;&gt;
+      &lt;!-- Shows weeks from last two months --&gt;
+      &lt;gf-users-chart class&#x3D;&quot;gf-card&quot;&gt;&lt;/gf-users-chart&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+  &lt;!-- #endregion--&gt;
+
+
+  &lt;!-- #region Quick View GRID --&gt;
+  &lt;div class&#x3D;&quot;quick-view-grid&quot;&gt;
+
+    &lt;!-- Quick View Item - 1 --&gt;
+    &lt;app-gf-card-quick-view type&#x3D;&quot;system-requests&quot; bigText&#x3D;&quot; {{ weeklyApiSuccessRate() !&#x3D;&#x3D; null ? &#x60;${weeklyApiSuccessRate()}%&#x60; : &#x27;Loading...&#x27; }}&quot;
+      littleText&#x3D;&quot;of system requests were successful(weekly)&quot;&gt;&lt;/app-gf-card-quick-view&gt;
+
+    &lt;!-- Quick View Item - 2 --&gt;
+    &lt;app-gf-card-quick-view type&#x3D;&quot;satisfaction-index&quot; bigText&#x3D;&quot;4.6&quot;
+      littleText&#x3D;&quot;User Satisfaction Index&quot;&gt;&lt;/app-gf-card-quick-view&gt;
+
+    &lt;!-- Quick View Item - 3 --&gt;
+    &lt;app-gf-card-quick-view type&#x3D;&quot;positive-votes&quot; bigText&#x3D;&quot;{{ pinsWith15PositiveVotes()?.pinsWith15PositiveVotes }}&quot;
+      littleText&#x3D;&quot;Pins with 15+ Positive Votes&quot;&gt;&lt;/app-gf-card-quick-view&gt;
+
+    &lt;!-- Quick View Item - 4 --&gt;
+    &lt;app-gf-card-quick-view type&#x3D;&quot;pins-today&quot; bigText&#x3D;&quot;{{ pinsCreatedToday()?.pinsCreatedToday }}&quot; littleText&#x3D;&quot;Pins created today&quot;&gt;&lt;/app-gf-card-quick-view&gt;
+
+    &lt;!-- Quick View Item - 5 --&gt;
+    &lt;app-gf-card-quick-view type&#x3D;&quot;active-users&quot; bigText&#x3D;&quot;{{ activeUsers()?.activeUsers }}&quot; littleText&#x3D;&quot;Active users&quot;&gt;&lt;/app-gf-card-quick-view&gt;
+
+  &lt;/div&gt;
+  &lt;!-- #endregion --&gt;
+
+
+&lt;/div&gt;
+
+&lt;!-- * Quick Access Items --&gt;
+
+&lt;div class&#x3D;&quot;container stats-section-wrapper&quot;&gt;
+
+  &lt;!-- #region Quick Access --&gt;
+
+
+  &lt;div class&#x3D;&quot;d-flex align-items-center quick-header-wrapper&quot;&gt;
+
+    &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;#ffffff&quot; stroke-width&#x3D;&quot;2&quot;
+      stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; class&#x3D;&quot;lucide lucide-list-icon lucide-list&quot;&gt;
+      &lt;path d&#x3D;&quot;M3 5h.01&quot; /&gt;
+      &lt;path d&#x3D;&quot;M3 12h.01&quot; /&gt;
+      &lt;path d&#x3D;&quot;M3 19h.01&quot; /&gt;
+      &lt;path d&#x3D;&quot;M8 5h13&quot; /&gt;
+      &lt;path d&#x3D;&quot;M8 12h13&quot; /&gt;
+      &lt;path d&#x3D;&quot;M8 19h13&quot; /&gt;
+    &lt;/svg&gt;
+
+    &lt;span class&#x3D;&quot;text-bold&quot;&gt;Quick Access&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;!-- #endregion --&gt;
+
+
+  &lt;!-- Go to Reports --&gt;
+  &lt;div class&#x3D;&quot;quick-view-grid&quot;&gt;
+    &lt;app-gf-card-quick-access class&#x3D;&quot;quick-access-grid-item&quot; type&#x3D;&quot;reports&quot; title&#x3D;&quot;Reports&quot;
+      [extraTexts]&#x3D;&quot;[&#x27;Reports awaiting review: &#x27; + (reportsWaitingReview()?.reportsWaitingReview || 0)]&quot; /&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="container stats-section-wrapper">  <!-- #region Quick View -->  <div class="quick-header-wrapper">    <div class="icon-quick-view-wrapper">      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"        stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye">        <path          d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />        <circle cx="12" cy="12" r="3" />      </svg>      <span class="text-bold">Quick View</span>    </div>    <div class="segmented-control">      <div class="radio-btn">        <input type="radio" name="month" id="current" [checked]="!isLastMonth" (change)="isLastMonth = false" checked>        <label for="current">Current Month</label>        <input type="radio" name="month" id="last" [checked]="isLastMonth" (change)="isLastMonth = true">        <label  for="last">Last Month</label>      </div>    </div>  </div>  <!-- #endregion -->  <div class="new-grid">    @if (!isLastMonth) {      <gf-pins-average-published-chart class="gf-card" [pinStats]="currentMonthStats"></gf-pins-average-published-chart>      <gf-pins-per-week class="gf-card" [pins]="pinWeeksCurrentMonth()"></gf-pins-per-week>    }    @else {      <gf-pins-average-published-chart class="gf-card" [pinStats]="lastMonthStats"></gf-pins-average-published-chart>      <gf-pins-per-week class="gf-card" [pins]="pinWeeksLastMonth()"></gf-pins-per-week>    }  </div>  <!-- #region Created Users Chart -->  <div class="quick-view-grid">    <div class="chart-grid-item">      <!-- Shows weeks from last two months -->      <gf-users-chart class="gf-card"></gf-users-chart>    </div>  </div>  <!-- #endregion-->  <!-- #region Quick View GRID -->  <div class="quick-view-grid">    <!-- Quick View Item - 1 -->    <app-gf-card-quick-view type="system-requests" bigText=" {{ weeklyApiSuccessRate() !== null ? `${weeklyApiSuccessRate()}%` : \'Loading...\' }}"      littleText="of system requests were successful(weekly)"></app-gf-card-quick-view>    <!-- Quick View Item - 2 -->    <app-gf-card-quick-view type="satisfaction-index" bigText="4.6"      littleText="User Satisfaction Index"></app-gf-card-quick-view>    <!-- Quick View Item - 3 -->    <app-gf-card-quick-view type="positive-votes" bigText="{{ pinsWith15PositiveVotes()?.pinsWith15PositiveVotes }}"      littleText="Pins with 15+ Positive Votes"></app-gf-card-quick-view>    <!-- Quick View Item - 4 -->    <app-gf-card-quick-view type="pins-today" bigText="{{ pinsCreatedToday()?.pinsCreatedToday }}" littleText="Pins created today"></app-gf-card-quick-view>    <!-- Quick View Item - 5 -->    <app-gf-card-quick-view type="active-users" bigText="{{ activeUsers()?.activeUsers }}" littleText="Active users"></app-gf-card-quick-view>  </div>  <!-- #endregion --></div><!-- * Quick Access Items --><div class="container stats-section-wrapper">  <!-- #region Quick Access -->  <div class="d-flex align-items-center quick-header-wrapper">    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"      stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-icon lucide-list">      <path d="M3 5h.01" />      <path d="M3 12h.01" />      <path d="M3 19h.01" />      <path d="M8 5h13" />      <path d="M8 12h13" />      <path d="M8 19h13" />    </svg>    <span class="text-bold">Quick Access</span>  </div>  <!-- #endregion -->  <!-- Go to Reports -->  <div class="quick-view-grid">    <app-gf-card-quick-access class="quick-access-grid-item" type="reports" title="Reports"      [extraTexts]="[\'Reports awaiting review: \' + (reportsWaitingReview()?.reportsWaitingReview || 0)]" />  </div></div></div>'
+    var COMPONENTS = [{'name': 'AboutComponent', 'selector': 'app-about'},{'name': 'AdminPopoverComponent', 'selector': 'gf-admin-popover'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AsyncButtonComponent', 'selector': 'app-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'gf-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'button[gfAsyncBtn]'},{'name': 'AuthCallbackComponent', 'selector': 'app-auth-callback'},{'name': 'CatchPinModalComponent', 'selector': 'app-catch-pin-modal'},{'name': 'ChangeBirthdateModalComponent', 'selector': 'app-change-birthdate-modal'},{'name': 'ChangeDisplaynameModalComponent', 'selector': 'app-change-displayname-modal'},{'name': 'ChangeEmailModalComponent', 'selector': 'gf-change-email-modal'},{'name': 'ChangeFirstnameModalComponent', 'selector': 'app-change-firstname-modal'},{'name': 'ChangeLastnameModalComponent', 'selector': 'app-change-lastname-modal'},{'name': 'ChangePhoneModalComponent', 'selector': 'app-change-phone-modal'},{'name': 'ChangeUsernameModalComponent', 'selector': 'app-change-username-modal'},{'name': 'ChoosePinPopupComponent', 'selector': 'app-choose-pin-popup'},{'name': 'ClusterDetailsComponent', 'selector': 'app-cluster-details'},{'name': 'ConfirmDeletionModalComponent', 'selector': 'app-confirm-deletion-modal'},{'name': 'DeleteCommentComponent', 'selector': 'gf-delete-comment'},{'name': 'DeleteGroupComponent', 'selector': 'gf-delete-group'},{'name': 'DeletePinComponent', 'selector': 'app-delete-pin'},{'name': 'DeletePostComponent', 'selector': 'gf-delete-post'},{'name': 'DiscoverComponent', 'selector': 'app-discover'},{'name': 'EnumComponent', 'selector': 'app-enum'},{'name': 'ExitGroupComponent', 'selector': 'gf-exit-group'},{'name': 'FooterComponent', 'selector': 'gf-footer'},{'name': 'ForumComponent', 'selector': 'app-forum'},{'name': 'ForumPostComponent', 'selector': 'app-forum-post'},{'name': 'FriendsComponent', 'selector': 'app-friends'},{'name': 'FriendshipListCardComponent', 'selector': 'gf-friendship-list-card'},{'name': 'FriendsListComponent', 'selector': 'app-friends-list'},{'name': 'FromFriendsComponent', 'selector': 'app-from-friends'},{'name': 'GeneralComponent', 'selector': 'app-general'},{'name': 'GfCardCommentPreviewComponent', 'selector': 'gf-gf-card-comment-preview'},{'name': 'GfCardPinPreviewComponent', 'selector': 'app-gf-card-pin-preview'},{'name': 'GfCardQuickAccessComponent', 'selector': 'app-gf-card-quick-access'},{'name': 'GfCardQuickViewComponent', 'selector': 'app-gf-card-quick-view'},{'name': 'GroupCreateComponent', 'selector': 'app-group-create'},{'name': 'GroupInviteComponent', 'selector': 'gf-group-invite'},{'name': 'GroupInvitesCardComponent', 'selector': 'gf-group-invites-card'},{'name': 'GroupInvitesListComponent', 'selector': 'gf-group-invites-list'},{'name': 'GroupListCardComponent', 'selector': 'gf-group-list-card'},{'name': 'GroupMemberSettingsPopoverComponent', 'selector': 'gf-group-member-settings-popover'},{'name': 'GroupPopoverComponent', 'selector': 'gf-group-popover'},{'name': 'GroupPostsPlaceholderComponent', 'selector': 'app-group-posts-placeholder'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsListCardComponent', 'selector': 'gf-groups-list-card'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'HeaderActionsComponent', 'selector': 'gf-header-actions'},{'name': 'HeaderComponent', 'selector': 'gf-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'InfoPinModalComponent', 'selector': 'app-info-pin-modal'},{'name': 'InviteToGroupsModalComponent', 'selector': 'gf-invite-to-groups-modal'},{'name': 'LeaderboardComponent', 'selector': 'gf-leaderboard'},{'name': 'LoadingErrorModalComponent', 'selector': 'gf-loading-error-modal'},{'name': 'LoadingSpinnerComponent', 'selector': 'gf-loading-spinner'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MembersGroupComponent', 'selector': 'gf-members-group'},{'name': 'MyGroupsComponent', 'selector': 'app-my-groups'},{'name': 'NavPopoverComponent', 'selector': 'gf-nav-popover'},{'name': 'OverviewComponent', 'selector': 'app-overview'},{'name': 'PersonalDataComponent', 'selector': 'app-personal-data'},{'name': 'PinDetailPanelComponent', 'selector': 'app-pin-detail-panel'},{'name': 'PinsAvgPublishedChart', 'selector': 'gf-pins-average-published-chart'},{'name': 'PinsComponent', 'selector': 'app-pins'},{'name': 'PinsPerWeekComponent', 'selector': 'gf-pins-per-week'},{'name': 'PostCommentsComponent', 'selector': 'app-post-comments'},{'name': 'PostIdPlaceholderComponent', 'selector': 'app-post-id-placeholder'},{'name': 'PrivacyPolicyComponent', 'selector': 'app-privacy-policy'},{'name': 'ProfileActionsPopoverComponent', 'selector': 'gf-profile-actions-popover'},{'name': 'ProfileCatchPinCardComponent', 'selector': 'gf-profile-catch-pin-card'},{'name': 'ProfileShellComponent', 'selector': 'app-profile'},{'name': 'ProfileShowMoreModalComponent', 'selector': 'gf-profile-show-more-modal'},{'name': 'ReportCommentComponent', 'selector': 'gf-report-comment'},{'name': 'ReportedCommentPageComponent', 'selector': 'gf-reported-comment-page'},{'name': 'ReportedCommentsComponent', 'selector': 'gf-reported-comments'},{'name': 'ReportedPinPageComponent', 'selector': 'gf-reported-pin-page'},{'name': 'ReportedPinsComponent', 'selector': 'gf-reported-pins'},{'name': 'ReportPinComponent', 'selector': 'gf-report'},{'name': 'RequestsListComponent', 'selector': 'app-requests-list'},{'name': 'ResetPasswordComponent', 'selector': 'gf-reset-password'},{'name': 'SearchComponent', 'selector': 'gf-search'},{'name': 'SecurityComponent', 'selector': 'app-security'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SetupTotpComponent', 'selector': 'app-setup-totp'},{'name': 'SigninComponent', 'selector': 'app-signin'},{'name': 'SigninVerifyComponent', 'selector': 'app-signin-verify'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'SmallFriendshipCarouselCardComponent', 'selector': 'gf-small-friendship-carousel-card'},{'name': 'SmallGroupCarouselCardComponent', 'selector': 'gf-small-group-carousel-card'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'StatsHomeComponent', 'selector': 'app-home'},{'name': 'StatsReportsComponent', 'selector': 'app-stats-reports'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'TermsOfServiceComponent', 'selector': 'app-terms-of-service'},{'name': 'TotpValidationModalComponent', 'selector': 'app-totp-validation-modal'},{'name': 'UserCardComponent', 'selector': 'app-user-card'},{'name': 'UserHelpBoxComponent', 'selector': 'gf-user-help-box'},{'name': 'UserPopoverComponent', 'selector': 'gf-user-popover'},{'name': 'UserRankIconComponent', 'selector': 'gf-user-rank-icon'},{'name': 'UserSatisfactionIndexComponent', 'selector': 'gf-user-satisfaction-index'},{'name': 'UsersChartComponent', 'selector': 'gf-users-chart'},{'name': 'UsersListCardComponent', 'selector': 'gf-users-list-card'},{'name': 'UsersListComponent', 'selector': 'gf-users-list'},{'name': 'UserTitleComponent', 'selector': 'gf-user-title'},{'name': 'VerifyEmailModalComponent', 'selector': 'gf-verify-email-modal'},{'name': 'VerifyTwofaContainerComponent', 'selector': 'gf-verify-twofa-container'},{'name': 'WarnPinModalComponent', 'selector': 'app-warn-pin-modal'}];
+    var DIRECTIVES = [{'name': 'ClickOutsideDirective', 'selector': '[clickOutside]'},{'name': 'LettersOnlyDirective', 'selector': '[appLettersOnly]'},{'name': 'MouseFollowDirective', 'selector': '[gfTooltip]'},{'name': 'NumbersOnlyDirective', 'selector': '[appNumbersOnly]'}];
+    var ACTUAL_COMPONENT = {'name': 'StatsHomeComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'StatsHomeComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,1 @@
+search_result['605']=["topic_00000000000001E0.html","UserProfile.MaxWeeklyStreak Property","/// Maior streak semanal atingido pelo utilizador.\r\n    ///"];

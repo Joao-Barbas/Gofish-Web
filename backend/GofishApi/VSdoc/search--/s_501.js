@@ -1,0 +1,1 @@
+search_result['501']=["topic_000000000000019B.html","InfoPin.AccessDifficulty Property","/// Nível de dificuldade de acesso ao local.\r\n    ///"];

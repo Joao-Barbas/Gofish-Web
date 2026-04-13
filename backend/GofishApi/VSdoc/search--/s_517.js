@@ -1,0 +1,1 @@
+search_result['517']=["topic_00000000000001A6.html","Pin.Score Property","/// Pontuação agregada do pin, normalmente derivada de votos.\r\n    ///"];

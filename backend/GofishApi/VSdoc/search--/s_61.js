@@ -1,0 +1,1 @@
+search_result['61']=["topic_0000000000000023.html","GroupController.GetUserGroups Method","/// Obtém a lista de grupos aos quais o utilizador autenticado pertence.\r\n    ///"];

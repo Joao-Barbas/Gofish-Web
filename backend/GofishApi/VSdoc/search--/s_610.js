@@ -1,0 +1,1 @@
+search_result['610']=["topic_00000000000001E5.html","Vote Class","/// Representa um voto efetuado por um utilizador sobre um pin.\r\n/// Utilizado para calcular a pontuação e relevância do conteúdo.\r\n///"];

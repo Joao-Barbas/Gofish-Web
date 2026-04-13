@@ -17,28 +17,52 @@ using System.Text;
 
 namespace GofishApi.Controllers;
 
+/// <summary>
+/// Controlador responsável pela gestão de segurança da conta do utilizador,
+/// incluindo password, verificação de email, mudança de email e autenticação de dois fatores.
+/// </summary>
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class UserSecurityController : ControllerBase
 {
+    /// <summary>Gestor de utilizadores do ASP.NET Identity.</summary>
     private readonly UserManager<AppUser> _userManager;
+
+    /// <summary>Serviço de envio de emails.</summary>
     private readonly IEmailService _emailService;
+
+    /// <summary>Serviço de criação e validação de tokens temporários para ações sensíveis.</summary>
     private readonly ISensitiveActionTokenService _actionTokenService;
+
+    /// <summary>Serviço de criação e validação de tokens temporários para mudança de email.</summary>
     private readonly IEmailChangeTokenService _emailChangeTokenService;
 
+    /// <summary>
+    /// Inicializa uma nova instância do controlador de segurança do utilizador.
+    /// </summary>
+    /// <param name="userManager">Gestor de utilizadores.</param>
+    /// <param name="emailService">Serviço de envio de emails.</param>
+    /// <param name="actionTokenService">Serviço de tokens para ações sensíveis.</param>
+    /// <param name="emailChangeTokenService">Serviço de tokens para mudança de email.</param>
     public UserSecurityController(
         UserManager<AppUser> userManager,
         IEmailService emailService,
         ISensitiveActionTokenService actionTokenService,
         IEmailChangeTokenService emailChangeTokenService
-    ){
+    )
+    {
         _userManager = userManager;
         _emailService = emailService;
         _actionTokenService = actionTokenService;
         _emailChangeTokenService = emailChangeTokenService;
     }
 
+    /// <summary>
+    /// Obtém informação de segurança da conta do utilizador autenticado,
+    /// incluindo provider de autenticação, estado de 2FA e verificação de email.
+    /// </summary>
+    /// <returns>Informação de segurança da conta.</returns>
     [HttpGet("GetSecurityInfo")]
     public async Task<IActionResult> GetSecurityInfo()
     {
@@ -57,11 +81,11 @@ public class UserSecurityController : ControllerBase
     }
 
     /// <summary>
-    /// Verifies the user's active 2FA method (TOTP or email code) and returns
-    /// a short-lived action token (5 min) the frontend must send when performing
-    /// a sensitive action like changing email.
-    /// Call this only when the user actually has 2FA enabled.
+    /// Valida o código de autenticação de dois fatores ativo do utilizador
+    /// e devolve um token temporário para ações sensíveis.
     /// </summary>
+    /// <param name="dto">Código de autenticação de dois fatores.</param>
+    /// <returns>Token temporário para ações sensíveis.</returns>
     [HttpPost("ValidateTwoFactorCode")]
     public async Task<IActionResult> ValidateTwoFactorCode([FromBody] ValidateTwoFactorCodeReqDto dto)
     {
@@ -93,11 +117,17 @@ public class UserSecurityController : ControllerBase
         return Ok(new ValidateTwoFactorCodeResDto(token));
     }
 
+    /// <summary>
+    /// Altera a password do utilizador autenticado.
+    /// Se a autenticação de dois fatores estiver ativa, exige também um código 2FA válido.
+    /// </summary>
+    /// <param name="dto">Password atual, nova password e eventual código 2FA.</param>
+    /// <returns>Resposta de sucesso.</returns>
     [HttpPost("ChangePassword")]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordReqDTO dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        var user   = userId is null ? null : await _userManager.FindByIdAsync(userId);
+        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
 
         if (user is null)
         {
@@ -137,6 +167,11 @@ public class UserSecurityController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Envia por email um código 2FA quando o método preferido de autenticação
+    /// de dois fatores do utilizador é email.
+    /// </summary>
+    /// <returns>Resposta de sucesso.</returns>
     [HttpPost("SendTwoFactorEmail")]
     public async Task<IActionResult> SendTwoFactorEmail()
     {
@@ -163,12 +198,12 @@ public class UserSecurityController : ControllerBase
         return Ok();
     }
 
-    // Forgot password
-
     /// <summary>
-    /// Starts the proccess of a password reset.
-    /// Sends to user's email a 6-digit code.
+    /// Inicia o processo de recuperação de password.
+    /// Envia para o email do utilizador um código/token de reset.
     /// </summary>
+    /// <param name="dto">Email do utilizador.</param>
+    /// <returns>Resposta de sucesso, sem revelar se o utilizador existe.</returns>
     [AllowAnonymous]
     [HttpPost("ForgotPassoword")]
     public async Task<IActionResult> ForgotPassoword([FromBody] ForgotPasswordReqDto dto)
@@ -183,15 +218,15 @@ public class UserSecurityController : ControllerBase
             await _emailService.SendAsync(dto.Email, subject, body);
         }
 
-        // Don't reveal that the user does not exist or is not confirmed, so don't return a 200 if we would have
-        // returned a 400 for an invalid code given a valid user email.
         return Ok();
     }
 
     /// <summary>
-    /// Ends the process of email verification.
-    /// Resets the password using the given values.
+    /// Conclui o processo de recuperação de password,
+    /// redefinindo a password com base no código/token recebido.
     /// </summary>
+    /// <param name="dto">Email, código/token e nova password.</param>
+    /// <returns>Resposta de sucesso.</returns>
     [AllowAnonymous]
     [HttpPost("ResetPassword")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordReqDto dto)
@@ -200,8 +235,6 @@ public class UserSecurityController : ControllerBase
 
         if (user is null || !(await _userManager.IsEmailConfirmedAsync(user)))
         {
-            // Don't reveal that the user does not exist or is not confirmed, so don't return a 200 if we would have
-            // returned a 400 for an invalid code given a valid user email.
             throw new IdentityException(_userManager.ErrorDescriber.InvalidToken());
         }
 
@@ -224,13 +257,12 @@ public class UserSecurityController : ControllerBase
         return Ok();
     }
 
-    // Change email
-
     /// <summary>
-    /// Initiates an email change.
-    /// Sends a 6-digit code to the new address and returns a token (encodes userId + newEmail + code, 15 min TTL).
-    /// The frontend holds the token and asks the user to enter the code.
+    /// Inicia o processo de mudança de email.
+    /// Envia um código para o novo email e devolve um token temporário de confirmação.
     /// </summary>
+    /// <param name="dto">Novo email e eventual token de ação sensível.</param>
+    /// <returns>Token temporário para conclusão da mudança de email.</returns>
     [HttpPost("InitiateEmailChange")]
     public async Task<IActionResult> InitiateEmailChange([FromBody] InitiateEmailChangeReqDto dto)
     {
@@ -270,10 +302,11 @@ public class UserSecurityController : ControllerBase
     }
 
     /// <summary>
-    /// Completes an email change.
-    /// Confirms the email change using the token returned by InitiateEmailChange
-    /// and the 6-digit code sent to the new address.
+    /// Conclui a mudança de email validando o token temporário e o código enviado
+    /// para o novo endereço de email.
     /// </summary>
+    /// <param name="dto">Token de mudança de email e código recebido.</param>
+    /// <returns>Resposta de sucesso.</returns>
     [HttpPost("CompleteEmailChange")]
     public async Task<IActionResult> CompleteEmailChange([FromBody] CompleteEmailChangeReqDto dto)
     {
@@ -295,8 +328,6 @@ public class UserSecurityController : ControllerBase
             return Unauthorized();
         }
 
-        // Generate Identity's change-email token so ChangeEmailAsync is satisfied,
-        // then immediately apply it. The code above is the real verification gate.
         var identityToken = await _userManager.GenerateChangeEmailTokenAsync(user, newEmail);
         var result = await _userManager.ChangeEmailAsync(user, newEmail, identityToken);
 
@@ -308,12 +339,11 @@ public class UserSecurityController : ControllerBase
         return Ok();
     }
 
-    // Email verification
-
     /// <summary>
-    /// Starts the proccess of email verification.
-    /// Sends to user's ser email a 6-digit code.
+    /// Inicia o processo de verificação do email atual do utilizador,
+    /// enviando um código para esse endereço.
     /// </summary>
+    /// <returns>Resposta de sucesso.</returns>
     [HttpPost("SendVerificationEmail")]
     public async Task<IActionResult> SendVerificationEmail()
     {
@@ -341,9 +371,11 @@ public class UserSecurityController : ControllerBase
     }
 
     /// <summary>
-    /// Ends the process of email verification.
-    /// Verifies the email using the 6-digit code sent by SendVerificationEmail.
+    /// Conclui o processo de verificação do email do utilizador
+    /// usando o código enviado previamente.
     /// </summary>
+    /// <param name="dto">Código de verificação do email.</param>
+    /// <returns>Resposta de sucesso.</returns>
     [HttpPost("VerifyEmail")]
     public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailReqDto dto)
     {
@@ -359,20 +391,22 @@ public class UserSecurityController : ControllerBase
             throw new AppException("Bad Request", StatusCodes.Status400BadRequest, "Invalid or expired code.");
         }
 
-        // Use Identity's confirmation flow to set EmailConfirmed = true
         var confirmToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         await _userManager.ConfirmEmailAsync(user, confirmToken);
 
         return Ok();
     }
 
-    // Enable-disable two factors
-
+    /// <summary>
+    /// Obtém a configuração necessária para ativação de TOTP,
+    /// incluindo chave secreta e URI de provisioning.
+    /// </summary>
+    /// <returns>Chave TOTP e URI de configuração.</returns>
     [HttpGet("GetTotpSetup")]
     public async Task<IActionResult> GetTotpSetup()
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        var user   = userId is null ? null : await _userManager.FindByIdAsync(userId);
+        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
 
         if (user is null)
         {
@@ -388,16 +422,22 @@ public class UserSecurityController : ControllerBase
         }
 
         var label = Uri.EscapeDataString($"GOFISH:{user.Email}");
-        var uri   = $"otpauth://totp/{label}?secret={key}&issuer=GOFISH";
+        var uri = $"otpauth://totp/{label}?secret={key}&issuer=GOFISH";
 
         return Ok(new GetTotpSetupResDTO(key!, uri));
     }
 
+    /// <summary>
+    /// Ativa autenticação de dois fatores por TOTP após validação do código gerado.
+    /// Também gera códigos de recuperação.
+    /// </summary>
+    /// <param name="dto">Código TOTP de validação.</param>
+    /// <returns>Códigos de recuperação gerados.</returns>
     [HttpPost("EnableTotp")]
     public async Task<IActionResult> EnableTotp([FromBody] EnableTotpReqDTO dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        var user   = userId is null ? null : await _userManager.FindByIdAsync(userId);
+        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
 
         if (user is null)
         {
@@ -417,11 +457,16 @@ public class UserSecurityController : ControllerBase
         return Ok(new EnableTotpResDTO(backupCodes!.ToArray()));
     }
 
+    /// <summary>
+    /// Desativa autenticação de dois fatores por TOTP após validação do código atual.
+    /// </summary>
+    /// <param name="dto">Código TOTP de validação.</param>
+    /// <returns>Resposta de sucesso.</returns>
     [HttpPost("DisableTotp")]
     public async Task<IActionResult> DisableTotp([FromBody] DisableTotpReqDTO dto)
     {
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        var user   = userId is null ? null : await _userManager.FindByIdAsync(userId);
+        var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
 
         if (user is null)
         {
@@ -441,6 +486,11 @@ public class UserSecurityController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Ativa autenticação de dois fatores por email.
+    /// Requer que o email do utilizador esteja previamente verificado.
+    /// </summary>
+    /// <returns>Resposta de sucesso.</returns>
     [HttpPost("EnableEmailTwoFactor")]
     public async Task<IActionResult> EnableEmailTwoFactor()
     {
@@ -468,6 +518,10 @@ public class UserSecurityController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Desativa autenticação de dois fatores por email.
+    /// </summary>
+    /// <returns>Resposta de sucesso.</returns>
     [HttpPost("DisableEmailTwoFactor")]
     public async Task<IActionResult> DisableEmailTwoFactor()
     {

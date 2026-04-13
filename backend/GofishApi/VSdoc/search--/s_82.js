@@ -1,0 +1,1 @@
+search_result['82']=["topic_0000000000000033.html","PinController.GetFeed Method","/// Obtém o feed de pins com paginação, de acordo com o tipo de feed selecionado.\r\n    ///"];

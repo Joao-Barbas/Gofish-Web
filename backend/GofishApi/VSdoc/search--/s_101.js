@@ -1,0 +1,1 @@
+search_result['101']=["topic_0000000000000041.html","RatingsController Constructor","/// Inicializa uma nova instância do controlador de ratings.\r\n    ///"];

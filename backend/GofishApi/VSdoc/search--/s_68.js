@@ -1,0 +1,1 @@
+search_result['68']=["topic_000000000000002A.html","GroupController.DeleteGroupInvite Method","/// Elimina um convite pendente de grupo.\r\n    /// Apenas o emissor ou o destinatário o pode remover.\r\n    ///"];

@@ -1,0 +1,1 @@
+search_result['66']=["topic_0000000000000028.html","GroupController.PromoteMemberToOwner Method","/// Transfere a ownership do grupo para outro membro.\r\n    /// O owner atual passa a moderator.\r\n    ///"];

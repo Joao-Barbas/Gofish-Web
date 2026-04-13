@@ -1,0 +1,1 @@
+search_result['411']=["topic_0000000000000164.html","CatchPin.HookSize Property","/// Tamanho do anzol utilizado na captura.\r\n    /// Segue o padrão europeu de tamanhos.\r\n    ///"];

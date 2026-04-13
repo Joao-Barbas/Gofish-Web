@@ -1,0 +1,1 @@
+search_result['142']=["topic_0000000000000060.html","StatsController.GetTotalPinsCreated Method","/// Obtém o número total de pins criados.\r\n    ///"];

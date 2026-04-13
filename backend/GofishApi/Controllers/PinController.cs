@@ -1,31 +1,53 @@
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
+using GofishApi.Data;
+using GofishApi.Dtos;
+using GofishApi.Enums;
+using GofishApi.Exceptions;
+using GofishApi.Models;
+using GofishApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GofishApi.Data;
-using GofishApi.Dtos;
-using GofishApi.Models;
-using GofishApi.Services;
-using GofishApi.Enums;
-using GofishApi.Exceptions;
-using GofishApi.Extensions;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
-namespace GofishApi.Controllers;
 
+/// <summary>
+/// Controlador responsável pela gestão de pins geográficos da aplicação.
+/// Disponibiliza operações de consulta, criação, remoção, votos e comentários.
+/// </summary>
 [Authorize]
 [Route("api/[controller]/[action]")]
 [ApiController]
 public class PinController : ControllerBase
 {
+    /// <summary>Logger para registo de eventos e erros.</summary>
     private readonly ILogger<PinController> _logger;
+
+    /// <summary>Serviço de armazenamento de imagens em blob storage.</summary>
     private readonly IBlobStorageService _blobStorage;
+
+    /// <summary>Contexto de acesso à base de dados da aplicação.</summary>
     private readonly AppDbContext _db;
+
+    /// <summary>Gestor de utilizadores do ASP.NET Identity.</summary>
     private readonly UserManager<AppUser> _userManager;
+
+    /// <summary>Serviço responsável pelas regras de gamificação.</summary>
     private readonly IGamificationService _gamification;
+
+    /// <summary>Serviço responsável pelas regras de visibilidade de pins.</summary>
     private readonly IVisibilityService _visibility;
 
+    /// <summary>
+    /// Inicializa uma nova instância do controlador de pins.
+    /// </summary>
+    /// <param name="logger">Logger da aplicação.</param>
+    /// <param name="blobStorage">Serviço de armazenamento de imagens.</param>
+    /// <param name="db">Contexto da base de dados.</param>
+    /// <param name="userManager">Gestor de utilizadores.</param>
+    /// <param name="gamification">Serviço de gamificação.</param>
+    /// <param name="visibility">Serviço de visibilidade.</param>
     public PinController(
         ILogger<PinController> logger,
         IBlobStorageService blobStorage,
@@ -43,6 +65,11 @@ public class PinController : ControllerBase
         _visibility = visibility;
     }
 
+    /// <summary>
+    /// Obtém os pins visíveis dentro de uma área geográfica definida por coordenadas mínimas e máximas.
+    /// </summary>
+    /// <param name="dto">Limites geográficos da viewport.</param>
+    /// <returns>Lista de pins visíveis na área indicada.</returns>
     [HttpGet]
     public async Task<IActionResult> GetInViewport([FromQuery] GetInViewportReqDto dto)
     {
@@ -63,11 +90,16 @@ public class PinController : ControllerBase
         return Ok(new GetInViewportResDto(pins));
     }
 
+    /// <summary>
+    /// Obtém o feed de pins com paginação, de acordo com o tipo de feed selecionado.
+    /// </summary>
+    /// <param name="dto">Critérios de feed e paginação.</param>
+    /// <returns>Lista paginada de pins do feed.</returns>
     [HttpPost]
     public async Task<IActionResult> GetFeed([FromBody] GetFeedReqDto dto)
     {
         var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
-        var userId     = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
 
         if (userId is null)
         {
@@ -77,8 +109,8 @@ public class PinController : ControllerBase
         IQueryable<Pin> query = dto.Kind switch
         {
             FeedKind.Discovery => _visibility.FilterVisiblePins(_db.Pins, userId),
-            FeedKind.Friends   => _visibility.FilterFriendsPins(_db.Pins, userId),
-            FeedKind.Groups    => _visibility.FilterGroupsPins(_db.Pins, userId),
+            FeedKind.Friends => _visibility.FilterFriendsPins(_db.Pins, userId),
+            FeedKind.Groups => _visibility.FilterGroupsPins(_db.Pins, userId),
             _ => throw new AppValidationException("Kind", "Feed kind must be Discovery, Friends, or Groups")
         };
 
@@ -118,25 +150,29 @@ public class PinController : ControllerBase
             })
             .ToListAsync();
 
-        var hasMore       = pins.Count > maxResults;
+        var hasMore = pins.Count > maxResults;
         var paginatedPins = pins.Take(maxResults).ToList();
         var lastTimestamp = hasMore ? paginatedPins[^1].CreatedAt : (DateTime?)null;
 
         return Ok(new GetFeedResDto(paginatedPins, hasMore, lastTimestamp));
     }
 
+    /// <summary>
+    /// Obtém pins específicos com suporte a múltiplos identificadores e seleção parcial de dados.
+    /// </summary>
+    /// <param name="dto">Critérios de identificação, filtragem e composição dos dados devolvidos.</param>
+    /// <returns>Lista paginada de pins.</returns>
     [HttpPost]
     public async Task<IActionResult> GetPins([FromBody] GetPinsReqDto dto)
     {
         var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
-        var userId     = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
 
         if (userId is null)
         {
             return Unauthorized();
         }
 
-        // Start with a database-backed query that returns nothing
         IQueryable<int> pinIdQuery = _db.Pins.Where(p => false).Select(p => p.Id);
 
         foreach (var id in dto.Ids)
@@ -215,6 +251,12 @@ public class PinController : ControllerBase
         return Ok(new GetPinsResDto(page, hasMore, lastTime));
     }
 
+    /// <summary>
+    /// Remove um pin existente.
+    /// Apenas o autor do pin ou um administrador o pode eliminar.
+    /// </summary>
+    /// <param name="id">Identificador do pin.</param>
+    /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePin(int id)
     {
@@ -231,6 +273,12 @@ public class PinController : ControllerBase
 
     #region Votes
 
+    /// <summary>
+    /// Regista ou atualiza o voto do utilizador autenticado num pin.
+    /// </summary>
+    /// <param name="pinId">Identificador do pin.</param>
+    /// <param name="dto">Valor do voto.</param>
+    /// <returns>Voto atual do utilizador e score atualizado do pin.</returns>
     [HttpPut("{pinId}")]
     public async Task<IActionResult> PutVote([FromRoute] int pinId, [FromBody] VoteReqDto dto)
     {
@@ -244,11 +292,6 @@ public class PinController : ControllerBase
         var pin = await _db.Pins.FindAsync(pinId);
         if (pin is null) return NotFound();
 
-        // if (pin.UserId == userId)
-        // {
-        //    throw new AppValidationException("Vote", "You cannot vote on your own pin.");
-        // }
-
         var existingVote = await _db.Votes.FirstOrDefaultAsync(v => v.PinId == pinId && v.UserId == userId);
 
         if (existingVote?.Value == dto.Value)
@@ -260,6 +303,11 @@ public class PinController : ControllerBase
         return Ok(new VoteResDto(dto.Value, newScore));
     }
 
+    /// <summary>
+    /// Remove o voto do utilizador autenticado de um pin.
+    /// </summary>
+    /// <param name="pinId">Identificador do pin.</param>
+    /// <returns>Estado atualizado do voto e score do pin.</returns>
     [HttpDelete("{pinId}")]
     public async Task<IActionResult> DeleteVote(int pinId)
     {
@@ -275,8 +323,10 @@ public class PinController : ControllerBase
     }
 
     /// <summary>
-    /// Get authenticated user's vote and score for a pin.
+    /// Obtém o voto do utilizador autenticado e o score atual de um pin.
     /// </summary>
+    /// <param name="pinId">Identificador do pin.</param>
+    /// <returns>Voto atual do utilizador e score do pin.</returns>
     [HttpGet("{pinId}")]
     public async Task<IActionResult> GetUserVote(int pinId)
     {
@@ -292,9 +342,15 @@ public class PinController : ControllerBase
         return Ok(new VoteResDto(userVote, pin.Score));
     }
 
-    #endregion // Votes
+    #endregion
+
     #region Comments
 
+    /// <summary>
+    /// Obtém a lista paginada de comentários de um pin.
+    /// </summary>
+    /// <param name="dto">Critérios de paginação dos comentários.</param>
+    /// <returns>Lista paginada de comentários.</returns>
     [HttpGet]
     public async Task<IActionResult> GetComments([FromQuery] GetCommentsReqDto dto)
     {
@@ -328,6 +384,11 @@ public class PinController : ControllerBase
         return Ok(new GetCommentsResDto(data, hasMore, lastTime));
     }
 
+    /// <summary>
+    /// Obtém um comentário específico pelo seu identificador.
+    /// </summary>
+    /// <param name="id">Identificador do comentário.</param>
+    /// <returns>Dados do comentário.</returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetComment(int id)
     {
@@ -343,6 +404,11 @@ public class PinController : ControllerBase
         return Ok(CommentDto.FromEntity(comment));
     }
 
+    /// <summary>
+    /// Cria um novo comentário num pin.
+    /// </summary>
+    /// <param name="dto">Dados do comentário a criar.</param>
+    /// <returns>Identificador do comentário criado.</returns>
     [HttpPost]
     public async Task<IActionResult> CreateComment([FromBody] CreateCommentReqDto dto)
     {
@@ -354,10 +420,10 @@ public class PinController : ControllerBase
 
         var comment = new Comment
         {
-            PinId     = dto.PinId,
-            Body      = dto.Body,
+            PinId = dto.PinId,
+            Body = dto.Body,
             CreatedAt = DateTime.UtcNow,
-            UserId    = userId
+            UserId = userId
         };
 
         _db.Comments.Add(comment);
@@ -365,6 +431,12 @@ public class PinController : ControllerBase
         return Ok(new CreateCommentResDto(comment.Id));
     }
 
+    /// <summary>
+    /// Remove um comentário existente.
+    /// Apenas o autor do comentário ou um administrador o pode eliminar.
+    /// </summary>
+    /// <param name="id">Identificador do comentário.</param>
+    /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteComment(int id)
     {
@@ -379,9 +451,16 @@ public class PinController : ControllerBase
         return NoContent();
     }
 
-    #endregion // Comments
+    #endregion
+
     #region CreatePins
 
+    /// <summary>
+    /// Cria um novo pin do tipo Catch com imagem.
+    /// Valida visibilidade, pertença a grupos e tipo de ficheiro.
+    /// </summary>
+    /// <param name="dto">Dados do catch pin.</param>
+    /// <returns>Identificador do pin criado.</returns>
     [HttpPost]
     [RequestSizeLimit(5_000_000)]
     public async Task<IActionResult> CreateCatchPin([FromForm] CreateCatchPinReqDto dto)
@@ -445,6 +524,11 @@ public class PinController : ControllerBase
         return Ok(new CreatePinResDto(pinId));
     }
 
+    /// <summary>
+    /// Cria um novo pin do tipo Information.
+    /// </summary>
+    /// <param name="dto">Dados do info pin.</param>
+    /// <returns>Identificador do pin criado.</returns>
     [HttpPost]
     public async Task<IActionResult> CreateInfoPin([FromBody] CreateInfoPinReqDto dto)
     {
@@ -484,6 +568,11 @@ public class PinController : ControllerBase
         return Ok(new CreatePinResDto(pinId));
     }
 
+    /// <summary>
+    /// Cria um novo pin do tipo Warning.
+    /// </summary>
+    /// <param name="dto">Dados do warning pin.</param>
+    /// <returns>Identificador do pin criado.</returns>
     [HttpPost]
     public async Task<IActionResult> CreateWarnPin([FromBody] CreateWarnPinReqDto dto)
     {
@@ -522,8 +611,11 @@ public class PinController : ControllerBase
         return Ok(new CreatePinResDto(pinId));
     }
 
-    // Helpers
-
+    /// <summary>
+    /// Guarda um pin na base de dados e atualiza a streak do utilizador.
+    /// </summary>
+    /// <param name="pin">Entidade pin a persistir.</param>
+    /// <returns>Identificador do pin guardado.</returns>
     private async Task<int> SavePinAsync(Pin pin)
     {
         _db.Pins.Add(pin);
@@ -532,6 +624,11 @@ public class PinController : ControllerBase
         return pin.Id;
     }
 
+    /// <summary>
+    /// Converte uma lista de identificadores de grupos em associações GroupPin.
+    /// </summary>
+    /// <param name="groupIds">Lista de identificadores de grupos.</param>
+    /// <returns>Lista de associações entre pin e grupos.</returns>
     private static List<GroupPin> ToGroupPins(IEnumerable<int>? groupIds)
     {
         return groupIds?.Select(gId => new GroupPin { GroupId = gId }).ToList() ?? [];

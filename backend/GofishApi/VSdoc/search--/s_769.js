@@ -1,0 +1,1 @@
+search_result['769']=["topic_0000000000000234.html","IEmailChangeTokenService.VerifyToken Method","Decodes and validates the token. Returns false if expired, tampered, or\r\nif the submitted code does not match the one baked into the token."];

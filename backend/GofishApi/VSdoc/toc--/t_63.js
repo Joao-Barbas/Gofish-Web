@@ -1,0 +1,1 @@
+c['63']=[['64',"CreateRating Method","topic_0000000000000042.html",0],['65',"DeleteRating Method","topic_0000000000000046.html",0],['66',"GetRating Method","topic_0000000000000045.html",0],['67',"GetRatings Method","topic_0000000000000044.html",0],['68',"UpdateRating Method","topic_0000000000000043.html",0]];

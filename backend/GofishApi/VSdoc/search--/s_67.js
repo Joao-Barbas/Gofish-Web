@@ -1,0 +1,1 @@
+search_result['67']=["topic_0000000000000029.html","GroupController.DemoteAdminToMember Method","/// Rebaixa um moderator/admin para member.\r\n    /// Apenas o owner pode executar esta operação.\r\n    ///"];

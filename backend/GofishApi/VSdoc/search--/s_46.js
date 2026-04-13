@@ -1,0 +1,1 @@
+search_result['46']=["topic_0000000000000019.html","EnumsController.TwoFactorMethod Method","/// Obtém os métodos de autenticação de dois fatores.\r\n    ///"];

@@ -1,0 +1,1 @@
+search_result['139']=["topic_000000000000005D.html","StatsController.GetPinsWith15PositiveVotes Method","/// Obtém o número de pins com pelo menos 15 votos positivos.\r\n    ///"];

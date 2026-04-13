@@ -1,0 +1,1261 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content miscellaneous-typealiases">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Miscellaneous</li>
+  <li class="breadcrumb-item">Type aliases</li>
+</ol>
+
+<section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <ul class="index-list">
+                        <li>
+                            <a href="#AsyncButtonConfig" title="src/app/shared/components/async-button-2/async-button-2.component.ts" ><b>AsyncButtonConfig</b>&nbsp;&nbsp;&nbsp;(src/.../async-button-2.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AsyncButtonConfig" title="src/app/shared/components/async-button-3/async-button-3.component.ts" ><b>AsyncButtonConfig</b>&nbsp;&nbsp;&nbsp;(src/.../async-button-3.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AsyncButtonState" title="src/app/shared/components/async-button/async-button.component.ts" ><b>AsyncButtonState</b>&nbsp;&nbsp;&nbsp;(src/.../async-button.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AsyncButtonState" title="src/app/shared/components/async-button-2/async-button-2.component.ts" ><b>AsyncButtonState</b>&nbsp;&nbsp;&nbsp;(src/.../async-button-2.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AsyncButtonState" title="src/app/shared/components/async-button-3/async-button-3.component.ts" ><b>AsyncButtonState</b>&nbsp;&nbsp;&nbsp;(src/.../async-button-3.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AsyncButtonType" title="src/app/shared/components/async-button/async-button.component.ts" ><b>AsyncButtonType</b>&nbsp;&nbsp;&nbsp;(src/.../async-button.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#BodyState" title="src/app/features/user/settings/components/general/components/change-email-modal/change-email-modal.component.ts" ><b>BodyState</b>&nbsp;&nbsp;&nbsp;(src/.../change-email-modal.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#BodyView" title="src/app/features/user/auth/reset-password/reset-password.component.ts" ><b>BodyView</b>&nbsp;&nbsp;&nbsp;(src/.../reset-password.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Coords" title="src/app/shared/models/coords.model.ts" ><b>Coords</b>&nbsp;&nbsp;&nbsp;(src/.../coords.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#FooterVariant" title="src/app/features/footer/footer.component.ts" ><b>FooterVariant</b>&nbsp;&nbsp;&nbsp;(src/.../footer.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#GeolocationError" title="src/app/shared/services/geolocation.service.ts" ><b>GeolocationError</b>&nbsp;&nbsp;&nbsp;(src/.../geolocation.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#GeolocationPermissionState" title="src/app/shared/services/geolocation.service.ts" ><b>GeolocationPermissionState</b>&nbsp;&nbsp;&nbsp;(src/.../geolocation.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#GeolocationState" title="src/app/shared/services/geolocation.service.ts" ><b>GeolocationState</b>&nbsp;&nbsp;&nbsp;(src/.../geolocation.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#HeaderVariant" title="src/app/features/header/header.component.ts" ><b>HeaderVariant</b>&nbsp;&nbsp;&nbsp;(src/.../header.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#InviteState" title="src/app/shared/components/invite-to-groups-modal/invite-to-groups-modal.component.ts" ><b>InviteState</b>&nbsp;&nbsp;&nbsp;(src/.../invite-to-groups-modal.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtAudience" title="src/app/shared/models/jwt.model.ts" ><b>JwtAudience</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtClaim" title="src/app/shared/models/jwt.model.ts" ><b>JwtClaim</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtDecoded" title="src/app/shared/models/jwt.model.ts" ><b>JwtDecoded</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtEncoded" title="src/app/shared/models/jwt.model.ts" ><b>JwtEncoded</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtExpiresAt" title="src/app/shared/models/jwt.model.ts" ><b>JwtExpiresAt</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtId" title="src/app/shared/models/jwt.model.ts" ><b>JwtId</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtIssuedAt" title="src/app/shared/models/jwt.model.ts" ><b>JwtIssuedAt</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtIssuer" title="src/app/shared/models/jwt.model.ts" ><b>JwtIssuer</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtLoginProvider" title="src/app/shared/models/jwt.model.ts" ><b>JwtLoginProvider</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtNotBefore" title="src/app/shared/models/jwt.model.ts" ><b>JwtNotBefore</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtPayload" title="src/app/shared/models/jwt.model.ts" ><b>JwtPayload</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtRole" title="src/app/shared/models/jwt.model.ts" ><b>JwtRole</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtRoles" title="src/app/shared/models/jwt.model.ts" ><b>JwtRoles</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtStdClaims" title="src/app/shared/models/jwt.model.ts" ><b>JwtStdClaims</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtStdKeys" title="src/app/shared/models/jwt.model.ts" ><b>JwtStdKeys</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtSubject" title="src/app/shared/models/jwt.model.ts" ><b>JwtSubject</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtUserClaims" title="src/app/shared/models/jwt.model.ts" ><b>JwtUserClaims</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtUserInfo" title="src/app/shared/models/jwt.model.ts" ><b>JwtUserInfo</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtUserKeys" title="src/app/shared/models/jwt.model.ts" ><b>JwtUserKeys</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#LeaderboardTab" title="src/app/features/leaderboard/leaderboard.component.ts" ><b>LeaderboardTab</b>&nbsp;&nbsp;&nbsp;(src/.../leaderboard.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#LoadingStatus" title="src/app/shared/core/loading-state.ts" ><b>LoadingStatus</b>&nbsp;&nbsp;&nbsp;(src/.../loading-state.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ModalKey" title="src/app/shared/core/modal-controller.ts" ><b>ModalKey</b>&nbsp;&nbsp;&nbsp;(src/.../modal-controller.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ModalKey" title="src/app/shared/models/modal.model.ts" ><b>ModalKey</b>&nbsp;&nbsp;&nbsp;(src/.../modal.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#NavPath" title="src/app/features/forum/forum.component.ts" ><b>NavPath</b>&nbsp;&nbsp;&nbsp;(src/.../forum.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#NavPath" title="src/app/features/statistics/statistics.component.ts" ><b>NavPath</b>&nbsp;&nbsp;&nbsp;(src/.../statistics.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#NavPath" title="src/app/features/user/settings/settings.component.ts" ><b>NavPath</b>&nbsp;&nbsp;&nbsp;(src/.../settings.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#PinType" title="src/app/shared/components/gf-card-pin-preview/gf-card-pin-preview.component.ts" ><b>PinType</b>&nbsp;&nbsp;&nbsp;(src/.../gf-card-pin-preview.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#PopoverKey" title="src/app/shared/core/popover-controller.ts" ><b>PopoverKey</b>&nbsp;&nbsp;&nbsp;(src/.../popover-controller.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#PopupKey" title="src/app/shared/models/popup.model.ts" class="deprecated-name"><b>PopupKey</b>&nbsp;&nbsp;&nbsp;(src/.../popup.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ProfileFriendsTab" title="src/app/shared/constants/index.ts" ><b>ProfileFriendsTab</b>&nbsp;&nbsp;&nbsp;(src/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ProfileGroupsTab" title="src/app/shared/constants/index.ts" ><b>ProfileGroupsTab</b>&nbsp;&nbsp;&nbsp;(src/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#QuickAccessType" title="src/app/features/statistics/components/gf-card-quick-access/gf-card-quick-access.component.ts" ><b>QuickAccessType</b>&nbsp;&nbsp;&nbsp;(src/.../gf-card-quick-access.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#QuickViewType" title="src/app/features/statistics/components/gf-card-quick-view/gf-card-quick-view.component.ts" ><b>QuickViewType</b>&nbsp;&nbsp;&nbsp;(src/.../gf-card-quick-view.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#TwofaVerificationState" title="src/app/shared/components/verify-twofa-container/verify-twofa-container.component.ts" ><b>TwofaVerificationState</b>&nbsp;&nbsp;&nbsp;(src/.../verify-twofa-container.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UrlMode" title="src/app/features/map/services/url.service.ts" ><b>UrlMode</b>&nbsp;&nbsp;&nbsp;(src/.../url.service.ts)</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    <h3>src/app/shared/components/async-button-2/async-button-2.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AsyncButtonConfig"></a>
+                    <span class="name "><b>AsyncButtonConfig</b><a href="#AsyncButtonConfig"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AsyncButtonState"></a>
+                    <span class="name "><b>AsyncButtonState</b><a href="#AsyncButtonState"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;idle&quot; | &quot;busy&quot; | &quot;success&quot; | &quot;disabled&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/components/async-button-3/async-button-3.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AsyncButtonConfig"></a>
+                    <span class="name "><b>AsyncButtonConfig</b><a href="#AsyncButtonConfig"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AsyncButtonState"></a>
+                    <span class="name "><b>AsyncButtonState</b><a href="#AsyncButtonState"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;idle&quot; | &quot;busy&quot; | &quot;success&quot; | &quot;disabled&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/components/async-button/async-button.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AsyncButtonState"></a>
+                    <span class="name "><b>AsyncButtonState</b><a href="#AsyncButtonState"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;idle&quot; | &quot;busy&quot; | &quot;success&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AsyncButtonType"></a>
+                    <span class="name "><b>AsyncButtonType</b><a href="#AsyncButtonType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;button&quot; | &quot;submit&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/features/user/settings/components/general/components/change-email-modal/change-email-modal.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BodyState"></a>
+                    <span class="name "><b>BodyState</b><a href="#BodyState"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;none&quot; | &quot;verify&quot; | &quot;new-email&quot; | &quot;confirm&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/features/user/auth/reset-password/reset-password.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BodyView"></a>
+                    <span class="name "><b>BodyView</b><a href="#BodyView"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Supported body states for the reset password flow.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;enter-email&quot; | &quot;new-password&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/models/coords.model.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Coords"></a>
+                    <span class="name "><b>Coords</b><a href="#Coords"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/features/footer/footer.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="FooterVariant"></a>
+                    <span class="name "><b>FooterVariant</b><a href="#FooterVariant"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;big&quot; | &quot;small&quot; | &quot;none&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/services/geolocation.service.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="GeolocationError"></a>
+                    <span class="name "><b>GeolocationError</b><a href="#GeolocationError"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;inaccurate&quot; | &quot;unavailable&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="GeolocationPermissionState"></a>
+                    <span class="name "><b>GeolocationPermissionState</b><a href="#GeolocationPermissionState"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>PermissionState</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="GeolocationState"></a>
+                    <span class="name "><b>GeolocationState</b><a href="#GeolocationState"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>GeolocationPermissionState | GeolocationError</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/features/header/header.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="HeaderVariant"></a>
+                    <span class="name "><b>HeaderVariant</b><a href="#HeaderVariant"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Defines the visual variants available for the header component.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;flat&quot; | &quot;overlay&quot; | &quot;none&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/components/invite-to-groups-modal/invite-to-groups-modal.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="InviteState"></a>
+                    <span class="name "><b>InviteState</b><a href="#InviteState"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;ready&quot; | &quot;inviting&quot; | &quot;invited&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/models/jwt.model.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtAudience"></a>
+                    <span class="name "><b>JwtAudience</b><a href="#JwtAudience"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtClaim"></a>
+                    <span class="name "><b>JwtClaim</b><a href="#JwtClaim"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/typealiases.html#JwtPayload" target="_self" >JwtPayload</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtDecoded"></a>
+                    <span class="name "><b>JwtDecoded</b><a href="#JwtDecoded"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtEncoded"></a>
+                    <span class="name "><b>JwtEncoded</b><a href="#JwtEncoded"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtExpiresAt"></a>
+                    <span class="name "><b>JwtExpiresAt</b><a href="#JwtExpiresAt"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtId"></a>
+                    <span class="name "><b>JwtId</b><a href="#JwtId"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtIssuedAt"></a>
+                    <span class="name "><b>JwtIssuedAt</b><a href="#JwtIssuedAt"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtIssuer"></a>
+                    <span class="name "><b>JwtIssuer</b><a href="#JwtIssuer"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtLoginProvider"></a>
+                    <span class="name "><b>JwtLoginProvider</b><a href="#JwtLoginProvider"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;Local&quot; | &quot;Google&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtNotBefore"></a>
+                    <span class="name "><b>JwtNotBefore</b><a href="#JwtNotBefore"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtPayload"></a>
+                    <span class="name "><b>JwtPayload</b><a href="#JwtPayload"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtRole"></a>
+                    <span class="name "><b>JwtRole</b><a href="#JwtRole"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;User&quot; | &quot;Admin&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtRoles"></a>
+                    <span class="name "><b>JwtRoles</b><a href="#JwtRoles"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/typealiases.html#JwtRole" target="_self" >JwtRole | JwtRole[]</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtStdClaims"></a>
+                    <span class="name "><b>JwtStdClaims</b><a href="#JwtStdClaims"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtStdKeys"></a>
+                    <span class="name "><b>JwtStdKeys</b><a href="#JwtStdKeys"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtSubject"></a>
+                    <span class="name "><b>JwtSubject</b><a href="#JwtSubject"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtUserClaims"></a>
+                    <span class="name "><b>JwtUserClaims</b><a href="#JwtUserClaims"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtUserInfo"></a>
+                    <span class="name "><b>JwtUserInfo</b><a href="#JwtUserInfo"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>Omit&lt;JwtPayload | JwtStdClaims&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtUserKeys"></a>
+                    <span class="name "><b>JwtUserKeys</b><a href="#JwtUserKeys"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/features/leaderboard/leaderboard.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="LeaderboardTab"></a>
+                    <span class="name "><b>LeaderboardTab</b><a href="#LeaderboardTab"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Supported leaderboard tabs.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;global&quot; | &quot;friends&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/core/loading-state.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="LoadingStatus"></a>
+                    <span class="name "><b>LoadingStatus</b><a href="#LoadingStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;idle&quot; | &quot;loading&quot; | &quot;success&quot; | &quot;error&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/core/modal-controller.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ModalKey"></a>
+                    <span class="name "><b>ModalKey</b><a href="#ModalKey"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Unique identifier for a modal instance.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/models/modal.model.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ModalKey"></a>
+                    <span class="name "><b>ModalKey</b><a href="#ModalKey"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/features/forum/forum.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="NavPath"></a>
+                    <span class="name "><b>NavPath</b><a href="#NavPath"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Represents a forum navigation entry.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/features/statistics/statistics.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="NavPath"></a>
+                    <span class="name "><b>NavPath</b><a href="#NavPath"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/features/user/settings/settings.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="NavPath"></a>
+                    <span class="name "><b>NavPath</b><a href="#NavPath"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/components/gf-card-pin-preview/gf-card-pin-preview.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="PinType"></a>
+                    <span class="name "><b>PinType</b><a href="#PinType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;catch&quot; | &quot;info&quot; | &quot;warning&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/core/popover-controller.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="PopoverKey"></a>
+                    <span class="name "><b>PopoverKey</b><a href="#PopoverKey"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Unique identifier for a popover instance.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/models/popup.model.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="PopupKey"></a>
+                    <span class="name deprecated-name"><b>PopupKey</b><a href="#PopupKey"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4 deprecated">
+                    [object Object],[object Object],[object Object]
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>string | &quot;example-key-popup&quot; | &quot;header-user-popup&quot; | &quot;header-admin-popup&quot; | &quot;choose-pin-popup&quot; | &quot;pin-preview&quot; | &quot;cluster-preview&quot; | &quot;group-options&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/constants/index.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ProfileFriendsTab"></a>
+                    <span class="name "><b>ProfileFriendsTab</b><a href="#ProfileFriendsTab"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ProfileGroupsTab"></a>
+                    <span class="name "><b>ProfileGroupsTab</b><a href="#ProfileGroupsTab"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/features/statistics/components/gf-card-quick-access/gf-card-quick-access.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="QuickAccessType"></a>
+                    <span class="name "><b>QuickAccessType</b><a href="#QuickAccessType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;average-published-pins&quot; | &quot;pin-density-by-location&quot; | &quot;reports&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/features/statistics/components/gf-card-quick-view/gf-card-quick-view.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="QuickViewType"></a>
+                    <span class="name "><b>QuickViewType</b><a href="#QuickViewType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;system-requests&quot; | &quot;satisfaction-index&quot; | &quot;positive-votes&quot; | &quot;pins-today&quot; | &quot;active-users&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/shared/components/verify-twofa-container/verify-twofa-container.component.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="TwofaVerificationState"></a>
+                    <span class="name "><b>TwofaVerificationState</b><a href="#TwofaVerificationState"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;ready&quot; | &quot;loading&quot; | &quot;succeeded&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/app/features/map/services/url.service.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UrlMode"></a>
+                    <span class="name "><b>UrlMode</b><a href="#UrlMode"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Supported interaction modes stored in the map URL.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;geo&quot; | &quot;picked&quot; | &quot;pick&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'miscellaneous-typealiases';
+            var COMPODOC_CURRENT_PAGE_URL = 'typealiases.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

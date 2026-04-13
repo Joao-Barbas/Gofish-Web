@@ -1,0 +1,1 @@
+search_result['195']=["topic_0000000000000086.html","UserSecurityController Class","/// Controlador responsável pela gestão de segurança da conta do utilizador,\r\n/// incluindo password, verificação de email, mudança de email e autenticação de dois fatores.\r\n///"];

@@ -1,0 +1,1 @@
+search_result['145']=["topic_0000000000000063.html","StatsController.GetTotalWarningPinsCreated Method","/// Obtém o número total de warning pins criados.\r\n    ///"];

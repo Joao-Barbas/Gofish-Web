@@ -1,0 +1,1 @@
+search_result['435']=["topic_0000000000000172.html","Friendship.ReceiverUserId Property","/// Identificador do utilizador que recebe o pedido de amizade.\r\n    ///"];

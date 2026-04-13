@@ -1,0 +1,1 @@
+search_result['212']=["topic_0000000000000092.html","UserSecurityController.GetTotpSetup Method","/// Obtém a configuração necessária para ativação de TOTP,\r\n    /// incluindo chave secreta e URI de provisioning.\r\n    ///"];

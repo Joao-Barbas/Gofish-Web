@@ -1,0 +1,1 @@
+search_result['205']=["topic_000000000000008B.html","UserSecurityController.SendTwoFactorEmail Method","/// Envia por email um código 2FA quando o método preferido de autenticação\r\n    /// de dois fatores do utilizador é email.\r\n    ///"];

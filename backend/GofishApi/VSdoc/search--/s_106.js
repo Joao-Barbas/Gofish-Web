@@ -1,0 +1,1 @@
+search_result['106']=["topic_0000000000000046.html","RatingsController.DeleteRating Method","/// Remove uma avaliação existente.\r\n    /// Apenas o autor da avaliação ou um administrador a podem eliminar.\r\n    ///"];

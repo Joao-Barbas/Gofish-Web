@@ -1,0 +1,1 @@
+search_result['59']=["topic_0000000000000021.html","GroupController.CreateGroup Method","/// Cria um novo grupo.\r\n    /// Valida o utilizador autenticado, o tipo de imagem enviada,\r\n    /// a unicidade do nome e faz upload da imagem para blob storage.\r\n    ///"];

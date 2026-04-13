@@ -1,0 +1,1 @@
+search_result['50']=["topic_000000000000001D.html","EnumsController.VoteKind Method","/// Obtém os tipos de voto (ex: upvote/downvote).\r\n    ///"];

@@ -1,0 +1,1 @@
+search_result['579']=["topic_00000000000001D0.html","RequestLogs Class","/// Representa o registo de uma requisição HTTP processada pela API.\r\n/// Utilizado para monitorização, métricas e análise de desempenho.\r\n///"];

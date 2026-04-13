@@ -1,0 +1,1 @@
+search_result['47']=["topic_000000000000001A.html","EnumsController.FriendshipState Method","/// Obtém os estados de amizade entre utilizadores.\r\n    ///"];

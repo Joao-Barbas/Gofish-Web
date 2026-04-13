@@ -1,0 +1,1879 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >MapInteractionsService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/features/map/services/map-interactions.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Service responsible for registering and handling interactive
+behavior on the map for pins and clusters.</p>
+<p>Responsibilities:</p>
+<ul>
+<li>Register click and hover interactions for clustered and unclustered pins</li>
+<li>Open pin previews or cluster previews based on user interaction</li>
+<li>Fetch full pin data when required</li>
+<li>Clear selected state when the user clicks outside map features</li>
+</ul>
+
+            </p>
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#pinHoverPreview" >pinHoverPreview</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#pinService" >pinService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#popupService" >popupService</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#openPinsList" >openPinsList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#openSinglePin" >openSinglePin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#registerClusterClick" >registerClusterClick</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#registerClusterCursor" >registerClusterCursor</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#registerMapClick" >registerMapClick</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#registerPinClick" >registerPinClick</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#registerPinHover" >registerPinHover</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#sameCoordinates" >sameCoordinates</a>
+                            </li>
+                            <li>
+                                <a href="#setup" >setup</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openPinsList"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>openPinsList</b></span>
+                        <a href="#openPinsList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openPinsList(pins: PinDto[], selectedPins: WritableSignal<PinDto[]>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="237"
+                                    class="link-to-prism">src/app/features/map/services/map-interactions.service.ts:237</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Loads full details for a list of pins and opens the cluster preview popup.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>pins</td>
+                                            <td>
+                                                        <code>PinDto[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Pins to load and display</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>selectedPins</td>
+                                            <td>
+                                                        <code>WritableSignal&lt;PinDto[]&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Signal storing the selected pins list</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openSinglePin"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>openSinglePin</b></span>
+                        <a href="#openSinglePin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openSinglePin(pinId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, selectedPin: WritableSignal<PinDto | null>, map: mapboxgl.Map)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="269"
+                                    class="link-to-prism">src/app/features/map/services/map-interactions.service.ts:269</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Loads full details for a single pin, opens the pin preview popup,
+and centers the map on the selected pin.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>pinId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identifier of the pin to load</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>selectedPin</td>
+                                            <td>
+                                                        <code>WritableSignal&lt;PinDto | null&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Signal storing the selected pin</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>map</td>
+                                            <td>
+                                                        <code>mapboxgl.Map</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Mapbox map instance</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="registerClusterClick"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>registerClusterClick</b></span>
+                        <a href="#registerClusterClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>registerClusterClick(map: mapboxgl.Map, clusterId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, sourceId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, selectedPins: WritableSignal<PinDto[]>, allPins: WritableSignal<PinDto[]>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/app/features/map/services/map-interactions.service.ts:71</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Registers click handling for cluster layers.</p>
+<p>Behavior:</p>
+<ul>
+<li>Expands the clicked cluster area</li>
+<li>Loads all pins contained in the cluster</li>
+<li>Opens the cluster preview popup</li>
+</ul>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>map</td>
+                                            <td>
+                                                        <code>mapboxgl.Map</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Mapbox map instance</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>clusterId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Cluster layer identifier</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>sourceId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Source identifier associated with the cluster</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>selectedPins</td>
+                                            <td>
+                                                        <code>WritableSignal&lt;PinDto[]&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Signal storing selected cluster pins</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>allPins</td>
+                                            <td>
+                                                        <code>WritableSignal&lt;PinDto[]&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Signal containing all loaded pins</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="registerClusterCursor"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>registerClusterCursor</b></span>
+                        <a href="#registerClusterCursor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>registerClusterCursor(map: mapboxgl.Map, clusterId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="313"
+                                    class="link-to-prism">src/app/features/map/services/map-interactions.service.ts:313</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Registers pointer cursor behavior for cluster layers.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>map</td>
+                                            <td>
+                                                        <code>mapboxgl.Map</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Mapbox map instance</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>clusterId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Cluster layer identifier</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="registerMapClick"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>registerMapClick</b></span>
+                        <a href="#registerMapClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>registerMapClick(map: mapboxgl.Map, selectedPin: WritableSignal<PinDto | null>, isPickingOnMap: () => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="335"
+                                    class="link-to-prism">src/app/features/map/services/map-interactions.service.ts:335</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Registers click handling on the map background.</p>
+<p>Behavior:</p>
+<ul>
+<li>Ignores clicks while pick mode is active</li>
+<li>Clears the selected pin when clicking outside pin layers</li>
+</ul>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>map</td>
+                                            <td>
+                                                        <code>mapboxgl.Map</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Mapbox map instance</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>selectedPin</td>
+                                            <td>
+                                                        <code>WritableSignal&lt;PinDto | null&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Signal storing the selected pin</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>isPickingOnMap</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Callback indicating whether pick mode is active</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="registerPinClick"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>registerPinClick</b></span>
+                        <a href="#registerPinClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>registerPinClick(map: mapboxgl.Map, unclusteredId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, allPins: WritableSignal<PinDto[]>, selectedPin: WritableSignal<PinDto | null>, selectedPins: WritableSignal<PinDto[]>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="179"
+                                    class="link-to-prism">src/app/features/map/services/map-interactions.service.ts:179</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Registers click handling for unclustered pin layers.</p>
+<p>Behavior:</p>
+<ul>
+<li>Detects whether multiple pins share the same location</li>
+<li>Opens a list preview for stacked pins</li>
+<li>Opens a single pin preview for individual pins</li>
+</ul>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>map</td>
+                                            <td>
+                                                        <code>mapboxgl.Map</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Mapbox map instance</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>unclusteredId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Unclustered layer identifier</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>allPins</td>
+                                            <td>
+                                                        <code>WritableSignal&lt;PinDto[]&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Signal containing all loaded pins</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>selectedPin</td>
+                                            <td>
+                                                        <code>WritableSignal&lt;PinDto | null&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Signal storing the selected pin</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>selectedPins</td>
+                                            <td>
+                                                        <code>WritableSignal&lt;PinDto[]&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Signal storing the selected pins list</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="registerPinHover"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>registerPinHover</b></span>
+                        <a href="#registerPinHover"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>registerPinHover(map: mapboxgl.Map, unclusteredId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, allPins: WritableSignal<PinDto[]>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="145"
+                                    class="link-to-prism">src/app/features/map/services/map-interactions.service.ts:145</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Registers hover handling for unclustered pin layers.</p>
+<p>Behavior:</p>
+<ul>
+<li>Changes the cursor to pointer when hovering a pin</li>
+<li>Displays the hover preview for the hovered pin</li>
+<li>Clears the hover preview when leaving the pin</li>
+</ul>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>map</td>
+                                            <td>
+                                                        <code>mapboxgl.Map</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Mapbox map instance</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>unclusteredId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Unclustered layer identifier</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>allPins</td>
+                                            <td>
+                                                        <code>WritableSignal&lt;PinDto[]&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Signal containing all loaded pins</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sameCoordinates"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>sameCoordinates</b></span>
+                        <a href="#sameCoordinates"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sameCoordinates(lat1: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, lng1: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, lat2: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, lng2: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="226"
+                                    class="link-to-prism">src/app/features/map/services/map-interactions.service.ts:226</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Compares two coordinate pairs using a small tolerance value
+to avoid precision issues.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>lat1</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>First latitude</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>lng1</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>First longitude</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>lat2</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Second latitude</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>lng2</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Second longitude</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>True when both coordinate pairs are effectively equal</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setup"></a>
+                    <span class="name">
+                        <span ><b>setup</b></span>
+                        <a href="#setup"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setup(map: mapboxgl.Map, allPins: WritableSignal<PinDto[]>, selectedPin: WritableSignal<PinDto | null>, selectedPins: WritableSignal<PinDto[]>, isPickingOnMap: () => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="36"
+                                    class="link-to-prism">src/app/features/map/services/map-interactions.service.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Registers all map interactions for configured pin kinds.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>map</td>
+                                            <td>
+                                                        <code>mapboxgl.Map</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Mapbox map instance</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>allPins</td>
+                                            <td>
+                                                        <code>WritableSignal&lt;PinDto[]&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Signal containing all currently loaded pins</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>selectedPin</td>
+                                            <td>
+                                                        <code>WritableSignal&lt;PinDto | null&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Signal containing the currently selected pin</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>selectedPins</td>
+                                            <td>
+                                                        <code>WritableSignal&lt;PinDto[]&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Signal containing the currently selected pins list</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>isPickingOnMap</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Callback indicating whether pick mode is active</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinHoverPreview"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>pinHoverPreview</b></span>
+                        <a href="#pinHoverPreview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(PinHoverPreviewService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/features/map/services/map-interactions.service.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>pinService</b></span>
+                        <a href="#pinService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(PinService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/features/map/services/map-interactions.service.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>popupService</b></span>
+                        <a href="#popupService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(PopupService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/features/map/services/map-interactions.service.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, Signal, inject } from &#x27;@angular/core&#x27;;
+import { ViewportPinDTO, GetPinsReqDto, GetPinsResDTO, PinDataReqDTO, PinDataResDTO, PinIdDTO, PinDto } from &#x27;@gofish/shared/dtos/pin.dto&#x27;;
+import { PinService } from &#x27;@gofish/shared/services/pin.service&#x27;;
+import { PinHoverPreviewService } from &#x27;@gofish/features/map/services/pin-hover-preview.service&#x27;;
+import { PopupService } from &#x27;@gofish/shared/services/popup.service&#x27;;
+import { PIN_CONFIG } from &#x27;@gofish/shared/constants/index&#x27;;
+import { WritableSignal } from &#x27;@angular/core&#x27;;
+
+/**
+ * Service responsible for registering and handling interactive
+ * behavior on the map for pins and clusters.
+ *
+ * Responsibilities:
+ * - Register click and hover interactions for clustered and unclustered pins
+ * - Open pin previews or cluster previews based on user interaction
+ * - Fetch full pin data when required
+ * - Clear selected state when the user clicks outside map features
+ */
+@Injectable({
+  providedIn: &#x27;root&#x27;,
+})
+export class MapInteractionsService {
+  private readonly pinService &#x3D; inject(PinService);
+  private readonly pinHoverPreview &#x3D; inject(PinHoverPreviewService);
+  private readonly popupService &#x3D; inject(PopupService);
+
+  /**
+   * Registers all map interactions for configured pin kinds.
+   *
+   * @param map Mapbox map instance
+   * @param allPins Signal containing all currently loaded pins
+   * @param selectedPin Signal containing the currently selected pin
+   * @param selectedPins Signal containing the currently selected pins list
+   * @param isPickingOnMap Callback indicating whether pick mode is active
+   */
+  setup(
+    map: mapboxgl.Map,
+    allPins: WritableSignal&lt;PinDto[]&gt;,
+    selectedPin: WritableSignal&lt;PinDto | null&gt;,
+    selectedPins: WritableSignal&lt;PinDto[]&gt;,
+    isPickingOnMap: () &#x3D;&gt; boolean
+  ): void {
+    PIN_CONFIG.forEach(({ kind }) &#x3D;&gt; {
+      const clusterId &#x3D; &#x60;clusters-${kind}&#x60;;
+      const unclusteredId &#x3D; &#x60;unclustered-${kind}&#x60;;
+      const sourceId &#x3D; &#x60;pins-${kind}&#x60;;
+
+      this.registerClusterClick(map, clusterId, sourceId, selectedPins, allPins);
+      this.registerPinHover(map, unclusteredId, allPins);
+      this.registerPinClick(map, unclusteredId, allPins, selectedPin, selectedPins);
+      this.registerClusterCursor(map, clusterId);
+    });
+
+    this.registerMapClick(map, selectedPin, isPickingOnMap);
+  }
+
+  /**
+   * Registers click handling for cluster layers.
+   *
+   * Behavior:
+   * - Expands the clicked cluster area
+   * - Loads all pins contained in the cluster
+   * - Opens the cluster preview popup
+   *
+   * @param map Mapbox map instance
+   * @param clusterId Cluster layer identifier
+   * @param sourceId Source identifier associated with the cluster
+   * @param selectedPins Signal storing selected cluster pins
+   * @param allPins Signal containing all loaded pins
+   */
+  private registerClusterClick(
+    map: mapboxgl.Map,
+    clusterId: string,
+    sourceId: string,
+    selectedPins: WritableSignal&lt;PinDto[]&gt;,
+    allPins: WritableSignal&lt;PinDto[]&gt;
+  ): void {
+    map.on(&#x27;click&#x27;, clusterId, (e) &#x3D;&gt; {
+      if (!map.getLayer(clusterId)) return;
+
+      const features &#x3D; map.queryRenderedFeatures(e.point, { layers: [clusterId] });
+      if (!features.length) return;
+
+      const clusterIdProp &#x3D; features[0].properties?.[&#x27;cluster_id&#x27;];
+      if (!clusterIdProp) return;
+
+      const source &#x3D; map.getSource(sourceId) as mapboxgl.GeoJSONSource;
+
+      source.getClusterExpansionZoom(clusterIdProp, (err, zoom) &#x3D;&gt; {
+        if (err) return;
+
+        map.easeTo({
+          center: (features[0].geometry as GeoJSON.Point).coordinates as [number, number],
+          //zoom: zoom as number
+        });
+      });
+
+      source.getClusterLeaves(clusterIdProp, Infinity, 0, (err, leaves) &#x3D;&gt; {
+        if (err || !leaves) return;
+
+        const pinIds: PinIdDTO[] &#x3D; leaves.map(leaf &#x3D;&gt; {
+          return {
+            pinId: leaf.properties?.[&#x27;id&#x27;]
+          };
+        });
+
+        const request: GetPinsReqDto &#x3D; {
+          ids: pinIds,
+          dataRequest: {
+            includeGeolocation: true,
+            includeAuthor: true,
+            includeDetails: true,
+            includeStats: true,
+            includeUgc: true,
+            includeGroups: true,
+          }
+        };
+
+        this.pinService.getPins(request).subscribe({
+          next: (res) &#x3D;&gt; {
+            selectedPins.set(res.pins);
+            this.popupService.open(&#x27;cluster-preview&#x27;);
+            console.log(res.pins);
+          },
+          error: (err) &#x3D;&gt; {
+            console.log(err);
+          }
+        });
+      });
+    });
+  }
+
+  /**
+   * Registers hover handling for unclustered pin layers.
+   *
+   * Behavior:
+   * - Changes the cursor to pointer when hovering a pin
+   * - Displays the hover preview for the hovered pin
+   * - Clears the hover preview when leaving the pin
+   *
+   * @param map Mapbox map instance
+   * @param unclusteredId Unclustered layer identifier
+   * @param allPins Signal containing all loaded pins
+   */
+  private registerPinHover(map: mapboxgl.Map, unclusteredId: string, allPins: WritableSignal&lt;PinDto[]&gt;): void {
+    map.on(&#x27;mouseenter&#x27;, unclusteredId, (e) &#x3D;&gt; {
+      if (!map.getLayer(unclusteredId)) return;
+      map.getCanvas().style.cursor &#x3D; &#x27;pointer&#x27;;
+
+      const features &#x3D; map.queryRenderedFeatures(e.point, { layers: [unclusteredId] });
+      if (!features.length) return;
+
+      const pin &#x3D; allPins().find(p &#x3D;&gt; p.id &#x3D;&#x3D;&#x3D; features[0].properties?.[&#x27;id&#x27;]);
+      if (!pin) return;
+
+      this.pinHoverPreview.showHover(map, pin);
+    });
+
+    map.on(&#x27;mouseleave&#x27;, unclusteredId, () &#x3D;&gt; {
+      map.getCanvas().style.cursor &#x3D; &#x27;default&#x27;;
+      this.pinHoverPreview.clear();
+    });
+  }
+
+  /**
+   * Registers click handling for unclustered pin layers.
+   *
+   * Behavior:
+   * - Detects whether multiple pins share the same location
+   * - Opens a list preview for stacked pins
+   * - Opens a single pin preview for individual pins
+   *
+   * @param map Mapbox map instance
+   * @param unclusteredId Unclustered layer identifier
+   * @param allPins Signal containing all loaded pins
+   * @param selectedPin Signal storing the selected pin
+   * @param selectedPins Signal storing the selected pins list
+   */
+  private registerPinClick(
+    map: mapboxgl.Map,
+    unclusteredId: string,
+    allPins: WritableSignal&lt;PinDto[]&gt;,
+    selectedPin: WritableSignal&lt;PinDto | null&gt;,
+    selectedPins: WritableSignal&lt;PinDto[]&gt;
+  ): void {
+    map.on(&#x27;click&#x27;, unclusteredId, (e) &#x3D;&gt; {
+      if (!map.getLayer(unclusteredId)) return;
+
+      const features &#x3D; map.queryRenderedFeatures(e.point, { layers: [unclusteredId] });
+      if (!features.length) return;
+
+      const feature &#x3D; features[0];
+      const [lng, lat] &#x3D; (feature.geometry as GeoJSON.Point).coordinates;
+
+      const pinsAtLocation &#x3D; allPins().filter(pin &#x3D;&gt; {
+        this.sameCoordinates(pin!.geolocation!.latitude, pin!.geolocation!.longitude, lat, lng)
+      });
+
+      if (!pinsAtLocation) return;
+
+      this.pinHoverPreview.clear();
+
+      // If have stacked pins
+      if (pinsAtLocation.length &gt; 1) {
+        this.openPinsList(pinsAtLocation, selectedPins);
+        return;
+      }
+
+      const pinId &#x3D; feature.properties?.[&#x27;id&#x27;];
+      if (!pinId) return;
+
+      this.openSinglePin(pinId, selectedPin, map);
+    });
+  }
+
+  /**
+   * Compares two coordinate pairs using a small tolerance value
+   * to avoid precision issues.
+   *
+   * @param lat1 First latitude
+   * @param lng1 First longitude
+   * @param lat2 Second latitude
+   * @param lng2 Second longitude
+   * @returns True when both coordinate pairs are effectively equal
+   */
+  private sameCoordinates(lat1: number, lng1: number, lat2: number, lng2: number): boolean {
+    const EPSILON &#x3D; 0.000001; // Helps in precision
+    return Math.abs(lat1 - lat2) &lt; EPSILON &amp;&amp; Math.abs(lng1 - lng2) &lt; EPSILON;
+  }
+
+  /**
+   * Loads full details for a list of pins and opens the cluster preview popup.
+   *
+   * @param pins Pins to load and display
+   * @param selectedPins Signal storing the selected pins list
+   */
+  private openPinsList(pins: PinDto[], selectedPins: WritableSignal&lt;PinDto[]&gt;) {
+    const request: GetPinsReqDto &#x3D; {
+      ids: pins.map(pin &#x3D;&gt; ({ pinId: pin.id })),
+      dataRequest: {
+        includeGeolocation: true,
+        includeAuthor: true,
+        includeDetails: true,
+        includeStats: true,
+        includeUgc: true,
+        includeGroups: true,
+      }
+    };
+
+    this.pinService.getPins(request).subscribe({
+      next: (res) &#x3D;&gt; {
+        selectedPins.set(res.pins);
+        this.popupService.open(&#x27;cluster-preview&#x27;);
+      },
+      error: (err) &#x3D;&gt; {
+        console.log(err);
+      }
+    });
+  }
+
+  /**
+   * Loads full details for a single pin, opens the pin preview popup,
+   * and centers the map on the selected pin.
+   *
+   * @param pinId Identifier of the pin to load
+   * @param selectedPin Signal storing the selected pin
+   * @param map Mapbox map instance
+   */
+  private openSinglePin(
+    pinId: number,
+    selectedPin: WritableSignal&lt;PinDto | null&gt;,
+    map: mapboxgl.Map
+  ): void {
+    const request: GetPinsReqDto &#x3D; {
+      ids: [{ pinId }],
+      dataRequest: {
+        includeGeolocation: true,
+        includeAuthor: true,
+        includeDetails: true,
+        includeStats: true,
+        includeUgc: true,
+        includeGroups: true,
+      }
+    };
+
+    this.pinService.getPins(request).subscribe({
+      next: (res) &#x3D;&gt; {
+        const pin &#x3D; res.pins[0];
+        if (!pin) return;
+
+        selectedPin.set(pin);
+        this.popupService.open(&#x27;pin-preview&#x27;);
+
+        if (!pin.geolocation) return;
+
+        map.flyTo({
+          center: [pin.geolocation.longitude, pin.geolocation.latitude],
+          zoom: 13
+        });
+
+        console.log(res);
+      },
+      error: (err) &#x3D;&gt; console.error(err)
+    });
+  }
+
+  /**
+   * Registers pointer cursor behavior for cluster layers.
+   *
+   * @param map Mapbox map instance
+   * @param clusterId Cluster layer identifier
+   */
+  private registerClusterCursor(map: mapboxgl.Map, clusterId: string): void {
+    map.on(&#x27;mouseenter&#x27;, clusterId, () &#x3D;&gt; {
+      if (!map.getLayer(clusterId)) return;
+      map.getCanvas().style.cursor &#x3D; &#x27;pointer&#x27;;
+    });
+
+    map.on(&#x27;mouseleave&#x27;, clusterId, () &#x3D;&gt; {
+      map.getCanvas().style.cursor &#x3D; &#x27;default&#x27;;
+    });
+  }
+
+  /**
+   * Registers click handling on the map background.
+   *
+   * Behavior:
+   * - Ignores clicks while pick mode is active
+   * - Clears the selected pin when clicking outside pin layers
+   *
+   * @param map Mapbox map instance
+   * @param selectedPin Signal storing the selected pin
+   * @param isPickingOnMap Callback indicating whether pick mode is active
+   */
+  private registerMapClick(
+    map: mapboxgl.Map,
+    selectedPin: WritableSignal&lt;PinDto | null&gt;,
+    isPickingOnMap: () &#x3D;&gt; boolean
+  ): void {
+    map.on(&#x27;click&#x27;, (e) &#x3D;&gt; {
+      if (isPickingOnMap()) return;
+
+      const layers &#x3D; PIN_CONFIG
+        .flatMap(({ kind }) &#x3D;&gt; [&#x60;clusters-${kind}&#x60;, &#x60;unclustered-${kind}&#x60;])
+        .filter(id &#x3D;&gt; map.getLayer(id));
+
+      const hits &#x3D; map.queryRenderedFeatures(e.point, { layers });
+
+      if (hits.length &#x3D;&#x3D;&#x3D; 0) {
+        selectedPin.set(null);
+        this.pinHoverPreview.closePopup();
+      }
+    });
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'MapInteractionsService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

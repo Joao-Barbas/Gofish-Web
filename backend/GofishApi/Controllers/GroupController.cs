@@ -5,27 +5,42 @@ using GofishApi.Exceptions;
 using GofishApi.Models;
 using GofishApi.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text.RegularExpressions;
-using Group = GofishApi.Models.Group;
+using Microsoft.EntityFrameworkCore;
 
-namespace GofishApi.Controllers;
 
+/// <summary>
+/// Controlador responsável pela gestão de grupos.
+/// Disponibiliza operações de consulta, criação, eliminação, gestão de membros,
+/// convites e listagem de pins associados a grupos.
+/// </summary>
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class GroupController : ControllerBase
 {
+    /// <summary>Logger para registo de eventos e erros.</summary>
     private readonly ILogger<GroupController> _logger;
+
+    /// <summary>Contexto de acesso à base de dados da aplicação.</summary>
     private readonly AppDbContext _db;
+
+    /// <summary>Gestor de utilizadores do ASP.NET Identity.</summary>
     private readonly UserManager<AppUser> _userManager;
+
+    /// <summary>Serviço de armazenamento de imagens em blob storage.</summary>
     private readonly IBlobStorageService _blobStorage;
 
+    /// <summary>
+    /// Inicializa uma nova instância do controlador de grupos.
+    /// </summary>
+    /// <param name="logger">Logger da aplicação.</param>
+    /// <param name="db">Contexto da base de dados.</param>
+    /// <param name="userManager">Gestor de utilizadores.</param>
+    /// <param name="blobStorage">Serviço de armazenamento de imagens.</param>
     public GroupController(
         ILogger<GroupController> logger,
         AppDbContext db,
@@ -39,6 +54,13 @@ public class GroupController : ControllerBase
         _blobStorage = blobStorage;
     }
 
+    /// <summary>
+    /// Obtém os detalhes de um grupo pelo seu identificador.
+    /// Inclui informação base, contagem de membros, contagem de pins,
+    /// owner do grupo e estado de pertença do utilizador autenticado.
+    /// </summary>
+    /// <param name="id">Identificador do grupo.</param>
+    /// <returns>Dados detalhados do grupo.</returns>
     [Authorize]
     [HttpGet("GetGroup/{id}")]
     public async Task<IActionResult> GetGroup([FromRoute] int id)
@@ -100,6 +122,13 @@ public class GroupController : ControllerBase
         });
     }
 
+    /// <summary>
+    /// Cria um novo grupo.
+    /// Valida o utilizador autenticado, o tipo de imagem enviada,
+    /// a unicidade do nome e faz upload da imagem para blob storage.
+    /// </summary>
+    /// <param name="dto">Dados de criação do grupo, incluindo imagem.</param>
+    /// <returns>Identificador do grupo criado.</returns>
     [Authorize]
     [HttpPost("CreateGroup")]
     [RequestSizeLimit(5_000_000)]
@@ -164,6 +193,13 @@ public class GroupController : ControllerBase
         return Ok(new CreateGroupResDTO(newGroup.Id));
     }
 
+    /// <summary>
+    /// Elimina um grupo existente.
+    /// Apenas o owner pode executar esta operação.
+    /// Remove membros, convites e associações de pins, ajustando a visibilidade dos pins quando necessário.
+    /// </summary>
+    /// <param name="groupId">Identificador do grupo.</param>
+    /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
     [Authorize]
     [HttpDelete("DeleteGroup/{groupId}")]
     public async Task<IActionResult> DeleteGroup([FromRoute] int groupId)
@@ -236,6 +272,10 @@ public class GroupController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Obtém a lista de grupos aos quais o utilizador autenticado pertence.
+    /// </summary>
+    /// <returns>Lista de grupos do utilizador.</returns>
     [Authorize]
     [HttpGet("GetUserGroups")]
     public async Task<IActionResult> GetUserGroups()
@@ -267,6 +307,11 @@ public class GroupController : ControllerBase
         return Ok(new GetUserGroupsResDTO(data));
     }
 
+    /// <summary>
+    /// Pesquisa grupos por nome normalizado com suporte a paginação incremental.
+    /// </summary>
+    /// <param name="dto">Critérios de pesquisa e paginação.</param>
+    /// <returns>Lista paginada de grupos encontrados.</returns>
     [HttpGet("SearchGroups")]
     public async Task<IActionResult> SearchGroups([FromQuery] SearchGroupsReqDto dto)
     {
@@ -302,6 +347,12 @@ public class GroupController : ControllerBase
 
     #region ManageMembers
 
+    /// <summary>
+    /// Cria um convite para um utilizador entrar num grupo.
+    /// Apenas owner ou moderator podem convidar novos membros.
+    /// </summary>
+    /// <param name="dto">Dados do convite.</param>
+    /// <returns>Identificador do convite criado.</returns>
     [HttpPost("CreateGroupInvite")]
     public async Task<IActionResult> CreateGroupInvite([FromBody] SendGroupInviteReqDTO dto)
     {
@@ -356,6 +407,12 @@ public class GroupController : ControllerBase
         return Ok(new SendGroupInviteResDTO(invite.Id));
     }
 
+    /// <summary>
+    /// Aceita um convite pendente para entrar num grupo.
+    /// O utilizador autenticado tem de ser o destinatário do convite.
+    /// </summary>
+    /// <param name="inviteId">Identificador do convite.</param>
+    /// <returns>Resposta de sucesso.</returns>
     [HttpPatch("AcceptGroupInvite/{inviteId}")]
     public async Task<IActionResult> AcceptGroupInvite([FromRoute] int inviteId)
     {
@@ -385,7 +442,7 @@ public class GroupController : ControllerBase
         {
             GroupId = invite.GroupId,
             UserId = userId,
-            Role = GroupRole.Member // default member role
+            Role = GroupRole.Member
         };
 
         invite.State = FriendshipState.Accepted;
@@ -396,6 +453,13 @@ public class GroupController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Promove um membro para moderator/admin.
+    /// Apenas o owner pode executar esta operação.
+    /// </summary>
+    /// <param name="groupId">Identificador do grupo.</param>
+    /// <param name="userId">Identificador do utilizador a promover.</param>
+    /// <returns>Resultado da atualização de role.</returns>
     [HttpPatch("PromoteMemberToAdmin/{groupId}/{userId}")]
     public async Task<IActionResult> PromoteMemberToAdmin([FromRoute] int groupId, [FromRoute] string userId)
     {
@@ -407,7 +471,7 @@ public class GroupController : ControllerBase
         var requesterMembership = await _db.GroupUsers
             .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == requesterUserId);
 
-        if(requesterMembership is null || requesterMembership.Role != GroupRole.Owner) return Forbid();
+        if (requesterMembership is null || requesterMembership.Role != GroupRole.Owner) return Forbid();
 
         var targetMembership = await _db.GroupUsers
             .FirstOrDefaultAsync(gu => gu.GroupId == groupId && gu.UserId == userId);
@@ -432,6 +496,13 @@ public class GroupController : ControllerBase
         ));
     }
 
+    /// <summary>
+    /// Transfere a ownership do grupo para outro membro.
+    /// O owner atual passa a moderator.
+    /// </summary>
+    /// <param name="groupId">Identificador do grupo.</param>
+    /// <param name="userId">Identificador do novo owner.</param>
+    /// <returns>Resultado da atualização de role.</returns>
     [HttpPatch("PromoteMemberToOwner/{groupId}/{userId}")]
     public async Task<IActionResult> PromoteMemberToOwner([FromRoute] int groupId, [FromRoute] string userId)
     {
@@ -474,6 +545,13 @@ public class GroupController : ControllerBase
         ));
     }
 
+    /// <summary>
+    /// Rebaixa um moderator/admin para member.
+    /// Apenas o owner pode executar esta operação.
+    /// </summary>
+    /// <param name="groupId">Identificador do grupo.</param>
+    /// <param name="userId">Identificador do utilizador a despromover.</param>
+    /// <returns>Resultado da atualização de role.</returns>
     [HttpPatch("DemoteAdminToMember/{groupId}/{userId}")]
     public async Task<IActionResult> DemoteAdminToMember([FromRoute] int groupId, [FromRoute] string userId)
     {
@@ -518,6 +596,12 @@ public class GroupController : ControllerBase
         ));
     }
 
+    /// <summary>
+    /// Elimina um convite pendente de grupo.
+    /// Apenas o emissor ou o destinatário o pode remover.
+    /// </summary>
+    /// <param name="inviteId">Identificador do convite.</param>
+    /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
     [HttpDelete("DeleteGroupInvite/{inviteId}")]
     public async Task<IActionResult> DeleteGroupInvite([FromRoute] int inviteId)
     {
@@ -525,11 +609,9 @@ public class GroupController : ControllerBase
         var invite = await _db.GroupInvites.FindAsync(inviteId);
         if (invite is null) return NotFound();
 
-        // Only receiver or requester can delete
         var isParticipant = invite.ReceiverUserId == userId || invite.RequesterUserId == userId;
         if (!isParticipant) return NotFound();
 
-        // Can only delete pending invites
         if (invite.State != FriendshipState.Pending)
         {
             throw new AppValidationException("State", "Only pending invites can be deleted.");
@@ -540,12 +622,25 @@ public class GroupController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Ignora um convite de grupo.
+    /// Internamente reutiliza a lógica de eliminação de convite.
+    /// </summary>
+    /// <param name="inviteId">Identificador do convite.</param>
+    /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
     [HttpDelete("IgnoreGroupInvite/{inviteId}")]
     public async Task<IActionResult> IgnoreGroupInvite([FromRoute] int inviteId)
     {
         return await DeleteGroupInvite(inviteId);
     }
 
+    /// <summary>
+    /// Remove um membro de um grupo.
+    /// Owner pode remover moderators e members; moderator apenas members.
+    /// </summary>
+    /// <param name="groupId">Identificador do grupo.</param>
+    /// <param name="userId">Identificador do membro a remover.</param>
+    /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
     [HttpDelete("RemoveMember/{groupId}/{userId}")]
     public async Task<IActionResult> RemoveMember([FromRoute] int groupId, [FromRoute] string userId)
     {
@@ -588,6 +683,12 @@ public class GroupController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Permite ao utilizador autenticado sair de um grupo.
+    /// O owner não pode sair sem primeiro transferir a ownership ou eliminar o grupo.
+    /// </summary>
+    /// <param name="groupId">Identificador do grupo.</param>
+    /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
     [HttpDelete("LeaveGroup/{groupId}")]
     public async Task<IActionResult> LeaveGroup([FromRoute] int groupId)
     {
@@ -611,8 +712,15 @@ public class GroupController : ControllerBase
     }
 
     #endregion
+
     #region Members
 
+    /// <summary>
+    /// Obtém a lista paginada de membros de um grupo.
+    /// Permite filtrar por role e paginação temporal.
+    /// </summary>
+    /// <param name="dto">Critérios de pesquisa, filtro e paginação.</param>
+    /// <returns>Lista paginada de membros do grupo.</returns>
     [HttpGet("GetGroupMembers")]
     public async Task<IActionResult> GetGroupMembers([FromQuery] GetGroupMembersReqDto dto)
     {
@@ -650,15 +758,22 @@ public class GroupController : ControllerBase
         return Ok(new GetGroupMembersResDto(data, hasMore, lastTime));
     }
 
-    #endregion // Members
+    #endregion
+
     #region Pins
 
+    /// <summary>
+    /// Obtém a lista paginada de pins associados a um grupo.
+    /// Apenas membros do grupo podem consultar estes pins.
+    /// </summary>
+    /// <param name="dto">Critérios de filtro e paginação.</param>
+    /// <returns>Lista paginada de pins do grupo.</returns>
     [HttpGet("GetGroupPins")]
     public async Task<IActionResult> GetGroupPins([FromQuery] GetGroupPinsReqDto dto)
     {
         var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
         var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
-        var isMember = await _db.GroupUsers.AnyAsync(gu => gu.GroupId == dto.GroupId &&gu.UserId == userId);
+        var isMember = await _db.GroupUsers.AnyAsync(gu => gu.GroupId == dto.GroupId && gu.UserId == userId);
 
         if (!isMember)
         {
@@ -680,8 +795,8 @@ public class GroupController : ControllerBase
         query = query.Include(p => p.AppUser)
             .ThenInclude(u => u.UserProfile);
         query = query.Include(p => p.Comments)
-            .ThenInclude(c => c.AppUser)      // TODO: Are these necessary?
-            .ThenInclude(u => u.UserProfile); // TODO: Are these necessary?
+            .ThenInclude(c => c.AppUser)
+            .ThenInclude(u => u.UserProfile);
         query = query.Include(p => p.Groups);
 
         query = query
@@ -707,5 +822,5 @@ public class GroupController : ControllerBase
         return Ok(new GetGroupPinsResDto(paginatedPins, hasMore, lastTimestamp));
     }
 
-    #endregion // Posts
-} 
+    #endregion
+}

@@ -1,0 +1,1 @@
+search_result['157']=["topic_000000000000006A.html","UserAccountController.DownloadPersonalData Method","/// Exporta os dados pessoais do utilizador autenticado em formato JSON.\r\n        /// Inclui propriedades marcadas com PersonalDataAttribute,\r\n        /// logins externos e chave de autenticador.\r\n   ..."];

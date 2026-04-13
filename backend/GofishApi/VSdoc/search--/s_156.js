@@ -1,0 +1,1 @@
+search_result['156']=["topic_0000000000000069.html","UserAccountController.DeletePersonalData Method","/// Elimina os dados pessoais do utilizador.\r\n        /// Nesta implementação reutiliza diretamente a lógica de eliminação de conta.\r\n        ///"];

@@ -1,0 +1,1 @@
+search_result['126']=["topic_0000000000000055.html","ReportController.ResolvePinReport Method","/// Resolve um report de pin removendo o pin associado.\r\n    /// Apenas administradores podem executar esta operação.\r\n    ///"];

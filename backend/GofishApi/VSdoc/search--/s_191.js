@@ -1,0 +1,1 @@
+search_result['191']=["topic_0000000000000082.html","UserProfileController.GetUserProfileSettings Method","/// Obtém as definições editáveis do perfil do utilizador autenticado.\r\n    ///"];

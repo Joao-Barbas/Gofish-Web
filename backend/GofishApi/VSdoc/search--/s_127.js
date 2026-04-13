@@ -1,0 +1,1 @@
+search_result['127']=["topic_0000000000000056.html","StatsController Class","/// Controlador responsável pela disponibilização de métricas e estatísticas\r\n/// sobre pins, utilizadores, reports e pedidos à API.\r\n///"];

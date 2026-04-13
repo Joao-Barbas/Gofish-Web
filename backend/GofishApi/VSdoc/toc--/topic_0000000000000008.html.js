@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"GofishApi Reference","topic_000000000000026E.html"],['69',"GofishApi.Builders Namespace","topic_0000000000000000.html"],['76',"IAppUserBuilder Interface","topic_0000000000000006.html"],['77',"Methods","topic_0000000000000006_methods--.html"],['80',"FromExternalLogin Method","topic_0000000000000008.html"]];

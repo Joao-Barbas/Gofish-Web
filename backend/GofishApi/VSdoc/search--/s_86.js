@@ -1,0 +1,1 @@
+search_result['86']=["topic_0000000000000037.html","PinController.DeleteVote Method","/// Remove o voto do utilizador autenticado de um pin.\r\n    ///"];

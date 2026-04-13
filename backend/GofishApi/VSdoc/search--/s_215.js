@@ -1,0 +1,1 @@
+search_result['215']=["topic_0000000000000095.html","UserSecurityController.EnableEmailTwoFactor Method","/// Ativa autenticação de dois fatores por email.\r\n    /// Requer que o email do utilizador esteja previamente verificado.\r\n    ///"];

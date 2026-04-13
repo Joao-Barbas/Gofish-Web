@@ -1,0 +1,1 @@
+search_result['45']=["topic_0000000000000018.html","EnumsController.WarningKind Method","/// Obtém os tipos de avisos (warnings).\r\n    ///"];

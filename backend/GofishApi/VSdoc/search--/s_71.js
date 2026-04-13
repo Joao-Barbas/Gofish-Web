@@ -1,0 +1,1 @@
+search_result['71']=["topic_000000000000002D.html","GroupController.LeaveGroup Method","/// Permite ao utilizador autenticado sair de um grupo.\r\n    /// O owner não pode sair sem primeiro transferir a ownership ou eliminar o grupo.\r\n    ///"];

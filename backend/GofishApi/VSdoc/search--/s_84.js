@@ -1,0 +1,1 @@
+search_result['84']=["topic_0000000000000035.html","PinController.DeletePin Method","/// Remove um pin existente.\r\n    /// Apenas o autor do pin ou um administrador o pode eliminar.\r\n    ///"];

@@ -1,0 +1,1 @@
+search_result['141']=["topic_000000000000005F.html","StatsController.GetNewUsersToday Method","/// Obtém o número de novos utilizadores registados no dia atual em UTC.\r\n    ///"];

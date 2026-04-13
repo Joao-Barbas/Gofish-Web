@@ -1,0 +1,1 @@
+search_result['516']=["topic_00000000000001A5.html","Pin.ExpiresAt Property","/// Data de expiração do pin.\r\n    /// Após esta data, o pin pode deixar de ser considerado válido ou visível.\r\n    ///"];

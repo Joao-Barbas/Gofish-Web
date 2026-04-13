@@ -1,0 +1,1 @@
+search_result['169']=["topic_0000000000000071.html","UserController.SearchUsers Method","Pesquisa utilizadores por username normalizado com suporte a paginação incremental.\r\nExclui o utilizador autenticado dos resultados."];

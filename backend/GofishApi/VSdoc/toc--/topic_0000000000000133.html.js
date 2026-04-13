@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"GofishApi Reference","topic_000000000000026E.html"],['231',"GofishApi.Extensions Namespace","topic_0000000000000131.html"],['232',"EnumExtensions Class","topic_0000000000000132.html"],['233',"Methods","topic_0000000000000132_methods--.html"],['235',"HasDisplayName Method","topic_0000000000000133.html"]];

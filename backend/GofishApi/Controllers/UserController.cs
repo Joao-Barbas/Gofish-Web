@@ -20,18 +20,42 @@ using System.Security.Claims;
 
 namespace GofishApi.Controllers;
 
+/// <summary>
+/// Controlador responsável pela gestão de utilizadores, amizades,
+/// leaderboards, grupos associados ao utilizador e convites de grupo.
+/// </summary>
 [Authorize]
 [Route("api/[controller]/[action]")]
 [ApiController]
 public class UserController : ControllerBase
 {
+    /// <summary>Logger para registo de eventos e erros.</summary>
     private readonly ILogger<UserController> _logger;
+
+    /// <summary>Gestor de utilizadores do ASP.NET Identity.</summary>
     private readonly UserManager<AppUser> _userManager;
+
+    /// <summary>Contexto de acesso à base de dados da aplicação.</summary>
     private readonly AppDbContext _db;
+
+    /// <summary>Serviço responsável pelas regras de gamificação.</summary>
     private readonly IGamificationService _gamification;
+
+    /// <summary>Serviço responsável pelas regras de visibilidade e relações entre utilizadores.</summary>
     private readonly IVisibilityService _visibility;
+
+    /// <summary>Opções de configuração da gamificação.</summary>
     private readonly IOptions<GamificationOptions> _gamificationOptions;
 
+    /// <summary>
+    /// Inicializa uma nova instância do controlador de utilizadores.
+    /// </summary>
+    /// <param name="logger">Logger da aplicação.</param>
+    /// <param name="userManager">Gestor de utilizadores.</param>
+    /// <param name="db">Contexto da base de dados.</param>
+    /// <param name="gamification">Serviço de gamificação.</param>
+    /// <param name="visibility">Serviço de visibilidade.</param>
+    /// <param name="gamificationOptions">Opções de gamificação.</param>
     public UserController(
         ILogger<UserController> logger,
         UserManager<AppUser> userManager,
@@ -51,6 +75,12 @@ public class UserController : ControllerBase
 
     #region User
 
+    /// <summary>
+    /// Obtém os dados públicos de um utilizador, incluindo o estado de amizade
+    /// entre o utilizador autenticado e o utilizador pedido.
+    /// </summary>
+    /// <param name="id">Identificador do utilizador.</param>
+    /// <returns>Dados do utilizador e eventual estado de amizade.</returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUser(string id)
     {
@@ -69,6 +99,11 @@ public class UserController : ControllerBase
         return Ok(GetUserResDto.FromEntity(thisUser, friendship?.State));
     }
 
+    /// <summary>
+    /// Obtém as definições e dados configuráveis do utilizador autenticado.
+    /// O email e o número de telefone são devolvidos mascarados.
+    /// </summary>
+    /// <returns>Definições do utilizador autenticado.</returns>
     [HttpGet]
     public async Task<IActionResult> GetUserSettings()
     {
@@ -89,6 +124,13 @@ public class UserController : ControllerBase
         return Ok(data);
     }
 
+    /// <summary>
+    /// Atualiza integralmente os dados editáveis do utilizador autenticado.
+    /// Alterações ao username podem implicar custo em pontos de gamificação.
+    /// A alteração de email não é permitida por este endpoint.
+    /// </summary>
+    /// <param name="dto">Novos dados do utilizador.</param>
+    /// <returns>Resposta de sucesso.</returns>
     [HttpPut]
     public async Task<IActionResult> PutUser([FromBody] PutUserReqDto dto)
     {
@@ -121,6 +163,13 @@ public class UserController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Atualiza parcialmente os dados editáveis do utilizador autenticado.
+    /// Alterações ao username podem implicar custo em pontos de gamificação.
+    /// A alteração de email não é permitida por este endpoint.
+    /// </summary>
+    /// <param name="dto">Dados parciais do utilizador a atualizar.</param>
+    /// <returns>Resposta de sucesso.</returns>
     [HttpPatch]
     public async Task<IActionResult> PatchUser([FromBody] PatchUserReqDto dto)
     {
@@ -156,6 +205,12 @@ public class UserController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Pesquisa utilizadores por username normalizado com suporte a paginação incremental.
+    /// Exclui o utilizador autenticado dos resultados.
+    /// </summary>
+    /// <param name="dto">Critérios de pesquisa e paginação.</param>
+    /// <returns>Lista paginada de utilizadores encontrados.</returns>
     [HttpGet]
     public async Task<IActionResult> SearchUsers([FromQuery] SearchUsersReqDto dto)
     {
@@ -209,20 +264,11 @@ public class UserController : ControllerBase
         return Ok(new SearchUsersResDto(data, hasMore, lastUsername));
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /// <summary>
+    /// Obtém o leaderboard global dos 100 utilizadores com mais catch points,
+    /// incluindo a posição do utilizador autenticado mesmo que esteja fora do top 100.
+    /// </summary>
+    /// <returns>Entradas do leaderboard global e posição do utilizador atual.</returns>
     [HttpGet]
     public async Task<IActionResult> GetGlobalLeaderboard()
     {
@@ -244,15 +290,15 @@ public class UserController : ControllerBase
 
         var entries = top100.Select((u, i) => new LeaderboardUserDto
         {
-            Position         = i + 1,
-            UserId           = u.UserId,
-            UserName         = u.UserName ?? "",
-            DisplayName      = u.DisplayName,
-            AvatarUrl        = u.AvatarUrl,
-            CatchPoints      = u.CatchPoints,
+            Position = i + 1,
+            UserId = u.UserId,
+            UserName = u.UserName ?? "",
+            DisplayName = u.DisplayName,
+            AvatarUrl = u.AvatarUrl,
+            CatchPoints = u.CatchPoints,
             CatchPointsDelta = u.CatchPoints - u.CatchPointsLastMonth,
-            WeeklyStreak     = u.WeeklyStreak,
-            Rank             = GamificationService.GetRank(u.CatchPoints),
+            WeeklyStreak = u.WeeklyStreak,
+            Rank = GamificationService.GetRank(u.CatchPoints),
         })
         .ToList();
 
@@ -260,9 +306,6 @@ public class UserController : ControllerBase
 
         if (currentUser is null)
         {
-            // User isn't in top 100.
-            // Fetch their position separately
-
             var userProfile = await _db.UserProfiles
             .Where(up => up.UserId == userId)
             .Select(up => new
@@ -284,21 +327,26 @@ public class UserController : ControllerBase
             var position = await _db.UserProfiles.CountAsync(up => up.CatchPoints > userProfile.CatchPoints) + 1;
             currentUser = new LeaderboardUserDto
             {
-                Position         = position,
-                UserId           = userId,
-                UserName         = userProfile.UserName ?? "",
-                DisplayName      = userProfile.DisplayName,
-                AvatarUrl        = userProfile.AvatarUrl,
-                CatchPoints      = userProfile.CatchPoints,
+                Position = position,
+                UserId = userId,
+                UserName = userProfile.UserName ?? "",
+                DisplayName = userProfile.DisplayName,
+                AvatarUrl = userProfile.AvatarUrl,
+                CatchPoints = userProfile.CatchPoints,
                 CatchPointsDelta = userProfile.CatchPoints - userProfile.CatchPointsLastMonth,
-                WeeklyStreak     = userProfile.WeeklyStreak,
-                Rank             = GamificationService.GetRank(userProfile.CatchPoints),
+                WeeklyStreak = userProfile.WeeklyStreak,
+                Rank = GamificationService.GetRank(userProfile.CatchPoints),
             };
         }
 
         return Ok(new LeaderboardResDto(entries, currentUser));
     }
 
+    /// <summary>
+    /// Obtém o leaderboard entre amigos do utilizador autenticado,
+    /// incluindo o próprio utilizador.
+    /// </summary>
+    /// <returns>Entradas do leaderboard de amigos.</returns>
     [HttpGet]
     public async Task<IActionResult> GetFriendsLeaderboard()
     {
@@ -307,7 +355,7 @@ public class UserController : ControllerBase
         List<string> friendIds =
         [
             .. await _visibility.GetFriendIds(userId).ToListAsync(),
-            userId, // Include self
+            userId,
         ];
 
         var top25 = await _db.UserProfiles
@@ -328,15 +376,15 @@ public class UserController : ControllerBase
 
         var entries = top25.Select((u, i) => new LeaderboardUserDto
         {
-            Position         = i + 1,
-            UserId           = u.UserId,
-            UserName         = u.UserName ?? "",
-            DisplayName      = u.DisplayName,
-            AvatarUrl        = u.AvatarUrl,
-            CatchPoints      = u.CatchPoints,
+            Position = i + 1,
+            UserId = u.UserId,
+            UserName = u.UserName ?? "",
+            DisplayName = u.DisplayName,
+            AvatarUrl = u.AvatarUrl,
+            CatchPoints = u.CatchPoints,
             CatchPointsDelta = u.CatchPoints - u.CatchPointsLastMonth,
-            WeeklyStreak     = u.WeeklyStreak,
-            Rank             = GamificationService.GetRank(u.CatchPoints)
+            WeeklyStreak = u.WeeklyStreak,
+            Rank = GamificationService.GetRank(u.CatchPoints)
         })
         .ToList();
 
@@ -345,27 +393,11 @@ public class UserController : ControllerBase
         return Ok(new LeaderboardResDto(entries, currentUser));
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Helpers
-
+    /// <summary>
+    /// Mascara parcialmente um endereço de email para apresentação segura.
+    /// </summary>
+    /// <param name="email">Email original.</param>
+    /// <returns>Email mascarado.</returns>
     private static string? MaskEmail(string? email)
     {
         if (email is null) return null;
@@ -376,6 +408,11 @@ public class UserController : ControllerBase
         return $"{masked}@{parts[1]}";
     }
 
+    /// <summary>
+    /// Mascara parcialmente um número de telefone para apresentação segura.
+    /// </summary>
+    /// <param name="phone">Número de telefone original.</param>
+    /// <returns>Número de telefone mascarado.</returns>
     private static string? MaskPhone(string? phone)
     {
         if (phone is null) return null;
@@ -384,8 +421,15 @@ public class UserController : ControllerBase
     }
 
     #endregion // User
+
     #region Friendship
 
+    /// <summary>
+    /// Obtém a lista paginada de amizades de um utilizador.
+    /// Se o utilizador alvo não for o autenticado, apenas permite consultar amizades aceites.
+    /// </summary>
+    /// <param name="dto">Critérios de filtro e paginação.</param>
+    /// <returns>Lista paginada de amizades.</returns>
     [HttpGet]
     public async Task<IActionResult> GetFriendships([FromQuery] GetFriendshipsReqDto dto)
     {
@@ -418,8 +462,6 @@ public class UserController : ControllerBase
         .Take(maxResults + 1)
         .ToListAsync();
 
-        // Plama noobalhao
-
         var hasMore = results.Count > maxResults;
         var page = results.Take(maxResults).ToList();
         var data = page.Select(FriendshipDto.FromEntity);
@@ -428,6 +470,12 @@ public class UserController : ControllerBase
         return Ok(new GetFriendshipsResDto(data, hasMore, lastTime));
     }
 
+    /// <summary>
+    /// Obtém uma amizade específica pelo seu identificador.
+    /// Utilizadores não participantes só podem vê-la se estiver aceite.
+    /// </summary>
+    /// <param name="id">Identificador da amizade.</param>
+    /// <returns>Dados da amizade.</returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetFriendship(int id)
     {
@@ -443,6 +491,12 @@ public class UserController : ControllerBase
         return Ok(FriendshipDto.FromEntity(friendship));
     }
 
+    /// <summary>
+    /// Obtém a amizade entre dois utilizadores.
+    /// Utilizadores não participantes só podem vê-la se estiver aceite.
+    /// </summary>
+    /// <param name="dto">Identificadores dos dois utilizadores.</param>
+    /// <returns>Dados da amizade entre os utilizadores.</returns>
     [HttpGet]
     public async Task<IActionResult> GetFriendshipBetween([FromQuery] GetFriendshipBetweenReqDto dto)
     {
@@ -461,6 +515,11 @@ public class UserController : ControllerBase
         return Ok(FriendshipDto.FromEntity(friendship));
     }
 
+    /// <summary>
+    /// Envia um pedido de amizade para outro utilizador.
+    /// </summary>
+    /// <param name="dto">Dados do pedido de amizade.</param>
+    /// <returns>Amizade criada em estado pendente.</returns>
     [HttpPost]
     public async Task<IActionResult> RequestFriendship([FromBody] RequestFriendshipReqDto dto)
     {
@@ -482,9 +541,9 @@ public class UserController : ControllerBase
         var friendship = new Friendship
         {
             RequesterUserId = userId,
-            ReceiverUserId  = dto.ReceiverId,
-            State           = FriendshipState.Pending,
-            CreatedAt       = DateTime.UtcNow
+            ReceiverUserId = dto.ReceiverId,
+            State = FriendshipState.Pending,
+            CreatedAt = DateTime.UtcNow
         };
 
         _db.Friendships.Add(friendship);
@@ -499,6 +558,11 @@ public class UserController : ControllerBase
         return CreatedAtAction(nameof(GetFriendship), new { id = friendship.Id }, res);
     }
 
+    /// <summary>
+    /// Aceita um pedido de amizade pendente recebido pelo utilizador autenticado.
+    /// </summary>
+    /// <param name="id">Identificador da amizade.</param>
+    /// <returns>Resposta de sucesso.</returns>
     [HttpPatch("{id}")]
     public async Task<IActionResult> AcceptFriendship(int id)
     {
@@ -520,6 +584,12 @@ public class UserController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Remove uma amizade ou pedido de amizade.
+    /// Apenas os participantes o podem fazer.
+    /// </summary>
+    /// <param name="id">Identificador da amizade.</param>
+    /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteFriendship(int id)
     {
@@ -527,7 +597,6 @@ public class UserController : ControllerBase
         var friendship = await _db.Friendships.FindAsync(id);
         if (friendship is null) return NotFound();
 
-        // Only participants can delete
         var isParticipant = friendship.RequesterUserId == userId || friendship.ReceiverUserId == userId;
         if (!isParticipant) return NotFound();
 
@@ -536,31 +605,46 @@ public class UserController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Ignora um pedido de amizade reutilizando a lógica de remoção da amizade.
+    /// </summary>
+    /// <param name="id">Identificador da amizade.</param>
+    /// <returns>Resposta sem conteúdo em caso de sucesso.</returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> IgnoreFriendship(int id)
     {
         return await DeleteFriendship(id);
     }
 
-    // Helpers
-
+    /// <summary>
+    /// Determina se o utilizador autenticado é participante numa amizade
+    /// ou se a amizade é pública por já estar aceite.
+    /// </summary>
+    /// <param name="authUserId">Identificador do utilizador autenticado.</param>
+    /// <param name="friendship">Entidade amizade.</param>
+    /// <returns><c>true</c> se a amizade for visível; caso contrário, <c>false</c>.</returns>
     private bool IsParticipant(string authUserId, Friendship friendship)
     {
-        // Only participants can view pending/refused friendships
-        // Return 404 instead of 403 to not reveal existence to unwanted users
         var isParticipant = friendship.RequesterUserId == authUserId || friendship.ReceiverUserId == authUserId;
         if (!isParticipant && friendship.State != FriendshipState.Accepted) return false;
         return true;
     }
 
     #endregion // Friendship
+
     #region Groups
 
+    /// <summary>
+    /// Obtém a lista paginada de grupos de um utilizador.
+    /// Se não for indicado utilizador, usa o utilizador autenticado.
+    /// </summary>
+    /// <param name="dto">Critérios de paginação e utilizador alvo.</param>
+    /// <returns>Lista paginada de grupos do utilizador.</returns>
     [HttpGet]
     public async Task<IActionResult> GetUserGroups([FromQuery] GetUserGroupReqDto dto)
     {
-        var maxResults   = Math.Clamp(dto.MaxResults, 1, 100);
-        var authUserId   = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+        var maxResults = Math.Clamp(dto.MaxResults, 1, 100);
+        var authUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
         var targetUserId = dto.UserId ?? authUserId;
 
         var userExists = await _db.Users.AnyAsync(u => u.Id == targetUserId);
@@ -583,14 +667,14 @@ public class UserController : ControllerBase
         .Take(maxResults + 1)
         .Select(g => new UserGroupDto
         {
-            Id          = g.Id,
-            Name        = g.Name,
+            Id = g.Id,
+            Name = g.Name,
             Description = g.Description,
-            AvatarUrl   = g.AvatarUrl,
-            CreatedAt   = g.CreatedAt,
-            Role        = g.GroupUsers.First(gu => gu.UserId == targetUserId).Role,
+            AvatarUrl = g.AvatarUrl,
+            CreatedAt = g.CreatedAt,
+            Role = g.GroupUsers.First(gu => gu.UserId == targetUserId).Role,
             MemberCount = g.GroupUsers.Count,
-            PinCount    = g.Pins.Count
+            PinCount = g.Pins.Count
         })
         .ToListAsync();
 
@@ -601,6 +685,12 @@ public class UserController : ControllerBase
         return Ok(new GetUserGroupResDto(page, hasMore, lastTime));
     }
 
+    /// <summary>
+    /// Obtém a lista de grupos em que o utilizador autenticado pode convidar
+    /// o utilizador alvo, considerando permissões, pertença e convites pendentes.
+    /// </summary>
+    /// <param name="dto">Utilizador alvo e critérios de paginação.</param>
+    /// <returns>Lista paginada de grupos convidáveis.</returns>
     [HttpGet]
     public async Task<IActionResult> GetInvitableGroups([FromQuery] GetInvitableGroupsReqDto dto)
     {
@@ -621,12 +711,9 @@ public class UserController : ControllerBase
         }
 
         var query = _db.Groups
-        // B is owner or moderator, aka can invite
         .Where(g => g.GroupUsers.Any(gu => gu.UserId == authUserId
             && (gu.Role == GroupRole.Owner || gu.Role == GroupRole.Moderator)))
-        // A is not already a member
         .Where(g => !g.GroupUsers.Any(gu => gu.UserId == dto.TargetUserId))
-        // A doesn't have a pending invite
         .Where(g => !_db.GroupInvites.Any(gi => gi.GroupId == g.Id
             && gi.ReceiverUserId == dto.TargetUserId
             && gi.State == FriendshipState.Pending));
@@ -660,6 +747,11 @@ public class UserController : ControllerBase
         return Ok(new GetInvitableGroupsResDto(page, hasMore, lastTime));
     }
 
+    /// <summary>
+    /// Obtém a lista paginada de convites de grupo recebidos pelo utilizador autenticado.
+    /// </summary>
+    /// <param name="dto">Critérios de filtro por estado e paginação.</param>
+    /// <returns>Lista paginada de convites de grupo.</returns>
     [HttpGet]
     public async Task<IActionResult> GetGroupInvites([FromQuery] GetGroupInvitesReqDto dto)
     {
@@ -683,11 +775,9 @@ public class UserController : ControllerBase
         .Take(maxResults + 1)
         .Select(gi => new
         {
-            // Invite data
             gi.Id,
             gi.State,
             gi.CreatedAt,
-            // Requester
             Requester = new
             {
                 gi.Requester.Id,
@@ -699,7 +789,6 @@ public class UserController : ControllerBase
                 .Select(gu => new { gu.Role, gu.JoinedAt })
                 .FirstOrDefault()
             },
-            // Group
             Group = new
             {
                 gi.Group.Id,
@@ -730,11 +819,9 @@ public class UserController : ControllerBase
 
         var data = page.Select(i => new GroupInviteDto
         {
-                        // Invite data
             Id = i.Id,
             InviteState = i.State,
             CreatedAt = i.CreatedAt,
-            // Requester
             Requester = new GroupMemberDto(
                 i.Requester.Id,
                 i.Requester.UserName ?? "",
@@ -743,7 +830,6 @@ public class UserController : ControllerBase
                 i.Requester.Membership?.Role ?? GroupRole.Member,
                 i.Requester.Membership?.JoinedAt ?? default
             ),
-            // Group
             Group = new GroupDto
             {
                 Id = i.Group.Id,
@@ -753,7 +839,7 @@ public class UserController : ControllerBase
                 CreatedAt = i.Group.CreatedAt,
                 MemberCount = i.Group.MemberCount,
                 PinCount = i.Group.PinCount,
-                IsCurrentUserMember = false, 
+                IsCurrentUserMember = false,
                 Owner = i.Group.Owner is null ? null! : new GroupMemberDto(
                     i.Group.Owner.Id,
                     i.Group.Owner.UserName ?? "",

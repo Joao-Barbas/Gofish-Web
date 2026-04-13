@@ -1,0 +1,1 @@
+search_result['204']=["topic_000000000000008A.html","UserSecurityController.ChangePassword Method","/// Altera a password do utilizador autenticado.\r\n    /// Se a autenticação de dois fatores estiver ativa, exige também um código 2FA válido.\r\n    ///"];

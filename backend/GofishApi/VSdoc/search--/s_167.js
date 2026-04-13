@@ -1,0 +1,1 @@
+search_result['167']=["topic_000000000000006F.html","UserController.PutUser Method","Atualiza integralmente os dados editáveis do utilizador autenticado.\r\nAlterações ao username podem implicar custo em pontos de gamificação.\r\nA alteração de email não é permitida por este endpoint."];

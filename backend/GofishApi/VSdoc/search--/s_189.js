@@ -1,0 +1,1 @@
+search_result['189']=["topic_0000000000000080.html","UserProfileController.GetUserProfile Method","/// Obtém o perfil público de um utilizador, incluindo estatísticas agregadas\r\n    /// e eventual relação de amizade com o utilizador autenticado.\r\n    ///"];

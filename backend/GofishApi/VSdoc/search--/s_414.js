@@ -1,0 +1,1 @@
+search_result['414']=["topic_0000000000000167.html","Comment Class","/// Representa um comentário associado a um pin.\r\n/// Permite aos utilizadores interagir com conteúdo publicado.\r\n///"];

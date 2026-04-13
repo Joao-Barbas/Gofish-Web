@@ -1,0 +1,2250 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  PinDetailPanelComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Displays detailed information for a selected pin and exposes
+actions such as voting, reporting, deletion, navigation, and preview.</p>
+<p>Responsibilities:</p>
+<ul>
+<li>Render detailed pin information in the UI</li>
+<li>Track local vote and score state</li>
+<li>Allow the user to close the panel or preview coordinates</li>
+<li>Navigate to related flows such as delete, report, or forum post view</li>
+</ul>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-pin-detail-panel</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/common/CommonModule" target="_blank" >CommonModule</a></code>
+                            <code>TimeAgoPipe</code>
+                                <code><a href="../components/EnumComponent.html" target="_self" >EnumComponent</a></code>
+                                <code><a href="https://angular.io/api/router/RouterLink" target="_blank" >RouterLink</a></code>
+                                <code><a href="../components/UserTitleComponent.html" target="_self" >UserTitleComponent</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./pin-detail-panel.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./pin-detail-panel.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#authService" >authService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#avatarService" >avatarService</a>
+                            </li>
+                            <li>
+                                <a href="#currentVote" >currentVote</a>
+                            </li>
+                            <li>
+                                <a href="#isAdmin" >isAdmin</a>
+                            </li>
+                            <li>
+                                <a href="#isVoting" >isVoting</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#Path" >Path</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#pinKind" >pinKind</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#pinService" >pinService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#popupController" >popupController</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                <a href="#score" >score</a>
+                            </li>
+                            <li>
+                                <a href="#userName" >userName</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#VoteKind" >VoteKind</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#closePanel" >closePanel</a>
+                            </li>
+                            <li>
+                                <a href="#deletePin" >deletePin</a>
+                            </li>
+                            <li>
+                                <a href="#goToPost" >goToPost</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onPreviewClick" >onPreviewClick</a>
+                            </li>
+                            <li>
+                                <a href="#openGoogleMaps" >openGoogleMaps</a>
+                            </li>
+                            <li>
+                                <a href="#report" >report</a>
+                            </li>
+                            <li>
+                                <a href="#vote" >vote</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#pinData" >pinData</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cancel" >cancel</a>
+                            </li>
+                            <li>
+                                <a href="#coords" >coords</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="pinData"></a>
+                        <b>pinData</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>PinDto | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:58</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Pin data displayed in the detail panel.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="cancel"></a>
+                        <b>cancel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:67</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Event emitted when the panel is closed.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="coords"></a>
+                        <b>coords</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:70</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Event emitted when coordinates are selected for preview.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closePanel"></a>
+                    <span class="name">
+                        <span ><b>closePanel</b></span>
+                        <a href="#closePanel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>closePanel()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="141"
+                                    class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:141</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Closes the panel and notifies the parent component.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deletePin"></a>
+                    <span class="name">
+                        <span ><b>deletePin</b></span>
+                        <a href="#deletePin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deletePin()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="149"
+                                    class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:149</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigates to the delete pin flow for the selected pin.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToPost"></a>
+                    <span class="name">
+                        <span ><b>goToPost</b></span>
+                        <a href="#goToPost"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goToPost()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="177"
+                                    class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:177</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigates to the related forum post page and closes the popup.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="84"
+                                    class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:84</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initializes local vote-related state from the provided pin data.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onPreviewClick"></a>
+                    <span class="name">
+                        <span ><b>onPreviewClick</b></span>
+                        <a href="#onPreviewClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onPreviewClick(coords: <a href="../interfaces/GeoLocationDTO.html" target="_self">GeoLocationDTO</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="161"
+                                    class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:161</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Emits the selected coordinates and closes the preview popup.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>coords</td>
+                                            <td>
+                                                            <code><a href="../interfaces/GeoLocationDTO.html" target="_self" >GeoLocationDTO</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Coordinates associated with the selected pin</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openGoogleMaps"></a>
+                    <span class="name">
+                        <span ><b>openGoogleMaps</b></span>
+                        <a href="#openGoogleMaps"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openGoogleMaps()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="169"
+                                    class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:169</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Opens the pin coordinates in Google Maps in a new browser tab.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="report"></a>
+                    <span class="name">
+                        <span ><b>report</b></span>
+                        <a href="#report"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>report()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="185"
+                                    class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:185</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigates to the report pin flow for the selected pin.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="vote"></a>
+                    <span class="name">
+                        <span ><b>vote</b></span>
+                        <a href="#vote"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>vote(value: <a href="../miscellaneous/enumerations.html#VoteKind" target="_self">VoteKind.Upvote | VoteKind.Downvote</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="101"
+                                    class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:101</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Submits or removes a vote for the current pin.</p>
+<p>Behavior:</p>
+<ul>
+<li>If the selected vote is already active, the vote is removed</li>
+<li>Otherwise, the selected vote is submitted</li>
+</ul>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/enumerations.html#VoteKind" target="_self" >VoteKind.Upvote | VoteKind.Downvote</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Vote type to apply</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>authService</b></span>
+                        <a href="#authService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(AuthService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="avatarService"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>avatarService</b></span>
+                        <a href="#avatarService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(AvatarService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Service used to resolve avatar image URLs.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentVote"></a>
+                    <span class="name">
+                        <span ><b>currentVote</b></span>
+                        <a href="#currentVote"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;number | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:73</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Current vote of the logged-in user for this pin.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isAdmin"></a>
+                    <span class="name">
+                        <span ><b>isAdmin</b></span>
+                        <a href="#isAdmin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.authService.isAdmin()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indicates whether the current user has administrator privileges.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isVoting"></a>
+                    <span class="name">
+                        <span ><b>isVoting</b></span>
+                        <a href="#isVoting"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;boolean&gt;(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:79</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Prevents multiple vote requests from being sent simultaneously.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Path"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>Path</b></span>
+                        <a href="#Path"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>Path</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:64</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Shared route path constants used in templates.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinKind"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>pinKind</b></span>
+                        <a href="#pinKind"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>PinKind</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Pin kind enum exposed to the template.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>pinService</b></span>
+                        <a href="#pinService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(PinService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupController"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>popupController</b></span>
+                        <a href="#popupController"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new PopupController(&#x27;cluster-preview&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Controller used to manage the cluster preview popup state.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(Router)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="score"></a>
+                    <span class="name">
+                        <span ><b>score</b></span>
+                        <a href="#score"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;number | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:76</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Current score shown for the pin.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userName"></a>
+                    <span class="name">
+                        <span ><b>userName</b></span>
+                        <a href="#userName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.authService.getUserName()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Username of the currently authenticated user.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VoteKind"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>VoteKind</b></span>
+                        <a href="#VoteKind"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>VoteKind</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/features/map/components/pin-detail-panel/pin-detail-panel.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Vote kind enum exposed to the template.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AsyncPipe, CommonModule, NgLocaleLocalization, NumberSymbol } from &#x27;@angular/common&#x27;;
+import { Component, EventEmitter, inject, input, Output, signal } from &#x27;@angular/core&#x27;;
+import { TimeAgoPipe } from &#x27;@gofish/shared/pipes/time-ago.pipe&#x27;;
+import { PinKind } from &#x27;@gofish/shared/models/pin.model&#x27;;
+import { PopupController } from &#x27;@gofish/shared/core/popup-controller&#x27;;
+import { GeoLocationDTO, PinDataResDTO, PinDto } from &#x27;@gofish/shared/dtos/pin.dto&#x27;;
+import { ActivatedRoute, Router, RouterLink } from &#x27;@angular/router&#x27;;
+import { AuthService } from &#x27;@gofish/shared/services/auth.service&#x27;;
+import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { PinService } from &#x27;@gofish/shared/services/pin.service&#x27;;
+import { EnumDTO } from &#x27;@gofish/shared/dtos/enum.dto&#x27;;
+import { ClickOutsideDirective } from &quot;@gofish/shared/directives/click-outside.directive&quot;;
+import { ReturnStatement } from &#x27;@angular/compiler&#x27;;
+
+import { Path } from &#x27;@gofish/shared/constants&#x27;;
+import { AvatarService } from &#x27;@gofish/shared/services/avatar.service&#x27;;
+import { VoteKind } from &#x27;@gofish/shared/enums/vote-kind.enum&#x27;;
+import { UserTitleComponent } from &quot;@gofish/shared/components/user-title/user-title.component&quot;;
+import { EnumComponent } from &#x27;@gofish/shared/components/enum/enum.component&#x27;;
+
+/**
+ * Displays detailed information for a selected pin and exposes
+ * actions such as voting, reporting, deletion, navigation, and preview.
+ *
+ * Responsibilities:
+ * - Render detailed pin information in the UI
+ * - Track local vote and score state
+ * - Allow the user to close the panel or preview coordinates
+ * - Navigate to related flows such as delete, report, or forum post view
+ */
+@Component({
+  selector: &#x27;app-pin-detail-panel&#x27;,
+  imports: [CommonModule, TimeAgoPipe, EnumComponent, RouterLink, UserTitleComponent],
+  templateUrl: &#x27;./pin-detail-panel.component.html&#x27;,
+  styleUrls: [&#x27;./pin-detail-panel.component.css&#x27;]
+})
+export class PinDetailPanelComponent {
+  private readonly pinService &#x3D; inject(PinService);
+  private readonly router &#x3D; inject(Router);
+  private readonly authService &#x3D; inject(AuthService);
+
+  /** Service used to resolve avatar image URLs. */
+  readonly avatarService &#x3D; inject(AvatarService);
+
+  /** Vote kind enum exposed to the template. */
+  readonly VoteKind &#x3D; VoteKind;
+
+  /** Username of the currently authenticated user. */
+  userName &#x3D; this.authService.getUserName();
+
+  /** Indicates whether the current user has administrator privileges. */
+  isAdmin &#x3D; this.authService.isAdmin();
+
+  /** Controller used to manage the cluster preview popup state. */
+  readonly popupController &#x3D; new PopupController(&#x27;cluster-preview&#x27;);
+
+  /** Pin data displayed in the detail panel. */
+  pinData &#x3D; input&lt;PinDto | null&gt;(null);
+
+  /** Pin kind enum exposed to the template. */
+  public pinKind &#x3D; PinKind;
+
+  /** Shared route path constants used in templates. */
+  readonly Path &#x3D; Path;
+
+  /** Event emitted when the panel is closed. */
+  @Output() cancel &#x3D; new EventEmitter&lt;void&gt;();
+
+  /** Event emitted when coordinates are selected for preview. */
+  @Output() coords &#x3D; new EventEmitter&lt;GeoLocationDTO&gt;();
+
+  /** Current vote of the logged-in user for this pin. */
+  currentVote &#x3D; signal&lt;number | null&gt;(null);
+
+  /** Current score shown for the pin. */
+  score &#x3D; signal&lt;number | null&gt;(null);
+
+  /** Prevents multiple vote requests from being sent simultaneously. */
+  isVoting &#x3D; signal&lt;boolean&gt;(false);
+
+  /**
+   * Initializes local vote-related state from the provided pin data.
+   */
+  ngOnInit() {
+    const post &#x3D; this.pinData()?.stats;
+    if (!post) return;
+
+    this.score.set(post.score ?? 1000);
+    this.currentVote.set(post.currentUserVote ?? null);
+  }
+
+  /**
+   * Submits or removes a vote for the current pin.
+   *
+   * Behavior:
+   * - If the selected vote is already active, the vote is removed
+   * - Otherwise, the selected vote is submitted
+   *
+   * @param value Vote type to apply
+   */
+  vote(value: VoteKind.Upvote | VoteKind.Downvote) {
+    if (this.isVoting()) return;
+
+    const pinId &#x3D; this.pinData()?.id;
+    if (!pinId) return;
+
+    const current &#x3D; this.currentVote();
+    this.isVoting.set(true);
+
+    if (current &#x3D;&#x3D;&#x3D; value) {
+      this.pinService.deleteVote(pinId).subscribe({
+        next: (res) &#x3D;&gt; {
+          this.score.set(res.newScore);
+          this.currentVote.set(res.userVote ?? null);
+          this.isVoting.set(false);
+        },
+        error: (err) &#x3D;&gt; {
+          console.log(err);
+          this.isVoting.set(false);
+        }
+      });
+      return;
+    }
+
+    this.pinService.putVote(pinId, { value }).subscribe({
+      next: (res) &#x3D;&gt; {
+        this.score.set(res.newScore);
+        this.currentVote.set(res.userVote ?? null);
+        this.isVoting.set(false);
+      },
+      error: (err) &#x3D;&gt; {
+        console.log(err);
+        this.isVoting.set(false);
+      }
+    });
+  }
+
+  /**
+   * Closes the panel and notifies the parent component.
+   */
+  closePanel(): void {
+    this.cancel.emit();
+    this.popupController.close();
+  }
+
+  /**
+   * Navigates to the delete pin flow for the selected pin.
+   */
+  deletePin(): void {
+    const id &#x3D; this.pinData()?.id;
+    if (!id) return;
+
+    this.router.navigate([&#x27;/map&#x27;, &#x27;delete-pin&#x27;, id]);
+  }
+
+  /**
+   * Emits the selected coordinates and closes the preview popup.
+   *
+   * @param coords Coordinates associated with the selected pin
+   */
+  onPreviewClick(coords: GeoLocationDTO): void {
+    this.coords.emit(coords);
+    this.popupController.close();
+  }
+
+  /**
+   * Opens the pin coordinates in Google Maps in a new browser tab.
+   */
+  openGoogleMaps() {
+    const url &#x3D; &#x60;https://www.google.com/maps/search/?api&#x3D;1&amp;query&#x3D;${this.pinData()?.geolocation?.latitude},${this.pinData()?.geolocation?.longitude}&#x60;;
+    window.open(url, &#x27;_blank&#x27;);
+  }
+
+  /**
+   * Navigates to the related forum post page and closes the popup.
+   */
+  goToPost() {
+    this.router.navigate([&#x27;/forum/post&#x27;, this.pinData()?.id]);
+    this.popupController.close();
+  }
+
+  /**
+   * Navigates to the report pin flow for the selected pin.
+   */
+  report() {
+    const id &#x3D; this.pinData()?.id;
+    if (!id) return;
+
+    this.router.navigate([&#x27;/map&#x27;, &#x27;report-pin&#x27;, id]);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;sidebar-wrapper&quot; &gt;
+
+  &lt;aside class&#x3D;&quot;pin-side-panel&quot; data-testid&#x3D;&quot;pin-details-card&quot;&gt;
+    @if (pinData(); as pin) {
+    &lt;div class&#x3D;&quot;gf-card-pin&quot;&gt;
+      &lt;!-- Post Header --&gt;
+      &lt;div class&#x3D;&quot;d-flex align-items-center justify-content-between gap-2&quot;&gt;
+
+        &lt;div class&#x3D;&quot;d-flex align-items-center gap-2 clickable&quot; [routerLink]&#x3D;&quot;Path.PROFILE(pin.author!.id)&quot; title&#x3D;&quot;Go to user profile&quot;&gt;
+
+          &lt;img [src]&#x3D;&quot;this.avatarService.resolve(pin.author?.avatarUrl)&quot;
+            class&#x3D;&quot;rounded-circle post-author-profile-photo&quot;&gt;
+
+          &lt;!-- &lt;span class&#x3D;&quot;post-author-name&quot;&gt;{{ pin.author?.userName ?? &#x27;User&#x27; }}&lt;/span&gt; --&gt;
+
+          &lt;gf-user-title [text]&#x3D;&quot;pin.author!.userName&quot; [rank]&#x3D;&quot;pin.author!.rank&quot;&gt;&lt;/gf-user-title&gt;
+
+          &lt;span class&#x3D;&quot;separator&quot;&gt;•&lt;/span&gt;
+          &lt;span class&#x3D;&quot;post-date dark-text-muted&quot;&gt;{{ pin.createdAt | timeAgo }}&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;d-flex gap-1 post-action-buttons-wrapper&quot;&gt;
+          @if (pin!.author!.userName &#x3D;&#x3D; this.userName || isAdmin) {
+
+          &lt;!-- Delete Post Button --&gt;
+          &lt;button class&#x3D;&quot;gf-badge&quot; (click)&#x3D;&quot;deletePin()&quot; title&#x3D;&quot;Delete pin&quot;&gt;
+            &lt;svg xmlns&#x3D;&quot; http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot;
+              stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;
+              class&#x3D;&quot;lucide lucide-trash2-icon lucide-trash-2&quot;&gt;
+              &lt;path d&#x3D;&quot;M10 11v6&quot; /&gt;
+              &lt;path d&#x3D;&quot;M14 11v6&quot; /&gt;
+              &lt;path d&#x3D;&quot;M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6&quot; /&gt;
+              &lt;path d&#x3D;&quot;M3 6h18&quot; /&gt;
+              &lt;path d&#x3D;&quot;M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2&quot; /&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+          }
+
+          &lt;!-- Report Post Button --&gt;
+            @if (pin!.author!.userName !&#x3D; this.userName) {
+          &lt;button class&#x3D;&quot;gf-badge&quot; (click)&#x3D;&quot;report()&quot; title&#x3D;&quot;Report pin&quot;&gt;
+
+            &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot;
+              stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;
+              class&#x3D;&quot;lucide lucide-flag-icon lucide-flag&quot;&gt;
+              &lt;path
+                d&#x3D;&quot;M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528&quot; /&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+          }
+          &lt;button class&#x3D;&quot;gf-badge&quot; (click)&#x3D;&quot;closePanel()&quot; title&#x3D;&quot;Close pin details&quot;&gt;
+            &lt;svg viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;&gt;
+              &lt;path d&#x3D;&quot;M18 6L6 18M6 6l12 12&quot; /&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+      &lt;!-- Post Content Enum values --&gt;
+
+      &lt;div class&#x3D;&quot;post-content&quot;&gt;
+        &lt;div class&#x3D;&quot;post-content&quot;&gt;
+          &lt;!-- Post Description --&gt;
+
+          &lt;div class&#x3D;&quot;post-description &quot;&gt;
+            &lt;p class&#x3D;&quot;mb-2 description-small&quot;&gt;
+              {{(pin.ugc!.body| slice:0:120) + (pin.ugc!.body!.length &gt; 120 ? &#x27;...&#x27; : &#x27;&#x27;)}}
+            &lt;/p&gt;
+
+            @if (pin.ugc!.body!.length &gt; 120) {
+            &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;see-more&quot; (click)&#x3D;&quot;goToPost()&quot; title&#x3D;&quot;Go to post&quot;&gt;
+              See more
+            &lt;/button&gt;
+            }
+          &lt;/div&gt;
+          @if (pin.kind &#x3D;&#x3D;&#x3D; pinKind.CATCH) {
+          &lt;div class&#x3D;&quot;post-image-wrapper&quot;&gt;
+            &lt;img [src]&#x3D;&quot;pin.ugc!.imageUrl&quot; class&#x3D;&quot;post-image&quot;&gt;
+          &lt;/div&gt;
+          }
+          &lt;!--  Banner (Pin Type ) --&gt;
+          &lt;app-enum class&#x3D;&quot;d-flex gap-2&quot; [pinData]&#x3D;pin&gt;&lt;/app-enum&gt;
+
+        &lt;/div&gt;
+        &lt;!-- Upvote / Downvote / Comment and Go To Post --&gt;
+        &lt;div class&#x3D;&quot;d-flex justify-content-between&quot;&gt;
+
+          &lt;div class&#x3D;&quot;d-flex post-interact-section&quot;&gt;
+
+            &lt;div class&#x3D;&quot;gf-badge-vote post-interaction-wrapper&quot;&gt;
+
+              &lt;!-- Upvote button --&gt;
+              &lt;button class&#x3D;&quot;post-interact-btn&quot; [class.active-up]&#x3D;&quot;currentVote() &#x3D;&#x3D;&#x3D; VoteKind.Upvote&quot;
+                [disabled]&#x3D;&quot;isVoting()&quot; (click)&#x3D;&quot;vote(VoteKind.Upvote)&quot; title&#x3D;&quot;UpVote&quot; data-testid&#x3D;&quot;pin-vote-up&quot;&gt;
+
+                &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot;
+                  stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;
+                  class&#x3D;&quot;lucide lucide-step-back-icon lucide-step-back post-icon icon-upvote&quot;&gt;
+                  &lt;path d&#x3D;&quot;M13.971 4.285A2 2 0 0 1 17 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z&quot; /&gt;
+                  &lt;path d&#x3D;&quot;M21 20V4&quot; /&gt;
+                &lt;/svg&gt;
+
+              &lt;/button&gt;
+
+              &lt;span class&#x3D;&quot;post-stats post-fishing-points&quot; title&#x3D;&quot;Score&quot; data-testid&#x3D;&quot;pin-score&quot;&gt;{{ score() }}&lt;/span&gt;
+
+              &lt;!-- Downvote button --&gt;
+              &lt;button class&#x3D;&quot;post-interact-btn&quot; class&#x3D;&quot;post-interact-btn&quot;
+                [class.active-down]&#x3D;&quot;currentVote() &#x3D;&#x3D;&#x3D; VoteKind.Downvote&quot; [disabled]&#x3D;&quot;isVoting()&quot;
+                (click)&#x3D;&quot;vote(VoteKind.Downvote)&quot; title&#x3D;&quot;DownVote&quot; data-testid&#x3D;&quot;pin-vote-down&quot;&gt;
+
+                &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot;
+                  stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;
+                  class&#x3D;&quot;lucide lucide-step-back-icon lucide-step-back post-icon icon-downvote&quot;&gt;
+                  &lt;path d&#x3D;&quot;M13.971 4.285A2 2 0 0 1 17 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z&quot; /&gt;
+                  &lt;path d&#x3D;&quot;M21 20V4&quot; /&gt;
+                &lt;/svg&gt;
+
+              &lt;/button&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Comment button --&gt;
+            &lt;button class&#x3D;&quot;gf-badge-comment post-interaction-wrapper post-interaction-comment-wrapper&quot;
+              (click)&#x3D;&quot;goToPost()&quot; title&#x3D;&quot;Comments&quot;&gt;
+
+              &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot;
+                stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;
+                class&#x3D;&quot;lucide lucide-message-circle-icon lucide-message-circle comment-icon&quot;&gt;
+                &lt;path
+                  d&#x3D;&quot;M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719&quot; /&gt;
+              &lt;/svg&gt;
+
+              &lt;span class&#x3D;&quot;post-stats post-fishing-points&quot;&gt;{{ pin.stats?.commentCount ?? 10000 }}&lt;/span&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;d-flex post-view-section&quot;&gt;
+
+
+            &lt;!-- Location Button --&gt;
+            &lt;button class&#x3D;&quot;gf-badge-post-view-button&quot; (click)&#x3D;&quot;onPreviewClick(pin.geolocation!)&quot; title&#x3D;&quot;View pin in location&quot;&gt;
+              &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot;
+                stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;
+                class&#x3D;&quot;lucide lucide-locate-icon lucide-locate&quot;&gt;
+                &lt;line x1&#x3D;&quot;2&quot; x2&#x3D;&quot;5&quot; y1&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot; /&gt;
+                &lt;line x1&#x3D;&quot;19&quot; x2&#x3D;&quot;22&quot; y1&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot; /&gt;
+                &lt;line x1&#x3D;&quot;12&quot; x2&#x3D;&quot;12&quot; y1&#x3D;&quot;2&quot; y2&#x3D;&quot;5&quot; /&gt;
+                &lt;line x1&#x3D;&quot;12&quot; x2&#x3D;&quot;12&quot; y1&#x3D;&quot;19&quot; y2&#x3D;&quot;22&quot; /&gt;
+                &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;7&quot; /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+
+            &lt;!-- Go To Post button --&gt;
+            &lt;button class&#x3D;&quot;gf-badge-post-view-button&quot; (click)&#x3D;&quot;goToPost()&quot; title&#x3D;&quot;Go to post details&quot;&gt;
+
+              &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot;
+                stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;
+                class&#x3D;&quot;lucide lucide-square-arrow-out-up-right-icon lucide-square-arrow-out-up-right&quot;&gt;
+                &lt;path d&#x3D;&quot;M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6&quot; /&gt;
+                &lt;path d&#x3D;&quot;m21 3-9 9&quot; /&gt;
+                &lt;path d&#x3D;&quot;M15 3h6v6&quot; /&gt;
+              &lt;/svg&gt;
+
+            &lt;/button&gt;
+
+            &lt;button class&#x3D;&quot;gf-badge-post-view-button&quot; (click)&#x3D;&quot;openGoogleMaps()&quot; title&#x3D;&quot;Open location in Google Maps&quot;&gt;
+              &lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot;
+                stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; class&#x3D;&quot;lucide lucide-map&quot;&gt;
+                &lt;path d&#x3D;&quot;M14.1 6a2 2 0 0 1 3.8 0&quot; /&gt;
+                &lt;path d&#x3D;&quot;M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z&quot; /&gt;
+                &lt;path d&#x3D;&quot;M9 3v15&quot; /&gt;
+                &lt;path d&#x3D;&quot;M15 6v15&quot; /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+    }
+
+  &lt;/aside&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./pin-detail-panel.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">/* TODO: Cleanup + remove old unused classes
+ * Old classes when removed together, break the Pin Listing
+*/
+
+.sidebar-wrapper {
+  border-radius: 12px;
+  padding: 6px;
+  width: 405px;
+}
+
+.pin-side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gf-badge-close-sidepanel {
+  height: 100%;
+  width: 36px;
+  height: 36px;
+}
+
+/* Post Header */
+
+.gf-card-pin {
+  padding: var(--gf-12);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.post-author-profile-photo {
+  width: var(--gf-32);
+  height: var(--gf-32);
+}
+
+gf-user-title {
+  --user-title-cursor: pointer;
+}
+
+.post-author-name {
+  font-size: var(--gf-14);
+  word-break: break-all;
+}
+
+.separator,
+.time-ago {
+  color: var(--gf-dark-text-muted);
+  font-size: 12px;
+}
+
+.post-date {
+  font-size: var(--gf-12);
+  font-family: var(--gf-font-date);
+  word-break: break-all;
+}
+
+/*temporary*/
+.gf-badge,
+[class^&#x3D;&quot;gf-badge-&quot;] {
+  width: var(--gf-32);
+  height: var(--gf-32);
+  background: var(--gf-dark-bg-light);
+  border: none;
+
+  box-shadow:
+    0px 1px 2px rgba(0, 0, 0, 0.18),
+    0px 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0px 1px 2px rgba(255, 255, 255, 0.18);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--gf-dark-text);
+
+  &amp; svg {
+    width: var(--gf-16);
+    height: var(--gf-16);
+    color: var(--gf-dark-text-muted);
+  }
+
+  &amp;:hover svg {
+    color: var(--gf-dark-text);
+  }
+}
+
+/*temporary*/
+
+/* Post Content */
+
+.post-content&gt; :not(:last-child) {
+  margin-bottom: var(--gf-8);
+}
+
+.warning-banner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--gf-16);
+
+  background: var(--gf-dark-bg-dark);
+
+  border-radius: var(--gf-16);
+  width: 100%;
+  gap: var(--gf-12);
+}
+
+.warning-image {
+  width: var(--gf-42);
+  height: var(--gf-42);
+}
+
+.warning-type-text {
+  font-size: var(--gf-16);
+}
+
+.post-description {
+  font-size: var(--gf-16);
+  font-family: var(--gf-font-ugc);
+  word-break: break-all;
+}
+
+.post-image-wrapper {
+  border-radius: var(--gf-12);
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+.post-image {
+  border-radius: var(--gf-12);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+/* Upvote / Downvote and Comment */
+
+.post-interact-section {
+  gap: 5px;
+}
+
+.post-interaction-wrapper {
+  width: fit-content;
+  height: 36px;
+
+  padding: var(--gf-6) var(--gf-8);
+  gap: var(--gf-8);
+
+  border-radius: var(--gf-30);
+}
+
+.gf-badge-vote {
+  display: flex;
+  align-items: center;
+  cursor: text;
+  color: var(--gf-dark-text-muted);
+
+  &amp;:hover span {
+    color: var(--gf-dark-text);
+  }
+
+  &amp; svg {
+    width: var(--gf-16);
+    height: var(--gf-16);
+    color: var(--gf-dark-text-muted);
+  }
+
+  &amp; button svg {
+    color: var(--gf-dark-text-muted);
+  }
+
+  &amp; button:hover svg {
+    color: var(--gf-dark-text);
+  }
+
+  padding: var(--gf-6) var(--gf-8);
+}
+
+.post-interact-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.gf-badge-comment {
+  color: var(--gf-dark-text-muted);
+
+  &amp;:hover {
+    color: var(--gf-dark-text);
+  }
+}
+
+.icon-upvote {
+  transform: rotate(90deg);
+}
+
+.icon-downvote {
+  transform: rotate(-90deg);
+}
+
+/* Comment button */
+
+.post-interaction-comment-wrapper {
+  cursor: pointer;
+
+}
+
+/* Go To Post */
+
+.post-view-section {
+  gap: 5px;
+}
+
+
+.gf-badge-post-view-button {
+  height: 100%;
+  width: 36px;
+  height: 36px;
+}
+
+.pin-preview-click {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.pin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.pin-author-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pin-avatar {
+  background-color: var(--gf-dark-text-muted);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+}
+
+.pin-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.author-name {
+  color: var(--gf-dark-text);
+  font-weight: 500;
+  /* text-medium */
+  font-size: 14px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: var(--gf-dark-text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s;
+}
+
+.close-button:hover {
+  opacity: 0.7;
+}
+
+.pin-image-wrapper {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.pin-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.pin-body {
+  padding: 12px 0;
+}
+
+.pin-text {
+  color: var(--gf-dark-text);
+  font-size: 14px;
+  margin: 0;
+}
+
+.pin-details {
+  padding: 0 0 12px 0;
+}
+
+.bait-info {
+  color: var(--gf-dark-text-muted);
+  font-size: 12px;
+}
+
+.pin-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.badge-container {
+  display: flex;
+  gap: 8px;
+}
+
+.pin-badge {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.badge-text {
+  color: var(--gf-dark-text);
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  /* Ativa o scroll vertical */
+  padding: 1rem;
+
+  /* Estilização opcional da scrollbar para combinar com o tema escuro */
+  scrollbar-width: thin;
+  scrollbar-color: #444 #000;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: #000;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 10px;
+  border: 2px solid #000;
+}
+
+
+/*Funciona como se fosse &amp;&amp; quando esta sem virgula*/
+.active-up .post-icon {
+  fill: currentColor;
+}
+
+.active-down .post-icon {
+  fill: currentColor;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.description-small{
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.see-more {
+  font-family: var(--gf-font-main);
+  font-size: var(--gf-16);
+  color: var(--gf-primary);
+
+  color: var(--gf-primary);
+  --underline-width: 100%;
+
+  background:none;
+  border: none;
+
+  text-decoration: underline;
+}
+
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="sidebar-wrapper" >  <aside class="pin-side-panel" data-testid="pin-details-card">    @if (pinData(); as pin) {    <div class="gf-card-pin">      <!-- Post Header -->      <div class="d-flex align-items-center justify-content-between gap-2">        <div class="d-flex align-items-center gap-2 clickable" [routerLink]="Path.PROFILE(pin.author!.id)" title="Go to user profile">          <img [src]="this.avatarService.resolve(pin.author?.avatarUrl)"            class="rounded-circle post-author-profile-photo">          <!-- <span class="post-author-name">{{ pin.author?.userName ?? \'User\' }}</span> -->          <gf-user-title [text]="pin.author!.userName" [rank]="pin.author!.rank"></gf-user-title>          <span class="separator">•</span>          <span class="post-date dark-text-muted">{{ pin.createdAt | timeAgo }}</span>        </div>        <div class="d-flex gap-1 post-action-buttons-wrapper">          @if (pin!.author!.userName == this.userName || isAdmin) {          <!-- Delete Post Button -->          <button class="gf-badge" (click)="deletePin()" title="Delete pin">            <svg xmlns=" http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"              class="lucide lucide-trash2-icon lucide-trash-2">              <path d="M10 11v6" />              <path d="M14 11v6" />              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />              <path d="M3 6h18" />              <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />            </svg>          </button>          }          <!-- Report Post Button -->            @if (pin!.author!.userName != this.userName) {          <button class="gf-badge" (click)="report()" title="Report pin">            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"              class="lucide lucide-flag-icon lucide-flag">              <path                d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />            </svg>          </button>          }          <button class="gf-badge" (click)="closePanel()" title="Close pin details">            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">              <path d="M18 6L6 18M6 6l12 12" />            </svg>          </button>        </div>      </div>      <!-- Post Content Enum values -->      <div class="post-content">        <div class="post-content">          <!-- Post Description -->          <div class="post-description ">            <p class="mb-2 description-small">              {{(pin.ugc!.body| slice:0:120) + (pin.ugc!.body!.length > 120 ? \'...\' : \'\')}}            </p>            @if (pin.ugc!.body!.length > 120) {            <button type="button" class="see-more" (click)="goToPost()" title="Go to post">              See more            </button>            }          </div>          @if (pin.kind === pinKind.CATCH) {          <div class="post-image-wrapper">            <img [src]="pin.ugc!.imageUrl" class="post-image">          </div>          }          <!--  Banner (Pin Type ) -->          <app-enum class="d-flex gap-2" [pinData]=pin></app-enum>        </div>        <!-- Upvote / Downvote / Comment and Go To Post -->        <div class="d-flex justify-content-between">          <div class="d-flex post-interact-section">            <div class="gf-badge-vote post-interaction-wrapper">              <!-- Upvote button -->              <button class="post-interact-btn" [class.active-up]="currentVote() === VoteKind.Upvote"                [disabled]="isVoting()" (click)="vote(VoteKind.Upvote)" title="UpVote" data-testid="pin-vote-up">                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"                  class="lucide lucide-step-back-icon lucide-step-back post-icon icon-upvote">                  <path d="M13.971 4.285A2 2 0 0 1 17 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" />                  <path d="M21 20V4" />                </svg>              </button>              <span class="post-stats post-fishing-points" title="Score" data-testid="pin-score">{{ score() }}</span>              <!-- Downvote button -->              <button class="post-interact-btn" class="post-interact-btn"                [class.active-down]="currentVote() === VoteKind.Downvote" [disabled]="isVoting()"                (click)="vote(VoteKind.Downvote)" title="DownVote" data-testid="pin-vote-down">                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"                  class="lucide lucide-step-back-icon lucide-step-back post-icon icon-downvote">                  <path d="M13.971 4.285A2 2 0 0 1 17 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" />                  <path d="M21 20V4" />                </svg>              </button>            </div>            <!-- Comment button -->            <button class="gf-badge-comment post-interaction-wrapper post-interaction-comment-wrapper"              (click)="goToPost()" title="Comments">              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"                class="lucide lucide-message-circle-icon lucide-message-circle comment-icon">                <path                  d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />              </svg>              <span class="post-stats post-fishing-points">{{ pin.stats?.commentCount ?? 10000 }}</span>            </button>          </div>          <div class="d-flex post-view-section">            <!-- Location Button -->            <button class="gf-badge-post-view-button" (click)="onPreviewClick(pin.geolocation!)" title="View pin in location">              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"                class="lucide lucide-locate-icon lucide-locate">                <line x1="2" x2="5" y1="12" y2="12" />                <line x1="19" x2="22" y1="12" y2="12" />                <line x1="12" x2="12" y1="2" y2="5" />                <line x1="12" x2="12" y1="19" y2="22" />                <circle cx="12" cy="12" r="7" />              </svg>            </button>            <!-- Go To Post button -->            <button class="gf-badge-post-view-button" (click)="goToPost()" title="Go to post details">              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"                class="lucide lucide-square-arrow-out-up-right-icon lucide-square-arrow-out-up-right">                <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" />                <path d="m21 3-9 9" />                <path d="M15 3h6v6" />              </svg>            </button>            <button class="gf-badge-post-view-button" (click)="openGoogleMaps()" title="Open location in Google Maps">              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map">                <path d="M14.1 6a2 2 0 0 1 3.8 0" />                <path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z" />                <path d="M9 3v15" />                <path d="M15 6v15" />              </svg>            </button>          </div>        </div>      </div>    </div>    }  </aside></div></div>'
+    var COMPONENTS = [{'name': 'AboutComponent', 'selector': 'app-about'},{'name': 'AdminPopoverComponent', 'selector': 'gf-admin-popover'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AsyncButtonComponent', 'selector': 'app-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'gf-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'button[gfAsyncBtn]'},{'name': 'AuthCallbackComponent', 'selector': 'app-auth-callback'},{'name': 'CatchPinModalComponent', 'selector': 'app-catch-pin-modal'},{'name': 'ChangeBirthdateModalComponent', 'selector': 'app-change-birthdate-modal'},{'name': 'ChangeDisplaynameModalComponent', 'selector': 'app-change-displayname-modal'},{'name': 'ChangeEmailModalComponent', 'selector': 'gf-change-email-modal'},{'name': 'ChangeFirstnameModalComponent', 'selector': 'app-change-firstname-modal'},{'name': 'ChangeLastnameModalComponent', 'selector': 'app-change-lastname-modal'},{'name': 'ChangePhoneModalComponent', 'selector': 'app-change-phone-modal'},{'name': 'ChangeUsernameModalComponent', 'selector': 'app-change-username-modal'},{'name': 'ChoosePinPopupComponent', 'selector': 'app-choose-pin-popup'},{'name': 'ClusterDetailsComponent', 'selector': 'app-cluster-details'},{'name': 'ConfirmDeletionModalComponent', 'selector': 'app-confirm-deletion-modal'},{'name': 'DeleteCommentComponent', 'selector': 'gf-delete-comment'},{'name': 'DeleteGroupComponent', 'selector': 'gf-delete-group'},{'name': 'DeletePinComponent', 'selector': 'app-delete-pin'},{'name': 'DeletePostComponent', 'selector': 'gf-delete-post'},{'name': 'DiscoverComponent', 'selector': 'app-discover'},{'name': 'EnumComponent', 'selector': 'app-enum'},{'name': 'ExitGroupComponent', 'selector': 'gf-exit-group'},{'name': 'FooterComponent', 'selector': 'gf-footer'},{'name': 'ForumComponent', 'selector': 'app-forum'},{'name': 'ForumPostComponent', 'selector': 'app-forum-post'},{'name': 'FriendsComponent', 'selector': 'app-friends'},{'name': 'FriendshipListCardComponent', 'selector': 'gf-friendship-list-card'},{'name': 'FriendsListComponent', 'selector': 'app-friends-list'},{'name': 'FromFriendsComponent', 'selector': 'app-from-friends'},{'name': 'GeneralComponent', 'selector': 'app-general'},{'name': 'GfCardCommentPreviewComponent', 'selector': 'gf-gf-card-comment-preview'},{'name': 'GfCardPinPreviewComponent', 'selector': 'app-gf-card-pin-preview'},{'name': 'GfCardQuickAccessComponent', 'selector': 'app-gf-card-quick-access'},{'name': 'GfCardQuickViewComponent', 'selector': 'app-gf-card-quick-view'},{'name': 'GroupCreateComponent', 'selector': 'app-group-create'},{'name': 'GroupInviteComponent', 'selector': 'gf-group-invite'},{'name': 'GroupInvitesCardComponent', 'selector': 'gf-group-invites-card'},{'name': 'GroupInvitesListComponent', 'selector': 'gf-group-invites-list'},{'name': 'GroupListCardComponent', 'selector': 'gf-group-list-card'},{'name': 'GroupMemberSettingsPopoverComponent', 'selector': 'gf-group-member-settings-popover'},{'name': 'GroupPopoverComponent', 'selector': 'gf-group-popover'},{'name': 'GroupPostsPlaceholderComponent', 'selector': 'app-group-posts-placeholder'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsListCardComponent', 'selector': 'gf-groups-list-card'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'HeaderActionsComponent', 'selector': 'gf-header-actions'},{'name': 'HeaderComponent', 'selector': 'gf-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'InfoPinModalComponent', 'selector': 'app-info-pin-modal'},{'name': 'InviteToGroupsModalComponent', 'selector': 'gf-invite-to-groups-modal'},{'name': 'LeaderboardComponent', 'selector': 'gf-leaderboard'},{'name': 'LoadingErrorModalComponent', 'selector': 'gf-loading-error-modal'},{'name': 'LoadingSpinnerComponent', 'selector': 'gf-loading-spinner'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MembersGroupComponent', 'selector': 'gf-members-group'},{'name': 'MyGroupsComponent', 'selector': 'app-my-groups'},{'name': 'NavPopoverComponent', 'selector': 'gf-nav-popover'},{'name': 'OverviewComponent', 'selector': 'app-overview'},{'name': 'PersonalDataComponent', 'selector': 'app-personal-data'},{'name': 'PinDetailPanelComponent', 'selector': 'app-pin-detail-panel'},{'name': 'PinsAvgPublishedChart', 'selector': 'gf-pins-average-published-chart'},{'name': 'PinsComponent', 'selector': 'app-pins'},{'name': 'PinsPerWeekComponent', 'selector': 'gf-pins-per-week'},{'name': 'PostCommentsComponent', 'selector': 'app-post-comments'},{'name': 'PostIdPlaceholderComponent', 'selector': 'app-post-id-placeholder'},{'name': 'PrivacyPolicyComponent', 'selector': 'app-privacy-policy'},{'name': 'ProfileActionsPopoverComponent', 'selector': 'gf-profile-actions-popover'},{'name': 'ProfileCatchPinCardComponent', 'selector': 'gf-profile-catch-pin-card'},{'name': 'ProfileShellComponent', 'selector': 'app-profile'},{'name': 'ProfileShowMoreModalComponent', 'selector': 'gf-profile-show-more-modal'},{'name': 'ReportCommentComponent', 'selector': 'gf-report-comment'},{'name': 'ReportedCommentPageComponent', 'selector': 'gf-reported-comment-page'},{'name': 'ReportedCommentsComponent', 'selector': 'gf-reported-comments'},{'name': 'ReportedPinPageComponent', 'selector': 'gf-reported-pin-page'},{'name': 'ReportedPinsComponent', 'selector': 'gf-reported-pins'},{'name': 'ReportPinComponent', 'selector': 'gf-report'},{'name': 'RequestsListComponent', 'selector': 'app-requests-list'},{'name': 'ResetPasswordComponent', 'selector': 'gf-reset-password'},{'name': 'SearchComponent', 'selector': 'gf-search'},{'name': 'SecurityComponent', 'selector': 'app-security'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SetupTotpComponent', 'selector': 'app-setup-totp'},{'name': 'SigninComponent', 'selector': 'app-signin'},{'name': 'SigninVerifyComponent', 'selector': 'app-signin-verify'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'SmallFriendshipCarouselCardComponent', 'selector': 'gf-small-friendship-carousel-card'},{'name': 'SmallGroupCarouselCardComponent', 'selector': 'gf-small-group-carousel-card'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'StatsHomeComponent', 'selector': 'app-home'},{'name': 'StatsReportsComponent', 'selector': 'app-stats-reports'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'TermsOfServiceComponent', 'selector': 'app-terms-of-service'},{'name': 'TotpValidationModalComponent', 'selector': 'app-totp-validation-modal'},{'name': 'UserCardComponent', 'selector': 'app-user-card'},{'name': 'UserHelpBoxComponent', 'selector': 'gf-user-help-box'},{'name': 'UserPopoverComponent', 'selector': 'gf-user-popover'},{'name': 'UserRankIconComponent', 'selector': 'gf-user-rank-icon'},{'name': 'UserSatisfactionIndexComponent', 'selector': 'gf-user-satisfaction-index'},{'name': 'UsersChartComponent', 'selector': 'gf-users-chart'},{'name': 'UsersListCardComponent', 'selector': 'gf-users-list-card'},{'name': 'UsersListComponent', 'selector': 'gf-users-list'},{'name': 'UserTitleComponent', 'selector': 'gf-user-title'},{'name': 'VerifyEmailModalComponent', 'selector': 'gf-verify-email-modal'},{'name': 'VerifyTwofaContainerComponent', 'selector': 'gf-verify-twofa-container'},{'name': 'WarnPinModalComponent', 'selector': 'app-warn-pin-modal'}];
+    var DIRECTIVES = [{'name': 'ClickOutsideDirective', 'selector': '[clickOutside]'},{'name': 'LettersOnlyDirective', 'selector': '[appLettersOnly]'},{'name': 'MouseFollowDirective', 'selector': '[gfTooltip]'},{'name': 'NumbersOnlyDirective', 'selector': '[appNumbersOnly]'}];
+    var ACTUAL_COMPONENT = {'name': 'PinDetailPanelComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'PinDetailPanelComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"GofishApi Reference","topic_000000000000026E.html"],['271',"GofishApi.Models Namespace","topic_000000000000014F.html"],['341',"GroupInvite Class","topic_0000000000000183.html"],['342',"Properties","topic_0000000000000183_props--.html"],['343',"CreatedAt Property","topic_0000000000000188.html"]];

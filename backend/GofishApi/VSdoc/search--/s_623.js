@@ -1,0 +1,1 @@
+search_result['623']=["topic_00000000000001ED.html","WarnPin Class","/// Representa um pin de aviso (warning), utilizado para alertar outros utilizadores\r\n/// sobre perigos ou condições adversas num determinado local.\r\n///"];

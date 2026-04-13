@@ -1,0 +1,1 @@
+search_result['526']=["topic_00000000000001AF.html","Rating Class","/// Representa uma avaliação feita por um utilizador.\r\n/// Cada utilizador pode ter no máximo uma avaliação associada.\r\n///"];

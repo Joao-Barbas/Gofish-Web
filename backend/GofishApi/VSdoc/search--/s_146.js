@@ -1,0 +1,1 @@
+search_result['146']=["topic_0000000000000064.html","StatsController.GetPinsWeeklyStats Method","/// Obtém estatísticas semanais de criação de pins num determinado mês,\r\n    /// segmentadas por tipo de pin.\r\n    ///"];

@@ -1,0 +1,1 @@
+search_result['457']=["topic_0000000000000183.html","GroupInvite Class","/// Representa um convite para um utilizador entrar num grupo.\r\n/// Controla o fluxo de entrada em grupos privados ou moderados.\r\n///"];

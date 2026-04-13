@@ -1,0 +1,1 @@
+search_result['188']=["topic_000000000000007F.html","UserProfileController Constructor","/// Inicializa uma nova instância do controlador de perfil de utilizador.\r\n    ///"];

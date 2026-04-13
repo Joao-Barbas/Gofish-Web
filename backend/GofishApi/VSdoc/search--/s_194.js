@@ -1,0 +1,1 @@
+search_result['194']=["topic_0000000000000085.html","UserProfileController.GetUserAvatar Method","/// Obtém o URL do avatar de um utilizador.\r\n    ///"];

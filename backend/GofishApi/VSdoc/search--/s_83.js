@@ -1,0 +1,1 @@
+search_result['83']=["topic_0000000000000034.html","PinController.GetPins Method","/// Obtém pins específicos com suporte a múltiplos identificadores e seleção parcial de dados.\r\n    ///"];

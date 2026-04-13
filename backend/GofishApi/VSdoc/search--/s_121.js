@@ -1,0 +1,1 @@
+search_result['121']=["topic_0000000000000050.html","ReportController.GetCommentReport Method","/// Obtém um report de comentário específico pelo seu identificador.\r\n    /// Apenas administradores podem consultar esta informação.\r\n    ///"];

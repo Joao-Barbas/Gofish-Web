@@ -1,0 +1,1 @@
+search_result['532']=["topic_00000000000001B0.html","Rating.UserId Property","/// Identificador do utilizador que realizou a avaliação.\r\n    /// Funciona também como chave primária da entidade.\r\n    ///"];

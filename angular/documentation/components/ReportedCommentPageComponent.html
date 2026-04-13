@@ -1,0 +1,1823 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ReportedCommentPageComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Displays a moderation page for a reported comment and its associated reports.</p>
+<p>Responsibilities:</p>
+<ul>
+<li>Load the reported comment data</li>
+<li>Load and paginate reports associated with the comment</li>
+<li>Allow moderators to select reports for action</li>
+<li>Accept or reject the selected reports</li>
+</ul>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>gf-reported-comment-page</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../components/UserHelpBoxComponent.html" target="_self" >UserHelpBoxComponent</a></code>
+                                <code><a href="../components/ForumPostComponent.html" target="_self" >ForumPostComponent</a></code>
+                                <code><a href="../components/LoadingSpinnerComponent.html" target="_self" >LoadingSpinnerComponent</a></code>
+                            <code>TimeAgoPipe</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./reported-comment-page.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./reported-comment-page.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#alertText" >alertText</a>
+                            </li>
+                            <li>
+                                <a href="#body" >body</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#commentData" >commentData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#commentId" >commentId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#hasMoreResults" >hasMoreResults</a>
+                            </li>
+                            <li>
+                                <a href="#header" >header</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#lastCreatedAt" >lastCreatedAt</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#pinService" >pinService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#reports" >reports</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#reportService" >reportService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#route" >route</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#selectedReportIds" >selectedReportIds</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#acceptSelectedReports" >acceptSelectedReports</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#fetchCommentData" >fetchCommentData</a>
+                            </li>
+                            <li>
+                                <a href="#hasSelectedReports" >hasSelectedReports</a>
+                            </li>
+                            <li>
+                                <a href="#isReportSelected" >isReportSelected</a>
+                            </li>
+                            <li>
+                                <a href="#loadMoreReports" >loadMoreReports</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#loadReports" >loadReports</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#rejectSelectedReports" >rejectSelectedReports</a>
+                            </li>
+                            <li>
+                                <a href="#toggleReportSelection" >toggleReportSelection</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updateAlertText" >updateAlertText</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="acceptSelectedReports"></a>
+                    <span class="name">
+                        <span ><b>acceptSelectedReports</b></span>
+                        <a href="#acceptSelectedReports"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>acceptSelectedReports()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="174"
+                                    class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:174</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Accepts the selected reports by deleting the reported comment.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fetchCommentData"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>fetchCommentData</b></span>
+                        <a href="#fetchCommentData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>fetchCommentData(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="78"
+                                    class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:78</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Loads the comment data for the specified comment identifier.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>commentId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identifier of the reported comment</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="hasSelectedReports"></a>
+                    <span class="name">
+                        <span ><b>hasSelectedReports</b></span>
+                        <a href="#hasSelectedReports"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>hasSelectedReports()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="167"
+                                    class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:167</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Indicates whether at least one report is currently selected.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>True when one or more reports are selected</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isReportSelected"></a>
+                    <span class="name">
+                        <span ><b>isReportSelected</b></span>
+                        <a href="#isReportSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isReportSelected(reportId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="158"
+                                    class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:158</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Indicates whether a specific report is currently selected.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reportId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identifier of the report to check</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>True when the report is selected</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadMoreReports"></a>
+                    <span class="name">
+                        <span ><b>loadMoreReports</b></span>
+                        <a href="#loadMoreReports"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadMoreReports()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="113"
+                                    class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:113</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Loads the next batch of reports for the current comment.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadReports"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>loadReports</b></span>
+                        <a href="#loadReports"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadReports(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="92"
+                                    class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:92</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Loads a batch of reports associated with the specified comment.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>commentId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identifier of the reported comment</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="64"
+                                    class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:64</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Loads the comment identifier from the route and initializes
+the comment and report data for review.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="rejectSelectedReports"></a>
+                    <span class="name">
+                        <span ><b>rejectSelectedReports</b></span>
+                        <a href="#rejectSelectedReports"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>rejectSelectedReports()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="189"
+                                    class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:189</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Rejects the selected reports and keeps the comment.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleReportSelection"></a>
+                    <span class="name">
+                        <span ><b>toggleReportSelection</b></span>
+                        <a href="#toggleReportSelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleReportSelection(reportId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="125"
+                                    class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:125</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Toggles the selection state of a report and refreshes the alert text.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reportId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identifier of the report to select or unselect</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateAlertText"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>updateAlertText</b></span>
+                        <a href="#updateAlertText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateAlertText()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:144</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Updates the alert text according to the number of selected reports.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="alertText"></a>
+                    <span class="name">
+                        <span ><b>alertText</b></span>
+                        <a href="#alertText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;You have yet to mark the Comment post with one of the report type on the right&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Alert text displayed according to the moderator selection state.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="body"></a>
+                    <span class="name">
+                        <span ><b>body</b></span>
+                        <a href="#body"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;To review Comment Reports, make sure to read the individual reports made by other users and see if there&#x27;s a pattern of report types that you can then use to understand why the Comment is not suitable for the platform when reading its contents.\n\nMake sure to check every part of the Comment post below to see if it falls under any report type and if so, mark any report type that users have identified on the left.\n\nYou don&#x27;t need to mark the same report type more than once.&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Help text explaining the moderation workflow.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="commentData"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>commentData</b></span>
+                        <a href="#commentData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;CommentDto | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:34</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Stores the reported comment data.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="commentId"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>commentId</b></span>
+                        <a href="#commentId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;number | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identifier of the comment currently under review.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="hasMoreResults"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>hasMoreResults</b></span>
+                        <a href="#hasMoreResults"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;boolean&gt;(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indicates whether more reports are available to load.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="header"></a>
+                    <span class="name">
+                        <span ><b>header</b></span>
+                        <a href="#header"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;Review Comment Reports&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Page header displayed to the moderator.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lastCreatedAt"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>lastCreatedAt</b></span>
+                        <a href="#lastCreatedAt"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | undefined</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>undefined</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Cursor used to paginate reports by creation date.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>pinService</b></span>
+                        <a href="#pinService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(PinService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reports"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>reports</b></span>
+                        <a href="#reports"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;GetReportResDTO[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Stores the loaded reports associated with the comment.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reportService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>reportService</b></span>
+                        <a href="#reportService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ReportService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="route"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>route</b></span>
+                        <a href="#route"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ActivatedRoute)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedReportIds"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>selectedReportIds</b></span>
+                        <a href="#selectedReportIds"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Set&lt;number&gt;&gt;(new Set())</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/features/statistics/children/reported-comment-page/reported-comment-page.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Stores the identifiers of the currently selected reports.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, signal } from &#x27;@angular/core&#x27;;
+import { ActivatedRoute } from &#x27;@angular/router&#x27;;
+import { ForumPostComponent } from &#x27;@gofish/features/forum/components/forum-post/forum-post.component&#x27;;
+import { LoadingSpinnerComponent } from &#x27;@gofish/shared/components/loading-spinner/loading-spinner.component&#x27;;
+import { UserHelpBoxComponent } from &#x27;@gofish/shared/components/user-help-box/user-help-box.component&#x27;;
+import { PinDto, GetPinsReqDto, CommentDto } from &#x27;@gofish/shared/dtos/pin.dto&#x27;;
+import { GetReportResDTO } from &#x27;@gofish/shared/dtos/report.dto&#x27;;
+import { TimeAgoPipe } from &#x27;@gofish/shared/pipes/time-ago.pipe&#x27;;
+import { PinService } from &#x27;@gofish/shared/services/pin.service&#x27;;
+import { ReportService } from &#x27;@gofish/shared/services/report.service&#x27;;
+import { toast } from &#x27;ngx-sonner&#x27;;
+
+/**
+ * Displays a moderation page for a reported comment and its associated reports.
+ *
+ * Responsibilities:
+ * - Load the reported comment data
+ * - Load and paginate reports associated with the comment
+ * - Allow moderators to select reports for action
+ * - Accept or reject the selected reports
+ */
+@Component({
+  selector: &#x27;gf-reported-comment-page&#x27;,
+  imports: [UserHelpBoxComponent, ForumPostComponent, LoadingSpinnerComponent, TimeAgoPipe],
+  templateUrl: &#x27;./reported-comment-page.component.html&#x27;,
+  styleUrl: &#x27;./reported-comment-page.component.css&#x27;,
+})
+export class ReportedCommentPageComponent {
+  private readonly route &#x3D; inject(ActivatedRoute);
+  private readonly pinService &#x3D; inject(PinService);
+  private readonly reportService &#x3D; inject(ReportService);
+
+  /** Stores the reported comment data. */
+  protected commentData &#x3D; signal&lt;CommentDto | null&gt;(null);
+
+  /** Stores the loaded reports associated with the comment. */
+  protected reports &#x3D; signal&lt;GetReportResDTO[]&gt;([]);
+
+  /** Indicates whether more reports are available to load. */
+  protected hasMoreResults &#x3D; signal&lt;boolean&gt;(false);
+
+  /** Cursor used to paginate reports by creation date. */
+  private lastCreatedAt: string | undefined &#x3D; undefined;
+
+  /** Stores the identifiers of the currently selected reports. */
+  protected selectedReportIds &#x3D; signal&lt;Set&lt;number&gt;&gt;(new Set());
+
+  /** Identifier of the comment currently under review. */
+  protected readonly commentId &#x3D; signal&lt;number | null&gt;(null);
+
+  /** Page header displayed to the moderator. */
+  header: string &#x3D; &quot;Review Comment Reports&quot;;
+
+  /** Help text explaining the moderation workflow. */
+  body: string &#x3D; &quot;To review Comment Reports, make sure to read the individual reports made by other users and see if there&#x27;s a pattern of report types that you can then use to understand why the Comment is not suitable for the platform when reading its contents.\n\nMake sure to check every part of the Comment post below to see if it falls under any report type and if so, mark any report type that users have identified on the left.\n\nYou don&#x27;t need to mark the same report type more than once.&quot;;
+
+  /** Alert text displayed according to the moderator selection state. */
+  alertText: string &#x3D; &quot;You have yet to mark the Comment post with one of the report type on the right&quot;;
+
+  /**
+   * Loads the comment identifier from the route and initializes
+   * the comment and report data for review.
+   */
+  ngOnInit() {
+    const id &#x3D; Number(this.route.snapshot.paramMap.get(&#x27;id&#x27;));
+    if (!id) return;
+
+    this.commentId.set(id);
+    this.fetchCommentData(id);
+    this.loadReports(id);
+  }
+
+  /**
+   * Loads the comment data for the specified comment identifier.
+   *
+   * @param commentId Identifier of the reported comment
+   */
+  private fetchCommentData(commentId: number) {
+    this.pinService.getComment(commentId).subscribe({
+      next: (res) &#x3D;&gt; {
+        this.commentData.set(res);
+      },
+      error: (err) &#x3D;&gt; console.error(err)
+    });
+  }
+
+  /**
+   * Loads a batch of reports associated with the specified comment.
+   *
+   * @param commentId Identifier of the reported comment
+   */
+  private loadReports(commentId: number) {
+    const request &#x3D; {
+      commentId,
+      maxResults: 5,
+      lastCreatedAt: this.lastCreatedAt
+    };
+
+    this.reportService.getCommentReportsByComment(request).subscribe({
+      next: (res) &#x3D;&gt; {
+        this.reports.update(current &#x3D;&gt; [...current, ...res.reports]);
+
+        this.hasMoreResults.set(res.hasMoreResults);
+        this.lastCreatedAt &#x3D; res.lastCreatedAt;
+      },
+      error: (err) &#x3D;&gt; console.error(err)
+    });
+  }
+
+  /**
+   * Loads the next batch of reports for the current comment.
+   */
+  loadMoreReports() {
+    const commentId &#x3D; this.commentData()?.id;
+    if (commentId) {
+      this.loadReports(commentId);
+    }
+  }
+
+  /**
+   * Toggles the selection state of a report and refreshes the alert text.
+   *
+   * @param reportId Identifier of the report to select or unselect
+   */
+  toggleReportSelection(reportId: number) {
+    this.selectedReportIds.update(set &#x3D;&gt; {
+      const newSet &#x3D; new Set(set);
+
+      if (newSet.has(reportId)) {
+        newSet.delete(reportId);
+      } else {
+        newSet.add(reportId);
+      }
+
+      return newSet;
+    });
+
+    this.updateAlertText();
+  }
+
+  /**
+   * Updates the alert text according to the number of selected reports.
+   */
+  private updateAlertText() {
+    if (this.selectedReportIds().size &gt; 0) {
+      this.alertText &#x3D; &#x60;You have selected ${this.selectedReportIds().size} report(s) to action.&#x60;;
+    } else {
+      this.alertText &#x3D; &quot;You have yet to mark the Comment post with one of the report type on the right&quot;;
+    }
+  }
+
+  /**
+   * Indicates whether a specific report is currently selected.
+   *
+   * @param reportId Identifier of the report to check
+   * @returns True when the report is selected
+   */
+  isReportSelected(reportId: number): boolean {
+    return this.selectedReportIds().has(reportId);
+  }
+
+  /**
+   * Indicates whether at least one report is currently selected.
+   *
+   * @returns True when one or more reports are selected
+   */
+  hasSelectedReports(): boolean {
+    return this.selectedReportIds().size &gt; 0;
+  }
+
+  /**
+   * Accepts the selected reports by deleting the reported comment.
+   */
+  acceptSelectedReports() {
+    if (!this.commentId()) return;
+
+    this.pinService.deletePin(this.commentId()!).subscribe({
+      next: () &#x3D;&gt; {
+        toast.success(&#x27;Selected reports accepted and comment deleted successfully&#x27;);
+      }
+    });
+
+    window.history.back();
+  }
+
+  /**
+   * Rejects the selected reports and keeps the comment.
+   */
+  rejectSelectedReports() {
+    const selectedIds &#x3D; new Set(this.selectedReportIds());
+    this.reportService.deleteCommentReports({ ids: Array.from(this.selectedReportIds()) }).subscribe({
+      next: () &#x3D;&gt; {
+        toast.success(&#x27;Selected reports rejected and comment kept successfully&#x27;);
+        /* this.reports.update(current &#x3D;&gt; current.filter(r &#x3D;&gt; r.id !&#x3D;&#x3D; Array.from(this.selectedReportIds())[0])); */
+        this.reports.update(current &#x3D;&gt; current.filter(r &#x3D;&gt; !selectedIds.has(r.id)));
+        this.selectedReportIds.set(new Set());
+        this.updateAlertText();
+      }
+    });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">@if (commentData(); as comment) {
+  &lt;div class&#x3D;&quot;container stats-section-wrapper&quot;&gt;
+
+    &lt;div class&#x3D;&quot;d-flex align-items-center quick-header-wrapper&quot;&gt;
+      &lt;span class&#x3D;&quot;text-bold&quot;&gt;Reports / {{ comment.id }}&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;gf-card-plain pin-report-panel&quot;&gt;
+
+      &lt;div class&#x3D;&quot;report-panel-body&quot;&gt;
+
+        &lt;div class&#x3D;&quot;pin-report-left&quot;&gt;
+          &lt;gf-user-help-box
+            [headerText]&#x3D;&quot;header&quot;
+            [bodyText]&#x3D;&quot;body&quot;&gt;
+          &lt;/gf-user-help-box&gt;
+
+          &lt;div class&#x3D;&quot;reported-pin-post&quot;&gt;
+
+            &lt;div class&#x3D;&quot;gf-card-comment-preview&quot;&gt;
+              &lt;div class&#x3D;&quot;top-wrapper&quot;&gt;
+                &lt;div class&#x3D;&quot;comment-user-wrapper&quot;&gt;
+                  &lt;img
+                    [src]&#x3D;&quot;comment.author?.avatarUrl || &#x27;assets/images/placeholder_profile_pic.png&#x27;&quot;
+                    class&#x3D;&quot;rounded-circle comment-author-profile-photo&quot;
+                    alt&#x3D;&quot;User avatar&quot;
+                  &gt;
+
+                  @if (comment.author; as author) {
+                    &lt;span class&#x3D;&quot;gf-ugc-username&quot;&gt;
+                      {{ author.userName }}
+                    &lt;/span&gt;
+                  }
+
+                  &lt;span&gt;•&lt;/span&gt;
+
+                  &lt;span class&#x3D;&quot;comment-date dark-text-muted&quot;&gt;
+                    {{ comment.createdAt | timeAgo }}
+                  &lt;/span&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;div class&#x3D;&quot;bottom-wrapper&quot;&gt;
+                &lt;span class&#x3D;&quot;gf-ugc-text comment-body-text&quot;&gt;
+                  {{ comment.body }}
+                &lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;pin-report-right&quot;&gt;
+          &lt;div class&#x3D;&quot;pin-report-right-inside&quot;&gt;
+
+            &lt;div class&#x3D;&quot;reports-listing-header&quot;&gt;
+              &lt;span class&#x3D;&quot;text-bold&quot;&gt;Reports ({{ reports().length }})&lt;/span&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;reports-listing&quot;&gt;
+
+              @if (reports().length &gt; 0) {
+                @for (report of reports(); track report.id) {
+                  &lt;div class&#x3D;&quot;report-wrapper&quot;&gt;
+
+                    &lt;div class&#x3D;&quot;report-header profile-pin-previews&quot;&gt;
+                      &lt;div class&#x3D;&quot;pin-author-date-wrapper gf-generic-clickable-wrapper&quot;&gt;
+                        &lt;img
+                          [src]&#x3D;&quot;report.imageURL || &#x27;assets/images/placeholder_profile_pic.png&#x27;&quot;
+                          class&#x3D;&quot;rounded-circle gf-small-avatar&quot;
+                          alt&#x3D;&quot;User avatar&quot;
+                        &gt;
+
+                        &lt;span class&#x3D;&quot;gf-ugc-username pin-report-username&quot;&gt;
+                          {{ report.username }}
+                        &lt;/span&gt;
+
+                        &lt;span&gt;•&lt;/span&gt;
+
+                        &lt;span class&#x3D;&quot;reported-pin-date dark-text-muted&quot;&gt;
+                          {{ report.createdAt | timeAgo }}
+                        &lt;/span&gt;
+                      &lt;/div&gt;
+
+                      &lt;input
+                        type&#x3D;&quot;checkbox&quot;
+                        class&#x3D;&quot;report-checkbox&quot;
+                        [checked]&#x3D;&quot;isReportSelected(report.id)&quot;
+                        (change)&#x3D;&quot;toggleReportSelection(report.id)&quot;
+                      &gt;
+                    &lt;/div&gt;
+
+                    &lt;div class&#x3D;&quot;report-body&quot;&gt;
+                      &lt;div class&#x3D;&quot;gf-tag-report&quot;&gt;
+                        &lt;span&gt;{{ report.reasonText || &#x27;No reason provided&#x27; }}&lt;/span&gt;
+                      &lt;/div&gt;
+
+                      &lt;span class&#x3D;&quot;gf-ugc-text report-body-text&quot;&gt;
+                        {{ report.description || &#x27;No description provided.&#x27; }}
+                      &lt;/span&gt;
+                    &lt;/div&gt;
+
+                  &lt;/div&gt;
+                }
+              } @else {
+                &lt;div class&#x3D;&quot;report-wrapper&quot;&gt;
+                  &lt;div class&#x3D;&quot;report-body&quot;&gt;
+                    &lt;span class&#x3D;&quot;gf-ugc-text report-body-text&quot;&gt;
+                      No reports found for this comment.
+                    &lt;/span&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              }
+
+            &lt;/div&gt;
+
+            @if (hasMoreResults()) {
+              &lt;button
+                type&#x3D;&quot;button&quot;
+                class&#x3D;&quot;btn-show-more&quot;
+                (click)&#x3D;&quot;loadMoreReports()&quot;&gt;
+                Load more
+              &lt;/button&gt;
+            }
+
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;report-panel-bottom&quot;&gt;
+        &lt;gf-user-help-box
+          type&#x3D;&quot;alert&quot;
+          [headerText]&#x3D;&quot;alertText&quot;&gt;
+        &lt;/gf-user-help-box&gt;
+
+        &lt;div class&#x3D;&quot;report-action-buttons-wrapper&quot;&gt;
+
+          &lt;button
+            class&#x3D;&quot;gf-tag-report-actions success&quot;
+            type&#x3D;&quot;button&quot;
+            [disabled]&#x3D;&quot;!hasSelectedReports()&quot;
+            (click)&#x3D;&quot;acceptSelectedReports()&quot;&gt;
+            &lt;span&gt;Accept Reports and Delete Comment&lt;/span&gt;
+          &lt;/button&gt;
+
+          &lt;button
+            class&#x3D;&quot;gf-tag-report-actions reject&quot;
+            type&#x3D;&quot;button&quot;
+            [disabled]&#x3D;&quot;!hasSelectedReports()&quot;
+            (click)&#x3D;&quot;rejectSelectedReports()&quot;&gt;
+            &lt;span&gt;Reject Selected Reports and Keep Comment&lt;/span&gt;
+          &lt;/button&gt;
+
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+  &lt;/div&gt;
+} @else {
+  &lt;gf-loading-spinner&gt;&lt;/gf-loading-spinner&gt;
+}
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div>@if (commentData(); as comment) {  <div class="container stats-section-wrapper">    <div class="d-flex align-items-center quick-header-wrapper">      <span class="text-bold">Reports / {{ comment.id }}</span>    </div>    <div class="gf-card-plain pin-report-panel">      <div class="report-panel-body">        <div class="pin-report-left">          <gf-user-help-box            [headerText]="header"            [bodyText]="body">          </gf-user-help-box>          <div class="reported-pin-post">            <div class="gf-card-comment-preview">              <div class="top-wrapper">                <div class="comment-user-wrapper">                  <img                    [src]="comment.author?.avatarUrl || \'assets/images/placeholder_profile_pic.png\'"                    class="rounded-circle comment-author-profile-photo"                    alt="User avatar"                  >                  @if (comment.author; as author) {                    <span class="gf-ugc-username">                      {{ author.userName }}                    </span>                  }                  <span>•</span>                  <span class="comment-date dark-text-muted">                    {{ comment.createdAt | timeAgo }}                  </span>                </div>              </div>              <div class="bottom-wrapper">                <span class="gf-ugc-text comment-body-text">                  {{ comment.body }}                </span>              </div>            </div>          </div>        </div>        <div class="pin-report-right">          <div class="pin-report-right-inside">            <div class="reports-listing-header">              <span class="text-bold">Reports ({{ reports().length }})</span>            </div>            <div class="reports-listing">              @if (reports().length > 0) {                @for (report of reports(); track report.id) {                  <div class="report-wrapper">                    <div class="report-header profile-pin-previews">                      <div class="pin-author-date-wrapper gf-generic-clickable-wrapper">                        <img                          [src]="report.imageURL || \'assets/images/placeholder_profile_pic.png\'"                          class="rounded-circle gf-small-avatar"                          alt="User avatar"                        >                        <span class="gf-ugc-username pin-report-username">                          {{ report.username }}                        </span>                        <span>•</span>                        <span class="reported-pin-date dark-text-muted">                          {{ report.createdAt | timeAgo }}                        </span>                      </div>                      <input                        type="checkbox"                        class="report-checkbox"                        [checked]="isReportSelected(report.id)"                        (change)="toggleReportSelection(report.id)"                      >                    </div>                    <div class="report-body">                      <div class="gf-tag-report">                        <span>{{ report.reasonText || \'No reason provided\' }}</span>                      </div>                      <span class="gf-ugc-text report-body-text">                        {{ report.description || \'No description provided.\' }}                      </span>                    </div>                  </div>                }              } @else {                <div class="report-wrapper">                  <div class="report-body">                    <span class="gf-ugc-text report-body-text">                      No reports found for this comment.                    </span>                  </div>                </div>              }            </div>            @if (hasMoreResults()) {              <button                type="button"                class="btn-show-more"                (click)="loadMoreReports()">                Load more              </button>            }          </div>        </div>      </div>      <div class="report-panel-bottom">        <gf-user-help-box          type="alert"          [headerText]="alertText">        </gf-user-help-box>        <div class="report-action-buttons-wrapper">          <button            class="gf-tag-report-actions success"            type="button"            [disabled]="!hasSelectedReports()"            (click)="acceptSelectedReports()">            <span>Accept Reports and Delete Comment</span>          </button>          <button            class="gf-tag-report-actions reject"            type="button"            [disabled]="!hasSelectedReports()"            (click)="rejectSelectedReports()">            <span>Reject Selected Reports and Keep Comment</span>          </button>        </div>      </div>    </div>  </div>} @else {  <gf-loading-spinner></gf-loading-spinner>}</div>'
+    var COMPONENTS = [{'name': 'AboutComponent', 'selector': 'app-about'},{'name': 'AdminPopoverComponent', 'selector': 'gf-admin-popover'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AsyncButtonComponent', 'selector': 'app-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'gf-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'button[gfAsyncBtn]'},{'name': 'AuthCallbackComponent', 'selector': 'app-auth-callback'},{'name': 'CatchPinModalComponent', 'selector': 'app-catch-pin-modal'},{'name': 'ChangeBirthdateModalComponent', 'selector': 'app-change-birthdate-modal'},{'name': 'ChangeDisplaynameModalComponent', 'selector': 'app-change-displayname-modal'},{'name': 'ChangeEmailModalComponent', 'selector': 'gf-change-email-modal'},{'name': 'ChangeFirstnameModalComponent', 'selector': 'app-change-firstname-modal'},{'name': 'ChangeLastnameModalComponent', 'selector': 'app-change-lastname-modal'},{'name': 'ChangePhoneModalComponent', 'selector': 'app-change-phone-modal'},{'name': 'ChangeUsernameModalComponent', 'selector': 'app-change-username-modal'},{'name': 'ChoosePinPopupComponent', 'selector': 'app-choose-pin-popup'},{'name': 'ClusterDetailsComponent', 'selector': 'app-cluster-details'},{'name': 'ConfirmDeletionModalComponent', 'selector': 'app-confirm-deletion-modal'},{'name': 'DeleteCommentComponent', 'selector': 'gf-delete-comment'},{'name': 'DeleteGroupComponent', 'selector': 'gf-delete-group'},{'name': 'DeletePinComponent', 'selector': 'app-delete-pin'},{'name': 'DeletePostComponent', 'selector': 'gf-delete-post'},{'name': 'DiscoverComponent', 'selector': 'app-discover'},{'name': 'EnumComponent', 'selector': 'app-enum'},{'name': 'ExitGroupComponent', 'selector': 'gf-exit-group'},{'name': 'FooterComponent', 'selector': 'gf-footer'},{'name': 'ForumComponent', 'selector': 'app-forum'},{'name': 'ForumPostComponent', 'selector': 'app-forum-post'},{'name': 'FriendsComponent', 'selector': 'app-friends'},{'name': 'FriendshipListCardComponent', 'selector': 'gf-friendship-list-card'},{'name': 'FriendsListComponent', 'selector': 'app-friends-list'},{'name': 'FromFriendsComponent', 'selector': 'app-from-friends'},{'name': 'GeneralComponent', 'selector': 'app-general'},{'name': 'GfCardCommentPreviewComponent', 'selector': 'gf-gf-card-comment-preview'},{'name': 'GfCardPinPreviewComponent', 'selector': 'app-gf-card-pin-preview'},{'name': 'GfCardQuickAccessComponent', 'selector': 'app-gf-card-quick-access'},{'name': 'GfCardQuickViewComponent', 'selector': 'app-gf-card-quick-view'},{'name': 'GroupCreateComponent', 'selector': 'app-group-create'},{'name': 'GroupInviteComponent', 'selector': 'gf-group-invite'},{'name': 'GroupInvitesCardComponent', 'selector': 'gf-group-invites-card'},{'name': 'GroupInvitesListComponent', 'selector': 'gf-group-invites-list'},{'name': 'GroupListCardComponent', 'selector': 'gf-group-list-card'},{'name': 'GroupMemberSettingsPopoverComponent', 'selector': 'gf-group-member-settings-popover'},{'name': 'GroupPopoverComponent', 'selector': 'gf-group-popover'},{'name': 'GroupPostsPlaceholderComponent', 'selector': 'app-group-posts-placeholder'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsListCardComponent', 'selector': 'gf-groups-list-card'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'HeaderActionsComponent', 'selector': 'gf-header-actions'},{'name': 'HeaderComponent', 'selector': 'gf-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'InfoPinModalComponent', 'selector': 'app-info-pin-modal'},{'name': 'InviteToGroupsModalComponent', 'selector': 'gf-invite-to-groups-modal'},{'name': 'LeaderboardComponent', 'selector': 'gf-leaderboard'},{'name': 'LoadingErrorModalComponent', 'selector': 'gf-loading-error-modal'},{'name': 'LoadingSpinnerComponent', 'selector': 'gf-loading-spinner'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MembersGroupComponent', 'selector': 'gf-members-group'},{'name': 'MyGroupsComponent', 'selector': 'app-my-groups'},{'name': 'NavPopoverComponent', 'selector': 'gf-nav-popover'},{'name': 'OverviewComponent', 'selector': 'app-overview'},{'name': 'PersonalDataComponent', 'selector': 'app-personal-data'},{'name': 'PinDetailPanelComponent', 'selector': 'app-pin-detail-panel'},{'name': 'PinsAvgPublishedChart', 'selector': 'gf-pins-average-published-chart'},{'name': 'PinsComponent', 'selector': 'app-pins'},{'name': 'PinsPerWeekComponent', 'selector': 'gf-pins-per-week'},{'name': 'PostCommentsComponent', 'selector': 'app-post-comments'},{'name': 'PostIdPlaceholderComponent', 'selector': 'app-post-id-placeholder'},{'name': 'PrivacyPolicyComponent', 'selector': 'app-privacy-policy'},{'name': 'ProfileActionsPopoverComponent', 'selector': 'gf-profile-actions-popover'},{'name': 'ProfileCatchPinCardComponent', 'selector': 'gf-profile-catch-pin-card'},{'name': 'ProfileShellComponent', 'selector': 'app-profile'},{'name': 'ProfileShowMoreModalComponent', 'selector': 'gf-profile-show-more-modal'},{'name': 'ReportCommentComponent', 'selector': 'gf-report-comment'},{'name': 'ReportedCommentPageComponent', 'selector': 'gf-reported-comment-page'},{'name': 'ReportedCommentsComponent', 'selector': 'gf-reported-comments'},{'name': 'ReportedPinPageComponent', 'selector': 'gf-reported-pin-page'},{'name': 'ReportedPinsComponent', 'selector': 'gf-reported-pins'},{'name': 'ReportPinComponent', 'selector': 'gf-report'},{'name': 'RequestsListComponent', 'selector': 'app-requests-list'},{'name': 'ResetPasswordComponent', 'selector': 'gf-reset-password'},{'name': 'SearchComponent', 'selector': 'gf-search'},{'name': 'SecurityComponent', 'selector': 'app-security'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SetupTotpComponent', 'selector': 'app-setup-totp'},{'name': 'SigninComponent', 'selector': 'app-signin'},{'name': 'SigninVerifyComponent', 'selector': 'app-signin-verify'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'SmallFriendshipCarouselCardComponent', 'selector': 'gf-small-friendship-carousel-card'},{'name': 'SmallGroupCarouselCardComponent', 'selector': 'gf-small-group-carousel-card'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'StatsHomeComponent', 'selector': 'app-home'},{'name': 'StatsReportsComponent', 'selector': 'app-stats-reports'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'TermsOfServiceComponent', 'selector': 'app-terms-of-service'},{'name': 'TotpValidationModalComponent', 'selector': 'app-totp-validation-modal'},{'name': 'UserCardComponent', 'selector': 'app-user-card'},{'name': 'UserHelpBoxComponent', 'selector': 'gf-user-help-box'},{'name': 'UserPopoverComponent', 'selector': 'gf-user-popover'},{'name': 'UserRankIconComponent', 'selector': 'gf-user-rank-icon'},{'name': 'UserSatisfactionIndexComponent', 'selector': 'gf-user-satisfaction-index'},{'name': 'UsersChartComponent', 'selector': 'gf-users-chart'},{'name': 'UsersListCardComponent', 'selector': 'gf-users-list-card'},{'name': 'UsersListComponent', 'selector': 'gf-users-list'},{'name': 'UserTitleComponent', 'selector': 'gf-user-title'},{'name': 'VerifyEmailModalComponent', 'selector': 'gf-verify-email-modal'},{'name': 'VerifyTwofaContainerComponent', 'selector': 'gf-verify-twofa-container'},{'name': 'WarnPinModalComponent', 'selector': 'app-warn-pin-modal'}];
+    var DIRECTIVES = [{'name': 'ClickOutsideDirective', 'selector': '[clickOutside]'},{'name': 'LettersOnlyDirective', 'selector': '[appLettersOnly]'},{'name': 'MouseFollowDirective', 'selector': '[gfTooltip]'},{'name': 'NumbersOnlyDirective', 'selector': '[appNumbersOnly]'}];
+    var ACTUAL_COMPONENT = {'name': 'ReportedCommentPageComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ReportedCommentPageComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

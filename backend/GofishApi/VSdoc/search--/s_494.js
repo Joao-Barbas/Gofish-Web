@@ -1,0 +1,1 @@
+search_result['494']=["topic_0000000000000199.html","InfoPin Class","/// Representa um pin do tipo informativo.\r\n/// Contém informação relevante sobre locais de pesca, como condições de acesso e características do fundo.\r\n///"];

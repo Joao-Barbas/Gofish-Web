@@ -1,0 +1,1 @@
+search_result['600']=["topic_00000000000001DB.html","UserProfile.CatchPoints Property","/// Pontos totais acumulados pelo utilizador (gamificação).\r\n    ///"];

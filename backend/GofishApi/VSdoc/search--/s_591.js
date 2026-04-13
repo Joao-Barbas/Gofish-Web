@@ -1,0 +1,1 @@
+search_result['591']=["topic_00000000000001D7.html","UserProfile Class","/// Representa o perfil público e estatístico de um utilizador.\r\n/// Contém informação adicional não crítica à autenticação, como gamificação e atividade.\r\n///"];

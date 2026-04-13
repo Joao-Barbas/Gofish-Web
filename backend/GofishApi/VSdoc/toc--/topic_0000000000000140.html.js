@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"GofishApi Reference","topic_000000000000026E.html"],['231',"GofishApi.Extensions Namespace","topic_0000000000000131.html"],['245',"WebApplicationBuilderExtensions Class","topic_000000000000013C.html"],['246',"Methods","topic_000000000000013C_methods--.html"],['249',"AddAndConfigureIdentityAuth Method","topic_0000000000000140.html"]];

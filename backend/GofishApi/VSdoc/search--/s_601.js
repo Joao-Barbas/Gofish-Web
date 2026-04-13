@@ -1,0 +1,1 @@
+search_result['601']=["topic_00000000000001DC.html","UserProfile.CatchPointsLastMonth Property","/// Pontos acumulados no mês anterior.\r\n    /// Usado para cálculo de progresso mensal.\r\n    ///"];

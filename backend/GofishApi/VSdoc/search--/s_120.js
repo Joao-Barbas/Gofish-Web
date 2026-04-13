@@ -1,0 +1,1 @@
+search_result['120']=["topic_000000000000004F.html","ReportController.GetCommentReports Method","/// Obtém a lista paginada de reports de comentários.\r\n    /// Apenas administradores podem consultar esta informação.\r\n    ///"];

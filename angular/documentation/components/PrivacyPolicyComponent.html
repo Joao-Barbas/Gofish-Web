@@ -1,0 +1,786 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  PrivacyPolicyComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/privacy-policy/privacy-policy.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-privacy-policy</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./privacy-policy.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./privacy-policy.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ngAfterViewInit" >ngAfterViewInit</a>
+                            </li>
+                            <li>
+                                <a href="#scrollToSection" >scrollToSection</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewInit"></a>
+                    <span class="name">
+                        <span ><b>ngAfterViewInit</b></span>
+                        <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="17"
+                                    class="link-to-prism">src/app/features/privacy-policy/privacy-policy.component.ts:17</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="scrollToSection"></a>
+                    <span class="name">
+                        <span ><b>scrollToSection</b></span>
+                        <a href="#scrollToSection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>scrollToSection(sectionId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="10"
+                                    class="link-to-prism">src/app/features/privacy-policy/privacy-policy.component.ts:10</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sectionId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+
+@Component({
+  selector: &#x27;app-privacy-policy&#x27;,
+  imports: [],
+  templateUrl: &#x27;./privacy-policy.component.html&#x27;,
+  styleUrl: &#x27;./privacy-policy.component.css&#x27;,
+})
+export class PrivacyPolicyComponent {
+    scrollToSection(sectionId: string): void {
+    const element &#x3D; document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: &#x27;smooth&#x27;, block: &#x27;start&#x27; });
+    }
+  }
+
+  ngAfterViewInit() {
+    window.scrollTo({ top: 0 });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;w-100&quot;&gt;
+
+  &lt;div class&#x3D;&quot;container&quot;&gt;
+
+    &lt;!-- # dates --&gt;
+    &lt;section class&#x3D;&quot;row justify-content-center first-row-wrapper&quot;&gt;
+      &lt;div class&#x3D;&quot;col-8&quot;&gt;
+
+        &lt;p class&#x3D;&quot;pp-title text-bold&quot;&gt;&lt;b class&#x3D;&quot;gf-text-logo&quot;&gt;GOFISH&lt;/b&gt;&#x27;s Privacy Policy&lt;/p&gt;
+        &lt;div class&#x3D;&quot;dates-wrapper&quot;&gt;
+          &lt;p class&#x3D;&quot;pp-date text-bold&quot;&gt;Effective: 12 April 2026&lt;/p&gt;
+          &lt;p class&#x3D;&quot;pp-date text-bold&quot;&gt;Last Updated: 12 April 2026&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+    &lt;/section&gt;
+
+    &lt;!-- # introduction-index --&gt;
+
+    &lt;section class&#x3D;&quot;row justify-content-center introduction-index&quot;&gt;
+
+      &lt;div class&#x3D;&quot;col-8&quot;&gt;
+
+        &lt;div class&#x3D;&quot;paragraph-generic-wrapper&quot;&gt;
+
+          &lt;p class&#x3D;&quot;pp-text pp-intro&quot;&gt;This Privacy Policy explains how &lt;span class&#x3D;&quot;logo-in-text&quot;&gt;GOFISH&lt;/span&gt;
+            collects, uses, and protects information when users access or use the platform.&lt;/p&gt;
+          &lt;p&gt;
+            By creating an account or using the service, users agree to the practices described in this Privacy Policy.
+          &lt;/p&gt;
+
+        &lt;/div&gt;
+
+        &lt;ol class&#x3D;&quot;index generic-select-wrapper-text&quot;&gt;
+          &lt;li&gt;
+            &lt;a (click)&#x3D;&quot;scrollToSection(&#x27;information-we-collect&#x27;)&quot;&gt;Information We Collect&lt;/a&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;a (click)&#x3D;&quot;scrollToSection(&#x27;how-we-use-the-information&#x27;)&quot;&gt;How We Use the Information&lt;/a&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;a (click)&#x3D;&quot;scrollToSection(&#x27;third-party-services&#x27;)&quot;&gt;Third-Party Services&lt;/a&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;a (click)&#x3D;&quot;scrollToSection(&#x27;data-retention&#x27;)&quot;&gt;Data Retention&lt;/a&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;a (click)&#x3D;&quot;scrollToSection(&#x27;user-rights&#x27;)&quot;&gt;User Rights&lt;/a&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;a (click)&#x3D;&quot;scrollToSection(&#x27;security-measures&#x27;)&quot;&gt;Security Measures&lt;/a&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;a (click)&#x3D;&quot;scrollToSection(&#x27;childrens-privacy&#x27;)&quot;&gt;Children&#x27;s Privacy&lt;/a&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;a (click)&#x3D;&quot;scrollToSection(&#x27;changes-to-privacy-policy&#x27;)&quot;&gt;Changes to This Privacy Policy&lt;/a&gt;
+          &lt;/li&gt;
+        &lt;/ol&gt;
+
+      &lt;/div&gt;
+
+    &lt;/section&gt;
+
+    &lt;!-- # Listed Terms Text --&gt;
+
+    &lt;section class&#x3D;&quot;row justify-content-center listed-terms&quot;&gt;
+
+      &lt;!-- # 1. Information We Collect --&gt;
+
+      &lt;div class&#x3D;&quot;col-8 singular-term-wrapper&quot; id&#x3D;&quot;information-we-collect&quot;&gt;
+
+        &lt;h2 class&#x3D;&quot;term-title text-bold&quot;&gt;
+          1. Information We Collect
+        &lt;/h2&gt;
+
+        &lt;div class&#x3D;&quot;paragraph-generic-wrapper&quot;&gt;
+
+          &lt;p class&#x3D;&quot;mt-3&quot;&gt;
+            When users create an account or interact with the platform, &lt;span class&#x3D;&quot;logo-in-text&quot;&gt;GOFISH&lt;/span&gt; may
+            collect the following information:
+          &lt;/p&gt;
+
+          &lt;p class&#x3D;&quot;text-bold&quot;&gt;
+            Account Information
+          &lt;/p&gt;
+
+          &lt;ul&gt;
+            &lt;li&gt;Username&lt;/li&gt;
+            &lt;li&gt;First and last name&lt;/li&gt;
+            &lt;li&gt;Email address&lt;/li&gt;
+            &lt;li&gt;Password (stored in encrypted/hashed form)&lt;/li&gt;
+          &lt;/ul&gt;
+
+          &lt;p class&#x3D;&quot;text-bold&quot;&gt;
+            User Content
+          &lt;/p&gt;
+
+          &lt;ul&gt;
+            &lt;li&gt;Pins created on the map&lt;/li&gt;
+            &lt;li&gt;Geographic location of pins&lt;/li&gt;
+            &lt;li&gt;Images uploaded with pins&lt;/li&gt;
+            &lt;li&gt;Information related to fishing catches or environmental observations&lt;/li&gt;
+          &lt;/ul&gt;
+
+          &lt;p class&#x3D;&quot;text-bold&quot;&gt;
+            User Feedback
+          &lt;/p&gt;
+
+          &lt;ul&gt;
+            &lt;li&gt;Satisfaction ratings or feedback voluntarily provided by users through in-app surveys.&lt;/li&gt;
+          &lt;/ul&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+      &lt;!-- # 2. How We Use the Information --&gt;
+
+      &lt;div class&#x3D;&quot;col-8 singular-term-wrapper&quot; id&#x3D;&quot;how-we-use-the-information&quot;&gt;
+
+        &lt;h2 class&#x3D;&quot;term-title text-bold&quot;&gt;
+          2. How We Use the Information
+        &lt;/h2&gt;
+
+        &lt;div class&#x3D;&quot;paragraph-generic-wrapper&quot;&gt;
+
+          &lt;p class&#x3D;&quot;mt-3&quot;&gt;
+            The information collected is used only for operating and maintaining the platform.
+          &lt;/p&gt;
+          &lt;p class&#x3D;&quot;mt-3&quot;&gt;
+            This includes:
+          &lt;/p&gt;
+          &lt;ul&gt;
+            &lt;li&gt;Creating and managing user accounts&lt;/li&gt;
+            &lt;li&gt;Displaying pins and user-generated content within the platform&lt;/li&gt;
+            &lt;li&gt;Allowing interaction between users and the map features&lt;/li&gt;
+            &lt;li&gt;Maintaining the functionality and integrity of the service&lt;/li&gt;
+            &lt;li&gt;Collecting voluntary user satisfaction feedback to improve the platform&lt;/li&gt;
+          &lt;/ul&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+      &lt;!-- # 3. Third-Party Services --&gt;
+
+      &lt;div class&#x3D;&quot;col-8 singular-term-wrapper&quot; id&#x3D;&quot;third-party-services&quot;&gt;
+
+        &lt;h2 class&#x3D;&quot;term-title text-bold&quot;&gt;
+          3. Third-Party Services
+        &lt;/h2&gt;
+
+        &lt;div class&#x3D;&quot;paragraph-generic-wrapper&quot;&gt;
+
+          &lt;p class&#x3D;&quot;mt-3&quot;&gt;
+            &lt;span class&#x3D;&quot;logo-in-text&quot;&gt;GOFISH&lt;/span&gt; relies on third-party services to provide certain functionalities.
+          &lt;/p&gt;
+          &lt;p&gt;
+            These services include:
+          &lt;/p&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;b&gt;Mapbox&lt;/b&gt; for map visualization and geolocation features&lt;/li&gt;
+            &lt;li&gt;&lt;b&gt;Google&lt;/b&gt; for optional authentication and account sign-in&lt;/li&gt;
+            &lt;li&gt;&lt;b&gt;Microsoft&lt;/b&gt; cloud infrastructure through Azure hosting services&lt;/li&gt;
+          &lt;/ul&gt;
+          &lt;p&gt;
+            These providers may process certain technical data required to deliver their services and are subject to their own privacy policies.
+          &lt;/p&gt;
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+      &lt;!-- # 4. Data Retention --&gt;
+
+      &lt;div class&#x3D;&quot;col-8 singular-term-wrapper&quot; id&#x3D;&quot;data-retention&quot;&gt;
+
+        &lt;h2 class&#x3D;&quot;term-title text-bold&quot;&gt;
+          4. Data Retention
+        &lt;/h2&gt;
+
+        &lt;div class&#x3D;&quot;paragraph-generic-wrapper&quot;&gt;
+
+          &lt;p class&#x3D;&quot;mt-3&quot;&gt;
+            User information is stored for as long as the account remains active.
+          &lt;/p&gt;
+          &lt;p&gt;
+            If a user deletes their account, associated personal data and content are removed from the platform, except where retention is required for technical or legal reasons.
+          &lt;/p&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+      &lt;!-- # 5. User Rights --&gt;
+
+      &lt;div class&#x3D;&quot;col-8 singular-term-wrapper&quot; id&#x3D;&quot;user-rights&quot;&gt;
+
+        &lt;h2 class&#x3D;&quot;term-title text-bold&quot;&gt;
+          5. User Rights
+        &lt;/h2&gt;
+
+        &lt;div class&#x3D;&quot;paragraph-generic-wrapper&quot;&gt;
+
+          &lt;p class&#x3D;&quot;mt-3&quot;&gt;
+            Users have control over their personal information within the platform.
+          &lt;/p&gt;
+          &lt;p&gt;
+            Users may:
+          &lt;/p&gt;
+          &lt;ul&gt;
+            &lt;li&gt;View their profile information&lt;/li&gt;
+            &lt;li&gt;Update or correct their personal data&lt;/li&gt;
+            &lt;li&gt;Delete their account and associated data&lt;/li&gt;
+          &lt;/ul&gt;
+          &lt;p&gt;
+            These controls are available directly within the application.
+          &lt;/p&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+      &lt;!-- # 6. Security Measures --&gt;
+
+      &lt;div class&#x3D;&quot;col-8 singular-term-wrapper&quot; id&#x3D;&quot;security-measures&quot;&gt;
+
+        &lt;h2 class&#x3D;&quot;term-title text-bold&quot;&gt;
+          6. Security Measures
+        &lt;/h2&gt;
+
+        &lt;div class&#x3D;&quot;paragraph-generic-wrapper&quot;&gt;
+
+          &lt;p class&#x3D;&quot;mt-3&quot;&gt;
+            &lt;span class&#x3D;&quot;logo-in-text&quot;&gt;GOFISH&lt;/span&gt; implements measures to protect user data from unauthorized access or misuse.
+          &lt;/p&gt;
+          &lt;p&gt;
+            These measures include:
+          &lt;/p&gt;
+          &lt;ul&gt;
+            &lt;li&gt;Secure password hashing for stored credentials&lt;/li&gt;
+            &lt;li&gt;Encrypted communication through HTTPS connections&lt;/li&gt;
+            &lt;li&gt;Optional &lt;b&gt;Two-Factor Authentication&lt;/b&gt; (2FA) for additional account security&lt;/li&gt;
+          &lt;/ul&gt;
+          &lt;p&gt;
+            Authentication applications such as &lt;b&gt;Google&lt;/b&gt; Authenticator may be used for this purpose.
+          &lt;/p&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+      &lt;!-- # 7. Children&#x27;s Privacy --&gt;
+
+      &lt;div class&#x3D;&quot;col-8 singular-term-wrapper&quot; id&#x3D;&quot;childrens-privacy&quot;&gt;
+
+        &lt;h2 class&#x3D;&quot;term-title text-bold&quot;&gt;
+          7. Children&#x27;s Privacy
+        &lt;/h2&gt;
+
+        &lt;div class&#x3D;&quot;paragraph-generic-wrapper&quot;&gt;
+
+          &lt;p class&#x3D;&quot;mt-3&quot;&gt;
+            The &lt;span class&#x3D;&quot;logo-in-text&quot;&gt;GOFISH&lt;/span&gt; platform is not intended for use by individuals under the age of 13.
+          &lt;/p&gt;
+          &lt;p&gt;
+            By creating an account, users confirm that they meet this minimum age requirement.
+          &lt;/p&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+      &lt;!-- # 8. Changes to This Privacy Policy --&gt;
+
+      &lt;div class&#x3D;&quot;col-8 singular-term-wrapper&quot; id&#x3D;&quot;changes-to-privacy-policy&quot;&gt;
+
+        &lt;h2 class&#x3D;&quot;term-title text-bold&quot;&gt;
+          8. Changes to This Privacy Policy
+        &lt;/h2&gt;
+
+        &lt;div class&#x3D;&quot;paragraph-generic-wrapper&quot;&gt;
+
+          &lt;p class&#x3D;&quot;mt-3&quot;&gt;
+            &lt;span class&#x3D;&quot;logo-in-text&quot;&gt;GOFISH&lt;/span&gt; may update this Privacy Policy from time to time.
+          &lt;/p&gt;
+          &lt;p&gt;
+            Continued use of the platform after changes have been published indicates acceptance of the updated policy.
+          &lt;/p&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+    &lt;/section&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="w-100">  <div class="container">    <!-- # dates -->    <section class="row justify-content-center first-row-wrapper">      <div class="col-8">        <p class="pp-title text-bold"><b class="gf-text-logo">GOFISH</b>\'s Privacy Policy</p>        <div class="dates-wrapper">          <p class="pp-date text-bold">Effective: 12 April 2026</p>          <p class="pp-date text-bold">Last Updated: 12 April 2026</p>        </div>      </div>    </section>    <!-- # introduction-index -->    <section class="row justify-content-center introduction-index">      <div class="col-8">        <div class="paragraph-generic-wrapper">          <p class="pp-text pp-intro">This Privacy Policy explains how <span class="logo-in-text">GOFISH</span>            collects, uses, and protects information when users access or use the platform.</p>          <p>            By creating an account or using the service, users agree to the practices described in this Privacy Policy.          </p>        </div>        <ol class="index generic-select-wrapper-text">          <li>            <a (click)="scrollToSection(\'information-we-collect\')">Information We Collect</a>          </li>          <li>            <a (click)="scrollToSection(\'how-we-use-the-information\')">How We Use the Information</a>          </li>          <li>            <a (click)="scrollToSection(\'third-party-services\')">Third-Party Services</a>          </li>          <li>            <a (click)="scrollToSection(\'data-retention\')">Data Retention</a>          </li>          <li>            <a (click)="scrollToSection(\'user-rights\')">User Rights</a>          </li>          <li>            <a (click)="scrollToSection(\'security-measures\')">Security Measures</a>          </li>          <li>            <a (click)="scrollToSection(\'childrens-privacy\')">Children\'s Privacy</a>          </li>          <li>            <a (click)="scrollToSection(\'changes-to-privacy-policy\')">Changes to This Privacy Policy</a>          </li>        </ol>      </div>    </section>    <!-- # Listed Terms Text -->    <section class="row justify-content-center listed-terms">      <!-- # 1. Information We Collect -->      <div class="col-8 singular-term-wrapper" id="information-we-collect">        <h2 class="term-title text-bold">          1. Information We Collect        </h2>        <div class="paragraph-generic-wrapper">          <p class="mt-3">            When users create an account or interact with the platform, <span class="logo-in-text">GOFISH</span> may            collect the following information:          </p>          <p class="text-bold">            Account Information          </p>          <ul>            <li>Username</li>            <li>First and last name</li>            <li>Email address</li>            <li>Password (stored in encrypted/hashed form)</li>          </ul>          <p class="text-bold">            User Content          </p>          <ul>            <li>Pins created on the map</li>            <li>Geographic location of pins</li>            <li>Images uploaded with pins</li>            <li>Information related to fishing catches or environmental observations</li>          </ul>          <p class="text-bold">            User Feedback          </p>          <ul>            <li>Satisfaction ratings or feedback voluntarily provided by users through in-app surveys.</li>          </ul>        </div>      </div>      <!-- # 2. How We Use the Information -->      <div class="col-8 singular-term-wrapper" id="how-we-use-the-information">        <h2 class="term-title text-bold">          2. How We Use the Information        </h2>        <div class="paragraph-generic-wrapper">          <p class="mt-3">            The information collected is used only for operating and maintaining the platform.          </p>          <p class="mt-3">            This includes:          </p>          <ul>            <li>Creating and managing user accounts</li>            <li>Displaying pins and user-generated content within the platform</li>            <li>Allowing interaction between users and the map features</li>            <li>Maintaining the functionality and integrity of the service</li>            <li>Collecting voluntary user satisfaction feedback to improve the platform</li>          </ul>        </div>      </div>      <!-- # 3. Third-Party Services -->      <div class="col-8 singular-term-wrapper" id="third-party-services">        <h2 class="term-title text-bold">          3. Third-Party Services        </h2>        <div class="paragraph-generic-wrapper">          <p class="mt-3">            <span class="logo-in-text">GOFISH</span> relies on third-party services to provide certain functionalities.          </p>          <p>            These services include:          </p>          <ul>            <li><b>Mapbox</b> for map visualization and geolocation features</li>            <li><b>Google</b> for optional authentication and account sign-in</li>            <li><b>Microsoft</b> cloud infrastructure through Azure hosting services</li>          </ul>          <p>            These providers may process certain technical data required to deliver their services and are subject to their own privacy policies.          </p>        </div>      </div>      <!-- # 4. Data Retention -->      <div class="col-8 singular-term-wrapper" id="data-retention">        <h2 class="term-title text-bold">          4. Data Retention        </h2>        <div class="paragraph-generic-wrapper">          <p class="mt-3">            User information is stored for as long as the account remains active.          </p>          <p>            If a user deletes their account, associated personal data and content are removed from the platform, except where retention is required for technical or legal reasons.          </p>        </div>      </div>      <!-- # 5. User Rights -->      <div class="col-8 singular-term-wrapper" id="user-rights">        <h2 class="term-title text-bold">          5. User Rights        </h2>        <div class="paragraph-generic-wrapper">          <p class="mt-3">            Users have control over their personal information within the platform.          </p>          <p>            Users may:          </p>          <ul>            <li>View their profile information</li>            <li>Update or correct their personal data</li>            <li>Delete their account and associated data</li>          </ul>          <p>            These controls are available directly within the application.          </p>        </div>      </div>      <!-- # 6. Security Measures -->      <div class="col-8 singular-term-wrapper" id="security-measures">        <h2 class="term-title text-bold">          6. Security Measures        </h2>        <div class="paragraph-generic-wrapper">          <p class="mt-3">            <span class="logo-in-text">GOFISH</span> implements measures to protect user data from unauthorized access or misuse.          </p>          <p>            These measures include:          </p>          <ul>            <li>Secure password hashing for stored credentials</li>            <li>Encrypted communication through HTTPS connections</li>            <li>Optional <b>Two-Factor Authentication</b> (2FA) for additional account security</li>          </ul>          <p>            Authentication applications such as <b>Google</b> Authenticator may be used for this purpose.          </p>        </div>      </div>      <!-- # 7. Children\'s Privacy -->      <div class="col-8 singular-term-wrapper" id="childrens-privacy">        <h2 class="term-title text-bold">          7. Children\'s Privacy        </h2>        <div class="paragraph-generic-wrapper">          <p class="mt-3">            The <span class="logo-in-text">GOFISH</span> platform is not intended for use by individuals under the age of 13.          </p>          <p>            By creating an account, users confirm that they meet this minimum age requirement.          </p>        </div>      </div>      <!-- # 8. Changes to This Privacy Policy -->      <div class="col-8 singular-term-wrapper" id="changes-to-privacy-policy">        <h2 class="term-title text-bold">          8. Changes to This Privacy Policy        </h2>        <div class="paragraph-generic-wrapper">          <p class="mt-3">            <span class="logo-in-text">GOFISH</span> may update this Privacy Policy from time to time.          </p>          <p>            Continued use of the platform after changes have been published indicates acceptance of the updated policy.          </p>        </div>      </div>    </section>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AboutComponent', 'selector': 'app-about'},{'name': 'AdminPopoverComponent', 'selector': 'gf-admin-popover'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AsyncButtonComponent', 'selector': 'app-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'gf-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'button[gfAsyncBtn]'},{'name': 'AuthCallbackComponent', 'selector': 'app-auth-callback'},{'name': 'CatchPinModalComponent', 'selector': 'app-catch-pin-modal'},{'name': 'ChangeBirthdateModalComponent', 'selector': 'app-change-birthdate-modal'},{'name': 'ChangeDisplaynameModalComponent', 'selector': 'app-change-displayname-modal'},{'name': 'ChangeEmailModalComponent', 'selector': 'gf-change-email-modal'},{'name': 'ChangeFirstnameModalComponent', 'selector': 'app-change-firstname-modal'},{'name': 'ChangeLastnameModalComponent', 'selector': 'app-change-lastname-modal'},{'name': 'ChangePhoneModalComponent', 'selector': 'app-change-phone-modal'},{'name': 'ChangeUsernameModalComponent', 'selector': 'app-change-username-modal'},{'name': 'ChoosePinPopupComponent', 'selector': 'app-choose-pin-popup'},{'name': 'ClusterDetailsComponent', 'selector': 'app-cluster-details'},{'name': 'ConfirmDeletionModalComponent', 'selector': 'app-confirm-deletion-modal'},{'name': 'DeleteCommentComponent', 'selector': 'gf-delete-comment'},{'name': 'DeleteGroupComponent', 'selector': 'gf-delete-group'},{'name': 'DeletePinComponent', 'selector': 'app-delete-pin'},{'name': 'DeletePostComponent', 'selector': 'gf-delete-post'},{'name': 'DiscoverComponent', 'selector': 'app-discover'},{'name': 'EnumComponent', 'selector': 'app-enum'},{'name': 'ExitGroupComponent', 'selector': 'gf-exit-group'},{'name': 'FooterComponent', 'selector': 'gf-footer'},{'name': 'ForumComponent', 'selector': 'app-forum'},{'name': 'ForumPostComponent', 'selector': 'app-forum-post'},{'name': 'FriendsComponent', 'selector': 'app-friends'},{'name': 'FriendshipListCardComponent', 'selector': 'gf-friendship-list-card'},{'name': 'FriendsListComponent', 'selector': 'app-friends-list'},{'name': 'FromFriendsComponent', 'selector': 'app-from-friends'},{'name': 'GeneralComponent', 'selector': 'app-general'},{'name': 'GfCardCommentPreviewComponent', 'selector': 'gf-gf-card-comment-preview'},{'name': 'GfCardPinPreviewComponent', 'selector': 'app-gf-card-pin-preview'},{'name': 'GfCardQuickAccessComponent', 'selector': 'app-gf-card-quick-access'},{'name': 'GfCardQuickViewComponent', 'selector': 'app-gf-card-quick-view'},{'name': 'GroupCreateComponent', 'selector': 'app-group-create'},{'name': 'GroupInviteComponent', 'selector': 'gf-group-invite'},{'name': 'GroupInvitesCardComponent', 'selector': 'gf-group-invites-card'},{'name': 'GroupInvitesListComponent', 'selector': 'gf-group-invites-list'},{'name': 'GroupListCardComponent', 'selector': 'gf-group-list-card'},{'name': 'GroupMemberSettingsPopoverComponent', 'selector': 'gf-group-member-settings-popover'},{'name': 'GroupPopoverComponent', 'selector': 'gf-group-popover'},{'name': 'GroupPostsPlaceholderComponent', 'selector': 'app-group-posts-placeholder'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsListCardComponent', 'selector': 'gf-groups-list-card'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'HeaderActionsComponent', 'selector': 'gf-header-actions'},{'name': 'HeaderComponent', 'selector': 'gf-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'InfoPinModalComponent', 'selector': 'app-info-pin-modal'},{'name': 'InviteToGroupsModalComponent', 'selector': 'gf-invite-to-groups-modal'},{'name': 'LeaderboardComponent', 'selector': 'gf-leaderboard'},{'name': 'LoadingErrorModalComponent', 'selector': 'gf-loading-error-modal'},{'name': 'LoadingSpinnerComponent', 'selector': 'gf-loading-spinner'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MembersGroupComponent', 'selector': 'gf-members-group'},{'name': 'MyGroupsComponent', 'selector': 'app-my-groups'},{'name': 'NavPopoverComponent', 'selector': 'gf-nav-popover'},{'name': 'OverviewComponent', 'selector': 'app-overview'},{'name': 'PersonalDataComponent', 'selector': 'app-personal-data'},{'name': 'PinDetailPanelComponent', 'selector': 'app-pin-detail-panel'},{'name': 'PinsAvgPublishedChart', 'selector': 'gf-pins-average-published-chart'},{'name': 'PinsComponent', 'selector': 'app-pins'},{'name': 'PinsPerWeekComponent', 'selector': 'gf-pins-per-week'},{'name': 'PostCommentsComponent', 'selector': 'app-post-comments'},{'name': 'PostIdPlaceholderComponent', 'selector': 'app-post-id-placeholder'},{'name': 'PrivacyPolicyComponent', 'selector': 'app-privacy-policy'},{'name': 'ProfileActionsPopoverComponent', 'selector': 'gf-profile-actions-popover'},{'name': 'ProfileCatchPinCardComponent', 'selector': 'gf-profile-catch-pin-card'},{'name': 'ProfileShellComponent', 'selector': 'app-profile'},{'name': 'ProfileShowMoreModalComponent', 'selector': 'gf-profile-show-more-modal'},{'name': 'ReportCommentComponent', 'selector': 'gf-report-comment'},{'name': 'ReportedCommentPageComponent', 'selector': 'gf-reported-comment-page'},{'name': 'ReportedCommentsComponent', 'selector': 'gf-reported-comments'},{'name': 'ReportedPinPageComponent', 'selector': 'gf-reported-pin-page'},{'name': 'ReportedPinsComponent', 'selector': 'gf-reported-pins'},{'name': 'ReportPinComponent', 'selector': 'gf-report'},{'name': 'RequestsListComponent', 'selector': 'app-requests-list'},{'name': 'ResetPasswordComponent', 'selector': 'gf-reset-password'},{'name': 'SearchComponent', 'selector': 'gf-search'},{'name': 'SecurityComponent', 'selector': 'app-security'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SetupTotpComponent', 'selector': 'app-setup-totp'},{'name': 'SigninComponent', 'selector': 'app-signin'},{'name': 'SigninVerifyComponent', 'selector': 'app-signin-verify'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'SmallFriendshipCarouselCardComponent', 'selector': 'gf-small-friendship-carousel-card'},{'name': 'SmallGroupCarouselCardComponent', 'selector': 'gf-small-group-carousel-card'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'StatsHomeComponent', 'selector': 'app-home'},{'name': 'StatsReportsComponent', 'selector': 'app-stats-reports'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'TermsOfServiceComponent', 'selector': 'app-terms-of-service'},{'name': 'TotpValidationModalComponent', 'selector': 'app-totp-validation-modal'},{'name': 'UserCardComponent', 'selector': 'app-user-card'},{'name': 'UserHelpBoxComponent', 'selector': 'gf-user-help-box'},{'name': 'UserPopoverComponent', 'selector': 'gf-user-popover'},{'name': 'UserRankIconComponent', 'selector': 'gf-user-rank-icon'},{'name': 'UserSatisfactionIndexComponent', 'selector': 'gf-user-satisfaction-index'},{'name': 'UsersChartComponent', 'selector': 'gf-users-chart'},{'name': 'UsersListCardComponent', 'selector': 'gf-users-list-card'},{'name': 'UsersListComponent', 'selector': 'gf-users-list'},{'name': 'UserTitleComponent', 'selector': 'gf-user-title'},{'name': 'VerifyEmailModalComponent', 'selector': 'gf-verify-email-modal'},{'name': 'VerifyTwofaContainerComponent', 'selector': 'gf-verify-twofa-container'},{'name': 'WarnPinModalComponent', 'selector': 'app-warn-pin-modal'}];
+    var DIRECTIVES = [{'name': 'ClickOutsideDirective', 'selector': '[clickOutside]'},{'name': 'LettersOnlyDirective', 'selector': '[appLettersOnly]'},{'name': 'MouseFollowDirective', 'selector': '[gfTooltip]'},{'name': 'NumbersOnlyDirective', 'selector': '[appNumbersOnly]'}];
+    var ACTUAL_COMPONENT = {'name': 'PrivacyPolicyComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'PrivacyPolicyComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

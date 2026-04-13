@@ -1,0 +1,1 @@
+search_result['135']=["topic_0000000000000059.html","StatsController.GetReportsWaitingReview Method","/// Obtém o número total de reports pendentes de revisão.\r\n    /// Soma reports de pins e de comentários.\r\n    ///"];

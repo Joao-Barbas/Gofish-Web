@@ -1,0 +1,1 @@
+search_result['171']=["topic_0000000000000073.html","UserController.GetFriendsLeaderboard Method","Obtém o leaderboard entre amigos do utilizador autenticado,\r\nincluindo o próprio utilizador."];

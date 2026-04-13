@@ -1,0 +1,1 @@
+search_result['607']=["topic_00000000000001E2.html","UserProfile.LastPinWeekStart Property","/// Data de início da última semana em que o utilizador criou um pin.\r\n    /// Usado para cálculo de streak.\r\n    ///"];

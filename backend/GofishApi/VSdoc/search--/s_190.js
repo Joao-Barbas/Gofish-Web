@@ -1,0 +1,1 @@
+search_result['190']=["topic_0000000000000081.html","UserProfileController.GetUserPoints Method","/// Obtém os pontos de gamificação de um utilizador.\r\n    ///"];

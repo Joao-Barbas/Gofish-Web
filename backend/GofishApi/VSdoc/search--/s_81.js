@@ -1,0 +1,1 @@
+search_result['81']=["topic_0000000000000032.html","PinController.GetInViewport Method","/// Obtém os pins visíveis dentro de uma área geográfica definida por coordenadas mínimas e máximas.\r\n    ///"];

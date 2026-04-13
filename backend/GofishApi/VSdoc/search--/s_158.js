@@ -1,0 +1,1 @@
+search_result['158']=["topic_000000000000006B.html","UserController Class","Controlador responsável pela gestão de utilizadores, amizades,\r\nleaderboards, grupos associados ao utilizador e convites de grupo."];

@@ -1,0 +1,1 @@
+search_result['123']=["topic_0000000000000052.html","ReportController.DeletePinReports Method","/// Remove vários reports de pins de uma só vez.\r\n    /// Apenas administradores podem executar esta operação.\r\n    ///"];

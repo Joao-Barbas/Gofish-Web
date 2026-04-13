@@ -1,0 +1,1 @@
+search_result['80']=["topic_0000000000000031.html","PinController Constructor","/// Inicializa uma nova instância do controlador de pins.\r\n    ///"];

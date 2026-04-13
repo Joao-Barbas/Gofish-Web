@@ -1,0 +1,1 @@
+search_result['116']=["topic_000000000000004B.html","ReportController.CreateCommentReport Method","/// Cria um novo report sobre um comentário.\r\n    /// O utilizador autenticado só pode reportar o mesmo comentário uma vez.\r\n    ///"];

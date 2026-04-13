@@ -1,0 +1,1276 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  LeaderboardComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/leaderboard/leaderboard.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Leaderboard page component.</p>
+<p>Responsibilities:</p>
+<ul>
+<li>Resolve the active leaderboard tab from component input</li>
+<li>Load leaderboard data from the backend</li>
+<li>Expose derived leaderboard sections for the template</li>
+<li>Provide access to shared constants and helper services</li>
+</ul>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>gf-leaderboard</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/router/RouterLink" target="_blank" >RouterLink</a></code>
+                                <code><a href="../components/LoadingErrorModalComponent.html" target="_self" >LoadingErrorModalComponent</a></code>
+                                <code><a href="../components/LoadingSpinnerComponent.html" target="_self" >LoadingSpinnerComponent</a></code>
+                            <code>AbsPipe</code>
+                                <code><a href="../components/UserTitleComponent.html" target="_self" >UserTitleComponent</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./leaderboard.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./leaderboard.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#activeTabOrDefault" >activeTabOrDefault</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#allEntries" >allEntries</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#authService" >authService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#avatarService" >avatarService</a>
+                            </li>
+                            <li>
+                                <a href="#leaderboard" >leaderboard</a>
+                            </li>
+                            <li>
+                                <a href="#Path" >Path</a>
+                            </li>
+                            <li>
+                                <a href="#Rank" >Rank</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#rest" >rest</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#route" >route</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#topThree" >topThree</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#userApi" >userApi</a>
+                            </li>
+                            <li>
+                                <a href="#window" >window</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#activeTab" >activeTab</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="activeTab"></a>
+                        <b>activeTab</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#LeaderboardTab" target="_self" >LeaderboardTab | undefined</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>undefined, { alias: &#x27;tab&#x27; }</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:43</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Active leaderboard tab provided through component input.
+The input is aliased as &quot;tab&quot;.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activeTabOrDefault"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>activeTabOrDefault</b></span>
+                        <a href="#activeTabOrDefault"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed&lt;LeaderboardTab&gt;(() &#x3D;&gt; this.activeTab() ?? &#x27;global&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:48</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Returns the active tab or falls back to the global leaderboard.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="allEntries"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>allEntries</b></span>
+                        <a href="#allEntries"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this.leaderboard.value()?.entries ?? [])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="105" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:105</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Returns all leaderboard entries.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authService"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>authService</b></span>
+                        <a href="#authService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(AuthService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Service used to access authentication state.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="avatarService"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>avatarService</b></span>
+                        <a href="#avatarService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(AvatarService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Service used to resolve avatar image URLs.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="leaderboard"></a>
+                    <span class="name">
+                        <span ><b>leaderboard</b></span>
+                        <a href="#leaderboard"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>resource({
+    params: () &#x3D;&gt; this.activeTabOrDefault(),
+    loader: ({ params: tab }) &#x3D;&gt; firstValueFrom(
+      tab &#x3D;&#x3D;&#x3D; &#x27;global&#x27;
+        ? this.userApi.getGlobalLeaderboard()
+        : this.userApi.getFriendsLeaderboard()
+    )
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:83</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Reactive resource used to load leaderboard data according to
+the currently selected tab.</p>
+<p>Behavior:</p>
+<ul>
+<li>Loads the global leaderboard when the active tab is &quot;global&quot;</li>
+<li>Loads the friends leaderboard when the active tab is &quot;friends&quot;</li>
+<li>Automatically reloads when the active tab changes</li>
+</ul>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Path"></a>
+                    <span class="name">
+                        <span ><b>Path</b></span>
+                        <a href="#Path"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>Path</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:69</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Shared route path constants used in templates.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Rank"></a>
+                    <span class="name">
+                        <span ><b>Rank</b></span>
+                        <a href="#Rank"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>Rank</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:72</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Shared rank constants used in templates.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="rest"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>rest</b></span>
+                        <a href="#rest"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this.leaderboard.value()?.entries.slice(3) ?? [])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:100</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Returns the leaderboard entries after the top three.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="route"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>route</b></span>
+                        <a href="#route"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ActivatedRoute)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Current activated route.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(Router)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Router instance used for navigation actions.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="topThree"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>topThree</b></span>
+                        <a href="#topThree"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this.leaderboard.value()?.entries.slice(0, 3) ?? [])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:95</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Returns the first three leaderboard entries.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userApi"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>userApi</b></span>
+                        <a href="#userApi"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(UserApi)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:51</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>API used to retrieve leaderboard data.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="window"></a>
+                    <span class="name">
+                        <span ><b>window</b></span>
+                        <a href="#window"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>window</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/features/leaderboard/leaderboard.component.ts:66</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Exposes the global window object to the template.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, computed, inject, input, resource, signal } from &#x27;@angular/core&#x27;;
+import { ActivatedRoute, Router, RouterLink } from &#x27;@angular/router&#x27;;
+import { toSignal } from &#x27;@angular/core/rxjs-interop&#x27;;
+import { filter, firstValueFrom, map } from &#x27;rxjs&#x27;;
+import { NavigationEnd } from &#x27;@angular/router&#x27;;
+import { UserApi } from &#x27;@gofish/shared/api/user.api&#x27;;
+import { AuthService } from &#x27;@gofish/shared/services/auth.service&#x27;;
+import { LoadingErrorModalComponent } from &quot;@gofish/shared/components/loading-error-modal/loading-error-modal.component&quot;;
+import { Path, Rank } from &#x27;@gofish/shared/constants&#x27;;
+import { LoadingSpinnerComponent } from &quot;@gofish/shared/components/loading-spinner/loading-spinner.component&quot;;
+import { AvatarService } from &#x27;@gofish/shared/services/avatar.service&#x27;;
+import { AbsPipe } from &quot;../../shared/pipes/absolute.pipe&quot;;
+import { UserTitleComponent } from &quot;@gofish/shared/components/user-title/user-title.component&quot;;
+import { LeaderboardUserDTO } from &#x27;@gofish/shared/dtos/user.dto&#x27;;
+
+/**
+ * Supported leaderboard tabs.
+ */
+type LeaderboardTab &#x3D; &#x27;global&#x27; | &#x27;friends&#x27;;
+
+/**
+ * Leaderboard page component.
+ *
+ * Responsibilities:
+ * - Resolve the active leaderboard tab from component input
+ * - Load leaderboard data from the backend
+ * - Expose derived leaderboard sections for the template
+ * - Provide access to shared constants and helper services
+ */
+@Component({
+  selector: &#x27;gf-leaderboard&#x27;,
+  imports: [RouterLink, LoadingErrorModalComponent, LoadingSpinnerComponent, AbsPipe, UserTitleComponent],
+  templateUrl: &#x27;./leaderboard.component.html&#x27;,
+  styleUrl: &#x27;./leaderboard.component.css&#x27;,
+})
+export class LeaderboardComponent {
+  /**
+   * Active leaderboard tab provided through component input.
+   * The input is aliased as &quot;tab&quot;.
+   */
+  readonly activeTab &#x3D; input&lt;LeaderboardTab | undefined&gt;(undefined, { alias: &#x27;tab&#x27; });
+
+  /**
+   * Returns the active tab or falls back to the global leaderboard.
+   */
+  readonly activeTabOrDefault &#x3D; computed&lt;LeaderboardTab&gt;(() &#x3D;&gt; this.activeTab() ?? &#x27;global&#x27;);
+
+  /** API used to retrieve leaderboard data. */
+  readonly userApi &#x3D; inject(UserApi);
+
+  /** Service used to access authentication state. */
+  readonly authService &#x3D; inject(AuthService);
+
+  /** Router instance used for navigation actions. */
+  readonly router &#x3D; inject(Router);
+
+  /** Current activated route. */
+  readonly route &#x3D; inject(ActivatedRoute);
+
+  /** Service used to resolve avatar image URLs. */
+  readonly avatarService &#x3D; inject(AvatarService);
+
+  /** Exposes the global window object to the template. */
+  window &#x3D; window;
+
+  /** Shared route path constants used in templates. */
+  Path &#x3D; Path;
+
+  /** Shared rank constants used in templates. */
+  Rank &#x3D; Rank;
+
+  /**
+   * Reactive resource used to load leaderboard data according to
+   * the currently selected tab.
+   *
+   * Behavior:
+   * - Loads the global leaderboard when the active tab is &quot;global&quot;
+   * - Loads the friends leaderboard when the active tab is &quot;friends&quot;
+   * - Automatically reloads when the active tab changes
+   */
+  leaderboard &#x3D; resource({
+    params: () &#x3D;&gt; this.activeTabOrDefault(),
+    loader: ({ params: tab }) &#x3D;&gt; firstValueFrom(
+      tab &#x3D;&#x3D;&#x3D; &#x27;global&#x27;
+        ? this.userApi.getGlobalLeaderboard()
+        : this.userApi.getFriendsLeaderboard()
+    )
+  });
+
+  /**
+   * Returns the first three leaderboard entries.
+   */
+  readonly topThree &#x3D; computed(() &#x3D;&gt; this.leaderboard.value()?.entries.slice(0, 3) ?? []);
+
+  /**
+   * Returns the leaderboard entries after the top three.
+   */
+  readonly rest &#x3D; computed(() &#x3D;&gt; this.leaderboard.value()?.entries.slice(3) ?? []);
+
+  /**
+   * Returns all leaderboard entries.
+   */
+  readonly allEntries &#x3D; computed(() &#x3D;&gt; this.leaderboard.value()?.entries ?? []);
+
+  // private readonly avatarService &#x3D; inject(AvatarService);
+  // private readonly leaderboardApi &#x3D; inject(LeaderboardApi);
+
+  // readonly activeTab &#x3D; toSignal(
+  //   this.route.queryParamMap.pipe(
+  //     map(params &#x3D;&gt; (params.get(&#x27;tab&#x27;) as LeaderboardTab) ?? &#x27;global&#x27;)
+  //   ),
+  //   { initialValue: &#x27;global&#x27; as LeaderboardTab }
+  // );
+
+  // TODO: Replace with real API data
+  // readonly entries &#x3D; signal&lt;LeaderboardUserDTO[]&gt;([
+  //   { position: 1, rank: 1, userId: &#x27;1&#x27;, firstName: &#x27;FirstName&#x27;, lastName: &#x27;LastName&#x27;, userName: &#x27;Username&#x27;, catchPoints: 130, catchPointsDelta: 55, weeklyStreak: 9 },
+  //   { position: 2, rank: 5, userId: &#x27;2&#x27;, firstName: &#x27;FirstName&#x27;, lastName: &#x27;LastName&#x27;, userName: &#x27;Username&#x27;, catchPoints: 99, catchPointsDelta: -55, weeklyStreak: 9 },
+  //   { position: 3, rank: 4, userId: &#x27;3&#x27;, firstName: &#x27;FirstName&#x27;, lastName: &#x27;LastName&#x27;, userName: &#x27;Username&#x27;, catchPoints: 99, catchPointsDelta: 0, weeklyStreak: 9 },
+  //   { position: 4, rank: 1, userId: &#x27;4&#x27;, firstName: &#x27;FirstName&#x27;, lastName: &#x27;LastName&#x27;, userName: &#x27;Username&#x27;, catchPoints: 99, catchPointsDelta: 55, weeklyStreak: 9 },
+  //   { position: 5, rank: 1, userId: &#x27;5&#x27;, firstName: &#x27;FirstName&#x27;, lastName: &#x27;LastName&#x27;, userName: &#x27;Username&#x27;, catchPoints: 99, catchPointsDelta: 55, weeklyStreak: 9 },
+  //   { position: 6, rank: 1, userId: &#x27;6&#x27;, firstName: &#x27;FirstName&#x27;, lastName: &#x27;LastName&#x27;, userName: &#x27;Username&#x27;, catchPoints: 99, catchPointsDelta: -55, weeklyStreak: 9 },
+  //   { position: 7, rank: 5, userId: &#x27;7&#x27;, firstName: &#x27;FirstName&#x27;, lastName: &#x27;LastName&#x27;, userName: &#x27;Username&#x27;, catchPoints: 99, catchPointsDelta: 55, weeklyStreak: 9 },
+  //   { position: 8, rank: 1, userId: &#x27;8&#x27;, firstName: &#x27;FirstName&#x27;, lastName: &#x27;LastName&#x27;, userName: &#x27;Username&#x27;, catchPoints: 99, catchPointsDelta: 55, weeklyStreak: 9 },
+  // ]);
+
+  // readonly topThree &#x3D; computed(() &#x3D;&gt; this.entries().slice(0, 3));
+  // readonly rest &#x3D; computed(() &#x3D;&gt; this.entries().slice(3));
+  // readonly allEntries &#x3D; computed(() &#x3D;&gt; this.entries());
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!-- leaderboard.component.ts --&gt;
+
+&lt;div class&#x3D;&quot;leaderboard-header&quot;&gt;
+  &lt;h4&gt;GOFISH Leaderboard&lt;/h4&gt;
+  &lt;nav&gt;
+    &lt;a
+      [routerLink]&#x3D;&quot;&#x27;.&#x27;&quot;
+      [queryParams]&#x3D;&quot;{ tab: &#x27;global&#x27; }&quot;
+      [class.active]&#x3D;&quot;activeTabOrDefault() &#x3D;&#x3D;&#x3D; &#x27;global&#x27;&quot;&gt;
+      Global
+    &lt;/a&gt;
+    &lt;a
+      [routerLink]&#x3D;&quot;&#x27;.&#x27;&quot;
+      [queryParams]&#x3D;&quot;{ tab: &#x27;friends&#x27; }&quot;
+      [class.active]&#x3D;&quot;activeTabOrDefault() &#x3D;&#x3D;&#x3D; &#x27;friends&#x27;&quot;&gt;
+      Friends
+    &lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/div&gt;
+
+@if (leaderboard.isLoading()) {
+  &lt;gf-loading-spinner&gt;&lt;/gf-loading-spinner&gt;
+} @else if (leaderboard.error()) {
+  &lt;gf-loading-error-modal
+    [error]&#x3D;&quot;leaderboard.error()!&quot;
+    (negative)&#x3D;&quot;router.navigate([Path.HOME]);&quot;
+    (positive)&#x3D;&quot;window.location.reload();&quot;&gt;
+  &lt;/gf-loading-error-modal&gt;
+} @else {
+  @switch (activeTabOrDefault()) {
+  @case (&#x27;global&#x27;) {
+    &lt;!-- Top 3 podium cards --&gt;
+    &lt;div class&#x3D;&quot;podium&quot;&gt;
+      @for (entry of topThree(); track entry.userId) {
+        &lt;div class&#x3D;&quot;podium-card&quot;&gt;
+          &lt;div class&#x3D;&quot;podium-card-top&quot;&gt;
+            &lt;img class&#x3D;&quot;avatar avatar-lg&quot; [src]&#x3D;&quot;avatarService.resolve(entry.avatarUrl)&quot; alt&#x3D;&quot;Avatar&quot;&gt;
+            &lt;div class&#x3D;&quot;podium-user-info&quot;&gt;
+              &lt;gf-user-title [text]&#x3D;&quot;&#x60;${entry.displayName} ${entry.userId &#x3D;&#x3D;&#x3D; authService.userId() ? &#x27;(You)&#x27; : &#x27;&#x27;}&#x60;&quot; [rank]&#x3D;&quot;entry.rank&quot;&gt;&lt;/gf-user-title&gt;
+              &lt;span class&#x3D;&quot;user-handle&quot;&gt;&amp;#64;{{ entry.userName }}&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;podium-card-stats&quot;&gt;
+            &lt;div class&#x3D;&quot;stat catch-points&quot;&gt;
+              &lt;small&gt;Catch points&lt;/small&gt;
+              &lt;div&gt;
+                &lt;span&gt;{{ &#x60;${entry.catchPoints}&#x60; }}&lt;/span&gt;
+                @if (entry.catchPointsDelta &gt; 0) {
+                  &lt;svg class&#x3D;&quot;delta gain&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;m5 12 7-7 7 7&quot;/&gt;&lt;path d&#x3D;&quot;M12 19V5&quot;/&gt;&lt;/svg&gt;
+                  &lt;span class&#x3D;&quot;delta gain&quot;&gt;{{ &#x60;+${entry.catchPointsDelta | abs}&#x60; }}&lt;/span&gt;
+                } @else if (entry.catchPointsDelta &lt; 0) {
+                  &lt;svg class&#x3D;&quot;delta loss&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;M12 5v14&quot;/&gt;&lt;path d&#x3D;&quot;m19 12-7 7-7-7&quot;/&gt;&lt;/svg&gt;
+                  &lt;span class&#x3D;&quot;delta loss&quot;&gt;{{ &#x60;-${entry.catchPointsDelta | abs}&#x60; }}&lt;/span&gt;
+                } @else {
+                  &lt;svg class&#x3D;&quot;delta neutral&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;M5 12h14&quot;/&gt;&lt;/svg&gt;
+                  &lt;span class&#x3D;&quot;delta neutral&quot;&gt;{{ &#x60;0&#x60; }}&lt;/span&gt;
+                }
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat generic&quot;&gt;
+              &lt;small&gt;Rank&lt;/small&gt;
+              &lt;span&gt;{{ Rank[entry.rank - 1] }}&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat generic&quot;&gt;
+              &lt;small&gt;Weekly Streak&lt;/small&gt;
+              &lt;span&gt;{{ entry.weeklyStreak }}&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;podium-card-actions&quot;&gt;
+            &lt;a class&#x3D;&quot;btn-action&quot; [routerLink]&#x3D;&quot;[&#x27;/profile&#x27;, entry.userId]&quot;&gt;View Profile&lt;/a&gt;
+            &lt;a class&#x3D;&quot;btn-action&quot; [routerLink]&#x3D;&quot;[&#x27;/profile&#x27;, entry.userId, &#x27;pins&#x27;]&quot;&gt;View pins&lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      }
+    &lt;/div&gt;
+    &lt;!-- Remaining rows --&gt;
+    &lt;table class&#x3D;&quot;remaining-table&quot;&gt;
+      &lt;tr&gt;
+        &lt;th class&#x3D;&quot;col-position&quot;&gt;Place&lt;/th&gt;
+        &lt;th class&#x3D;&quot;col-user&quot;&gt;User&lt;/th&gt;
+        &lt;th class&#x3D;&quot;col-points&quot;&gt;Catch points&lt;/th&gt;
+        &lt;th class&#x3D;&quot;col-streak&quot;&gt;Weekly Streak&lt;/th&gt;
+        &lt;th class&#x3D;&quot;col-actions&quot;&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+      @for (entry of rest(); track entry.userId) {
+        &lt;tr&gt;
+          &lt;td class&#x3D;&quot;col-position&quot;&gt;{{ entry.position }}&lt;/td&gt;
+          &lt;td class&#x3D;&quot;col-user&quot;&gt;
+            &lt;img class&#x3D;&quot;avatar avatar-sm&quot; [src]&#x3D;&quot;avatarService.resolve(entry.avatarUrl)&quot; alt&#x3D;&quot;Avatar&quot;&gt;
+            &lt;div class&#x3D;&quot;&quot;&gt;
+              &lt;gf-user-title [text]&#x3D;&quot;&#x60;${entry.displayName} ${entry.userId &#x3D;&#x3D;&#x3D; authService.userId() ? &#x27;(You)&#x27; : &#x27;&#x27;}&#x60;&quot; [rank]&#x3D;&quot;entry.rank&quot;&gt;&lt;/gf-user-title&gt;
+              &lt;span class&#x3D;&quot;user-handle&quot;&gt;&amp;#64;{{ entry.userName }}&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/td&gt;
+          &lt;td class&#x3D;&quot;col-points&quot;&gt;
+            &lt;span&gt;{{ &#x60;${entry.catchPoints}&#x60; }}&lt;/span&gt;
+            @if (entry.catchPointsDelta &gt; 0) {
+              &lt;svg class&#x3D;&quot;delta gain&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;m5 12 7-7 7 7&quot;/&gt;&lt;path d&#x3D;&quot;M12 19V5&quot;/&gt;&lt;/svg&gt;
+              &lt;span class&#x3D;&quot;delta gain&quot;&gt;{{ &#x60;+${entry.catchPointsDelta | abs}&#x60; }}&lt;/span&gt;
+            } @else if (entry.catchPointsDelta &lt; 0) {
+              &lt;svg class&#x3D;&quot;delta loss&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;M12 5v14&quot;/&gt;&lt;path d&#x3D;&quot;m19 12-7 7-7-7&quot;/&gt;&lt;/svg&gt;
+              &lt;span class&#x3D;&quot;delta loss&quot;&gt;{{ &#x60;-${entry.catchPointsDelta | abs}&#x60; }}&lt;/span&gt;
+            } @else {
+              &lt;svg class&#x3D;&quot;delta neutral&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;M5 12h14&quot;/&gt;&lt;/svg&gt;
+              &lt;span class&#x3D;&quot;delta neutral&quot;&gt;{{ &#x60;0&#x60; }}&lt;/span&gt;
+            }
+          &lt;/td&gt;
+          &lt;td class&#x3D;&quot;col-streak&quot;&gt;{{ entry.weeklyStreak }}&lt;/td&gt;
+          &lt;td class&#x3D;&quot;col-actions&quot;&gt;
+            &lt;a class&#x3D;&quot;btn-action&quot; [routerLink]&#x3D;&quot;[&#x27;/profile&#x27;, entry.userId]&quot;&gt;View Profile&lt;/a&gt;
+            &lt;a class&#x3D;&quot;btn-action&quot; [routerLink]&#x3D;&quot;[&#x27;/profile&#x27;, entry.userId, &#x27;pins&#x27;]&quot;&gt;View pins&lt;/a&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      }
+    &lt;/table&gt;
+  }
+  @case (&#x27;friends&#x27;) {
+    @if (allEntries().length &gt; 1) {
+      &lt;table class&#x3D;&quot;remaining-table&quot;&gt;
+        &lt;tr&gt;
+          &lt;th class&#x3D;&quot;col-position&quot;&gt;Place&lt;/th&gt;
+          &lt;th class&#x3D;&quot;col-user&quot;&gt;User&lt;/th&gt;
+          &lt;th class&#x3D;&quot;col-points&quot;&gt;Catch points&lt;/th&gt;
+          &lt;th class&#x3D;&quot;col-streak&quot;&gt;Weekly Streak&lt;/th&gt;
+          &lt;th class&#x3D;&quot;col-actions&quot;&gt;&lt;/th&gt;
+        &lt;/tr&gt;
+        @for (entry of allEntries(); track entry.userId) {
+          &lt;tr&gt;
+            &lt;td class&#x3D;&quot;col-position&quot;&gt;{{ entry.position }}&lt;/td&gt;
+            &lt;td class&#x3D;&quot;col-user&quot;&gt;
+              &lt;img class&#x3D;&quot;avatar avatar-sm&quot; [src]&#x3D;&quot;avatarService.resolve(entry.avatarUrl)&quot; alt&#x3D;&quot;Avatar&quot;&gt;
+              &lt;div class&#x3D;&quot;&quot;&gt;
+                &lt;gf-user-title [text]&#x3D;&quot;&#x60;${entry.displayName} ${entry.userId &#x3D;&#x3D;&#x3D; authService.userId() ? &#x27;(You)&#x27; : &#x27;&#x27;}&#x60;&quot; [rank]&#x3D;&quot;entry.rank&quot;&gt;&lt;/gf-user-title&gt;
+                &lt;span class&#x3D;&quot;user-handle&quot;&gt;&amp;#64;{{ entry.userName }}&lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;col-points&quot;&gt;
+              &lt;span&gt;{{ &#x60;${entry.catchPoints}&#x60; }}&lt;/span&gt;
+              @if (entry.catchPointsDelta &gt; 0) {
+                &lt;svg class&#x3D;&quot;delta gain&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;m5 12 7-7 7 7&quot;/&gt;&lt;path d&#x3D;&quot;M12 19V5&quot;/&gt;&lt;/svg&gt;
+                &lt;span class&#x3D;&quot;delta gain&quot;&gt;{{ &#x60;+${entry.catchPointsDelta | abs}&#x60; }}&lt;/span&gt;
+              } @else if (entry.catchPointsDelta &lt; 0) {
+                &lt;svg class&#x3D;&quot;delta loss&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;M12 5v14&quot;/&gt;&lt;path d&#x3D;&quot;m19 12-7 7-7-7&quot;/&gt;&lt;/svg&gt;
+                &lt;span class&#x3D;&quot;delta loss&quot;&gt;{{ &#x60;-${entry.catchPointsDelta | abs}&#x60; }}&lt;/span&gt;
+              } @else {
+                &lt;svg class&#x3D;&quot;delta neutral&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;M5 12h14&quot;/&gt;&lt;/svg&gt;
+                &lt;span class&#x3D;&quot;delta neutral&quot;&gt;{{ &#x60;0&#x60; }}&lt;/span&gt;
+              }
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;col-streak&quot;&gt;{{ entry.weeklyStreak }}&lt;/td&gt;
+            &lt;td class&#x3D;&quot;col-actions&quot;&gt;
+              &lt;a class&#x3D;&quot;btn-action&quot; [routerLink]&#x3D;&quot;[&#x27;/profile&#x27;, entry.userId]&quot;&gt;View Profile&lt;/a&gt;
+              &lt;a class&#x3D;&quot;btn-action&quot; [routerLink]&#x3D;&quot;[&#x27;/profile&#x27;, entry.userId, &#x27;pins&#x27;]&quot;&gt;View pins&lt;/a&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        }
+      &lt;/table&gt;
+    } @else {
+      &lt;p&gt;{{ &#x27;No friends to go against :(&#x27; }}&lt;/p&gt;
+    }
+  }}
+}
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!-- leaderboard.component.ts --><div class="leaderboard-header">  <h4>GOFISH Leaderboard</h4>  <nav>    <a      [routerLink]="\'.\'"      [queryParams]="{ tab: \'global\' }"      [class.active]="activeTabOrDefault() === \'global\'">      Global    </a>    <a      [routerLink]="\'.\'"      [queryParams]="{ tab: \'friends\' }"      [class.active]="activeTabOrDefault() === \'friends\'">      Friends    </a>  </nav></div>@if (leaderboard.isLoading()) {  <gf-loading-spinner></gf-loading-spinner>} @else if (leaderboard.error()) {  <gf-loading-error-modal    [error]="leaderboard.error()!"    (negative)="router.navigate([Path.HOME]);"    (positive)="window.location.reload();">  </gf-loading-error-modal>} @else {  @switch (activeTabOrDefault()) {  @case (\'global\') {    <!-- Top 3 podium cards -->    <div class="podium">      @for (entry of topThree(); track entry.userId) {        <div class="podium-card">          <div class="podium-card-top">            <img class="avatar avatar-lg" [src]="avatarService.resolve(entry.avatarUrl)" alt="Avatar">            <div class="podium-user-info">              <gf-user-title [text]="`${entry.displayName} ${entry.userId === authService.userId() ? \'(You)\' : \'\'}`" [rank]="entry.rank"></gf-user-title>              <span class="user-handle">&#64;{{ entry.userName }}</span>            </div>          </div>          <div class="podium-card-stats">            <div class="stat catch-points">              <small>Catch points</small>              <div>                <span>{{ `${entry.catchPoints}` }}</span>                @if (entry.catchPointsDelta > 0) {                  <svg class="delta gain" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>                  <span class="delta gain">{{ `+${entry.catchPointsDelta | abs}` }}</span>                } @else if (entry.catchPointsDelta < 0) {                  <svg class="delta loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>                  <span class="delta loss">{{ `-${entry.catchPointsDelta | abs}` }}</span>                } @else {                  <svg class="delta neutral" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>                  <span class="delta neutral">{{ `0` }}</span>                }              </div>            </div>            <div class="stat generic">              <small>Rank</small>              <span>{{ Rank[entry.rank - 1] }}</span>            </div>            <div class="stat generic">              <small>Weekly Streak</small>              <span>{{ entry.weeklyStreak }}</span>            </div>          </div>          <div class="podium-card-actions">            <a class="btn-action" [routerLink]="[\'/profile\', entry.userId]">View Profile</a>            <a class="btn-action" [routerLink]="[\'/profile\', entry.userId, \'pins\']">View pins</a>          </div>        </div>      }    </div>    <!-- Remaining rows -->    <table class="remaining-table">      <tr>        <th class="col-position">Place</th>        <th class="col-user">User</th>        <th class="col-points">Catch points</th>        <th class="col-streak">Weekly Streak</th>        <th class="col-actions"></th>      </tr>      @for (entry of rest(); track entry.userId) {        <tr>          <td class="col-position">{{ entry.position }}</td>          <td class="col-user">            <img class="avatar avatar-sm" [src]="avatarService.resolve(entry.avatarUrl)" alt="Avatar">            <div class="">              <gf-user-title [text]="`${entry.displayName} ${entry.userId === authService.userId() ? \'(You)\' : \'\'}`" [rank]="entry.rank"></gf-user-title>              <span class="user-handle">&#64;{{ entry.userName }}</span>            </div>          </td>          <td class="col-points">            <span>{{ `${entry.catchPoints}` }}</span>            @if (entry.catchPointsDelta > 0) {              <svg class="delta gain" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>              <span class="delta gain">{{ `+${entry.catchPointsDelta | abs}` }}</span>            } @else if (entry.catchPointsDelta < 0) {              <svg class="delta loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>              <span class="delta loss">{{ `-${entry.catchPointsDelta | abs}` }}</span>            } @else {              <svg class="delta neutral" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>              <span class="delta neutral">{{ `0` }}</span>            }          </td>          <td class="col-streak">{{ entry.weeklyStreak }}</td>          <td class="col-actions">            <a class="btn-action" [routerLink]="[\'/profile\', entry.userId]">View Profile</a>            <a class="btn-action" [routerLink]="[\'/profile\', entry.userId, \'pins\']">View pins</a>          </td>        </tr>      }    </table>  }  @case (\'friends\') {    @if (allEntries().length > 1) {      <table class="remaining-table">        <tr>          <th class="col-position">Place</th>          <th class="col-user">User</th>          <th class="col-points">Catch points</th>          <th class="col-streak">Weekly Streak</th>          <th class="col-actions"></th>        </tr>        @for (entry of allEntries(); track entry.userId) {          <tr>            <td class="col-position">{{ entry.position }}</td>            <td class="col-user">              <img class="avatar avatar-sm" [src]="avatarService.resolve(entry.avatarUrl)" alt="Avatar">              <div class="">                <gf-user-title [text]="`${entry.displayName} ${entry.userId === authService.userId() ? \'(You)\' : \'\'}`" [rank]="entry.rank"></gf-user-title>                <span class="user-handle">&#64;{{ entry.userName }}</span>              </div>            </td>            <td class="col-points">              <span>{{ `${entry.catchPoints}` }}</span>              @if (entry.catchPointsDelta > 0) {                <svg class="delta gain" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>                <span class="delta gain">{{ `+${entry.catchPointsDelta | abs}` }}</span>              } @else if (entry.catchPointsDelta < 0) {                <svg class="delta loss" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>                <span class="delta loss">{{ `-${entry.catchPointsDelta | abs}` }}</span>              } @else {                <svg class="delta neutral" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>                <span class="delta neutral">{{ `0` }}</span>              }            </td>            <td class="col-streak">{{ entry.weeklyStreak }}</td>            <td class="col-actions">              <a class="btn-action" [routerLink]="[\'/profile\', entry.userId]">View Profile</a>              <a class="btn-action" [routerLink]="[\'/profile\', entry.userId, \'pins\']">View pins</a>            </td>          </tr>        }      </table>    } @else {      <p>{{ \'No friends to go against :(\' }}</p>    }  }}}</div>'
+    var COMPONENTS = [{'name': 'AboutComponent', 'selector': 'app-about'},{'name': 'AdminPopoverComponent', 'selector': 'gf-admin-popover'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AsyncButtonComponent', 'selector': 'app-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'gf-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'button[gfAsyncBtn]'},{'name': 'AuthCallbackComponent', 'selector': 'app-auth-callback'},{'name': 'CatchPinModalComponent', 'selector': 'app-catch-pin-modal'},{'name': 'ChangeBirthdateModalComponent', 'selector': 'app-change-birthdate-modal'},{'name': 'ChangeDisplaynameModalComponent', 'selector': 'app-change-displayname-modal'},{'name': 'ChangeEmailModalComponent', 'selector': 'gf-change-email-modal'},{'name': 'ChangeFirstnameModalComponent', 'selector': 'app-change-firstname-modal'},{'name': 'ChangeLastnameModalComponent', 'selector': 'app-change-lastname-modal'},{'name': 'ChangePhoneModalComponent', 'selector': 'app-change-phone-modal'},{'name': 'ChangeUsernameModalComponent', 'selector': 'app-change-username-modal'},{'name': 'ChoosePinPopupComponent', 'selector': 'app-choose-pin-popup'},{'name': 'ClusterDetailsComponent', 'selector': 'app-cluster-details'},{'name': 'ConfirmDeletionModalComponent', 'selector': 'app-confirm-deletion-modal'},{'name': 'DeleteCommentComponent', 'selector': 'gf-delete-comment'},{'name': 'DeleteGroupComponent', 'selector': 'gf-delete-group'},{'name': 'DeletePinComponent', 'selector': 'app-delete-pin'},{'name': 'DeletePostComponent', 'selector': 'gf-delete-post'},{'name': 'DiscoverComponent', 'selector': 'app-discover'},{'name': 'EnumComponent', 'selector': 'app-enum'},{'name': 'ExitGroupComponent', 'selector': 'gf-exit-group'},{'name': 'FooterComponent', 'selector': 'gf-footer'},{'name': 'ForumComponent', 'selector': 'app-forum'},{'name': 'ForumPostComponent', 'selector': 'app-forum-post'},{'name': 'FriendsComponent', 'selector': 'app-friends'},{'name': 'FriendshipListCardComponent', 'selector': 'gf-friendship-list-card'},{'name': 'FriendsListComponent', 'selector': 'app-friends-list'},{'name': 'FromFriendsComponent', 'selector': 'app-from-friends'},{'name': 'GeneralComponent', 'selector': 'app-general'},{'name': 'GfCardCommentPreviewComponent', 'selector': 'gf-gf-card-comment-preview'},{'name': 'GfCardPinPreviewComponent', 'selector': 'app-gf-card-pin-preview'},{'name': 'GfCardQuickAccessComponent', 'selector': 'app-gf-card-quick-access'},{'name': 'GfCardQuickViewComponent', 'selector': 'app-gf-card-quick-view'},{'name': 'GroupCreateComponent', 'selector': 'app-group-create'},{'name': 'GroupInviteComponent', 'selector': 'gf-group-invite'},{'name': 'GroupInvitesCardComponent', 'selector': 'gf-group-invites-card'},{'name': 'GroupInvitesListComponent', 'selector': 'gf-group-invites-list'},{'name': 'GroupListCardComponent', 'selector': 'gf-group-list-card'},{'name': 'GroupMemberSettingsPopoverComponent', 'selector': 'gf-group-member-settings-popover'},{'name': 'GroupPopoverComponent', 'selector': 'gf-group-popover'},{'name': 'GroupPostsPlaceholderComponent', 'selector': 'app-group-posts-placeholder'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsListCardComponent', 'selector': 'gf-groups-list-card'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'HeaderActionsComponent', 'selector': 'gf-header-actions'},{'name': 'HeaderComponent', 'selector': 'gf-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'InfoPinModalComponent', 'selector': 'app-info-pin-modal'},{'name': 'InviteToGroupsModalComponent', 'selector': 'gf-invite-to-groups-modal'},{'name': 'LeaderboardComponent', 'selector': 'gf-leaderboard'},{'name': 'LoadingErrorModalComponent', 'selector': 'gf-loading-error-modal'},{'name': 'LoadingSpinnerComponent', 'selector': 'gf-loading-spinner'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MembersGroupComponent', 'selector': 'gf-members-group'},{'name': 'MyGroupsComponent', 'selector': 'app-my-groups'},{'name': 'NavPopoverComponent', 'selector': 'gf-nav-popover'},{'name': 'OverviewComponent', 'selector': 'app-overview'},{'name': 'PersonalDataComponent', 'selector': 'app-personal-data'},{'name': 'PinDetailPanelComponent', 'selector': 'app-pin-detail-panel'},{'name': 'PinsAvgPublishedChart', 'selector': 'gf-pins-average-published-chart'},{'name': 'PinsComponent', 'selector': 'app-pins'},{'name': 'PinsPerWeekComponent', 'selector': 'gf-pins-per-week'},{'name': 'PostCommentsComponent', 'selector': 'app-post-comments'},{'name': 'PostIdPlaceholderComponent', 'selector': 'app-post-id-placeholder'},{'name': 'PrivacyPolicyComponent', 'selector': 'app-privacy-policy'},{'name': 'ProfileActionsPopoverComponent', 'selector': 'gf-profile-actions-popover'},{'name': 'ProfileCatchPinCardComponent', 'selector': 'gf-profile-catch-pin-card'},{'name': 'ProfileShellComponent', 'selector': 'app-profile'},{'name': 'ProfileShowMoreModalComponent', 'selector': 'gf-profile-show-more-modal'},{'name': 'ReportCommentComponent', 'selector': 'gf-report-comment'},{'name': 'ReportedCommentPageComponent', 'selector': 'gf-reported-comment-page'},{'name': 'ReportedCommentsComponent', 'selector': 'gf-reported-comments'},{'name': 'ReportedPinPageComponent', 'selector': 'gf-reported-pin-page'},{'name': 'ReportedPinsComponent', 'selector': 'gf-reported-pins'},{'name': 'ReportPinComponent', 'selector': 'gf-report'},{'name': 'RequestsListComponent', 'selector': 'app-requests-list'},{'name': 'ResetPasswordComponent', 'selector': 'gf-reset-password'},{'name': 'SearchComponent', 'selector': 'gf-search'},{'name': 'SecurityComponent', 'selector': 'app-security'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SetupTotpComponent', 'selector': 'app-setup-totp'},{'name': 'SigninComponent', 'selector': 'app-signin'},{'name': 'SigninVerifyComponent', 'selector': 'app-signin-verify'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'SmallFriendshipCarouselCardComponent', 'selector': 'gf-small-friendship-carousel-card'},{'name': 'SmallGroupCarouselCardComponent', 'selector': 'gf-small-group-carousel-card'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'StatsHomeComponent', 'selector': 'app-home'},{'name': 'StatsReportsComponent', 'selector': 'app-stats-reports'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'TermsOfServiceComponent', 'selector': 'app-terms-of-service'},{'name': 'TotpValidationModalComponent', 'selector': 'app-totp-validation-modal'},{'name': 'UserCardComponent', 'selector': 'app-user-card'},{'name': 'UserHelpBoxComponent', 'selector': 'gf-user-help-box'},{'name': 'UserPopoverComponent', 'selector': 'gf-user-popover'},{'name': 'UserRankIconComponent', 'selector': 'gf-user-rank-icon'},{'name': 'UserSatisfactionIndexComponent', 'selector': 'gf-user-satisfaction-index'},{'name': 'UsersChartComponent', 'selector': 'gf-users-chart'},{'name': 'UsersListCardComponent', 'selector': 'gf-users-list-card'},{'name': 'UsersListComponent', 'selector': 'gf-users-list'},{'name': 'UserTitleComponent', 'selector': 'gf-user-title'},{'name': 'VerifyEmailModalComponent', 'selector': 'gf-verify-email-modal'},{'name': 'VerifyTwofaContainerComponent', 'selector': 'gf-verify-twofa-container'},{'name': 'WarnPinModalComponent', 'selector': 'app-warn-pin-modal'}];
+    var DIRECTIVES = [{'name': 'ClickOutsideDirective', 'selector': '[clickOutside]'},{'name': 'LettersOnlyDirective', 'selector': '[appLettersOnly]'},{'name': 'MouseFollowDirective', 'selector': '[gfTooltip]'},{'name': 'NumbersOnlyDirective', 'selector': '[appNumbersOnly]'}];
+    var ACTUAL_COMPONENT = {'name': 'LeaderboardComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'LeaderboardComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

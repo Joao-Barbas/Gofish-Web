@@ -1,0 +1,1 @@
+search_result['133']=["topic_0000000000000057.html","StatsController Constructor","/// Inicializa uma nova instância do controlador de estatísticas.\r\n    ///"];

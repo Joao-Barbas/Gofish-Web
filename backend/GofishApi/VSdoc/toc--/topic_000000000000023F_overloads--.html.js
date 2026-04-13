@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"GofishApi Reference","topic_000000000000026E.html"],['480',"GofishApi.Services Namespace","topic_0000000000000206.html"],['583',"IJwtService Interface","topic_000000000000023E.html"],['584',"Methods","topic_000000000000023E_methods--.html"],['585',"CreateTokenAsync Method","topic_000000000000023F_overloads--.html"]];

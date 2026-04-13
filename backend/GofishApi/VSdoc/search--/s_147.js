@@ -1,0 +1,1 @@
+search_result['147']=["topic_0000000000000065.html","StatsController.GetRegisteredUsersWeeklyStats Method","/// Obtém estatísticas semanais de registo de utilizadores para um determinado ano.\r\n    ///"];

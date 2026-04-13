@@ -1,0 +1,1 @@
+search_result['472']=["topic_000000000000018D.html","GroupPin Class","/// Representa a relação many-to-many entre pins e grupos.\r\n/// Permite associar um pin a múltiplos grupos e vice-versa.\r\n///"];

@@ -1,0 +1,509 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  AboutComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/about/about.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-about</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./about.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./about.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+
+@Component({
+  selector: &#x27;app-about&#x27;,
+  standalone: true,
+  imports: [],
+  templateUrl: &#x27;./about.component.html&#x27;,
+  styleUrls: [&#x27;./about.component.css&#x27;]
+})
+export class AboutComponent {
+
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!-- # Descrição --&gt;
+
+&lt;div class&#x3D;&quot;about-hero-bg&quot;&gt;
+  &lt;section class&#x3D;&quot;gf-container-md gf-mx-auto dark-text&quot;&gt;
+    &lt;article class&#x3D;&quot;row justify-content-center about-us-main-text text-center pt-5 gf-pb-96&quot;&gt;
+      &lt;p&gt;
+        Remember when sharing a great catch was as simple as telling
+        the story?
+        No algorithms to beat, no posts disappearing into the void. Just anglers swapping tips, photos, and bragging
+        rights.
+        &lt;br&gt;&lt;br&gt;
+        We built that feeling back, then levelled it up.
+        Our platform combines real catches with twitter-style sharing, community-driven scoring, and game-like
+        progression that rewards great content, not noise.
+        Every post matters. Every catch counts.
+        &lt;br&gt;&lt;br&gt;
+        Welcome to GOFISH, re-engineered for the people who actually fish.
+        See how we stack up against the rest:
+      &lt;/p&gt;
+    &lt;/article&gt;
+  &lt;/section&gt;
+&lt;/div&gt;
+&lt;section class&#x3D;&quot;container comparison-section dark-text&quot;&gt;
+  &lt;!-- Tabela visual --&gt;
+  &lt;div class&#x3D;&quot;comparison-table&quot;&gt;
+
+    &lt;!-- Header row --&gt;
+    &lt;div class&#x3D;&quot;row comparison-row comparison-header font-main text-center col-font align-items-center mb-3&quot;&gt;
+      &lt;div class&#x3D;&quot;col-2&quot;&gt;&lt;/div&gt;
+      &lt;span class&#x3D;&quot;col-2&quot;&gt;GAMIFIED COMMUNITY&lt;/span&gt;
+      &lt;span class&#x3D;&quot;col-2&quot;&gt;GROUPS&lt;/span&gt;
+      &lt;span class&#x3D;&quot;col-2&quot;&gt;INTERACTIVE MAP&lt;/span&gt;
+      &lt;span class&#x3D;&quot;col-2&quot;&gt;MULTIPLE PINS&lt;/span&gt;
+      &lt;span class&#x3D;&quot;col-2&quot;&gt;VOTING SYSTEM&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Linha GOFISH --&gt;
+    &lt;div class&#x3D;&quot;row comparison-row text-center mb-4 font-heading&quot;&gt;
+      &lt;div class&#x3D;&quot;col-2 comparison-label d-flex justify-content-center align-items-center gap-3&quot;&gt;
+        &lt;div class&#x3D;&quot;icon icon-size-gofish-logo icon-gofish&quot;&gt;&lt;/div&gt;
+        &lt;span class&#x3D;&quot;text-gofish row-font&quot;&gt;GOFISH&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;col-2 d-flex align-items-center justify-content-center&quot;&gt;
+        &lt;div class&#x3D;&quot;icon icon-check icon-white icon-size-about-table&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;col-2 d-flex align-items-center justify-content-center&quot;&gt;
+        &lt;div class&#x3D;&quot;icon icon-check icon-white icon-size-about-table&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;col-2 d-flex align-items-center justify-content-center&quot;&gt;
+        &lt;div class&#x3D;&quot;icon icon-check icon-white icon-size-about-table&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;col-2 d-flex align-items-center justify-content-center&quot;&gt;
+        &lt;div class&#x3D;&quot;icon icon-check icon-white icon-size-about-table&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;col-2 d-flex align-items-center justify-content-center&quot;&gt;
+        &lt;div class&#x3D;&quot;icon icon-check icon-white icon-size-about-table&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Linha Others --&gt;
+    &lt;div class&#x3D;&quot;row comparison-row align-items-center text-center dark-text font-heading&quot;&gt;
+      &lt;div class&#x3D;&quot;col-2 comparison-label&quot;&gt;
+        &lt;span class&#x3D;&quot;text-gofish row-font&quot;&gt;OTHERS&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;col-2 d-flex align-items-center justify-content-center&quot;&gt;
+        &lt;div class&#x3D;&quot;icon icon-cross icon-white icon-size-about-table&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;col-2 d-flex align-items-center justify-content-center&quot;&gt;
+        &lt;div class&#x3D;&quot;icon icon-cross icon-white icon-size-about-table&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;col-2 d-flex align-items-center justify-content-center&quot;&gt;
+        &lt;div class&#x3D;&quot;icon icon-check icon-white icon-size-about-table&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;col-2 d-flex align-items-center justify-content-center&quot;&gt;
+        &lt;div class&#x3D;&quot;icon icon-cross icon-white icon-size-about-table&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;col-2 d-flex align-items-center justify-content-center&quot;&gt;
+        &lt;div class&#x3D;&quot;icon icon-cross icon-white icon-size-about-table&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+  &lt;section class&#x3D;&quot;about-team-section gf-container-md gf-mx-auto dark-text text-center pt-5 pb-5&quot;&gt;
+
+    &lt;h4 class&#x3D;&quot;text-bold mb-3&quot;&gt;About the Project&lt;/h4&gt;
+    &lt;p class&#x3D;&quot;mb-4&quot;&gt;
+      This project was developed as part of an academic initiative at the Polytechnic Institute of Setúbal,
+      with the goal of building a useful and intuitive platform for the community.
+      It reflects both our technical skills and our focus on usability and real user experience.
+    &lt;/p&gt;
+
+    &lt;h4 class&#x3D;&quot;text-bold mb-3&quot;&gt;Meet the Team&lt;/h4&gt;
+    &lt;p class&#x3D;&quot;mb-4&quot;&gt;
+      Gonçalo Fontoura — &lt;a href&#x3D;&quot;mailto:202200766@estudantes.ips.pt&quot;&gt;202200766@estudantes.ips.pt&lt;/a&gt;&lt;br&gt;
+      João Barbas — &lt;a href&#x3D;&quot;mailto:2024134076@estudantes.ips.pt&quot;&gt;2024134076@estudantes.ips.pt&lt;/a&gt;&lt;br&gt;
+      Daniel Palma — &lt;a href&#x3D;&quot;mailto:2024105741@estudantes.ips.pt&quot;&gt;2024105741@estudantes.ips.pt&lt;/a&gt;&lt;br&gt;
+      Ricardo Reis — &lt;a href&#x3D;&quot;mailto:202000806@estudantes.ips.pt&quot;&gt;202000806@estudantes.ips.pt&lt;/a&gt;
+    &lt;/p&gt;
+
+    &lt;p class&#x3D;&quot;mb-4&quot;&gt;
+      We worked collaboratively across all areas of the platform, including design, development, testing, and usability
+      improvements.
+    &lt;/p&gt;
+
+    &lt;p&gt;
+      Thank you for using GOFISH. Your feedback and interaction help us continuously improve the platform.
+    &lt;/p&gt;
+
+  &lt;/section&gt;
+&lt;/section&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./about.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">:host {
+  display: block;
+  margin-top: calc(-80rem / 16); /* Go behind the header */
+}
+
+.about-us-main-text {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.row-font {
+  font-size: 1.875rem;
+}
+
+.col-font {
+  font-size: 1.125rem;
+  line-height: 1.375rem;
+  font-weight: 900;
+}
+
+.about-hero-bg {
+  position: relative;
+  padding-top: calc(80rem / 16);
+  background: linear-gradient(180deg, #1A2F4C 5%, #2C7AE8 90%);
+}
+
+.comparison-section {
+  margin: calc(256rem / 16) auto;
+}
+
+.about-team-section {
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!-- # Descrição --><div class="about-hero-bg">  <section class="gf-container-md gf-mx-auto dark-text">    <article class="row justify-content-center about-us-main-text text-center pt-5 gf-pb-96">      <p>        Remember when sharing a great catch was as simple as telling        the story?        No algorithms to beat, no posts disappearing into the void. Just anglers swapping tips, photos, and bragging        rights.        <br><br>        We built that feeling back, then levelled it up.        Our platform combines real catches with twitter-style sharing, community-driven scoring, and game-like        progression that rewards great content, not noise.        Every post matters. Every catch counts.        <br><br>        Welcome to GOFISH, re-engineered for the people who actually fish.        See how we stack up against the rest:      </p>    </article>  </section></div><section class="container comparison-section dark-text">  <!-- Tabela visual -->  <div class="comparison-table">    <!-- Header row -->    <div class="row comparison-row comparison-header font-main text-center col-font align-items-center mb-3">      <div class="col-2"></div>      <span class="col-2">GAMIFIED COMMUNITY</span>      <span class="col-2">GROUPS</span>      <span class="col-2">INTERACTIVE MAP</span>      <span class="col-2">MULTIPLE PINS</span>      <span class="col-2">VOTING SYSTEM</span>    </div>    <!-- Linha GOFISH -->    <div class="row comparison-row text-center mb-4 font-heading">      <div class="col-2 comparison-label d-flex justify-content-center align-items-center gap-3">        <div class="icon icon-size-gofish-logo icon-gofish"></div>        <span class="text-gofish row-font">GOFISH</span>      </div>      <div class="col-2 d-flex align-items-center justify-content-center">        <div class="icon icon-check icon-white icon-size-about-table"></div>      </div>      <div class="col-2 d-flex align-items-center justify-content-center">        <div class="icon icon-check icon-white icon-size-about-table"></div>      </div>      <div class="col-2 d-flex align-items-center justify-content-center">        <div class="icon icon-check icon-white icon-size-about-table"></div>      </div>      <div class="col-2 d-flex align-items-center justify-content-center">        <div class="icon icon-check icon-white icon-size-about-table"></div>      </div>      <div class="col-2 d-flex align-items-center justify-content-center">        <div class="icon icon-check icon-white icon-size-about-table"></div>      </div>    </div>    <!-- Linha Others -->    <div class="row comparison-row align-items-center text-center dark-text font-heading">      <div class="col-2 comparison-label">        <span class="text-gofish row-font">OTHERS</span>      </div>      <div class="col-2 d-flex align-items-center justify-content-center">        <div class="icon icon-cross icon-white icon-size-about-table"></div>      </div>      <div class="col-2 d-flex align-items-center justify-content-center">        <div class="icon icon-cross icon-white icon-size-about-table"></div>      </div>      <div class="col-2 d-flex align-items-center justify-content-center">        <div class="icon icon-check icon-white icon-size-about-table"></div>      </div>      <div class="col-2 d-flex align-items-center justify-content-center">        <div class="icon icon-cross icon-white icon-size-about-table"></div>      </div>      <div class="col-2 d-flex align-items-center justify-content-center">        <div class="icon icon-cross icon-white icon-size-about-table"></div>      </div>    </div>  </div>  <section class="about-team-section gf-container-md gf-mx-auto dark-text text-center pt-5 pb-5">    <h4 class="text-bold mb-3">About the Project</h4>    <p class="mb-4">      This project was developed as part of an academic initiative at the Polytechnic Institute of Setúbal,      with the goal of building a useful and intuitive platform for the community.      It reflects both our technical skills and our focus on usability and real user experience.    </p>    <h4 class="text-bold mb-3">Meet the Team</h4>    <p class="mb-4">      Gonçalo Fontoura — <a href="mailto:202200766@estudantes.ips.pt">202200766@estudantes.ips.pt</a><br>      João Barbas — <a href="mailto:2024134076@estudantes.ips.pt">2024134076@estudantes.ips.pt</a><br>      Daniel Palma — <a href="mailto:2024105741@estudantes.ips.pt">2024105741@estudantes.ips.pt</a><br>      Ricardo Reis — <a href="mailto:202000806@estudantes.ips.pt">202000806@estudantes.ips.pt</a>    </p>    <p class="mb-4">      We worked collaboratively across all areas of the platform, including design, development, testing, and usability      improvements.    </p>    <p>      Thank you for using GOFISH. Your feedback and interaction help us continuously improve the platform.    </p>  </section></section></div>'
+    var COMPONENTS = [{'name': 'AboutComponent', 'selector': 'app-about'},{'name': 'AdminPopoverComponent', 'selector': 'gf-admin-popover'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AsyncButtonComponent', 'selector': 'app-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'gf-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'button[gfAsyncBtn]'},{'name': 'AuthCallbackComponent', 'selector': 'app-auth-callback'},{'name': 'CatchPinModalComponent', 'selector': 'app-catch-pin-modal'},{'name': 'ChangeBirthdateModalComponent', 'selector': 'app-change-birthdate-modal'},{'name': 'ChangeDisplaynameModalComponent', 'selector': 'app-change-displayname-modal'},{'name': 'ChangeEmailModalComponent', 'selector': 'gf-change-email-modal'},{'name': 'ChangeFirstnameModalComponent', 'selector': 'app-change-firstname-modal'},{'name': 'ChangeLastnameModalComponent', 'selector': 'app-change-lastname-modal'},{'name': 'ChangePhoneModalComponent', 'selector': 'app-change-phone-modal'},{'name': 'ChangeUsernameModalComponent', 'selector': 'app-change-username-modal'},{'name': 'ChoosePinPopupComponent', 'selector': 'app-choose-pin-popup'},{'name': 'ClusterDetailsComponent', 'selector': 'app-cluster-details'},{'name': 'ConfirmDeletionModalComponent', 'selector': 'app-confirm-deletion-modal'},{'name': 'DeleteCommentComponent', 'selector': 'gf-delete-comment'},{'name': 'DeleteGroupComponent', 'selector': 'gf-delete-group'},{'name': 'DeletePinComponent', 'selector': 'app-delete-pin'},{'name': 'DeletePostComponent', 'selector': 'gf-delete-post'},{'name': 'DiscoverComponent', 'selector': 'app-discover'},{'name': 'EnumComponent', 'selector': 'app-enum'},{'name': 'ExitGroupComponent', 'selector': 'gf-exit-group'},{'name': 'FooterComponent', 'selector': 'gf-footer'},{'name': 'ForumComponent', 'selector': 'app-forum'},{'name': 'ForumPostComponent', 'selector': 'app-forum-post'},{'name': 'FriendsComponent', 'selector': 'app-friends'},{'name': 'FriendshipListCardComponent', 'selector': 'gf-friendship-list-card'},{'name': 'FriendsListComponent', 'selector': 'app-friends-list'},{'name': 'FromFriendsComponent', 'selector': 'app-from-friends'},{'name': 'GeneralComponent', 'selector': 'app-general'},{'name': 'GfCardCommentPreviewComponent', 'selector': 'gf-gf-card-comment-preview'},{'name': 'GfCardPinPreviewComponent', 'selector': 'app-gf-card-pin-preview'},{'name': 'GfCardQuickAccessComponent', 'selector': 'app-gf-card-quick-access'},{'name': 'GfCardQuickViewComponent', 'selector': 'app-gf-card-quick-view'},{'name': 'GroupCreateComponent', 'selector': 'app-group-create'},{'name': 'GroupInviteComponent', 'selector': 'gf-group-invite'},{'name': 'GroupInvitesCardComponent', 'selector': 'gf-group-invites-card'},{'name': 'GroupInvitesListComponent', 'selector': 'gf-group-invites-list'},{'name': 'GroupListCardComponent', 'selector': 'gf-group-list-card'},{'name': 'GroupMemberSettingsPopoverComponent', 'selector': 'gf-group-member-settings-popover'},{'name': 'GroupPopoverComponent', 'selector': 'gf-group-popover'},{'name': 'GroupPostsPlaceholderComponent', 'selector': 'app-group-posts-placeholder'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsListCardComponent', 'selector': 'gf-groups-list-card'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'HeaderActionsComponent', 'selector': 'gf-header-actions'},{'name': 'HeaderComponent', 'selector': 'gf-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'InfoPinModalComponent', 'selector': 'app-info-pin-modal'},{'name': 'InviteToGroupsModalComponent', 'selector': 'gf-invite-to-groups-modal'},{'name': 'LeaderboardComponent', 'selector': 'gf-leaderboard'},{'name': 'LoadingErrorModalComponent', 'selector': 'gf-loading-error-modal'},{'name': 'LoadingSpinnerComponent', 'selector': 'gf-loading-spinner'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MembersGroupComponent', 'selector': 'gf-members-group'},{'name': 'MyGroupsComponent', 'selector': 'app-my-groups'},{'name': 'NavPopoverComponent', 'selector': 'gf-nav-popover'},{'name': 'OverviewComponent', 'selector': 'app-overview'},{'name': 'PersonalDataComponent', 'selector': 'app-personal-data'},{'name': 'PinDetailPanelComponent', 'selector': 'app-pin-detail-panel'},{'name': 'PinsAvgPublishedChart', 'selector': 'gf-pins-average-published-chart'},{'name': 'PinsComponent', 'selector': 'app-pins'},{'name': 'PinsPerWeekComponent', 'selector': 'gf-pins-per-week'},{'name': 'PostCommentsComponent', 'selector': 'app-post-comments'},{'name': 'PostIdPlaceholderComponent', 'selector': 'app-post-id-placeholder'},{'name': 'PrivacyPolicyComponent', 'selector': 'app-privacy-policy'},{'name': 'ProfileActionsPopoverComponent', 'selector': 'gf-profile-actions-popover'},{'name': 'ProfileCatchPinCardComponent', 'selector': 'gf-profile-catch-pin-card'},{'name': 'ProfileShellComponent', 'selector': 'app-profile'},{'name': 'ProfileShowMoreModalComponent', 'selector': 'gf-profile-show-more-modal'},{'name': 'ReportCommentComponent', 'selector': 'gf-report-comment'},{'name': 'ReportedCommentPageComponent', 'selector': 'gf-reported-comment-page'},{'name': 'ReportedCommentsComponent', 'selector': 'gf-reported-comments'},{'name': 'ReportedPinPageComponent', 'selector': 'gf-reported-pin-page'},{'name': 'ReportedPinsComponent', 'selector': 'gf-reported-pins'},{'name': 'ReportPinComponent', 'selector': 'gf-report'},{'name': 'RequestsListComponent', 'selector': 'app-requests-list'},{'name': 'ResetPasswordComponent', 'selector': 'gf-reset-password'},{'name': 'SearchComponent', 'selector': 'gf-search'},{'name': 'SecurityComponent', 'selector': 'app-security'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SetupTotpComponent', 'selector': 'app-setup-totp'},{'name': 'SigninComponent', 'selector': 'app-signin'},{'name': 'SigninVerifyComponent', 'selector': 'app-signin-verify'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'SmallFriendshipCarouselCardComponent', 'selector': 'gf-small-friendship-carousel-card'},{'name': 'SmallGroupCarouselCardComponent', 'selector': 'gf-small-group-carousel-card'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'StatsHomeComponent', 'selector': 'app-home'},{'name': 'StatsReportsComponent', 'selector': 'app-stats-reports'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'TermsOfServiceComponent', 'selector': 'app-terms-of-service'},{'name': 'TotpValidationModalComponent', 'selector': 'app-totp-validation-modal'},{'name': 'UserCardComponent', 'selector': 'app-user-card'},{'name': 'UserHelpBoxComponent', 'selector': 'gf-user-help-box'},{'name': 'UserPopoverComponent', 'selector': 'gf-user-popover'},{'name': 'UserRankIconComponent', 'selector': 'gf-user-rank-icon'},{'name': 'UserSatisfactionIndexComponent', 'selector': 'gf-user-satisfaction-index'},{'name': 'UsersChartComponent', 'selector': 'gf-users-chart'},{'name': 'UsersListCardComponent', 'selector': 'gf-users-list-card'},{'name': 'UsersListComponent', 'selector': 'gf-users-list'},{'name': 'UserTitleComponent', 'selector': 'gf-user-title'},{'name': 'VerifyEmailModalComponent', 'selector': 'gf-verify-email-modal'},{'name': 'VerifyTwofaContainerComponent', 'selector': 'gf-verify-twofa-container'},{'name': 'WarnPinModalComponent', 'selector': 'app-warn-pin-modal'}];
+    var DIRECTIVES = [{'name': 'ClickOutsideDirective', 'selector': '[clickOutside]'},{'name': 'LettersOnlyDirective', 'selector': '[appLettersOnly]'},{'name': 'MouseFollowDirective', 'selector': '[gfTooltip]'},{'name': 'NumbersOnlyDirective', 'selector': '[appNumbersOnly]'}];
+    var ACTUAL_COMPONENT = {'name': 'AboutComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'AboutComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,1 @@
+search_result['33']=["topic_0000000000000011.html","EnumsController Class","/// Controlador responsável por expor valores de enums da aplicação.\r\n/// Permite ao frontend obter listas tipadas para preenchimento de UI (dropdowns, filtros, etc).\r\n///"];

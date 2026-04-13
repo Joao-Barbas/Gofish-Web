@@ -1,0 +1,1598 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">angular documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  WarnPinModalComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Modal component responsible for creating a warning pin.</p>
+<p>Responsibilities:</p>
+<ul>
+<li>Load enum options required by the form</li>
+<li>Restore selected coordinates from the URL</li>
+<li>Allow optional group-restricted visibility selection</li>
+<li>Validate and submit warning pin data to the backend</li>
+</ul>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-warn-pin-modal</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/common/CommonModule" target="_blank" >CommonModule</a></code>
+                                <code><a href="https://angular.io/api/forms/ReactiveFormsModule" target="_blank" >ReactiveFormsModule</a></code>
+                                <code><a href="../components/AsyncButtonComponent.html" target="_self" >AsyncButtonComponent</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./warn-pin-modal.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./warn-pin-modal.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#BodyLengthConstraints" >BodyLengthConstraints</a>
+                            </li>
+                            <li>
+                                <a href="#busyState" >busyState</a>
+                            </li>
+                            <li>
+                                <a href="#errorMessage" >errorMessage</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#fb" >fb</a>
+                            </li>
+                            <li>
+                                <a href="#form" >form</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#groupsService" >groupsService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#pinService" >pinService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#route" >route</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                <a href="#selectedCoords" >selectedCoords</a>
+                            </li>
+                            <li>
+                                <a href="#selectedGroupIds" >selectedGroupIds</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#urlService" >urlService</a>
+                            </li>
+                            <li>
+                                <a href="#userGroups" >userGroups</a>
+                            </li>
+                            <li>
+                                <a href="#values" >values</a>
+                            </li>
+                            <li>
+                                <a href="#visibilityOptions" >visibilityOptions</a>
+                            </li>
+                            <li>
+                                <a href="#warnTypeOptions" >warnTypeOptions</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onCancel" >onCancel</a>
+                            </li>
+                            <li>
+                                <a href="#onPublish" >onPublish</a>
+                            </li>
+                            <li>
+                                <a href="#toggleGroup" >toggleGroup</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="82"
+                                    class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:82</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Loads enum values, restores selected coordinates from the URL,
+fetches the user&#39;s groups, and reacts to visibility changes.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCancel"></a>
+                    <span class="name">
+                        <span ><b>onCancel</b></span>
+                        <a href="#onCancel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onCancel()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="159"
+                                    class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:159</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Cancels warning pin creation and navigates back to the map view.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onPublish"></a>
+                    <span class="name">
+                        <span ><b>onPublish</b></span>
+                        <a href="#onPublish"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onPublish()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="174"
+                                    class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:174</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Validates the form, builds the request payload, and submits
+the warning pin creation request to the backend.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleGroup"></a>
+                    <span class="name">
+                        <span ><b>toggleGroup</b></span>
+                        <a href="#toggleGroup"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleGroup(groupId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="147"
+                                    class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:147</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Toggles a group identifier in the selected group list.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>groupId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identifier of the group to add or remove</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BodyLengthConstraints"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>BodyLengthConstraints</b></span>
+                        <a href="#BodyLengthConstraints"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>BodyLengthConstraints</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:42</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Shared body length validation constraints exposed to the template.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="busyState"></a>
+                    <span class="name">
+                        <span ><b>busyState</b></span>
+                        <a href="#busyState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/BusyState.html" target="_self" >BusyState</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new BusyState()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:48</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Busy state used while the create pin request is in progress.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorMessage"></a>
+                    <span class="name">
+                        <span ><b>errorMessage</b></span>
+                        <a href="#errorMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Error message displayed when validation or submission fails.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fb"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>fb</b></span>
+                        <a href="#fb"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(FormBuilder)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="form"></a>
+                    <span class="name">
+                        <span ><b>form</b></span>
+                        <a href="#form"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.fb.group({
+    body: [&#x27;&#x27;, [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
+    visibility: [0, Validators.required],
+    warningKind: [0, Validators.required],
+    groupIds: this.fb.control&lt;number[]&gt;([])
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:71</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Reactive form used to validate warning pin input data.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="groupsService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>groupsService</b></span>
+                        <a href="#groupsService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(GroupsService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>pinService</b></span>
+                        <a href="#pinService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(PinService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:35</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="route"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>route</b></span>
+                        <a href="#route"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ActivatedRoute)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(Router)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:34</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedCoords"></a>
+                    <span class="name">
+                        <span ><b>selectedCoords</b></span>
+                        <a href="#selectedCoords"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#Coords" target="_self" >Coords | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:51</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Coordinates selected for the new warning pin.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedGroupIds"></a>
+                    <span class="name">
+                        <span ><b>selectedGroupIds</b></span>
+                        <a href="#selectedGroupIds"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;number[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:66</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identifiers of the currently selected groups.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="urlService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>urlService</b></span>
+                        <a href="#urlService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(UrlService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userGroups"></a>
+                    <span class="name">
+                        <span ><b>userGroups</b></span>
+                        <a href="#userGroups"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;GetUserGroupsResDTO[&#x27;groups&#x27;]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Groups available to the current user for restricted visibility selection.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="values"></a>
+                    <span class="name">
+                        <span ><b>values</b></span>
+                        <a href="#values"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/UrlQuery.html" target="_self" >UrlQuery | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:45</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Parsed URL values used to restore map-related state.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="visibilityOptions"></a>
+                    <span class="name">
+                        <span ><b>visibilityOptions</b></span>
+                        <a href="#visibilityOptions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/EnumDTO.html" target="_self" >EnumDTO[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Available visibility options loaded from the backend.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="warnTypeOptions"></a>
+                    <span class="name">
+                        <span ><b>warnTypeOptions</b></span>
+                        <a href="#warnTypeOptions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/EnumDTO.html" target="_self" >EnumDTO[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/features/map/components/create-pin-modals/warn-pin-modal/warn-pin-modal.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Available warning type options loaded from the backend.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { CommonModule } from &#x27;@angular/common&#x27;;
+import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { Component, inject, signal } from &#x27;@angular/core&#x27;;
+import { FormBuilder, ReactiveFormsModule, Validators } from &#x27;@angular/forms&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { PinService } from &#x27;@gofish/shared/services/pin.service&#x27;;
+import { UrlQuery, UrlService } from &#x27;@gofish/features/map/services/url.service&#x27;;
+import { EnumDTO } from &#x27;@gofish/shared/dtos/enum.dto&#x27;;
+import { CreateWarnPinReqDTO } from &#x27;@gofish/shared/dtos/pin.dto&#x27;;
+import { Coords } from &#x27;@gofish/shared/models/coords.model&#x27;;
+import { NgxSonnerToaster, toast } from &#x27;ngx-sonner&#x27;;
+import { AsyncButtonComponent } from &quot;@gofish/shared/components/async-button/async-button.component&quot;;
+import { BusyState } from &#x27;@gofish/shared/core/busy-state&#x27;;
+import { GetUserGroupsResDTO } from &#x27;@gofish/shared/dtos/group.dto&#x27;;
+import { GroupsService } from &#x27;@gofish/shared/services/groups.service&#x27;;
+import { BodyLengthConstraints } from &#x27;@gofish/shared/constants&#x27;;
+
+/**
+ * Modal component responsible for creating a warning pin.
+ *
+ * Responsibilities:
+ * - Load enum options required by the form
+ * - Restore selected coordinates from the URL
+ * - Allow optional group-restricted visibility selection
+ * - Validate and submit warning pin data to the backend
+ */
+@Component({
+  selector: &#x27;app-warn-pin-modal&#x27;,
+  imports: [CommonModule, ReactiveFormsModule, AsyncButtonComponent],
+  templateUrl: &#x27;./warn-pin-modal.component.html&#x27;,
+  styleUrl: &#x27;./warn-pin-modal.component.css&#x27;,
+})
+export class WarnPinModalComponent {
+  private readonly router &#x3D; inject(Router);
+  private readonly pinService &#x3D; inject(PinService);
+  private readonly fb &#x3D; inject(FormBuilder);
+  private readonly urlService &#x3D; inject(UrlService);
+  private readonly route &#x3D; inject(ActivatedRoute);
+  private readonly groupsService &#x3D; inject(GroupsService);
+
+  /** Shared body length validation constraints exposed to the template. */
+  protected readonly BodyLengthConstraints &#x3D; BodyLengthConstraints;
+
+  /** Parsed URL values used to restore map-related state. */
+  values: UrlQuery | null &#x3D; null;
+
+  /** Busy state used while the create pin request is in progress. */
+  busyState: BusyState &#x3D; new BusyState();
+
+  /** Coordinates selected for the new warning pin. */
+  selectedCoords: Coords | null &#x3D; null;
+
+  /** Available warning type options loaded from the backend. */
+  warnTypeOptions: EnumDTO[] &#x3D; [];
+
+  /** Available visibility options loaded from the backend. */
+  visibilityOptions: EnumDTO[] &#x3D; [];
+
+  /** Error message displayed when validation or submission fails. */
+  errorMessage &#x3D; &#x27;&#x27;;
+
+  /** Groups available to the current user for restricted visibility selection. */
+  userGroups &#x3D; signal&lt;GetUserGroupsResDTO[&#x27;groups&#x27;]&gt;([]);
+
+  /** Identifiers of the currently selected groups. */
+  selectedGroupIds &#x3D; signal&lt;number[]&gt;([]);
+
+  /**
+   * Reactive form used to validate warning pin input data.
+   */
+  form &#x3D; this.fb.group({
+    body: [&#x27;&#x27;, [Validators.required, Validators.minLength(BodyLengthConstraints.MIN), Validators.maxLength(BodyLengthConstraints.MAX)]],
+    visibility: [0, Validators.required],
+    warningKind: [0, Validators.required],
+    groupIds: this.fb.control&lt;number[]&gt;([])
+  });
+
+  /**
+   * Loads enum values, restores selected coordinates from the URL,
+   * fetches the user&#x27;s groups, and reacts to visibility changes.
+   */
+  ngOnInit(): void {
+    this.pinService.enumerateWarnType().subscribe({
+      next: (res: EnumDTO[]) &#x3D;&gt; {
+        this.warnTypeOptions &#x3D; res;
+      },
+      error: (err: HttpErrorResponse) &#x3D;&gt; {
+        console.error(err);
+      }
+    });
+
+    this.pinService.enumerateVisibilityType().subscribe({
+      next: (res: EnumDTO[]) &#x3D;&gt; {
+        this.visibilityOptions &#x3D; res;
+      },
+      error: (err: HttpErrorResponse) &#x3D;&gt; {
+        console.error(err);
+      }
+    });
+
+    this.route.queryParamMap.subscribe(paramMap &#x3D;&gt; {
+      this.values &#x3D; this.urlService.getUrlValues(paramMap);
+
+      if (!this.values) {
+        this.selectedCoords &#x3D; null;
+        return;
+      }
+
+      const lng &#x3D; this.values.sLng;
+      const lat &#x3D; this.values.sLat;
+
+      if (lng &#x3D;&#x3D;&#x3D; null || lat &#x3D;&#x3D;&#x3D; null) return;
+
+      if (!this.urlService.isLngLatValid(lng, lat)) {
+        this.selectedCoords &#x3D; null;
+        return;
+      }
+
+      this.selectedCoords &#x3D; {
+        longitude: lng,
+        latitude: lat
+      };
+    });
+
+    this.groupsService.getUserGroups().subscribe({
+      next: (res) &#x3D;&gt; {
+        this.userGroups.set(res.groups);
+      },
+      error: (err) &#x3D;&gt; {
+        console.log(err);
+      }
+    });
+
+    this.form.controls.visibility.valueChanges.subscribe(value &#x3D;&gt; {
+      if (Number(value) !&#x3D;&#x3D; 2) {
+        this.selectedGroupIds.set([]);
+        this.form.controls.groupIds.setValue([]);
+      }
+    });
+  }
+
+  /**
+   * Toggles a group identifier in the selected group list.
+   *
+   * @param groupId Identifier of the group to add or remove
+   */
+  toggleGroup(groupId: number) {
+    const current &#x3D; this.selectedGroupIds();
+
+    const updated &#x3D; current.includes(groupId) ? current.filter(id &#x3D;&gt; id !&#x3D;&#x3D; groupId) : [...current, groupId];
+
+    this.selectedGroupIds.set(updated);
+    this.form.controls.groupIds.setValue(updated);
+  }
+
+  /**
+   * Cancels warning pin creation and navigates back to the map view.
+   */
+  onCancel(): void {
+    toast.info(&#x27;You cancel the creation&#x27;);
+    this.router.navigate([&#x27;/map&#x27;], {
+      queryParams: {
+        vLat: this.selectedCoords?.latitude,
+        vLng: this.selectedCoords?.longitude,
+        z: this.values?.z
+      }
+    });
+  }
+
+  /**
+   * Validates the form, builds the request payload, and submits
+   * the warning pin creation request to the backend.
+   */
+  onPublish(): void {
+    this.errorMessage &#x3D; &#x27;&#x27;;
+
+    if (!this.selectedCoords) {
+      this.errorMessage &#x3D; &#x27;No valid coords&#x27;;
+      return;
+    }
+
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    const visibility &#x3D; Number(this.form.value.visibility);
+    const groupIds &#x3D; this.form.value.groupIds ?? [];
+
+    if (visibility &#x3D;&#x3D;&#x3D; 2 &amp;&amp; groupIds.length &#x3D;&#x3D;&#x3D; 0) {
+      this.errorMessage &#x3D; &#x27;Select at least one group.&#x27;;
+      return;
+    }
+
+    this.busyState.setBusy(true);
+
+    const dto: CreateWarnPinReqDTO &#x3D; {
+      latitude: this.selectedCoords!.latitude,
+      longitude: this.selectedCoords!.longitude,
+      visibility: this.form.value.visibility!,
+      body: this.form.value.body ?? &#x27;&#x27;,
+      warningKind: Number(this.form.value.warningKind!),
+      groupIds: groupIds
+    };
+
+    console.log(&#x27;DTO to be sent:&#x27;, dto);
+    const toastId &#x3D; toast.loading(&#x27;Publishing your pin!&#x27;);
+
+    this.pinService.createWarnPin(dto).subscribe({
+      next: () &#x3D;&gt; {
+        this.busyState.setBusy(false);
+        toast.dismiss(toastId);
+        toast.success(&#x27;Warn Pin created successfully.&#x27;);
+        this.router.navigate([&#x27;/map&#x27;]);
+      },
+      error: (err) &#x3D;&gt; {
+        this.busyState.setBusy(false);
+        toast.dismiss(toastId);
+        this.errorMessage &#x3D; &#x27;Failed to create warn pin. Please try again.&#x27;;
+        toast.error(this.errorMessage);
+        console.log(err);
+      }
+    });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;modal-backdrop-custom d-flex justify-content-center align-items-center&quot;&gt;
+  &lt;div class&#x3D;&quot;modal-custom gf-card&quot;&gt;
+    &lt;form id&#x3D;&quot;warn-modal&quot; [formGroup]&#x3D;&quot;form&quot; (ngSubmit)&#x3D;&quot;onPublish()&quot;&gt;
+
+      &lt;!-- Header --&gt;
+      &lt;div class&#x3D;&quot;modal-header text-white align-items-center mb-3 justify-content-between&quot;&gt;
+        &lt;div&gt;
+          &lt;h5 class&#x3D;&quot;mb-0 text-bold modal-header-title&quot;&gt;Warning Pin Create&lt;/h5&gt;
+          &lt;p class&#x3D;&quot;mb-0 dark-text-muted modal-header-subtitle&quot;&gt;
+            Add details about the warning (This pin has a durability of 24 hours)
+          &lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;button class&#x3D;&quot;gf-btn-icon&quot; (click)&#x3D;&quot;onCancel()&quot;
+          style&#x3D;&quot;background: none; border: none; color: var(--gf-dark-text-muted); cursor: pointer;&quot;&gt;
+          &lt;svg width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;
+            stroke-linecap&#x3D;&quot;round&quot;&gt;
+            &lt;path d&#x3D;&quot;M18 6L6 18M6 6l12 12&quot; /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Body --&gt;
+      &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+
+        &lt;!-- Content --&gt;
+        &lt;h5 class&#x3D;&quot;text-slim modal-body-section-title mt-3&quot;&gt;Content&lt;/h5&gt;
+        &lt;section class&#x3D;&quot;d-flex flex-column&quot;&gt;
+          &lt;textarea id&#x3D;&quot;catchPinDescription&quot; class&#x3D;&quot;modal-body-description dark-bg-dark dark-text&quot;
+            placeholder&#x3D;&quot;Add a description...&quot; formControlName&#x3D;&quot;body&quot; maxlength&#x3D;&quot;{{ BodyLengthConstraints.MAX }}&quot;&gt;&lt;/textarea&gt;
+          &lt;small class&#x3D;&quot;dark-text-muted text-end&quot;&gt;
+            {{ form.value.body?.length ?? 0 }}/{{ BodyLengthConstraints.MAX }}
+          &lt;/small&gt;
+
+          @if (form.controls.body.touched) {
+          @if (form.controls.body.hasError(&#x27;required&#x27;)) {
+          &lt;p class&#x3D;&quot;text-danger mt-2 mb-0&quot;&gt;
+            You must have a description!
+          &lt;/p&gt;
+          } @else if (form.controls.body.hasError(&#x27;minlength&#x27;)) {
+          &lt;p class&#x3D;&quot;text-danger mt-2 mb-0&quot;&gt;
+            Your description must be at least {{ BodyLengthConstraints.MIN }} characters long.
+          &lt;/p&gt;
+          } @else if (form.controls.body.hasError(&#x27;maxlength&#x27;)) {
+          &lt;p class&#x3D;&quot;text-danger mt-2 mb-0&quot;&gt;
+            Your description must be lower than {{ BodyLengthConstraints.MAX }} characters.
+
+          &lt;/p&gt;
+          }
+          }
+        &lt;/section&gt;
+
+        &lt;!-- Options --&gt;
+        &lt;h5 class&#x3D;&quot;text-slim modal-body-section-title mt-3&quot;&gt;Options&lt;/h5&gt;
+        &lt;section class&#x3D;&quot;d-flex flex-column&quot;&gt;
+
+          &lt;!-- Geolocation --&gt;
+          &lt;div class&#x3D;&quot;options-line d-flex align-items-center justify-content-between dark-text-muted&quot;&gt;
+            &lt;h5 class&#x3D;&quot;modal-body-options-text text-slim mb-0&quot;&gt;Geolocation&lt;/h5&gt;
+            &lt;div class&#x3D;&quot;d-flex align-items-center gap-1 coords-div&quot;&gt;
+              &lt;p&gt;Lat: &lt;/p&gt;
+              &lt;p class&#x3D;&quot;mb-0 dark-bg-dark modal-info-box&quot;&gt;{{ (selectedCoords?.latitude | number: &#x27;1.5&#x27;) ?? &#x27;-&#x27; }}&lt;/p&gt;
+              &lt;p&gt;Lng: &lt;/p&gt;
+              &lt;p class&#x3D;&quot;mb-0 dark-bg-dark modal-info-box&quot;&gt;{{ (selectedCoords?.longitude | number: &#x27;1.5&#x27;) ?? &#x27;-&#x27;}}&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Visibility --&gt;
+          &lt;div class&#x3D;&quot;options-line d-flex align-items-center justify-content-between dark-text-muted&quot;&gt;
+            &lt;h5 class&#x3D;&quot;modal-body-options-text text-slim mb-0&quot;&gt;Visibility&lt;/h5&gt;
+
+            &lt;div class&#x3D;&quot;d-flex align-items-center gap-1 radio-group-container&quot;&gt;
+              @for (option of visibilityOptions; track option.value) {
+              &lt;div class&#x3D;&quot;visibility-option&quot;&gt;
+                &lt;input type&#x3D;&quot;radio&quot; class&#x3D;&quot;d-none&quot; name&#x3D;&quot;visibility&quot; [id]&#x3D;&quot;&#x27;vis-&#x27; + option.value&quot; [value]&#x3D;&quot;option.value&quot;
+                  formControlName&#x3D;&quot;visibility&quot;&gt;
+
+                &lt;label [for]&#x3D;&quot;&#x27;vis-&#x27; + option.value&quot; class&#x3D;&quot;modal-visibility-btn&quot;
+                  [class.active]&#x3D;&quot;form.controls.visibility.value &#x3D;&#x3D;&#x3D; option.value&quot;&gt;
+                  {{ option.label }}
+                &lt;/label&gt;
+              &lt;/div&gt;
+              }
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          @if (form.controls.visibility.value &#x3D;&#x3D;&#x3D; 2) {
+          &lt;div class&#x3D;&quot;options-line groups-line d-flex align-items-start justify-content-between dark-text-muted&quot;&gt;
+            &lt;h5 class&#x3D;&quot;modal-body-options-text text-slim mb-0 pt-2&quot;&gt;Groups&lt;/h5&gt;
+            &lt;div class&#x3D;&quot;groups-selector flex-column&quot;&gt;
+              @for (group of userGroups(); track group.id) {
+              &lt;label class&#x3D;&quot;group-chip&quot; [class.selected]&#x3D;&quot;selectedGroupIds().includes(group.id)&quot;&gt;
+                &lt;input type&#x3D;&quot;checkbox&quot; class&#x3D;&quot;d-none&quot; [checked]&#x3D;&quot;selectedGroupIds().includes(group.id)&quot;
+                  (change)&#x3D;&quot;toggleGroup(group.id)&quot; class&#x3D;&quot;group-chip-image&quot;&gt;
+                &lt;img [src]&#x3D;&quot;group.imageUrl&quot; class&#x3D;&quot;group-chip-image&quot;&gt;
+                &lt;span&gt;{{ group.name }}&lt;/span&gt;
+              &lt;/label&gt;
+              }
+            &lt;/div&gt;
+          &lt;/div&gt;
+          }
+          &lt;!-- Warning Type --&gt;
+          &lt;div class&#x3D;&quot;options-line d-flex align-items-center justify-content-between dark-text-muted mb-3&quot;&gt;
+            &lt;h5 class&#x3D;&quot;modal-body-options-text text-slim mb-0&quot;&gt;Warning Type&lt;/h5&gt;
+
+            &lt;div class&#x3D;&quot;d-flex align-items-center&quot;&gt;
+              &lt;select class&#x3D;&quot;form-select form-select-sm custom-dropdown&quot; formControlName&#x3D;&quot;warningKind&quot;&gt;
+                @for (option of warnTypeOptions; track option.value) {
+                &lt;option [value]&#x3D;&quot;option.value&quot;&gt;{{ option.label }}&lt;/option&gt;
+                }
+              &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- Error --&gt;
+        @if (errorMessage) {
+        &lt;p class&#x3D;&quot;text-danger mt-2 mb-0&quot;&gt;{{ errorMessage }}&lt;/p&gt;
+        }
+
+      &lt;/div&gt;
+
+      &lt;!-- Footer --&gt;
+      &lt;div class&#x3D;&quot;modal-footer mt-2 action-btns&quot;&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-secondary&quot; (click)&#x3D;&quot;onCancel()&quot;&gt;
+          Cancel
+        &lt;/button&gt;
+
+        &lt;app-async-button type&#x3D;&quot;submit&quot; form&#x3D;&quot;warn-modal&quot; labels&#x3D;&quot;Publish&quot;
+          [state]&#x3D;&quot;busyState.isBusy() ? &#x27;busy&#x27; : &#x27;idle&#x27;&quot; /&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="modal-backdrop-custom d-flex justify-content-center align-items-center">  <div class="modal-custom gf-card">    <form id="warn-modal" [formGroup]="form" (ngSubmit)="onPublish()">      <!-- Header -->      <div class="modal-header text-white align-items-center mb-3 justify-content-between">        <div>          <h5 class="mb-0 text-bold modal-header-title">Warning Pin Create</h5>          <p class="mb-0 dark-text-muted modal-header-subtitle">            Add details about the warning (This pin has a durability of 24 hours)          </p>        </div>        <button class="gf-btn-icon" (click)="onCancel()"          style="background: none; border: none; color: var(--gf-dark-text-muted); cursor: pointer;">          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"            stroke-linecap="round">            <path d="M18 6L6 18M6 6l12 12" />          </svg>        </button>      </div>      <!-- Body -->      <div class="modal-body">        <!-- Content -->        <h5 class="text-slim modal-body-section-title mt-3">Content</h5>        <section class="d-flex flex-column">          <textarea id="catchPinDescription" class="modal-body-description dark-bg-dark dark-text"            placeholder="Add a description..." formControlName="body" maxlength="{{ BodyLengthConstraints.MAX }}"></textarea>          <small class="dark-text-muted text-end">            {{ form.value.body?.length ?? 0 }}/{{ BodyLengthConstraints.MAX }}          </small>          @if (form.controls.body.touched) {          @if (form.controls.body.hasError(\'required\')) {          <p class="text-danger mt-2 mb-0">            You must have a description!          </p>          } @else if (form.controls.body.hasError(\'minlength\')) {          <p class="text-danger mt-2 mb-0">            Your description must be at least {{ BodyLengthConstraints.MIN }} characters long.          </p>          } @else if (form.controls.body.hasError(\'maxlength\')) {          <p class="text-danger mt-2 mb-0">            Your description must be lower than {{ BodyLengthConstraints.MAX }} characters.          </p>          }          }        </section>        <!-- Options -->        <h5 class="text-slim modal-body-section-title mt-3">Options</h5>        <section class="d-flex flex-column">          <!-- Geolocation -->          <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">            <h5 class="modal-body-options-text text-slim mb-0">Geolocation</h5>            <div class="d-flex align-items-center gap-1 coords-div">              <p>Lat: </p>              <p class="mb-0 dark-bg-dark modal-info-box">{{ (selectedCoords?.latitude | number: \'1.5\') ?? \'-\' }}</p>              <p>Lng: </p>              <p class="mb-0 dark-bg-dark modal-info-box">{{ (selectedCoords?.longitude | number: \'1.5\') ?? \'-\'}}</p>            </div>          </div>          <!-- Visibility -->          <div class="options-line d-flex align-items-center justify-content-between dark-text-muted">            <h5 class="modal-body-options-text text-slim mb-0">Visibility</h5>            <div class="d-flex align-items-center gap-1 radio-group-container">              @for (option of visibilityOptions; track option.value) {              <div class="visibility-option">                <input type="radio" class="d-none" name="visibility" [id]="\'vis-\' + option.value" [value]="option.value"                  formControlName="visibility">                <label [for]="\'vis-\' + option.value" class="modal-visibility-btn"                  [class.active]="form.controls.visibility.value === option.value">                  {{ option.label }}                </label>              </div>              }            </div>          </div>          @if (form.controls.visibility.value === 2) {          <div class="options-line groups-line d-flex align-items-start justify-content-between dark-text-muted">            <h5 class="modal-body-options-text text-slim mb-0 pt-2">Groups</h5>            <div class="groups-selector flex-column">              @for (group of userGroups(); track group.id) {              <label class="group-chip" [class.selected]="selectedGroupIds().includes(group.id)">                <input type="checkbox" class="d-none" [checked]="selectedGroupIds().includes(group.id)"                  (change)="toggleGroup(group.id)" class="group-chip-image">                <img [src]="group.imageUrl" class="group-chip-image">                <span>{{ group.name }}</span>              </label>              }            </div>          </div>          }          <!-- Warning Type -->          <div class="options-line d-flex align-items-center justify-content-between dark-text-muted mb-3">            <h5 class="modal-body-options-text text-slim mb-0">Warning Type</h5>            <div class="d-flex align-items-center">              <select class="form-select form-select-sm custom-dropdown" formControlName="warningKind">                @for (option of warnTypeOptions; track option.value) {                <option [value]="option.value">{{ option.label }}</option>                }              </select>            </div>          </div>        </section>        <!-- Error -->        @if (errorMessage) {        <p class="text-danger mt-2 mb-0">{{ errorMessage }}</p>        }      </div>      <!-- Footer -->      <div class="modal-footer mt-2 action-btns">        <button type="button" class="btn btn-secondary" (click)="onCancel()">          Cancel        </button>        <app-async-button type="submit" form="warn-modal" labels="Publish"          [state]="busyState.isBusy() ? \'busy\' : \'idle\'" />      </div>    </form>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AboutComponent', 'selector': 'app-about'},{'name': 'AdminPopoverComponent', 'selector': 'gf-admin-popover'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AsyncButtonComponent', 'selector': 'app-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'gf-async-button'},{'name': 'AsyncButtonComponent', 'selector': 'button[gfAsyncBtn]'},{'name': 'AuthCallbackComponent', 'selector': 'app-auth-callback'},{'name': 'CatchPinModalComponent', 'selector': 'app-catch-pin-modal'},{'name': 'ChangeBirthdateModalComponent', 'selector': 'app-change-birthdate-modal'},{'name': 'ChangeDisplaynameModalComponent', 'selector': 'app-change-displayname-modal'},{'name': 'ChangeEmailModalComponent', 'selector': 'gf-change-email-modal'},{'name': 'ChangeFirstnameModalComponent', 'selector': 'app-change-firstname-modal'},{'name': 'ChangeLastnameModalComponent', 'selector': 'app-change-lastname-modal'},{'name': 'ChangePhoneModalComponent', 'selector': 'app-change-phone-modal'},{'name': 'ChangeUsernameModalComponent', 'selector': 'app-change-username-modal'},{'name': 'ChoosePinPopupComponent', 'selector': 'app-choose-pin-popup'},{'name': 'ClusterDetailsComponent', 'selector': 'app-cluster-details'},{'name': 'ConfirmDeletionModalComponent', 'selector': 'app-confirm-deletion-modal'},{'name': 'DeleteCommentComponent', 'selector': 'gf-delete-comment'},{'name': 'DeleteGroupComponent', 'selector': 'gf-delete-group'},{'name': 'DeletePinComponent', 'selector': 'app-delete-pin'},{'name': 'DeletePostComponent', 'selector': 'gf-delete-post'},{'name': 'DiscoverComponent', 'selector': 'app-discover'},{'name': 'EnumComponent', 'selector': 'app-enum'},{'name': 'ExitGroupComponent', 'selector': 'gf-exit-group'},{'name': 'FooterComponent', 'selector': 'gf-footer'},{'name': 'ForumComponent', 'selector': 'app-forum'},{'name': 'ForumPostComponent', 'selector': 'app-forum-post'},{'name': 'FriendsComponent', 'selector': 'app-friends'},{'name': 'FriendshipListCardComponent', 'selector': 'gf-friendship-list-card'},{'name': 'FriendsListComponent', 'selector': 'app-friends-list'},{'name': 'FromFriendsComponent', 'selector': 'app-from-friends'},{'name': 'GeneralComponent', 'selector': 'app-general'},{'name': 'GfCardCommentPreviewComponent', 'selector': 'gf-gf-card-comment-preview'},{'name': 'GfCardPinPreviewComponent', 'selector': 'app-gf-card-pin-preview'},{'name': 'GfCardQuickAccessComponent', 'selector': 'app-gf-card-quick-access'},{'name': 'GfCardQuickViewComponent', 'selector': 'app-gf-card-quick-view'},{'name': 'GroupCreateComponent', 'selector': 'app-group-create'},{'name': 'GroupInviteComponent', 'selector': 'gf-group-invite'},{'name': 'GroupInvitesCardComponent', 'selector': 'gf-group-invites-card'},{'name': 'GroupInvitesListComponent', 'selector': 'gf-group-invites-list'},{'name': 'GroupListCardComponent', 'selector': 'gf-group-list-card'},{'name': 'GroupMemberSettingsPopoverComponent', 'selector': 'gf-group-member-settings-popover'},{'name': 'GroupPopoverComponent', 'selector': 'gf-group-popover'},{'name': 'GroupPostsPlaceholderComponent', 'selector': 'app-group-posts-placeholder'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsComponent', 'selector': 'app-groups'},{'name': 'GroupsListCardComponent', 'selector': 'gf-groups-list-card'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'GroupsListComponent', 'selector': 'gf-groups-list'},{'name': 'HeaderActionsComponent', 'selector': 'gf-header-actions'},{'name': 'HeaderComponent', 'selector': 'gf-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'InfoPinModalComponent', 'selector': 'app-info-pin-modal'},{'name': 'InviteToGroupsModalComponent', 'selector': 'gf-invite-to-groups-modal'},{'name': 'LeaderboardComponent', 'selector': 'gf-leaderboard'},{'name': 'LoadingErrorModalComponent', 'selector': 'gf-loading-error-modal'},{'name': 'LoadingSpinnerComponent', 'selector': 'gf-loading-spinner'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MembersGroupComponent', 'selector': 'gf-members-group'},{'name': 'MyGroupsComponent', 'selector': 'app-my-groups'},{'name': 'NavPopoverComponent', 'selector': 'gf-nav-popover'},{'name': 'OverviewComponent', 'selector': 'app-overview'},{'name': 'PersonalDataComponent', 'selector': 'app-personal-data'},{'name': 'PinDetailPanelComponent', 'selector': 'app-pin-detail-panel'},{'name': 'PinsAvgPublishedChart', 'selector': 'gf-pins-average-published-chart'},{'name': 'PinsComponent', 'selector': 'app-pins'},{'name': 'PinsPerWeekComponent', 'selector': 'gf-pins-per-week'},{'name': 'PostCommentsComponent', 'selector': 'app-post-comments'},{'name': 'PostIdPlaceholderComponent', 'selector': 'app-post-id-placeholder'},{'name': 'PrivacyPolicyComponent', 'selector': 'app-privacy-policy'},{'name': 'ProfileActionsPopoverComponent', 'selector': 'gf-profile-actions-popover'},{'name': 'ProfileCatchPinCardComponent', 'selector': 'gf-profile-catch-pin-card'},{'name': 'ProfileShellComponent', 'selector': 'app-profile'},{'name': 'ProfileShowMoreModalComponent', 'selector': 'gf-profile-show-more-modal'},{'name': 'ReportCommentComponent', 'selector': 'gf-report-comment'},{'name': 'ReportedCommentPageComponent', 'selector': 'gf-reported-comment-page'},{'name': 'ReportedCommentsComponent', 'selector': 'gf-reported-comments'},{'name': 'ReportedPinPageComponent', 'selector': 'gf-reported-pin-page'},{'name': 'ReportedPinsComponent', 'selector': 'gf-reported-pins'},{'name': 'ReportPinComponent', 'selector': 'gf-report'},{'name': 'RequestsListComponent', 'selector': 'app-requests-list'},{'name': 'ResetPasswordComponent', 'selector': 'gf-reset-password'},{'name': 'SearchComponent', 'selector': 'gf-search'},{'name': 'SecurityComponent', 'selector': 'app-security'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SetupTotpComponent', 'selector': 'app-setup-totp'},{'name': 'SigninComponent', 'selector': 'app-signin'},{'name': 'SigninVerifyComponent', 'selector': 'app-signin-verify'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'SmallFriendshipCarouselCardComponent', 'selector': 'gf-small-friendship-carousel-card'},{'name': 'SmallGroupCarouselCardComponent', 'selector': 'gf-small-group-carousel-card'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'StatsHomeComponent', 'selector': 'app-home'},{'name': 'StatsReportsComponent', 'selector': 'app-stats-reports'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'TermsOfServiceComponent', 'selector': 'app-terms-of-service'},{'name': 'TotpValidationModalComponent', 'selector': 'app-totp-validation-modal'},{'name': 'UserCardComponent', 'selector': 'app-user-card'},{'name': 'UserHelpBoxComponent', 'selector': 'gf-user-help-box'},{'name': 'UserPopoverComponent', 'selector': 'gf-user-popover'},{'name': 'UserRankIconComponent', 'selector': 'gf-user-rank-icon'},{'name': 'UserSatisfactionIndexComponent', 'selector': 'gf-user-satisfaction-index'},{'name': 'UsersChartComponent', 'selector': 'gf-users-chart'},{'name': 'UsersListCardComponent', 'selector': 'gf-users-list-card'},{'name': 'UsersListComponent', 'selector': 'gf-users-list'},{'name': 'UserTitleComponent', 'selector': 'gf-user-title'},{'name': 'VerifyEmailModalComponent', 'selector': 'gf-verify-email-modal'},{'name': 'VerifyTwofaContainerComponent', 'selector': 'gf-verify-twofa-container'},{'name': 'WarnPinModalComponent', 'selector': 'app-warn-pin-modal'}];
+    var DIRECTIVES = [{'name': 'ClickOutsideDirective', 'selector': '[clickOutside]'},{'name': 'LettersOnlyDirective', 'selector': '[appLettersOnly]'},{'name': 'MouseFollowDirective', 'selector': '[gfTooltip]'},{'name': 'NumbersOnlyDirective', 'selector': '[appNumbersOnly]'}];
+    var ACTUAL_COMPONENT = {'name': 'WarnPinModalComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'WarnPinModalComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

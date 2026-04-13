@@ -1,0 +1,1 @@
+search_result['69']=["topic_000000000000002B.html","GroupController.IgnoreGroupInvite Method","/// Ignora um convite de grupo.\r\n    /// Internamente reutiliza a lógica de eliminação de convite.\r\n    ///"];

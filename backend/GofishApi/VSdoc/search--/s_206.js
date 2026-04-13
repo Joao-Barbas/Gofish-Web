@@ -1,0 +1,1 @@
+search_result['206']=["topic_000000000000008C.html","UserSecurityController.ForgotPassoword Method","/// Inicia o processo de recuperação de password.\r\n    /// Envia para o email do utilizador um código/token de reset.\r\n    ///"];
