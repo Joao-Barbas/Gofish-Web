@@ -3,7 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-POST_URL = "/forum/post/106"
+POST_URL = "/forum/post/308"
 
 
 def test_add_comment_to_forum_post(driver_player2, base_url):
