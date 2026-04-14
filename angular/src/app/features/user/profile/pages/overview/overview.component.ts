@@ -69,7 +69,7 @@ export class OverviewComponent {
   readonly ProfileShowMoreModalComponent = ProfileShowMoreModalComponent;
 
   overviewData = rxResource({
-    params: () => this.profileContext.userProfileId(),
+    params: () => this.profileContext.profileId(),
     stream: ({ params: id }) => forkJoin({
       friends: this.userApi.getFriendships({ userId: id, state: FriendshipState.Accepted, maxResults: 8 }),
       groups: this.userApi.getUserGroups({ userId: id, maxResults: 8 }),
@@ -98,7 +98,7 @@ export class OverviewComponent {
   onSendFriendshipRequest(): void {
     this.busyState.setBusy(true);
     this.userApi.requestFriendship({
-      receiverId: this.profileContext.userProfileId() // Also userId
+      receiverId: this.profileContext.profileId() // Also userId
     }).pipe(finalize(() => {
       this.busyState.setBusy(false);
     })).subscribe({
@@ -112,14 +112,16 @@ export class OverviewComponent {
   }
 
   onAcceptFriendRequest() {
-    if (!this.profileContext.userProfile().friendship) return;
-    if (!this.profileContext.isFriendshipAcceptable()) return;
+    console.log("ASDGJGASDHGASFXYGHASDCGHHDGASGHDFSAG")
+    console.log(this.profileContext.profileFriendship());
+    if (!this.profileContext.profile().friendship) return;
+    if (!this.profileContext.viewerCanAcceptRequest()) return;
 
     this.busyState.setBusy(true);
 
-    this.userApi.acceptFriendship(this.profileContext.userProfile().friendship?.id!).subscribe({
+    this.userApi.acceptFriendship(this.profileContext.profile().friendship?.id!).subscribe({
       next: () => {
-        this.profileContext.befriends(this.profileContext.userProfile().friendship!);
+        this.profileContext.befriends(this.profileContext.profile().friendship!);
         this.busyState.setBusy(false);
       },
       error: () => {

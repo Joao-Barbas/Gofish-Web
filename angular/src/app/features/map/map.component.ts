@@ -24,9 +24,7 @@ import { RouterOutlet } from '@angular/router';
 import { MapLayersService } from '@gofish/features/map/services/map-layers.service';
 import { MapInteractionsService } from '@gofish/features/map/services/map-interactions.service';
 import { ClusterDetailsComponent } from '@gofish/features/map/components/cluster-details/cluster-details.component';
-
-
-const MAPBOX_TOKEN = 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21uY2NtZjdrMHpsYjJwcXlsNWdpM2pzaSJ9.M0UieuxBdBlA67zriIvU4w';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-map',
@@ -100,7 +98,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   private initMap(): void {
     const view = this.getInitialView();
     console.log('Initial view:', view);
-    mapboxgl.accessToken = MAPBOX_TOKEN;
+    mapboxgl.accessToken = environment.mapboxToken;
 
     this.map = new mapboxgl.Map({
       container: 'map',

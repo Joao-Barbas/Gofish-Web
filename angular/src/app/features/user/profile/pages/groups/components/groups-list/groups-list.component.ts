@@ -42,7 +42,7 @@ export class GroupsListComponent {
   groupsList    = signal<UserGroupDTO[]>([]);
 
   groups = resource({
-    params: () => this.profileContext.userProfileId(),
+    params: () => this.profileContext.profileId(),
     loader: ({ params: id }) => firstValueFrom(this.userApi.getUserGroups({ userId: id, maxResults: 20, lastTimestamp: undefined }))
   });
 
@@ -56,7 +56,7 @@ export class GroupsListComponent {
   }
 
   loadMoreGroups() {
-    let profileId = this.profileContext.userProfileId();
+    let profileId = this.profileContext.profileId();
     this.loadingState.start();
     this.busyState.setBusy(true);
     this.userApi.getUserGroups({

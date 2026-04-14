@@ -47,7 +47,7 @@ export class RequestsListComponent {
   requestsListReceived = computed(() => this.requestsList().filter((a) => a.receiverUserId === this.authService.userId()!));
 
   requests = resource({
-    params: () => this.profileContext.userProfileId(),
+    params: () => this.profileContext.profileId(),
     loader: ({ params: id }) => firstValueFrom(this.userApi.getFriendships({ userId: id, state: FriendshipState.Pending, maxResults: 20, lastTimestamp: undefined }))
   });
 
@@ -61,7 +61,7 @@ export class RequestsListComponent {
   }
 
   loadMoreFriends() {
-    let profileId = this.profileContext.userProfileId();
+    let profileId = this.profileContext.profileId();
     this.loadingState.start();
     this.busyState.setBusy(true);
     this.userApi.getFriendships({

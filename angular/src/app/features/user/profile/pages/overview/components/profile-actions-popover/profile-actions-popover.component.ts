@@ -49,12 +49,12 @@ export class ProfileActionsPopoverComponent {
 
   onUnfriend() {
     this.controller.close();
-    let friendship = this.profileContext.userProfile().friendship;
+    let friendship = this.profileContext.profile().friendship;
     if (!friendship) return;
     this.userApi.deleteFriendship(friendship.id).subscribe({
       next: () => {
         this.profileContext.unfriend();
-        this.toast.info(`You are no longer friends with ${this.profileContext.userProfile().userName}`);
+        this.toast.info(`You are no longer friends with ${this.profileContext.profile().userName}`);
       },
       error: () => {
         this.toast.error('Something went wrong while trying to unfriend');
@@ -64,12 +64,12 @@ export class ProfileActionsPopoverComponent {
 
   onFriendshipCancel() {
     this.controller.close();
-    let friendship = this.profileContext.userProfile().friendship;
+    let friendship = this.profileContext.profile().friendship;
     if (!friendship) return;
     this.userApi.deleteFriendship(friendship.id).subscribe({
       next: () => {
         this.profileContext.unfriend();
-        this.toast.info(`You are no longer seeking friendship with ${this.profileContext.userProfile().userName}`);
+        this.toast.info(`You are no longer seeking friendship with ${this.profileContext.profile().userName}`);
       },
       error: () => {
         this.toast.error('Something went wrong while trying to cancel friendship request');
@@ -79,17 +79,17 @@ export class ProfileActionsPopoverComponent {
 
   onFriends() {
     this.controller.close();
-    this.router.navigate([Path.PROFILE_FRIENDS(this.profileContext.userProfileId())]);
+    this.router.navigate([Path.PROFILE_FRIENDS(this.profileContext.profileId())]);
   }
 
   onPins() {
     this.controller.close();
-    this.router.navigate([Path.PROFILE_PINS(this.profileContext.userProfileId())]);
+    this.router.navigate([Path.PROFILE_PINS(this.profileContext.profileId())]);
   }
 
   onGroups() {
     this.controller.close();
-    this.router.navigate([Path.PROFILE_GROUPS(this.profileContext.userProfileId())]);
+    this.router.navigate([Path.PROFILE_GROUPS(this.profileContext.profileId())]);
   }
 
   onShowMore() {
@@ -105,7 +105,7 @@ export class ProfileActionsPopoverComponent {
   onFriendRequests() {
     this.controller.close();
     this.router.navigate(
-      [Path.PROFILE_FRIENDS(this.profileContext.userProfileId())],
+      [Path.PROFILE_FRIENDS(this.profileContext.profileId())],
       { queryParams: { tab: ProfileFriendsTab.REQUESTS } }
     );
   }
@@ -113,7 +113,7 @@ export class ProfileActionsPopoverComponent {
   onGroupInvites() {
     this.controller.close();
     this.router.navigate(
-      [Path.PROFILE_GROUPS(this.profileContext.userProfileId())],
+      [Path.PROFILE_GROUPS(this.profileContext.profileId())],
       { queryParams: { tab: ProfileGroupsTab.INVITES } }
     );
   }

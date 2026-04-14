@@ -1,7 +1,7 @@
 <!-- groups.component.html -->
 
-<h5 class="gf-font-bold">{{ `${ profileContext.userProfile().userName }'s groups` }}</h5>
-@if (profileContext.isOwner()) {
+<h5 class="gf-font-bold">{{ `${ profileContext.profile().userName }'s groups` }}</h5>
+@if (profileContext.viewerIsProfileOwner()) {
   <nav class="gf-flow-horizontal gf-justify-evenly gf-items-center gf-w-100">
   <a [routerLink]="'.'" [queryParams]="{ tab: 'groups' }" [class.active]="activeTabOrDefault() === 'groups'">
     Groups
@@ -11,7 +11,7 @@
   </a>
   </nav>
 }
-@if (activeTabOrDefault() === 'invites' && profileContext.isOwner()) {
+@if (activeTabOrDefault() === 'invites' && profileContext.viewerIsProfileOwner()) {
   <gf-group-invites-list></gf-group-invites-list>
 } @else {
   <gf-groups-list></gf-groups-list>

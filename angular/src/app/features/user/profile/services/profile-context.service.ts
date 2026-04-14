@@ -1,48 +1,48 @@
 // profile-context.service.ts
 
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { GetUserProfileResDTO, UserProfileDTO } from '@gofish/shared/dtos/user-profile.dto';
+import { UserProfileDTO } from '@gofish/shared/dtos/user-profile.dto';
 import { FriendshipDTO } from '@gofish/shared/dtos/user.dto';
 import { FriendshipState } from '@gofish/shared/enums/friendship-state.enum';
 import { AuthService } from '@gofish/shared/services/auth.service';
 import { UserManagerService } from '@gofish/shared/services/user-manager.service';
 
-@Injectable(
-  {
-    providedIn: 'root',
-  }
-)
+@Injectable({ providedIn: 'root' })
 export class ProfileContext {
   private readonly userManagerService = inject(UserManagerService);
   private readonly authService = inject(AuthService);
 
-  // Signals
+  // Profile
 
-  private _userProfileId = signal<string>(null!);
-  readonly userProfileId = this._userProfileId.asReadonly();
+  private _profileId = signal<string>(null!);
+  readonly profileId = this._profileId.asReadonly();
 
-  private _userProfile = signal<UserProfileDTO>(null!);
-  readonly userProfile = this._userProfile.asReadonly();
+  private _profile = signal<UserProfileDTO>(null!);
+  readonly profile = this._profile.asReadonly();
 
-  // Computed
+  readonly profileFriendship = computed<FriendshipDTO | null>(() => this._profile()?.friendship ?? null);
+  readonly profileSentRequest = computed<boolean>(() => this.profileFriendship()?.requesterUserId === this._profileId());
+  readonly profileFriendshipIsPending = computed<boolean>(() => this.profileFriendship()?.state === FriendshipState.Pending);
 
-  readonly isOwner = computed<boolean>(() => this._userProfileId() === this.authService.userId())
-  readonly isFriend = computed<boolean>(() => this._userProfile().friendship?.state === FriendshipState.Accepted);
-  readonly isFriendshipPending = computed<boolean>(() => this._userProfile().friendship?.state === FriendshipState.Pending);
-  readonly isFriendshipAcceptable = computed<boolean>(() => !this.isOwner() && this.isFriendshipPending())
+  // Viewer relationship with this profile
+
+  readonly viewerIsProfileOwner = computed<boolean>(() => this._profileId() === this.authService.userId());
+  readonly viewerIsFriend = computed<boolean>(() => this.profileFriendship()?.state === FriendshipState.Accepted);
+  readonly viewerSentRequest = computed<boolean>(() => this.profileFriendship()?.requesterUserId === this.authService.userId());
+  readonly viewerCanAcceptRequest = computed<boolean>(() => !this.viewerIsProfileOwner() && this.profileFriendshipIsPending() && this.profileSentRequest());
 
   // Mutations
 
   load(profileId: string, profileData: UserProfileDTO): void {
-    this._userProfileId.set(profileId);
-    this._userProfile.set(profileData);
+    this._profileId.set(profileId);
+    this._profile.set(profileData);
   }
 
   unfriend(): void {
-    this._userProfile.update(p => p && ({ ...p, friendship: undefined }));
+    this._profile.update(p => p && ({ ...p, friendship: undefined }));
   }
 
   befriends(friendship: FriendshipDTO): void {
-    this._userProfile.update(p => p && ({ ...p, friendship: friendship }));
+    this._profile.update(p => p && ({ ...p, friendship: friendship }));
   }
 }

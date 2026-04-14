@@ -52,7 +52,7 @@ export class PinsComponent {
   pinsList    = signal<PinDto[]>([]);
 
   pins = resource({
-    params: () => this.profileContext.userProfileId(),
+    params: () => this.profileContext.profileId(),
     loader: ({ params: id }) => firstValueFrom(this.pinApi.getPins({
       ids: [{ authorId: id }],
       dataRequest: {
@@ -93,7 +93,7 @@ export class PinsComponent {
   }
 
   loadMorePins() {
-    let profileId = this.profileContext.userProfileId();
+    let profileId = this.profileContext.profileId();
     this.loadingState.start();
     this.busyState.setBusy(true);
     this.pinApi.getPins({

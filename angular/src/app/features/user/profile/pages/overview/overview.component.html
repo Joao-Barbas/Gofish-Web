@@ -9,7 +9,7 @@
     (positive)="onErrorModalPositive()"
   ></gf-loading-error-modal>
 } @else if (overviewData.hasValue()) {
-  @let profile = profileContext.userProfile();
+  @let profile = profileContext.profile();
 
   @let friends = overviewData.value().friends;
   @let groups  = overviewData.value().groups;
@@ -48,9 +48,15 @@
             <gf-profile-actions-popover></gf-profile-actions-popover>
           }
         </div>
-        @if (profile.userId !== authService.userId()) {
-          @if (!profileContext.isFriend()) {
-            @if (profileContext.isFriendshipAcceptable()) {
+        @if (profileContext.viewerIsProfileOwner()) {
+          <a class="gf-center-axes gf-px-32 action-btn btn-edit" [routerLink]="'/settings'">
+            Edit profile
+          </a>
+        } @else {
+          @if (profileContext.viewerIsFriend()) {
+            <!-- Nothing to do here yet -->
+          } @else {
+            @if (profileContext.viewerCanAcceptRequest()) {
               <gf-async-button
                 [labels]="{ idle: 'Accept Friend Request' }"
                 [states]="{ busy: busyState.isBusy() }"
@@ -59,15 +65,11 @@
             } @else {
               <gf-async-button
                 [labels]="{ idle: 'Send Friend Request', disabled: 'Pending' }"
-                [states]="{ busy: busyState.isBusy(), disabled: profileContext.userProfile().friendship?.state === FriendshipState.Pending }"
+                [states]="{ busy: busyState.isBusy(), disabled: profileContext.profileFriendshipIsPending()}"
                 (click)="onSendFriendshipRequest()"
               ></gf-async-button>
             }
           }
-        } @else {
-          <a class="gf-center-axes gf-px-32 action-btn btn-edit" [routerLink]="'/settings'">
-            Edit profile
-          </a>
         }
       </div>
     </div>

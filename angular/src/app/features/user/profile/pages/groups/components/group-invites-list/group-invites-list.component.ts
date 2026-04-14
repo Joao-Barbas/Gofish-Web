@@ -40,7 +40,7 @@ export class GroupInvitesListComponent {
   groupInvitesCursor  = signal<string | undefined>(undefined);
 
   groupInvites = rxResource({
-    params: () => this.profileContext.userProfileId(),
+    params: () => this.profileContext.profileId(),
     stream: () => this.userApi.getGroupInvites({ state: FriendshipState.Pending, maxResults: 20, lastTimestamp: undefined })
   });
 

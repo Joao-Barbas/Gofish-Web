@@ -1,10 +1,16 @@
 <!-- profile-actions-popover.component.html -->
 
-@if (!profileContext.isOwner()) {
-  @if (profileContext.isFriend()) {
+@if (!profileContext.viewerIsProfileOwner()) {
+  @if (profileContext.viewerIsFriend()) {
     <button (click)="onUnfriend()">Unfriend</button>
-  } @else if (profileContext.isFriendshipPending()) {
-    <button (click)="onFriendshipCancel()">Cancel friend request</button>
+  } @else if (profileContext.profileFriendshipIsPending()) {
+    <button (click)="onFriendshipCancel()">
+      @if (profileContext.profileSentRequest()) {
+        Ignore friend request
+      } @else {
+        Cancel friend request
+      }
+    </button>
   }
 }
 
@@ -12,10 +18,10 @@
 <button (click)="onPins()">View all pins</button>
 <button (click)="onGroups()">View all crews</button>
 
-@if (profileContext.isOwner()) {
+@if (profileContext.viewerIsProfileOwner()) {
   <button (click)="onFriendRequests()">Go to friendship requests</button>
   <button (click)="onGroupInvites()">Go to crew invites</button>
-} @else if (profileContext.isFriend()) {
+} @else if (profileContext.viewerIsFriend()) {
   <button (click)="onInviteToGroup()">Invite to group...</button>
 }
 

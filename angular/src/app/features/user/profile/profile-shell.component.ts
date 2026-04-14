@@ -66,7 +66,7 @@ export class ProfileShellComponent {
 //
 //   // Only shown if owner
 //   friendRequests = resource({
-//     params: () => this.ctx.isOwner() ? this.ctx.id() : undefined,
+//     params: () => this.ctx.viewerIsProfileOwner() ? this.ctx.id() : undefined,
 //     loader: ({ params: id }) => this.friendsService.getRequests(id!)
 //   });
 // }
@@ -82,7 +82,7 @@ export class ProfileShellComponent {
 //
 //   // Only fetches for the profile owner
 //   invites = resource({
-//     params: () => this.ctx.isOwner() ? this.ctx.id() : undefined,
+//     params: () => this.ctx.viewerIsProfileOwner() ? this.ctx.id() : undefined,
 //     loader: ({ params: id }) => this.groupsService.getInvites(id!)
 //   });
 // }

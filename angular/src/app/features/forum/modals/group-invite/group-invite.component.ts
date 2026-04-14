@@ -86,7 +86,7 @@ export class GroupInviteComponent {
   }
 
   private loadMoreFriends() {
-    const userId = this.profileContext.userProfile()?.userId;
+    const userId = this.profileContext.profile()?.userId;
     this.loadingState.start();
     this.busyState.setBusy(true);
     this.userApi.getFriendships({

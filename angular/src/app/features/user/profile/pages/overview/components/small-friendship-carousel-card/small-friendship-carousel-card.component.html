@@ -1,6 +1,6 @@
 <!-- small-friendship-carousel-card.component.html -->
 
-@let otherUser = friendship().requesterUserId === profileContext.userProfileId()
+@let otherUser = friendship().requesterUserId === profileContext.profileId()
   ? friendship().receiver
   : friendship().requester;
 

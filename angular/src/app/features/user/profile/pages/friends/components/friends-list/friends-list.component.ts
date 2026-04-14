@@ -43,7 +43,7 @@ export class FriendsListComponent {
   friendsList    = signal<FriendshipDTO[]>([]);
 
   friends = resource({
-    params: () => this.profileContext.userProfileId(),
+    params: () => this.profileContext.profileId(),
     loader: ({ params: id }) => firstValueFrom(this.userApi.getFriendships({ userId: id, state: FriendshipState.Accepted, maxResults: 1, lastTimestamp: undefined }))
   });
 
@@ -57,7 +57,7 @@ export class FriendsListComponent {
   }
 
   loadMoreFriends() {
-    let profileId = this.profileContext.userProfileId();
+    let profileId = this.profileContext.profileId();
     this.loadingState.start();
     this.busyState.setBusy(true);
     this.userApi.getFriendships({

@@ -1,7 +1,7 @@
 <!-- friends.component.html -->
 
-<h5 class="gf-font-bold">{{ `${ profileContext.userProfile().userName }'s friends` }}</h5>
-@if (profileContext.isOwner()) {
+<h5 class="gf-font-bold">{{ `${ profileContext.profile().userName }'s friends` }}</h5>
+@if (profileContext.viewerIsProfileOwner()) {
   <nav class="gf-flow-horizontal gf-justify-evenly gf-items-center gf-w-100">
   <a [routerLink]="'.'" [queryParams]="{ tab: 'friends' }" [class.active]="activeTabOrDefault() === 'friends'">
     Friends
@@ -11,7 +11,7 @@
   </a>
   </nav>
 }
-@if (activeTabOrDefault() === 'requests' && profileContext.isOwner()) {
+@if (activeTabOrDefault() === 'requests' && profileContext.viewerIsProfileOwner()) {
   <app-requests-list></app-requests-list>
 } @else {
   <app-friends-list></app-friends-list>

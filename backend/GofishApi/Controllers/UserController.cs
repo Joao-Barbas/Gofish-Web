@@ -170,7 +170,7 @@ public class UserController : ControllerBase
 
         var query = _db.Users
             .Where(u => u.Id != userId)
-            .Where(u => u.NormalizedUserName!.Contains(normalizedQuery) || u.DisplayName.Contains(normalizedQuery, StringComparison.CurrentCultureIgnoreCase));
+            .Where(u => u.NormalizedUserName!.Contains(normalizedQuery) || u.DisplayName.ToUpper().Contains(normalizedQuery));
 
         if (dto.LastUsername is not null)
         {
