@@ -4,5 +4,5 @@ export const environment = {
   containerGroupAvatars: 'group-avatars',
   containerPostImages: 'group-avatars',
   containerUserAvatars: 'group-avatars',
-  mapboxToken: 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21uY2NtZjdrMHpsYjJwcXlsNWdpM2pzaSJ9.M0UieuxBdBlA67zriIvU4w'
+  mapboxToken: 'pk.eyJ1IjoiZ29uY2Fsb3BybzIiLCJhIjoiY21ueHVyYWY4MDdiNTJwcjgwY3VjcGdnNyJ9.hdErnuL_PbhBDADpq0oDPg'
 } as const;
