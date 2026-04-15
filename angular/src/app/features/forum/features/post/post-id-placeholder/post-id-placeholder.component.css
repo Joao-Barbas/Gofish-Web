@@ -20,6 +20,7 @@
   box-shadow: none;
   background: none;
   gap: 12px;
+  border-radius: 0px;
 }
 
 .app-forum-post {
@@ -252,6 +253,10 @@
   font-family: var(--gf-font-main);
   word-break: break-all;
 
+}
+
+.comment-list-section {
+  border-radius: 0;
 }
 
 .show-more-text {

@@ -62,6 +62,8 @@ export class OverviewComponent {
   readonly router = inject(Router);
 
   readonly busyState = new BusyState();
+
+  readonly toast = toast;
   readonly Path = Path;
   readonly FriendshipState = FriendshipState;
   readonly InviteToGroupModalComponent = InviteToGroupsModalComponent;
@@ -103,7 +105,7 @@ export class OverviewComponent {
       this.busyState.setBusy(false);
     })).subscribe({
       next: (res) => {
-        this.profileContext.befriends(res);
+        this.profileContext.requestFriendship(res);
       },
       error: (err) => {
         toast.error('Something went wrong. Try again later.');
@@ -112,21 +114,24 @@ export class OverviewComponent {
   }
 
   onAcceptFriendRequest() {
-    console.log("ASDGJGASDHGASFXYGHASDCGHHDGASGHDFSAG")
-    console.log(this.profileContext.profileFriendship());
-    if (!this.profileContext.profile().friendship) return;
-    if (!this.profileContext.viewerCanAcceptRequest()) return;
+    let friendship = this.profileContext.profile().friendship;
+    let canAccept  = this.profileContext.viewerCanAcceptRequest();
+
+    if (!friendship) return;
+    if (!canAccept) return;
 
     this.busyState.setBusy(true);
-
-    this.userApi.acceptFriendship(this.profileContext.profile().friendship?.id!).subscribe({
+    this.userApi.acceptFriendship(friendship.id).subscribe({
       next: () => {
-        this.profileContext.befriends(this.profileContext.profile().friendship!);
+        friendship.state = FriendshipState.Accepted;
+        this.profileContext.acceptFriendship();
+        console.log(this.profileContext.profile())
+        this.toast.success(`You and ${this.profileContext.profile().displayName} are now on the same boat.`);
         this.busyState.setBusy(false);
       },
       error: () => {
         this.busyState.setBusy(false);
-        toast.warning('Couldn\'t accept friend request. It\'s possible that this user has canceled the friend request');
+        this.toast.warning('Couldn\'t accept friend request. It\'s possible that this user has canceled the friend request');
       }
     });
   }

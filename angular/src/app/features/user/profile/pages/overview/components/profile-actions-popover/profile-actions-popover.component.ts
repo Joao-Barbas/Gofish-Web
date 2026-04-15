@@ -53,7 +53,7 @@ export class ProfileActionsPopoverComponent {
     if (!friendship) return;
     this.userApi.deleteFriendship(friendship.id).subscribe({
       next: () => {
-        this.profileContext.unfriend();
+        this.profileContext.removeFriendship();
         this.toast.info(`You are no longer friends with ${this.profileContext.profile().userName}`);
       },
       error: () => {
@@ -68,7 +68,7 @@ export class ProfileActionsPopoverComponent {
     if (!friendship) return;
     this.userApi.deleteFriendship(friendship.id).subscribe({
       next: () => {
-        this.profileContext.unfriend();
+        this.profileContext.removeFriendship();
         this.toast.info(`You are no longer seeking friendship with ${this.profileContext.profile().userName}`);
       },
       error: () => {

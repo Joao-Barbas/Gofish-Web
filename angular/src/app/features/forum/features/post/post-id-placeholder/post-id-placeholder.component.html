@@ -61,19 +61,19 @@
       </app-post-comments>
 
       @if (hasMoreResults()) {
-      <div class="show-more">
+      <!-- <div class="show-more"> -->
         <!-- <button type="button" class="show-more-text" (click)="showMore()">
           Show more
         </button> -->
         <button
-          class="gf-async-btn-primary-stroked"
+          class="gf-async-btn-primary-stroked gf-mt-6 gf-w-100"
           gfAsyncBtn
           (click)="showMore()"
           [labels]="{ idle: 'Load More' }"
           [states]="{ busy: showMoreBusyState.isBusy() }">
         </button>
 
-      </div>
+      <!-- </div> -->
       } @else {
       <div class="end-message">
         <p>No more tales to tell.</p>

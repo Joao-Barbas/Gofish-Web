@@ -88,11 +88,9 @@ export class PostIdPlaceholderComponent {
     this.showMoreBusyState.setBusy(true);
     this.pinService.getComments(req).subscribe({
       next: (res) => {
+        this.hasMoreResults.set(res.hasMoreResults);
         this.comments.update(current => {
           if (!current) return res;
-
-          this.hasMoreResults.set(res.hasMoreResults);
-
           return {
             ...res,
             comments: [...current.comments, ...res.comments]

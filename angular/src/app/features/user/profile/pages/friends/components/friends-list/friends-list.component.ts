@@ -44,7 +44,7 @@ export class FriendsListComponent {
 
   friends = resource({
     params: () => this.profileContext.profileId(),
-    loader: ({ params: id }) => firstValueFrom(this.userApi.getFriendships({ userId: id, state: FriendshipState.Accepted, maxResults: 1, lastTimestamp: undefined }))
+    loader: ({ params: id }) => firstValueFrom(this.userApi.getFriendships({ userId: id, state: FriendshipState.Accepted, maxResults: 20, lastTimestamp: undefined }))
   });
 
   constructor() {
@@ -63,7 +63,7 @@ export class FriendsListComponent {
     this.userApi.getFriendships({
       userId: profileId,
       state: FriendshipState.Accepted,
-      maxResults: 1,
+      maxResults: 20,
       lastTimestamp: this.friendsCursor()
     }).subscribe({
       next: (res: GetFriendshipsResDTO) => {

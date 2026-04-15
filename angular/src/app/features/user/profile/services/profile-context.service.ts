@@ -20,15 +20,14 @@ export class ProfileContext {
   private _profile = signal<UserProfileDTO>(null!);
   readonly profile = this._profile.asReadonly();
 
-  readonly profileFriendship = computed<FriendshipDTO | null>(() => this._profile()?.friendship ?? null);
-  readonly profileSentRequest = computed<boolean>(() => this.profileFriendship()?.requesterUserId === this._profileId());
-  readonly profileFriendshipIsPending = computed<boolean>(() => this.profileFriendship()?.state === FriendshipState.Pending);
+  readonly profileSentRequest         = computed<boolean>(() => this._profile().friendship?.requesterUserId === this._profileId());
+  readonly profileFriendshipIsPending = computed<boolean>(() => this._profile().friendship?.state === FriendshipState.Pending);
 
   // Viewer relationship with this profile
 
-  readonly viewerIsProfileOwner = computed<boolean>(() => this._profileId() === this.authService.userId());
-  readonly viewerIsFriend = computed<boolean>(() => this.profileFriendship()?.state === FriendshipState.Accepted);
-  readonly viewerSentRequest = computed<boolean>(() => this.profileFriendship()?.requesterUserId === this.authService.userId());
+  readonly viewerIsProfileOwner   = computed<boolean>(() => this._profileId() === this.authService.userId());
+  readonly viewerIsFriend         = computed<boolean>(() => this._profile().friendship?.state === FriendshipState.Accepted);
+  readonly viewerSentRequest      = computed<boolean>(() => this._profile().friendship?.requesterUserId === this.authService.userId());
   readonly viewerCanAcceptRequest = computed<boolean>(() => !this.viewerIsProfileOwner() && this.profileFriendshipIsPending() && this.profileSentRequest());
 
   // Mutations
@@ -38,11 +37,16 @@ export class ProfileContext {
     this._profile.set(profileData);
   }
 
-  unfriend(): void {
+  removeFriendship(): void {
     this._profile.update(p => p && ({ ...p, friendship: undefined }));
   }
 
-  befriends(friendship: FriendshipDTO): void {
+  requestFriendship(friendship: FriendshipDTO): void {
     this._profile.update(p => p && ({ ...p, friendship: friendship }));
+  }
+
+  acceptFriendship(): void {
+    let f = this._profile().friendship;
+    if (f) this._profile.update(p => p && ({ ...p, friendship: { ...f, state: FriendshipState.Accepted }}));
   }
 }

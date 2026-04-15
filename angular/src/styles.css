@@ -536,7 +536,7 @@ h6 {
 
 .gf-async-btn-primary-stroked {
   background-color: transparent;
-  border: var(--gf-2) solid var(--gf-accent);
+  border: var(--gf-2) solid var(--gf-primary);
   padding: calc(1em / 2) var(--gf-16);
   max-height: var(--gf-36);
   border-radius: var(--gf-8);
