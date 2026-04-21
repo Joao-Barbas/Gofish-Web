@@ -6,6 +6,8 @@
   border-radius: 12px;
   padding: 6px;
   width: 405px;
+  max-width: 405px;
+  overflow: hidden;
 }
 
 .pin-side-panel {
@@ -27,15 +29,22 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .post-author-profile-photo {
   width: var(--gf-32);
   height: var(--gf-32);
+  flex-shrink: 0;
 }
+
 
 gf-user-title {
   --user-title-cursor: pointer;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .post-author-name {
@@ -44,9 +53,11 @@ gf-user-title {
 }
 
 .separator,
-.time-ago {
-  color: var(--gf-dark-text-muted);
-  font-size: 12px;
+.post-date {
+  font-size: var(--gf-12);
+  font-family: var(--gf-font-date);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .post-date {
@@ -118,7 +129,15 @@ gf-user-title {
 .post-description {
   font-size: var(--gf-16);
   font-family: var(--gf-font-ugc);
-  word-break: break-all;
+  word-break: break-word;
+  min-width: 0;
+}
+
+
+app-enum {
+  min-width: 0;
+  overflow: hidden;
+  flex-wrap: wrap;
 }
 
 .post-image-wrapper {
@@ -404,4 +423,6 @@ gf-user-title {
   text-decoration: underline;
 }
 
-
+.post-action-buttons-wrapper {
+  flex-shrink: 0;
+}

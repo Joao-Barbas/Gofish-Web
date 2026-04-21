@@ -6,7 +6,8 @@
 .gf-card-pin-preview {
   padding: 12px;
   width: 100%;
-  min-width: fit-content;
+  min-width: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,24 +16,30 @@
 
 .top-wrapper {
   display: flex;
-  justify-items: center;
+  align-items: center;
   justify-content: space-between;
+  min-width: 0;
 }
 
 .pin-user-wrapper {
   display: flex;
   align-items: center;
   gap: 8px;
+  overflow: hidden;
+  flex: 1;
 }
 
 gf-user-title {
   --user-title-font-size: 14px;
-  --user-title-max-width: 100px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .pin-author-profile-photo {
   width: var(--gf-32);
   height: var(--gf-32);
+  flex-shrink: 0;
 }
 
 .user-name-text {
@@ -44,12 +51,18 @@ gf-user-title {
 .pin-time-ago {
   font-size: var(--gf-12);
   font-family: var(--gf-font-date);
-  word-break: break-all;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pin-time-ago {
+  margin-right: 12px;
 }
 
 .badge-wrapper {
   display: flex;
   gap: 4px;
+  flex-shrink: 0;
 }
 
 .gf-badge-pin-preview {
@@ -97,24 +110,29 @@ gf-user-title {
 .bottom-wrapper {
   display: flex;
   justify-content: space-between;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .pin-type-extras-wrapper {
   display: flex;
   align-items: center;
   gap: 4px;
+  min-width: 0;
+  overflow: hidden;
+  flex-wrap: wrap;
 }
+
 
 .gf-badge-pin-type-and-extras {
   gap: 4px;
-
   padding: 4px 16px;
-
   width: fit-content;
   height: 100%;
   border-radius: 16px;
-
   background-color: var(--gf-dark-bg-dark);
+  white-space: nowrap;
+  flex-shrink: 0;
 
   &.catch-pin {
     background-color: var(--gf-dark-bg-catch-pin);

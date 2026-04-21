@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   min-width: calc(256rem / 16);
+  max-width: calc(320rem / 16);
   top: calc(100% + var(--gf-8));
   right: 0;
   border-radius: var(--gf-12);
@@ -110,6 +111,13 @@
   &:hover {
     background-color: var(--gf-dark-bg-light);
   }
+}
+
+.gf-text-normal,
+.gf-text-small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: wrap;
 }
 
 @media (max-width: 36rem) {

@@ -6,18 +6,19 @@
       <!-- Post Header -->
       <div class="d-flex align-items-center justify-content-between gap-2">
 
-        <div class="d-flex align-items-center gap-2 clickable" [routerLink]="Path.PROFILE(pin.author!.id)" title="Go to user profile">
+      <div class="d-flex align-items-center gap-2 clickable"
+          [routerLink]="Path.PROFILE(pin.author!.id)"
+          title="Go to user profile"
+          style="min-width: 0; overflow: hidden; flex: 1;">
 
-          <img [src]="this.avatarService.resolve(pin.author?.avatarUrl)"
-            class="rounded-circle post-author-profile-photo">
+        <img [src]="this.avatarService.resolve(pin.author?.avatarUrl)"
+          class="rounded-circle post-author-profile-photo">
 
-          <!-- <span class="post-author-name">{{ pin.author?.userName ?? 'User' }}</span> -->
+        <gf-user-title [text]="pin.author!.userName" [rank]="pin.author!.rank"></gf-user-title>
 
-          <gf-user-title [text]="pin.author!.userName" [rank]="pin.author!.rank"></gf-user-title>
-
-          <span class="separator">•</span>
-          <span class="post-date dark-text-muted">{{ pin.createdAt | timeAgo }}</span>
-        </div>
+        <span class="separator">•</span>
+        <span class="post-date dark-text-muted">{{ pin.createdAt | timeAgo }} ago</span>
+      </div>
 
         <div class="d-flex gap-1 post-action-buttons-wrapper">
           @if (pin!.author!.userName == this.userName || isAdmin) {

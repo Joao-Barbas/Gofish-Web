@@ -1,11 +1,11 @@
 <!-- user-popover.component.html -->
 
 <div class="d-flex justify-content-between align-items-start gf-p-12">
-  <div class="d-flex align-items-center gf-gap-12 flex-grow-1">
+  <div class="d-flex align-items-center gf-gap-12 flex-grow-1" style="overflow: hidden; min-width: 0;">
     <img [src]="avatarService.resolve(avatarUrl.value())" alt="Avatar" style="width: 48px; height: 48px; border-radius: 100%; object-fit: cover;">
-    <div class="flex-grow-1">
-      <div class="gf-text-normal text-truncate">{{ authService.userDisplayName() }}</div>
-      <div class="gf-text-small text-truncate">&#64;{{ authService.userName() }}</div>
+    <div class="flex-grow-1" style="min-width: 0;">
+      <div class="gf-text-normal text-truncate text-displayname">{{ authService.userDisplayName() }}</div>
+      <div class="gf-text-small text-truncate text-username">&#64;{{ authService.userName() }}</div>
     </div>
   </div>
 </div>

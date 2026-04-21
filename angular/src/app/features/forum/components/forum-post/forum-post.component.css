@@ -7,11 +7,11 @@
 
 gf-user-title {
   --user-title-cursor: pointer;
+  text-overflow: ellipsis;
 }
 
 .post-author-name {
   font-size: var(--gf-14);
-  word-break: break-all;
 }
 
 .separator {
@@ -22,7 +22,7 @@ gf-user-title {
 .post-date {
   font-size: var(--gf-12);
   font-family: var(--gf-font-date);
-  word-break: break-all;
+  margin-right: 16px;
 }
 
 /* Post Content */
@@ -209,4 +209,35 @@ app-enum {
 
 .post-stats {
   font-size: var(--gf-text-sm);
+}
+
+.top-of-post {
+  min-width: 0;
+}
+
+.top-of-post > .d-flex:first-child {
+  min-width: 0;
+  overflow: hidden;
+  flex: 1;
+}
+
+.top-of-post .gf-big-avatar {
+  flex-shrink: 0;
+}
+
+.post-author-name {
+  font-size: var(--gf-14);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.post-date {
+  font-size: var(--gf-12);
+  font-family: var(--gf-font-date);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.post-action-buttons {
+  flex-shrink: 0;
 }

@@ -1,6 +1,7 @@
 :host {
   display: block;
   width: 100%;
+  max-width: 100%;
 }
 
 .comment-list-section {
@@ -25,6 +26,12 @@
   min-width: 0;
 }
 
+.top-of-post > .d-flex:first-child {
+  min-width: 0;
+  overflow: hidden;
+  flex: 1;
+}
+
 .post-author-profile-photo {
   width: var(--gf-32);
   height: var(--gf-32);
@@ -33,22 +40,25 @@
 }
 
 gf-user-title {
+  text-overflow: ellipsis;
   --user-title-cursor: pointer;
 }
 
 .post-author-name {
   font-size: var(--gf-14);
   font-family: var(--gf-font-main);
-  word-break: break-word;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .post-date {
   font-size: var(--gf-12);
   font-family: var(--gf-font-date);
   color: var(--gf-dark-text-muted);
-  word-break: break-word;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-right: 12px;
 }
-
 
 .post-content {
   min-width: 0;
@@ -56,6 +66,10 @@ gf-user-title {
 
 .post-comment-textarea {
   padding-left: 40px;
+}
+
+.post-action-buttons {
+  flex-shrink: 0;
 }
 
 .post-comment-text {

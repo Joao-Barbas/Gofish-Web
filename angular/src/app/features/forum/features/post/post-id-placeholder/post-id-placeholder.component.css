@@ -257,6 +257,8 @@
 
 .comment-list-section {
   border-radius: 0;
+  width: 100%;
+  min-width: 0px;
 }
 
 .show-more-text {
